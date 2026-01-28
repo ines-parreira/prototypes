@@ -16,6 +16,7 @@ import type {
     OpportunityListItem,
     SidebarOpportunityItem,
 } from '../../types'
+import { ResourceType } from '../../types'
 import { OpportunitiesSidebar } from './OpportunitiesSidebar'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
@@ -73,33 +74,57 @@ describe('OpportunitiesSidebar', () => {
         {
             id: '1',
             key: 'ai_1',
-            title: "What's your return policy?",
-            content:
-                'You can request a return or exchange within 14 days of your delivery date.',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: "What's your return policy?",
+                    content:
+                        'You can request a return or exchange within 14 days of your delivery date.',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '2',
             key: 'ai_2',
-            title: 'How do I access my store account?',
-            content:
-                "You can access your account by clicking the 'My Account' link in the top right corner.",
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'How do I access my store account?',
+                    content:
+                        "You can access your account by clicking the 'My Account' link in the top right corner.",
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '3',
             key: 'ai_3',
-            title: 'How can I apply a discount?',
-            content:
-                "Enter your discount code at checkout in the 'Promo Code' field.",
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'How can I apply a discount?',
+                    content:
+                        "Enter your discount code at checkout in the 'Promo Code' field.",
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '4',
             key: 'ai_4',
-            title: 'Topic',
-            content: 'Resolve this conflict in your guidance.',
             type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [
+                {
+                    title: 'Topic',
+                    content: 'Resolve this conflict in your guidance.',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
     ]
 
@@ -198,10 +223,16 @@ describe('OpportunitiesSidebar', () => {
             expect(mockOnSelectOpportunity).toHaveBeenCalledWith({
                 id: '2',
                 key: 'ai_2',
-                title: 'How do I access my store account?',
-                content:
-                    "You can access your account by clicking the 'My Account' link in the top right corner.",
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'How do I access my store account?',
+                        content:
+                            "You can access your account by clicking the 'My Account' link in the top right corner.",
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
     })
@@ -436,30 +467,54 @@ describe('OpportunitiesSidebar', () => {
                 {
                     id: '5',
                     key: 'ai_5',
-                    title: 'Additional opportunity 1',
-                    content: 'Content for additional opportunity 1',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    resources: [
+                        {
+                            title: 'Additional opportunity 1',
+                            content: 'Content for additional opportunity 1',
+                            type: ResourceType.GUIDANCE,
+                            isVisible: true,
+                        },
+                    ],
                 },
                 {
                     id: '6',
                     key: 'ai_6',
-                    title: 'Additional opportunity 2',
-                    content: 'Content for additional opportunity 2',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    resources: [
+                        {
+                            title: 'Additional opportunity 2',
+                            content: 'Content for additional opportunity 2',
+                            type: ResourceType.GUIDANCE,
+                            isVisible: true,
+                        },
+                    ],
                 },
                 {
                     id: '7',
                     key: 'ai_7',
-                    title: 'Additional opportunity 3',
-                    content: 'Content for additional opportunity 3',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    resources: [
+                        {
+                            title: 'Additional opportunity 3',
+                            content: 'Content for additional opportunity 3',
+                            type: ResourceType.GUIDANCE,
+                            isVisible: true,
+                        },
+                    ],
                 },
                 {
                     id: '8',
                     key: 'ai_8',
-                    title: 'Additional opportunity 4',
-                    content: 'Content for additional opportunity 4',
                     type: OpportunityType.RESOLVE_CONFLICT,
+                    resources: [
+                        {
+                            title: 'Additional opportunity 4',
+                            content: 'Content for additional opportunity 4',
+                            type: ResourceType.GUIDANCE,
+                            isVisible: true,
+                        },
+                    ],
                 },
             ]
 
@@ -590,9 +645,15 @@ describe('OpportunitiesSidebar', () => {
                 {
                     id: '1',
                     key: 'ai_1',
-                    title: 'Fallback Title',
-                    content: 'Some content',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    resources: [
+                        {
+                            title: 'Fallback Title',
+                            content: 'Some content',
+                            type: ResourceType.GUIDANCE,
+                            isVisible: true,
+                        },
+                    ],
                 },
             ]
 

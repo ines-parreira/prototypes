@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { OpportunityType } from '../../enums'
-import type { Opportunity } from '../../types'
+import type { OpportunityResource } from '../../types'
+import { ResourceType } from '../../types'
 import { OpportunityGuidanceEditor } from './OpportunityGuidanceEditor'
 
 jest.mock(
@@ -24,18 +24,16 @@ jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
     ),
 }))
 
-const mockOpportunity: Opportunity = {
-    id: '123',
-    key: 'ai_123',
-    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+const mockResource: OpportunityResource = {
     title: 'Test Guidance Title',
     content: 'Test guidance content',
-    ticketCount: 5,
+    type: ResourceType.GUIDANCE,
+    isVisible: true,
 }
 
 describe('OpportunityGuidanceEditor', () => {
     const defaultProps = {
-        opportunity: mockOpportunity,
+        resource: mockResource,
         shopName: 'test-shop',
     }
 
@@ -70,8 +68,9 @@ describe('OpportunityGuidanceEditor', () => {
 
         expect(onValuesChange).toHaveBeenLastCalledWith({
             title: 'New Title',
-            body: 'Test guidance content',
+            content: 'Test guidance content',
             isVisible: true,
+            isDeleted: false,
         })
     })
 
@@ -92,8 +91,9 @@ describe('OpportunityGuidanceEditor', () => {
 
         expect(onValuesChange).toHaveBeenLastCalledWith({
             title: 'Test Guidance Title',
-            body: 'New content',
+            content: 'New content',
             isVisible: true,
+            isDeleted: false,
         })
     })
 
@@ -112,7 +112,10 @@ describe('OpportunityGuidanceEditor', () => {
 
     it('should disable inputs when isVisible is false', () => {
         render(
-            <OpportunityGuidanceEditor {...defaultProps} isVisible={false} />,
+            <OpportunityGuidanceEditor
+                {...defaultProps}
+                resource={{ ...mockResource, isVisible: false }}
+            />,
         )
 
         const nameInput = screen.getByLabelText(/guidance name/i)

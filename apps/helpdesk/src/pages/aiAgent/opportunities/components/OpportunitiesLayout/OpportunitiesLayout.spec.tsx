@@ -21,6 +21,7 @@ import {
     useOpportunityPageState,
 } from '../../hooks/useOpportunityPageState'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
+import { ResourceType } from '../../types'
 import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesLayout } from './OpportunitiesLayout'
 
@@ -114,7 +115,7 @@ jest.mock('../OpportunitiesSidebar/OpportunitiesSidebar', () => ({
                         onClick={() => onSelectOpportunity(opp)}
                         data-testid={`opportunity-${opp.id}`}
                     >
-                        {opp.title}
+                        {opp.resources?.[0]?.title}
                     </button>
                 ))}
             </div>
@@ -128,7 +129,7 @@ jest.mock('../OpportunitiesContent/OpportunitiesContent', () => ({
             <div data-testid="opportunities-content">
                 {selectedOpportunity ? (
                     <div>
-                        <h2>{selectedOpportunity.title}</h2>
+                        <h2>{selectedOpportunity.resources?.[0]?.title}</h2>
                         <button
                             data-testid="archive-button"
                             onClick={() => onArchive(selectedOpportunity.id)}
@@ -229,9 +230,15 @@ describe('OpportunitiesLayout', () => {
             articles.map((article: any) => ({
                 id: article.key,
                 key: article.key,
-                title: article.title,
-                content: article.html_content,
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: article.title,
+                        content: article.html_content,
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             })),
         )
         ;(useParams as jest.Mock).mockReturnValue({
@@ -415,9 +422,15 @@ describe('OpportunitiesLayout', () => {
         const TestComponentWithSelection = () => {
             const [selected, setSelected] = React.useState({
                 id: 'article-1',
-                title: 'First Article',
-                content: 'First article content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'First Article',
+                        content: 'First article content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             })
 
             React.useEffect(() => {
@@ -426,9 +439,15 @@ describe('OpportunitiesLayout', () => {
                     if (selected?.id === articleKey) {
                         const opportunities = mockArticles.map((article) => ({
                             id: article.key,
-                            title: article.title,
-                            content: article.html_content,
                             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                            resources: [
+                                {
+                                    title: article.title,
+                                    content: article.html_content,
+                                    type: ResourceType.GUIDANCE,
+                                    isVisible: true,
+                                },
+                            ],
                         }))
                         const remaining = opportunities.filter(
                             (opp) => opp.id !== articleKey,
@@ -442,7 +461,7 @@ describe('OpportunitiesLayout', () => {
 
             return (
                 <div data-testid="test-selected">
-                    {selected?.title || 'No selection'}
+                    {selected?.resources?.[0]?.title || 'No selection'}
                 </div>
             )
         }
@@ -475,9 +494,15 @@ describe('OpportunitiesLayout', () => {
         const TestComponentWithSingleSelection = () => {
             const [selected, setSelected] = React.useState({
                 id: 'article-1',
-                title: 'First Article',
-                content: 'First article content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'First Article',
+                        content: 'First article content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             })
 
             React.useEffect(() => {
@@ -487,9 +512,15 @@ describe('OpportunitiesLayout', () => {
                         const opportunities = [
                             {
                                 id: 'article-1',
-                                title: 'First Article',
-                                content: 'First article content',
                                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                                resources: [
+                                    {
+                                        title: 'First Article',
+                                        content: 'First article content',
+                                        type: ResourceType.GUIDANCE,
+                                        isVisible: true,
+                                    },
+                                ],
                             },
                         ]
                         const remaining = opportunities.filter(
@@ -504,7 +535,7 @@ describe('OpportunitiesLayout', () => {
 
             return (
                 <div data-testid="test-selected">
-                    {selected?.title || 'No selection'}
+                    {selected?.resources?.[0]?.title || 'No selection'}
                 </div>
             )
         }
@@ -614,9 +645,15 @@ describe('OpportunitiesLayout', () => {
                 opportunities: expect.arrayContaining([
                     expect.objectContaining({
                         id: 'article-1',
-                        title: 'First Article',
-                        content: 'First article content',
                         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                        resources: expect.arrayContaining([
+                            expect.objectContaining({
+                                title: 'First Article',
+                                content: 'First article content',
+                                type: ResourceType.GUIDANCE,
+                                isVisible: true,
+                            }),
+                        ]),
                     }),
                 ]),
                 opportunitiesPageState: expect.objectContaining({
@@ -828,10 +865,16 @@ describe('OpportunitiesLayout', () => {
             const mockSelectedOpportunity = {
                 id: '1',
                 key: 'ks_1',
-                title: 'KS Opportunity 1',
-                content: 'KS Opportunity 1 content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                resources: [
+                    {
+                        title: 'KS Opportunity 1',
+                        content: 'KS Opportunity 1 content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             }
             mockUseSelectedOpportunity.mockReturnValue({
                 selectedOpportunity: mockSelectedOpportunity,
@@ -877,18 +920,30 @@ describe('OpportunitiesLayout', () => {
             {
                 id: '1',
                 key: 'ks_1',
-                title: 'KS Opportunity 1',
-                content: 'KS Opportunity 1 content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
+                resources: [
+                    {
+                        title: 'KS Opportunity 1',
+                        content: 'KS Opportunity 1 content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
             {
                 id: '2',
                 key: 'ks_2',
-                title: 'KS Opportunity 2',
-                content: 'KS Opportunity 2 content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 3,
+                resources: [
+                    {
+                        title: 'KS Opportunity 2',
+                        content: 'KS Opportunity 2 content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
         ]
 

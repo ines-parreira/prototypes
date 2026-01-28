@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { OpportunityType } from '../../enums'
 import type { Opportunity } from '../../types'
+import { ResourceType } from '../../types'
 import { OpportunityDetailsHeader } from './OpportunityDetailsHeader'
 
 jest.mock('../../hooks/useOpportunitiesSidebar', () => ({
@@ -47,9 +48,15 @@ const mockOpportunity: Opportunity = {
     id: '123',
     key: 'ai_123',
     type: OpportunityType.FILL_KNOWLEDGE_GAP,
-    title: 'Test Opportunity Title',
-    content: 'Test content',
     ticketCount: 5,
+    resources: [
+        {
+            title: 'Test Opportunity Title',
+            content: 'Test content',
+            type: ResourceType.GUIDANCE,
+            isVisible: true,
+        },
+    ],
 }
 
 const mockOpportunityConfig = {
@@ -211,7 +218,45 @@ describe('OpportunityDetailsHeader', () => {
             ).toBeInTheDocument()
         })
 
-        it('should call handleResolve when clicked', async () => {
+        it('should be disabled when no changes have been made (isFormDirty=false)', () => {
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+
+            renderComponent({
+                selectedOpportunity: conflictOpportunity,
+                opportunities: [],
+                isFormDirty: false,
+            })
+
+            const resolveButton = screen.getByRole('button', {
+                name: /resolve/i,
+            })
+
+            expect(resolveButton).toBeDisabled()
+        })
+
+        it('should be enabled when changes have been made (isFormDirty=true)', () => {
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+
+            renderComponent({
+                selectedOpportunity: conflictOpportunity,
+                opportunities: [],
+                isFormDirty: true,
+            })
+
+            const resolveButton = screen.getByRole('button', {
+                name: /resolve/i,
+            })
+
+            expect(resolveButton).not.toBeDisabled()
+        })
+
+        it('should call handleResolve when clicked and changes have been made', async () => {
             const user = userEvent.setup()
             const handleResolve = jest.fn()
             const conflictOpportunity: Opportunity = {
@@ -222,6 +267,7 @@ describe('OpportunityDetailsHeader', () => {
             renderComponent({
                 selectedOpportunity: conflictOpportunity,
                 opportunities: [],
+                isFormDirty: true,
                 opportunityCTAs: {
                     ...mockOpportunityCTAs,
                     handleResolve,
@@ -234,6 +280,37 @@ describe('OpportunityDetailsHeader', () => {
             await user.click(resolveButton)
 
             expect(handleResolve).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not call handleResolve when button is disabled', async () => {
+            const user = userEvent.setup()
+            const handleResolve = jest.fn()
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+
+            renderComponent({
+                selectedOpportunity: conflictOpportunity,
+                opportunities: [],
+                isFormDirty: false,
+                opportunityCTAs: {
+                    ...mockOpportunityCTAs,
+                    handleResolve,
+                },
+            })
+
+            const resolveButton = screen.getByRole('button', {
+                name: /resolve/i,
+            })
+
+            // Verify button is disabled
+            expect(resolveButton).toBeDisabled()
+
+            // Try to click (should not trigger handler)
+            await user.click(resolveButton)
+
+            expect(handleResolve).not.toHaveBeenCalled()
         })
     })
 })

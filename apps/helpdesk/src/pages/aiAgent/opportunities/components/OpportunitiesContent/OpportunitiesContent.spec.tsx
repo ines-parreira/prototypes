@@ -12,6 +12,7 @@ import thunk from 'redux-thunk'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import { ResourceType } from 'pages/aiAgent/opportunities/types'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 
@@ -157,9 +158,15 @@ describe('OpportunitiesContent', () => {
     const selectedOpportunity: Opportunity = {
         id: '1',
         key: 'ai_1',
-        title: 'Test opportunity',
-        content: 'Test content',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        resources: [
+            {
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: ResourceType.GUIDANCE,
+                isVisible: true,
+            },
+        ],
     }
 
     const mockOpportunityConfig = {
@@ -551,9 +558,15 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity: {
                 id: '1',
-                title: 'Test',
-                content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'Test',
+                        content: 'Test',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
             opportunitiesPageState: mockOpportunityPageState,
         })
@@ -580,9 +593,15 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity: {
                 id: '1',
-                title: 'Test',
-                content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'Test',
+                        content: 'Test',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
             opportunitiesPageState: mockOpportunityPageState,
         })
@@ -613,9 +632,15 @@ describe('OpportunitiesContent', () => {
         renderComponent({
             selectedOpportunity: {
                 id: '1',
-                title: 'Test',
-                content: 'Test',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'Test',
+                        content: 'Test',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
             opportunitiesPageState: mockOpportunityPageState,
         })
@@ -904,12 +929,18 @@ describe('OpportunitiesContent', () => {
         it('should render ticket count when detectionObjectIds are provided', () => {
             const selectedOpportunity: Opportunity = {
                 id: '1',
-                title: 'Test opportunity',
-                content: 'Test content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 key: 'ai_1',
                 ticketCount: 10,
                 detectionObjectIds: ['123', '456'],
+                resources: [
+                    {
+                        title: 'Test opportunity',
+                        content: 'Test content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             }
 
             renderComponent({
@@ -1116,9 +1147,15 @@ describe('OpportunitiesContent', () => {
             const selectedOpportunity: Opportunity = {
                 id: '1',
                 key: 'key-1',
-                title: "What's your return policy?",
-                content: 'Return policy content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: "What's your return policy?",
+                        content: 'Return policy content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             }
 
             renderComponent({

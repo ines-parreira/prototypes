@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import classNames from 'classnames'
+import { useHistory } from 'react-router'
 
 import {
     Box,
@@ -13,32 +14,35 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
-import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import type {
+    OpportunityResource,
+    ResourceFormFields,
+} from 'pages/aiAgent/opportunities/types'
 
 import css from './OpportunitySnippetEditor.less'
 
-export interface SnippetFormFields {
-    isVisible: boolean
-}
-
 interface OpportunitySnippetEditorProps {
-    opportunity: Opportunity
-    source: string
-    isVisible?: boolean
-    onValuesChange?: (fields: SnippetFormFields) => void
+    resource: OpportunityResource
+    shopName: string
+    onValuesChange?: (fields: ResourceFormFields) => void
 }
 
 export const OpportunitySnippetEditor = ({
-    opportunity,
-    isVisible = true,
+    resource,
+    shopName,
     onValuesChange,
-    source,
 }: OpportunitySnippetEditorProps) => {
-    const [formFields, setFormFields] = useState<SnippetFormFields>({
-        isVisible,
+    const history = useHistory()
+    const { routes } = useAiAgentNavigation({ shopName })
+
+    const [formFields, setFormFields] = useState<ResourceFormFields>({
+        title: resource.title,
+        content: resource.content,
+        isVisible: resource.isVisible,
     })
 
-    const handleFieldChange = (partialFields: Partial<SnippetFormFields>) => {
+    const handleFieldChange = (partialFields: Partial<ResourceFormFields>) => {
         const updatedFields = {
             ...formFields,
             ...partialFields,
@@ -51,41 +55,73 @@ export const OpportunitySnippetEditor = ({
         handleFieldChange({ isVisible: !formFields.isVisible })
     }
 
-    // TODO: Implement source click
     const handleSourceClick = () => {
-        return null
+        const source = resource.meta?.articleIngestionLog?.source
+
+        if (!source) return
+
+        let sourcePath: string
+
+        switch (source) {
+            case 'file':
+                sourcePath = '?filter=document'
+                break
+            case 'domain':
+                sourcePath = '?filter=domain'
+                break
+            case 'url':
+                sourcePath = '?filter=url'
+                break
+            default:
+                return
+        }
+
+        const knowledgeHubUrl = `${routes.knowledgeSources}${sourcePath}`
+        history.push(knowledgeHubUrl)
     }
 
     return (
         <Box flexDirection="column" gap="md" className={css.container}>
-            <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                className={css.header}
-            >
-                <Heading
-                    size="md"
-                    className={!formFields.isVisible ? css.disabled : undefined}
+            <Box flexDirection="column" gap="sm">
+                <Box
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    className={css.header}
                 >
-                    Snippet
-                </Heading>
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Button
-                            size="sm"
-                            variant="secondary"
-                            onClick={handleDisableClick}
-                        >
-                            {formFields.isVisible ? 'Disable' : 'Enable'}
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {formFields.isVisible
-                            ? 'Disable knowledge for AI Agent'
-                            : 'Enable knowledge for AI Agent'}
-                    </TooltipContent>
-                </Tooltip>
+                    <Heading
+                        size="md"
+                        className={
+                            !formFields.isVisible ? css.disabled : undefined
+                        }
+                    >
+                        Snippet
+                    </Heading>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                size="sm"
+                                variant="secondary"
+                                onClick={handleDisableClick}
+                            >
+                                {formFields.isVisible ? 'Disable' : 'Enable'}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {formFields.isVisible
+                                ? 'Disable knowledge for AI Agent'
+                                : 'Enable knowledge for AI Agent'}
+                        </TooltipContent>
+                    </Tooltip>
+                </Box>
+
+                {resource.insight && (
+                    <div className={css.summary}>
+                        <Text variant="bold" size="md">
+                            {resource.insight}
+                        </Text>
+                    </div>
+                )}
             </Box>
 
             <Box
@@ -96,24 +132,26 @@ export const OpportunitySnippetEditor = ({
                     [css.disabled]: !formFields.isVisible,
                 })}
             >
-                <div
-                    className={css.sourceContainer}
-                    onClick={handleSourceClick}
-                >
-                    <Icon
-                        name="nav-globe"
-                        color="var(--content-accent-default)"
-                    />
-                    <Text size="sm" variant="regular">
-                        {source}
-                    </Text>
-                </div>
+                {resource.meta?.articleIngestionLog?.source_name && (
+                    <div
+                        className={css.sourceContainer}
+                        onClick={handleSourceClick}
+                    >
+                        <Icon
+                            name="nav-globe"
+                            color="var(--content-accent-default)"
+                        />
+                        <Text size="sm" variant="regular">
+                            {resource.meta?.articleIngestionLog?.source_name}
+                        </Text>
+                    </div>
+                )}
                 <Box flexDirection="column" gap="xxxs">
                     <Text size="md" variant="bold">
-                        {opportunity.title}
+                        {resource.title}
                     </Text>
                     <Text size="md" variant="regular">
-                        {opportunity.content}
+                        {resource.content}
                     </Text>
                 </Box>
             </Box>

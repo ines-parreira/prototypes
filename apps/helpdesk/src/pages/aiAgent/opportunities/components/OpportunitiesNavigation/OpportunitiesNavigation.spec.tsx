@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import { ResourceType } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunitiesNavigation } from './OpportunitiesNavigation'
 
@@ -34,23 +35,41 @@ describe('OpportunitiesNavigation', () => {
         {
             id: '1',
             key: 'ai_1',
-            title: 'First Opportunity',
-            content: 'First content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'First Opportunity',
+                    content: 'First content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '2',
             key: 'ai_2',
-            title: 'Second Opportunity',
-            content: 'Second content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Second Opportunity',
+                    content: 'Second content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '3',
             key: 'ai_3',
-            title: 'Third Opportunity',
-            content: 'Third content',
             type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [
+                {
+                    title: 'Third Opportunity',
+                    content: 'Third content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
     ]
 

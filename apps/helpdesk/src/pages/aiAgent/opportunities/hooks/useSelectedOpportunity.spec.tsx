@@ -5,6 +5,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity, OpportunityListItem } from '../types'
+import { ResourceType } from '../types'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 import { useSelectedOpportunity } from './useSelectedOpportunity'
 
@@ -44,18 +45,30 @@ describe('useSelectedOpportunity', () => {
         {
             id: '1',
             key: 'opportunity-1',
-            title: 'First Opportunity',
-            content: 'Content for first opportunity',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: 5,
+            resources: [
+                {
+                    title: 'First Opportunity',
+                    content: 'Content for first opportunity',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '2',
             key: 'opportunity-2',
-            title: 'Second Opportunity',
-            content: 'Content for second opportunity',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: 10,
+            resources: [
+                {
+                    title: 'Second Opportunity',
+                    content: 'Content for second opportunity',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
     ]
 
@@ -79,10 +92,16 @@ describe('useSelectedOpportunity', () => {
     const mockOpportunityDetails: Opportunity = {
         id: '1',
         key: 'ks_1',
-        title: 'First Opportunity with Details',
-        content: 'Detailed content for first opportunity',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
         ticketCount: 5,
+        resources: [
+            {
+                title: 'First Opportunity with Details',
+                content: 'Detailed content for first opportunity',
+                type: ResourceType.GUIDANCE,
+                isVisible: true,
+            },
+        ],
     }
 
     beforeEach(() => {
@@ -506,10 +525,16 @@ describe('useSelectedOpportunity', () => {
             {
                 id: '2',
                 key: 'opportunity-2',
-                title: 'Updated Second Opportunity',
-                content: 'Updated content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 15,
+                resources: [
+                    {
+                        title: 'Updated Second Opportunity',
+                        content: 'Updated content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             },
         ]
 

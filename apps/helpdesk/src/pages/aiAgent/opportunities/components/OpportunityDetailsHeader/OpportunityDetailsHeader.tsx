@@ -35,6 +35,7 @@ interface OpportunityDetailsHeaderProps {
     totalCount: number
     allowedOpportunityIds?: number[]
     onOpenDismissModal: () => void
+    isFormDirty?: boolean
 }
 
 export const OpportunityDetailsHeader = ({
@@ -46,6 +47,7 @@ export const OpportunityDetailsHeader = ({
     totalCount,
     allowedOpportunityIds,
     onOpenDismissModal,
+    isFormDirty = false,
 }: OpportunityDetailsHeaderProps) => {
     const [containerWidth, setContainerWidth] = useState(0)
     const approveButtonRef = useRef<HTMLButtonElement>(null)
@@ -115,7 +117,8 @@ export const OpportunityDetailsHeader = ({
         if (!selectedOpportunity) return null
 
         const typeLabel = getOpportunityTypeLabel(selectedOpportunity.type)
-        const titleText = `${typeLabel}: ${selectedOpportunity.title}`
+        const resourceTitle = selectedOpportunity.resources[0]?.title
+        const titleText = `${typeLabel}: ${resourceTitle}`
 
         return (
             <Heading size="md" className={css.title}>
@@ -162,6 +165,7 @@ export const OpportunityDetailsHeader = ({
                             leadingSlot="check"
                             onClick={handleResolve}
                             isLoading={isProcessing}
+                            isDisabled={!isFormDirty}
                         >
                             Resolve
                         </Button>

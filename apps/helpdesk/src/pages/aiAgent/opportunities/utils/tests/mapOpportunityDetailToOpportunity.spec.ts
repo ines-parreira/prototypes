@@ -4,6 +4,7 @@ import type {
 } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../../enums'
+import { ResourceType } from '../../types'
 import { mapOpportunityDetailToOpportunity } from '../mapOpportunityDetailToOpportunity'
 
 describe('mapOpportunityDetailToOpportunity', () => {
@@ -34,11 +35,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '123',
                 key: 'ks_123',
-                title: 'Test Knowledge Gap Title',
-                content: '<p>Test knowledge gap content</p>',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['1', '2', '3', '4', '5'],
+                resources: [
+                    {
+                        title: 'Test Knowledge Gap Title',
+                        content: '<p>Test knowledge gap content</p>',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
 
@@ -68,11 +75,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '123',
                 key: 'ks_123',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: [],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
 
@@ -95,11 +108,10 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '124',
                 key: 'ks_124',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['10', '11'],
+                resources: [],
             })
         })
 
@@ -129,11 +141,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '125',
                 key: 'ks_125',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['20'],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
 
@@ -163,11 +181,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '126',
                 key: 'ks_126',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['30', '31', '32'],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
 
@@ -197,11 +221,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '456',
                 key: 'ks_456',
-                title: 'Guidance Title',
-                content: '<p>Guidance content</p>',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 3,
                 detectionObjectIds: ['40', '41', '42'],
+                resources: [
+                    {
+                        title: 'Guidance Title',
+                        content: '<p>Guidance content</p>',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             })
         })
     })
@@ -235,7 +265,24 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         version: 2,
                     },
                 ],
-                resources: [],
+                resources: [
+                    {
+                        resourceId: 'resource-1',
+                        resourceSetId: 'resource-set-1',
+                        resourceLocale: 'en',
+                        resourceVersion: '1.0.0',
+                        resourceTitle: 'test',
+                        resourceType: 'guidance',
+                    },
+                    {
+                        resourceId: 'resource-2',
+                        resourceSetId: 'resource-set-2',
+                        resourceLocale: 'en',
+                        resourceVersion: '2.0.0',
+                        resourceTitle: 'test',
+                        resourceType: 'guidance',
+                    },
+                ],
             }
 
             const result = mapOpportunityDetailToOpportunity(conflictDetail)
@@ -243,10 +290,36 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '789',
                 key: 'ks_789',
-                title: 'First Conflict Title',
-                content: '<p>First conflict content</p>',
                 type: OpportunityType.RESOLVE_CONFLICT,
                 detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
+                resources: [
+                    {
+                        title: 'First Conflict Title',
+                        content: '<p>First conflict content</p>',
+                        insight: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'resource-1',
+                            resourceSetId: 'resource-set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: '1.0.0',
+                        },
+                    },
+                    {
+                        title: 'Second Conflict Title',
+                        content: '<p>Second conflict content</p>',
+                        insight: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'resource-2',
+                            resourceSetId: 'resource-set-2',
+                            resourceLocale: 'en',
+                            resourceVersion: '2.0.0',
+                        },
+                    },
+                ],
             })
         })
 
@@ -269,10 +342,9 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '999',
                 key: 'ks_999',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
                 detectionObjectIds: ['60', '61'],
+                resources: [],
             })
         })
 
@@ -304,10 +376,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '888',
                 key: 'ks_888',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
                 detectionObjectIds: ['70', '71'],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        insight: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: undefined,
+                    },
+                ],
             })
         })
 
@@ -339,10 +419,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '777',
                 key: 'ks_777',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
                 detectionObjectIds: ['80', '81'],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        insight: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: undefined,
+                    },
+                ],
             })
         })
 
@@ -374,10 +462,76 @@ describe('mapOpportunityDetailToOpportunity', () => {
             expect(result).toEqual({
                 id: '666',
                 key: 'ks_666',
-                title: 'Untitled',
-                content: '',
                 type: OpportunityType.RESOLVE_CONFLICT,
                 detectionObjectIds: ['90', '91'],
+                resources: [
+                    {
+                        title: 'Untitled',
+                        content: '',
+                        insight: '',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: undefined,
+                    },
+                ],
+            })
+        })
+
+        it('should include insight when provided in resource metadata', () => {
+            const conflictDetail: ConflictOpportunityDetail = {
+                id: 1000,
+                accountId: 456,
+                opportunityType: 'RESOLVE_CONFLICT',
+                shopIntegrationId: 123,
+                shopName: 'Test Shop',
+                createdDatetime: '2024-01-01T00:00:00Z',
+                detectionCount: 3,
+                detectionObjectIds: ['110', '111', '112'],
+                conflictingResources: [
+                    {
+                        title: 'Resource with Insight',
+                        body: '<p>Content with insight</p>',
+                        locale: 'en',
+                        type: 'article',
+                        origin: null,
+                        version: 1,
+                    },
+                ],
+                resources: [
+                    {
+                        resourceId: 'resource-with-insight',
+                        resourceSetId: 'resource-set-1',
+                        resourceLocale: 'en',
+                        resourceVersion: '1.0.0',
+                        resourceTitle: 'test',
+                        resourceType: 'article',
+                        insight: 'This article conflicts with another policy',
+                    },
+                ],
+            }
+
+            const result = mapOpportunityDetailToOpportunity(conflictDetail)
+
+            expect(result).toEqual({
+                id: '1000',
+                key: 'ks_1000',
+                type: OpportunityType.RESOLVE_CONFLICT,
+                detectionObjectIds: ['110', '111', '112'],
+                resources: [
+                    {
+                        title: 'Resource with Insight',
+                        content: '<p>Content with insight</p>',
+                        insight: 'This article conflicts with another policy',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'resource-with-insight',
+                            resourceSetId: 'resource-set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: '1.0.0',
+                        },
+                    },
+                ],
             })
         })
 
@@ -420,13 +574,34 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         version: 2,
                     },
                 ],
-                resources: [],
+                resources: [
+                    {
+                        resourceId: 'resource-keep',
+                        resourceSetId: 'resource-set-keep',
+                        resourceLocale: 'en',
+                        resourceVersion: '1.0',
+                        resourceTitle: 'test',
+                        resourceType: 'guidance',
+                    },
+                    {
+                        resourceId: 'resource-ignore',
+                        resourceSetId: 'resource-set-ignore',
+                        resourceLocale: 'fr',
+                        resourceVersion: '2.0',
+                        resourceTitle: 'test',
+                        resourceType: 'guidance',
+                    },
+                ],
             }
 
             const result = mapOpportunityDetailToOpportunity(conflictDetail)
 
-            expect(result.title).toBe('Keep This Title')
-            expect(result.content).toBe('<p>Keep this content</p>')
+            expect(result.resources[0].title).toBe('Keep This Title')
+            expect(result.resources[0].content).toBe('<p>Keep this content</p>')
+            expect(result.resources[1].title).toBe('Ignore This Title')
+            expect(result.resources[1].content).toBe(
+                '<p>Ignore this content</p>',
+            )
             expect(result.type).toBe(OpportunityType.RESOLVE_CONFLICT)
         })
     })

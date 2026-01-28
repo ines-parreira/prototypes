@@ -356,3 +356,43 @@ export function unescapeAmpAndDollarEntities(html: string): string {
 
     return html.replace(rex, (matched) => entities[matched])
 }
+
+/**
+ * Normalize HTML by parsing and serializing it back through the DOM parser,
+ * then applying additional transformations to match Draft.js editor output.
+ * This ensures consistent HTML representation by applying:
+ * - Character entities: & -> &amp;
+ * - Empty divs: <div><br /></div> or <div><br></div> -> <div></div>
+ * - Link attributes: removes target="_blank" for consistency
+ * - Trailing slashes in URLs: http://example.com/ -> http://example.com
+ *
+ * Useful for comparing HTML strings that may have been processed by different editors
+ * or loaded at different times, ensuring structural equality.
+ */
+export function normalizeHtml(html: string): string {
+    if (!html) return ''
+    const doc = parseHtml(html)
+
+    // Remove <br> tags that are the only child of a div
+    const divs = doc.querySelectorAll('div')
+    divs.forEach((div) => {
+        if (div.childNodes.length === 1 && div.firstChild?.nodeName === 'BR') {
+            div.removeChild(div.firstChild)
+        }
+    })
+
+    // Normalize link attributes for consistent comparison
+    const links = doc.querySelectorAll('a')
+    links.forEach((link) => {
+        // Remove target attribute
+        link.removeAttribute('target')
+
+        // Remove trailing slash from href for consistency
+        const href = link.getAttribute('href')
+        if (href && href.endsWith('/')) {
+            link.setAttribute('href', href.slice(0, -1))
+        }
+    })
+
+    return doc.body.innerHTML
+}

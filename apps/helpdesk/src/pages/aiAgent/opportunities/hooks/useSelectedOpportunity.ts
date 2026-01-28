@@ -4,7 +4,7 @@ import { useHistory } from 'react-router'
 
 import type { Opportunity, SidebarOpportunityItem } from '../types'
 import { isOpportunity } from '../types'
-import { useFindOneOpportunity } from './useFindOneOpportunity'
+import { useEnrichedOpportunity } from './useEnrichedOpportunity'
 
 interface UseSelectedOpportunityParams {
     shopIntegrationId: number
@@ -42,7 +42,7 @@ export const useSelectedOpportunity = ({
         !!selectedOpportunityId &&
         (!baseSelectedOpportunity || !isOpportunity(baseSelectedOpportunity))
 
-    const { data: opportunityDetails, isLoading } = useFindOneOpportunity(
+    const { data: opportunityDetails, isLoading } = useEnrichedOpportunity(
         shopIntegrationId,
         selectedOpportunityId ? parseInt(selectedOpportunityId, 10) : undefined,
         {

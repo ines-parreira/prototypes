@@ -7,6 +7,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import { ResourceType } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunityDismissReason } from '../../../../tickets/detail/components/AIAgentFeedbackBar/types'
 import { OpportunityType } from '../../enums'
@@ -30,14 +31,19 @@ const mockStore = configureStore(middlewares)
 describe('DismissOpportunityModal', () => {
     const mockOnClose = jest.fn()
     const mockOnConfirm = jest.fn()
-    const mockOnOpportunityDismissed = jest.fn()
 
     const mockOpportunity: Opportunity = {
         id: 'test-opportunity-id',
         key: 'test-opportunity-key',
-        title: 'Test Opportunity',
-        content: 'Test content',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        resources: [
+            {
+                title: 'Test Opportunity',
+                content: 'Test content',
+                type: ResourceType.GUIDANCE,
+                isVisible: true,
+            },
+        ],
     }
 
     const defaultProps = {
@@ -64,13 +70,30 @@ describe('DismissOpportunityModal', () => {
     })
 
     describe('Modal rendering', () => {
-        it('should render when isOpen is true', () => {
+        it('should render knowledge gap modal when isOpen is true', () => {
             renderComponent()
 
             expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
             expect(
                 screen.getByText(
                     'Dismissing this knowledge gap opportunity will delete the generated Guidance and cannot be undone.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render knowledge conflict modal with correct title and description', () => {
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+            renderComponent({ opportunity: conflictOpportunity })
+
+            expect(
+                screen.getByText('Dismiss knowledge conflict opportunity?'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Dismissing this knowledge conflict cannot be undone.',
                 ),
             ).toBeInTheDocument()
         })
@@ -93,7 +116,7 @@ describe('DismissOpportunityModal', () => {
             expect(dismissButtons.length).toBeGreaterThan(0)
         })
 
-        it('should render reason selection checkboxes', () => {
+        it('should render 5 checkboxes for knowledge gap opportunities', () => {
             renderComponent()
 
             expect(
@@ -102,6 +125,43 @@ describe('DismissOpportunityModal', () => {
 
             const checkboxes = screen.getAllByRole('checkbox')
             expect(checkboxes).toHaveLength(5)
+            expect(
+                screen.getByText("Topic shouldn't be handled by AI"),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Knowledge for this topic already exists'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Content is inaccurate'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Opportunity is irrelevant'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Other')).toBeInTheDocument()
+        })
+
+        it('should render 3 checkboxes for knowledge conflict opportunities', () => {
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+            renderComponent({ opportunity: conflictOpportunity })
+
+            expect(
+                screen.getByText('Why are you dismissing this opportunity?'),
+            ).toBeInTheDocument()
+
+            const checkboxes = screen.getAllByRole('checkbox')
+            expect(checkboxes).toHaveLength(3)
+            expect(
+                screen.getByText('Knowledge is intentionally different'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Knowledge items are actually saying the same thing',
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Other')).toBeInTheDocument()
         })
     })
 
@@ -133,11 +193,31 @@ describe('DismissOpportunityModal', () => {
             })
         })
 
-        it('should be disabled when "Other" is selected and text area is empty', async () => {
+        it('should be disabled when "Other" is selected and text area is empty for knowledge gaps', async () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
             const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            await act(() => user.click(otherCheckbox))
+
+            await waitFor(() => {
+                expect(screen.getByRole('textbox')).toBeInTheDocument()
+                const dismissButton = screen.getAllByRole('button', {
+                    name: 'Dismiss',
+                })[1]
+                expect(dismissButton).toHaveAttribute('aria-disabled', 'true')
+            })
+        })
+
+        it('should be disabled when "Other" is selected and text area is empty for knowledge conflicts', async () => {
+            const user = userEvent.setup({ delay: null })
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+            renderComponent({ opportunity: conflictOpportunity })
+
+            const otherCheckbox = screen.getAllByRole('checkbox')[2]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -210,39 +290,6 @@ describe('DismissOpportunityModal', () => {
                 }),
             )
             expect(mockOnClose).toHaveBeenCalledTimes(1)
-        })
-
-        it('should call onOpportunityDismissed with correct parameters when dismiss is successful', async () => {
-            const user = userEvent.setup({ delay: null })
-            renderComponent({
-                onOpportunityDismissed: mockOnOpportunityDismissed,
-            })
-
-            const firstCheckbox = screen.getAllByRole('checkbox')[0]
-            await act(() => user.click(firstCheckbox))
-
-            await waitFor(() => {
-                const dismissButton = screen.getAllByRole('button', {
-                    name: 'Dismiss',
-                })[1]
-                expect(dismissButton).not.toHaveAttribute(
-                    'aria-disabled',
-                    'true',
-                )
-            })
-
-            const dismissButton = screen.getAllByRole('button', {
-                name: 'Dismiss',
-            })[1]
-            await act(() => user.click(dismissButton))
-
-            await waitFor(() => {
-                expect(mockOnOpportunityDismissed).toHaveBeenCalledTimes(1)
-                expect(mockOnOpportunityDismissed).toHaveBeenCalledWith({
-                    opportunityId: 'test-opportunity-id',
-                    opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
-                })
-            })
         })
     })
 

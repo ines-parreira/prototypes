@@ -1,6 +1,42 @@
 import type { ArticleTemplateReviewAction } from 'models/helpCenter/types'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import type { OpportunityType } from './enums'
+
+type ArticleIngestionLog = Components.Schemas.ArticleIngestionLogDto
+
+export enum ResourceType {
+    GUIDANCE = 'guidance',
+    ARTICLE = 'article',
+    EXTERNAL_SNIPPET = 'external_snippet',
+}
+
+export interface ResourceIdentifiers {
+    resourceId: string
+    resourceSetId: string
+    resourceLocale: string | null
+    resourceVersion: string | null
+}
+
+export interface OpportunityResource {
+    title: string
+    content: string
+    type: ResourceType
+    isVisible: boolean
+    insight?: string
+    identifiers?: ResourceIdentifiers
+    meta?: {
+        articleIngestionLog?: Partial<ArticleIngestionLog> &
+            Pick<ArticleIngestionLog, 'source' | 'source_name'>
+    }
+}
+
+export interface ResourceFormFields {
+    title: string
+    content: string
+    isVisible: boolean
+    isDeleted?: boolean
+}
 
 export interface OpportunityConfig {
     shopName: string
@@ -36,9 +72,8 @@ export interface OpportunityListItem extends OpportunityBase {
 }
 
 export interface Opportunity extends OpportunityBase {
-    title: string
-    content: string
     detectionObjectIds?: string[]
+    resources: OpportunityResource[]
 }
 
 export type SidebarOpportunityItem = OpportunityListItem | Opportunity
@@ -52,7 +87,7 @@ export const isOpportunityListItem = (
 export const isOpportunity = (
     item: SidebarOpportunityItem,
 ): item is Opportunity => {
-    return 'title' in item
+    return 'resources' in item
 }
 
 export const getOpportunitySidebarDisplayText = (
@@ -61,5 +96,5 @@ export const getOpportunitySidebarDisplayText = (
     if (isOpportunityListItem(item)) {
         return item.insight
     }
-    return item.title
+    return item.resources[0]?.title
 }

@@ -15,30 +15,23 @@ import {
 
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
-import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import type {
+    OpportunityResource,
+    ResourceFormFields,
+} from 'pages/aiAgent/opportunities/types'
 
 import css from './OpportunityGuidanceEditor.less'
 
-export interface GuidanceFormFields {
-    title: string
-    body: string
-    isVisible: boolean
-}
-
 interface OpportunityGuidanceEditorProps {
-    opportunity: Opportunity
-    isVisible?: boolean
+    resource: OpportunityResource
     shopName: string
-    onDelete?: () => void
-    onValuesChange?: (fields: GuidanceFormFields) => void
+    onValuesChange?: (fields: ResourceFormFields) => void
     isInGuidanceEditorModeOnly?: boolean
 }
 
 export const OpportunityGuidanceEditor = ({
-    opportunity,
-    isVisible = true,
+    resource,
     shopName,
-    onDelete,
     onValuesChange,
     isInGuidanceEditorModeOnly = false,
 }: OpportunityGuidanceEditorProps) => {
@@ -47,13 +40,14 @@ export const OpportunityGuidanceEditor = ({
         'shopify',
     )
 
-    const [formFields, setFormFields] = useState<GuidanceFormFields>({
-        title: opportunity.title,
-        body: opportunity.content,
-        isVisible,
+    const [formFields, setFormFields] = useState<ResourceFormFields>({
+        title: resource.title,
+        content: resource.content,
+        isVisible: resource.isVisible,
+        isDeleted: false,
     })
 
-    const handleFieldChange = (partialFields: Partial<GuidanceFormFields>) => {
+    const handleFieldChange = (partialFields: Partial<ResourceFormFields>) => {
         const updatedFields = {
             ...formFields,
             ...partialFields,
@@ -86,8 +80,10 @@ export const OpportunityGuidanceEditor = ({
                 })}
             >
                 <GuidanceEditor
-                    content={formFields.body}
-                    handleUpdateContent={(body) => handleFieldChange({ body })}
+                    content={formFields.content}
+                    handleUpdateContent={(content) =>
+                        handleFieldChange({ content })
+                    }
                     label="Instructions"
                     shopName={shopName}
                     availableActions={guidanceActions}
@@ -108,51 +104,65 @@ export const OpportunityGuidanceEditor = ({
 
     return (
         <Box flexDirection="column" gap="md" className={css.container}>
-            <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="center"
-                className={css.header}
-            >
-                <Heading
-                    size="md"
-                    className={classNames({
-                        [css.disabledTitle]: !formFields.isVisible,
-                    })}
+            <Box flexDirection="column" gap="sm">
+                <Box
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    className={css.header}
                 >
-                    Guidance
-                </Heading>
-                <Box flexDirection="row" gap="xs">
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button
-                                size="sm"
-                                variant="secondary"
-                                onClick={() =>
-                                    handleFieldChange({
-                                        isVisible: !formFields.isVisible,
-                                    })
-                                }
-                            >
-                                {formFields.isVisible ? 'Disable' : 'Enable'}
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {formFields.isVisible
-                                ? 'Disable knowledge for AI Agent'
-                                : 'Enable knowledge for AI Agent'}
-                        </TooltipContent>
-                    </Tooltip>
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        intent="destructive"
-                        onClick={onDelete}
-                        icon="trash-empty"
+                    <Heading
+                        size="md"
+                        className={classNames({
+                            [css.disabledTitle]: !formFields.isVisible,
+                        })}
                     >
-                        Delete
-                    </Button>
+                        Guidance
+                    </Heading>
+                    <Box flexDirection="row" gap="xs">
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={() =>
+                                        handleFieldChange({
+                                            isVisible: !formFields.isVisible,
+                                        })
+                                    }
+                                >
+                                    {formFields.isVisible
+                                        ? 'Disable'
+                                        : 'Enable'}
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                {formFields.isVisible
+                                    ? 'Disable knowledge for AI Agent'
+                                    : 'Enable knowledge for AI Agent'}
+                            </TooltipContent>
+                        </Tooltip>
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            intent="destructive"
+                            onClick={() =>
+                                handleFieldChange({ isDeleted: true })
+                            }
+                            icon="trash-empty"
+                        >
+                            Delete
+                        </Button>
+                    </Box>
                 </Box>
+
+                {resource.insight && (
+                    <div className={css.summary}>
+                        <Text variant="bold" size="md">
+                            {resource.insight}
+                        </Text>
+                    </div>
+                )}
             </Box>
 
             <div

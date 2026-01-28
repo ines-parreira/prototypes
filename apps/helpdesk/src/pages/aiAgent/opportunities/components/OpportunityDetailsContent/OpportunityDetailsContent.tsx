@@ -1,8 +1,17 @@
+import { Box } from '@gorgias/axiom'
+
 import { OpportunityType } from '../../enums'
-import type { Opportunity, OpportunityConfig } from '../../types'
+import type {
+    Opportunity,
+    OpportunityConfig,
+    OpportunityResource,
+    ResourceFormFields,
+} from '../../types'
+import { ResourceType } from '../../types'
+import { OpportunityArticleEditor } from '../OpportunityArticleEditor/OpportunityArticleEditor'
 import { OpportunityDetailsCard } from '../OpportunityDetailsCard/OpportunityDetailsCard'
 import { OpportunityGuidanceEditor } from '../OpportunityGuidanceEditor/OpportunityGuidanceEditor'
-import type { GuidanceFormFields } from '../OpportunityGuidanceEditor/OpportunityGuidanceEditor'
+import { OpportunitySnippetEditor } from '../OpportunitySnippetEditor/OpportunitySnippetEditor'
 
 import css from './OpportunityDetailsContent.less'
 
@@ -10,7 +19,10 @@ interface OpportunityDetailsContentProps {
     selectedOpportunity: Opportunity
     opportunityConfig: OpportunityConfig
     onTicketCountClick: () => void
-    onFormValuesChange: (fields: GuidanceFormFields) => void
+    onFormValuesChange: (
+        resourceIndex: number,
+        fields: ResourceFormFields,
+    ) => void
 }
 
 export const OpportunityDetailsContent = ({
@@ -19,9 +31,52 @@ export const OpportunityDetailsContent = ({
     onTicketCountClick,
     onFormValuesChange,
 }: OpportunityDetailsContentProps) => {
-    // TODO: Add content for knowledge conflicts
-    if (selectedOpportunity.type === OpportunityType.RESOLVE_CONFLICT) {
-        return null
+    const renderResourceEditor = (
+        resource: OpportunityResource,
+        index: number,
+    ) => {
+        const key = `${selectedOpportunity.key}-${index}`
+
+        switch (resource.type) {
+            case ResourceType.GUIDANCE:
+                return (
+                    <OpportunityGuidanceEditor
+                        key={key}
+                        resource={resource}
+                        shopName={opportunityConfig.shopName}
+                        onValuesChange={(fields) =>
+                            onFormValuesChange(index, fields)
+                        }
+                        isInGuidanceEditorModeOnly={
+                            selectedOpportunity.type ===
+                            OpportunityType.FILL_KNOWLEDGE_GAP
+                        }
+                    />
+                )
+            case ResourceType.ARTICLE:
+                return (
+                    <OpportunityArticleEditor
+                        key={key}
+                        resource={resource}
+                        onValuesChange={(fields) =>
+                            onFormValuesChange(index, fields)
+                        }
+                    />
+                )
+            case ResourceType.EXTERNAL_SNIPPET:
+                return (
+                    <OpportunitySnippetEditor
+                        key={key}
+                        resource={resource}
+                        shopName={opportunityConfig.shopName}
+                        onValuesChange={(fields) =>
+                            onFormValuesChange(index, fields)
+                        }
+                    />
+                )
+            default:
+                return null
+        }
     }
 
     return (
@@ -32,13 +87,16 @@ export const OpportunityDetailsContent = ({
                     ticketCount={selectedOpportunity.ticketCount}
                     onTicketCountClick={onTicketCountClick}
                 />
-                <OpportunityGuidanceEditor
-                    key={selectedOpportunity.key}
-                    opportunity={selectedOpportunity}
-                    shopName={opportunityConfig.shopName}
-                    onValuesChange={onFormValuesChange}
-                    isInGuidanceEditorModeOnly
-                />
+                <Box flexDirection="row" gap="md">
+                    {selectedOpportunity.resources.map((resource, index) => (
+                        <div
+                            key={`${selectedOpportunity.key}-${index}`}
+                            className={css.resourceEditor}
+                        >
+                            {renderResourceEditor(resource, index)}
+                        </div>
+                    ))}
+                </Box>
             </div>
         </div>
     )

@@ -13,6 +13,7 @@ import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TextArea from 'pages/common/forms/TextArea'
@@ -34,15 +35,11 @@ interface DismissOpportunityModalProps {
     opportunity: Opportunity | null
     onClose: () => void
     onConfirm: (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => void
-    onOpportunityDismissed?: (context: {
-        opportunityId: string
-        opportunityType: string
-    }) => void
 }
 
-const DISMISS_REASON_OPTIONS: Option[] = [
+const KNOWLEDGE_GAP_DISMISS_REASON_OPTIONS: Option[] = [
     {
-        label: 'Topic shouldn’t be handled by AI',
+        label: "Topic shouldn't be handled by AI",
         value: OpportunityDismissReason.NOT_FOR_AI_AGENT,
     },
     {
@@ -63,18 +60,54 @@ const DISMISS_REASON_OPTIONS: Option[] = [
     },
 ]
 
+const KNOWLEDGE_CONFLICT_DISMISS_REASON_OPTIONS: Option[] = [
+    {
+        label: 'Knowledge is intentionally different',
+        value: OpportunityDismissReason.KNOWLEDGE_INTENTIONALLY_DIFFERENT,
+    },
+    {
+        label: 'Knowledge items are actually saying the same thing',
+        value: OpportunityDismissReason.KNOWLEDGE_IS_SIMILAR,
+    },
+    {
+        label: 'Other',
+        value: OpportunityDismissReason.OTHER,
+    },
+]
+
 export const DismissOpportunityModal = ({
     isOpen,
     opportunity,
     onClose,
     onConfirm,
-    onOpportunityDismissed,
 }: DismissOpportunityModalProps) => {
     const dispatch = useAppDispatch()
     const userId = useAppSelector(getCurrentUserId)
     const [selectedReasons, setSelectedReasons] = useState<Option[]>([])
     const [freeformText, setFreeformText] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
+
+    const dismissReasonOptions = useMemo(() => {
+        if (opportunity?.type === OpportunityType.RESOLVE_CONFLICT) {
+            return KNOWLEDGE_CONFLICT_DISMISS_REASON_OPTIONS
+        }
+        return KNOWLEDGE_GAP_DISMISS_REASON_OPTIONS
+    }, [opportunity?.type])
+
+    const modalContent = useMemo(() => {
+        if (opportunity?.type === OpportunityType.RESOLVE_CONFLICT) {
+            return {
+                title: 'Dismiss knowledge conflict opportunity?',
+                description:
+                    'Dismissing this knowledge conflict cannot be undone.',
+            }
+        }
+        return {
+            title: 'Dismiss opportunity?',
+            description:
+                'Dismissing this knowledge gap opportunity will delete the generated Guidance and cannot be undone.',
+        }
+    }, [opportunity?.type])
 
     const isOtherSelected = selectedReasons.some(
         (reason) => reason.value === OpportunityDismissReason.OTHER,
@@ -177,18 +210,12 @@ export const DismissOpportunityModal = ({
 
         resetForm()
 
-        onOpportunityDismissed?.({
-            opportunityId: opportunity.id,
-            opportunityType: opportunity.type,
-        })
-
         onConfirm(feedbackData)
         onClose()
     }, [
         opportunity,
         selectedReasons,
         feedbackData,
-        onOpportunityDismissed,
         onConfirm,
         onClose,
         dispatch,
@@ -208,20 +235,17 @@ export const DismissOpportunityModal = ({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">
-            <OverlayHeader title="Dismiss opportunity?" />
+            <OverlayHeader title={modalContent.title} />
             <OverlayContent>
                 <div className={css.modalContent}>
-                    <Text>
-                        Dismissing this knowledge gap opportunity will delete
-                        the generated Guidance and cannot be undone.
-                    </Text>
+                    <Text>{modalContent.description}</Text>
 
                     <div className={css.checkboxContainer}>
                         <Text variant="medium">
                             Why are you dismissing this opportunity?
                         </Text>
 
-                        {DISMISS_REASON_OPTIONS.map((reason) => (
+                        {dismissReasonOptions.map((reason) => (
                             <CheckBoxField
                                 key={reason.value}
                                 value={isReasonSelected(reason)}

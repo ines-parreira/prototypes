@@ -11,9 +11,13 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 
 import { useGuidanceArticleMutation } from '../../hooks/useGuidanceArticleMutation'
-import type { GuidanceFormFields } from '../../types'
 import { OpportunityType } from '../enums'
-import type { Opportunity, OpportunityConfig } from '../types'
+import type {
+    Opportunity,
+    OpportunityConfig,
+    ResourceFormFields,
+} from '../types'
+import { ResourceType } from '../types'
 import { useOpportunityCTAs } from './useOpportunityCTAs'
 import { useProcessOpportunity } from './useProcessOpportunity'
 
@@ -33,9 +37,15 @@ const mockOpportunity: Opportunity = {
     id: '123',
     key: 'ai_123',
     type: OpportunityType.FILL_KNOWLEDGE_GAP,
-    title: 'Test Opportunity',
-    content: 'Test content',
     ticketCount: 5,
+    resources: [
+        {
+            title: 'Test Opportunity',
+            content: 'Test content',
+            type: ResourceType.GUIDANCE,
+            isVisible: true,
+        },
+    ],
 }
 
 const mockOpportunityConfig: OpportunityConfig = {
@@ -51,10 +61,11 @@ const mockOpportunityConfig: OpportunityConfig = {
     onOpportunityDismissed: jest.fn(),
 }
 
-const mockFormData: GuidanceFormFields = {
-    name: 'Test Guidance',
+const mockFormData: ResourceFormFields = {
+    title: 'Test Guidance',
     content: 'Test guidance content',
     isVisible: true,
+    isDeleted: false,
 }
 
 describe('useOpportunityCTAs', () => {
@@ -118,7 +129,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -153,7 +164,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: null,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -178,7 +189,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -204,7 +215,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -224,25 +235,54 @@ describe('useOpportunityCTAs', () => {
     })
 
     describe('handleResolve', () => {
-        it('should return null (not yet implemented)', async () => {
+        it('should call processOpportunity for conflict resolution', async () => {
+            const mutateAsync = jest.fn().mockResolvedValue({})
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
             const conflictOpportunity: Opportunity = {
                 ...mockOpportunity,
                 type: OpportunityType.RESOLVE_CONFLICT,
+                resources: [
+                    {
+                        title: 'Test Resource',
+                        content: 'Test content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'res-1',
+                            resourceSetId: 'set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: '1.0',
+                        },
+                    },
+                ],
             }
 
             const { result } = renderHook(
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: conflictOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
             )
 
-            const resolveResult = await result.current.handleResolve()
+            await result.current.handleResolve()
 
-            expect(resolveResult).toBeNull()
+            await waitFor(() => {
+                expect(mutateAsync).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        shopIntegrationId: 456,
+                        opportunityId: 123,
+                        data: expect.objectContaining({
+                            action: 'RESOLVE_CONFLICT',
+                        }),
+                    }),
+                )
+            })
         })
     })
 
@@ -274,7 +314,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -305,7 +345,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -333,7 +373,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: null,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -351,7 +391,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -370,7 +410,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -389,7 +429,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -412,7 +452,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },
@@ -437,7 +477,7 @@ describe('useOpportunityCTAs', () => {
                 () =>
                     useOpportunityCTAs({
                         selectedOpportunity: mockOpportunity,
-                        currentFormData: mockFormData,
+                        editorFormResources: [mockFormData],
                         opportunityConfig: mockOpportunityConfig,
                     }),
                 { wrapper },

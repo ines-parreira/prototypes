@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 
 import { OpportunityType } from '../../enums'
 import type { Opportunity } from '../../types'
+import { ResourceType } from '../../types'
 import { OpportunityDetailsContent } from './OpportunityDetailsContent'
 
 jest.mock('../OpportunityDetailsCard/OpportunityDetailsCard', () => ({
@@ -21,13 +22,13 @@ jest.mock('../OpportunityDetailsCard/OpportunityDetailsCard', () => ({
 
 jest.mock('../OpportunityGuidanceEditor/OpportunityGuidanceEditor', () => ({
     OpportunityGuidanceEditor: ({
-        opportunity,
+        resource,
         shopName,
         onValuesChange,
         isInGuidanceEditorModeOnly,
     }: any) => (
         <div data-testid="opportunity-guidance-editor">
-            <div>Opportunity: {opportunity.title}</div>
+            <div>Resource: {resource.title}</div>
             <div>Shop: {shopName}</div>
             <div>Editor Mode: {String(isInGuidanceEditorModeOnly)}</div>
             <input
@@ -35,8 +36,45 @@ jest.mock('../OpportunityGuidanceEditor/OpportunityGuidanceEditor', () => ({
                 onChange={(e) =>
                     onValuesChange({
                         title: e.target.value,
-                        body: opportunity.content,
+                        body: resource.content,
                         isVisible: true,
+                    })
+                }
+            />
+        </div>
+    ),
+}))
+
+jest.mock('../OpportunityArticleEditor/OpportunityArticleEditor', () => ({
+    OpportunityArticleEditor: ({ resource, onValuesChange }: any) => (
+        <div data-testid="opportunity-article-editor">
+            <div>Article: {resource.title}</div>
+            <input
+                placeholder="Article Title"
+                onChange={(e) =>
+                    onValuesChange({
+                        title: e.target.value,
+                        content: resource.content,
+                        isVisible: resource.isVisible,
+                    })
+                }
+            />
+        </div>
+    ),
+}))
+
+jest.mock('../OpportunitySnippetEditor/OpportunitySnippetEditor', () => ({
+    OpportunitySnippetEditor: ({ resource, shopName, onValuesChange }: any) => (
+        <div data-testid="opportunity-snippet-editor">
+            <div>Snippet: {resource.title}</div>
+            <div>Shop: {shopName}</div>
+            <input
+                placeholder="Snippet Title"
+                onChange={(e) =>
+                    onValuesChange({
+                        title: e.target.value,
+                        content: resource.content,
+                        isVisible: resource.isVisible,
                     })
                 }
             />
@@ -48,9 +86,15 @@ const mockOpportunity: Opportunity = {
     id: '123',
     key: 'ai_123',
     type: OpportunityType.FILL_KNOWLEDGE_GAP,
-    title: 'Test Opportunity',
-    content: 'Test content',
     ticketCount: 5,
+    resources: [
+        {
+            title: 'Test Opportunity',
+            content: 'Test content',
+            type: ResourceType.GUIDANCE,
+            isVisible: true,
+        },
+    ],
 }
 
 const mockOpportunityConfig = {
@@ -107,7 +151,7 @@ describe('OpportunityDetailsContent', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Opportunity: Test Opportunity'),
+                screen.getByText('Resource: Test Opportunity'),
             ).toBeInTheDocument()
             expect(screen.getByText('Shop: test-shop')).toBeInTheDocument()
             expect(screen.getByText('Editor Mode: true')).toBeInTheDocument()
@@ -137,7 +181,7 @@ describe('OpportunityDetailsContent', () => {
             await user.type(titleInput, 'New')
 
             expect(onFormValuesChange).toHaveBeenCalled()
-            expect(onFormValuesChange).toHaveBeenCalledWith({
+            expect(onFormValuesChange).toHaveBeenCalledWith(0, {
                 title: 'New',
                 body: 'Test content',
                 isVisible: true,
@@ -146,20 +190,7 @@ describe('OpportunityDetailsContent', () => {
     })
 
     describe('Resolve Conflict Opportunities', () => {
-        it('should return null for conflict opportunities (not yet implemented)', () => {
-            const conflictOpportunity: Opportunity = {
-                ...mockOpportunity,
-                type: OpportunityType.RESOLVE_CONFLICT,
-            }
-
-            const { container } = renderComponent({
-                selectedOpportunity: conflictOpportunity,
-            })
-
-            expect(container.firstChild).toBeNull()
-        })
-
-        it('should not render OpportunityDetailsCard for conflicts', () => {
+        it('should render content for conflict opportunities', () => {
             const conflictOpportunity: Opportunity = {
                 ...mockOpportunity,
                 type: OpportunityType.RESOLVE_CONFLICT,
@@ -170,11 +201,14 @@ describe('OpportunityDetailsContent', () => {
             })
 
             expect(
-                screen.queryByTestId('opportunity-details-card'),
-            ).not.toBeInTheDocument()
+                screen.getByTestId('opportunity-details-card'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Type: RESOLVE_CONFLICT'),
+            ).toBeInTheDocument()
         })
 
-        it('should not render OpportunityGuidanceEditor for conflicts', () => {
+        it('should render OpportunityGuidanceEditor with isInGuidanceEditorModeOnly=false for conflicts', () => {
             const conflictOpportunity: Opportunity = {
                 ...mockOpportunity,
                 type: OpportunityType.RESOLVE_CONFLICT,
@@ -182,11 +216,256 @@ describe('OpportunityDetailsContent', () => {
 
             renderComponent({
                 selectedOpportunity: conflictOpportunity,
+            })
+
+            expect(
+                screen.getByTestId('opportunity-guidance-editor'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Editor Mode: false')).toBeInTheDocument()
+        })
+    })
+
+    describe('Article Resources', () => {
+        it('should render OpportunityArticleEditor for article resources', () => {
+            const articleOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'Test Article',
+                        content: 'Article content',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: articleOpportunity,
+            })
+
+            expect(
+                screen.getByTestId('opportunity-article-editor'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Article: Test Article'),
+            ).toBeInTheDocument()
+        })
+
+        it('should call onFormValuesChange when article values change', async () => {
+            const user = userEvent.setup()
+            const onFormValuesChange = jest.fn()
+            const articleOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'Test Article',
+                        content: 'Article content',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: articleOpportunity,
+                onFormValuesChange,
+            })
+
+            const titleInput = screen.getByPlaceholderText('Article Title')
+            await user.type(titleInput, 'Updated')
+
+            expect(onFormValuesChange).toHaveBeenCalled()
+            expect(onFormValuesChange).toHaveBeenCalledWith(0, {
+                title: 'Updated',
+                content: 'Article content',
+                isVisible: true,
+            })
+        })
+    })
+
+    describe('External Snippet Resources', () => {
+        it('should render OpportunitySnippetEditor for external snippet resources', () => {
+            const snippetOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'Test Snippet',
+                        content: 'Snippet content',
+                        type: ResourceType.EXTERNAL_SNIPPET,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: snippetOpportunity,
+            })
+
+            expect(
+                screen.getByTestId('opportunity-snippet-editor'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Snippet: Test Snippet'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Shop: test-shop')).toBeInTheDocument()
+        })
+
+        it('should call onFormValuesChange when snippet values change', async () => {
+            const user = userEvent.setup()
+            const onFormValuesChange = jest.fn()
+            const snippetOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'Test Snippet',
+                        content: 'Snippet content',
+                        type: ResourceType.EXTERNAL_SNIPPET,
+                        isVisible: false,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: snippetOpportunity,
+                onFormValuesChange,
+            })
+
+            const titleInput = screen.getByPlaceholderText('Snippet Title')
+            await user.type(titleInput, 'New')
+
+            expect(onFormValuesChange).toHaveBeenCalled()
+            expect(onFormValuesChange).toHaveBeenCalledWith(0, {
+                title: 'New',
+                content: 'Snippet content',
+                isVisible: false,
+            })
+        })
+    })
+
+    describe('Multiple Resources', () => {
+        it('should render multiple resources of different types', () => {
+            const multiResourceOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+                resources: [
+                    {
+                        title: 'Guidance Resource',
+                        content: 'Guidance content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                    {
+                        title: 'Article Resource',
+                        content: 'Article content',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                    {
+                        title: 'Snippet Resource',
+                        content: 'Snippet content',
+                        type: ResourceType.EXTERNAL_SNIPPET,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: multiResourceOpportunity,
+            })
+
+            expect(
+                screen.getByTestId('opportunity-guidance-editor'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('opportunity-article-editor'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('opportunity-snippet-editor'),
+            ).toBeInTheDocument()
+        })
+
+        it('should call onFormValuesChange with correct index for each resource', async () => {
+            const user = userEvent.setup()
+            const onFormValuesChange = jest.fn()
+            const multiResourceOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'First Resource',
+                        content: 'First content',
+                        type: ResourceType.ARTICLE,
+                        isVisible: true,
+                    },
+                    {
+                        title: 'Second Resource',
+                        content: 'Second content',
+                        type: ResourceType.EXTERNAL_SNIPPET,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            renderComponent({
+                selectedOpportunity: multiResourceOpportunity,
+                onFormValuesChange,
+            })
+
+            const articleInput = screen.getByPlaceholderText('Article Title')
+            await user.type(articleInput, 'A')
+
+            expect(onFormValuesChange).toHaveBeenCalledWith(
+                0,
+                expect.objectContaining({
+                    title: 'A',
+                }),
+            )
+
+            onFormValuesChange.mockClear()
+
+            const snippetInput = screen.getByPlaceholderText('Snippet Title')
+            await user.type(snippetInput, 'B')
+
+            expect(onFormValuesChange).toHaveBeenCalledWith(
+                1,
+                expect.objectContaining({
+                    title: 'B',
+                }),
+            )
+        })
+    })
+
+    describe('Unknown Resource Type', () => {
+        it('should not render anything for unknown resource types', () => {
+            const unknownResourceOpportunity: Opportunity = {
+                ...mockOpportunity,
+                resources: [
+                    {
+                        title: 'Unknown Resource',
+                        content: 'Unknown content',
+                        type: 'UNKNOWN_TYPE' as ResourceType,
+                        isVisible: true,
+                    },
+                ],
+            }
+
+            const { container } = renderComponent({
+                selectedOpportunity: unknownResourceOpportunity,
             })
 
             expect(
                 screen.queryByTestId('opportunity-guidance-editor'),
             ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('opportunity-article-editor'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('opportunity-snippet-editor'),
+            ).not.toBeInTheDocument()
+
+            const resourceEditor = container.querySelector('.resourceEditor')
+            if (resourceEditor) {
+                expect(resourceEditor.children.length).toBe(0)
+            }
         })
     })
 })

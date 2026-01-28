@@ -2,6 +2,7 @@ import { renderHook } from '@testing-library/react'
 
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
+import { ResourceType } from 'pages/aiAgent/opportunities/types'
 
 import { useOpportunitiesNavigation } from './useOpportunitiesNavigation'
 
@@ -10,23 +11,41 @@ describe('useOpportunitiesNavigation', () => {
         {
             id: '1',
             key: 'ai_1',
-            title: 'First Opportunity',
-            content: 'First content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'First Opportunity',
+                    content: 'First content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '2',
             key: 'ai_2',
-            title: 'Second Opportunity',
-            content: 'Second content',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Second Opportunity',
+                    content: 'Second content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
         {
             id: '3',
             key: 'ai_3',
-            title: 'Third Opportunity',
-            content: 'Third content',
             type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [
+                {
+                    title: 'Third Opportunity',
+                    content: 'Third content',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         },
     ]
 
@@ -164,9 +183,15 @@ describe('useOpportunitiesNavigation', () => {
             const nonExistentOpportunity: Opportunity = {
                 id: 'non-existent',
                 key: 'non-existent',
-                title: 'Non-existent',
-                content: 'Content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'Non-existent',
+                        content: 'Content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             }
 
             const { result } = renderHook(() =>
@@ -224,9 +249,15 @@ describe('useOpportunitiesNavigation', () => {
             const nonExistentOpportunity: Opportunity = {
                 id: 'non-existent',
                 key: 'non-existent',
-                title: 'Non-existent',
-                content: 'Content',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                resources: [
+                    {
+                        title: 'Non-existent',
+                        content: 'Content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                    },
+                ],
             }
 
             const { result } = renderHook(() =>

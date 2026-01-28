@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { OpportunityType } from '../../enums'
-import type { Opportunity } from '../../types'
+import type { OpportunityResource } from '../../types'
+import { ResourceType } from '../../types'
 import { OpportunityArticleEditor } from './OpportunityArticleEditor'
 
 jest.mock('pages/common/forms/TextArea', () => ({
@@ -20,18 +20,16 @@ jest.mock('pages/common/forms/TextArea', () => ({
     ),
 }))
 
-const mockOpportunity: Opportunity = {
-    id: '123',
-    key: 'ai_123',
-    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+const mockResource: OpportunityResource = {
     title: 'Test Article Title',
     content: 'Test article body content',
-    ticketCount: 5,
+    type: ResourceType.ARTICLE,
+    isVisible: true,
 }
 
 describe('OpportunityArticleEditor', () => {
     const defaultProps = {
-        opportunity: mockOpportunity,
+        resource: mockResource,
     }
 
     it('should render article editor heading', () => {
@@ -48,7 +46,12 @@ describe('OpportunityArticleEditor', () => {
     })
 
     it('should disable body textarea when isVisible is false', () => {
-        render(<OpportunityArticleEditor {...defaultProps} isVisible={false} />)
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                resource={{ ...mockResource, isVisible: false }}
+            />,
+        )
 
         const bodyTextarea = screen.getByLabelText('Body')
         expect(bodyTextarea).toBeDisabled()

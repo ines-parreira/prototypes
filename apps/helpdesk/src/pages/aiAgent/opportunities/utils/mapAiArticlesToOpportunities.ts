@@ -2,6 +2,7 @@ import type { AILibraryArticleItem } from 'models/helpCenter/types'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
+import { ResourceType } from '../types'
 
 const removeAiPrefix = (key: string): string => {
     return key.startsWith('ai_') ? key.slice(3) : key
@@ -18,9 +19,15 @@ export const mapAiArticlesToOpportunities = (
         (article): Opportunity => ({
             id: removeAiPrefix(article.key),
             key: article.key,
-            title: article.title,
-            content: article.html_content,
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: article.title,
+                    content: article.html_content,
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         }),
     )
 }

@@ -1,6 +1,7 @@
 import type { AILibraryArticleItem } from 'models/helpCenter/types'
 
 import { OpportunityType } from '../enums'
+import { ResourceType } from '../types'
 import { mapAiArticlesToOpportunities } from './mapAiArticlesToOpportunities'
 
 describe('mapAiArticlesToOpportunities', () => {
@@ -23,10 +24,16 @@ describe('mapAiArticlesToOpportunities', () => {
         expect(result).toHaveLength(1)
         expect(result[0]).toEqual({
             id: 'test-article-1',
-            title: 'Test Article Title',
-            content: '<p>Test article content</p>',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
             key: 'test-article-1',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Test Article Title',
+                    content: '<p>Test article content</p>',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         })
     })
 
@@ -53,24 +60,42 @@ describe('mapAiArticlesToOpportunities', () => {
         expect(result).toHaveLength(3)
         expect(result[0]).toEqual({
             id: 'test-article-1',
-            title: 'Test Article Title',
-            content: '<p>Test article content</p>',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
             key: 'test-article-1',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Test Article Title',
+                    content: '<p>Test article content</p>',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         })
         expect(result[1]).toEqual({
             id: 'test-article-2',
-            title: 'Second Article',
-            content: '<p>Second article content</p>',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
             key: 'test-article-2',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Second Article',
+                    content: '<p>Second article content</p>',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         })
         expect(result[2]).toEqual({
             id: 'test-article-3',
-            title: 'Third Article',
-            content: '<p>Third article content</p>',
-            type: OpportunityType.FILL_KNOWLEDGE_GAP,
             key: 'test-article-3',
+            type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            resources: [
+                {
+                    title: 'Third Article',
+                    content: '<p>Third article content</p>',
+                    type: ResourceType.GUIDANCE,
+                    isVisible: true,
+                },
+            ],
         })
     })
 
@@ -97,8 +122,8 @@ describe('mapAiArticlesToOpportunities', () => {
         const result = mapAiArticlesToOpportunities(aiArticles)
 
         expect(result).toHaveLength(2)
-        expect(result[0].content).toBe('')
-        expect(result[1].content).toBe(null)
+        expect(result[0].resources[0].content).toBe('')
+        expect(result[1].resources[0].content).toBe(null)
     })
 
     it('should always map to FILL_KNOWLEDGE_GAP type', () => {
@@ -140,7 +165,7 @@ describe('mapAiArticlesToOpportunities', () => {
         const result = mapAiArticlesToOpportunities(aiArticles)
 
         result.forEach((opportunity, index) => {
-            expect(opportunity.title).toBe(titles[index])
+            expect(opportunity.resources[0].title).toBe(titles[index])
         })
     })
 

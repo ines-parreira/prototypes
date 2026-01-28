@@ -12,8 +12,8 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 import type {
     Opportunity,
     OpportunityConfig,
+    ResourceFormFields,
 } from 'pages/aiAgent/opportunities/types'
-import type { GuidanceFormFields } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import {
@@ -29,18 +29,19 @@ import { reportError } from 'utils/errors'
 import {
     buildApprovePayload,
     buildDismissPayload,
+    buildResolveConflictPayload,
     useProcessOpportunity,
 } from './useProcessOpportunity'
 
 interface UseOpportunityCTAsProps {
     selectedOpportunity: Opportunity | null
-    currentFormData: GuidanceFormFields
+    editorFormResources: ResourceFormFields[]
     opportunityConfig: OpportunityConfig
 }
 
 export const useOpportunityCTAs = ({
     selectedOpportunity,
-    currentFormData,
+    editorFormResources,
     opportunityConfig,
 }: UseOpportunityCTAsProps) => {
     const dispatch = useAppDispatch()
@@ -96,6 +97,9 @@ export const useOpportunityCTAs = ({
     const handleApprove = useCallback(async () => {
         if (!selectedOpportunity) return
 
+        const resource = editorFormResources[0]
+        if (!resource) return
+
         setIsProcessing(true)
         try {
             if (useKnowledgeService && shopIntegrationId) {
@@ -103,16 +107,20 @@ export const useOpportunityCTAs = ({
                     shopIntegrationId,
                     opportunityId: parseInt(selectedOpportunity.id, 10),
                     data: buildApprovePayload({
-                        isVisible: currentFormData.isVisible,
-                        title: currentFormData.name,
-                        content: currentFormData.content,
+                        isVisible: resource.isVisible,
+                        title: resource.title,
+                        content: resource.content,
                     }),
                 })
                 onArchive(selectedOpportunity.key)
             } else {
                 await createGuidanceArticle(
                     mapGuidanceFormFieldsToGuidanceArticle(
-                        currentFormData,
+                        {
+                            name: resource.title,
+                            content: resource.content,
+                            isVisible: resource.isVisible,
+                        },
                         locale,
                         selectedOpportunity.id,
                     ),
@@ -155,7 +163,7 @@ export const useOpportunityCTAs = ({
         helpCenterId,
         reviewArticle,
         createGuidanceArticle,
-        currentFormData,
+        editorFormResources,
         locale,
         dispatch,
         onOpportunityAccepted,
@@ -166,9 +174,53 @@ export const useOpportunityCTAs = ({
     ])
 
     const handleResolve = useCallback(async () => {
-        // TODO: Implement handleResolve for knowledge conflicts
-        return null
-    }, [])
+        if (!selectedOpportunity || !shopIntegrationId) return
+
+        setIsProcessing(true)
+
+        try {
+            const payload = buildResolveConflictPayload({
+                selectedOpportunity,
+                resourceUpdates: editorFormResources,
+            })
+
+            if (!payload) {
+                throw new Error(
+                    'Payload not valid for resolve conflict opportunity',
+                )
+            }
+
+            await processOpportunity.mutateAsync({
+                shopIntegrationId,
+                opportunityId: parseInt(selectedOpportunity.id, 10),
+                data: payload,
+            })
+            onArchive(selectedOpportunity.key)
+
+            dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Conflict resolved successfully',
+                }),
+            )
+        } catch {
+            dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to resolve conflict. Please try again.',
+                }),
+            )
+        } finally {
+            setIsProcessing(false)
+        }
+    }, [
+        selectedOpportunity,
+        dispatch,
+        editorFormResources,
+        processOpportunity,
+        shopIntegrationId,
+        onArchive,
+    ])
 
     const handleFeedback = useCallback(
         (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {

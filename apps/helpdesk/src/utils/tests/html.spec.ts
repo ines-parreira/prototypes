@@ -4,6 +4,7 @@ import jsdom from 'jsdom'
 import {
     focusElement,
     linkifyHtml,
+    normalizeHtml,
     parseHtml,
     removeLinksFromHtml,
     sanitizeHtmlDefault,
@@ -532,6 +533,90 @@ describe('html util', () => {
                 'bla bla entities $, $, &, &, &, &lt;, &gt;, &quot;, &#39;, then &#x27;, &apos;, &#x27;, &#39;, &quot;, &#x22;, &#34;'
 
             expect(unescapeAmpAndDollarEntities(input_html)).toBe(expected)
+        })
+    })
+
+    describe('normalizeHtml()', () => {
+        it('should return empty string for empty input', () => {
+            expect(normalizeHtml('')).toBe('')
+        })
+
+        it('should normalize ampersand entities', () => {
+            const input = '<div>&&&customer.email&&&</div>'
+            const normalized = normalizeHtml(input)
+            expect(normalized).toBe(
+                '<div>&amp;&amp;&amp;customer.email&amp;&amp;&amp;</div>',
+            )
+        })
+
+        it('should remove br tags that are the only child of a div', () => {
+            const input1 = '<div><br /></div>'
+            const input2 = '<div><br></div>'
+            const normalized1 = normalizeHtml(input1)
+            const normalized2 = normalizeHtml(input2)
+            expect(normalized1).toBe('<div></div>')
+            expect(normalized2).toBe('<div></div>')
+            expect(normalized1).toBe(normalized2)
+        })
+
+        it('should not remove br tags that have siblings', () => {
+            const input = '<div>Text<br />More text</div>'
+            const normalized = normalizeHtml(input)
+            expect(normalized).toContain('<br>')
+        })
+
+        it('should remove target attributes from links', () => {
+            const input1 =
+                '<a href="http://email.com" target="_blank">email.com</a>'
+            const input2 = '<a href="http://email.com">email.com</a>'
+            const normalized1 = normalizeHtml(input1)
+            const normalized2 = normalizeHtml(input2)
+            expect(normalized1).toBe('<a href="http://email.com">email.com</a>')
+            expect(normalized2).toBe('<a href="http://email.com">email.com</a>')
+            expect(normalized1).toBe(normalized2)
+        })
+
+        it('should remove trailing slashes from link hrefs', () => {
+            const input1 = '<a href="http://email.com/">email.com</a>'
+            const input2 = '<a href="http://email.com">email.com</a>'
+            const normalized1 = normalizeHtml(input1)
+            const normalized2 = normalizeHtml(input2)
+            expect(normalized1).toBe('<a href="http://email.com">email.com</a>')
+            expect(normalized2).toBe('<a href="http://email.com">email.com</a>')
+            expect(normalized1).toBe(normalized2)
+        })
+
+        it('should produce consistent output when called multiple times', () => {
+            const html =
+                '<div>When a customer asks that they want to make more money, we should just give it to them.</div><div><br /></div><div>&&&customer.email&&& <a href="http://email.com/" target="_blank">email.com</a></div>'
+
+            // Normalizing the same HTML twice should produce identical results
+            const normalized1 = normalizeHtml(html)
+            const normalized2 = normalizeHtml(html)
+            expect(normalized1).toBe(normalized2)
+
+            // Normalizing already normalized HTML should produce the same result
+            const normalized3 = normalizeHtml(normalized1)
+            expect(normalized3).toBe(normalized1)
+        })
+
+        it('should handle the real-world example from Draft.js editor', () => {
+            const original =
+                '<div>When a customer asks that they want to make more money, we should just give it to them.</div><div><br /></div><div>&&&customer.email&&& <a href="http://email.com/" target="_blank">email.com</a></div>'
+            const rendered =
+                '<div>When a customer asks that they want to make more money, we should just give it to them.</div><div></div><div>&amp;&amp;&amp;customer.email&amp;&amp;&amp; <a href="http://email.com">email.com</a></div>'
+
+            const normalizedOriginal = normalizeHtml(original)
+            const normalizedRendered = normalizeHtml(rendered)
+            expect(normalizedOriginal).toBe(normalizedRendered)
+        })
+
+        it('should handle complex nested HTML', () => {
+            const input = '<div><p>Test</p><div><br /></div></div>'
+            const normalized = normalizeHtml(input)
+            expect(typeof normalized).toBe('string')
+            expect(normalized).toContain('Test')
+            expect(normalized).toBe('<div><p>Test</p><div></div></div>')
         })
     })
 })

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Skeleton } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
+import { DeleteOpportunityModal } from 'pages/aiAgent/opportunities/components/DeleteOpportunityModal/DeleteOpportunityModal'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
 import { OpportunityDetailsHeader } from 'pages/aiAgent/opportunities/components/OpportunityDetailsHeader/OpportunityDetailsHeader'
 import { State } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
@@ -12,15 +13,14 @@ import type {
     SidebarOpportunityItem,
 } from 'pages/aiAgent/opportunities/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import { normalizeHtml } from 'utils/html'
 
-import type { GuidanceFormFields } from '../../../types'
 import { OpportunityType } from '../../enums'
 import { useOpportunityCTAs } from '../../hooks/useOpportunityCTAs'
-import type { OpportunityConfig } from '../../types'
+import type { OpportunityConfig, ResourceFormFields } from '../../types'
 import { OpportunitiesContentSkeleton } from '../OpportunitiesContentSkeleton/OpportunitiesContentSkeleton'
 import { OpportunitiesEmptyState } from '../OpportunitiesEmptyState/OpportunitiesEmptyState'
 import { OpportunityDetailsContent } from '../OpportunityDetailsContent/OpportunityDetailsContent'
-import type { GuidanceFormFields as GuidanceFormFieldsFromOpportunityEditor } from '../OpportunityGuidanceEditor/OpportunityGuidanceEditor'
 import { OpportunityTicketDrillDownModal } from '../OpportunityTicketDrillDownModal/OpportunityTicketDrillDownModal'
 import { RestrictedOpportunityMessage } from '../RestrictedOpportunityMessage/RestrictedOpportunityMessage'
 
@@ -48,25 +48,34 @@ export const OpportunitiesContent = ({
     allowedOpportunityIds,
 }: OpportunitiesContentProps) => {
     const [isDismissModalOpen, setIsDismissModalOpen] = useState(false)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isTicketDrillDownModalOpen, setIsTicketDrillDownModalOpen] =
         useState(false)
 
-    const [editorFormData, setEditorFormData] =
-        useState<GuidanceFormFieldsFromOpportunityEditor>({
-            title: selectedOpportunity?.title || '',
-            body: selectedOpportunity?.content || '',
-            isVisible: true,
-        })
+    const [editorFormResources, setEditorFormResources] = useState<
+        ResourceFormFields[]
+    >([])
 
-    const currentFormData: GuidanceFormFields = {
-        name: editorFormData.title,
-        content: editorFormData.body,
-        isVisible: editorFormData.isVisible,
-    }
+    /**
+     * editorResetKey is used to force remount OpportunityDetailsContent and its child editors.
+     *
+     * It was necessary here because the editors are display-only components based on parent data.
+     * When a user marks a resource as deleted (isDeleted: true) and then cancels the DeleteModal, we need to
+     * reset the editor state. Without remounting, the editors continue sending isDeleted: true
+     * in onFormValuesChange callbacks, causing stale state issues.
+     *
+     * Alternative approaches considered:
+     * - Lifting state management: Would require significant refactoring of the editor components
+     * - Imperative reset methods: Would conflict with React's declarative paradigm and add complexity
+     * - useEffect to sync state: Would create additional re-renders and potential race conditions
+     *
+     * The key remounting pattern is the simplest solution for this edge case scenario.
+     */
+    const [editorResetKey, setEditorResetKey] = useState(0)
 
     const opportunityCTAs = useOpportunityCTAs({
         selectedOpportunity,
-        currentFormData,
+        editorFormResources,
         opportunityConfig,
     })
 
@@ -84,6 +93,22 @@ export const OpportunitiesContent = ({
 
     const handleCancelDismiss = useCallback(() => {
         setIsDismissModalOpen(false)
+    }, [])
+
+    const handleConfirmDelete = useCallback(async () => {
+        await opportunityCTAs.handleResolve()
+        setIsDeleteModalOpen(false)
+    }, [opportunityCTAs])
+
+    const handleCancelDelete = useCallback(() => {
+        setEditorFormResources((prev) =>
+            prev.map((resource) => ({
+                ...resource,
+                isDeleted: false,
+            })),
+        )
+        setEditorResetKey((prev) => prev + 1)
+        setIsDeleteModalOpen(false)
     }, [])
 
     const handleOpenTicketDrillDownModal = useCallback(() => {
@@ -105,26 +130,44 @@ export const OpportunitiesContent = ({
     }, [])
 
     const handleFormValuesChange = useCallback(
-        (fields: GuidanceFormFieldsFromOpportunityEditor) => {
-            setEditorFormData(fields)
+        (resourceIndex: number, fields: ResourceFormFields) => {
+            setEditorFormResources((prev) => {
+                const updated = [...prev]
+                updated[resourceIndex] = fields
+                return updated
+            })
+
+            if (fields.isDeleted) {
+                setIsDeleteModalOpen(true)
+            }
         },
         [],
     )
 
     useEffect(() => {
         if (selectedOpportunity) {
-            setEditorFormData({
-                title: selectedOpportunity.title,
-                body: selectedOpportunity.content,
-                isVisible: true,
-            })
+            setEditorFormResources(
+                selectedOpportunity.resources.map((resource) => ({
+                    title: resource.title,
+                    content: resource.content,
+                    isVisible: resource.isVisible,
+                    isDeleted: false,
+                })),
+            )
         }
     }, [selectedOpportunity])
 
     const isFormDirty =
         selectedOpportunity &&
-        (editorFormData.title !== selectedOpportunity.title ||
-            editorFormData.body !== selectedOpportunity.content)
+        editorFormResources.some((resource, index) => {
+            const originalResource = selectedOpportunity.resources[index]
+            return (
+                resource.title !== originalResource?.title ||
+                normalizeHtml(resource.content) !==
+                    normalizeHtml(originalResource?.content || '') ||
+                resource.isVisible !== originalResource?.isVisible
+            )
+        })
 
     const handleSaveChanges = useCallback(async () => {
         if (!selectedOpportunity) return
@@ -137,11 +180,14 @@ export const OpportunitiesContent = ({
 
     const handleResetForm = useCallback(() => {
         if (selectedOpportunity) {
-            setEditorFormData({
-                title: selectedOpportunity.title,
-                body: selectedOpportunity.content,
-                isVisible: true,
-            })
+            setEditorFormResources(
+                selectedOpportunity.resources.map((resource) => ({
+                    title: resource.title,
+                    content: resource.content,
+                    isVisible: resource.isVisible,
+                    isDeleted: false,
+                })),
+            )
         }
     }, [selectedOpportunity])
 
@@ -212,9 +258,11 @@ export const OpportunitiesContent = ({
                 totalCount={totalCount}
                 allowedOpportunityIds={allowedOpportunityIds}
                 onOpenDismissModal={handleOpenDismissModal}
+                isFormDirty={!!isFormDirty}
             />
 
             <OpportunityDetailsContent
+                key={editorResetKey}
                 selectedOpportunity={selectedOpportunity}
                 opportunityConfig={opportunityConfig}
                 onTicketCountClick={handleOpenTicketDrillDownModal}
@@ -226,9 +274,13 @@ export const OpportunitiesContent = ({
                 opportunity={selectedOpportunity}
                 onClose={handleCancelDismiss}
                 onConfirm={handleConfirmDismiss}
-                onOpportunityDismissed={
-                    opportunityConfig.onOpportunityDismissed
-                }
+            />
+
+            <DeleteOpportunityModal
+                isOpen={isDeleteModalOpen}
+                opportunity={selectedOpportunity}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDelete}
             />
 
             {selectedOpportunity?.detectionObjectIds && (
