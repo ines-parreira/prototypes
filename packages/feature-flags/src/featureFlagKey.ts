@@ -75,6 +75,7 @@ export enum FeatureFlagKey {
     AutomateAIAgentInteractions = 'automate-ai-agent-interactions',
     AutomateSettingsRevamp = 'linear.project_automate-settings-revamp.access',
     AxiomMigration = 'linear.project_ui-kit-foundations-migration',
+    AxiomMigrationDebugging = 'linear.project_ui-kit-axiom-debugging',
     BannerCarousel = 'banner-carousel',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',

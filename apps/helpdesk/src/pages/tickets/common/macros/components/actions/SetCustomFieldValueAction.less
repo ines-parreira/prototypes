@@ -35,8 +35,14 @@
 .axiom :local {
     .select {
         :global .dropdown-toggle {
-            background: var(--surface-neutral-tertiary);
+            background: transparent;
             color: var(--content-neutral-default);
+            border: 1px solid var(--border-neutral-default);
+            border-radius: var(--spacing-xs);
+
+            &:hover {
+                background: var(--hover-input);
+            }
 
             i {
                 color: var(--content-neutral-default);
@@ -46,7 +52,13 @@
 
     .input {
         &:global(.custom-field-input--dropdown) > span {
-            border-color: var(--border-neutral-default);
+            background: transparent;
+            border: 1px solid var(--border-neutral-default);
+            border-radius: var(--spacing-xs);
+
+            &:hover {
+                background: var(--hover-input);
+            }
         }
     }
 }

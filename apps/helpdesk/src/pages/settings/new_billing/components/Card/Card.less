@@ -31,9 +31,25 @@
 .axiom :local {
     .container {
         border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        background-color: var(--elevation-neutral-mid);
+        box-shadow: var(--effects-shadow-container);
     }
 
     .header {
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .title {
+        color: var(--content-neutral-default);
+    }
+
+    .link {
+        color: var(--content-accent-default);
+
+        &:hover {
+            color: var(--content-accent-default);
+            text-decoration: underline;
+        }
     }
 }

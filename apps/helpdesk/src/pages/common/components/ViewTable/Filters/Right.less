@@ -30,13 +30,106 @@
 }
 
 .axiom :local {
+    .timedeltaPicker {
+        border: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        display: flex !important;
+        gap: var(--spacing-xxs) !important;
+
+        &:hover {
+            background-color: transparent !important;
+        }
+
+        // Reset border radius manipulation for children
+        > * {
+            border-radius: var(--spacing-xs) !important;
+        }
+    }
+
     .customFieldValueInput {
         &:not(div, p) {
-            border: 1px solid var(--border-neutral-default);
+            border: 1px solid var(--border-neutral-default) !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+            border-radius: var(--spacing-xs) !important;
+
+            &:hover:not(:disabled):not(:focus) {
+                background-color: var(--hover-input) !important;
+            }
+
+            &:focus {
+                border: 1px solid var(--border-neutral-secondary) !important;
+                background-color: transparent !important;
+                box-shadow: var(--effects-inner-shadow) !important;
+            }
         }
 
         &[class*='valid'] {
-            border: 1px solid var(--content-accent-default);
+            border: 1px solid var(--border-neutral-secondary) !important;
+            box-shadow: var(--effects-inner-shadow) !important;
+        }
+    }
+
+    .customFieldValueInput > input {
+        border: 1px solid var(--border-neutral-default) !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        border-radius: var(--spacing-xs) !important;
+        padding: var(--spacing-xxs) var(--spacing-xs) !important;
+
+        &:hover:not(:disabled):not(:focus) {
+            background-color: var(--hover-input) !important;
+        }
+
+        &:focus {
+            border: 1px solid var(--border-neutral-secondary) !important;
+            background-color: transparent !important;
+            box-shadow: var(--effects-inner-shadow) !important;
+        }
+    }
+
+    .customFieldValueInput > span {
+        input[class*='StealthInput--baseStyles'],
+        input[class*='StealthInput--stealth'],
+        input[class*='StealthInput--valid'] {
+            border: 1px solid var(--border-neutral-default) !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+            border-radius: var(--spacing-xs) !important;
+            padding: var(--spacing-xxs) var(--spacing-xs) !important;
+            height: 32px !important;
+            font-size: 14px !important;
+
+            &:hover:not(:disabled):not(:focus) {
+                background-color: var(--hover-input) !important;
+            }
+
+            &:focus {
+                border: 1px solid var(--border-neutral-secondary) !important;
+                background-color: transparent !important;
+                box-shadow: var(--effects-inner-shadow) !important;
+            }
+        }
+
+        input[class*='StealthInput--invalid'] {
+            border: 1px solid var(--border-error-primary) !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+            border-radius: var(--spacing-xs) !important;
+            padding: var(--spacing-xxs) var(--spacing-xs) !important;
+            height: 32px !important;
+            font-size: 14px !important;
+
+            &:hover:not(:disabled):not(:focus) {
+                background-color: var(--hover-input) !important;
+            }
+
+            &:focus {
+                border: 1px solid var(--border-error-primary) !important;
+                background-color: transparent !important;
+                box-shadow: var(--effects-inner-shadow) !important;
+            }
         }
     }
 }

@@ -126,7 +126,8 @@ export function MultiLevelSelect(props: Props) {
                         }
                         variant="secondary"
                         size="sm"
-                        value={label || placeholder}
+                        value={label ?? undefined}
+                        placeholder={placeholder}
                         isInvalid={isInvalid}
                     />
                 </SelectTrigger>

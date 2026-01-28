@@ -18,7 +18,7 @@ export function AxiomMigrationToggle() {
             )}
             onClick={onToggle}
         >
-            <span>Axiom Migration</span>
+            <span>New UI</span>
             <ToggleField value={isEnabled} />
         </button>
     )

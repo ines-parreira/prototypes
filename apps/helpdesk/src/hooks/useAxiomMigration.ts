@@ -6,6 +6,7 @@ import { useLocalStorage } from '@repo/hooks'
 
 export function useAxiomMigration() {
     const hasFlag = useFlag(FeatureFlagKey.AxiomMigration)
+    const isDebugging = useFlag(FeatureFlagKey.AxiomMigrationDebugging)
 
     const [isEnabled, setIsEnabled] = useLocalStorage(
         'axiom-migration-enabled-v3',
@@ -29,6 +30,7 @@ export function useAxiomMigration() {
         () => ({
             hasFlag,
             isEnabled,
+            isDebugging,
             isHighlightingTokens,
             onToggle,
             onToggleTokenHighlighting,
@@ -36,6 +38,7 @@ export function useAxiomMigration() {
         [
             hasFlag,
             isEnabled,
+            isDebugging,
             isHighlightingTokens,
             onToggle,
             onToggleTokenHighlighting,

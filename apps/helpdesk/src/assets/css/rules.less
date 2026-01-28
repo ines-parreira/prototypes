@@ -326,7 +326,7 @@ pre {
         }
     }
 
-    .Literal .dropdown-toggle {
+    .Literal .LiteralWidget:not(.InputField) .dropdown-toggle {
         // Full button reset
         appearance: none !important;
         -webkit-appearance: none !important;
@@ -407,7 +407,7 @@ pre {
         }
     }
 
-    .Literal .LiteralWidget.MultiSelectField > div {
+    .Literal .LiteralWidget:not(.InputField).MultiSelectField > div {
         background: var(--elevation-neutral-default);
         border: none;
         border-radius: var(--spacing-xs);
@@ -424,7 +424,9 @@ pre {
         }
     }
 
-    .Literal .LiteralWidget.MultiSelectField .badge.badge-secondary {
+    .Literal
+        .LiteralWidget:not(.InputField).MultiSelectField
+        .badge.badge-secondary {
         background-color: transparent !important;
         color: var(--content-neutral-default) !important;
         border-radius: var(--spacing-xxs) !important;
@@ -751,6 +753,21 @@ pre {
 }
 
 .axiom {
+    .Program .test {
+        .Identifier,
+        .Literal {
+            margin-right: 0 !important;
+        }
+    }
+
+    .BinaryExpression {
+        .left,
+        .operator,
+        .right {
+            margin-left: 0;
+        }
+    }
+
     .delete-blockstatement {
         display: flex;
         align-items: center !important;
@@ -765,21 +782,21 @@ pre {
         box-shadow: none;
         cursor: pointer;
         position: absolute;
-        top: 4px;
-        left: auto !important;
-        right: 0 !important;
+        top: -1px;
+        left: 2px !important;
         z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         .material-icons {
             color: var(--content-error-primary) !important;
             font-size: 16px;
-            line-height: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            vertical-align: middle;
-            width: 16px;
-            height: 16px;
+            display: block;
+            width: 32px;
+            height: 32px;
+            line-height: 30px;
+            text-align: center;
         }
 
         &::before {
@@ -815,12 +832,12 @@ pre {
         box-shadow: none;
         cursor: pointer;
         position: absolute;
-        top: 4px;
+        top: -4px;
         left: auto !important;
-        right: 0 !important;
+        right: 4px !important;
         z-index: 5;
         color: var(--content-error-primary);
-        font-size: 16px;
+        font-size: 16px !important;
         line-height: 1;
         vertical-align: middle;
 
@@ -845,6 +862,7 @@ pre {
 
     .flex.flex-wrap {
         position: relative;
+        gap: var(--spacing-xxs);
     }
 
     .AddActionOrIfStatement {
@@ -854,12 +872,60 @@ pre {
     .IfStatement,
     .ExpressionStatement {
         &.hovered:hover {
-            background: var(--elevation-neutral-default);
+            background: var(--hover-default);
+            border-radius: var(--spacing-xs);
         }
     }
 
     .Action .compact-action .ActionWidget .badge.badge-secondary {
         border-radius: var(--spacing-xxs) !important;
+    }
+
+    .ActionWidget.InputField,
+    .Action .compact-action .ActionWidget.InputField,
+    .Literal .LiteralWidget.InputField {
+        input,
+        input:focus {
+            display: flex;
+            height: 24px;
+            padding: var(--spacing-xxs) var(--spacing-xs) !important;
+            border: none !important;
+            box-shadow: inset 0 0 0 1px var(--border-neutral-default) !important;
+            border-radius: var(--spacing-xs) !important;
+            background-color: transparent !important;
+            color: var(--content-neutral-default) !important;
+            font-size: inherit !important;
+            font-weight: inherit !important;
+            line-height: 1 !important;
+            text-transform: none !important;
+            transition: all 0.2s linear;
+            outline: none !important;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0 !important;
+
+            &::placeholder {
+                color: var(--content-neutral-tertiary);
+            }
+
+            &:hover {
+                background: var(--hover-input) !important;
+                box-shadow: inset 0 0 0 1px var(--border-neutral-default) !important;
+            }
+
+            &:focus {
+                background: transparent !important;
+                box-shadow:
+                    var(--effects-inner-shadow),
+                    inset 0 0 0 1px var(--border-neutral-secondary) !important;
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--focus) !important;
+                outline-offset: 2px !important;
+            }
+        }
     }
 
     .ActionSelect .dropdown-toggle,
@@ -963,6 +1029,7 @@ pre {
         .btn-group {
             & > .ControlStructureButton.dropdown-toggle {
                 &:not(:disabled) {
+                    color: var(--content-additional-blue) !important;
                     background-color: var(--surface-additional-blue) !important;
                     box-shadow: inset 0 0 0 1px var(--border-additional-blue) !important;
 
@@ -1013,6 +1080,85 @@ pre {
         &.customer-field-input--status {
             background-color: var(--surface-success-primary);
             color: var(--content-success-primary);
+        }
+    }
+
+    #ruleContainer {
+        // Override SelectField height to match other rule editor elements (24px)
+        [class*='SelectField--select'] {
+            min-height: 24px !important;
+            height: 24px !important;
+            line-height: 1 !important;
+            padding: 0 var(--spacing-xs) !important;
+
+            [class*='SelectField--label'],
+            [class*='SelectField--placeholder'] {
+                line-height: 22px !important;
+                height: 22px !important;
+            }
+
+            [class*='SelectField--dropdownIcon'] {
+                font-size: 18px !important;
+            }
+        }
+    }
+
+    // Override SelectField inside Literal to match StatusButton styling
+    .Literal [class*='SelectField--select'] {
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-additional-fuchsia) !important;
+        background-color: var(--surface-additional-fuchsia) !important;
+        color: var(--content-additional-fuchsia) !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        text-transform: none !important;
+        padding: 0 var(--spacing-xs) !important;
+        height: 24px !important;
+        margin-right: 0 !important;
+        position: relative !important;
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        &:active::before,
+        &.active::before {
+            background-color: var(--pressed-default);
+        }
+
+        &:focus {
+            box-shadow: inset 0 0 0 1px var(--border-additional-fuchsia) !important;
+        }
+
+        & > span {
+            line-height: 1 !important;
+            height: auto !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        [class*='SelectField--label'],
+        [class*='SelectField--placeholder'] {
+            color: var(--content-additional-fuchsia) !important;
+            font-size: 12px !important;
+            font-weight: 400 !important;
+            line-height: 22px !important;
+        }
+
+        [class*='SelectField--dropdownIcon'] {
+            color: var(--content-additional-fuchsia) !important;
+            position: relative;
+            z-index: 1;
         }
     }
 }

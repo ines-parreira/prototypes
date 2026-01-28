@@ -30,10 +30,28 @@
 
 .axiom :local {
     .metric {
-        background: var(--elevation-neutral-default);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+        background: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        padding: var(--spacing-md);
+        box-shadow: var(--effects-shadow-container);
 
         &:nth-child(n + 1) {
             border-left: 1px solid var(--border-neutral-default);
+        }
+
+        .label {
+            font-family: Inter;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0em;
+            text-transform: none;
+            color: var(--content-neutral-secondary);
+            text-align: left;
         }
     }
 }

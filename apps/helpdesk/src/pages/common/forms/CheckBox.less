@@ -112,7 +112,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: var(--content-inverted-default);
+            background-color: var(--content-selected-accent);
             clip-path: path(
                 'M 11.025 4.96 C 11.406 4.594 12.039 4.579 12.439 4.928 C 12.839 5.277 12.855 5.858 12.474 6.225 L 7.474 11.04 C 7.286 11.222 7.024 11.325 6.75 11.325 C 6.476 11.325 6.215 11.222 6.026 11.04 L 3.526 8.633 C 3.145 8.266 3.161 7.686 3.56 7.337 C 3.96 6.987 4.593 7.001 4.974 7.368 L 6.75 9.078 L 11.025 4.96 Z'
             );
@@ -139,7 +139,7 @@
 
         &:indeterminate,
         &:checked {
-            background-color: var(--surface-inverted-default);
+            background-color: var(--surface-accent-primary);
             box-shadow: var(--effects-inner-light);
 
             &::before {
@@ -151,8 +151,10 @@
             }
 
             &:hover:not(:disabled) {
+                box-shadow: inset 0 0 0 1px var(--surface-accent-primary);
+
                 &::before {
-                    background-color: var(--inverted-hover);
+                    background-color: var(--hover-default);
                     opacity: 1;
                 }
             }
@@ -186,7 +188,7 @@
 
         &[readonly]:checked,
         &[readonly]:indeterminate {
-            background: var(--surface-inverted-default) !important;
+            background: var(--surface-accent-primary) !important;
         }
     }
 }

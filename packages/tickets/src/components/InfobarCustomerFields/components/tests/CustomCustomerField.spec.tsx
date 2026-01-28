@@ -193,7 +193,7 @@ describe('CustomCustomerField', () => {
                 />,
             )
 
-            const inputs = await screen.findAllByDisplayValue('+ Add')
+            const inputs = await screen.findAllByPlaceholderText('+ Add')
             const input = inputs[0]
 
             await act(async () => {

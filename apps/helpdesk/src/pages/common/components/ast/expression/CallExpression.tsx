@@ -79,7 +79,14 @@ export default function CallExpression({
         }
 
         return (
-            <span className="flex flex-wrap" ref={setRef}>
+            <span
+                className="flex flex-wrap"
+                ref={setRef}
+                style={{
+                    width: '100%',
+                    paddingRight: '32px',
+                }}
+            >
                 <Expression
                     {...firstArg}
                     parent={parent.push('arguments', 0)}

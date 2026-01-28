@@ -291,22 +291,26 @@ pre {
     textarea {
         background-color: transparent;
 
+        &::placeholder {
+            color: var(--content-neutral-tertiary) !important;
+        }
+
         &::-webkit-input-placeholder {
-            color: var(--content-neutral-secondary) !important;
+            color: var(--content-neutral-tertiary) !important;
         }
 
         &::-moz-placeholder {
-            color: var(--content-neutral-secondary) !important;
+            color: var(--content-neutral-tertiary) !important;
             opacity: 1;
         }
 
         &:-ms-input-placeholder {
-            color: var(--content-neutral-secondary) !important;
+            color: var(--content-neutral-tertiary) !important;
             opacity: 1;
         }
 
         &:-moz-placeholder {
-            color: var(--content-neutral-secondary) !important;
+            color: var(--content-neutral-tertiary) !important;
             opacity: 1;
         }
     }
@@ -335,5 +339,9 @@ pre {
         &:hover {
             background-color: var(--hover-default);
         }
+    }
+
+    .analytics-card-wrapper-ec71 {
+        border: 1px solid var(--border-neutral-default);
     }
 }

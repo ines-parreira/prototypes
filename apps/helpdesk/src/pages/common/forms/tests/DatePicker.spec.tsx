@@ -61,6 +61,7 @@ describe('DatePicker', () => {
         useAxiomMigrationMock.mockReturnValue({
             hasFlag: false,
             isEnabled: false,
+            isDebugging: false,
             isHighlightingTokens: false,
             onToggle: jest.fn(),
             onToggleTokenHighlighting: jest.fn(),
@@ -386,6 +387,7 @@ describe('DatePicker', () => {
             useAxiomMigrationMock.mockReturnValue({
                 hasFlag: true,
                 isEnabled: true,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),
@@ -416,6 +418,7 @@ describe('DatePicker', () => {
             useAxiomMigrationMock.mockReturnValue({
                 hasFlag: false,
                 isEnabled: false,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),
@@ -446,6 +449,7 @@ describe('DatePicker', () => {
             useAxiomMigrationMock.mockReturnValue({
                 hasFlag: true,
                 isEnabled: true,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),

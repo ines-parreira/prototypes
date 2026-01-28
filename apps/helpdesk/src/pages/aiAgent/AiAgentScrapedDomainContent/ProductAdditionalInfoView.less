@@ -53,3 +53,19 @@
         margin-bottom: 53px;
     }
 }
+
+.axiom :local {
+    .richField {
+        &.onError {
+            border-color: var(--content-error-primary);
+            [class*='Toolbar--maxLength--'] {
+                color: var(--content-error-primary) !important;
+            }
+        }
+
+        [class*='Toolbar--maxLength--'] {
+            color: var(--content-neutral-secondary) !important;
+            margin-right: 9px;
+        }
+    }
+}

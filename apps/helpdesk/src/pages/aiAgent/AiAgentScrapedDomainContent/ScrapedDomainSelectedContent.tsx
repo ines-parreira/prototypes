@@ -123,7 +123,7 @@ const SelectedProductView = ({
                                         className="material-icons"
                                         style={{
                                             fontSize: '20px',
-                                            color: 'var(--neutral-grey-5)',
+                                            color: 'var(--content-neutral-secondary)',
                                         }}
                                     >
                                         edit

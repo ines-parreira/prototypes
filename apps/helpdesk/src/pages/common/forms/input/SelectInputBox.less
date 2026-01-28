@@ -106,6 +106,20 @@
 }
 
 .axiom :local {
+    .wrapper:global(.btn-light) {
+        &:hover {
+            box-shadow: none !important;
+            border-color: transparent !important;
+            background: none !important;
+        }
+
+        .inputWrapper {
+            &:hover:not(.isDisabled):not(.isFocused) {
+                box-shadow: none !important;
+            }
+        }
+    }
+
     .inputWrapper {
         border: 1px solid var(--border-neutral-default);
         border-radius: var(--spacing-xs);
@@ -117,8 +131,9 @@
         }
 
         &.isFocused:not(.isNested) {
+            background-color: transparent;
             border: 1px solid var(--border-neutral-secondary);
-            box-shadow: none;
+            box-shadow: var(--effects-inner-shadow);
 
             &.hasError {
                 border: 1px solid var(--border-error-primary);

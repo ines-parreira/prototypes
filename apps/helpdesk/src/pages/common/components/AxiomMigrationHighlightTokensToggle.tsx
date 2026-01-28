@@ -9,11 +9,12 @@ export default function AxiomMigrationHighlightTokensToggle() {
     const {
         hasFlag,
         isEnabled,
+        isDebugging,
         isHighlightingTokens,
         onToggleTokenHighlighting,
     } = useAxiomMigration()
 
-    if (!hasFlag || !isEnabled) {
+    if (!hasFlag || !isEnabled || !isDebugging) {
         return null
     }
 

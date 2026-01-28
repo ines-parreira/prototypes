@@ -240,7 +240,9 @@ describe('CustomCustomerFieldInput', () => {
                 />,
             )
 
-            expect(await screen.findByDisplayValue('+ Add')).toBeInTheDocument()
+            expect(
+                await screen.findByPlaceholderText('+ Add'),
+            ).toBeInTheDocument()
         })
 
         it('should render dropdown with selected value', async () => {
@@ -265,7 +267,7 @@ describe('CustomCustomerFieldInput', () => {
                 />,
             )
 
-            const input = await screen.findByDisplayValue('+ Add')
+            const input = await screen.findByPlaceholderText('+ Add')
             await act(() => userEvent.click(input))
 
             const options = await screen.findAllByText('inactive')
@@ -307,7 +309,9 @@ describe('CustomCustomerFieldInput', () => {
                 />,
             )
 
-            expect(await screen.findByDisplayValue('+ Add')).toBeInTheDocument()
+            expect(
+                await screen.findByPlaceholderText('+ Add'),
+            ).toBeInTheDocument()
         })
     })
 

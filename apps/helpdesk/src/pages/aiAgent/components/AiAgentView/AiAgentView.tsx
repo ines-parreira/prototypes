@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import React from 'react'
+import React, { useRef } from 'react'
 
 import classnames from 'classnames'
 import { NavLink } from 'react-router-dom'
@@ -7,6 +7,7 @@ import { Container } from 'reactstrap'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
+import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
@@ -38,8 +39,12 @@ export const AiAgentView = ({
     className,
     fullWidth = true,
 }: Props) => {
+    const containerRef = useRef<HTMLDivElement>(null)
+    useInjectStyleToCandu(containerRef.current)
+
     return (
         <div
+            ref={containerRef}
             className={classnames(css.parentContainer, {
                 'full-width': fullWidth,
             })}

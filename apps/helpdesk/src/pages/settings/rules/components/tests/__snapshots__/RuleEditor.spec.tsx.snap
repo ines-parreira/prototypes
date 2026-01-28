@@ -126,7 +126,7 @@ exports[`<RuleEditor/> render should render the  editor 1`] = `
       >
         <div
           class="AddActionOrIfStatement btn-group"
-          style="padding-left: 0px;"
+          style="padding-left: 20px;"
         >
           <button
             aria-expanded="false"

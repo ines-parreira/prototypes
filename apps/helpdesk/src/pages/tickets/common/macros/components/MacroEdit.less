@@ -51,6 +51,26 @@
 }
 
 .axiom :local {
+    .wrapper {
+        :global {
+            .rich-textarea-wrapper {
+                background: transparent;
+                border: 1px solid var(--border-neutral-default) !important;
+            }
+
+            .textarea-toolbar {
+                background-color: transparent;
+                border-bottom-left-radius: var(--spacing-xs);
+                border-bottom-right-radius: var(--spacing-xs);
+            }
+
+            .field {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+
     .description {
         color: var(--content-neutral-secondary);
     }

@@ -6,7 +6,7 @@ exports[`IfStatement component should not render alternate because there is none
 >
   <div
     class="test flex flex-wrap"
-    style="padding-left: 0px;"
+    style="padding-left: 20px;"
   >
     <span
       class="clickable delete-blockstatement"
@@ -55,7 +55,7 @@ exports[`IfStatement component should not render alternate because there is none
       >
         <div
           class="AddActionOrIfStatement btn-group"
-          style="padding-left: 0px;"
+          style="padding-left: 20px;"
         >
           <button
             aria-expanded="false"
@@ -112,7 +112,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
 >
   <div
     class="test flex flex-wrap"
-    style="padding-left: 0px;"
+    style="padding-left: 20px;"
   >
     <span
       class="clickable delete-blockstatement"
@@ -161,7 +161,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       >
         <div
           class="AddActionOrIfStatement btn-group"
-          style="padding-left: 0px;"
+          style="padding-left: 20px;"
         >
           <button
             aria-expanded="false"
@@ -229,7 +229,7 @@ exports[`IfStatement component should render alternate because there is one 1`] 
       >
         <div
           class="AddActionOrIfStatement btn-group"
-          style="padding-left: 0px;"
+          style="padding-left: 20px;"
         >
           <button
             aria-expanded="false"

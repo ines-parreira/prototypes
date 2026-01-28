@@ -49,7 +49,13 @@ export default function LogicalExpression({
                 leftsiblings={leftsiblings}
                 className="IdentifierDropdown"
             />
-            <div className="w-100 d-flex align-items-baseline mt-1 ml-3">
+            <div
+                className="w-100 d-flex align-items-baseline"
+                style={{
+                    gap: 'var(--spacing-xxs)',
+                    width: '100%',
+                }}
+            >
                 <AddSiblingCondition
                     actions={actions}
                     rule={rule}

@@ -2,30 +2,73 @@ import { useCallback, useEffect } from 'react'
 
 const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
     const canduStyles = `
+            ::-webkit-scrollbar-thumb {
+                background: var(--scrollbar-thumb);
+            }
+
+            *:hover > ::-webkit-scrollbar-thumb {
+                visibility: visible;
+            }
+
+            ::-webkit-scrollbar-track {
+                background: var(--scrollbar-track);
+            }
+
+            .candu-document {
+                scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
+                scrollbar-width: thin !important;
+            }
+
             .candu-typography {
-                --color: var(--neutral-grey-6) !important;
+                color: var(--content-neutral-default) !important;
             }
+
+            .variant-base.candu-typography {
+                --color: var(--content-neutral-default) !important;
+            }
+
+            .candu-card.variant-base {
+                --background-color: var(--elevation-neutral-mid) !important;
+                box-shadow: var(--effects-shadow-container) !important;
+                border-radius: var(--spacing-sm) !important;
+                position: relative;
+            }
+
             .candu-card {
-                --background-color: var(--neutral-grey-0) !important;
+                --background-color: var(--elevation-neutral-mid) !important;
+                box-shadow: var(--effects-shadow-container) !important;
+                border-radius: var(--spacing-sm) !important;
+                box-shadow: var(--effects-shadow-container) !important;
             }
+
+            .candu-button {
+                color: var(--content-accent-default) !important;
+            }
+
             .candu-checklist--group-title {
-                --color: var(--neutral-grey-6) !important;
+                --color: var(--content-neutral-default) !important;
             }
+
             .candu-checklist--item {
-                --color: var(--neutral-grey-6) !important;
-                --background-color: var(--neutral-grey-0) !important;
-                --checklist-item-border-color: var(--neutral-grey-3) !important;
+                --color: var(--content-neutral-default) !important;
+                --background-color: var(--elevation-neutral-mid) !important;
+                --checklist-item-border-color: var(--border-neutral-default) !important;
             }
+
             .variant-base.candu-card {
-                --color: var(--neutral-grey-6) !important;
-                --background-color: var(--neutral-grey-0) !important;
-                --border-color: var(--neutral-grey-3) !important;
+                --color: var(--content-neutral-default) !important;
+                --background-color: var(--elevation-neutral-mid) !important;
+                --border-color: var(--border-neutral-default) !important;
+                --border-radius: var(--spacing-sm) !important;
+                box-shadow: var(--effects-shadow-container) !important;
+                border-radius: var(--spacing-sm) !important;
+            }
+
+            a {
+                color: red !important;
             }
             .candu-link {
-                --color: var(--main-primary) !important;
-                &:hover {
-                    --color: var(--main-primary-3) !important;
-                }
+                --color: var(--content-accent-default) !important;
             }`
 
     const injectStyle = useCallback(

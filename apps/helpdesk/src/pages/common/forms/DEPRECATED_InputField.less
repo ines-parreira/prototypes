@@ -103,16 +103,16 @@
         border-radius: var(--spacing-xs);
         box-shadow: none;
         color: var(--content-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent;
         border: 1px solid var(--border-neutral-default);
 
         &:hover:not(:disabled):not(:focus) {
-            background-color: var(--hover-default);
+            background-color: var(--hover-input);
         }
 
         &:focus {
             border: 1px solid var(--border-neutral-secondary);
-            box-shadow: none;
+            box-shadow: var(--effects-inner-shadow);
         }
 
         &:disabled {
@@ -122,7 +122,7 @@
         }
 
         &::placeholder {
-            color: var(--content-neutral-secondary);
+            color: var(--content-neutral-tertiary);
         }
     }
 
@@ -131,16 +131,16 @@
             border-radius: var(--spacing-xs);
             box-shadow: none;
             color: var(--content-neutral-default);
-            background-color: var(--elevation-neutral-default);
+            background-color: transparent;
             border: 1px solid var(--border-neutral-default);
 
             &:hover:not(:disabled):not(:focus) {
-                background-color: var(--hover-default);
+                background-color: var(--hover-input);
             }
 
             &:focus {
                 border: 1px solid var(--border-neutral-secondary);
-                box-shadow: none;
+                box-shadow: var(--effects-inner-shadow);
             }
 
             &:disabled {

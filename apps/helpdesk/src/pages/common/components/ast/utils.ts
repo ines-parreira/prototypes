@@ -10,7 +10,7 @@ import { getObjectExpression, updateCallExpression } from 'state/rules/utils'
 import type { SchemasState } from 'state/schemas/types'
 import { getAST, getCode, toJS } from 'utils'
 
-export const BASIC_PADDING = 0
+export const BASIC_PADDING = 20
 export const PADDING_STEP = 18
 
 /**

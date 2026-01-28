@@ -76,6 +76,7 @@ jest.mock('hooks/useAxiomMigration', () => ({
     useAxiomMigration: jest.fn().mockReturnValue({
         hasFlag: true,
         isEnabled: true,
+        isDebugging: false,
         isHighlightingTokens: false,
         onToggle: jest.fn(),
         onToggleTokenHighlighting: jest.fn(),
@@ -207,6 +208,7 @@ describe('App component', () => {
             mockUseAxiomMigration.mockReturnValue({
                 hasFlag: false,
                 isEnabled: false,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),
@@ -221,6 +223,7 @@ describe('App component', () => {
             mockUseAxiomMigration.mockReturnValue({
                 hasFlag: true,
                 isEnabled: false,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),
@@ -236,6 +239,7 @@ describe('App component', () => {
             mockUseAxiomMigration.mockReturnValue({
                 hasFlag: true,
                 isEnabled: true,
+                isDebugging: false,
                 isHighlightingTokens: false,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),
@@ -251,6 +255,7 @@ describe('App component', () => {
             mockUseAxiomMigration.mockReturnValue({
                 hasFlag: true,
                 isEnabled: true,
+                isDebugging: true,
                 isHighlightingTokens: true,
                 onToggle: jest.fn(),
                 onToggleTokenHighlighting: jest.fn(),

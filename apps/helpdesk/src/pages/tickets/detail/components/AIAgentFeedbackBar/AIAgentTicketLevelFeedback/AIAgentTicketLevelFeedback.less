@@ -150,26 +150,41 @@
 
     .ratingButtons {
         .ratingButton {
-            background-color: var(--elevation-neutral-default);
-            border-color: var(--border-neutral-default);
-            color: var(--content-neutral-secondary);
+            position: relative;
+            background-color: var(--surface-button-secondary) !important;
+            border-color: var(--border-neutral-tertiary) !important;
+            color: var(--content-neutral-default) !important;
+
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                pointer-events: none;
+                background-color: transparent;
+                transition: background-color 150ms ease;
+            }
 
             &:hover {
-                background-color: var(--elevation-neutral-default);
-                border-color: var(--border-neutral-default);
-                color: var(--content-neutral-secondary);
+                border-color: var(--border-neutral-tertiary) !important;
+                color: var(--content-neutral-default) !important;
+                box-shadow: none !important;
+
+                &::after {
+                    background-color: var(--hover-default);
+                }
             }
         }
 
         .buttonPressed {
-            background-color: var(--surface-accent-subtle);
-            border-color: var(--border-accent-default);
-            color: var(--content-neutral-default);
+            background-color: var(--surface-accent-subtle) !important;
+            border-color: var(--border-accent-default) !important;
+            color: var(--content-neutral-default) !important;
 
             &:hover {
-                background-color: var(--surface-accent-subtle);
-                border-color: var(--border-accent-default);
-                color: var(--content-neutral-default);
+                background-color: var(--surface-accent-subtle) !important;
+                border-color: var(--border-accent-default) !important;
+                color: var(--content-neutral-default) !important;
             }
         }
     }

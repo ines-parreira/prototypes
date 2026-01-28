@@ -62,7 +62,11 @@ const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
 jest.mock('../AxiomMigrationToggle', () => ({
-    AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
+    AxiomMigrationToggle: () => (
+        <div>
+            <span>New UI</span>
+        </div>
+    ),
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock('../StatusMenu', () => () => <div>StatusMenu</div>)
@@ -118,9 +122,7 @@ describe('UserMenu', () => {
         })
 
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
-        expect(
-            screen.queryByText('AxiomMigrationToggle'),
-        ).not.toBeInTheDocument()
+        expect(screen.queryByText('New UI')).not.toBeInTheDocument()
         expect(
             screen.queryByText(ignoreHTML('Status:None')),
         ).not.toBeInTheDocument()
@@ -134,10 +136,10 @@ describe('UserMenu', () => {
         expect(screen.getByText('Log out')).toBeInTheDocument()
     })
 
-    it('should render the axiom migration toggle if the fla is enabled', () => {
+    it('should render the New UI menu item when axiom migration flag is enabled', () => {
         useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
         render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
+        expect(screen.getByText('New UI')).toBeInTheDocument()
     })
 
     it('should not render the user info header when feature flag is disabled', () => {

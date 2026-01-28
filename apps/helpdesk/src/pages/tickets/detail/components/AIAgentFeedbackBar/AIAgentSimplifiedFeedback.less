@@ -412,9 +412,27 @@
 
     .internalNote {
         textarea {
-            background: var(--surface-neutral-secondary);
-            border-color: var(--border-neutral-default);
-            color: var(--content-neutral-default);
+            background: transparent !important;
+            border: none !important;
+            box-shadow: inset 0 0 0 1px var(--border-neutral-default) !important;
+            color: var(--content-neutral-default) !important;
+            border-radius: var(--spacing-xs) !important;
+            transition: all 0.2s linear !important;
+
+            &:hover {
+                background: var(--hover-input) !important;
+            }
+
+            &:focus {
+                background: transparent !important;
+                box-shadow:
+                    var(--effects-inner-shadow),
+                    inset 0 0 0 1px var(--border-neutral-secondary) !important;
+            }
+
+            &::placeholder {
+                color: var(--content-neutral-tertiary) !important;
+            }
         }
     }
 

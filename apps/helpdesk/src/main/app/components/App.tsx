@@ -52,6 +52,7 @@ type Props = {
 export default function App({ children }: Props) {
     const {
         hasFlag: hasAxiomMigration,
+        isDebugging: isAxiomDebugging,
         isEnabled: isAxiomEnabled,
         isHighlightingTokens: isAxiomHighlightingTokens,
     } = useAxiomMigration()
@@ -92,7 +93,8 @@ export default function App({ children }: Props) {
                 axiomHighlightLegacyTokens:
                     hasAxiomMigration &&
                     isAxiomEnabled &&
-                    isAxiomHighlightingTokens,
+                    isAxiomHighlightingTokens &&
+                    isAxiomDebugging,
                 classic: theme.resolvedName === THEME_NAME.Classic,
                 globalNav: hasGlobalNav,
                 uiVisionMilestone1: hasUIVisionMS1,

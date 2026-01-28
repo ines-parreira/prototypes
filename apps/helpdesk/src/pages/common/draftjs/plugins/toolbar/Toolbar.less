@@ -108,22 +108,26 @@
     }
 }
 
-.axiom :local .page {
-    .maxLength {
-        color: var(--content-neutral-secondary);
-    }
+.axiom :local {
+    .page {
+        z-index: 1000;
 
-    .hoverOverlay {
-        background: var(--elevation-neutral-default);
-        opacity: 0.8;
-        border: 3px dashed var(--border-neutral-default);
-        color: var(--content-neutral-secondary);
-    }
+        .maxLength {
+            color: var(--content-neutral-secondary);
+        }
 
-    .actions {
-        button,
-        .button {
-            border: none !important;
+        .hoverOverlay {
+            background: var(--elevation-neutral-default);
+            opacity: 0.8;
+            border: 3px dashed var(--border-neutral-default);
+            color: var(--content-neutral-secondary);
+        }
+
+        .actions {
+            button,
+            .button {
+                border: none !important;
+            }
         }
     }
 }

@@ -98,13 +98,17 @@
 
 .axiom :local {
     .wrapper {
-        background: var(--elevation-neutral-mid);
+        background: transparent;
         border-color: var(--border-neutral-default);
+        border-top-left-radius: var(--spacing-xs) !important;
+        border-top-right-radius: var(--spacing-xs) !important;
+        align-items: center;
     }
 
     .dropdownToggle {
         background: transparent;
         color: var(--content-neutral-default);
+        height: auto;
 
         &:hover {
             color: var(--content-neutral-default);
@@ -114,6 +118,8 @@
     .menu {
         background: var(--elevation-neutral-mid);
         border-color: var(--border-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+        border-radius: var(--spacing-sm);
     }
 
     .dropdownItem {

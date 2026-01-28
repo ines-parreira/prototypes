@@ -52,7 +52,7 @@ const InnerNewToggleButton = (
                 '--new-toggle-button-color':
                     color ??
                     (isEnabled
-                        ? 'var(--surface-inverted-default)'
+                        ? 'var(--surface-accent-primary)'
                         : 'var(--main-primary)'),
             }) as React.CSSProperties,
         [color, isEnabled],

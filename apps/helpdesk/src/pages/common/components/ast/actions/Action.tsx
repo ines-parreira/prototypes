@@ -98,7 +98,10 @@ export default function Action({
             className={classnames('Action', {
                 'd-flex align-items-baseline': config?.compact,
             })}
-            style={{ paddingLeft: computeLeftPadding(depth) }}
+            style={{
+                paddingLeft: computeLeftPadding(depth),
+                gap: 'var(--spacing-xxs)',
+            }}
         >
             <ActionSelect
                 actions={actions}

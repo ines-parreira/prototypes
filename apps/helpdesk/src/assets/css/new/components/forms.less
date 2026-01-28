@@ -48,21 +48,21 @@
 .axiom {
     .form-control {
         border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default) !important;
+        background-color: transparent !important;
         border-radius: var(--spacing-xs);
         color: var(--content-neutral-default);
         box-shadow: none;
 
         &:hover:not(:disabled):not([readonly]):not(:focus) {
             border: 1px solid var(--border-neutral-default);
-            background-color: var(--hover-default) !important;
+            background-color: var(--hover-input) !important;
         }
 
         &:focus {
             border: 1px solid var(--border-neutral-secondary);
-            background-color: var(--elevation-neutral-default) !important;
+            background-color: transparent !important;
             color: var(--content-neutral-default);
-            box-shadow: none;
+            box-shadow: var(--effects-inner-shadow);
             outline: none;
         }
 
@@ -76,13 +76,13 @@
         }
 
         &::placeholder {
-            color: var(--content-neutral-secondary) !important;
+            color: var(--content-neutral-tertiary) !important;
         }
     }
 
     .input-group-text {
         border-color: var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
+        background-color: transparent;
     }
 
     .input-group {
