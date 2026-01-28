@@ -11,13 +11,13 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 import { useGetHelpCentersByShopName } from './useGetHelpCentersByShopName'
 
-type KnowledgeSourceStatus = {
+export type KnowledgeSourceStatus = {
     isLoading: boolean
     label: string
     status: KnowledgeStatus
 }
 
-type KnowledgeSourceStatuses = {
+export type KnowledgeSourceStatuses = {
     [KnowledgeSourceType.DOMAIN]: KnowledgeSourceStatus
     [KnowledgeSourceType.SHOPIFY]: KnowledgeSourceStatus
     [KnowledgeSourceType.HELP_CENTER]: KnowledgeSourceStatus | undefined

@@ -18,7 +18,7 @@ describe('KnowledgeResourceLine', () => {
         expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
         expect(screen.getByText('Ready')).toBeInTheDocument()
         expect(
-            screen.getByText('', { selector: '#store-icon' }),
+            screen.getByRole('img', { name: 'vendor-shopify-colored' }),
         ).toBeInTheDocument()
     })
 
@@ -32,9 +32,9 @@ describe('KnowledgeResourceLine', () => {
         )
 
         expect(screen.getByText('Help Center Articles')).toBeInTheDocument()
-        expect(screen.getByText('In Process')).toBeInTheDocument()
+        expect(screen.getByText('Syncing')).toBeInTheDocument()
         expect(
-            screen.getByText('', { selector: '#chat-icon' }),
+            screen.getByRole('img', { name: 'comm-chat-circle' }),
         ).toBeInTheDocument()
     })
 
@@ -50,7 +50,7 @@ describe('KnowledgeResourceLine', () => {
         expect(screen.getByText('https://example.com')).toBeInTheDocument()
         expect(screen.getByText('Ready')).toBeInTheDocument()
         expect(
-            screen.getByText('', { selector: '#link-icon' }),
+            screen.getByRole('img', { name: 'nav-globe' }),
         ).toBeInTheDocument()
     })
 
@@ -64,6 +64,6 @@ describe('KnowledgeResourceLine', () => {
         )
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
-        expect(screen.getByText('In Process')).toBeInTheDocument()
+        expect(screen.getByText('Syncing')).toBeInTheDocument()
     })
 })

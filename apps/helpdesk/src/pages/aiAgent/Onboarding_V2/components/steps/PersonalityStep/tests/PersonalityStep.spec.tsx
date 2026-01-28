@@ -205,7 +205,7 @@ describe('PersonalityStep - Empty state', () => {
 
         expect(
             screen.getByRole('heading', {
-                name: /Let's define the sales skills for your AI Agent/i,
+                name: /Choose how AI Agent drives sales/i,
             }),
         ).toBeInTheDocument()
         expect(

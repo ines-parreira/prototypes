@@ -170,9 +170,10 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         expect(
-            screen.getByText(/First, let's connect your/i),
+            screen.getByRole('heading', {
+                name: /First, let.s connect your Shopify account/i,
+            }),
         ).toBeInTheDocument()
-        expect(screen.getByText(/Shopify account/i)).toBeInTheDocument()
     })
 
     it('should keep user on onboarding even if feature flag is disabled', () => {
@@ -192,7 +193,9 @@ describe('AiAgentOnboarding', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText(/First, let's connect your/i),
+                screen.getByRole('heading', {
+                    name: /First, let.s connect your Shopify account/i,
+                }),
             ).toBeInTheDocument()
         })
 
@@ -219,7 +222,11 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         await waitFor(() => {
-            expect(screen.getByText(/AI Agent's knowledge/)).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', {
+                    name: /AI Agent is syncing your knowledge sources/i,
+                }),
+            ).toBeInTheDocument()
         })
 
         // Click Back

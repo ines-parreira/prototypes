@@ -273,18 +273,21 @@ describe('KnowledgeStep', () => {
 
         jest.runAllTimers()
 
-        expect(screen.getByText(/Great, start building/)).toBeInTheDocument()
-        expect(screen.getByText(/AI Agent's knowledge/)).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', {
+                name: /AI Agent is syncing your knowledge sources/i,
+            }),
+        ).toBeInTheDocument()
     })
 
-    it('renders AI Banner with correct text', () => {
+    it('renders description with correct text', () => {
         renderWithProvider()
 
         jest.runAllTimers()
 
         expect(
             screen.getByText(
-                /Your AI Agent leverages different knowledge resources/,
+                /We're setting things up so AI Agent can respond with confidence/,
             ),
         ).toBeInTheDocument()
     })

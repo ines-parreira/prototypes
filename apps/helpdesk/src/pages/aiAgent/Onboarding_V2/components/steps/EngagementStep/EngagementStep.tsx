@@ -4,13 +4,12 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { Box, Text } from '@gorgias/axiom'
+import { Box, Heading, Text } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { OnboardingData } from 'models/aiAgent/types'
 import { useGmvUsdOver30Days } from 'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
-import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
 import { ConversationLauncherSettings } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/components/ConversationLauncherSettings'
 import { ConversationStartersSettings } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/components/ConversationStartersSettings'
 import { TriggerOnSearchSettings } from 'pages/aiAgent/Onboarding_V2/components/steps/EngagementStep/components/TriggerOnSearchSettings'
@@ -149,10 +148,9 @@ export const EngagementStep = ({
                 onBackClick={onBackClick}
                 containerClassName={css.contentContainer}
             >
-                <MainTitle
-                    titleBlack="Choose how AI Agent engages on your website"
-                    titleMagenta=""
-                />
+                <Heading size="xxl">
+                    Choose how AI Agent engages on your website
+                </Heading>
                 <div className={css.description}>
                     <Text>
                         Turn browsing into buying with smart prompts. Start

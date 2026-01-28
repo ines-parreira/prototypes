@@ -1,9 +1,6 @@
-import { Icon, Tag } from '@gorgias/axiom'
+import { Box, Icon, Text } from '@gorgias/axiom'
 
 import { KnowledgeSourceType } from '../types'
-import ChatIcon from './icons/ChatIcon'
-import LinkIcon from './icons/LinkIcon'
-import StoreIcon from './icons/StoreIcon'
 
 import css from './KnowledgeResourceLine.less'
 
@@ -13,16 +10,16 @@ type Props = {
     isReady: boolean
 }
 
-const getIcon = (type: KnowledgeSourceType) => {
+const getIconName = (type: KnowledgeSourceType) => {
     switch (type) {
         case KnowledgeSourceType.DOMAIN:
-            return <LinkIcon />
+            return 'nav-globe'
         case KnowledgeSourceType.SHOPIFY:
-            return <StoreIcon />
+            return 'vendor-shopify-colored'
         case KnowledgeSourceType.HELP_CENTER:
-            return <ChatIcon />
+            return 'comm-chat-circle'
         default:
-            return <LinkIcon />
+            return 'nav-globe'
     }
 }
 
@@ -32,27 +29,34 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
     isReady,
 }) => {
     return (
-        <div className={css.line}>
-            <div className={css.icon}>{getIcon(type)}</div>
-            <div className={css.resource}>{name}</div>
-            <div className={css.status}>
-                {isReady ? (
-                    <Tag className={css.badge} color="green">
-                        <i className="material-icons">check_circle</i>
-                        <div>Ready</div>
-                    </Tag>
-                ) : (
-                    <Tag className={css.badge} color="grey">
-                        <div className={css.spinner}>
-                            <Icon
-                                name="arrows-reload-alt-1"
-                                data-testid="loading-spinner"
-                            />
-                        </div>
-                        <div>In Process</div>
-                    </Tag>
-                )}
-            </div>
-        </div>
+        <Box display="flex" justifyContent="space-between" width="100%">
+            <Box display="flex" alignItems="center" gap="xs">
+                <Icon
+                    name={getIconName(type)}
+                    size="md"
+                    color="var(--content-neutral-tertiary)"
+                />
+                <Text variant="bold">{name}</Text>
+            </Box>
+            {isReady ? (
+                <Box className={css.badgeSynced} padding="xs">
+                    <Icon name="check" size="sm" />
+                    <Text variant="bold" size="sm">
+                        Ready
+                    </Text>
+                </Box>
+            ) : (
+                <Box className={css.badgeSyncing} padding="xs" gap="xs">
+                    <Icon
+                        name="arrows-reload-alt-1"
+                        data-testid="loading-spinner"
+                        color="var(--content-neutral-tertiary)"
+                    />
+                    <Text variant="bold" size="sm">
+                        Syncing
+                    </Text>
+                </Box>
+            )}
+        </Box>
     )
 }

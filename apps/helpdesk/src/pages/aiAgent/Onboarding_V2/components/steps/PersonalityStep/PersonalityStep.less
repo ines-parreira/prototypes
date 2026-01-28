@@ -1,45 +1,19 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .title {
-        margin-bottom: var(--layout-spacing-l);
-    }
-
-    .cardsWrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-s);
-    }
-
     .cardSection {
         padding: var(--layout-spacing-s);
         gap: 0;
     }
 
-    .cardTitleWrapper {
-        display: flex;
-        align-items: center;
-
-        .cardTitle {
-            .heading-subsection-semibold();
-            margin: 0;
-        }
+    .percentageInput {
+        width: 90px;
     }
 
-    .percentageSection {
-        display: flex;
-        align-items: baseline;
-
-        .percentageInputWrapper {
-            max-width: 128px;
-            width: 100%;
-        }
-    }
-
-    .separator {
-        width: 100%;
-        margin: var(--layout-spacing-s) 0;
+    .banner {
+        background-color: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--layout-spacing-xs);
     }
 
     .chatWrapper {
@@ -49,9 +23,5 @@
         position: relative;
         width: 100%;
         height: 100%;
-    }
-
-    .banner {
-        width: 100%;
     }
 }

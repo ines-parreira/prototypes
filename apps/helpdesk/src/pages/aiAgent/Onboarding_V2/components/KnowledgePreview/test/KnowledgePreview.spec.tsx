@@ -11,7 +11,7 @@ import {
     mockedCategories,
     mockedProducts,
 } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/constants'
-import KnowledgePreview from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
+import { KnowledgePreview } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
 import useTopProducts from 'pages/aiAgent/Onboarding_V2/components/TopProductsCard/hooks'
 import { useGetAverageOrderValue } from 'pages/aiAgent/Onboarding_V2/hooks/useGetAverageOrderValue'
 import { useGetKnowledgePreviewData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgePreviewData'

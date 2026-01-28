@@ -1,58 +1,10 @@
 @import (reference) '~css/typography.less';
-@import (reference) '../../../layout/ConvAiOnboardingLayoutV2';
 
 :local {
     .card {
-        margin-top: var(--layout-spacing-s);
         cursor: default;
-    }
-
-    .knowledgeResources {
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-m);
-
-        & > *:not(:last-child) {
-            padding-bottom: var(--layout-spacing-s);
-            border-bottom: 1px solid var(--neutral-grey-2); // legacy
-        }
-    }
-
-    .banner {
-        padding-top: var(--layout-spacing-s);
-    }
-
-    [class*='ConvAiOnboardingLayoutV2--onboardingBody'] {
-        @media @tablets-up {
-            display: flex;
-        }
-
-        [class*='ConvAiOnboardingLayoutV2--onboardingPreviewContainerWrapper'] {
-            @media @tablets-up {
-                width: calc(1 / 3 * 100%);
-            }
-
-            max-width: 100%;
-
-            [class*='ConvAiOnboardingLayoutV2--onboardingPreviewContainer--'] {
-                max-width: 100%;
-
-                [class*='ConvAiOnboardingLayoutV2--ghostContainer'] {
-                    max-width: 100%;
-
-                    @media @tablets-up {
-                        padding: 0;
-                    }
-                }
-            }
-        }
-    }
-}
-
-.axiom :local {
-    .knowledgeResources {
-        & > *:not(:last-child) {
-            border-bottom: 1px solid var(--border-neutral-default);
-        }
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--layout-spacing-s);
+        box-shadow: var(--effects-shadow-container);
     }
 }

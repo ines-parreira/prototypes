@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { Text } from '@gorgias/axiom'
+import { Heading, Text } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { ToneOfVoiceComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent'
@@ -15,7 +15,6 @@ import {
 } from 'pages/aiAgent/constants'
 import type { ConversationMessage } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
-import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
@@ -196,11 +195,9 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <MainTitle
-                        titleBlack="Choose a tone that matches your brand"
-                        titleMagenta=""
-                        className={css.title}
-                    />
+                    <Heading size="xxl" className={css.title}>
+                        Choose a tone that matches your brand
+                    </Heading>
                     <div className={css.description}>
                         <Text>
                             Set the personality of your AI Agent. Pick how your

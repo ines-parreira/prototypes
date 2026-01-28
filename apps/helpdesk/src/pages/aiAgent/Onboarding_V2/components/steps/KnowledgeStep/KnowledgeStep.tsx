@@ -6,7 +6,16 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Skeleton } from '@gorgias/axiom'
+import {
+    Box,
+    Heading,
+    Icon,
+    Skeleton,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -15,9 +24,7 @@ import {
 } from 'models/aiAgent/queries'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { Card, CardContent } from 'pages/aiAgent/Onboarding_V2/components/Card'
-import KnowledgePreview from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
-import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
+import { KnowledgePreview } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
 import GorgiasIcon from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import { KnowledgeResourceLine } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeResourceLine'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep.less'
@@ -30,6 +37,7 @@ import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCh
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetKnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgeSourceStatuses'
+import type { KnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgeSourceStatuses'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
@@ -39,7 +47,6 @@ import {
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -155,26 +162,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         goToStep(previousStep)
     }
 
-    const renderContent = () => (
-        <div className={css.knowledgeResources}>
-            {Object.entries(knowledgeSources).map(([type, knowledgeSource]) => {
-                if (!knowledgeSource) return undefined
-
-                const { isLoading, label, status } = knowledgeSource
-                return isLoading ? (
-                    <Skeleton key={type} height={24} />
-                ) : (
-                    <KnowledgeResourceLine
-                        key={type}
-                        name={label}
-                        type={type as KnowledgeSourceType}
-                        isReady={status === KnowledgeStatus.DONE}
-                    />
-                )
-            })}
-        </div>
-    )
-
     return (
         <OnboardingBody>
             <OnboardingContentContainer
@@ -184,21 +171,38 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 onBackClick={onBackClick}
                 isLoading={isLoading}
             >
-                <MainTitle
-                    titleBlack="Great, start building "
-                    titleMagenta="AI Agent's knowledge"
-                />
-                <div className={css.banner}>
-                    <AIBanner fillStyle="fill">
-                        Your AI Agent leverages different knowledge resources to
-                        provide accurate responses to customers. You can update
-                        or expand your knowledge resources anytime in your
-                        settings.
-                    </AIBanner>
-                </div>
-                <Card className={css.card}>
-                    <CardContent>{renderContent()}</CardContent>
-                </Card>
+                <Heading size="xxl">
+                    AI Agent is syncing your knowledge sources
+                </Heading>
+                <Box marginTop="md">
+                    <Text>
+                        <Text variant="bold">
+                            We&apos;re setting things up so AI Agent can respond
+                            with confidence.
+                        </Text>{' '}
+                        No action needed. Once your resources are synced, AI
+                        Agent will start responding automatically. We&apos;ll
+                        let you know when it&apos;s ready.
+                    </Text>
+                </Box>
+                <Box
+                    marginTop="xxl"
+                    marginBottom="md"
+                    display="flex"
+                    alignItems="center"
+                    gap="xs"
+                >
+                    <Text variant="bold">
+                        We&apos;re syncing these knowledge sources
+                    </Text>
+                    <Tooltip placement="top left" delay={0}>
+                        <TooltipTrigger>
+                            <Icon name="info" size="sm" />
+                        </TooltipTrigger>
+                        <TooltipContent title="These knowledge sources were pulled from your initial Gorgias setup. They will be used to provide context for AI Agent to respond to customer inquiries." />
+                    </Tooltip>
+                </Box>
+                <KnowledgeResourcesList knowledgeSources={knowledgeSources} />
             </OnboardingContentContainer>
             <OnboardingPreviewContainer
                 isLoading={false}
@@ -209,3 +213,44 @@ export const KnowledgeStep: React.FC<StepProps> = ({
         </OnboardingBody>
     )
 }
+
+interface KnowledgeResourcesListProps {
+    knowledgeSources: KnowledgeSourceStatuses
+}
+
+const KnowledgeResourcesList: React.FC<KnowledgeResourcesListProps> = ({
+    knowledgeSources,
+}) => (
+    <div>
+        {Object.entries(knowledgeSources).map(([type, knowledgeSource]) => {
+            if (!knowledgeSource) return null
+
+            const { isLoading, label, status } = knowledgeSource
+            return (
+                <Box
+                    padding="md"
+                    marginBottom="xs"
+                    key={type}
+                    className={css.card}
+                >
+                    {isLoading ? (
+                        <Box
+                            width="100%"
+                            display="flex"
+                            justifyContent="space-between"
+                        >
+                            <Skeleton height={24} width={140} />
+                            <Skeleton height={24} width={80} />
+                        </Box>
+                    ) : (
+                        <KnowledgeResourceLine
+                            name={label}
+                            type={type as KnowledgeSourceType}
+                            isReady={status === KnowledgeStatus.DONE}
+                        />
+                    )}
+                </Box>
+            )
+        })}
+    </div>
+)

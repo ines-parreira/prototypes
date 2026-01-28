@@ -7,25 +7,16 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { Label, TextField } from '@gorgias/axiom'
+import { Box, Heading, Text } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
-import Card from 'pages/aiAgent/Onboarding_V2/components/Card/Card'
-import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
-import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding_V2/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
-import {
-    DiscountStrategy,
-    DiscountStrategyLabels,
-    DiscountStrategySteps,
-} from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { DiscountStrategySection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategySection'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep.less'
-import {
-    PersuasionLevel,
-    PersuasionLevelLabels,
-    PersuasionLevelSteps,
-} from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
+import { PurchaseGuidanceSection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PurchaseGuidanceSection'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import type { PreviewId } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
@@ -45,8 +36,6 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding_V2/settings'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
-import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
@@ -130,13 +119,10 @@ export const PersonalityStep: FC<StepProps> = ({
 
     const {
         watch,
-        setValue,
-        formState: { errors, isDirty },
+        formState: { isDirty },
         handleSubmit,
-        trigger,
     } = methods
 
-    // Watch form state values
     const salesPersuasionLevel = watch('salesPersuasionLevel')
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
@@ -147,97 +133,6 @@ export const PersonalityStep: FC<StepProps> = ({
             shopName,
             getPreviewId(salesPersuasionLevel, salesDiscountStrategyLevel),
         )
-
-    const logViewEvent = (
-        persuasion: PersuasionLevel,
-        discount: DiscountStrategy,
-    ) => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesUsed, {
-            persuasion,
-            discount,
-            shopName,
-        })
-    }
-
-    const handleSliderChange = (
-        field: keyof SalesSettingsData,
-        value: PersuasionLevel | DiscountStrategy | number,
-    ) => {
-        setValue(field, value, { shouldValidate: true, shouldDirty: true })
-        if (
-            field === 'salesDiscountStrategyLevel' &&
-            value === DiscountStrategy.NoDiscount
-        ) {
-            setValue('salesDiscountMax', 0, {
-                shouldValidate: true,
-                shouldDirty: true,
-            })
-        }
-        if (
-            field === 'salesDiscountStrategyLevel' &&
-            value !== DiscountStrategy.NoDiscount &&
-            !salesDiscountMax
-        ) {
-            setValue('salesDiscountMax', 8, {
-                shouldValidate: true,
-                shouldDirty: true,
-            })
-        }
-        if (field === 'salesDiscountStrategyLevel') {
-            void trigger('salesDiscountMax')
-        }
-
-        if (
-            field === 'salesPersuasionLevel' ||
-            field === 'salesDiscountStrategyLevel'
-        ) {
-            const newPersuasion =
-                field === 'salesPersuasionLevel'
-                    ? (value as PersuasionLevel)
-                    : salesPersuasionLevel
-            const newDiscount =
-                field === 'salesDiscountStrategyLevel'
-                    ? (value as DiscountStrategy)
-                    : salesDiscountStrategyLevel
-
-            logViewEvent(newPersuasion, newDiscount)
-        }
-    }
-
-    const onChangeDiscountMax = (value: string) => {
-        if (value === '') {
-            setValue('salesDiscountMax', value as any, {
-                shouldValidate: false,
-                shouldDirty: true,
-            })
-            return
-        }
-
-        const parsedValue = Number(value)
-        const safeValue = !value || isNaN(parsedValue) ? 0 : parsedValue
-
-        setValue('salesDiscountMax', safeValue, {
-            shouldValidate: true,
-            shouldDirty: true,
-        })
-
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardDiscountChanged, {
-            value: safeValue,
-            shopName,
-        })
-
-        if (parsedValue === 0) {
-            setValue(
-                'salesDiscountStrategyLevel',
-                DiscountStrategy.NoDiscount,
-                {
-                    shouldValidate: true,
-                    shouldDirty: true,
-                },
-            )
-            void trigger('salesDiscountMax')
-        }
-    }
 
     const onNextClick = () => {
         const hasExistingSalesSettings =
@@ -315,112 +210,22 @@ export const PersonalityStep: FC<StepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <div className={css.title}>
-                        <MainTitle
-                            titleBlack="Let's define the sales skills for "
-                            titleMagenta="your AI Agent"
-                        />
-                    </div>
-
-                    <div className={css.cardsWrapper}>
-                        <Card className={css.cardSection}>
-                            <div className={css.cardTitleWrapper}>
-                                <label
-                                    htmlFor="salesPersuasionLevel"
-                                    className={css.cardTitle}
-                                >
-                                    Set your sales persuasion level
-                                </label>
-                                <IconTooltip>
-                                    AI Agent will take into account your custom
-                                    persuasion level in the way in interacts
-                                    with customers.
-                                </IconTooltip>
-                            </div>
-                            <div className={css.steppedSlider}>
-                                <OnboardingSteppedSlider
-                                    steps={PersuasionLevelSteps}
-                                    stepKey={salesPersuasionLevel}
-                                    onChange={(value: string) => {
-                                        handleSliderChange(
-                                            'salesPersuasionLevel',
-                                            value as PersuasionLevel,
-                                        )
-                                    }}
-                                />
-                                <AIBanner fillStyle="fill">
-                                    {
-                                        PersuasionLevelLabels[
-                                            salesPersuasionLevel
-                                        ]?.description
-                                    }
-                                </AIBanner>
-                            </div>
-                        </Card>
-
-                        <Card className={css.cardSection}>
-                            <div className={css.cardTitleWrapper}>
-                                <label
-                                    htmlFor="salesDiscountStrategyLevel"
-                                    className={css.cardTitle}
-                                >
-                                    Discount Strategy
-                                </label>
-                                <IconTooltip>
-                                    Define how often AI Agent should use
-                                    discounts to encourage customers to complete
-                                    a purchase.
-                                </IconTooltip>
-                            </div>
-                            <div>
-                                <OnboardingSteppedSlider
-                                    steps={DiscountStrategySteps}
-                                    stepKey={salesDiscountStrategyLevel}
-                                    onChange={(value: string) => {
-                                        handleSliderChange(
-                                            'salesDiscountStrategyLevel',
-                                            value as DiscountStrategy,
-                                        )
-                                    }}
-                                />
-                                <AIBanner fillStyle="fill">
-                                    {
-                                        DiscountStrategyLabels[
-                                            salesDiscountStrategyLevel
-                                        ]?.description
-                                    }
-                                </AIBanner>
-                            </div>
-                            <hr className={css.separator} />
-                            <div className={css.percentageSection}>
-                                <Label htmlFor="percentage-discount">
-                                    Fixed discount (%)
-                                    <IconTooltip>
-                                        Choose the discount amount Shopping
-                                        Assistant offers.
-                                    </IconTooltip>
-                                </Label>
-                                <div className={css.percentageInputContainer}>
-                                    <TextField
-                                        data-testid="percentage-input"
-                                        type="text"
-                                        id="percentage-discount"
-                                        className={css.percentageInputWrapper}
-                                        value={String(salesDiscountMax)}
-                                        onChange={onChangeDiscountMax}
-                                        error={errors.salesDiscountMax?.message}
-                                        isDisabled={
-                                            salesDiscountStrategyLevel ===
-                                            DiscountStrategy.NoDiscount
-                                        }
-                                    />
-                                    <span className={css.percentageLabel}>
-                                        %
-                                    </span>
-                                </div>
-                            </div>
-                        </Card>
-                    </div>
+                    <Box marginTop="md" marginBottom="md">
+                        <Heading size="xxl">
+                            Choose how AI Agent drives sales
+                        </Heading>
+                    </Box>
+                    <Box marginBottom="lg">
+                        <Text>
+                            Tailor how AI guides shoppers toward a purchase.
+                            Control how AI encourages purchases and uses
+                            discounts to boost sales.
+                        </Text>
+                    </Box>
+                    <Box width="100%" flexDirection="column" gap="md">
+                        <PurchaseGuidanceSection />
+                        <DiscountStrategySection />
+                    </Box>
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
                     isLoading={false}

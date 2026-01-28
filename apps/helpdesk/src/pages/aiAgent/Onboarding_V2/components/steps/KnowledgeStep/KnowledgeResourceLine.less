@@ -1,49 +1,14 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .line {
-        display: flex;
-        align-items: center;
-
-        .icon {
-            max-width: 40px;
-            color: var(--neutral-grey-5); // legacy
-        }
-
-        .resource {
-            flex-grow: 1;
-            margin-left: var(--layout-spacing-xs);
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--neutral-grey-6); // legacy
-        }
-
-        .status {
-            display: flex;
-            align-items: center;
-            margin-left: var(--layout-spacing-xs);
-        }
-
-        .badge {
-            text-transform: none;
-            font-size: 12px;
-            height: 24px;
-        }
-
-        .spinner {
-            animation-duration: 2.4s;
-        }
+    .badgeSynced {
+        color: var(--content-success-primary);
+        background-color: var(--surface-success-primary);
+        border-radius: var(--layout-spacing-xs);
     }
-}
-
-.axiom :local {
-    .line {
-        .icon {
-            color: var(--content-neutral-secondary);
-        }
-
-        .resource {
-            color: var(--content-neutral-default);
-        }
+    .badgeSyncing {
+        color: var(--content-neutral-secondary);
+        background-color: var(--surface-neutral-secondary);
+        border-radius: var(--layout-spacing-xs);
     }
 }

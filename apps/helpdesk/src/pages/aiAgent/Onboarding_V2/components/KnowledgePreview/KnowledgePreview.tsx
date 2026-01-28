@@ -1,4 +1,3 @@
-import type React from 'react'
 import { useEffect, useRef } from 'react'
 
 import { Skeleton } from '@gorgias/axiom'
@@ -25,11 +24,11 @@ import css from './KnowledgePreview.less'
 
 const ANIMATION_DURATION = 60000
 
-type Props = {
+type KnowledgePreviewProps = {
     shopName: string
 }
 
-const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
+export const KnowledgePreview = ({ shopName }: KnowledgePreviewProps) => {
     const shopifyIntegration: ShopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || ''),
     ).toJS()
@@ -187,5 +186,3 @@ const KnowledgePreview: React.FC<Props> = ({ shopName }) => {
         </div>
     )
 }
-
-export default KnowledgePreview

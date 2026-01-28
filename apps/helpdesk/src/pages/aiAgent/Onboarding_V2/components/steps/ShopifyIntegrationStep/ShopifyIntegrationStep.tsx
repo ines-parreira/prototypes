@@ -5,6 +5,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useHistory, useParams } from 'react-router-dom'
 import { z } from 'zod'
 
+import { Heading } from '@gorgias/axiom'
+
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
 import type { OnboardingData } from 'models/aiAgent/types'
@@ -13,7 +15,6 @@ import { IntegrationType } from 'models/integration/types'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { DropdownSelector } from 'pages/aiAgent/Onboarding_V2/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding_V2/components/IntegrationCard'
-import MainTitle from 'pages/aiAgent/Onboarding_V2/components/MainTitle/MainTitle'
 import { Separator } from 'pages/aiAgent/Onboarding_V2/components/Separator/Separator'
 import StatusBadge, {
     StatusEnum,
@@ -299,10 +300,9 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <MainTitle
-                        titleBlack="First, let's connect your "
-                        titleMagenta="Shopify account"
-                    />
+                    <Heading size="xxl">
+                        First, let&lsquo;s connect your Shopify account
+                    </Heading>
                     <Separator />
                     {renderContent()}
                 </OnboardingContentContainer>
