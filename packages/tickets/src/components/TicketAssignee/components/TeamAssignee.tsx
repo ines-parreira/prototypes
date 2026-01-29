@@ -7,7 +7,6 @@ import {
     Icon,
     ListItem,
     ListSection,
-    LegacyLoadingSpinner as LoadingSpinner,
     Select,
     StatusButton,
     Tooltip,
@@ -86,6 +85,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
             onOpenChange={clearSearch}
             aria-label="Team selection"
             size="sm"
+            autoFocus={false}
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const emoji = isNumber(selectedOption?.id)
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
@@ -95,9 +95,7 @@ export function TeamAssignee({ ticketId, currentTeam }: Props) {
                         <StatusButton
                             ref={ref}
                             leadingSlot={
-                                isUpdatingTeam || isLoading ? (
-                                    <LoadingSpinner size={16} />
-                                ) : !!emoji ? (
+                                !!emoji ? (
                                     <span
                                         style={{
                                             display: 'flex',

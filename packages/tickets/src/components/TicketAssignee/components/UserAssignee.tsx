@@ -7,7 +7,6 @@ import {
     Icon,
     ListItem,
     ListSection,
-    LegacyLoadingSpinner as LoadingSpinner,
     Select,
     StatusButton,
     Tooltip,
@@ -84,6 +83,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
             onOpenChange={clearSearch}
             aria-label="User selection"
             size="sm"
+            autoFocus={false}
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
                 const user = isNumber(selectedOption?.id)
                     ? usersMap.get(selectedOption?.id)
@@ -100,9 +100,7 @@ export function UserAssignee({ ticketId, currentAssignee }: Props) {
                         <StatusButton
                             ref={ref}
                             leadingSlot={
-                                isUpdatingUser || isLoading ? (
-                                    <LoadingSpinner size={16} />
-                                ) : user ? (
+                                user ? (
                                     <div>
                                         <Avatar
                                             name={user.name || ''}
