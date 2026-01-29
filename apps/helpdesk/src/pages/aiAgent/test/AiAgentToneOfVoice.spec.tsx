@@ -365,11 +365,111 @@ describe('AiAgentToneOfVoice', () => {
                 expect(instructions[2]).toHaveValue('SMS instructions')
             })
         })
+
+        it('should render verbosity fields for all channels', async () => {
+            setupComponent({})
+
+            await switchToChannelTab()
+
+            await waitFor(() => {
+                const verbositySelects = screen.getAllByRole('textbox', {
+                    name: /verbosity/i,
+                })
+                expect(verbositySelects).toHaveLength(3)
+            })
+        })
+
+        it('should load saved verbosity values for all channels', async () => {
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: {
+                        customToneOfVoice: '',
+                        verbosity: 'detailed',
+                    },
+                    chat: {
+                        customToneOfVoice: '',
+                        verbosity: 'balanced',
+                    },
+                    sms: {
+                        customToneOfVoice: '',
+                        verbosity: 'concise',
+                    },
+                },
+            })
+
+            await switchToChannelTab()
+
+            await waitFor(() => {
+                const verbosityFields = screen.getAllByRole('textbox', {
+                    name: /verbosity/i,
+                })
+                expect(verbosityFields[0]).toHaveValue('Detailed')
+                expect(verbosityFields[1]).toHaveValue('Balanced')
+                expect(verbosityFields[2]).toHaveValue('Concise')
+            })
+        })
+
+        it('should default to concise when verbosity is not set', async () => {
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: 'Test' },
+                    chat: { customToneOfVoice: 'Test' },
+                    sms: { customToneOfVoice: 'Test' },
+                },
+            })
+
+            await switchToChannelTab()
+
+            await waitFor(() => {
+                const verbosityFields = screen.getAllByRole('textbox', {
+                    name: /verbosity/i,
+                })
+                expect(verbosityFields[0]).toHaveValue('Concise')
+                expect(verbosityFields[1]).toHaveValue('Concise')
+                expect(verbosityFields[2]).toHaveValue('Concise')
+            })
+        })
+
+        it('should update verbosity value when changed', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            await switchToChannelTab()
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('textbox', { name: /verbosity/i }),
+                ).toHaveLength(3)
+            })
+
+            const emailVerbosity = screen.getAllByRole('textbox', {
+                name: /verbosity/i,
+            })[0]
+            await user.click(emailVerbosity)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /detailed/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('option', { name: /detailed/i }))
+
+            await waitFor(() => {
+                expect(emailVerbosity).toHaveValue('Detailed')
+            })
+        })
     })
 
     describe('Save functionality', () => {
         it('should disable save button when no changes are made', () => {
-            setupComponent({})
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: '', verbosity: 'concise' },
+                    chat: { customToneOfVoice: '', verbosity: 'concise' },
+                    sms: { customToneOfVoice: '', verbosity: 'concise' },
+                },
+            })
             expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
         })
 
@@ -449,7 +549,13 @@ describe('AiAgentToneOfVoice', () => {
         })
 
         it('should save channel-specific instructions', async () => {
-            setupComponent({})
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: '', verbosity: 'concise' },
+                    chat: { customToneOfVoice: '', verbosity: 'concise' },
+                    sms: { customToneOfVoice: '', verbosity: 'concise' },
+                },
+            })
             const user = userEvent.setup()
 
             await user.click(
@@ -471,10 +577,126 @@ describe('AiAgentToneOfVoice', () => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     expect.objectContaining({
                         toneOfVoiceByChannel: expect.objectContaining({
-                            email: { customToneOfVoice: 'Custom email' },
+                            email: {
+                                customToneOfVoice: 'Custom email',
+                                verbosity: 'concise',
+                            },
                         }),
                     }),
                 )
+            })
+        })
+
+        it('should save verbosity changes for all channels', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            await user.click(
+                screen.getByRole('tab', { name: /channel-specific/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('textbox', { name: /verbosity/i }),
+                ).toHaveLength(3)
+            })
+
+            const emailVerbosity = screen.getAllByRole('textbox', {
+                name: /verbosity/i,
+            })[0]
+            await user.click(emailVerbosity)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /detailed/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('option', { name: /detailed/i }))
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            await waitFor(() => {
+                expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        toneOfVoiceByChannel: expect.objectContaining({
+                            email: expect.objectContaining({
+                                verbosity: 'detailed',
+                            }),
+                        }),
+                    }),
+                )
+            })
+        })
+
+        it('should enable save button when verbosity is changed', async () => {
+            setupComponent({
+                toneOfVoiceByChannel: {
+                    email: { customToneOfVoice: '', verbosity: 'concise' },
+                    chat: { customToneOfVoice: '', verbosity: 'concise' },
+                    sms: { customToneOfVoice: '', verbosity: 'concise' },
+                },
+            })
+            const user = userEvent.setup()
+
+            expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
+
+            await user.click(
+                screen.getByRole('tab', { name: /channel-specific/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('textbox', { name: /verbosity/i }),
+                ).toHaveLength(3)
+            })
+
+            const chatVerbosity = screen.getAllByRole('textbox', {
+                name: /verbosity/i,
+            })[1]
+            await user.click(chatVerbosity)
+            await user.click(screen.getByRole('option', { name: /balanced/i }))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).not.toBeDisabled()
+            })
+        })
+
+        it('should send default verbosity value on save', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            await user.click(
+                screen.getByRole('tab', { name: /channel-specific/i }),
+            )
+
+            await waitFor(() => {
+                expect(screen.getAllByLabelText(/instructions/i)).toHaveLength(
+                    3,
+                )
+            })
+
+            const smsInstructions = screen.getAllByLabelText(/instructions/i)[2]
+            await user.type(smsInstructions, 'SMS instructions')
+            await user.click(screen.getByRole('button', { name: /save/i }))
+
+            await waitFor(() => {
+                const call = mockUpdateStoreConfiguration.mock.calls[0][0]
+                expect(call.toneOfVoiceByChannel.sms).toEqual({
+                    customToneOfVoice: 'SMS instructions',
+                    verbosity: 'concise',
+                })
+            })
+        })
+
+        it('should enable save button when verbosity uses default value', async () => {
+            setupComponent({})
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).not.toBeDisabled()
             })
         })
 

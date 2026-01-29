@@ -4,6 +4,8 @@ import {
     Box,
     Button,
     Heading,
+    ListItem,
+    SelectField,
     TabItem,
     TabList,
     Tabs,
@@ -14,7 +16,7 @@ import {
 import { EmojiPicker } from 'components/EmojiPicker/EmojiPicker'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { StoreConfiguration, Verbosity } from 'models/aiAgent/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -38,6 +40,12 @@ enum ToneOfVoiceTab {
     ChannelSpecific = 'channel-specific',
 }
 
+const VERBOSITY_OPTIONS = [
+    { id: 'concise', name: 'Concise' },
+    { id: 'balanced', name: 'Balanced' },
+    { id: 'detailed', name: 'Detailed' },
+]
+
 const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
     if (!storeConfiguration) {
         return {
@@ -50,6 +58,9 @@ const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
             emailInstructions: '',
             chatInstructions: '',
             smsInstructions: '',
+            emailVerbosity: undefined,
+            chatVerbosity: undefined,
+            smsVerbosity: undefined,
             allowEmojis: false,
             allowedEmojis: '',
             forbiddenEmojis: '',
@@ -82,6 +93,10 @@ const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
         smsInstructions:
             storeConfiguration.toneOfVoiceByChannel?.sms?.customToneOfVoice ||
             '',
+        emailVerbosity:
+            storeConfiguration.toneOfVoiceByChannel?.email?.verbosity,
+        chatVerbosity: storeConfiguration.toneOfVoiceByChannel?.chat?.verbosity,
+        smsVerbosity: storeConfiguration.toneOfVoiceByChannel?.sms?.verbosity,
         allowEmojis:
             storeConfiguration.toneOfVoiceOptions?.emojisEnabled || false,
         allowedEmojis:
@@ -152,6 +167,16 @@ export function AiAgentToneOfVoice() {
         savedValues.smsInstructions,
     )
 
+    const [emailVerbosity, setEmailVerbosity] = useState<Verbosity>(
+        savedValues.emailVerbosity ?? 'concise',
+    )
+    const [chatVerbosity, setChatVerbosity] = useState<Verbosity>(
+        savedValues.chatVerbosity ?? 'concise',
+    )
+    const [smsVerbosity, setSmsVerbosity] = useState<Verbosity>(
+        savedValues.smsVerbosity ?? 'concise',
+    )
+
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
     const [allowEmojis, setAllowEmojis] = useState<boolean>(
         savedValues.allowEmojis,
@@ -174,6 +199,9 @@ export function AiAgentToneOfVoice() {
             emailInstructions !== savedValues.emailInstructions ||
             chatInstructions !== savedValues.chatInstructions ||
             smsInstructions !== savedValues.smsInstructions ||
+            emailVerbosity !== savedValues.emailVerbosity ||
+            chatVerbosity !== savedValues.chatVerbosity ||
+            smsVerbosity !== savedValues.smsVerbosity ||
             allowEmojis !== savedValues.allowEmojis ||
             allowedEmojis !== savedValues.allowedEmojis ||
             forbiddenEmojis !== savedValues.forbiddenEmojis
@@ -189,6 +217,9 @@ export function AiAgentToneOfVoice() {
         emailInstructions,
         chatInstructions,
         smsInstructions,
+        emailVerbosity,
+        chatVerbosity,
+        smsVerbosity,
         allowEmojis,
         allowedEmojis,
         forbiddenEmojis,
@@ -207,9 +238,18 @@ export function AiAgentToneOfVoice() {
                 toneOfVoice: genericToneOfVoice as ToneOfVoice,
                 customToneOfVoiceGuidance: customPersonality,
                 toneOfVoiceByChannel: {
-                    email: { customToneOfVoice: emailInstructions },
-                    chat: { customToneOfVoice: chatInstructions },
-                    sms: { customToneOfVoice: smsInstructions },
+                    email: {
+                        customToneOfVoice: emailInstructions,
+                        ...(emailVerbosity && { verbosity: emailVerbosity }),
+                    },
+                    chat: {
+                        customToneOfVoice: chatInstructions,
+                        ...(chatVerbosity && { verbosity: chatVerbosity }),
+                    },
+                    sms: {
+                        customToneOfVoice: smsInstructions,
+                        ...(smsVerbosity && { verbosity: smsVerbosity }),
+                    },
                 },
                 toneOfVoiceOptions: {
                     greetingGuidance: greetingsGuidance,
@@ -246,6 +286,9 @@ export function AiAgentToneOfVoice() {
         emailInstructions,
         chatInstructions,
         smsInstructions,
+        emailVerbosity,
+        chatVerbosity,
+        smsVerbosity,
         greetingsGuidance,
         signoffGuidance,
         brandSpecificGuidance,
@@ -266,6 +309,9 @@ export function AiAgentToneOfVoice() {
         setEmailInstructions(savedValues.emailInstructions)
         setChatInstructions(savedValues.chatInstructions)
         setSmsInstructions(savedValues.smsInstructions)
+        setEmailVerbosity(savedValues.emailVerbosity ?? 'concise')
+        setChatVerbosity(savedValues.chatVerbosity ?? 'concise')
+        setSmsVerbosity(savedValues.smsVerbosity ?? 'concise')
         setAllowEmojis(savedValues.allowEmojis)
         setAllowedEmojis(savedValues.allowedEmojis)
         setForbiddenEmojis(savedValues.forbiddenEmojis)
@@ -447,17 +493,42 @@ export function AiAgentToneOfVoice() {
                     isExpanded={emailExpanded}
                     onToggle={() => setEmailExpanded(!emailExpanded)}
                 >
-                    <TextAreaField
-                        value={emailInstructions}
-                        onChange={createCharacterLimitHandler(
-                            setEmailInstructions,
-                            CUSTOM_PERSONALITY_CHARACTER_LIMIT,
-                        )}
-                        label="Instructions"
-                        placeholder="To sound more human, please never submit responses in numbered lists. Instead, separate by paragraphs."
-                        caption={`${emailInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
-                        rows={3}
-                    />
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap="md"
+                        width="100%"
+                    >
+                        <Box maxWidth="160px">
+                            <SelectField
+                                items={VERBOSITY_OPTIONS}
+                                value={
+                                    VERBOSITY_OPTIONS.find(
+                                        (opt) => opt.id === emailVerbosity,
+                                    ) || VERBOSITY_OPTIONS[0]
+                                }
+                                onChange={(item) =>
+                                    setEmailVerbosity(item.id as Verbosity)
+                                }
+                                label="Verbosity"
+                            >
+                                {(item) => (
+                                    <ListItem id={item.id} label={item.name} />
+                                )}
+                            </SelectField>
+                        </Box>
+                        <TextAreaField
+                            value={emailInstructions}
+                            onChange={createCharacterLimitHandler(
+                                setEmailInstructions,
+                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                            )}
+                            label="Instructions"
+                            placeholder="To sound more human, please never submit responses in numbered lists. Instead, separate by paragraphs."
+                            caption={`${emailInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            rows={3}
+                        />
+                    </Box>
                 </CollapsibleSection>
 
                 <CollapsibleSection
@@ -465,17 +536,42 @@ export function AiAgentToneOfVoice() {
                     isExpanded={chatExpanded}
                     onToggle={() => setChatExpanded(!chatExpanded)}
                 >
-                    <TextAreaField
-                        value={chatInstructions}
-                        onChange={createCharacterLimitHandler(
-                            setChatInstructions,
-                            CUSTOM_PERSONALITY_CHARACTER_LIMIT,
-                        )}
-                        label="Instructions"
-                        placeholder="Keep replies brief, friendly, and conversational like talking to a good friend. Use small paragraphs (2–3 lines max) per message and get to the point quickly."
-                        caption={`${chatInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
-                        rows={3}
-                    />
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap="md"
+                        width="100%"
+                    >
+                        <Box maxWidth="160px">
+                            <SelectField
+                                items={VERBOSITY_OPTIONS}
+                                value={
+                                    VERBOSITY_OPTIONS.find(
+                                        (opt) => opt.id === chatVerbosity,
+                                    ) || VERBOSITY_OPTIONS[0]
+                                }
+                                onChange={(item) =>
+                                    setChatVerbosity(item.id as Verbosity)
+                                }
+                                label="Verbosity"
+                            >
+                                {(item) => (
+                                    <ListItem id={item.id} label={item.name} />
+                                )}
+                            </SelectField>
+                        </Box>
+                        <TextAreaField
+                            value={chatInstructions}
+                            onChange={createCharacterLimitHandler(
+                                setChatInstructions,
+                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                            )}
+                            label="Instructions"
+                            placeholder="Keep replies brief, friendly, and conversational like talking to a good friend. Use small paragraphs (2–3 lines max) per message and get to the point quickly."
+                            caption={`${chatInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            rows={3}
+                        />
+                    </Box>
                 </CollapsibleSection>
 
                 <CollapsibleSection
@@ -483,17 +579,42 @@ export function AiAgentToneOfVoice() {
                     isExpanded={smsExpanded}
                     onToggle={() => setSmsExpanded(!smsExpanded)}
                 >
-                    <TextAreaField
-                        value={smsInstructions}
-                        onChange={createCharacterLimitHandler(
-                            setSmsInstructions,
-                            CUSTOM_PERSONALITY_CHARACTER_LIMIT,
-                        )}
-                        label="Instructions"
-                        placeholder="Keep it brief and upbeat (1–2 lines). No greeting or sign-off. Use simple language, include only essential info, and ask at most one question"
-                        caption={`${smsInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
-                        rows={3}
-                    />
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        gap="md"
+                        width="100%"
+                    >
+                        <Box maxWidth="160px">
+                            <SelectField
+                                items={VERBOSITY_OPTIONS}
+                                value={
+                                    VERBOSITY_OPTIONS.find(
+                                        (opt) => opt.id === smsVerbosity,
+                                    ) || VERBOSITY_OPTIONS[0]
+                                }
+                                onChange={(item) =>
+                                    setSmsVerbosity(item.id as Verbosity)
+                                }
+                                label="Verbosity"
+                            >
+                                {(item) => (
+                                    <ListItem id={item.id} label={item.name} />
+                                )}
+                            </SelectField>
+                        </Box>
+                        <TextAreaField
+                            value={smsInstructions}
+                            onChange={createCharacterLimitHandler(
+                                setSmsInstructions,
+                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                            )}
+                            label="Instructions"
+                            placeholder="Keep it brief and upbeat (1–2 lines). No greeting or sign-off. Use simple language, include only essential info, and ask at most one question"
+                            caption={`${smsInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            rows={3}
+                        />
+                    </Box>
                 </CollapsibleSection>
             </Box>
         </Box>

@@ -6,6 +6,8 @@ import type { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps
 import type { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
+export type Verbosity = 'concise' | 'balanced' | 'detailed'
+
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
 }
@@ -145,9 +147,18 @@ export type StoreConfiguration = {
     handoverHttpIntegrationId: number | null
 
     toneOfVoiceByChannel?: {
-        email?: { customToneOfVoice: string }
-        chat?: { customToneOfVoice: string }
-        sms?: { customToneOfVoice: string }
+        email?: {
+            customToneOfVoice: string
+            verbosity?: Verbosity
+        }
+        chat?: {
+            customToneOfVoice: string
+            verbosity?: Verbosity
+        }
+        sms?: {
+            customToneOfVoice: string
+            verbosity?: Verbosity
+        }
     }
     toneOfVoiceOptions?: {
         greetingGuidance: string
