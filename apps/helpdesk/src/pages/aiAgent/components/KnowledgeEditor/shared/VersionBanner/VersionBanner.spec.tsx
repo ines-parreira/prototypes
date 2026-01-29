@@ -1,5 +1,3 @@
-import type { ComponentProps } from 'react'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -17,7 +15,25 @@ jest.mock('state/currentUser/selectors', () => ({
     getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
 }))
 
-const defaultProps = {
+type HistoricalVersion = {
+    publishedDatetime: string | null
+    commitMessage?: string
+} | null
+
+type DefaultProps = {
+    isViewingDraft: boolean
+    hasDraftVersion: boolean
+    hasPublishedVersion: boolean
+    isDisabled: boolean
+    switchVersion: jest.Mock
+    isViewingHistoricalVersion: boolean
+    onGoToLatest: jest.Mock
+    historicalVersion: HistoricalVersion
+    onOpenRestoreModal: jest.Mock
+    className?: string
+}
+
+const defaultProps: DefaultProps = {
     isViewingDraft: true,
     hasDraftVersion: true,
     hasPublishedVersion: true,
@@ -29,9 +45,7 @@ const defaultProps = {
     onOpenRestoreModal: jest.fn(),
 }
 
-function renderComponent(
-    overrides?: Partial<ComponentProps<typeof VersionBanner>>,
-) {
+function renderComponent(overrides?: Partial<typeof defaultProps>) {
     return render(<VersionBanner {...defaultProps} {...overrides} />)
 }
 

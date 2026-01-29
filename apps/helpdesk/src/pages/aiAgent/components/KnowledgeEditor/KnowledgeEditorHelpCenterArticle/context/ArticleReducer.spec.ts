@@ -7,6 +7,7 @@ import { articleReducer } from './ArticleReducer'
 import type {
     ArticleState,
     ArticleTranslationVersion,
+    ImpactDateRange,
     SettingsChanges,
 } from './types'
 
@@ -47,9 +48,13 @@ const createMockArticle = (
         ...overrides,
     }) as ArticleWithLocalTranslation
 
+type VersionWithImpactDateRange = ArticleTranslationVersion & {
+    impactDateRange: ImpactDateRange
+}
+
 const createMockVersion = (
-    overrides: Partial<ArticleTranslationVersion> = {},
-): ArticleTranslationVersion => ({
+    overrides: Partial<VersionWithImpactDateRange> = {},
+): VersionWithImpactDateRange => ({
     id: 10,
     version: 3,
     title: 'Version Title',
@@ -61,6 +66,7 @@ const createMockVersion = (
     published_datetime: '2024-03-01T12:00:00Z',
     commit_message: 'Published v3',
     publisher_user_id: 42,
+    impactDateRange: { start_datetime: '', end_datetime: '' },
     ...overrides,
 })
 
@@ -943,6 +949,10 @@ describe('articleReducer', () => {
                     publishedDatetime: '2024-03-01T12:00:00Z',
                     publisherUserId: 42,
                     commitMessage: 'Published v3',
+                    impactDateRange: {
+                        start_datetime: '',
+                        end_datetime: '',
+                    },
                 })
             })
 
@@ -1016,6 +1026,10 @@ describe('articleReducer', () => {
                     publishedDatetime: null,
                     publisherUserId: undefined,
                     commitMessage: undefined,
+                    impactDateRange: {
+                        end_datetime: '',
+                        start_datetime: '',
+                    },
                 })
             })
 
@@ -1051,6 +1065,10 @@ describe('articleReducer', () => {
                         publishedDatetime: '2024-03-01T12:00:00Z',
                         publisherUserId: 42,
                         commitMessage: 'Published v3',
+                        impactDateRange: {
+                            end_datetime: '',
+                            start_datetime: '',
+                        },
                     },
                 })
 
@@ -1097,6 +1115,10 @@ describe('articleReducer', () => {
                         publishedDatetime: '2024-03-01T12:00:00Z',
                         publisherUserId: 42,
                         commitMessage: 'Published v3',
+                        impactDateRange: {
+                            end_datetime: '',
+                            start_datetime: '',
+                        },
                     },
                 })
 
@@ -1121,6 +1143,10 @@ describe('articleReducer', () => {
                         publishedDatetime: null,
                         publisherUserId: undefined,
                         commitMessage: undefined,
+                        impactDateRange: {
+                            end_datetime: '',
+                            start_datetime: '',
+                        },
                     },
                 })
 
@@ -1146,6 +1172,10 @@ describe('articleReducer', () => {
                         publishedDatetime: null,
                         publisherUserId: undefined,
                         commitMessage: undefined,
+                        impactDateRange: {
+                            end_datetime: '',
+                            start_datetime: '',
+                        },
                     },
                 })
 

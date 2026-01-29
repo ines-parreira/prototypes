@@ -349,14 +349,20 @@ describe('useVersionHistory', () => {
     })
 
     describe('onSelectVersion', () => {
-        it('should dispatch VIEW_HISTORICAL_VERSION for a non-current version', () => {
+        it('should dispatch VIEW_HISTORICAL_VERSION with impactDateRange for a non-current version', () => {
             const { result } = renderHook(() => useVersionHistory())
 
             result.current.onSelectVersion(mockVersions[1])
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'VIEW_HISTORICAL_VERSION',
-                payload: mockVersions[1],
+                payload: {
+                    ...mockVersions[1],
+                    impactDateRange: {
+                        start_datetime: '2025-02-01T00:00:00Z',
+                        end_datetime: '2025-03-01T00:00:00.000Z',
+                    },
+                },
             })
         })
 

@@ -37,6 +37,7 @@ export type Props = {
     }
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
+    subtitle?: string
 }
 
 export const KnowledgeEditorSidePanelSectionRecentTickets = ({
@@ -50,6 +51,7 @@ export const KnowledgeEditorSidePanelSectionRecentTickets = ({
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
+    subtitle,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
@@ -84,7 +86,7 @@ export const KnowledgeEditorSidePanelSectionRecentTickets = ({
                 title: (
                     <Title ticketCount={ticketCount} isLoading={isLoading} />
                 ),
-                subtitle: 'Last 28 days',
+                subtitle: subtitle ?? 'Last 28 days',
             }}
             sectionId={sectionId}
             bottomElement={

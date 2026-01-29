@@ -138,6 +138,7 @@ describe('useArticleImpactFromContext', () => {
                 csat: mockMetricsData.csat,
                 intents: mockMetricsData.intents,
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
         })
 
@@ -248,7 +249,68 @@ describe('useArticleImpactFromContext', () => {
                 csat: undefined,
                 intents: undefined,
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
+        })
+    })
+
+    describe('when impactDateRange is provided', () => {
+        const impactDateRange = {
+            start_datetime: '2025-03-01T00:00:00.000Z',
+            end_datetime: '2025-03-15T00:00:00.000Z',
+        }
+
+        const contextWithImpactDateRange = {
+            ...defaultContextValue,
+            state: {
+                ...defaultContextValue.state,
+                historicalVersion: {
+                    versionId: 42,
+                    impactDateRange,
+                },
+            },
+        }
+
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseArticleContext.mockReturnValue(contextWithImpactDateRange)
+        })
+
+        it('should not call getLast28DaysDateRange', () => {
+            renderHook(() => useArticleImpactFromContext())
+
+            expect(mockGetLast28DaysDateRange).not.toHaveBeenCalled()
+        })
+
+        it('should pass the impact date range to useResourceMetrics', () => {
+            renderHook(() => useArticleImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: impactDateRange,
+                }),
+            )
+        })
+
+        it('should return the formatted date range subtitle instead of "Last 28 days"', () => {
+            const { result } = renderHook(() => useArticleImpactFromContext())
+
+            expect(result.current?.subtitle).not.toBe('Last 28 days')
+            expect(result.current?.subtitle).toContain('Mar')
+        })
+
+        it('should still return impact data', () => {
+            const { result } = renderHook(() => useArticleImpactFromContext())
+
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    tickets: mockMetricsData.tickets,
+                    handoverTickets: mockMetricsData.handoverTickets,
+                    csat: mockMetricsData.csat,
+                    intents: mockMetricsData.intents,
+                    isLoading: false,
+                }),
+            )
         })
     })
 

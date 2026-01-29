@@ -45,7 +45,7 @@ describe('useRestoreVersionModal', () => {
         publishedVersionId: 2,
     }
 
-    const mockHistoricalVersion: HistoricalVersionState = {
+    const mockHistoricalVersion: NonNullable<HistoricalVersionState> = {
         versionId: 5,
         version: 3,
         title: 'Historical Title',
@@ -53,6 +53,10 @@ describe('useRestoreVersionModal', () => {
         publishedDatetime: '2024-01-10T00:00:00Z',
         publisherUserId: 42,
         commitMessage: 'Published version 3',
+        impactDateRange: {
+            start_datetime: '2024-01-01T00:00:00Z',
+            end_datetime: '2024-01-10T00:00:00Z',
+        },
     }
 
     const defaultState: GuidanceState = {

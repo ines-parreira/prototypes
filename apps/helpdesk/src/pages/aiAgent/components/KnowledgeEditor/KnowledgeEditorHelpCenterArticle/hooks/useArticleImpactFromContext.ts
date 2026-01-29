@@ -9,6 +9,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
+import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export type ArticleImpactData = {
@@ -17,6 +18,7 @@ export type ArticleImpactData = {
     csat?: MetricProps | null
     intents?: string[] | null
     isLoading: boolean
+    subtitle: string
 }
 
 export const useArticleImpactFromContext = ():
@@ -29,8 +31,13 @@ export const useArticleImpactFromContext = ():
     const { state, config } = useArticleContext()
     const { helpCenter } = config
 
-    // Calculate date range once to ensure consistency
-    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
+    // Use historical version's date range if viewing history, otherwise last 28 days
+    const dateRange = useMemo(
+        () =>
+            state.historicalVersion?.impactDateRange ??
+            getLast28DaysDateRange(),
+        [state.historicalVersion?.impactDateRange],
+    )
 
     const resourceImpact = useResourceMetrics({
         resourceSourceId: state.article?.id ?? 0,
@@ -41,6 +48,10 @@ export const useArticleImpactFromContext = ():
         dateRange,
     })
 
+    const subtitle = formatDateRangeSubtitle(
+        state.historicalVersion?.impactDateRange,
+    )
+
     return useMemo(
         () =>
             isPerformanceStatsEnabled
@@ -50,8 +61,9 @@ export const useArticleImpactFromContext = ():
                       csat: resourceImpact.data?.csat,
                       intents: resourceImpact.data?.intents,
                       isLoading: resourceImpact.isLoading,
+                      subtitle,
                   }
                 : undefined,
-        [isPerformanceStatsEnabled, resourceImpact],
+        [isPerformanceStatsEnabled, resourceImpact, subtitle],
     )
 }

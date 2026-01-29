@@ -154,6 +154,7 @@ export function guidanceReducer(
                     publishedDatetime: action.payload.published_datetime,
                     publisherUserId: action.payload.publisher_user_id,
                     commitMessage: action.payload.commit_message,
+                    impactDateRange: action.payload.impactDateRange,
                 },
                 title: versionTitle,
                 content: versionContent,

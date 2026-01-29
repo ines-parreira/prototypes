@@ -213,6 +213,7 @@ describe('useArticleEngagementFromContext', () => {
                     down: 20,
                 },
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
         })
     })
@@ -231,6 +232,7 @@ describe('useArticleEngagementFromContext', () => {
                     down: 20,
                 },
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
         })
     })
@@ -565,6 +567,102 @@ describe('useArticleEngagementFromContext', () => {
             expect(mockPerformanceByArticleQueryFactory).toHaveBeenCalledWith(
                 expect.any(Object),
                 'UTC',
+            )
+        })
+    })
+
+    describe('when impactDateRange is provided', () => {
+        const impactDateRange = {
+            start_datetime: '2025-03-01T00:00:00.000Z',
+            end_datetime: '2025-03-15T00:00:00.000Z',
+        }
+
+        const contextWithImpactDateRange = {
+            ...defaultContextValue,
+            state: {
+                ...defaultContextValue.state,
+                historicalVersion: {
+                    versionId: 42,
+                    impactDateRange,
+                },
+            },
+        }
+
+        beforeEach(() => {
+            mockUseArticleContext.mockReturnValue(contextWithImpactDateRange)
+        })
+
+        it('should return the formatted date range subtitle instead of "Last 28 days"', () => {
+            const { result } = renderHook(() =>
+                useArticleEngagementFromContext(),
+            )
+
+            expect(result.current?.subtitle).not.toBe('Last 28 days')
+            expect(result.current?.subtitle).toContain('Mar')
+        })
+
+        it('should call useGetHelpCenterStatistics with the impact date range', () => {
+            renderHook(() => useArticleEngagementFromContext())
+
+            expect(mockUseGetHelpCenterStatistics).toHaveBeenCalledWith(
+                2,
+                {
+                    start_date: impactDateRange.start_datetime,
+                    end_date: impactDateRange.end_datetime,
+                    ids: [456],
+                },
+                { enabled: true },
+            )
+        })
+
+        it('should call performanceByArticleQueryFactory with the impact period', () => {
+            renderHook(() => useArticleEngagementFromContext())
+
+            expect(mockPerformanceByArticleQueryFactory).toHaveBeenCalledWith(
+                {
+                    helpCenters: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [2],
+                    },
+                    period: {
+                        start_datetime: impactDateRange.start_datetime,
+                        end_datetime: impactDateRange.end_datetime,
+                    },
+                },
+                'America/New_York',
+            )
+        })
+
+        it('should still return full engagement data', () => {
+            const { result } = renderHook(() =>
+                useArticleEngagementFromContext(),
+            )
+
+            expect(result.current).toEqual(
+                expect.objectContaining({
+                    views: 1234,
+                    rating: 0.8,
+                    reactions: { up: 80, down: 20 },
+                    isLoading: false,
+                }),
+            )
+        })
+
+        it('should call useMetricPerDimension with article filter from impact-based query', () => {
+            renderHook(() => useArticleEngagementFromContext())
+
+            expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    filters: expect.arrayContaining([
+                        {
+                            member: HelpCenterTrackingEventDimensions.ArticleId,
+                            operator: ReportingFilterOperator.Equals,
+                            values: ['456'],
+                        },
+                    ]),
+                }),
+                undefined,
+                true,
             )
         })
     })

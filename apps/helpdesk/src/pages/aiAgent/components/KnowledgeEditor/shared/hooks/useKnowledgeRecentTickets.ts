@@ -13,11 +13,17 @@ import { getTimezone } from 'state/currentUser/selectors'
 
 export type KnowledgeRecentTicketsData = Omit<RecentTicketsProps, 'sectionId'>
 
+export type DateRange = {
+    start_datetime: string
+    end_datetime: string
+}
+
 type Params = {
     resourceSourceId: number
     resourceSourceSetId: number
     shopIntegrationId: number
     enabled?: boolean
+    dateRange?: DateRange
 }
 
 /**
@@ -27,6 +33,7 @@ type Params = {
  * @param resourceSourceSetId - The ID of the help center
  * @param shopIntegrationId - The ID of the shop
  * @param enabled - Whether to fetch data (default: true)
+ * @param dateRange - Optional custom date range (defaults to last 28 days)
  * @returns Recent tickets data or undefined if feature flag is disabled
  */
 export const useKnowledgeRecentTickets = ({
@@ -34,14 +41,18 @@ export const useKnowledgeRecentTickets = ({
     resourceSourceSetId,
     shopIntegrationId,
     enabled = true,
+    dateRange: customDateRange,
 }: Params): KnowledgeRecentTicketsData | undefined => {
     const isPerformanceStatsEnabled = useFlag(
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
     const timezone = useAppSelector(getTimezone)
 
-    // Calculate date range once to ensure consistency
-    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
+    // Use custom date range if provided, otherwise calculate last 28 days
+    const dateRange = useMemo(
+        () => customDateRange ?? getLast28DaysDateRange(),
+        [customDateRange],
+    )
 
     const isEnabled = isPerformanceStatsEnabled && enabled
 

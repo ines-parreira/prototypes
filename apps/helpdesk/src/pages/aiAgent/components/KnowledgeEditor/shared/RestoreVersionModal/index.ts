@@ -1,0 +1,1 @@
+export { RestoreVersionModal } from './RestoreVersionModal'

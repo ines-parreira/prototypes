@@ -3,7 +3,10 @@ import { act, renderHook } from '@repo/testing'
 
 import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
 
-import { useVersionHistoryBase } from './useVersionHistoryBase'
+import {
+    getVersionImpactDateRange,
+    useVersionHistoryBase,
+} from './useVersionHistoryBase'
 import type {
     ArticleTranslationVersion,
     VersionHistoryBaseParams,
@@ -266,7 +269,7 @@ describe('useVersionHistoryBase', () => {
     })
 
     describe('onSelectVersion', () => {
-        it('should dispatch VIEW_HISTORICAL_VERSION when selecting a non-current version', () => {
+        it('should dispatch VIEW_HISTORICAL_VERSION with impactDateRange when selecting a non-current version', () => {
             const { result } = renderHook(() =>
                 useVersionHistoryBase(defaultParams),
             )
@@ -275,7 +278,13 @@ describe('useVersionHistoryBase', () => {
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'VIEW_HISTORICAL_VERSION',
-                payload: mockVersions[1],
+                payload: {
+                    ...mockVersions[1],
+                    impactDateRange: {
+                        start_datetime: '2025-02-01T00:00:00Z',
+                        end_datetime: '2025-03-01T00:00:00.000Z',
+                    },
+                },
             })
         })
 
@@ -443,6 +452,216 @@ describe('useVersionHistoryBase', () => {
             )
 
             expect(result.current.shouldLoadMore).toBe(false)
+        })
+    })
+})
+
+describe('getVersionImpactDateRange', () => {
+    const createVersion = (
+        id: number,
+        publishedDatetime: string | null,
+    ): ArticleTranslationVersion => ({
+        id,
+        version: id,
+        title: `v${id}`,
+        excerpt: '',
+        content: '',
+        slug: '',
+        seo_meta: null,
+        created_datetime: publishedDatetime ?? '2025-01-01T00:00:00Z',
+        published_datetime: publishedDatetime,
+        commit_message: `Publish ${id}`,
+    })
+
+    const versionsFixture: ArticleTranslationVersion[] = [
+        createVersion(3, '2025-03-15T10:00:00Z'),
+        createVersion(2, '2025-02-10T10:00:00Z'),
+        createVersion(1, '2025-01-05T10:00:00Z'),
+    ]
+
+    describe('basic date range calculation', () => {
+        it('should return date range from version publish to next version publish for historical version', () => {
+            const result = getVersionImpactDateRange(2, versionsFixture)
+
+            expect(result).toEqual({
+                start_datetime: '2025-02-10T10:00:00Z',
+                end_datetime: '2025-03-15T10:00:00.000Z',
+            })
+        })
+
+        it('should return date range from version publish to next version publish for oldest version', () => {
+            const result = getVersionImpactDateRange(1, versionsFixture)
+
+            expect(result).toEqual({
+                start_datetime: '2025-01-05T10:00:00Z',
+                end_datetime: '2025-02-10T10:00:00.000Z',
+            })
+        })
+
+        it('should return date range ending at current time for latest version', () => {
+            const result = getVersionImpactDateRange(3, versionsFixture)
+
+            expect(result.start_datetime).toBe('2025-03-15T10:00:00Z')
+            expect(new Date(result.end_datetime).getTime()).toBeGreaterThan(
+                Date.now() - 1000 * 60 * 60,
+            )
+        })
+    })
+
+    describe('fallback to default date range', () => {
+        it('should return default 28-day date range when version not found', () => {
+            const result = getVersionImpactDateRange(999, versionsFixture)
+
+            expect(result.start_datetime).toBeDefined()
+            expect(result.end_datetime).toBeDefined()
+            const diffMs =
+                new Date(result.end_datetime).getTime() -
+                new Date(result.start_datetime).getTime()
+            const diffDays = diffMs / (1000 * 60 * 60 * 24)
+            expect(diffDays).toBeCloseTo(28, 0)
+        })
+
+        it('should return default date range when version has no published_datetime', () => {
+            const versionsWithNullDate: ArticleTranslationVersion[] = [
+                createVersion(3, null),
+            ]
+
+            const result = getVersionImpactDateRange(3, versionsWithNullDate)
+
+            expect(result.start_datetime).toBeDefined()
+            expect(result.end_datetime).toBeDefined()
+            const diffMs =
+                new Date(result.end_datetime).getTime() -
+                new Date(result.start_datetime).getTime()
+            const diffDays = diffMs / (1000 * 60 * 60 * 24)
+            expect(diffDays).toBeCloseTo(28, 0)
+        })
+
+        it('should return default date range when versions array is empty', () => {
+            const result = getVersionImpactDateRange(1, [])
+
+            expect(result.start_datetime).toBeDefined()
+            expect(result.end_datetime).toBeDefined()
+            const diffMs =
+                new Date(result.end_datetime).getTime() -
+                new Date(result.start_datetime).getTime()
+            const diffDays = diffMs / (1000 * 60 * 60 * 24)
+            expect(diffDays).toBeCloseTo(28, 0)
+        })
+    })
+
+    describe('365-day cap', () => {
+        it('should cap end date at 365 days when next version is more than 365 days later', () => {
+            const twoYearsLater = '2027-01-05T10:00:00Z'
+            const versionsWithLongGap: ArticleTranslationVersion[] = [
+                createVersion(2, twoYearsLater),
+                createVersion(1, '2025-01-05T10:00:00Z'),
+            ]
+
+            const result = getVersionImpactDateRange(1, versionsWithLongGap)
+
+            expect(result.start_datetime).toBe('2025-01-05T10:00:00Z')
+
+            const startDate = new Date('2025-01-05T10:00:00Z')
+            const endDate = new Date(result.end_datetime)
+            const diffDays =
+                (endDate.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+
+            expect(diffDays).toBe(365)
+        })
+
+        it('should not cap when next version is within 365 days', () => {
+            const result = getVersionImpactDateRange(1, versionsFixture)
+
+            expect(result).toEqual({
+                start_datetime: '2025-01-05T10:00:00Z',
+                end_datetime: '2025-02-10T10:00:00.000Z',
+            })
+        })
+
+        it('should cap at exactly 365 days for latest version published more than 365 days ago', () => {
+            jest.useFakeTimers()
+            const oldDate = '2020-01-01T10:00:00Z'
+            const now = new Date('2025-01-01T12:00:00Z')
+            jest.setSystemTime(now)
+
+            const oldVersions: ArticleTranslationVersion[] = [
+                createVersion(1, oldDate),
+            ]
+
+            const result = getVersionImpactDateRange(1, oldVersions)
+
+            expect(result.start_datetime).toBe(oldDate)
+
+            const startDate = new Date(oldDate)
+            const endDate = new Date(result.end_datetime)
+            const diffDays =
+                (endDate.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+
+            expect(diffDays).toBe(365)
+
+            jest.useRealTimers()
+        })
+
+        it('should not cap for latest version published within last 365 days', () => {
+            jest.useFakeTimers()
+            const now = new Date('2025-06-01T12:00:00Z')
+            jest.setSystemTime(now)
+
+            const recentVersion: ArticleTranslationVersion[] = [
+                createVersion(1, '2025-03-15T10:00:00Z'),
+            ]
+
+            const result = getVersionImpactDateRange(1, recentVersion)
+
+            expect(result.start_datetime).toBe('2025-03-15T10:00:00Z')
+
+            const expectedEnd = new Date(now)
+            expectedEnd.setHours(expectedEnd.getHours() + 1, 0, 0, 0)
+            expect(result.end_datetime).toBe(expectedEnd.toISOString())
+
+            jest.useRealTimers()
+        })
+    })
+
+    describe('edge cases', () => {
+        it('should handle single version in array (latest version)', () => {
+            const singleVersion: ArticleTranslationVersion[] = [
+                createVersion(1, '2025-03-15T10:00:00Z'),
+            ]
+
+            const result = getVersionImpactDateRange(1, singleVersion)
+
+            expect(result.start_datetime).toBe('2025-03-15T10:00:00Z')
+            expect(new Date(result.end_datetime).getTime()).toBeGreaterThan(
+                Date.now() - 1000 * 60 * 60,
+            )
+        })
+
+        it('should handle version at index 0 (newest) with no next version', () => {
+            const result = getVersionImpactDateRange(3, versionsFixture)
+
+            expect(result.start_datetime).toBe('2025-03-15T10:00:00Z')
+            expect(
+                new Date(result.end_datetime).getTime(),
+            ).toBeGreaterThanOrEqual(Date.now())
+        })
+
+        it('should handle version at last index (oldest) correctly', () => {
+            const result = getVersionImpactDateRange(1, versionsFixture)
+
+            expect(result).toEqual({
+                start_datetime: '2025-01-05T10:00:00Z',
+                end_datetime: '2025-02-10T10:00:00.000Z',
+            })
+        })
+
+        it('should use next version publish date as end date when available', () => {
+            const middleResult = getVersionImpactDateRange(2, versionsFixture)
+
+            expect(middleResult.end_datetime).toBe('2025-03-15T10:00:00.000Z')
         })
     })
 })

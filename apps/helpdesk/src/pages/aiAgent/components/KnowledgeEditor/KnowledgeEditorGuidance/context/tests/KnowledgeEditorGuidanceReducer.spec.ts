@@ -477,6 +477,37 @@ describe('guidanceReducer', () => {
 
             expect(result.hasAutoSavedInSession).toBe(true)
         })
+
+        it('should set hasAutoSavedInSession to true', () => {
+            const stateNotAutoSaved = {
+                ...initialState,
+                hasAutoSavedInSession: false,
+            }
+
+            const result = guidanceReducer(stateNotAutoSaved, {
+                type: 'MARK_AS_SAVED',
+                payload: {
+                    title: 'Title',
+                    content: 'Content',
+                    guidance: mockGuidance,
+                },
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
+        })
+
+        it('should set hasAutoSavedInSession to true when payload is undefined', () => {
+            const stateNotAutoSaved = {
+                ...initialState,
+                hasAutoSavedInSession: false,
+            }
+
+            const result = guidanceReducer(stateNotAutoSaved, {
+                type: 'MARK_AS_SAVED',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
+        })
     })
 
     describe('SET_AUTO_SAVING', () => {
@@ -625,6 +656,24 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.activeModal).toBe('delete')
+        })
+
+        it('should set activeModal to publish', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'publish',
+            })
+
+            expect(result.activeModal).toBe('publish')
+        })
+
+        it('should set activeModal to restore', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'restore',
+            })
+
+            expect(result.activeModal).toBe('restore')
         })
 
         it('should set activeModal to publish', () => {
@@ -799,6 +848,11 @@ describe('guidanceReducer', () => {
     })
 
     describe('VIEW_HISTORICAL_VERSION', () => {
+        const mockImpactDateRange = {
+            start_datetime: '2024-01-10T00:00:00Z',
+            end_datetime: '2024-02-15T00:00:00Z',
+        }
+
         const historicalVersionPayload = {
             id: 5,
             version: 3,
@@ -811,6 +865,7 @@ describe('guidanceReducer', () => {
             published_datetime: '2024-01-10T00:00:00Z',
             publisher_user_id: 42,
             commit_message: 'Published version 3',
+            impactDateRange: mockImpactDateRange,
         }
 
         it('should set historicalVersion with correct data', () => {
@@ -827,6 +882,7 @@ describe('guidanceReducer', () => {
                 publishedDatetime: '2024-01-10T00:00:00Z',
                 publisherUserId: 42,
                 commitMessage: 'Published version 3',
+                impactDateRange: mockImpactDateRange,
             })
         })
 
@@ -940,6 +996,7 @@ describe('guidanceReducer', () => {
                 seo_meta: null,
                 created_datetime: '2024-01-01T00:00:00Z',
                 published_datetime: null,
+                impactDateRange: mockImpactDateRange,
             }
 
             const result = guidanceReducer(initialState, {
@@ -955,6 +1012,7 @@ describe('guidanceReducer', () => {
                 publishedDatetime: null,
                 publisherUserId: undefined,
                 commitMessage: undefined,
+                impactDateRange: mockImpactDateRange,
             })
         })
     })
@@ -970,6 +1028,10 @@ describe('guidanceReducer', () => {
                 publishedDatetime: '2024-01-10T00:00:00Z',
                 publisherUserId: 42,
                 commitMessage: 'Published version 3',
+                impactDateRange: {
+                    start_datetime: '2024-01-10T00:00:00Z',
+                    end_datetime: '2024-02-15T00:00:00Z',
+                },
             },
             title: 'Historical Title',
             content: 'Historical Content',

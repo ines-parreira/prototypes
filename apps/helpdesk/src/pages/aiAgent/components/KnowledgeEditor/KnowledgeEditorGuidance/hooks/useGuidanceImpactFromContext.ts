@@ -8,6 +8,7 @@ import {
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import useAppSelector from 'hooks/useAppSelector'
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
+import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { getTimezone } from 'state/currentUser/selectors'
 
 import { useGuidanceContext } from '../context'
@@ -18,6 +19,7 @@ export type GuidanceImpactData = {
     csat?: MetricProps | null
     intents?: string[] | null
     isLoading: boolean
+    subtitle: string
 }
 
 export const useGuidanceImpactFromContext = ():
@@ -27,10 +29,16 @@ export const useGuidanceImpactFromContext = ():
         FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
     )
     const timezone = useAppSelector(getTimezone)
-    const { guidanceArticle, config } = useGuidanceContext()
+    const { guidanceArticle, config, state } = useGuidanceContext()
     const { guidanceHelpCenter } = config
 
-    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
+    // Use historical version's date range if viewing history, otherwise last 28 days
+    const dateRange = useMemo(
+        () =>
+            state.historicalVersion?.impactDateRange ??
+            getLast28DaysDateRange(),
+        [state.historicalVersion?.impactDateRange],
+    )
 
     const resourceImpact = useResourceMetrics({
         resourceSourceId: guidanceArticle?.id ?? 0,
@@ -41,6 +49,10 @@ export const useGuidanceImpactFromContext = ():
         dateRange,
     })
 
+    const subtitle = formatDateRangeSubtitle(
+        state.historicalVersion?.impactDateRange,
+    )
+
     return useMemo(
         () =>
             isPerformanceStatsEnabled
@@ -50,8 +62,9 @@ export const useGuidanceImpactFromContext = ():
                       csat: resourceImpact.data?.csat,
                       intents: resourceImpact.data?.intents,
                       isLoading: resourceImpact.isLoading,
+                      subtitle,
                   }
                 : undefined,
-        [isPerformanceStatsEnabled, resourceImpact],
+        [isPerformanceStatsEnabled, resourceImpact, subtitle],
     )
 }

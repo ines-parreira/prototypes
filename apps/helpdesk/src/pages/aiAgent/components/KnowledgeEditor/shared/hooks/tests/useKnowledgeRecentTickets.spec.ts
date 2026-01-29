@@ -541,6 +541,82 @@ describe('useKnowledgeRecentTickets', () => {
         })
     })
 
+    describe('when custom dateRange is provided', () => {
+        const customDateRange = {
+            start_datetime: '2025-03-01T00:00:00.000Z',
+            end_datetime: '2025-03-15T00:00:00.000Z',
+        }
+
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should not call getLast28DaysDateRange', () => {
+            renderHook(() =>
+                useKnowledgeRecentTickets({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 456,
+                    dateRange: customDateRange,
+                }),
+            )
+
+            expect(mockGetLast28DaysDateRange).not.toHaveBeenCalled()
+        })
+
+        it('should pass the custom dateRange to useResourceMetrics', () => {
+            renderHook(() =>
+                useKnowledgeRecentTickets({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 456,
+                    dateRange: customDateRange,
+                }),
+            )
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: customDateRange,
+                }),
+            )
+        })
+
+        it('should pass the custom dateRange to useRecentTicketsWithDrilldown', () => {
+            renderHook(() =>
+                useKnowledgeRecentTickets({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 456,
+                    dateRange: customDateRange,
+                }),
+            )
+
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: customDateRange,
+                }),
+            )
+        })
+
+        it('should pass the same custom dateRange to both hooks', () => {
+            renderHook(() =>
+                useKnowledgeRecentTickets({
+                    resourceSourceId: 123,
+                    resourceSourceSetId: 1,
+                    shopIntegrationId: 456,
+                    dateRange: customDateRange,
+                }),
+            )
+
+            const resourceMetricsCall = mockUseResourceMetrics.mock.calls[0][0]
+            const recentTicketsCall =
+                mockUseRecentTicketsWithDrilldown.mock.calls[0][0]
+
+            expect(resourceMetricsCall.dateRange).toBe(customDateRange)
+            expect(recentTicketsCall.dateRange).toBe(customDateRange)
+        })
+    })
+
     describe('memoization', () => {
         it('should memoize dateRange across renders', () => {
             mockUseFlag.mockReturnValue(true)

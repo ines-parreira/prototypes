@@ -19,6 +19,7 @@ export type Props = {
     intents?: string[] | null
     isLoading?: boolean
     sectionId: string
+    subtitle?: string
 }
 
 export const KnowledgeEditorSidePanelSectionImpact = ({
@@ -28,6 +29,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
     intents,
     isLoading,
     sectionId,
+    subtitle,
 }: Props) => {
     const MAX_VISIBLE_INTENTS = 3
     const [isIntentsExpanded, setIsIntentsExpanded] = useState(false)
@@ -61,7 +63,7 @@ export const KnowledgeEditorSidePanelSectionImpact = ({
         <KnowledgeEditorSidePanelSection
             header={{
                 title: 'Impact',
-                subtitle: 'Last 28 days',
+                subtitle: subtitle ?? 'Last 28 days',
                 tooltip:
                     'Performance in tickets where this knowledge was used by AI Agent in the last 28 days.',
             }}

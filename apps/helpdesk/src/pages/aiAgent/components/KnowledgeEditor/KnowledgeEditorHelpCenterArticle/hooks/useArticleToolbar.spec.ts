@@ -280,6 +280,10 @@ describe('useArticleToolbar', () => {
                             publishedDatetime: '2024-03-01T12:00:00Z',
                             publisherUserId: 42,
                             commitMessage: 'Published v3',
+                            impactDateRange: {
+                                end_datetime: '',
+                                start_datetime: '',
+                            },
                         },
                     },
                 }),
@@ -312,6 +316,10 @@ describe('useArticleToolbar', () => {
                             publishedDatetime: null,
                             publisherUserId: undefined,
                             commitMessage: undefined,
+                            impactDateRange: {
+                                end_datetime: '',
+                                start_datetime: '',
+                            },
                         },
                     },
                     hasDraft: true,

@@ -22,6 +22,11 @@ export const InitialArticleMode = {
 export type InitialArticleModeValue =
     (typeof InitialArticleMode)[keyof typeof InitialArticleMode]
 
+export type ImpactDateRange = {
+    start_datetime: string
+    end_datetime: string
+}
+
 export type HistoricalVersionState = {
     versionId: number
     version: number
@@ -30,6 +35,7 @@ export type HistoricalVersionState = {
     publishedDatetime: string | null
     publisherUserId?: number
     commitMessage?: string
+    impactDateRange: ImpactDateRange
 } | null
 
 export type ArticleTranslationVersion =
@@ -151,7 +157,9 @@ export type ArticleReducerAction =
     // Historical version actions
     | {
           type: 'VIEW_HISTORICAL_VERSION'
-          payload: ArticleTranslationVersion
+          payload: ArticleTranslationVersion & {
+              impactDateRange: ImpactDateRange
+          }
       }
     | { type: 'CLEAR_HISTORICAL_VERSION' }
 

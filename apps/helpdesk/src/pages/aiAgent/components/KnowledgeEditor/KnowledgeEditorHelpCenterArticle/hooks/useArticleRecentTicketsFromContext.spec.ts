@@ -157,7 +157,10 @@ describe('useArticleRecentTicketsFromContext', () => {
                 useArticleRecentTicketsFromContext(),
             )
 
-            expect(result.current).toEqual(mockRecentTicketsData)
+            expect(result.current).toEqual({
+                ...mockRecentTicketsData,
+                subtitle: 'Last 28 days',
+            })
         })
 
         it('should call useFlag with correct feature flag key', () => {
@@ -314,6 +317,64 @@ describe('useArticleRecentTicketsFromContext', () => {
             expect(resourceMetricsCall.dateRange).toBe(
                 recentTicketsCall.dateRange,
             )
+        })
+    })
+
+    describe('when impactDateRange is provided', () => {
+        const impactDateRange = {
+            start_datetime: '2025-03-01T00:00:00.000Z',
+            end_datetime: '2025-03-15T00:00:00.000Z',
+        }
+
+        const contextWithImpactDateRange = {
+            ...defaultContextValue,
+            state: {
+                ...defaultContextValue.state,
+                historicalVersion: {
+                    versionId: 42,
+                    impactDateRange,
+                },
+            },
+        }
+
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseArticleContext.mockReturnValue(contextWithImpactDateRange)
+        })
+
+        it('should not call getLast28DaysDateRange', () => {
+            renderHook(() => useArticleRecentTicketsFromContext())
+
+            expect(mockGetLast28DaysDateRange).not.toHaveBeenCalled()
+        })
+
+        it('should pass the impact date range to useResourceMetrics', () => {
+            renderHook(() => useArticleRecentTicketsFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: impactDateRange,
+                }),
+            )
+        })
+
+        it('should pass the impact date range to useRecentTicketsWithDrilldown', () => {
+            renderHook(() => useArticleRecentTicketsFromContext())
+
+            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: impactDateRange,
+                }),
+            )
+        })
+
+        it('should return the formatted date range subtitle instead of "Last 28 days"', () => {
+            const { result } = renderHook(() =>
+                useArticleRecentTicketsFromContext(),
+            )
+
+            expect(result.current?.subtitle).not.toBe('Last 28 days')
+            expect(result.current?.subtitle).toContain('Mar')
         })
     })
 

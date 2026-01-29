@@ -124,12 +124,14 @@ describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
                 csat: { value: 0.8 },
                 intents: ['intent1', 'intent2'],
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
             mockUseArticleEngagementFromContext.mockReturnValue({
                 views: 100,
                 rating: 0.9,
                 reactions: { up: 90, down: 10 },
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
             mockUseArticleRecentTicketsFromContext.mockReturnValue({
                 ticketCount: 10,

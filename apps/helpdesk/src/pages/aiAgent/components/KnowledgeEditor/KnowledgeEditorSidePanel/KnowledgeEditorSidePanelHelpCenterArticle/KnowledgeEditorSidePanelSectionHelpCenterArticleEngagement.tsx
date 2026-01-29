@@ -17,6 +17,7 @@ export type Props = {
     }
     sectionId: string
     isLoading?: boolean
+    subtitle?: string
 }
 
 export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
@@ -25,9 +26,10 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement = ({
     reactions,
     sectionId,
     isLoading,
+    subtitle,
 }: Props) => (
     <KnowledgeEditorSidePanelSection
-        header={{ title: 'Engagement', subtitle: 'Last 28 days' }}
+        header={{ title: 'Engagement', subtitle: subtitle ?? 'Last 28 days' }}
         sectionId={sectionId}
     >
         <KnowledgeEditorSidePanelTwoColumnsContent

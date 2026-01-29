@@ -61,6 +61,9 @@ describe('useGuidanceImpactFromContext', () => {
                 shop_integration_id: 456,
             },
         } as GuidanceContextValue['config'],
+        state: {
+            historicalVersion: null,
+        } as GuidanceContextValue['state'],
     }
 
     const mockMetricsData = {
@@ -126,6 +129,7 @@ describe('useGuidanceImpactFromContext', () => {
                 csat: mockMetricsData.csat,
                 intents: mockMetricsData.intents,
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
         })
 
@@ -225,7 +229,54 @@ describe('useGuidanceImpactFromContext', () => {
                 csat: undefined,
                 intents: undefined,
                 isLoading: false,
+                subtitle: 'Last 28 days',
             })
+        })
+    })
+
+    describe('historical version date range', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('should use historicalVersion impactDateRange when viewing historical version', () => {
+            const historicalDateRange = {
+                start_datetime: '2024-06-01T00:00:00Z',
+                end_datetime: '2024-07-15T00:00:00Z',
+            }
+
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    historicalVersion: {
+                        versionId: 123,
+                        version: 2,
+                        title: 'Historical Title',
+                        content: 'Historical Content',
+                        publishedDatetime: '2024-06-01T00:00:00Z',
+                        impactDateRange: historicalDateRange,
+                    },
+                } as GuidanceContextValue['state'],
+            })
+
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: historicalDateRange,
+                }),
+            )
+            expect(mockGetLast28DaysDateRange).not.toHaveBeenCalled()
+        })
+
+        it('should use getLast28DaysDateRange when not viewing historical version', () => {
+            renderHook(() => useGuidanceImpactFromContext())
+
+            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    dateRange: mockDateRange,
+                }),
+            )
         })
     })
 

@@ -22,6 +22,7 @@ jest.mock(
                 csat: { value: 3.2 },
                 intents: ['Billing/Payment', 'Shipping/Inquiry'],
                 isLoading: false,
+                subtitle: 'Last 28 days',
             }),
         ),
         useGuidanceRecentTicketsFromContext: jest.fn(() => {

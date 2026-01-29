@@ -13,6 +13,7 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetHelpCenterStatistics } from 'models/helpCenter/queries'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
+import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { getTimezone } from 'state/currentUser/selectors'
 
 export type ArticleEngagementData = {
@@ -23,6 +24,7 @@ export type ArticleEngagementData = {
         down: number
     }
     isLoading: boolean
+    subtitle: string
 }
 
 export const useArticleEngagementFromContext = ():
@@ -40,7 +42,16 @@ export const useArticleEngagementFromContext = ():
 
     const shouldFetchData = isPerformanceStatsEnabled && !!articleId
 
+    const impactDateRange = state.historicalVersion?.impactDateRange
+
     const dateRange = useMemo(() => {
+        if (impactDateRange) {
+            return {
+                start_date: impactDateRange.start_datetime,
+                end_date: impactDateRange.end_datetime,
+            }
+        }
+
         const now = new Date()
         const past28Days = new Date(now)
         past28Days.setDate(now.getDate() - 28)
@@ -49,7 +60,7 @@ export const useArticleEngagementFromContext = ():
             start_date: past28Days.toISOString(),
             end_date: now.toISOString(),
         }
-    }, [])
+    }, [impactDateRange])
 
     const { data: statisticsData, isFetching: isFetchingStatistics } =
         useGetHelpCenterStatistics(
@@ -69,21 +80,31 @@ export const useArticleEngagementFromContext = ():
     )
 
     const statsFilters = useMemo(() => {
-        const now = new Date()
-        const past28Days = new Date(now)
-        past28Days.setDate(now.getDate() - 28)
+        let period: { start_datetime: string; end_datetime: string }
+
+        if (impactDateRange) {
+            period = {
+                start_datetime: impactDateRange.start_datetime,
+                end_datetime: impactDateRange.end_datetime,
+            }
+        } else {
+            const now = new Date()
+            const past28Days = new Date(now)
+            past28Days.setDate(now.getDate() - 28)
+            period = {
+                start_datetime: past28Days.toISOString(),
+                end_datetime: now.toISOString(),
+            }
+        }
 
         return {
             helpCenters: {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [helpCenterId],
             },
-            period: {
-                start_datetime: past28Days.toISOString(),
-                end_datetime: now.toISOString(),
-            },
+            period,
         }
-    }, [helpCenterId])
+    }, [helpCenterId, impactDateRange])
 
     const query = useMemo(() => {
         const baseQuery = performanceByArticleQueryFactory(
@@ -139,6 +160,8 @@ export const useArticleEngagementFromContext = ():
         }
     }, [articleStatistics?.rating])
 
+    const subtitle = formatDateRangeSubtitle(impactDateRange)
+
     if (!shouldFetchData) {
         return undefined
     }
@@ -148,5 +171,6 @@ export const useArticleEngagementFromContext = ():
         rating,
         reactions,
         isLoading: articleViewData.isFetching || isFetchingStatistics,
+        subtitle,
     }
 }
