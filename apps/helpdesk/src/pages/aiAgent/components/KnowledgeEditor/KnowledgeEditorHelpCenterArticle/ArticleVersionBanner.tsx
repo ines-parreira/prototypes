@@ -1,8 +1,7 @@
-import { Banner } from '@gorgias/axiom'
-
+import { VersionBanner } from '../shared/VersionBanner'
+import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
-
-import css from './ArticleVersionBanner.less'
+import { useVersionHistory } from './hooks/useVersionHistory'
 
 export function ArticleVersionBanner() {
     const {
@@ -13,60 +12,22 @@ export function ArticleVersionBanner() {
         switchVersion,
     } = useVersionBanner()
 
-    if (!hasDraftVersion || !hasPublishedVersion) {
-        return null
-    }
-
-    if (isViewingDraft) {
-        return (
-            <div className={css.bannerWrapper}>
-                <Banner
-                    variant="inline"
-                    intent="info"
-                    size="sm"
-                    isClosable={false}
-                    icon="info"
-                    title={
-                        <>
-                            This is a draft version. You also have a{' '}
-                            <span
-                                className={
-                                    isDisabled ? css.linkDisabled : css.link
-                                }
-                                onClick={isDisabled ? undefined : switchVersion}
-                            >
-                                published version
-                            </span>
-                            .
-                        </>
-                    }
-                    description="Edit, test, and publish your draft to update the published version."
-                />
-            </div>
-        )
-    }
+    const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
+    const { state, dispatch } = useArticleContext()
 
     return (
-        <div className={css.bannerWrapper}>
-            <Banner
-                variant="inline"
-                intent="info"
-                size="sm"
-                isClosable={false}
-                icon="info"
-                title={
-                    <>
-                        This is a published version. You also have a{' '}
-                        <span
-                            className={isDisabled ? css.linkDisabled : css.link}
-                            onClick={isDisabled ? undefined : switchVersion}
-                        >
-                            draft version
-                        </span>
-                        .
-                    </>
-                }
-            />
-        </div>
+        <VersionBanner
+            isViewingDraft={isViewingDraft}
+            hasDraftVersion={hasDraftVersion}
+            hasPublishedVersion={hasPublishedVersion}
+            isDisabled={isDisabled}
+            switchVersion={switchVersion}
+            isViewingHistoricalVersion={isViewingHistoricalVersion}
+            onGoToLatest={onGoToLatest}
+            historicalVersion={state.historicalVersion}
+            onOpenRestoreModal={() =>
+                dispatch({ type: 'SET_MODAL', payload: 'restore' })
+            }
+        />
     )
 }

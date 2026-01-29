@@ -12,6 +12,7 @@ import {
     ArticleDeleteModal,
     ArticleDiscardDraftModal,
     ArticlePublishModal,
+    ArticleRestoreVersionModal,
     ArticleTranslationDeleteModal,
     ArticleUnsavedChangesModal,
 } from './modals'
@@ -121,6 +122,7 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
             <ArticleDeleteModal />
             <ArticleTranslationDeleteModal />
             <ArticlePublishModal />
+            <ArticleRestoreVersionModal />
         </div>
     )
 }

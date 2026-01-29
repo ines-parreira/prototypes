@@ -10,6 +10,7 @@ import type {
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export type ArticleModeType = 'create' | 'edit' | 'read'
 
@@ -21,6 +22,19 @@ export const InitialArticleMode = {
 export type InitialArticleModeValue =
     (typeof InitialArticleMode)[keyof typeof InitialArticleMode]
 
+export type HistoricalVersionState = {
+    versionId: number
+    version: number
+    title: string
+    content: string
+    publishedDatetime: string | null
+    publisherUserId?: number
+    commitMessage?: string
+} | null
+
+export type ArticleTranslationVersion =
+    Components.Schemas.ArticleTranslationVersionResponseDto
+
 export type ModalType =
     | null
     | 'unsaved'
@@ -28,6 +42,7 @@ export type ModalType =
     | { type: 'delete-translation'; locale: LocaleOption }
     | 'discard-draft'
     | 'publish'
+    | 'restore'
 
 export type SettingsChanges = Pick<
     UpdateArticleTranslationDto,
@@ -61,6 +76,9 @@ export type ArticleState = {
 
     // Version info
     versionStatus: GetArticleVersionStatus
+
+    // Historical version (read only mode - viewing old published versions)
+    historicalVersion: HistoricalVersionState
 
     // Modal state
     activeModal: ModalType
@@ -130,6 +148,12 @@ export type ArticleReducerAction =
           type: 'RESET_TO_SERVER'
           payload: { title: string; content: string }
       }
+    // Historical version actions
+    | {
+          type: 'VIEW_HISTORICAL_VERSION'
+          payload: ArticleTranslationVersion
+      }
+    | { type: 'CLEAR_HISTORICAL_VERSION' }
 
 export type ArticleContextConfig = {
     // Help center data
@@ -208,6 +232,7 @@ export const createInitialState = (
             initialArticle?.translation.locale ?? helpCenter.default_locale,
         pendingSettingsChanges: {},
         versionStatus: versionStatus ?? 'latest_draft',
+        historicalVersion: null,
         activeModal: null,
         isUpdating: false,
         templateKey: template?.key,

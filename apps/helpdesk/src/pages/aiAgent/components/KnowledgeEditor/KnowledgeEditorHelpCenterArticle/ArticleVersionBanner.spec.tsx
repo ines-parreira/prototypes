@@ -2,13 +2,40 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ArticleVersionBanner } from './ArticleVersionBanner'
+import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
+import { useVersionHistory } from './hooks/useVersionHistory'
+
+jest.mock('@repo/utils', () => ({
+    DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
+    formatDatetime: jest.fn(() => 'Jan 1, 2024 12:00 PM'),
+}))
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(() => 'UTC'),
+}))
+
+jest.mock('state/currentUser/selectors', () => ({
+    getTimezone: jest.fn(() => 'UTC'),
+    getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
+}))
 
 jest.mock('./hooks/useVersionBanner', () => ({
     useVersionBanner: jest.fn(),
 }))
 
+jest.mock('./hooks/useVersionHistory', () => ({
+    useVersionHistory: jest.fn(),
+}))
+
+jest.mock('./context', () => ({
+    useArticleContext: jest.fn(),
+}))
+
 const mockUseVersionBanner = useVersionBanner as jest.Mock
+const mockUseVersionHistory = useVersionHistory as jest.Mock
+const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('ArticleVersionBanner', () => {
     let mockSwitchVersion: jest.Mock
@@ -32,6 +59,14 @@ describe('ArticleVersionBanner', () => {
         jest.clearAllMocks()
         mockSwitchVersion = jest.fn()
         mockUseVersionBanner.mockReturnValue(createMockVersionBanner())
+        mockUseVersionHistory.mockReturnValue({
+            isViewingHistoricalVersion: false,
+            onGoToLatest: jest.fn(),
+        })
+        mockUseArticleContext.mockReturnValue({
+            state: { historicalVersion: null },
+            dispatch: jest.fn(),
+        })
     })
 
     describe('visibility conditions', () => {

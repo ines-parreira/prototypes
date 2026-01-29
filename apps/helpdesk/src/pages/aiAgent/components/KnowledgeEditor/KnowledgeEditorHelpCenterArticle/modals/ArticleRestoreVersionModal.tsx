@@ -1,7 +1,7 @@
 import { RestoreVersionModal } from '../../shared/RestoreVersionModal/RestoreVersionModal'
 import { useRestoreVersionModal } from './useRestoreVersionModal'
 
-export const KnowledgeEditorGuidanceRestoreVersionModal = () => {
+export const ArticleRestoreVersionModal = () => {
     const { isOpen, isRestoring, onClose, onRestore } = useRestoreVersionModal()
 
     return (

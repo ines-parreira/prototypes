@@ -15,6 +15,8 @@ export {
 } from './useKnowledgeEditorHelpCenterArticleDetails'
 export { useVersionBanner } from './useVersionBanner'
 export type { VersionBannerState } from './useVersionBanner'
+export { useVersionHistory } from './useVersionHistory'
+export type { VersionHistoryData } from './useVersionHistory'
 export { useArticleAutoSave } from './useArticleAutoSave'
 export { useLocaleManagement } from './useLocaleManagement'
 export { useSettingsAutoSave } from './useSettingsAutoSave'

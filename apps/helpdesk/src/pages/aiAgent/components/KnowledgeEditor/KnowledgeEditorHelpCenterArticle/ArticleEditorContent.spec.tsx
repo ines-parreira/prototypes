@@ -88,6 +88,7 @@ const createMockContextValue = (
         currentLocale: 'en-US' as const,
         pendingSettingsChanges: {} as SettingsChanges,
         versionStatus: 'latest_draft' as const,
+        historicalVersion: null,
         activeModal: null,
         isUpdating: false,
         templateKey: undefined,
@@ -286,6 +287,9 @@ jest.mock('./modals', () => ({
         <div data-mock="ArticleTranslationDeleteModal" />
     ),
     ArticlePublishModal: () => <div data-mock="ArticlePublishModal" />,
+    ArticleRestoreVersionModal: () => (
+        <div data-mock="ArticleRestoreVersionModal" />
+    ),
 }))
 
 describe('ArticleEditorContent', () => {

@@ -164,6 +164,38 @@ export function articleReducer(
                 isAutoSaving: false,
             }
 
+        // Historical version actions
+        case 'VIEW_HISTORICAL_VERSION': {
+            const versionTitle = action.payload.title ?? ''
+            const versionContent = action.payload.content ?? ''
+            return {
+                ...state,
+                historicalVersion: {
+                    versionId: action.payload.id,
+                    version: action.payload.version,
+                    title: versionTitle,
+                    content: versionContent,
+                    publishedDatetime: action.payload.published_datetime,
+                    publisherUserId: action.payload.publisher_user_id,
+                    commitMessage: action.payload.commit_message,
+                },
+                title: versionTitle,
+                content: versionContent,
+                articleMode: 'read',
+            }
+        }
+
+        case 'CLEAR_HISTORICAL_VERSION': {
+            const originalTitle = state.article?.translation.title ?? ''
+            const originalContent = state.article?.translation.content ?? ''
+            return {
+                ...state,
+                historicalVersion: null,
+                title: originalTitle,
+                content: originalContent,
+            }
+        }
+
         default:
             return state
     }

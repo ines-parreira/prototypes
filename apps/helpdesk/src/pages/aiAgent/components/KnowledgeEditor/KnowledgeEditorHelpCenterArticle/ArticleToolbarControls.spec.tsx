@@ -3,12 +3,26 @@ import userEvent from '@testing-library/user-event'
 
 import { ArticleToolbarControls } from './ArticleToolbarControls'
 import { useArticleToolbar } from './hooks/useArticleToolbar'
+import { useVersionHistory } from './hooks/useVersionHistory'
 
 jest.mock('./hooks/useArticleToolbar', () => ({
     useArticleToolbar: jest.fn(),
 }))
 
+jest.mock('./hooks/useVersionHistory', () => ({
+    useVersionHistory: jest.fn(),
+}))
+
+jest.mock('../shared/VersionHistoryButton', () => ({
+    VersionHistoryButton: (props: { isDisabled?: boolean }) => (
+        <button aria-label="Version history" disabled={props.isDisabled}>
+            Version history
+        </button>
+    ),
+}))
+
 const mockUseArticleToolbar = useArticleToolbar as jest.Mock
+const mockUseVersionHistory = useVersionHistory as jest.Mock
 
 describe('ArticleToolbarControls', () => {
     let mockOnClickEdit: jest.Mock
@@ -25,6 +39,7 @@ describe('ArticleToolbarControls', () => {
             canEdit: boolean
             editDisabledReason: string | undefined
             isPlaygroundOpen: boolean
+            isVersionHistoryEnabled: boolean
         }> = {},
     ) => ({
         state: overrides.state ?? { type: 'draft-edit' },
@@ -40,6 +55,7 @@ describe('ArticleToolbarControls', () => {
         editDisabledReason: overrides.editDisabledReason,
         onTest: mockOnTest,
         isPlaygroundOpen: overrides.isPlaygroundOpen ?? false,
+        isVersionHistoryEnabled: overrides.isVersionHistoryEnabled ?? false,
     })
 
     beforeEach(() => {
@@ -52,6 +68,20 @@ describe('ArticleToolbarControls', () => {
         mockOnTest = jest.fn()
 
         mockUseArticleToolbar.mockReturnValue(createMockToolbar())
+        mockUseVersionHistory.mockReturnValue({
+            versions: [],
+            isLoading: false,
+            isViewingHistoricalVersion: false,
+            currentVersionId: null,
+            selectedVersionId: null,
+            onSelectVersion: jest.fn(),
+            onGoToLatest: jest.fn(),
+            isDisabled: false,
+            hasNextPage: false,
+            isFetchingNextPage: false,
+            onLoadMore: jest.fn(),
+            shouldLoadMore: false,
+        })
     })
 
     describe('published-with-draft state', () => {
@@ -303,18 +333,15 @@ describe('ArticleToolbarControls', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not render edit, delete, or delete draft buttons', () => {
+        it('should render delete draft button and not render edit button', () => {
             render(<ArticleToolbarControls />)
 
             expect(
                 screen.queryByRole('button', { name: /^edit$/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: 'Delete' }),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Delete' }),
-            ).not.toBeInTheDocument()
+                screen.getByRole('button', { name: 'Delete' }),
+            ).toBeInTheDocument()
         })
 
         it('should always disable publish button', () => {
@@ -487,6 +514,191 @@ describe('ArticleToolbarControls', () => {
             await user.click(publishButton)
 
             expect(mockOnClickPublish).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('viewing-historical-version state', () => {
+        beforeEach(() => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'viewing-historical-version' },
+                    isVersionHistoryEnabled: true,
+                }),
+            )
+            mockUseVersionHistory.mockReturnValue({
+                versions: [
+                    {
+                        id: 10,
+                        version: 3,
+                        title: 'V3',
+                        content: '<p>V3</p>',
+                        excerpt: '',
+                        slug: '',
+                        seo_meta: null,
+                        created_datetime: '2024-03-01T00:00:00Z',
+                        published_datetime: '2024-03-01T12:00:00Z',
+                        commit_message: 'Published v3',
+                        publisher_user_id: 42,
+                    },
+                ],
+                isLoading: false,
+                isViewingHistoricalVersion: true,
+                currentVersionId: 10,
+                selectedVersionId: 10,
+                onSelectVersion: jest.fn(),
+                onGoToLatest: jest.fn(),
+                isDisabled: false,
+                hasNextPage: false,
+                isFetchingNextPage: false,
+                onLoadMore: jest.fn(),
+                shouldLoadMore: false,
+            })
+        })
+
+        it('should render version history, edit, delete, and test buttons', () => {
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.getByRole('button', { name: /version history/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /edit/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /test/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should disable edit, delete, and test buttons', () => {
+            render(<ArticleToolbarControls />)
+
+            expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeDisabled()
+            expect(screen.getByRole('button', { name: /test/i })).toBeDisabled()
+        })
+
+        it('should not render publish button', () => {
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /publish/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide test button when playground is open', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'viewing-historical-version' },
+                    isVersionHistoryEnabled: true,
+                    isPlaygroundOpen: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /test/i }),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('VersionHistoryButton visibility', () => {
+        const versionHistoryMock = {
+            versions: [
+                {
+                    id: 10,
+                    version: 3,
+                    title: 'V3',
+                    content: '<p>V3</p>',
+                    excerpt: '',
+                    slug: '',
+                    seo_meta: null,
+                    created_datetime: '2024-03-01T00:00:00Z',
+                    published_datetime: '2024-03-01T12:00:00Z',
+                    commit_message: 'Published v3',
+                    publisher_user_id: 42,
+                },
+            ],
+            isLoading: false,
+            isViewingHistoricalVersion: false,
+            currentVersionId: 10,
+            selectedVersionId: null,
+            onSelectVersion: jest.fn(),
+            onGoToLatest: jest.fn(),
+            isDisabled: false,
+            hasNextPage: false,
+            isFetchingNextPage: false,
+            onLoadMore: jest.fn(),
+            shouldLoadMore: false,
+        }
+
+        beforeEach(() => {
+            mockUseVersionHistory.mockReturnValue(versionHistoryMock)
+        })
+
+        it.each([
+            'published-with-draft',
+            'published-without-draft',
+            'draft-view',
+            'published-without-draft-edit',
+            'draft-edit',
+        ] as const)(
+            'should render version history button in %s state when enabled',
+            (stateType) => {
+                mockUseArticleToolbar.mockReturnValue(
+                    createMockToolbar({
+                        state: { type: stateType },
+                        isVersionHistoryEnabled: true,
+                    }),
+                )
+                render(<ArticleToolbarControls />)
+
+                expect(
+                    screen.getByRole('button', { name: /version history/i }),
+                ).toBeInTheDocument()
+            },
+        )
+
+        it.each([
+            'published-with-draft',
+            'published-without-draft',
+            'draft-view',
+            'published-without-draft-edit',
+            'draft-edit',
+            'create',
+        ] as const)(
+            'should not render version history button in %s state when disabled',
+            (stateType) => {
+                mockUseArticleToolbar.mockReturnValue(
+                    createMockToolbar({
+                        state: { type: stateType },
+                        isVersionHistoryEnabled: false,
+                    }),
+                )
+                render(<ArticleToolbarControls />)
+
+                expect(
+                    screen.queryByRole('button', { name: /version history/i }),
+                ).not.toBeInTheDocument()
+            },
+        )
+
+        it('should not render version history button in create state even when enabled', () => {
+            mockUseArticleToolbar.mockReturnValue(
+                createMockToolbar({
+                    state: { type: 'create' },
+                    isVersionHistoryEnabled: true,
+                }),
+            )
+            render(<ArticleToolbarControls />)
+
+            expect(
+                screen.queryByRole('button', { name: /version history/i }),
+            ).not.toBeInTheDocument()
         })
     })
 

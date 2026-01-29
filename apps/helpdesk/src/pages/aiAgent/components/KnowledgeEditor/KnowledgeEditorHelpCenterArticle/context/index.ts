@@ -7,6 +7,8 @@ export {
     type ArticleModeType,
     type ArticleReducerAction,
     type ArticleState,
+    type ArticleTranslationVersion,
+    type HistoricalVersionState,
     type InitialArticleModeValue,
     type ModalType,
     type PlaygroundState,

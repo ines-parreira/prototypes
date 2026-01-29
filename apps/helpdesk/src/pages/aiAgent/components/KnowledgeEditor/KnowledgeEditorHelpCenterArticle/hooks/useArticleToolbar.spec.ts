@@ -91,6 +91,7 @@ describe('useArticleToolbar', () => {
             currentLocale: 'en-US',
             pendingSettingsChanges: {},
             versionStatus: 'latest_draft',
+            historicalVersion: null,
             activeModal: null,
             isUpdating: false,
             templateKey: undefined,
@@ -263,6 +264,64 @@ describe('useArticleToolbar', () => {
 
             expect(result.current.state).toEqual({
                 type: 'published-without-draft-edit',
+            })
+        })
+
+        it('should return "viewing-historical-version" state when historicalVersion is set', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        articleMode: 'read',
+                        historicalVersion: {
+                            versionId: 10,
+                            version: 3,
+                            title: 'Old Version',
+                            content: '<p>Old content</p>',
+                            publishedDatetime: '2024-03-01T12:00:00Z',
+                            publisherUserId: 42,
+                            commitMessage: 'Published v3',
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.state).toEqual({
+                type: 'viewing-historical-version',
+            })
+        })
+
+        it('should prioritize "viewing-historical-version" over other states', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        articleMode: 'edit',
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                is_current: false,
+                            },
+                        },
+                        historicalVersion: {
+                            versionId: 10,
+                            version: 3,
+                            title: 'Old Version',
+                            content: '<p>Old content</p>',
+                            publishedDatetime: null,
+                            publisherUserId: undefined,
+                            commitMessage: undefined,
+                        },
+                    },
+                    hasDraft: true,
+                }),
+            )
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.state).toEqual({
+                type: 'viewing-historical-version',
             })
         })
     })
@@ -663,6 +722,29 @@ describe('useArticleToolbar', () => {
             expect(result.current).toHaveProperty('editDisabledReason')
             expect(result.current).toHaveProperty('onTest')
             expect(result.current).toHaveProperty('isPlaygroundOpen')
+            expect(result.current).toHaveProperty('isVersionHistoryEnabled')
+        })
+    })
+
+    describe('isVersionHistoryEnabled', () => {
+        it('should return true when feature flag is enabled', () => {
+            mockUseFlag.mockImplementation(
+                (key) =>
+                    key ===
+                    FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
+            )
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.isVersionHistoryEnabled).toBe(true)
+        })
+
+        it('should return false when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.isVersionHistoryEnabled).toBe(false)
         })
     })
 

@@ -4,7 +4,11 @@ import type {
 } from 'models/helpCenter/types'
 
 import { articleReducer } from './ArticleReducer'
-import type { ArticleState, SettingsChanges } from './types'
+import type {
+    ArticleState,
+    ArticleTranslationVersion,
+    SettingsChanges,
+} from './types'
 
 const createMockArticle = (
     overrides: Partial<ArticleWithLocalTranslation> = {},
@@ -43,6 +47,23 @@ const createMockArticle = (
         ...overrides,
     }) as ArticleWithLocalTranslation
 
+const createMockVersion = (
+    overrides: Partial<ArticleTranslationVersion> = {},
+): ArticleTranslationVersion => ({
+    id: 10,
+    version: 3,
+    title: 'Version Title',
+    content: '<p>Version content</p>',
+    excerpt: 'Version excerpt',
+    slug: 'version-slug',
+    seo_meta: null,
+    created_datetime: '2024-03-01T00:00:00Z',
+    published_datetime: '2024-03-01T12:00:00Z',
+    commit_message: 'Published v3',
+    publisher_user_id: 42,
+    ...overrides,
+})
+
 const createInitialState = (
     overrides: Partial<ArticleState> = {},
 ): ArticleState => ({
@@ -65,6 +86,7 @@ const createInitialState = (
     activeModal: null,
     isUpdating: false,
     templateKey: undefined,
+    historicalVersion: null,
     ...overrides,
 })
 
@@ -898,6 +920,255 @@ describe('articleReducer', () => {
                 expect(result.articleMode).toBe('edit')
                 expect(result.isFullscreen).toBe(true)
                 expect(result.currentLocale).toBe('fr-FR')
+            })
+        })
+    })
+
+    describe('Historical version actions', () => {
+        describe('VIEW_HISTORICAL_VERSION', () => {
+            it('should set historicalVersion with version data', () => {
+                const state = createInitialState()
+                const version = createMockVersion()
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.historicalVersion).toEqual({
+                    versionId: 10,
+                    version: 3,
+                    title: 'Version Title',
+                    content: '<p>Version content</p>',
+                    publishedDatetime: '2024-03-01T12:00:00Z',
+                    publisherUserId: 42,
+                    commitMessage: 'Published v3',
+                })
+            })
+
+            it('should update title and content to the version values', () => {
+                const state = createInitialState({
+                    title: 'Current Title',
+                    content: '<p>Current content</p>',
+                })
+                const version = createMockVersion({
+                    title: 'Old Version Title',
+                    content: '<p>Old version content</p>',
+                })
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.title).toBe('Old Version Title')
+                expect(result.content).toBe('<p>Old version content</p>')
+            })
+
+            it('should set articleMode to read', () => {
+                const state = createInitialState({ articleMode: 'edit' })
+                const version = createMockVersion()
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.articleMode).toBe('read')
+            })
+
+            it('should default title and content to empty string when null', () => {
+                const state = createInitialState()
+                const version = createMockVersion({
+                    title: null as unknown as string,
+                    content: null as unknown as string,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.title).toBe('')
+                expect(result.content).toBe('')
+                expect(result.historicalVersion?.title).toBe('')
+                expect(result.historicalVersion?.content).toBe('')
+            })
+
+            it('should handle version without optional fields', () => {
+                const state = createInitialState()
+                const version = createMockVersion({
+                    published_datetime: null,
+                    publisher_user_id: undefined,
+                    commit_message: undefined,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.historicalVersion).toEqual({
+                    versionId: 10,
+                    version: 3,
+                    title: 'Version Title',
+                    content: '<p>Version content</p>',
+                    publishedDatetime: null,
+                    publisherUserId: undefined,
+                    commitMessage: undefined,
+                })
+            })
+
+            it('should preserve other state properties', () => {
+                const state = createInitialState({
+                    isFullscreen: true,
+                    isDetailsView: false,
+                    currentLocale: 'fr-FR',
+                    versionStatus: 'current',
+                })
+                const version = createMockVersion()
+
+                const result = articleReducer(state, {
+                    type: 'VIEW_HISTORICAL_VERSION',
+                    payload: version,
+                })
+
+                expect(result.isFullscreen).toBe(true)
+                expect(result.isDetailsView).toBe(false)
+                expect(result.currentLocale).toBe('fr-FR')
+                expect(result.versionStatus).toBe('current')
+            })
+        })
+
+        describe('CLEAR_HISTORICAL_VERSION', () => {
+            it('should set historicalVersion to null', () => {
+                const state = createInitialState({
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 3,
+                        title: 'Version Title',
+                        content: '<p>Version content</p>',
+                        publishedDatetime: '2024-03-01T12:00:00Z',
+                        publisherUserId: 42,
+                        commitMessage: 'Published v3',
+                    },
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.historicalVersion).toBeNull()
+            })
+
+            it('should restore title and content from the current article translation', () => {
+                const article = createMockArticle({
+                    translation: {
+                        locale: 'en-US',
+                        title: 'Original Article Title',
+                        content: '<p>Original article content</p>',
+                        slug: 'test-article',
+                        excerpt: 'Test excerpt',
+                        category_id: 1,
+                        visibility_status: 'PUBLIC',
+                        article_id: 1,
+                        article_unlisted_id: 'test-unlisted-id',
+                        seo_meta: { title: '', description: '' },
+                        created_datetime: '2024-01-01T00:00:00Z',
+                        updated_datetime: '2024-01-02T00:00:00Z',
+                        deleted_datetime: null,
+                        is_current: true,
+                        draft_version_id: null,
+                        published_version_id: null,
+                        published_datetime: null,
+                        publisher_user_id: null,
+                        commit_message: null,
+                    },
+                })
+                const state = createInitialState({
+                    article,
+                    title: 'Historical Title',
+                    content: '<p>Historical content</p>',
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 3,
+                        title: 'Historical Title',
+                        content: '<p>Historical content</p>',
+                        publishedDatetime: '2024-03-01T12:00:00Z',
+                        publisherUserId: 42,
+                        commitMessage: 'Published v3',
+                    },
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.title).toBe('Original Article Title')
+                expect(result.content).toBe('<p>Original article content</p>')
+            })
+
+            it('should use empty strings when article is undefined', () => {
+                const state = createInitialState({
+                    article: undefined,
+                    title: 'Historical Title',
+                    content: '<p>Historical content</p>',
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 3,
+                        title: 'Historical Title',
+                        content: '<p>Historical content</p>',
+                        publishedDatetime: null,
+                        publisherUserId: undefined,
+                        commitMessage: undefined,
+                    },
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.title).toBe('')
+                expect(result.content).toBe('')
+            })
+
+            it('should preserve other state properties', () => {
+                const state = createInitialState({
+                    isFullscreen: true,
+                    articleMode: 'read',
+                    currentLocale: 'fr-FR',
+                    versionStatus: 'current',
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 3,
+                        title: 'Version Title',
+                        content: '<p>Version content</p>',
+                        publishedDatetime: null,
+                        publisherUserId: undefined,
+                        commitMessage: undefined,
+                    },
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.isFullscreen).toBe(true)
+                expect(result.articleMode).toBe('read')
+                expect(result.currentLocale).toBe('fr-FR')
+                expect(result.versionStatus).toBe('current')
+            })
+
+            it('should be a no-op on historicalVersion when already null', () => {
+                const state = createInitialState({
+                    historicalVersion: null,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.historicalVersion).toBeNull()
             })
         })
     })

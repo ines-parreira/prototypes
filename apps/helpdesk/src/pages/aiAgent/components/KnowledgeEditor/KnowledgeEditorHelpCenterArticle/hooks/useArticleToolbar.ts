@@ -14,6 +14,7 @@ export type ArticleToolbarState =
     | { type: 'published-with-draft' }
     | { type: 'published-without-draft' }
     | { type: 'published-without-draft-edit' }
+    | { type: 'viewing-historical-version' }
 
 export type ArticleToolbarActions = {
     onClickEdit: () => void
@@ -31,6 +32,7 @@ export type ArticleToolbarData = {
     editDisabledReason: string | undefined
     onTest: () => void
     isPlaygroundOpen: boolean
+    isVersionHistoryEnabled: boolean
 }
 
 export const useArticleToolbar = (): ArticleToolbarData => {
@@ -134,6 +136,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         state.articleMode,
         state.article?.translation.is_current,
         hasDraft,
+        state.historicalVersion !== null,
     )
 
     const isDisabled = state.isUpdating || state.isAutoSaving
@@ -158,6 +161,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         editDisabledReason,
         onTest: playground.onTest,
         isPlaygroundOpen: playground.isOpen,
+        isVersionHistoryEnabled: isPublishModalEnabled,
     }
 }
 
@@ -165,7 +169,12 @@ const getToolbarState = (
     articleMode: 'create' | 'edit' | 'read',
     isCurrent: boolean | undefined,
     hasDraft: boolean,
+    isViewingHistoricalVersion: boolean,
 ): ArticleToolbarState => {
+    if (isViewingHistoricalVersion) {
+        return { type: 'viewing-historical-version' }
+    }
+
     if (articleMode === 'create') {
         return { type: 'create' }
     }
