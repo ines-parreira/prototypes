@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
-    LegacyTooltip as Tooltip,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -41,17 +43,41 @@ const GuidanceActionPicker = ({
 
     return (
         <>
-            <Button
-                size="small"
-                intent="secondary"
-                ref={anchorEl}
-                onClick={handleToggle}
-                leadingIcon="webhook"
-                trailingIcon="arrow_drop_down"
-                isDisabled={isDisabled}
-            >
-                Actions
-            </Button>
+            {isDisabled ? (
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button
+                            size="small"
+                            intent="secondary"
+                            ref={anchorEl}
+                            onClick={handleToggle}
+                            leadingIcon="webhook"
+                            trailingIcon="arrow_drop_down"
+                            isDisabled={isDisabled}
+                        >
+                            Actions
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <div className={css.tooltipDisabled}>
+                            To use <Link to={routes.actions}>Actions</Link> in
+                            Guidance, enable at least one Action for AI Agent.
+                        </div>
+                    </TooltipContent>
+                </Tooltip>
+            ) : (
+                <Button
+                    size="small"
+                    intent="secondary"
+                    ref={anchorEl}
+                    onClick={handleToggle}
+                    leadingIcon="webhook"
+                    trailingIcon="arrow_drop_down"
+                    isDisabled={isDisabled}
+                >
+                    Actions
+                </Button>
+            )}
             <GuidanceActionDropdown
                 target={anchorEl}
                 onSelect={onSelect}
@@ -59,14 +85,6 @@ const GuidanceActionPicker = ({
                 onToggle={setIsOpen}
                 {...actionDropdownProps}
             />
-            {anchorEl && isDisabled && (
-                <Tooltip target={anchorEl} placement="top" autohide={false}>
-                    <div className={css.tooltipDisabled}>
-                        To use <Link to={routes.actions}>Actions</Link> in
-                        Guidance, enable at least one Action for AI Agent.
-                    </div>
-                </Tooltip>
-            )}
         </>
     )
 }

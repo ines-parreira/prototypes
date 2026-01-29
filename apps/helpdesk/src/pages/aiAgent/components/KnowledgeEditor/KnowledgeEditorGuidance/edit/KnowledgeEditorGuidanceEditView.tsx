@@ -51,7 +51,7 @@ export const KnowledgeEditorGuidanceEditView = ({
                 label={GUIDANCE_EDITOR_DEFAULT_LABEL}
                 shopName={shopName}
                 availableActions={availableActions || []}
-                showActionsButton={!!availableActions?.length}
+                showActionsButton={true}
                 showVariablesButton={!!availableVariables?.length}
             />
             <Caption isValid>

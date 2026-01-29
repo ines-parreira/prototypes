@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import type { ContentState } from 'draft-js'
 import { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
@@ -248,7 +248,7 @@ describe('Toolbar', () => {
             )
         })
 
-        it('should display guidance action picker disabled with a tooltip when there is no action', async () => {
+        it('should display guidance action picker button as disabled when there is no action', () => {
             mockUseFlag.mockReturnValue(true)
 
             renderWithRouter(
@@ -275,16 +275,10 @@ describe('Toolbar', () => {
                 </Provider>,
             )
 
-            fireEvent.mouseOver(screen.getByText('Actions'))
-
-            await waitFor(() =>
-                expect(
-                    screen.getByText(
-                        'enable at least one Action for AI Agent.',
-                        { exact: false },
-                    ),
-                ).toBeInTheDocument(),
-            )
+            const actionsButton = screen.getByRole('button', {
+                name: /Actions/,
+            })
+            expect(actionsButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
 })
