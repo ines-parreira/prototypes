@@ -142,7 +142,7 @@ describe('UserMenu', () => {
         expect(screen.getByText('New UI')).toBeInTheDocument()
     })
 
-    it('should not render the user info header when feature flag is disabled', () => {
+    it('should not render the agent status components when CustomAgentUnavailableStatuses feature flag is disabled', () => {
         useFlagMock.mockImplementation((key: string) => {
             if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
                 return false
@@ -150,12 +150,26 @@ describe('UserMenu', () => {
             return false
         })
         render(<UserMenu onClose={onClose} />, { wrapper })
+
+        expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
+        expect(screen.queryByText('Status:')).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        ).not.toBeInTheDocument()
         expect(
             screen.queryByText('UserInfoHeaderContainer'),
         ).not.toBeInTheDocument()
     })
-
-    it('should render the user info header when feature flag is enabled', () => {
+    it('should render the agent status components when CustomAgentUnavailableStatuses feature flag is enabled', () => {
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
         useFlagMock.mockImplementation((key: string) => {
             if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
                 return true
@@ -164,34 +178,15 @@ describe('UserMenu', () => {
         })
         render(<UserMenu onClose={onClose} />, { wrapper })
         expect(screen.getByText('UserInfoHeaderContainer')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(ignoreHTML('Status:Available')),
+        ).toBeInTheDocument()
     })
-
-    it('should render user info header above availability toggle when enabled', () => {
-        useFlagMock.mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                return true
-            }
-            return false
-        })
-        const { container } = render(<UserMenu onClose={onClose} />, {
-            wrapper,
-        })
-
-        const userInfoHeader = screen.getByText('UserInfoHeaderContainer')
-        const availabilityToggle = screen.getByText('AvailabilityToggle')
-
-        expect(userInfoHeader).toBeInTheDocument()
-        expect(availabilityToggle).toBeInTheDocument()
-
-        const allElements = Array.from(container.querySelectorAll('*'))
-        const userInfoPosition = allElements.indexOf(userInfoHeader)
-        const availabilityPosition = allElements.indexOf(availabilityToggle)
-
-        expect(userInfoPosition).toBeGreaterThan(-1)
-        expect(availabilityPosition).toBeGreaterThan(-1)
-        expect(userInfoPosition).toBeLessThan(availabilityPosition)
-    })
-
     it.each([
         ['Your profile', 'your-profile'],
         ['Refer a friend & earn', 'referral-program'],
@@ -460,7 +455,12 @@ describe('UserMenu', () => {
         userEvent.click(getByText('Back'))
 
         expect(screen.queryByText('StatusMenu')).not.toBeInTheDocument()
-        expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
+        expect(screen.queryByText('AvailabilityToggle')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        ).toBeInTheDocument()
         expect(screen.getByText('Your profile')).toBeInTheDocument()
     })
 })

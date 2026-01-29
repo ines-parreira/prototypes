@@ -48,9 +48,6 @@ type Props = {
 
 export default function UserMenu({ onClose }: Props) {
     const { hasFlag: hasAxiomMigration } = useAxiomMigration()
-    const areCustomStatusesActive = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = useAppSelector(getCurrentUserId)
@@ -71,14 +68,14 @@ export default function UserMenu({ onClose }: Props) {
     return (
         <Screens activeScreen={activeScreen}>
             <Screen name={ActiveScreen.Main}>
-                {areCustomStatusesActive && (
+                {isAgentUnavailabilityEnabled && (
                     <>
                         <UserInfoHeaderContainer />
-                        <hr className={css.separator} />
                     </>
                 )}
-                <AvailabilityToggle />
-                {isAgentUnavailabilityEnabled && (
+                {!isAgentUnavailabilityEnabled ? (
+                    <AvailabilityToggle />
+                ) : (
                     <>
                         <hr className={css.separator} />
                         <button
