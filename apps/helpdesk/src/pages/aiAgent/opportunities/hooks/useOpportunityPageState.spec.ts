@@ -349,7 +349,7 @@ describe('useOpportunityPageState', () => {
                 'Let AI Agent show you what to improve',
             )
             expect(result.current.description).toContain(
-                'AI Agent automatically finds opportunities',
+                'AI Agent finds opportunities to improve its responses',
             )
             expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toEqual({
@@ -425,7 +425,7 @@ describe('useOpportunityPageState', () => {
                 'Let AI Agent show you what to improve',
             )
             expect(result.current.description).toContain(
-                'AI Agent automatically finds opportunities',
+                'AI Agent automatically finds opportunities to improve its responses',
             )
             expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toEqual({

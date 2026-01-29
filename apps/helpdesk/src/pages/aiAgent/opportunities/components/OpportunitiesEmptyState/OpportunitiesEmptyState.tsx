@@ -31,8 +31,15 @@ export const OpportunitiesEmptyState = ({
                 </div>
             )}
             <Box flexDirection="column" gap="xs" alignItems="center">
-                <Heading size="lg">{opportunitiesPageState.title}</Heading>
-                <Text size="md" variant="regular" align="center">
+                <Heading size="lg" className={css.title}>
+                    {opportunitiesPageState.title}
+                </Heading>
+                <Text
+                    size="md"
+                    variant="regular"
+                    align="center"
+                    className={css.description}
+                >
                     {opportunitiesPageState.description}
                 </Text>
             </Box>

@@ -76,7 +76,7 @@ export const OpportunityCard = ({
         return (
             <Tooltip placement="top">
                 <TooltipTrigger>{titleElement}</TooltipTrigger>
-                <TooltipContent title={title} />
+                <TooltipContent caption={title} />
             </Tooltip>
         )
     }

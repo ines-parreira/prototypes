@@ -34,9 +34,9 @@ interface OpportunityTicketDrillDownInfoBarProps {
 
 const getInfoLabel = (totalResults: number) => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {
-        return `Displaying last ${totalResults} tickets`
+        return `Displaying last ${totalResults} ${totalResults === 1 ? 'ticket' : 'tickets'}`
     }
-    return `Displaying last ${DRILLDOWN_QUERY_LIMIT} tickets`
+    return `Displaying last ${DRILLDOWN_QUERY_LIMIT} ${totalResults === 1 ? 'ticket' : 'tickets'}`
 }
 
 export const OpportunityTicketDrillDownInfoBar = ({
@@ -72,7 +72,10 @@ export const OpportunityTicketDrillDownInfoBar = ({
         if (isDownloadRequested && !isDownloadError) {
             return DOWNLOAD_REQUESTED_LABEL
         }
-        return 'Export all tickets'
+
+        return totalTickets > DRILLDOWN_QUERY_LIMIT
+            ? 'Export all tickets'
+            : 'Export'
     }
 
     return (

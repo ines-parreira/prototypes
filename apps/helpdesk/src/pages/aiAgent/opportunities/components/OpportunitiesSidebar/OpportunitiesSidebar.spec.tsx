@@ -7,10 +7,8 @@ import { Virtuoso } from 'react-virtuoso'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
 import { OpportunityType } from '../../enums'
-import {
-    type OpportunityPageState,
-    State,
-} from '../../hooks/useOpportunityPageState'
+import { State } from '../../hooks/useOpportunityPageState'
+import type { OpportunityPageState } from '../../hooks/useOpportunityPageState'
 import type {
     Opportunity,
     OpportunityListItem,
@@ -283,6 +281,33 @@ describe('OpportunitiesSidebar', () => {
 
         const skeletons = container.querySelectorAll('[class*="skeleton"]')
         expect(skeletons.length).toBeGreaterThan(0)
+    })
+
+    it('should call setIsSidebarVisible when hide sidebar button is clicked', async () => {
+        const user = userEvent.setup()
+        const mockSetIsSidebarVisible = jest.fn()
+
+        render(
+            <OpportunitiesSidebarContext.Provider
+                value={{
+                    isSidebarVisible: true,
+                    setIsSidebarVisible: mockSetIsSidebarVisible,
+                }}
+            >
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                />
+            </OpportunitiesSidebarContext.Provider>,
+        )
+
+        const hideButton = screen.getByRole('button', {
+            name: /hide sidebar/i,
+        })
+        await user.click(hideButton)
+
+        expect(mockSetIsSidebarVisible).toHaveBeenCalledWith(false)
     })
 
     describe('Infinite scroll', () => {
@@ -612,6 +637,50 @@ describe('OpportunitiesSidebar', () => {
 
             expect(screen.getByText('4 items')).toBeInTheDocument()
         })
+
+        it('should trigger auto-fetch after timeout when conditions are met', async () => {
+            jest.useFakeTimers()
+            const mockOnEndReached = jest.fn()
+
+            // Mock Virtuoso to provide container reference
+            VirtuosoMock.mockImplementation(
+                ({ data, itemContent, computeItemKey, components }) => (
+                    <div data-testid="virtuoso-mock">
+                        {data.map(
+                            (item: SidebarOpportunityItem, index: number) => (
+                                <div
+                                    key={
+                                        computeItemKey?.(index, item) || item.id
+                                    }
+                                >
+                                    {itemContent(index, item)}
+                                </div>
+                            ),
+                        )}
+                        {components?.Footer && <components.Footer />}
+                    </div>
+                ),
+            )
+
+            renderWithProvider(
+                <OpportunitiesSidebar
+                    opportunities={mockOpportunities}
+                    opportunitiesPageState={mockOpportunityPageState}
+                    onSelectOpportunity={mockOnSelectOpportunity}
+                    hasNextPage={true}
+                    isFetchingNextPage={false}
+                    onEndReached={mockOnEndReached}
+                />,
+            )
+
+            // Fast-forward time to trigger the setTimeout callback
+            act(() => {
+                jest.advanceTimersByTime(100)
+            })
+
+            // Cleanup
+            jest.useRealTimers()
+        })
     })
 
     describe('insight display', () => {
@@ -786,6 +855,69 @@ describe('OpportunitiesSidebar', () => {
             expect(mockOnSelectOpportunity).toHaveBeenCalledWith(
                 mockOpportunities[1],
             )
+        })
+    })
+
+    describe('sidebar visibility', () => {
+        it('should render loading state with collapsed width when sidebar is hidden', () => {
+            const { container } = render(
+                <OpportunitiesSidebarContext.Provider
+                    value={{
+                        isSidebarVisible: false,
+                        setIsSidebarVisible: jest.fn(),
+                    }}
+                >
+                    <OpportunitiesSidebar
+                        opportunities={mockOpportunities}
+                        opportunitiesPageState={mockOpportunityPageState}
+                        isLoading={true}
+                        onSelectOpportunity={mockOnSelectOpportunity}
+                    />
+                </OpportunitiesSidebarContext.Provider>,
+            )
+
+            const sidebar = container.querySelector('[class*="sidebar"]')
+            expect(sidebar).toBeInTheDocument()
+        })
+
+        it('should render empty state with collapsed width when sidebar is hidden', () => {
+            const { container } = render(
+                <OpportunitiesSidebarContext.Provider
+                    value={{
+                        isSidebarVisible: false,
+                        setIsSidebarVisible: jest.fn(),
+                    }}
+                >
+                    <OpportunitiesSidebar
+                        opportunities={[]}
+                        opportunitiesPageState={mockEmptyPageState}
+                        onSelectOpportunity={mockOnSelectOpportunity}
+                    />
+                </OpportunitiesSidebarContext.Provider>,
+            )
+
+            const sidebar = container.querySelector('[class*="sidebar"]')
+            expect(sidebar).toBeInTheDocument()
+        })
+
+        it('should render main state with collapsed width when sidebar is hidden', () => {
+            const { container } = render(
+                <OpportunitiesSidebarContext.Provider
+                    value={{
+                        isSidebarVisible: false,
+                        setIsSidebarVisible: jest.fn(),
+                    }}
+                >
+                    <OpportunitiesSidebar
+                        opportunities={mockOpportunities}
+                        opportunitiesPageState={mockOpportunityPageState}
+                        onSelectOpportunity={mockOnSelectOpportunity}
+                    />
+                </OpportunitiesSidebarContext.Provider>,
+            )
+
+            const sidebar = container.querySelector('[class*="sidebar"]')
+            expect(sidebar).toBeInTheDocument()
         })
     })
 

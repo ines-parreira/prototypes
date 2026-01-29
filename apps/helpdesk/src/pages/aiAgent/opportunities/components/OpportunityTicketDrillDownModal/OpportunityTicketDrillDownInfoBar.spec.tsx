@@ -64,7 +64,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent({ totalTickets: 1 })
 
             expect(
-                screen.getByText(/Displaying last 1 tickets/i),
+                screen.getByText(/Displaying last 1 ticket$/i),
             ).toBeInTheDocument()
         })
 
@@ -117,19 +117,20 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
             expect(downloadButton).toBeInTheDocument()
         })
 
         it('should call onDownload when button is clicked', async () => {
+            const user = userEvent.setup()
             const onDownload = jest.fn()
             renderComponent({ onDownload })
 
             const downloadButton = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
-            await userEvent.click(downloadButton)
+            await user.click(downloadButton)
 
             expect(onDownload).toHaveBeenCalledTimes(1)
         })
@@ -146,17 +147,16 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
         it('should be disabled when loading tickets', () => {
             renderComponent({ isLoading: true })
 
-            const downloadButton = screen.getByRole('button', {
-                name: /export all tickets/i,
-            })
+            const downloadButton = screen.getByRole('button')
             expect(downloadButton).toHaveAttribute('aria-disabled', 'true')
+            expect(downloadButton).toHaveTextContent('Export')
         })
 
         it('should be enabled when not loading or downloading', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
             expect(downloadButton).not.toHaveAttribute('aria-disabled', 'true')
         })
@@ -165,16 +165,14 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent({ isDownloading: true })
 
             expect(screen.getByText('Loading')).toBeInTheDocument()
-            expect(
-                screen.queryByText('Export all tickets'),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Export')).not.toBeInTheDocument()
         })
 
         it('should display download icon', () => {
             renderComponent()
 
             const button = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
             expect(button).toBeInTheDocument()
         })
@@ -253,7 +251,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             renderComponent()
 
             const button = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
             expect(button).toHaveAccessibleName()
         })
@@ -261,10 +259,9 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
         it('should indicate disabled state accessibly', () => {
             renderComponent({ isLoading: true })
 
-            const button = screen.getByRole('button', {
-                name: /export all tickets/i,
-            })
+            const button = screen.getByRole('button')
             expect(button).toHaveAttribute('aria-disabled', 'true')
+            expect(button).toHaveTextContent('Export')
         })
     })
 
@@ -346,7 +343,7 @@ describe('OpportunityTicketDrillDownInfoBar', () => {
             expect(
                 screen.queryByText('Download Requested'),
             ).not.toBeInTheDocument()
-            expect(screen.getByText('Export all tickets')).toBeInTheDocument()
+            expect(screen.getByText('Export')).toBeInTheDocument()
         })
     })
 })

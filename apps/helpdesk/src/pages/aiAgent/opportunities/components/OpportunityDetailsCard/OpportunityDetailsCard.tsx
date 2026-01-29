@@ -59,7 +59,8 @@ export const OpportunityDetailsCard = ({
                         className={css.handoverTickets}
                         onClick={handleTicketCountClick}
                     >
-                        {ticketCount} handover tickets
+                        {ticketCount} handover{' '}
+                        {ticketCount === 1 ? 'ticket' : 'tickets'}
                     </span>{' '}
                     AI Agent could not resolve
                 </Text>

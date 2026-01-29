@@ -185,7 +185,7 @@ describe('OpportunityTicketDrillDownModal', () => {
 
     it('should render download button with correct text', () => {
         renderComponent()
-        const downloadText = screen.getByText(/export all tickets/i)
+        const downloadText = screen.getByText(/^Export$/i)
         expect(downloadText).toBeInTheDocument()
     })
 
@@ -565,7 +565,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             renderComponent()
 
             const downloadButton = screen.getByRole('button', {
-                name: /export all tickets/i,
+                name: /download export/i,
             })
 
             act(() => {
@@ -575,7 +575,7 @@ describe('OpportunityTicketDrillDownModal', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {
-                        name: /export all tickets/i,
+                        name: /download export/i,
                     }),
                 ).toBeInTheDocument()
             })

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import classNames from 'classnames'
+import { motion } from 'framer-motion'
 import { Virtuoso } from 'react-virtuoso'
 
 import { Button, Heading, Skeleton, Text } from '@gorgias/axiom'
@@ -169,88 +169,123 @@ export const OpportunitiesSidebar = ({
         [renderFooter],
     )
 
-    const sidebarClassName = classNames(css.sidebar, {
-        [css.sidebarHidden]: !isSidebarVisible,
-    })
-
     if (isLoading) {
         return (
-            <div className={sidebarClassName}>
-                <div className={css.header}>
-                    <Heading size="sm">Opportunities</Heading>
-                </div>
+            <motion.div
+                className={css.sidebar}
+                initial={false}
+                animate={{
+                    width: isSidebarVisible ? 300 : 0,
+                    borderWidth: isSidebarVisible ? 1 : 0,
+                }}
+                transition={{
+                    duration: 0.3,
+                    ease: 'easeInOut',
+                }}
+            >
+                <div className={css.sidebarContent}>
+                    <div className={css.header}>
+                        <Heading size="sm">Opportunities</Heading>
+                    </div>
 
-                <div className={css.itemCountContainer}>
-                    <Skeleton height={16} width={50} />
-                </div>
+                    <div className={css.itemCountContainer}>
+                        <Skeleton height={16} width={50} />
+                    </div>
 
-                <div className={css.cardsContainer}>
-                    {Array.from({
-                        length: OPPORTUNITIES_PAGE_SIZE,
-                    }).map((_, index) => (
-                        <OpportunityCardSkeleton
-                            key={`loading-skeleton-${index}`}
-                        />
-                    ))}
+                    <div className={css.cardsContainer}>
+                        {Array.from({
+                            length: OPPORTUNITIES_PAGE_SIZE,
+                        }).map((_, index) => (
+                            <OpportunityCardSkeleton
+                                key={`loading-skeleton-${index}`}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </motion.div>
         )
     }
 
     if (opportunitiesPageState.showEmptyState) {
         return (
-            <div className={sidebarClassName}>
-                <div className={css.header}>
-                    <Heading size="sm">Opportunities</Heading>
-                </div>
+            <motion.div
+                className={css.sidebar}
+                initial={false}
+                animate={{
+                    width: isSidebarVisible ? 300 : 0,
+                    borderWidth: isSidebarVisible ? 1 : 0,
+                }}
+                transition={{
+                    duration: 0.3,
+                    ease: 'easeInOut',
+                }}
+            >
+                <div className={css.sidebarContent}>
+                    <div className={css.header}>
+                        <Heading size="sm">Opportunities</Heading>
+                    </div>
 
-                <div className={css.emptyState}>
-                    <Text size="sm" variant="regular">
-                        No opportunities
-                    </Text>
+                    <div className={css.emptyState}>
+                        <Text size="sm" variant="regular">
+                            No opportunities
+                        </Text>
+                    </div>
                 </div>
-            </div>
+            </motion.div>
         )
     }
 
     return (
-        <div className={sidebarClassName}>
-            <div className={css.header}>
-                <Button
-                    intent="regular"
-                    variant="secondary"
-                    icon="system-bar-left"
-                    size="sm"
-                    onClick={handleToggleSidebar}
-                    aria-label="Hide sidebar"
-                />
-                <Heading size="md">Opportunities</Heading>
+        <motion.div
+            className={css.sidebar}
+            initial={false}
+            animate={{
+                width: isSidebarVisible ? 300 : 0,
+                borderWidth: isSidebarVisible ? 1 : 0,
+            }}
+            transition={{
+                duration: 0.3,
+                ease: 'easeInOut',
+            }}
+        >
+            <div className={css.sidebarContent}>
+                <div className={css.header}>
+                    <Button
+                        intent="regular"
+                        variant="secondary"
+                        icon="system-bar-left"
+                        size="sm"
+                        onClick={handleToggleSidebar}
+                        aria-label="Hide sidebar"
+                    />
+                    <Heading size="md">Opportunities</Heading>
+                </div>
+                <div className={css.containerContent}>
+                    <>
+                        <div className={css.itemCountContainer}>
+                            <Text size="sm" variant="regular">
+                                {itemCountText}
+                            </Text>
+                        </div>
+                        <div
+                            className={css.virtuosoContainer}
+                            ref={virtuosoContainerRef}
+                        >
+                            <Virtuoso
+                                data={opportunities}
+                                itemContent={renderOpportunityCard}
+                                computeItemKey={(_index, opportunity) =>
+                                    opportunity.id
+                                }
+                                endReached={handleEndReached}
+                                atBottomThreshold={OPPORTUNITY_CARD_HEIGHT * 2}
+                                fixedItemHeight={OPPORTUNITY_CARD_HEIGHT}
+                                components={virtuosoComponents}
+                            />
+                        </div>
+                    </>
+                </div>
             </div>
-            <div className={css.containerContent}>
-                <>
-                    <div className={css.itemCountContainer}>
-                        <Text size="sm" variant="regular">
-                            {itemCountText}
-                        </Text>
-                    </div>
-                    <div
-                        className={css.virtuosoContainer}
-                        ref={virtuosoContainerRef}
-                    >
-                        <Virtuoso
-                            data={opportunities}
-                            itemContent={renderOpportunityCard}
-                            computeItemKey={(_index, opportunity) =>
-                                opportunity.id
-                            }
-                            endReached={handleEndReached}
-                            atBottomThreshold={OPPORTUNITY_CARD_HEIGHT * 2}
-                            fixedItemHeight={OPPORTUNITY_CARD_HEIGHT}
-                            components={virtuosoComponents}
-                        />
-                    </div>
-                </>
-            </div>
-        </div>
+        </motion.div>
     )
 }

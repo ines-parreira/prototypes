@@ -82,7 +82,7 @@ const getStateConfig = (
         state: State.DISABLED_NEEDS_ENABLE,
         title: 'Let AI Agent show you what to improve',
         description:
-            'AI Agent automatically finds opportunities to improve its responses based on customer conversations. AI Agent needs to be enabled to start learning from conversations.',
+            'AI Agent finds opportunities to improve its responses based on your customer conversations. AI Agent needs to be enabled to start learning.',
         media: aiAgentButtonEnableGif,
         primaryCta: {
             label: 'Enable AI Agent',
