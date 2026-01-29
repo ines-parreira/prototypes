@@ -183,7 +183,49 @@ describe('useCanduRouter', () => {
                         }
                     })
 
-                    it('should start a session', () => {
+                    it('should start a session with skipStartDialog=true', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/startSession?planUUID=${planUUID}&skipStartDialog=true`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                    skipStartDialog: true,
+                                },
+                            )
+                        }
+                    })
+
+                    it('should start a session with skipStartDialog=false', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/startSession?planUUID=${planUUID}&skipStartDialog=false`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenCalledWith(
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                    skipStartDialog: false,
+                                },
+                            )
+                        }
+                    })
+
+                    it('should start a session with skipStartDialog defaulting to false when not provided', () => {
                         const planUUID = '00000000-0000-0000-0000-000000000000'
 
                         expect(() => {
@@ -198,6 +240,7 @@ describe('useCanduRouter', () => {
                                 'startSession',
                                 {
                                     planUuid: planUUID,
+                                    skipStartDialog: false,
                                 },
                             )
                         }
@@ -234,7 +277,65 @@ describe('useCanduRouter', () => {
                         }
                     })
 
-                    it('should actviate and start a session', () => {
+                    it('should activate and start a session with skipStartDialog=true', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/activateAndStartSession?planUUID=${planUUID}&skipStartDialog=true`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                1,
+                                'update',
+                                {
+                                    isActive: true,
+                                },
+                            )
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                2,
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                    skipStartDialog: true,
+                                },
+                            )
+                        }
+                    })
+
+                    it('should activate and start a session with skipStartDialog=false', () => {
+                        const planUUID = '00000000-0000-0000-0000-000000000000'
+
+                        expect(() => {
+                            router.route(
+                                `growth/obi/activateAndStartSession?planUUID=${planUUID}&skipStartDialog=false`,
+                            )
+                        }).not.toThrow()
+
+                        expect(mockReportError).not.toHaveBeenCalled()
+                        if (initialised) {
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                1,
+                                'update',
+                                {
+                                    isActive: true,
+                                },
+                            )
+                            expect(window.ObiSDK).toHaveBeenNthCalledWith(
+                                2,
+                                'startSession',
+                                {
+                                    planUuid: planUUID,
+                                    skipStartDialog: false,
+                                },
+                            )
+                        }
+                    })
+
+                    it('should activate and start a session with skipStartDialog defaulting to false when not provided', () => {
                         const planUUID = '00000000-0000-0000-0000-000000000000'
 
                         expect(() => {
@@ -257,6 +358,7 @@ describe('useCanduRouter', () => {
                                 'startSession',
                                 {
                                     planUuid: planUUID,
+                                    skipStartDialog: false,
                                 },
                             )
                         }

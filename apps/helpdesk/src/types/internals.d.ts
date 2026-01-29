@@ -5,7 +5,10 @@ import { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { SystemMessage } from 'utils'
 
 function ObiSDK(action: 'update', payload: { isActive: boolean }): void
-function ObiSDK(action: 'startSession', payload: { planUuid: string }): void
+function ObiSDK(
+    action: 'startSession',
+    payload: { planUuid: string; skipStartDialog: boolean },
+): void
 function ObiSDK(action: 'stopSession'): void
 
 declare global {

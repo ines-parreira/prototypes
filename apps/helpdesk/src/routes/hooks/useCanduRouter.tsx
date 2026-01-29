@@ -94,6 +94,13 @@ function growthParsePlanUUID(searchParams: URLSearchParams): string {
     return planUUID
 }
 
+function growthParseSkipStartDialog(searchParams: URLSearchParams): boolean {
+    const skipStartDialogParam = searchParams
+        .get('skipStartDialog')
+        ?.toLocaleLowerCase()
+    return skipStartDialogParam === 'true'
+}
+
 function growthRouter(pathname: string, searchParams: URLSearchParams) {
     switch (pathname) {
         case '/obi/activate':
@@ -105,9 +112,11 @@ function growthRouter(pathname: string, searchParams: URLSearchParams) {
         case '/obi/startSession':
             {
                 const planUUID = growthParsePlanUUID(searchParams)
+                const skipStartDialog = growthParseSkipStartDialog(searchParams)
 
                 window.ObiSDK?.('startSession', {
                     planUuid: planUUID,
+                    skipStartDialog: skipStartDialog,
                 })
             }
             break
@@ -117,10 +126,12 @@ function growthRouter(pathname: string, searchParams: URLSearchParams) {
         case '/obi/activateAndStartSession':
             {
                 const planUUID = growthParsePlanUUID(searchParams)
+                const skipStartDialog = growthParseSkipStartDialog(searchParams)
 
                 window.ObiSDK?.('update', { isActive: true })
                 window.ObiSDK?.('startSession', {
                     planUuid: planUUID,
+                    skipStartDialog: skipStartDialog,
                 })
             }
             break
