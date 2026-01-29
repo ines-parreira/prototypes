@@ -2,7 +2,7 @@ import type React from 'react'
 import { createRef, useContext } from 'react'
 
 import { DateAndTimeFormatting } from '@repo/utils'
-import { isArray, map, startCase, truncate } from 'lodash'
+import { isArray, map, truncate } from 'lodash'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import type {
@@ -227,7 +227,7 @@ export function FieldWrapper({
 }) {
     return (
         <div className={css.fieldWrapper}>
-            <StaticField label={startCase(label)}>{children}</StaticField>
+            <StaticField label={label}>{children}</StaticField>
         </div>
     )
 }

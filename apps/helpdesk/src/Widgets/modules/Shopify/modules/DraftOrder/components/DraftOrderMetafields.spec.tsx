@@ -1,8 +1,16 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+
+import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
+
+import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import WrappedDraftOrderMetafields, {
     DraftOrderMetafields,
@@ -22,9 +30,82 @@ const store = mockStore({
     currentAccount: fromJS({ domain: 'domain' }),
 })
 
-const renderWithProviders = (ui: React.ReactElement) => {
-    return render(<Provider store={store}>{ui}</Provider>)
+const integrationContext: IntegrationContextType = {
+    integration: Map<string, unknown>(
+        fromJS({
+            name: 'test-store',
+        }),
+    ),
+    integrationId: 1,
 }
+
+const server = setupServer()
+
+const createMockDefinitions = (
+    metafields: { namespace: string; key: string }[],
+) =>
+    metafields.map((mf, index) => ({
+        id: String(index + 1),
+        namespace: mf.namespace,
+        key: mf.key,
+        name: mf.key
+            .split('_')
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' '),
+        ownerType: 'DraftOrder' as const,
+        type: 'single_line_text_field' as const,
+    }))
+
+const mockListMetafieldDefinitions = mockListMetafieldDefinitionsHandler(
+    async ({ data }) =>
+        HttpResponse.json({
+            ...data,
+            data: [],
+        }),
+)
+
+let queryClient: QueryClient
+
+const renderWithProviders = (ui: React.ReactElement) => {
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+                <IntegrationContext.Provider value={integrationContext}>
+                    {ui}
+                </IntegrationContext.Provider>
+            </Provider>
+        </QueryClientProvider>,
+    )
+}
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            },
+        },
+        logger: {
+            log: console.log,
+            warn: console.warn,
+            error: () => {},
+        },
+    })
+    server.use(mockListMetafieldDefinitions.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('DraftOrderMetafields', () => {
     describe('empty state', () => {
@@ -49,7 +130,7 @@ describe('DraftOrderMetafields', () => {
     })
 
     describe('successful data rendering', () => {
-        it('should render metafields when data is available', () => {
+        it('should render metafields when data is available', async () => {
             const metafields = [
                 {
                     type: 'single_line_text_field' as const,
@@ -65,17 +146,28 @@ describe('DraftOrderMetafields', () => {
                 },
             ]
 
+            server.use(
+                mockListMetafieldDefinitionsHandler(async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: createMockDefinitions(metafields),
+                    }),
+                ).handler,
+            )
+
             renderWithProviders(
                 <DraftOrderMetafields metafields={metafields} />,
             )
 
-            expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+            })
             expect(screen.getByText('value_1')).toBeInTheDocument()
             expect(screen.getByText('Custom Field 2:')).toBeInTheDocument()
             expect(screen.getByText('value_2')).toBeInTheDocument()
         })
 
-        it('should render all metafields from the props', () => {
+        it('should render all metafields from the props', async () => {
             const metafields = Array.from({ length: 5 }, (_, i) => ({
                 type: 'single_line_text_field' as const,
                 namespace: 'custom',
@@ -83,10 +175,22 @@ describe('DraftOrderMetafields', () => {
                 value: `value_${i + 1}`,
             }))
 
+            server.use(
+                mockListMetafieldDefinitionsHandler(async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: createMockDefinitions(metafields),
+                    }),
+                ).handler,
+            )
+
             renderWithProviders(
                 <DraftOrderMetafields metafields={metafields} />,
             )
 
+            await waitFor(() => {
+                expect(screen.getByText('Field 1:')).toBeInTheDocument()
+            })
             for (let i = 1; i <= 5; i++) {
                 expect(screen.getByText(`Field ${i}:`)).toBeInTheDocument()
                 expect(screen.getByText(`value_${i}`)).toBeInTheDocument()
@@ -100,7 +204,7 @@ describe('WrappedDraftOrderMetafields', () => {
         jest.clearAllMocks()
     })
 
-    it('should render expanded by default with MetafieldsContainer wrapper', () => {
+    it('should render expanded by default with MetafieldsContainer wrapper', async () => {
         const metafields = [
             {
                 type: 'single_line_text_field' as const,
@@ -110,13 +214,24 @@ describe('WrappedDraftOrderMetafields', () => {
             },
         ]
 
+        server.use(
+            mockListMetafieldDefinitionsHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: createMockDefinitions(metafields),
+                }),
+            ).handler,
+        )
+
         renderWithProviders(
             <WrappedDraftOrderMetafields metafields={metafields} />,
         )
 
         expect(screen.getByText('Draft Order Metafields')).toBeInTheDocument()
         expect(screen.getByTitle('Fold this card')).toBeInTheDocument()
-        expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+        })
         expect(screen.getByText('value_1')).toBeInTheDocument()
     })
 
@@ -136,7 +251,7 @@ describe('WrappedDraftOrderMetafields', () => {
         )
     })
 
-    it('should collapse when toggle button is clicked', () => {
+    it('should collapse when toggle button is clicked', async () => {
         const metafields = [
             {
                 type: 'single_line_text_field' as const,
@@ -146,11 +261,22 @@ describe('WrappedDraftOrderMetafields', () => {
             },
         ]
 
+        server.use(
+            mockListMetafieldDefinitionsHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: createMockDefinitions(metafields),
+                }),
+            ).handler,
+        )
+
         renderWithProviders(
             <WrappedDraftOrderMetafields metafields={metafields} />,
         )
 
-        expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Custom Field 1:')).toBeInTheDocument()
+        })
         expect(screen.getByText('value_1')).toBeInTheDocument()
 
         const toggleButton = screen.getByTitle('Fold this card')

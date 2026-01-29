@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { startCase } from 'lodash'
+
 import type { ShopifyMetafield } from '@gorgias/helpdesk-queries'
 
 import {
@@ -23,12 +25,14 @@ export type ExtendedShopifyMetafield = ShopifyMetafield & {
     owner_resource: string
 }
 
+export type MetafieldWithName = ShopifyMetafield & { name?: string }
+
 export type Props = {
-    metafield: ShopifyMetafield
+    metafield: MetafieldWithName
 }
 
 export default function Metafield({ metafield }: Props) {
-    const label = metafield.key || ''
+    const label = metafield.name || startCase(metafield.key || '')
 
     const renderField = (content: ReactNode) => (
         <FieldWrapper label={label}>{content}</FieldWrapper>

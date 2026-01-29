@@ -4,11 +4,15 @@ import { useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { mockListShopifyOrderMetafieldsHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockListMetafieldDefinitionsHandler,
+    mockListShopifyOrderMetafieldsHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
@@ -24,6 +28,7 @@ const store = mockStore({
 })
 
 const mockListShopifyOrderMetafields = mockListShopifyOrderMetafieldsHandler()
+const mockListMetafieldDefinitions = mockListMetafieldDefinitionsHandler()
 
 const server = setupServer()
 let queryClient: QueryClient
@@ -40,7 +45,10 @@ beforeEach(() => {
             },
         },
     })
-    server.use(mockListShopifyOrderMetafields.handler)
+    server.use(
+        mockListShopifyOrderMetafields.handler,
+        mockListMetafieldDefinitions.handler,
+    )
     jest.clearAllMocks()
 })
 
@@ -54,8 +62,26 @@ afterAll(() => {
 })
 
 describe('AfterContent', () => {
-    it('should render source metafields when useSourceMetafields flag is enabled', () => {
+    it('should render source metafields when useSourceMetafields flag is enabled', async () => {
         mockUseFlag.mockReturnValue(true)
+
+        const { handler } = mockListMetafieldDefinitionsHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: [
+                        {
+                            id: '1',
+                            namespace: 'test_namespace',
+                            key: 'source_key',
+                            name: 'Source Key',
+                            ownerType: 'Order',
+                            type: 'single_line_text_field',
+                        },
+                    ],
+                }),
+        )
+        server.use(handler)
 
         const sourceMetafields = [
             {
@@ -100,7 +126,9 @@ describe('AfterContent', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Source Key:')).toBeInTheDocument()
+        })
         expect(screen.getByText('source_value')).toBeInTheDocument()
     })
 

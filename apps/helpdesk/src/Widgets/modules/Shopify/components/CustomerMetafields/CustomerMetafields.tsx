@@ -1,7 +1,10 @@
 import { Skeleton } from '@gorgias/axiom'
 import { useListShopifyCustomerMetafields } from '@gorgias/helpdesk-queries'
 
-import { Metafield } from 'Widgets/modules/Shopify/modules/Metafields'
+import {
+    Metafield,
+    useMetafieldsFilter,
+} from 'Widgets/modules/Shopify/modules/Metafields'
 import { getMetafieldsFromResponse } from 'Widgets/modules/Shopify/modules/Metafields/helpers/getMetafieldsFromResponse'
 
 import type { MetafieldProps } from './types'
@@ -14,6 +17,7 @@ export function CustomerMetafields({
     metafields: sourceMetafields,
     useSourceMetafields,
 }: MetafieldProps) {
+    const { filterMetafields } = useMetafieldsFilter()
     const { data, isLoading, isError } = useListShopifyCustomerMetafields(
         integrationId,
         customerId,
@@ -45,7 +49,7 @@ export function CustomerMetafields({
     }
 
     const metafields = useSourceMetafields
-        ? sourceMetafields
+        ? filterMetafields(sourceMetafields ?? [])
         : getMetafieldsFromResponse(data)
 
     if (!metafields?.length) {

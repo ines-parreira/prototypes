@@ -7,6 +7,7 @@ import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 import {
     Metafield,
     MetafieldsContainer,
+    useMetafieldsFilter,
 } from 'Widgets/modules/Shopify/modules/Metafields'
 import { getMetafieldsFromResponse } from 'Widgets/modules/Shopify/modules/Metafields/helpers/getMetafieldsFromResponse'
 
@@ -51,6 +52,7 @@ export function OrderMetafields({
     metafields: sourceMetafields,
     useSourceMetafields,
 }: Props) {
+    const { filterMetafields } = useMetafieldsFilter()
     const { data, isLoading, isError } = useListShopifyOrderMetafields(
         integrationId,
         orderId,
@@ -83,7 +85,7 @@ export function OrderMetafields({
     }
 
     const metafields = useSourceMetafields
-        ? sourceMetafields
+        ? filterMetafields(sourceMetafields ?? [])
         : getMetafieldsFromResponse(data)
 
     if (!metafields?.length) {

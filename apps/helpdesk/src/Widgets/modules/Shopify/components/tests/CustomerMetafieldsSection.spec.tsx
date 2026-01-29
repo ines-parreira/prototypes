@@ -5,6 +5,12 @@ import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
 
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
@@ -13,6 +19,35 @@ import CustomerMetafieldsSection from '../CustomerMetafieldsSection'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
+
+const mockStore = configureMockStore()
+const store = mockStore({
+    currentAccount: fromJS({ domain: 'domain' }),
+})
+
+const server = setupServer()
+
+const mockListMetafieldDefinitions = mockListMetafieldDefinitionsHandler(
+    async ({ data }) =>
+        HttpResponse.json({
+            ...data,
+            data: [],
+        }),
+)
+
+let queryClient: QueryClient
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('<CustomerMetafieldsSection />', () => {
     const mockShopifyContextValue = {
@@ -32,18 +67,22 @@ describe('<CustomerMetafieldsSection />', () => {
         },
     }
 
-    let queryClient: QueryClient
-
     beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(true)
         queryClient = new QueryClient({
             defaultOptions: {
                 queries: {
                     retry: false,
                 },
             },
+            logger: {
+                log: console.log,
+                warn: console.warn,
+                error: () => {},
+            },
         })
-        jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(true)
+        server.use(mockListMetafieldDefinitions.handler)
     })
 
     afterEach(() => {
@@ -53,13 +92,15 @@ describe('<CustomerMetafieldsSection />', () => {
     const renderComponent = (isEditing: boolean) => {
         return render(
             <QueryClientProvider client={queryClient}>
-                <ShopifyContext.Provider value={mockShopifyContextValue}>
-                    <IntegrationContext.Provider
-                        value={mockIntegrationContextValue}
-                    >
-                        <CustomerMetafieldsSection isEditing={isEditing} />
-                    </IntegrationContext.Provider>
-                </ShopifyContext.Provider>
+                <Provider store={store}>
+                    <ShopifyContext.Provider value={mockShopifyContextValue}>
+                        <IntegrationContext.Provider
+                            value={mockIntegrationContextValue}
+                        >
+                            <CustomerMetafieldsSection isEditing={isEditing} />
+                        </IntegrationContext.Provider>
+                    </ShopifyContext.Provider>
+                </Provider>
             </QueryClientProvider>,
         )
     }

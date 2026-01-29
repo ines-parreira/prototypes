@@ -5,6 +5,7 @@ import type { ShopifyMetafield } from '@gorgias/helpdesk-types'
 import {
     Metafield,
     MetafieldsContainer,
+    useMetafieldsFilter,
 } from 'Widgets/modules/Shopify/modules/Metafields'
 
 import css from './DraftOrderMetafields.less'
@@ -30,7 +31,11 @@ export default function WrappedDraftOrderMetafields({ metafields }: Props) {
 }
 
 export function DraftOrderMetafields({ metafields }: Props) {
-    if (!metafields?.length) {
+    const { filterMetafields } = useMetafieldsFilter()
+
+    const filteredMetafields = metafields ? filterMetafields(metafields) : []
+
+    if (!filteredMetafields.length) {
         return (
             <span className={css.infoMessage}>
                 Draft order has no metafields populated.
@@ -40,7 +45,7 @@ export function DraftOrderMetafields({ metafields }: Props) {
 
     return (
         <>
-            {metafields.map((field, index) => (
+            {filteredMetafields.map((field, index) => (
                 <Metafield key={index} metafield={field} />
             ))}
         </>
