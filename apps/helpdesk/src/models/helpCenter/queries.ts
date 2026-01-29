@@ -1,7 +1,15 @@
 import { useCallback, useMemo } from 'react'
 
-import type { UseQueryOptions } from '@tanstack/react-query'
-import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
+import type {
+    UseInfiniteQueryOptions,
+    UseQueryOptions,
+} from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    useMutation,
+    useQueries,
+    useQuery,
+} from '@tanstack/react-query'
 
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
@@ -30,6 +38,7 @@ import {
     deleteHelpCenterTranslation,
     getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
+    getArticleTranslationVersion,
     getCategoryTree,
     getFileIngestion,
     getFileIngestionArticleTitlesAndStatus,
@@ -42,6 +51,7 @@ import {
     getIngestionLogs,
     getKnowledgeHubArticles,
     getKnowledgeStatus,
+    listArticleTranslationVersions,
     listIngestedResources,
     startIngestion,
     updateAllIngestedResourcesStatus,
@@ -174,6 +184,30 @@ export const helpCenterKeys = {
             'translations',
             queryParams,
         ].filter(Boolean),
+    articleTranslationVersions: (
+        helpCenterId: number,
+        articleId: number,
+        locale: string,
+        queryParams?: Paths.ListArticleTranslationVersions.QueryParameters,
+    ) =>
+        [
+            ...helpCenterKeys.article(helpCenterId, articleId),
+            'versions',
+            locale,
+            queryParams,
+        ].filter(Boolean),
+    articleTranslationVersion: (
+        helpCenterId: number,
+        articleId: number,
+        locale: string,
+        versionId: number,
+    ) =>
+        [
+            ...helpCenterKeys.article(helpCenterId, articleId),
+            'version',
+            locale,
+            versionId,
+        ] as const,
 }
 
 export const helpCenterArticleKeys = (
@@ -1249,5 +1283,108 @@ export const useDeleteArticleTranslationDraft = (
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             deleteArticleTranslationDraft(client, pathParams),
         ...overrides,
+    })
+}
+
+export const useGetArticleTranslationVersions = (
+    pathParams: Paths.ListArticleTranslationVersions.PathParameters,
+    queryParams?: Paths.ListArticleTranslationVersions.QueryParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listArticleTranslationVersions>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.articleTranslationVersions(
+            pathParams.help_center_id,
+            pathParams.article_id,
+            pathParams.locale,
+            queryParams,
+        ),
+        queryFn: async () =>
+            listArticleTranslationVersions(client, pathParams, queryParams),
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            pathParams.help_center_id !== undefined &&
+            pathParams.article_id !== undefined &&
+            !!pathParams.locale &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useInfiniteGetArticleTranslationVersions = (
+    pathParams: Paths.ListArticleTranslationVersions.PathParameters,
+    queryParams?: Omit<
+        Paths.ListArticleTranslationVersions.QueryParameters,
+        'page'
+    >,
+    overrides?: UseInfiniteQueryOptions<
+        Awaited<ReturnType<typeof listArticleTranslationVersions>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useInfiniteQuery({
+        queryKey: [
+            ...helpCenterKeys.articleTranslationVersions(
+                pathParams.help_center_id,
+                pathParams.article_id,
+                pathParams.locale,
+                queryParams,
+            ),
+            'infinite',
+        ],
+        queryFn: async ({ pageParam = 1 }) =>
+            listArticleTranslationVersions(client, pathParams, {
+                ...queryParams,
+                page: pageParam,
+            }),
+        getNextPageParam: (lastPage) => {
+            if (!lastPage?.meta) return undefined
+            const { page, nb_pages } = lastPage.meta
+            return page < nb_pages ? page + 1 : undefined
+        },
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            pathParams.help_center_id !== undefined &&
+            pathParams.article_id !== undefined &&
+            !!pathParams.locale &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleTranslationVersion = (
+    pathParams: Paths.GetArticleTranslationVersion.PathParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleTranslationVersion>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.articleTranslationVersion(
+            pathParams.help_center_id,
+            pathParams.article_id,
+            pathParams.locale,
+            pathParams.version_id,
+        ),
+        queryFn: async () => getArticleTranslationVersion(client, pathParams),
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            pathParams.help_center_id !== undefined &&
+            pathParams.article_id !== undefined &&
+            !!pathParams.locale &&
+            pathParams.version_id !== undefined &&
+            (overrides === undefined || overrides.enabled),
     })
 }

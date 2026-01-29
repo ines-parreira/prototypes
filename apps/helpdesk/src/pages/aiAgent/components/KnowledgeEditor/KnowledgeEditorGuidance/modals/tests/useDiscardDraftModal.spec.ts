@@ -61,6 +61,7 @@ describe('useDiscardDraftModal', () => {
         versionStatus: 'latest_draft',
         activeModal: 'discard',
         isUpdating: false,
+        historicalVersion: null,
     }
 
     const defaultConfig = {

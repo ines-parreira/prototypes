@@ -34,6 +34,7 @@ describe('guidanceReducer', () => {
         versionStatus: 'latest_draft',
         activeModal: null,
         isUpdating: false,
+        historicalVersion: null,
     }
 
     describe('SET_MODE', () => {
@@ -445,6 +446,37 @@ describe('guidanceReducer', () => {
 
             expect(result.isAutoSaving).toBe(false)
         })
+
+        it('should set hasAutoSavedInSession to true', () => {
+            const stateNotAutoSaved = {
+                ...initialState,
+                hasAutoSavedInSession: false,
+            }
+
+            const result = guidanceReducer(stateNotAutoSaved, {
+                type: 'MARK_AS_SAVED',
+                payload: {
+                    title: 'Title',
+                    content: 'Content',
+                    guidance: mockGuidance,
+                },
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
+        })
+
+        it('should set hasAutoSavedInSession to true when payload is undefined', () => {
+            const stateNotAutoSaved = {
+                ...initialState,
+                hasAutoSavedInSession: false,
+            }
+
+            const result = guidanceReducer(stateNotAutoSaved, {
+                type: 'MARK_AS_SAVED',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
+        })
     })
 
     describe('SET_AUTO_SAVING', () => {
@@ -593,6 +625,24 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.activeModal).toBe('delete')
+        })
+
+        it('should set activeModal to publish', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'publish',
+            })
+
+            expect(result.activeModal).toBe('publish')
+        })
+
+        it('should set activeModal to restore', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODAL',
+                payload: 'restore',
+            })
+
+            expect(result.activeModal).toBe('restore')
         })
 
         it('should set activeModal to null', () => {
@@ -745,6 +795,251 @@ describe('guidanceReducer', () => {
                 title: 'New Article Title',
                 content: 'New Article Content',
             })
+        })
+    })
+
+    describe('VIEW_HISTORICAL_VERSION', () => {
+        const historicalVersionPayload = {
+            id: 5,
+            version: 3,
+            title: 'Historical Title',
+            excerpt: 'Historical Excerpt',
+            content: 'Historical Content',
+            slug: 'historical-title',
+            seo_meta: null,
+            created_datetime: '2024-01-05T00:00:00Z',
+            published_datetime: '2024-01-10T00:00:00Z',
+            publisher_user_id: 42,
+            commit_message: 'Published version 3',
+        }
+
+        it('should set historicalVersion with correct data', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: historicalVersionPayload,
+            })
+
+            expect(result.historicalVersion).toEqual({
+                versionId: 5,
+                version: 3,
+                title: 'Historical Title',
+                content: 'Historical Content',
+                publishedDatetime: '2024-01-10T00:00:00Z',
+                publisherUserId: 42,
+                commitMessage: 'Published version 3',
+            })
+        })
+
+        it('should update title and content with historical version values', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: historicalVersionPayload,
+            })
+
+            expect(result.title).toBe('Historical Title')
+            expect(result.content).toBe('Historical Content')
+        })
+
+        it('should set guidanceMode to read', () => {
+            const stateInEdit = {
+                ...initialState,
+                guidanceMode: 'edit' as const,
+            }
+            const result = guidanceReducer(stateInEdit, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: historicalVersionPayload,
+            })
+
+            expect(result.guidanceMode).toBe('read')
+        })
+
+        it('should handle null title gracefully', () => {
+            const payloadWithNullTitle = {
+                ...historicalVersionPayload,
+                title: null as unknown as string,
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: payloadWithNullTitle,
+            })
+
+            expect(result.historicalVersion?.title).toBe('')
+            expect(result.title).toBe('')
+        })
+
+        it('should handle null content gracefully', () => {
+            const payloadWithNullContent = {
+                ...historicalVersionPayload,
+                content: null as unknown as string,
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: payloadWithNullContent,
+            })
+
+            expect(result.historicalVersion?.content).toBe('')
+            expect(result.content).toBe('')
+        })
+
+        it('should handle undefined title gracefully', () => {
+            const payloadWithUndefinedTitle = {
+                ...historicalVersionPayload,
+                title: undefined as unknown as string,
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: payloadWithUndefinedTitle,
+            })
+
+            expect(result.historicalVersion?.title).toBe('')
+            expect(result.title).toBe('')
+        })
+
+        it('should handle undefined content gracefully', () => {
+            const payloadWithUndefinedContent = {
+                ...historicalVersionPayload,
+                content: undefined as unknown as string,
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: payloadWithUndefinedContent,
+            })
+
+            expect(result.historicalVersion?.content).toBe('')
+            expect(result.content).toBe('')
+        })
+
+        it('should preserve other state properties', () => {
+            const stateWithFullscreen = {
+                ...initialState,
+                isFullscreen: true,
+                isDetailsView: false,
+            }
+
+            const result = guidanceReducer(stateWithFullscreen, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: historicalVersionPayload,
+            })
+
+            expect(result.isFullscreen).toBe(true)
+            expect(result.isDetailsView).toBe(false)
+        })
+
+        it('should handle missing optional fields', () => {
+            const minimalPayload = {
+                id: 1,
+                version: 1,
+                title: 'Minimal Title',
+                excerpt: 'Minimal Excerpt',
+                content: 'Minimal Content',
+                slug: 'minimal-title',
+                seo_meta: null,
+                created_datetime: '2024-01-01T00:00:00Z',
+                published_datetime: null,
+            }
+
+            const result = guidanceReducer(initialState, {
+                type: 'VIEW_HISTORICAL_VERSION',
+                payload: minimalPayload,
+            })
+
+            expect(result.historicalVersion).toEqual({
+                versionId: 1,
+                version: 1,
+                title: 'Minimal Title',
+                content: 'Minimal Content',
+                publishedDatetime: null,
+                publisherUserId: undefined,
+                commitMessage: undefined,
+            })
+        })
+    })
+
+    describe('CLEAR_HISTORICAL_VERSION', () => {
+        const stateWithHistoricalVersion: GuidanceState = {
+            ...initialState,
+            historicalVersion: {
+                versionId: 5,
+                version: 3,
+                title: 'Historical Title',
+                content: 'Historical Content',
+                publishedDatetime: '2024-01-10T00:00:00Z',
+                publisherUserId: 42,
+                commitMessage: 'Published version 3',
+            },
+            title: 'Historical Title',
+            content: 'Historical Content',
+            guidanceMode: 'read',
+        }
+
+        it('should set historicalVersion to null', () => {
+            const result = guidanceReducer(stateWithHistoricalVersion, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.historicalVersion).toBeNull()
+        })
+
+        it('should restore title from guidance', () => {
+            const result = guidanceReducer(stateWithHistoricalVersion, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.title).toBe(mockGuidance.title)
+        })
+
+        it('should restore content from guidance', () => {
+            const result = guidanceReducer(stateWithHistoricalVersion, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.content).toBe(mockGuidance.content)
+        })
+
+        it('should handle undefined guidance gracefully', () => {
+            const stateWithoutGuidance: GuidanceState = {
+                ...stateWithHistoricalVersion,
+                guidance: undefined,
+            }
+
+            const result = guidanceReducer(stateWithoutGuidance, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.historicalVersion).toBeNull()
+            expect(result.title).toBe('')
+            expect(result.content).toBe('')
+        })
+
+        it('should preserve other state properties', () => {
+            const stateWithOtherProps: GuidanceState = {
+                ...stateWithHistoricalVersion,
+                isFullscreen: true,
+                isDetailsView: false,
+                visibility: false,
+            }
+
+            const result = guidanceReducer(stateWithOtherProps, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.isFullscreen).toBe(true)
+            expect(result.isDetailsView).toBe(false)
+            expect(result.visibility).toBe(false)
+        })
+
+        it('should work when historicalVersion is already null', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.historicalVersion).toBeNull()
+            expect(result.title).toBe(mockGuidance.title)
+            expect(result.content).toBe(mockGuidance.content)
         })
     })
 

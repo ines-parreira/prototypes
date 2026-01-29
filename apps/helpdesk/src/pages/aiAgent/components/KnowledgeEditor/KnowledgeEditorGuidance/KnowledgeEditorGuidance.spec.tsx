@@ -163,6 +163,21 @@ jest.mock(
     }),
 )
 
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetArticleTranslationVersions: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+    useInfiniteGetArticleTranslationVersions: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+        isFetchingNextPage: false,
+        hasNextPage: false,
+        fetchNextPage: jest.fn(),
+    })),
+}))
+
 jest.mock('models/api/types', () => ({
     ...jest.requireActual('models/api/types'),
     isGorgiasApiError: jest.fn(),

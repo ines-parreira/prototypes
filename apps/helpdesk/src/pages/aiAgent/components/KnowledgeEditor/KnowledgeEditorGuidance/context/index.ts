@@ -12,5 +12,7 @@ export type {
     GuidanceModeType,
     ModalType,
     PlaygroundState,
+    HistoricalVersionState,
+    ArticleTranslationVersion,
 } from './types'
 export { createInitialState } from './types'

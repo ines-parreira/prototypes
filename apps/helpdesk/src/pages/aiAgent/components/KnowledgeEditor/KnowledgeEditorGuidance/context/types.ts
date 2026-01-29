@@ -4,10 +4,30 @@ import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
+import type { Components } from 'rest_api/help_center_api/client.generated'
 
 export type GuidanceModeType = 'create' | 'edit' | 'read'
 
-export type ModalType = 'unsaved' | 'discard' | 'delete' | 'publish' | null
+export type ModalType =
+    | 'unsaved'
+    | 'discard'
+    | 'delete'
+    | 'publish'
+    | 'restore'
+    | null
+
+export type HistoricalVersionState = {
+    versionId: number
+    version: number
+    title: string
+    content: string
+    publishedDatetime: string | null
+    publisherUserId?: number
+    commitMessage?: string
+} | null
+
+export type ArticleTranslationVersion =
+    Components.Schemas.ArticleTranslationVersionResponseDto
 
 export type GuidanceState = {
     // Mode & UI
@@ -32,6 +52,9 @@ export type GuidanceState = {
 
     // Version info (edit only)
     versionStatus: GetArticleVersionStatus
+
+    // Historical version (read only mode - viewing old published versions)
+    historicalVersion: HistoricalVersionState
 
     // Modal state
     activeModal: ModalType
@@ -74,6 +97,11 @@ export type GuidanceReducerAction =
               mode: GuidanceModeType
           }
       }
+    | {
+          type: 'VIEW_HISTORICAL_VERSION'
+          payload: ArticleTranslationVersion
+      }
+    | { type: 'CLEAR_HISTORICAL_VERSION' }
 
 export type GuidanceContextConfig = {
     shopName: string
@@ -153,6 +181,7 @@ export const createInitialState = (
         isFromTemplate: template !== undefined && initialMode === 'create',
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',
+        historicalVersion: null,
         activeModal: null,
         isUpdating: false,
     }

@@ -9,8 +9,12 @@ import {
     useBulkCopyArticles,
     useBulkDeleteArticles,
     useBulkUpdateArticleTranslationVisibility,
+    useDeleteArticleTranslationDraft,
+    useGetArticleTranslationVersion,
+    useGetArticleTranslationVersions,
     useGetHelpCenterStatistics,
     useGetKnowledgeHubArticles,
+    useInfiniteGetArticleTranslationVersions,
 } from './queries'
 import * as resources from './resources'
 import type {
@@ -1267,5 +1271,710 @@ describe('useGetHelpCenterStatistics', () => {
                 },
             )
         })
+    })
+})
+
+describe('useGetArticleTranslationVersions', () => {
+    let queryClient: QueryClient
+    const mockListArticleTranslationVersions = jest.spyOn(
+        resources,
+        'listArticleTranslationVersions',
+    )
+
+    const mockVersionsResponse = {
+        object: 'list' as const,
+        data: [
+            {
+                id: 1,
+                version: 1,
+                title: 'Article Title v1',
+                excerpt: 'Article excerpt v1',
+                content: '<p>Article body v1</p>',
+                slug: 'article-title-v1',
+                seo_meta: null,
+                created_datetime: '2024-01-01T10:00:00Z',
+                published_datetime: '2024-01-01T10:00:00Z',
+            },
+            {
+                id: 2,
+                version: 2,
+                title: 'Article Title v2',
+                excerpt: 'Article excerpt v2',
+                content: '<p>Article body v2</p>',
+                slug: 'article-title-v2',
+                seo_meta: null,
+                created_datetime: '2024-01-15T10:00:00Z',
+                published_datetime: '2024-01-15T10:00:00Z',
+            },
+        ],
+        meta: {
+            page: 1,
+            per_page: 25,
+            nb_pages: 1,
+            item_count: 2,
+            current_page:
+                '/help-centers/1/articles/100/translations/en-US/versions?page=1&per_page=25',
+        },
+    }
+
+    const pathParams = {
+        help_center_id: 1,
+        article_id: 100,
+        locale: 'en-US',
+    }
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should fetch article translation versions successfully', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            mockVersionsResponse,
+        )
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual(mockVersionsResponse)
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should call listArticleTranslationVersions with correct parameters', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            mockVersionsResponse,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersions(pathParams, {
+                    page: 2,
+                    per_page: 10,
+                }),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockListArticleTranslationVersions).toHaveBeenCalledWith(
+            mockClient,
+            pathParams,
+            { page: 2, per_page: 10 },
+        )
+    })
+
+    it('should handle error state', async () => {
+        const mockError = new Error('Failed to fetch versions')
+        mockListArticleTranslationVersions.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isError).toBe(true))
+
+        expect(result.current.error).toBeTruthy()
+    })
+
+    it('should respect custom enabled override when false', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            mockVersionsResponse,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersions(pathParams, undefined, {
+                    enabled: false,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockListArticleTranslationVersions).not.toHaveBeenCalled()
+    })
+
+    it('should handle empty versions response', async () => {
+        const emptyResponse = {
+            object: 'list' as const,
+            data: [],
+            meta: {
+                page: 1,
+                per_page: 25,
+                nb_pages: 0,
+                item_count: 0,
+                current_page:
+                    '/help-centers/1/articles/100/translations/en-US/versions?page=1&per_page=25',
+            },
+        }
+        mockListArticleTranslationVersions.mockResolvedValue(emptyResponse)
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data?.data).toHaveLength(0)
+    })
+
+    it('should be disabled when locale is missing', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            mockVersionsResponse,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersions({
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: '',
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockListArticleTranslationVersions).not.toHaveBeenCalled()
+    })
+})
+
+describe('useInfiniteGetArticleTranslationVersions', () => {
+    let queryClient: QueryClient
+    const mockListArticleTranslationVersions = jest.spyOn(
+        resources,
+        'listArticleTranslationVersions',
+    )
+
+    const createPageResponse = (page: number, hasMore: boolean) => ({
+        object: 'list' as const,
+        data: [
+            {
+                id: page * 10 + 1,
+                version: page * 10 + 1,
+                title: `Article Title v${page * 10 + 1}`,
+                excerpt: `Article excerpt v${page * 10 + 1}`,
+                content: `<p>Article body v${page * 10 + 1}</p>`,
+                slug: `article-title-v${page * 10 + 1}`,
+                seo_meta: null,
+                created_datetime: '2024-01-01T10:00:00Z',
+                published_datetime: '2024-01-01T10:00:00Z',
+            },
+            {
+                id: page * 10 + 2,
+                version: page * 10 + 2,
+                title: `Article Title v${page * 10 + 2}`,
+                excerpt: `Article excerpt v${page * 10 + 2}`,
+                content: `<p>Article body v${page * 10 + 2}</p>`,
+                slug: `article-title-v${page * 10 + 2}`,
+                seo_meta: null,
+                created_datetime: '2024-01-02T10:00:00Z',
+                published_datetime: '2024-01-02T10:00:00Z',
+            },
+        ],
+        meta: {
+            page,
+            per_page: 2,
+            nb_pages: hasMore ? page + 1 : page,
+            item_count: 2,
+            current_page: `/help-centers/1/articles/100/translations/en-US/versions?page=${page}&per_page=2`,
+            next_page: hasMore
+                ? `/help-centers/1/articles/100/translations/en-US/versions?page=${page + 1}&per_page=2`
+                : undefined,
+        },
+    })
+
+    const pathParams = {
+        help_center_id: 1,
+        article_id: 100,
+        locale: 'en-US',
+    }
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should fetch first page of versions successfully', async () => {
+        const firstPageResponse = createPageResponse(1, true)
+        mockListArticleTranslationVersions.mockResolvedValue(firstPageResponse)
+
+        const { result } = renderHook(
+            () => useInfiniteGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data?.pages).toHaveLength(1)
+        expect(result.current.data?.pages[0]).toEqual(firstPageResponse)
+    })
+
+    it('should fetch next page when fetchNextPage is called', async () => {
+        const firstPageResponse = createPageResponse(1, true)
+        const secondPageResponse = createPageResponse(2, false)
+
+        mockListArticleTranslationVersions
+            .mockResolvedValueOnce(firstPageResponse)
+            .mockResolvedValueOnce(secondPageResponse)
+
+        const { result } = renderHook(
+            () => useInfiniteGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.hasNextPage).toBe(true)
+
+        await act(async () => {
+            await result.current.fetchNextPage()
+        })
+
+        await waitFor(() => {
+            expect(result.current.data?.pages).toHaveLength(2)
+        })
+
+        expect(result.current.data?.pages[1]).toEqual(secondPageResponse)
+    })
+
+    it('should not have next page when on last page', async () => {
+        const lastPageResponse = createPageResponse(1, false)
+        mockListArticleTranslationVersions.mockResolvedValue(lastPageResponse)
+
+        const { result } = renderHook(
+            () => useInfiniteGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.hasNextPage).toBe(false)
+    })
+
+    it('should handle error state', async () => {
+        const mockError = new Error('Failed to fetch versions')
+        mockListArticleTranslationVersions.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () => useInfiniteGetArticleTranslationVersions(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isError).toBe(true))
+
+        expect(result.current.error).toBeTruthy()
+    })
+
+    it('should respect custom enabled override', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            createPageResponse(1, false),
+        )
+
+        const { result } = renderHook(
+            () =>
+                useInfiniteGetArticleTranslationVersions(
+                    pathParams,
+                    undefined,
+                    {
+                        enabled: false,
+                    },
+                ),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockListArticleTranslationVersions).not.toHaveBeenCalled()
+    })
+
+    it('should pass query params correctly', async () => {
+        mockListArticleTranslationVersions.mockResolvedValue(
+            createPageResponse(1, false),
+        )
+
+        const { result } = renderHook(
+            () =>
+                useInfiniteGetArticleTranslationVersions(pathParams, {
+                    per_page: 10,
+                }),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockListArticleTranslationVersions).toHaveBeenCalledWith(
+            mockClient,
+            pathParams,
+            { per_page: 10, page: 1 },
+        )
+    })
+})
+
+describe('useGetArticleTranslationVersion', () => {
+    let queryClient: QueryClient
+    const mockGetArticleTranslationVersion = jest.spyOn(
+        resources,
+        'getArticleTranslationVersion',
+    )
+
+    const mockVersionResponse = {
+        id: 1,
+        version: 5,
+        title: 'Article Title',
+        excerpt: 'Article excerpt',
+        content: '<p>Article body content</p>',
+        slug: 'article-title',
+        seo_meta: null,
+        created_datetime: '2024-01-01T10:00:00Z',
+        published_datetime: '2024-01-15T10:00:00Z',
+    }
+
+    const pathParams = {
+        help_center_id: 1,
+        article_id: 100,
+        locale: 'en-US',
+        version_id: 5,
+    }
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should fetch a specific version successfully', async () => {
+        mockGetArticleTranslationVersion.mockResolvedValue(mockVersionResponse)
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersion(pathParams),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(result.current.data).toEqual(mockVersionResponse)
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should call getArticleTranslationVersion with correct parameters', async () => {
+        mockGetArticleTranslationVersion.mockResolvedValue(mockVersionResponse)
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersion(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+        expect(mockGetArticleTranslationVersion).toHaveBeenCalledWith(
+            mockClient,
+            pathParams,
+        )
+    })
+
+    it('should handle error state', async () => {
+        const mockError = new Error('Version not found')
+        mockGetArticleTranslationVersion.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () => useGetArticleTranslationVersion(pathParams),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isError).toBe(true))
+
+        expect(result.current.error).toBeTruthy()
+    })
+
+    it('should respect custom enabled override', async () => {
+        mockGetArticleTranslationVersion.mockResolvedValue(mockVersionResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersion(pathParams, {
+                    enabled: false,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockGetArticleTranslationVersion).not.toHaveBeenCalled()
+    })
+
+    it('should be disabled when version_id is undefined', async () => {
+        mockGetArticleTranslationVersion.mockResolvedValue(mockVersionResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersion({
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: 'en-US',
+                    version_id: undefined as unknown as number,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockGetArticleTranslationVersion).not.toHaveBeenCalled()
+    })
+
+    it('should be disabled when locale is empty', async () => {
+        mockGetArticleTranslationVersion.mockResolvedValue(mockVersionResponse)
+
+        const { result } = renderHook(
+            () =>
+                useGetArticleTranslationVersion({
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: '',
+                    version_id: 5,
+                }),
+            { wrapper },
+        )
+
+        expect(result.current.fetchStatus).toBe('idle')
+        expect(mockGetArticleTranslationVersion).not.toHaveBeenCalled()
+    })
+})
+
+describe('useDeleteArticleTranslationDraft', () => {
+    let queryClient: QueryClient
+    const mockDeleteArticleTranslationDraft = jest.spyOn(
+        resources,
+        'deleteArticleTranslationDraft',
+    )
+
+    const createMockAxiosResponse = (status: number = 204) => ({
+        data: {} as Record<string, never>,
+        status,
+        statusText: status === 204 ? 'No Content' : 'OK',
+        headers: {},
+        config: {} as any,
+    })
+
+    beforeEach(() => {
+        queryClient = new QueryClient({
+            defaultOptions: {
+                queries: { retry: false },
+            },
+        })
+        jest.clearAllMocks()
+    })
+
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    )
+
+    it('should successfully delete article translation draft', async () => {
+        const mockResponse = createMockAxiosResponse()
+        mockDeleteArticleTranslationDraft.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(
+            () => useDeleteArticleTranslationDraft(),
+            { wrapper },
+        )
+
+        let response
+        await act(async () => {
+            response = await result.current.mutateAsync([
+                undefined,
+                {
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: 'en-US',
+                },
+            ])
+        })
+
+        expect(response).toEqual(mockResponse)
+        expect(mockDeleteArticleTranslationDraft).toHaveBeenCalledWith(
+            mockClient,
+            {
+                help_center_id: 1,
+                article_id: 100,
+                locale: 'en-US',
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    it('should handle error when deletion fails', async () => {
+        const mockError = new Error('Failed to delete draft')
+        mockDeleteArticleTranslationDraft.mockRejectedValue(mockError)
+
+        const { result } = renderHook(
+            () => useDeleteArticleTranslationDraft(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    {
+                        help_center_id: 1,
+                        article_id: 100,
+                        locale: 'en-US',
+                    },
+                ])
+            } catch (error) {
+                expect(error).toEqual(mockError)
+            }
+        })
+
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
+        })
+    })
+
+    it('should call onSuccess callback after successful deletion', async () => {
+        const mockResponse = createMockAxiosResponse()
+        mockDeleteArticleTranslationDraft.mockResolvedValue(mockResponse)
+        const onSuccess = jest.fn()
+
+        const { result } = renderHook(
+            () => useDeleteArticleTranslationDraft({ onSuccess }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                {
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: 'en-US',
+                },
+            ])
+        })
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                mockResponse,
+                [
+                    undefined,
+                    {
+                        help_center_id: 1,
+                        article_id: 100,
+                        locale: 'en-US',
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should call onError callback when deletion fails', async () => {
+        const mockError = new Error('Deletion failed')
+        mockDeleteArticleTranslationDraft.mockRejectedValue(mockError)
+        const onError = jest.fn()
+
+        const { result } = renderHook(
+            () => useDeleteArticleTranslationDraft({ onError }),
+            { wrapper },
+        )
+
+        await act(async () => {
+            try {
+                await result.current.mutateAsync([
+                    undefined,
+                    {
+                        help_center_id: 1,
+                        article_id: 100,
+                        locale: 'en-US',
+                    },
+                ])
+            } catch {
+                // Expected to throw
+            }
+        })
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                mockError,
+                [
+                    undefined,
+                    {
+                        help_center_id: 1,
+                        article_id: 100,
+                        locale: 'en-US',
+                    },
+                ],
+                undefined,
+            )
+        })
+    })
+
+    it('should handle different locales', async () => {
+        const mockResponse = createMockAxiosResponse()
+        mockDeleteArticleTranslationDraft.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(
+            () => useDeleteArticleTranslationDraft(),
+            { wrapper },
+        )
+
+        await act(async () => {
+            await result.current.mutateAsync([
+                undefined,
+                {
+                    help_center_id: 1,
+                    article_id: 100,
+                    locale: 'fr-FR',
+                },
+            ])
+        })
+
+        expect(mockDeleteArticleTranslationDraft).toHaveBeenCalledWith(
+            mockClient,
+            {
+                help_center_id: 1,
+                article_id: 100,
+                locale: 'fr-FR',
+            },
+        )
     })
 })

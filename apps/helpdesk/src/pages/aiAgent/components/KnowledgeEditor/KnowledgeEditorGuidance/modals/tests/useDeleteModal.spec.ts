@@ -57,6 +57,7 @@ describe('useDeleteModal', () => {
         versionStatus: 'latest_draft',
         activeModal: 'delete',
         isUpdating: false,
+        historicalVersion: null,
     }
 
     const defaultConfig = {

@@ -17,6 +17,7 @@ export type GuidanceToolbarState =
     | { type: 'draft-view' }
     | { type: 'draft-edit' }
     | { type: 'create' }
+    | { type: 'viewing-historical-version' }
 
 export type GuidanceToolbarActions = {
     duplicateGuidanceToShops: (
@@ -42,10 +43,11 @@ export type GuidanceToolbarData = {
     editDisabledReason: string | undefined
     onTest: () => void
     isPlaygroundOpen: boolean
+    isVersionHistoryEnabled: boolean
 }
 
 export const useGuidanceToolbar = (): GuidanceToolbarData => {
-    const isPublishModalEnabled = useFlag(
+    const isVersionHistoryEnabled = useFlag(
         FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
     )
     const { error: notifyError, success: notifySuccess } = useNotify()
@@ -176,6 +178,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         state.guidanceMode,
         state.guidance?.isCurrent,
         hasDraft,
+        state.historicalVersion !== null,
     )
 
     const isDisabled =
@@ -190,7 +193,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         actions: {
             duplicateGuidanceToShops,
             onClickEdit,
-            onClickPublish: isPublishModalEnabled
+            onClickPublish: isVersionHistoryEnabled
                 ? onOpenPublishModal
                 : onClickPublishLegacy,
             onOpenDiscardModal,
@@ -203,6 +206,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         editDisabledReason,
         onTest: playground.onTest,
         isPlaygroundOpen: playground.isOpen,
+        isVersionHistoryEnabled,
     }
 }
 
@@ -210,7 +214,12 @@ const getToolbarState = (
     guidanceMode: 'create' | 'edit' | 'read',
     isCurrent: boolean | undefined,
     hasDraft: boolean,
+    isViewingHistoricalVersion: boolean,
 ): GuidanceToolbarState => {
+    if (isViewingHistoricalVersion) {
+        return { type: 'viewing-historical-version' }
+    }
+
     if (guidanceMode === 'create') {
         return { type: 'create' }
     }

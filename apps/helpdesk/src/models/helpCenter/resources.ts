@@ -414,3 +414,25 @@ export const deleteArticleTranslationDraft = async (
     const response = await client.deleteArticleTranslationDraft(pathParams)
     return response
 }
+
+export const listArticleTranslationVersions = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.ListArticleTranslationVersions.PathParameters,
+    queryParams?: Paths.ListArticleTranslationVersions.QueryParameters,
+) => {
+    if (!client) return null
+    const response = await client.listArticleTranslationVersions({
+        ...pathParams,
+        ...queryParams,
+    })
+    return response.data
+}
+
+export const getArticleTranslationVersion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetArticleTranslationVersion.PathParameters,
+) => {
+    if (!client) return null
+    const response = await client.getArticleTranslationVersion(pathParams)
+    return response.data
+}

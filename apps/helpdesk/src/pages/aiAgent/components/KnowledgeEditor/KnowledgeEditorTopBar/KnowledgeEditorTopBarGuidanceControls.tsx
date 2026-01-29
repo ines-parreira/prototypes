@@ -1,9 +1,11 @@
 import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
+import { useVersionHistory } from '../KnowledgeEditorGuidance/hooks/useVersionHistory'
 import { DuplicateGuidance } from '../shared/DuplicateGuidance/DuplicateGuidance'
 import { ButtonRenderMode } from '../shared/DuplicateGuidance/types'
 import type { TriggerProps } from '../shared/DuplicateGuidance/types'
+import { VersionHistoryButton } from '../shared/VersionHistoryButton'
 import {
     DeleteButton,
     DeleteDraftButton,
@@ -27,6 +29,7 @@ export const GuidanceToolbarControls = () => {
         editDisabledReason,
         onTest,
         isPlaygroundOpen,
+        isVersionHistoryEnabled,
     } = useGuidanceToolbar()
 
     const {
@@ -41,6 +44,7 @@ export const GuidanceToolbarControls = () => {
     const { state, config } = useGuidanceContext()
     const articleId = state.guidance?.id
     const shopName = config.shopName
+    const versionHistory = useVersionHistory()
 
     const copyButtonTrigger = ({ ref }: TriggerProps) => {
         const button = (
@@ -64,10 +68,75 @@ export const GuidanceToolbarControls = () => {
             </Tooltip>
         )
     }
+
+    const disabledCopyButtonTrigger = ({ ref }: TriggerProps) => (
+        <Button
+            ref={ref}
+            slot="button"
+            variant="secondary"
+            isDisabled={true}
+            icon="copy"
+        />
+    )
     switch (toolbarState.type) {
+        case 'viewing-historical-version':
+            return (
+                <>
+                    {isVersionHistoryEnabled && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
+                    <EditIconButton disabled={true} />
+                    {articleId && shopName && (
+                        <DuplicateGuidance
+                            articleIds={[articleId]}
+                            shopName={shopName}
+                            isDisabled={true}
+                            renderMode={ButtonRenderMode.Visible}
+                            trigger={disabledCopyButtonTrigger}
+                            placement="bottom right"
+                            onDuplicate={duplicateGuidanceToShops}
+                        />
+                    )}
+                    <DeleteButton
+                        onDelete={onOpenDeleteModal}
+                        disabled={true}
+                    />
+                    {!isPlaygroundOpen && (
+                        <TestButton onTest={onTest} disabled={true} />
+                    )}
+                </>
+            )
+
         case 'published-with-draft':
             return (
                 <>
+                    {isVersionHistoryEnabled && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
                     <EditIconButton
                         disabled={isDisabled}
                         disabledReason={editDisabledReason}
@@ -96,6 +165,21 @@ export const GuidanceToolbarControls = () => {
         case 'published-without-draft':
             return (
                 <>
+                    {isVersionHistoryEnabled && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
                     <EditIconButton
                         onEdit={canEdit ? onClickEdit : undefined}
                         disabled={isDisabled}
@@ -124,6 +208,21 @@ export const GuidanceToolbarControls = () => {
         case 'draft-view':
             return (
                 <>
+                    {isVersionHistoryEnabled && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
                     <EditIconButton
                         onEdit={onClickEdit}
                         disabled={isDisabled}
@@ -159,6 +258,25 @@ export const GuidanceToolbarControls = () => {
         case 'published-without-draft-edit':
             return (
                 <>
+                    {isVersionHistoryEnabled && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
+                    <DeleteDraftButton
+                        onDelete={onOpenDeleteModal}
+                        disabled={isDisabled}
+                    />
                     <Button
                         onClick={onClickPublish}
                         isDisabled
@@ -178,6 +296,21 @@ export const GuidanceToolbarControls = () => {
             const isPublishDisabled = isCreateMode || !isFormValid || isDisabled
             return (
                 <>
+                    {isVersionHistoryEnabled && !isCreateMode && (
+                        <VersionHistoryButton
+                            versions={versionHistory.versions}
+                            isLoading={versionHistory.isLoading}
+                            currentVersionId={versionHistory.currentVersionId}
+                            selectedVersionId={versionHistory.selectedVersionId}
+                            onSelectVersion={versionHistory.onSelectVersion}
+                            isDisabled={versionHistory.isDisabled}
+                            isFetchingNextPage={
+                                versionHistory.isFetchingNextPage
+                            }
+                            onLoadMore={versionHistory.onLoadMore}
+                            shouldLoadMore={versionHistory.shouldLoadMore}
+                        />
+                    )}
                     <DeleteDraftButton
                         onDelete={
                             isCreateMode ? onDiscardCreate : onOpenDiscardModal

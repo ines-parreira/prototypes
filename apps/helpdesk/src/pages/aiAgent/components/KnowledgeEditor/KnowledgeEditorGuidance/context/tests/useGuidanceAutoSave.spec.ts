@@ -70,6 +70,7 @@ describe('useGuidanceAutoSave', () => {
         versionStatus: 'latest_draft',
         activeModal: null,
         isUpdating: false,
+        historicalVersion: null,
     }
 
     const defaultConfig = {
