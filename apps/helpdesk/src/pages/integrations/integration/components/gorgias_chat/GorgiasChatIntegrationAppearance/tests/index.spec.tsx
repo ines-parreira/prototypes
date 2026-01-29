@@ -145,6 +145,8 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             </Router>,
         )
 
-        expect(screen.getByText(/REVAMP VERSION/)).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', { name: 'Settings' }),
+        ).toBeInTheDocument()
     })
 })

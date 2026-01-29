@@ -32,6 +32,8 @@ type Props = {
     showBackButton?: boolean
     title: string
     onSave?: () => void
+    isSaveDisabled?: boolean
+    isSaveLoading?: boolean
 }
 
 const ChatSettingsPageHeader = ({
@@ -39,6 +41,8 @@ const ChatSettingsPageHeader = ({
     backButtonLink,
     showBackButton = true,
     onSave,
+    isSaveDisabled,
+    isSaveLoading,
     title,
 }: Props) => {
     const _backButtonlink = useMemo<string | null>(() => {
@@ -110,6 +114,8 @@ const ChatSettingsPageHeader = ({
                             as={ButtonAs.Button}
                             size={ButtonSize.Md}
                             onClick={onSave}
+                            isDisabled={isSaveDisabled}
+                            isLoading={isSaveLoading}
                         >
                             Save
                         </Button>

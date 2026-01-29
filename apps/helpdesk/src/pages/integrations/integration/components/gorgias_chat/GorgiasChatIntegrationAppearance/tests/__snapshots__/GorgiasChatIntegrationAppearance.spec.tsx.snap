@@ -1977,7 +1977,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -1989,27 +1989,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -3478,7 +3482,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -3490,27 +3494,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -4948,7 +4956,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -4960,27 +4968,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -6418,7 +6430,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -6430,27 +6442,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -7888,7 +7904,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -7900,27 +7916,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -10726,7 +10746,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -10738,27 +10758,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >
@@ -12140,7 +12164,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       Standard logo
                     </h3>
                     <div
-                      class="previewHeaderLogoContainer mb-3"
+                      class="previewHeaderLogoContainer previewSpacing"
                     >
                       <div
                         class="previewHeaderLogoContent"
@@ -12164,27 +12188,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         </div>
                       </div>
                     </div>
-                    <a
-                      class="mb-3"
-                      href="#"
+                    <div
+                      class="uploadLinkContainer"
                     >
-                      <b>
-                        Replace
-                         image
-                      </b>
-                    </a>
-                    <span
-                      class="imageInfo"
-                    >
-                      <span
-                        class="ml-1"
+                      <a
+                        class="uploadLink"
+                        href="#"
                       >
-                         – 
+                        <b>
+                          Replace
+                           image
+                        </b>
+                      </a>
+                      <span
+                        class="imageInfo"
+                      >
+                        <span
+                          class="ml-1"
+                        >
+                           – 
+                        </span>
+                        <span>
+                          Works best with horizontal logos with transparent background. Max 500 KB.
+                        </span>
                       </span>
-                      <span>
-                        Works best with horizontal logos with transparent background. Max 500 KB.
-                      </span>
-                    </span>
+                    </div>
                     <div
                       class="d-none"
                     >
@@ -12210,7 +12238,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       </span>
                     </h3>
                     <div
-                      class="previewHeaderLogoContainer mb-3"
+                      class="previewHeaderLogoContainer previewSpacing"
                     >
                       <div
                         class="previewHeaderLogoContent"
@@ -12226,27 +12254,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         </div>
                       </div>
                     </div>
-                    <a
-                      class="mb-3"
-                      href="#"
+                    <div
+                      class="uploadLinkContainer"
                     >
-                      <b>
-                        Upload
-                         image
-                      </b>
-                    </a>
-                    <span
-                      class="imageInfo"
-                    >
-                      <span
-                        class="ml-1"
+                      <a
+                        class="uploadLink"
+                        href="#"
                       >
-                         – 
+                        <b>
+                          Upload
+                           image
+                        </b>
+                      </a>
+                      <span
+                        class="imageInfo"
+                      >
+                        <span
+                          class="ml-1"
+                        >
+                           – 
+                        </span>
+                        <span>
+                          Works best with horizontal logos with transparent background. Max 500 KB.
+                        </span>
                       </span>
-                      <span>
-                        Works best with horizontal logos with transparent background. Max 500 KB.
-                      </span>
-                    </span>
+                    </div>
                     <div
                       class="d-none"
                     >
@@ -12270,7 +12302,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       Used as your team's or bot avatar.
                     </p>
                     <div
-                      class="previewAvatarLogoContent mb-3"
+                      class="previewAvatarLogoContent previewSpacing"
                     >
                       <div
                         class="imagePreview imagePreviewAvatar"
@@ -12290,27 +12322,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         </i>
                       </div>
                     </div>
-                    <a
-                      class="mb-3"
-                      href="#"
+                    <div
+                      class="uploadLinkContainer"
                     >
-                      <b>
-                        Replace
-                         image
-                      </b>
-                    </a>
-                    <span
-                      class="imageInfo"
-                    >
-                      <span
-                        class="ml-1"
+                      <a
+                        class="uploadLink"
+                        href="#"
                       >
-                         – 
+                        <b>
+                          Replace
+                           image
+                        </b>
+                      </a>
+                      <span
+                        class="imageInfo"
+                      >
+                        <span
+                          class="ml-1"
+                        >
+                           – 
+                        </span>
+                        <span>
+                          Recommended size 100 x 100 px. Max 500 KB.
+                        </span>
                       </span>
-                      <span>
-                        Recommended size 100 x 100 px. Max 500 KB.
-                      </span>
-                    </span>
+                    </div>
                     <div
                       class="d-none"
                     >
@@ -15099,7 +15135,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   Customize your team's or robot avatars by uploading your company's logo.
                 </p>
                 <div
-                  class="previewAvatarLogoContent mb-3"
+                  class="previewAvatarLogoContent previewSpacing"
                 >
                   <div
                     class="imagePreview imagePreviewAvatar"
@@ -15111,27 +15147,31 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     </i>
                   </div>
                 </div>
-                <a
-                  class="mb-3"
-                  href="#"
+                <div
+                  class="uploadLinkContainer"
                 >
-                  <b>
-                    Upload
-                     image
-                  </b>
-                </a>
-                <span
-                  class="imageInfo"
-                >
-                  <span
-                    class="ml-1"
+                  <a
+                    class="uploadLink"
+                    href="#"
                   >
-                     – 
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
                   </span>
-                  <span>
-                    Recommended size 100 x 100 px. Max 500 KB.
-                  </span>
-                </span>
+                </div>
                 <div
                   class="d-none"
                 >

@@ -31,14 +31,14 @@ const UploadLink = ({
     showSeparator,
     variant,
 }: UploadLinkProps) => (
-    <>
+    <div className={css.uploadLinkContainer}>
         <a
             href="#"
             onClick={(ev) => {
                 ev.preventDefault()
                 onClick()
             }}
-            className="mb-3"
+            className={css.uploadLink}
         >
             {isUploading ? (
                 <span>
@@ -61,7 +61,7 @@ const UploadLink = ({
                 </span>
             )}
         </span>
-    </>
+    </div>
 )
 
 type PreviewVariantProps = {
@@ -77,7 +77,9 @@ const PreviewAvatarLogo = ({
     isDisabled,
     onSelect,
 }: PreviewVariantProps) => (
-    <div className={classnames(css.previewAvatarLogoContent, 'mb-3')}>
+    <div
+        className={classnames(css.previewAvatarLogoContent, css.previewSpacing)}
+    >
         <div
             className={classnames(css.imagePreview, css.imagePreviewAvatar, {
                 [css.imagePreviewDisabled]: isDisabled,
@@ -96,7 +98,12 @@ const PreviewHeaderLogo = ({
     isDisabled,
     onSelect,
 }: PreviewVariantProps) => (
-    <div className={classnames(css.previewHeaderLogoContainer, 'mb-3')}>
+    <div
+        className={classnames(
+            css.previewHeaderLogoContainer,
+            css.previewSpacing,
+        )}
+    >
         <div className={css.previewHeaderLogoContent}>
             <div
                 className={classnames(

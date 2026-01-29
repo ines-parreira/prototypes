@@ -9,7 +9,6 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
-import classNames from 'classnames'
 import { produce } from 'immer'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -22,11 +21,13 @@ import { useHistory } from 'react-router-dom'
 
 import {
     Button,
+    Card,
+    Elevation,
+    Heading,
+    Radio,
+    RadioGroup,
     Text,
     TextField,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
@@ -62,12 +63,11 @@ import {
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import ColorField from 'pages/common/forms/ColorField'
-import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/components/ColorPicker'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/components/LauncherPositionPicker'
-import ChatSettingsPageHeader, {
-    type ChatSettingsBreadcrumbItem,
-} from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
+import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/components/LogoUpload'
+import ChatSettingsPageHeader from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
+import type { ChatSettingsBreadcrumbItem } from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
 import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
@@ -81,8 +81,7 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
-import ImageField, { ImageFieldVariant } from '../components/ImageField'
-import UploadLogoCaption from '../components/UploadLogoCaption'
+import ImageField from '../components/ImageField'
 import { multiLanguageInitialTextsEmptyData } from '../GorgiasTranslateText/GorgiasTranslateText'
 
 import css from './GorgiasChatIntegrationAppearance.less'
@@ -115,25 +114,6 @@ export const defaultContent = {
     displayBotLabel: true,
     useMainColorOutsideBusinessHours: false,
 }
-
-const avatarNameTypeOptions = [
-    {
-        value: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
-        label: 'First name only',
-    },
-    {
-        value: GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL,
-        label: 'First name, last name initial',
-    },
-    {
-        value: GorgiasChatAvatarNameType.AGENT_FULLNAME,
-        label: 'Full name',
-    },
-    {
-        value: GorgiasChatAvatarNameType.CHAT_TITLE,
-        label: 'Use chat title instead of agent name',
-    },
-]
 
 type Props = {
     integration: Map<any, any>
@@ -208,9 +188,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const chatApplicationId = integrationChat?.meta?.app_id
 
     const chatMultiLanguagesEnabled = useFlag(FeatureFlagKey.ChatMultiLanguages)
-    const isChatHeaderPictureStyleEnabled = useFlag(
-        FeatureFlagKey.ChatHeaderPictureStyle,
-    )
     const isControlUseMainColorOutsideBusinessHoursEnabled = useFlag(
         FeatureFlagKey.ChatControlOutsideBusinessHoursColor,
     )
@@ -444,8 +421,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         )
     }
 
-    const handleSubmit = (event: SyntheticEvent<any>) => {
-        event.preventDefault()
+    const handleSubmit = (event?: SyntheticEvent<any>) => {
+        event?.preventDefault()
 
         const mainColor = CSS.supports('color', state.mainColor)
             ? state.mainColor.trim()
@@ -589,14 +566,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         return integrationResult
     }
 
-    const {
-        name,
-        avatar,
-        mainColor,
-        position,
-        headerPictureUrl,
-        headerPictureUrlOffline,
-    } = state
+    const { name, avatar, mainColor, position, headerPictureUrl } = state
 
     const isSubmitting = _isSubmitting()
     const canSubmit = _canSubmit()
@@ -605,14 +575,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             ...prevState,
             headerPictureUrl,
             isOnline: true,
-        }))
-    }
-
-    const onHeaderLogoUrlOfflineChange = (headerPictureUrlOffline?: string) => {
-        setState((prevState) => ({
-            ...prevState,
-            headerPictureUrlOffline,
-            isOnline: false,
         }))
     }
 
@@ -631,25 +593,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             },
         }))
     }
-
-    const avatarImageTypeOptions = [
-        {
-            value: GorgiasChatAvatarImageType.AGENT_PICTURE,
-            label: 'Profile picture',
-        },
-        {
-            value: GorgiasChatAvatarImageType.AGENT_INITIALS,
-            label: 'Initials',
-        },
-        {
-            value: GorgiasChatAvatarImageType.COMPANY_LOGO,
-            label: 'Logo',
-            disabled: !avatar.companyLogoUrl,
-            caption: !avatar.companyLogoUrl && (
-                <UploadLogoCaption onConfirm={onCompanyLogoUrlChange} />
-            ),
-        },
-    ]
 
     const chatIntegrationsLink = `/app/settings/channels/${IntegrationType.GorgiasChat}`
 
@@ -670,19 +613,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     return (
         <div className="full-width">
-            {/* ========================================================
-                REVAMP DISCLAIMER BANNER - REMOVE WHEN DONE
-                ======================================================== */}
-            <div className={css.revampBanner}>
-                <strong>REVAMP VERSION</strong> - You are viewing the revamped
-                Appearance tab. This component is under active development.
-            </div>
-
             <ChatSettingsPageHeader
                 breadcrumbItems={breadcrumbItems}
                 title="Settings"
-                onSave={() => {}}
-            ></ChatSettingsPageHeader>
+                onSave={handleSubmit}
+                isSaveDisabled={!isUpdate && !canSubmit}
+                isSaveLoading={isSubmitting}
+            />
 
             {isUpdate && (
                 <GorgiasChatIntegrationHeader
@@ -784,215 +721,243 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         </div>
                     )}
 
-                    {/* REVAMP: Intro message fields removed - using defaults */}
-
-                    <div className={css.formSection}>
-                        <h2 className={css.title}>Colors</h2>
-
-                        <ColorField
-                            className={css.colorPicker}
-                            value={mainColor}
-                            onChange={(value: string) => {
-                                setState((prevState) => ({
-                                    ...prevState,
-                                    mainColor: value,
-                                }))
-                            }}
-                            label="Main color"
-                        />
-                        {/* REVAMP: Conversation color removed - defaults to main color */}
-                        {/* REVAMP: "Keep main color when outside business hours" checkbox removed */}
-                    </div>
-
-                    {/* REVAMP: Background style section removed - using default (Gradient) */}
-
-                    {/* REVAMP: Font section removed - using default (Inter) */}
-
                     {isUpdate && (
-                        <>
-                            <div className={css.formSection}>
-                                {isChatHeaderPictureStyleEnabled ? (
-                                    <>
-                                        <h2 className={css.title}>
-                                            Company logo
-                                        </h2>
-                                        <h3 className={css.subtitle}>
-                                            Header logo
-                                        </h3>
-                                        <p className="mb-4">
-                                            Used in the header instead of chat
-                                            title.
-                                        </p>
-                                        <div className={css.logoInputsWrapper}>
-                                            <section>
-                                                <h3
-                                                    className={classNames(
-                                                        css.subtitle,
-                                                        'mb-2',
-                                                    )}
-                                                >
-                                                    Standard logo
-                                                </h3>
-                                                <ImageField
-                                                    isDiscardable={true}
-                                                    onChange={
-                                                        onHeaderLogoUrlChange
-                                                    }
-                                                    url={headerPictureUrl}
-                                                    maxSize={500 * 1000}
-                                                    variant={
-                                                        ImageFieldVariant.Header
-                                                    }
-                                                />
-                                            </section>
-                                            <section>
-                                                <h3
-                                                    className={classNames(
-                                                        css.subtitle,
-                                                        'mb-2',
-                                                    )}
-                                                >
-                                                    Dark logo
-                                                    {headerPictureUrl && (
-                                                        <Tooltip>
-                                                            <TooltipTrigger>
-                                                                <span>
-                                                                    <i
-                                                                        className={classNames(
-                                                                            'material-icons-outlined',
-                                                                            css.tooltipIcon,
-                                                                        )}
-                                                                    >
-                                                                        info
-                                                                    </i>
-                                                                </span>
-                                                            </TooltipTrigger>
-                                                            <TooltipContent caption="If your standard logo is light in color, we recommend you upload a dark version for when your chat is outside of business hours. This will improve readability against the gray background." />
-                                                        </Tooltip>
-                                                    )}
-                                                </h3>
-                                                <ImageField
-                                                    isDiscardable={true}
-                                                    onChange={
-                                                        onHeaderLogoUrlOfflineChange
-                                                    }
-                                                    url={
-                                                        headerPictureUrlOffline
-                                                    }
-                                                    maxSize={500 * 1000}
-                                                    variant={
-                                                        ImageFieldVariant.Header
-                                                    }
-                                                />
-                                            </section>
+                        <div className={css.cardsContainer}>
+                            <Card
+                                className={css.card}
+                                elevation={Elevation.Mid}
+                            >
+                                <div className={css.cardContent}>
+                                    <div className={css.cardHeader}>
+                                        <Heading size="md">Brand</Heading>
+                                        <Text size="md">
+                                            Customize your chat to match your
+                                            store&apos;s look and feel.
+                                        </Text>
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <div className={css.fieldSectionLabel}>
+                                            <Text variant="bold" size="md">
+                                                Brand color
+                                            </Text>
+                                            <Text size="sm" color="secondary">
+                                                Select your brand color to
+                                                personalize the chat experience.
+                                            </Text>
                                         </div>
-                                        <div>
-                                            <section>
-                                                <h3 className={css.subtitle}>
-                                                    Avatar logo
-                                                </h3>
-                                                <p className="mb-4">
-                                                    {`Used as your team's or bot avatar.`}
-                                                </p>
-                                                <ImageField
-                                                    isDiscardable={true}
-                                                    onChange={
-                                                        onCompanyLogoUrlChange
-                                                    }
-                                                    url={avatar.companyLogoUrl}
-                                                    maxSize={500 * 1000}
-                                                />
-                                            </section>
+                                        <ColorPicker
+                                            className={css.brandColorPicker}
+                                            value={mainColor}
+                                            defaultValue={
+                                                GORGIAS_CHAT_DEFAULT_COLOR
+                                            }
+                                            onChange={(value) =>
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    mainColor: value,
+                                                }))
+                                            }
+                                        />
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <div className={css.fieldSectionLabel}>
+                                            <Text variant="bold" size="md">
+                                                Home page logo
+                                            </Text>
+                                            <Text size="sm" color="secondary">
+                                                Upload a horizontal logo (PNG,
+                                                JPG, or GIF) with a transparent
+                                                background. This logo will
+                                                appear in your chat home screen.
+                                            </Text>
                                         </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <h2
-                                            className={classNames(
-                                                css.title,
-                                                'mb-1',
-                                            )}
-                                        >
-                                            Company logo
-                                        </h2>
-                                        <p className="mb-4">
-                                            {`Customize your team's or robot avatars by uploading your company's logo.`}
-                                        </p>
+                                        <LogoUpload
+                                            url={headerPictureUrl}
+                                            onChange={onHeaderLogoUrlChange}
+                                        />
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <LauncherPositionPicker
+                                            value={position}
+                                            onChange={(newPosition) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: newPosition,
+                                                }))
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </Card>
+
+                            <Card
+                                className={css.card}
+                                elevation={Elevation.Mid}
+                            >
+                                <div className={css.cardContent}>
+                                    <div className={css.cardHeader}>
+                                        <Heading size="md">
+                                            How your team appears to customers
+                                        </Heading>
+                                        <Text size="md">
+                                            Choose how your team&apos;s name and
+                                            profile appear in conversations.
+                                        </Text>
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <Text variant="bold" size="md">
+                                            Name
+                                        </Text>
+                                        <div className={css.radioGroupWrapper}>
+                                            <RadioGroup
+                                                value={avatar.nameType}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        avatar: {
+                                                            ...prevState.avatar,
+                                                            nameType:
+                                                                value as GorgiasChatAvatarNameType,
+                                                        },
+                                                    }))
+                                                }
+                                                flexDirection="column"
+                                                gap="xs"
+                                            >
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                                                    }
+                                                    label="First name only"
+                                                />
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL
+                                                    }
+                                                    label="First name and last initial"
+                                                />
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarNameType.AGENT_FULLNAME
+                                                    }
+                                                    label="Full name"
+                                                />
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarNameType.CHAT_TITLE
+                                                    }
+                                                    label="Use chat title"
+                                                />
+                                            </RadioGroup>
+                                        </div>
+                                        {avatar.nameType ===
+                                            GorgiasChatAvatarNameType.CHAT_TITLE && (
+                                            <TextField
+                                                className={css.customNameInput}
+                                                value={name}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        name: value,
+                                                    }))
+                                                }
+                                            />
+                                        )}
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <Text variant="bold" size="md">
+                                            Profile picture
+                                        </Text>
+                                        <div className={css.radioGroupWrapper}>
+                                            <RadioGroup
+                                                value={avatar.imageType}
+                                                onChange={(value) =>
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        avatar: {
+                                                            ...prevState.avatar,
+                                                            imageType:
+                                                                value as GorgiasChatAvatarImageType,
+                                                        },
+                                                    }))
+                                                }
+                                                flexDirection="column"
+                                                gap="xs"
+                                            >
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarImageType.AGENT_PICTURE
+                                                    }
+                                                    label="Profile picture"
+                                                />
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarImageType.AGENT_INITIALS
+                                                    }
+                                                    label="Initials"
+                                                />
+                                                <Radio
+                                                    value={
+                                                        GorgiasChatAvatarImageType.COMPANY_LOGO
+                                                    }
+                                                    label="Logo"
+                                                    isDisabled={
+                                                        !avatar.companyLogoUrl
+                                                    }
+                                                />
+                                            </RadioGroup>
+                                        </div>
+                                    </div>
+
+                                    <div className={css.fieldSection}>
+                                        <div className={css.fieldSectionLabel}>
+                                            <Text variant="bold" size="md">
+                                                Avatar logo
+                                            </Text>
+                                            <Text size="sm" color="secondary">
+                                                Upload a logo to use as your
+                                                team&apos;s or bot avatar.
+                                            </Text>
+                                        </div>
                                         <ImageField
                                             isDiscardable={true}
                                             onChange={onCompanyLogoUrlChange}
                                             url={avatar.companyLogoUrl}
                                             maxSize={500 * 1000}
                                         />
-                                    </>
-                                )}
-                            </div>
-
-                            <div className={css.formSection}>
-                                <h2 className={css.title}>Agent avatar</h2>
-                                <div className={css.avatarInputsWrapper}>
-                                    <RadioFieldSet
-                                        className={css.radioFieldSet}
-                                        label="Name"
-                                        name="avatar-name-type-field"
-                                        options={avatarNameTypeOptions}
-                                        selectedValue={avatar.nameType}
-                                        onChange={(value) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                avatar: {
-                                                    ...prevState.avatar,
-                                                    nameType:
-                                                        value as GorgiasChatAvatarNameType,
-                                                },
-                                            }))
-                                        }}
-                                    />
-                                    <RadioFieldSet
-                                        className={css.radioFieldSet}
-                                        label="Image"
-                                        name="avatar-image-type-field"
-                                        options={avatarImageTypeOptions}
-                                        selectedValue={avatar.imageType}
-                                        onChange={(value) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                avatar: {
-                                                    ...prevState.avatar,
-                                                    imageType:
-                                                        value as GorgiasChatAvatarImageType,
-                                                },
-                                            }))
-                                        }}
-                                    />
+                                    </div>
                                 </div>
-                            </div>
-                        </>
+                            </Card>
+                        </div>
                     )}
 
-                    {/* REVAMP: Chatbot display toggle removed - using default (true) */}
-
-                    <div className={css.formSection}>
-                        {/* REVAMP: Launcher type customization removed - using default (Icon) */}
-                        <LauncherPositionPicker
-                            value={position}
-                            onChange={(newPosition) => {
-                                setState((prevState) => ({
-                                    ...prevState,
-                                    position: newPosition,
-                                }))
-                            }}
-                        />
-                    </div>
-                    <div>
-                        <Button
-                            type="submit"
-                            isDisabled={!isUpdate && !canSubmit}
-                            isLoading={isSubmitting}
-                        >
-                            {isUpdate ? 'Save changes' : 'Add new chat'}
-                        </Button>
-                        {!isUpdate && (
+                    {!isUpdate && (
+                        <div className={css.formSection}>
+                            <LauncherPositionPicker
+                                value={position}
+                                onChange={(newPosition) => {
+                                    setState((prevState) => ({
+                                        ...prevState,
+                                        position: newPosition,
+                                    }))
+                                }}
+                            />
+                        </div>
+                    )}
+                    {!isUpdate && (
+                        <div>
+                            <Button
+                                type="submit"
+                                isDisabled={!canSubmit}
+                                isLoading={isSubmitting}
+                            >
+                                Add new chat
+                            </Button>
                             <Button
                                 variant="secondary"
                                 onClick={() => {
@@ -1004,8 +969,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             >
                                 Cancel
                             </Button>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>

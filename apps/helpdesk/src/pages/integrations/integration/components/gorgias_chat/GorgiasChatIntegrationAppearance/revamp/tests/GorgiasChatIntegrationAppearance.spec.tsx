@@ -4,7 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
@@ -140,25 +140,6 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
     })
 
     describe('render()', () => {
-        it('should render the revamp banner', () => {
-            render(
-                <Router history={history}>
-                    <QueryClientProvider client={mockClient}>
-                        <Provider store={mockStore(defaultState)}>
-                            <GorgiasChatIntegrationAppearanceComponent
-                                {...minProps}
-                                loading={fromJS({ updateIntegration: false })}
-                                integration={fromJS({})}
-                                isUpdate={false}
-                            />
-                        </Provider>
-                    </QueryClientProvider>
-                </Router>,
-            )
-
-            expect(screen.getByText(/REVAMP VERSION/)).toBeInTheDocument()
-        })
-
         it('should render platform type selection when creating a new chat integration', () => {
             render(
                 <Router history={history}>
@@ -226,7 +207,7 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render main color field', () => {
+        it('should render brand color field when updating', () => {
             render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
@@ -234,15 +215,24 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
                                 loading={fromJS({ updateIntegration: false })}
-                                integration={fromJS({})}
-                                isUpdate={false}
+                                integration={fromJS({
+                                    id: 1,
+                                    name: 'Acme Chat',
+                                    type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                                    decoration: {},
+                                    meta: {
+                                        language:
+                                            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                                    },
+                                })}
+                                isUpdate={true}
                             />
                         </Provider>
                     </QueryClientProvider>
                 </Router>,
             )
 
-            expect(screen.getByText('Main color')).toBeInTheDocument()
+            expect(screen.getByText('Brand color')).toBeInTheDocument()
         })
 
         it('should not render conversation color field (deprecated in revamp)', () => {
@@ -359,19 +349,16 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            expect(screen.getByText('Agent avatar')).toBeInTheDocument()
+            expect(
+                screen.getByText('How your team appears to customers'),
+            ).toBeInTheDocument()
             expect(screen.getByText('Name')).toBeInTheDocument()
-            expect(screen.getByText('Image')).toBeInTheDocument()
+            expect(
+                screen.getAllByText('Profile picture').length,
+            ).toBeGreaterThan(0)
         })
 
-        it('should render header logo inputs when updating and feature flag is enabled', () => {
-            mockUseFlag.mockImplementation((key, defaultValue) => {
-                if (key === FeatureFlagKey.ChatHeaderPictureStyle) {
-                    return true
-                }
-                return defaultValue
-            })
-
+        it('should render logo inputs when updating', () => {
             render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
@@ -407,10 +394,7 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            expect(screen.getByText('Company logo')).toBeInTheDocument()
-            expect(screen.getByText('Header logo')).toBeInTheDocument()
-            expect(screen.getByText('Standard logo')).toBeInTheDocument()
-            expect(screen.getByText('Dark logo')).toBeInTheDocument()
+            expect(screen.getByText('Home page logo')).toBeInTheDocument()
             expect(screen.getByText('Avatar logo')).toBeInTheDocument()
         })
     })
@@ -598,8 +582,8 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            const saveChangesButton = screen.getByText(/Save changes/)
-            fireEvent.click(saveChangesButton)
+            const saveButton = screen.getByRole('button', { name: /Save/ })
+            fireEvent.click(saveButton)
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalled()
             const callArg = mockUpdateOrCreateIntegration.mock.calls[0]![0]!
@@ -671,8 +655,8 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            const saveChangesButton = screen.getByText(/Save changes/)
-            fireEvent.click(saveChangesButton)
+            const saveButton = screen.getByRole('button', { name: /Save/ })
+            fireEvent.click(saveButton)
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalled()
             const callArg = mockUpdateOrCreateIntegration.mock.calls[0]![0]!
@@ -803,10 +787,8 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            const saveChangesButton = screen.getByRole('button', {
-                name: /Save changes/,
-            })
-            expect(saveChangesButton).toHaveAttribute('aria-disabled', 'true')
+            const saveButton = screen.getByRole('button', { name: /Save/ })
+            expect(saveButton).toHaveAttribute('aria-disabled', 'true')
         })
     })
 
@@ -903,8 +885,8 @@ describe('<GorgiasChatIntegrationAppearanceRevamp/>', () => {
                 </Router>,
             )
 
-            const saveChangesButton = screen.getByText(/Save changes/)
-            fireEvent.click(saveChangesButton)
+            const saveButton = screen.getByRole('button', { name: /Save/ })
+            fireEvent.click(saveButton)
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalled()
             const callArg = mockUpdateOrCreateIntegration.mock.calls[0]![0]!
