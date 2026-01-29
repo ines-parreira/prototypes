@@ -38,7 +38,15 @@ export const P2_SCOPES: MetricScope[] = [
     MetricScope.VoiceCallsSummary,
 ]
 
-export const P3_SCOPES: MetricScope[] = [MetricScope.KnowledgeInsights]
+export const P3_SCOPES: MetricScope[] = [
+    MetricScope.KnowledgeInsights,
+    MetricScope.Helpcenter,
+    MetricScope.ConvertCampainEvents,
+    MetricScope.ConvertOrderConversion,
+    MetricScope.ConvertCampaignOrderEvents,
+    MetricScope.AISalesAgentConversations,
+    MetricScope.AISalesAgentOrders,
+]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
 
