@@ -6,8 +6,8 @@ import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
+import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
-import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -36,7 +36,7 @@ export function ServiceLevelAgreementsPage() {
     return (
         <Box w="100%" flexDirection="column">
             <StatsPage
-                title={ServiceLevelAgreementsReportConfig.reportName}
+                title={SLA_PAGE_TITLE}
                 titleExtra={
                     <Switch>
                         {isVoiceTabAvailable && (

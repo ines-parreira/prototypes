@@ -12,7 +12,7 @@ import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashb
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavbarView } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavbarView'
 import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
-import { SERVICE_LEVEL_AGREEMENT_PAGE_TITLE } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { AUTO_QA_PAGE_TITLE } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
@@ -152,9 +152,7 @@ describe('StatsNavbarViewV2', () => {
             </Provider>,
         )
 
-        expect(
-            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE),
-        ).toBeInTheDocument()
+        expect(screen.getByText(SLA_PAGE_TITLE)).toBeInTheDocument()
     })
 
     it.each([UserRole.Admin, UserRole.Agent])(

@@ -26,6 +26,7 @@ import type { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { HelpCenterChart } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import type { SatisfactionChart } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import type { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import type { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
 import type { AgentsChart } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import type { AutoQAChart } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import type { BusiestTimesChart } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
@@ -211,6 +212,7 @@ export type AvailableChartIds =
     | typeof OverviewChart
     | typeof SatisfactionChart
     | typeof ServiceLevelAgreementsChart
+    | typeof VoiceServiceLevelAgreementsChart
     | typeof TicketFieldsChart
     | typeof TicketInsightsTagsChart
     | typeof VoiceAgentsChart

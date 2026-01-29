@@ -9,8 +9,8 @@ import { setupServer } from 'msw/node'
 import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 
 import { appQueryClient } from 'api/queryClient'
+import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
-import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
 import { billingState } from 'fixtures/billing'
 import { ProductType } from 'models/billing/types'
@@ -130,7 +130,7 @@ describe('ServiceLevelAgreementsPage', () => {
             currentAccountHasProductSpy.mockReturnValue((() => true) as any)
         })
 
-        it('should render report name title', async () => {
+        it('should render page title', async () => {
             renderWithStoreAndQueryClientAndRouter(
                 <ServiceLevelAgreementsPage />,
                 stateWithVoice,
@@ -141,11 +141,7 @@ describe('ServiceLevelAgreementsPage', () => {
             )
 
             await waitFor(() => {
-                expect(
-                    screen.getByText(
-                        ServiceLevelAgreementsReportConfig.reportName,
-                    ),
-                ).toBeInTheDocument()
+                expect(screen.getByText(SLA_PAGE_TITLE)).toBeInTheDocument()
             })
         })
 

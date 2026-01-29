@@ -33,7 +33,7 @@ import {
 import { SlaMetric } from 'domains/reporting/state/ui/stats/types'
 import { STATS_ROUTES } from 'routes/constants'
 
-export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
+export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'Tickets SLAs'
 
 export enum ServiceLevelAgreementsChart {
     AchievementRateTrend = 'achievement-rate-trend',

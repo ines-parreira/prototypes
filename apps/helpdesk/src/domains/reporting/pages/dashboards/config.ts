@@ -34,6 +34,10 @@ import {
     ServiceLevelAgreementsReportConfig,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import {
+    VoiceServiceLevelAgreementsChart,
+    VoiceServiceLevelAgreementsReportConfig,
+} from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
+import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
@@ -101,6 +105,10 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: ServiceLevelAgreementsChart,
                 config: ServiceLevelAgreementsReportConfig,
+            },
+            {
+                type: VoiceServiceLevelAgreementsChart,
+                config: VoiceServiceLevelAgreementsReportConfig,
             },
             {
                 type: HelpCenterChart,

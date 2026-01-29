@@ -28,10 +28,10 @@ import {
 import { VoiceSlaMetric } from 'domains/reporting/state/ui/stats/types'
 import { STATS_ROUTES } from 'routes/constants'
 
-export const VOICE_SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'Voice SLAs'
+export const VOICE_SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'Calls SLAs'
 
 export enum VoiceServiceLevelAgreementsChart {
-    AchievementRateTrend = 'achievement-rate-trend',
+    AchievementRateTrend = 'calls-achievement-rate-trend',
     BreachedVoiceCallsRateTrend = 'breached-voice-calls-rate-trend',
     AchievedAndBreachedVoiceCallsChart = 'achieved-and-breached-voice-calls-chart',
 }
