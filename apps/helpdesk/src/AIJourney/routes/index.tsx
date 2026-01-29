@@ -4,6 +4,7 @@ import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
 import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
+import { useLastSelectedStore } from 'AIJourney/hooks'
 import {
     AiJourneyOnboarding,
     Analytics,
@@ -21,29 +22,45 @@ import App from 'pages/App'
 
 import DefaultStatsFilters from '../../domains/reporting/pages/DefaultStatsFilters'
 
+type RedirectToShopProps = {
+    basePath: string
+}
+
+export function RedirectToShop({ basePath }: RedirectToShopProps) {
+    const { integrations, isLoading } = useIntegrations()
+    const { resolveStore } = useLastSelectedStore()
+    const history = useHistory()
+
+    useEffect(() => {
+        if (isLoading) {
+            return
+        }
+
+        const sortedStoreNames = [...integrations]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((store) => store.name)
+
+        const resolvedStore = resolveStore(sortedStoreNames)
+        if (!resolvedStore) {
+            return
+        }
+
+        history.replace(`${basePath}/${resolvedStore}`)
+    }, [isLoading, integrations, history, resolveStore, basePath])
+
+    return null
+}
+
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
 
-    function RedirectToShop() {
-        const { integrations, isLoading } = useIntegrations()
-        const sortedShopifyIntegrations = [...integrations].sort((a, b) =>
-            a.name.localeCompare(b.name),
-        )
-        const firstStoreName = sortedShopifyIntegrations[0]?.name
-        const history = useHistory()
-
-        useEffect(() => {
-            if (!isLoading && firstStoreName) {
-                history.replace(`${path}/${firstStoreName}`)
-            }
-        }, [isLoading, firstStoreName, history])
-
-        return null
-    }
-
     return (
         <Switch>
-            <Route path={`${path}/`} exact render={() => <RedirectToShop />} />
+            <Route
+                path={`${path}/`}
+                exact
+                render={() => <RedirectToShop basePath={path} />}
+            />
             <Route path={`${path}/:shopName`}>
                 <JourneyProvider>
                     <App navbar={AiJourneyNavbar}>

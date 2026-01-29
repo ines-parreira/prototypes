@@ -7,8 +7,9 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { StaticRouter, useHistory } from 'react-router-dom'
+import { StaticRouter, useHistory, useParams } from 'react-router-dom'
 
+import { useLastSelectedStore } from 'AIJourney/hooks'
 import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
@@ -23,7 +24,14 @@ import { AiJourneyNavbar } from './Navbar'
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
+    useParams: jest.fn(),
 }))
+
+jest.mock('AIJourney/hooks', () => ({
+    ...jest.requireActual('AIJourney/hooks'),
+    useLastSelectedStore: jest.fn(),
+}))
+const mockUseLastSelectedStore = assumeMock(useLastSelectedStore)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -41,8 +49,10 @@ jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
 
 const mockUseHistory = jest.mocked(useHistory)
+const mockUseParams = jest.mocked(useParams)
 const mockPush = jest.fn()
 const mockReplace = jest.fn()
+const mockSetLastSelectedStore = jest.fn()
 
 const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
@@ -169,6 +179,13 @@ describe('<AiJourneyNavbar />', () => {
         } as any)
 
         mockUseJourneyContext.mockReturnValue(mockJourneyContext)
+        mockUseLastSelectedStore.mockReturnValue({
+            setLastSelectedStore: mockSetLastSelectedStore,
+            resolveStore: (storeNames: string[]) => storeNames[0],
+        })
+        mockUseParams.mockReturnValue({
+            shopName: undefined as unknown as string,
+        })
     })
     it('should render ai agent navbar with first store selected', async () => {
         renderNavbar()
@@ -207,6 +224,54 @@ describe('<AiJourneyNavbar />', () => {
         expect(screen.getByText('teststore1')).toBeInTheDocument()
     })
 
+    describe('localStorage persistence', () => {
+        it('should use stored store when no shopName in URL and stored store exists', async () => {
+            mockUseLastSelectedStore.mockReturnValue({
+                setLastSelectedStore: mockSetLastSelectedStore,
+                resolveStore: (storeNames: string[]) =>
+                    storeNames.includes('teststore2')
+                        ? 'teststore2'
+                        : storeNames[0],
+            })
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore2',
+            )
+        })
+
+        it('should fall back to first store when stored store no longer exists', async () => {
+            mockUseLastSelectedStore.mockReturnValue({
+                setLastSelectedStore: mockSetLastSelectedStore,
+                resolveStore: (storeNames: string[]) => storeNames[0],
+            })
+
+            renderNavbar()
+
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-journey/teststore1',
+            )
+        })
+
+        it('should save selected store to localStorage when changing store', async () => {
+            renderNavbar()
+
+            await user.click(screen.getByText('teststore1'))
+            await user.click(screen.getByText('teststore2'))
+
+            expect(mockSetLastSelectedStore).toHaveBeenCalledWith('teststore2')
+        })
+
+        it('should save store to localStorage when URL has shopName', async () => {
+            mockUseParams.mockReturnValue({ shopName: 'teststore2' })
+
+            renderNavbar()
+
+            expect(mockSetLastSelectedStore).toHaveBeenCalledWith('teststore2')
+        })
+    })
+
     describe('Analytics section', () => {
         beforeEach(() => {
             mockUseFlag.mockImplementation((key) => {
@@ -232,8 +297,6 @@ describe('<AiJourneyNavbar />', () => {
 
             renderNavbar()
 
-            screen.debug()
-
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
             )
@@ -251,8 +314,6 @@ describe('<AiJourneyNavbar />', () => {
             )
 
             renderNavbar()
-
-            screen.debug()
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -273,8 +334,6 @@ describe('<AiJourneyNavbar />', () => {
             )
 
             renderNavbar()
-
-            screen.debug()
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',

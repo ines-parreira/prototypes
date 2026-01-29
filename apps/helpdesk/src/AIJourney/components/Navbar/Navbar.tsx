@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { NavLink, useHistory, useParams } from 'react-router-dom'
 
+import { useLastSelectedStore } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -33,6 +34,8 @@ export const AiJourneyNavbar = () => {
 
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
+    const { setLastSelectedStore, resolveStore } = useLastSelectedStore()
+
     const [selectedStore, setSelectedStore] = useState(shopName)
 
     const hasJourney = useMemo(() => {
@@ -52,15 +55,28 @@ export const AiJourneyNavbar = () => {
     useEffect(() => {
         if (shopName) {
             setSelectedStore(shopName)
-        } else if (!shopName && storeIntegrations.length > 0) {
-            const firstStore = storeIntegrations[0]
-            const firstShopName = getShopNameFromStoreIntegration(firstStore)
-            if (firstShopName) {
-                history.replace(`/app/ai-journey/${firstShopName}`)
-                setSelectedStore(firstShopName)
-            }
+            setLastSelectedStore(shopName)
+            return
         }
-    }, [shopName, storeIntegrations, history])
+
+        const availableStoreNames = storeIntegrations
+            .map(getShopNameFromStoreIntegration)
+            .filter((name): name is string => name !== null)
+
+        const resolvedStore = resolveStore(availableStoreNames)
+        if (!resolvedStore) {
+            return
+        }
+
+        history.replace(`/app/ai-journey/${resolvedStore}`)
+        setSelectedStore(resolvedStore)
+    }, [
+        shopName,
+        storeIntegrations,
+        history,
+        resolveStore,
+        setLastSelectedStore,
+    ])
 
     const handleStoreChange = useCallback(
         (id: number) => {
@@ -68,8 +84,9 @@ export const AiJourneyNavbar = () => {
             if (!integration) return
             const shopName = getShopNameFromStoreIntegration(integration)
             history.push(`/app/ai-journey/${shopName}`)
+            setLastSelectedStore(shopName)
         },
-        [storeIntegrations, history],
+        [storeIntegrations, history, setLastSelectedStore],
     )
 
     const shouldAccessPlayground =
