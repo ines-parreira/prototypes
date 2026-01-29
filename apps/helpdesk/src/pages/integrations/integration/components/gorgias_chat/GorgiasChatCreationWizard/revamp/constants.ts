@@ -3,7 +3,7 @@ import { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgias
 export const STEP_LABELS: Record<GorgiasChatCreationWizardSteps, string> = {
     [GorgiasChatCreationWizardSteps.Basics]: 'Set up the basics',
     [GorgiasChatCreationWizardSteps.Branding]: 'Brand',
-    [GorgiasChatCreationWizardSteps.Automate]: 'Enable AI Agent',
+    [GorgiasChatCreationWizardSteps.Automate]: 'Enable order management',
     [GorgiasChatCreationWizardSteps.Installation]: 'Install and launch',
 }
 
@@ -12,6 +12,4 @@ export const STEP_DESCRIPTIONS: Partial<
 > = {
     [GorgiasChatCreationWizardSteps.Branding]:
         "Give the chat widget your brand's look and feel",
-    [GorgiasChatCreationWizardSteps.Automate]:
-        'Connect a store to use AI Agent features in chat and to enable quick install for Shopify.',
 }

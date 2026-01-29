@@ -12,10 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
 import type { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
-import type {
-    GorgiasChatIntegration,
-    IntegrationFromType,
-} from 'models/integration/types'
+import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
@@ -25,7 +22,6 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
@@ -68,15 +64,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const [isSubmittingAutomation, setIsSubmittingAutomation] = useState(false)
 
-    const [currentStoreIntegration, setCurrentStoreIntegration] =
-        useState<
-            IntegrationFromType<
-                | IntegrationType.Shopify
-                | IntegrationType.BigCommerce
-                | IntegrationType.Magento2
-            >
-        >()
-
     const [
         currentIsOrderManagementEnabled,
         setCurrentIsOrderManagementEnabled,
@@ -93,10 +80,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
     const automationSettings: ChatApplicationAutomationSettings | undefined =
         appId ? applicationsAutomationSettings[appId] : undefined
 
-    const gorgiasChatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
-    )
-
     const storeIntegrations = useAppSelector(
         getIntegrationsByTypes([
             IntegrationType.Shopify,
@@ -105,13 +88,11 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         ]),
     )
 
-    const storeIntegration =
-        currentStoreIntegration ??
-        storeIntegrations.find(
-            (storeIntegration) =>
-                storeIntegration.id ===
-                gorgiasChatIntegration?.meta.shop_integration_id,
-        )
+    const storeIntegration = storeIntegrations.find(
+        (storeIntegration) =>
+            storeIntegration.id ===
+            gorgiasChatIntegration?.meta.shop_integration_id,
+    )
 
     const shopName = storeIntegration
         ? getShopNameFromStoreIntegration(storeIntegration)
@@ -139,9 +120,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const showPreviewPlaceholder = !storeIntegration
 
-    const isPristine =
-        currentStoreIntegration === undefined &&
-        currentIsOrderManagementEnabled === undefined
+    const isPristine = currentIsOrderManagementEnabled === undefined
 
     const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
@@ -307,47 +286,23 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     </div>
                 }
             >
-                <>
-                    <div className={css.section}>
-                        <StorePicker
-                            selectedStoreIntegrationId={
-                                storeIntegration?.id ?? null
-                            }
-                            gorgiasChatIntegrations={gorgiasChatIntegrations}
-                            storeIntegrations={storeIntegrations}
-                            onChange={(storeIntegrationId: number) => {
-                                const storeIntegration = storeIntegrations.find(
-                                    (storeIntegration) =>
-                                        storeIntegration?.id ===
-                                        storeIntegrationId,
-                                )!
-
-                                setCurrentStoreIntegration(storeIntegration)
+                {(!storeIntegration ||
+                    storeIntegration?.type === IntegrationType.Shopify) && (
+                    <Card>
+                        <FeatureToggle
+                            label="Order management"
+                            caption="Let customers sign in to track, return, cancel or report issues with orders."
+                            tag={{
+                                text: 'Automate up to 30% of tickets',
+                                color: 'purple',
+                                icon: 'zap',
                             }}
-                            isDisabled={
-                                storeIntegration ? isFormDisabled : false
-                            }
-                            showHelperText={false}
+                            value={isOrderManagementEnabled}
+                            onChange={setCurrentIsOrderManagementEnabled}
+                            isDisabled={isFormDisabled}
                         />
-                    </div>
-                    {(!storeIntegration ||
-                        storeIntegration?.type === IntegrationType.Shopify) && (
-                        <Card mt={'24px'}>
-                            <FeatureToggle
-                                label="Order management"
-                                caption="Let customers sign in to track, return, cancel or report issues with orders."
-                                tag={{
-                                    text: 'Automate up to 50% of tickets',
-                                    color: 'purple',
-                                    icon: 'zap',
-                                }}
-                                value={isOrderManagementEnabled}
-                                onChange={setCurrentIsOrderManagementEnabled}
-                                isDisabled={isFormDisabled}
-                            />
-                        </Card>
-                    )}
-                </>
+                    </Card>
+                )}
             </GorgiasChatCreationWizardStep>
         </>
     )

@@ -100,7 +100,9 @@ describe('<GorgiasChatCreationWizardStepAutomate />', () => {
     it('renders step title', () => {
         const { getAllByText } = renderComponent()
 
-        expect(getAllByText('Enable AI Agent').length).toBeGreaterThan(0)
+        expect(getAllByText('Enable order management').length).toBeGreaterThan(
+            0,
+        )
     })
 
     it('renders navigation buttons', () => {
