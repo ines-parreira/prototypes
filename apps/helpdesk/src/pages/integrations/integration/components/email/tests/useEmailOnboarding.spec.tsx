@@ -400,8 +400,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: null,
-                } as HttpResponse<null>)
+                    data: undefined,
+                } as HttpResponse<void>)
 
                 expect(result.current.isRequested).toBe(false)
 
@@ -518,8 +518,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: null,
-                } as HttpResponse<null>)
+                    data: undefined,
+                } as HttpResponse<void>)
 
                 expect(result.current.isRequested).toEqual(false)
                 expect(result.current.isPending).toEqual(false)
@@ -543,8 +543,8 @@ describe('useEmailOnboarding()', () => {
                 } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: null,
-                } as HttpResponse<null>)
+                    data: undefined,
+                } as HttpResponse<void>)
 
                 const { result } = render({ integration })
 
@@ -578,8 +578,8 @@ describe('useEmailOnboarding()', () => {
                 } as EmailIntegration
 
                 sendVerificationEmailMock.mockResolvedValue({
-                    data: null,
-                } as HttpResponse<null>)
+                    data: undefined,
+                } as HttpResponse<void>)
 
                 const { result } = render({ integration })
 
@@ -618,8 +618,8 @@ describe('useEmailOnboarding()', () => {
                 const { result } = render({ integration })
 
                 deleteIntegrationMock.mockResolvedValue({
-                    data: null,
-                } as HttpResponse<null>)
+                    data: undefined,
+                } as HttpResponse<void>)
 
                 result.current.deleteIntegration()
 

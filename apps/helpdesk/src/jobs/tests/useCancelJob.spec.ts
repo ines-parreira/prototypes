@@ -52,7 +52,7 @@ describe('useBulkAction', () => {
         )
         void result.current.cancelJob({ id: 1 })
         useCancelJobMock.mock.calls[0][0]?.mutation?.onSuccess?.(
-            axiosSuccessResponse(null),
+            axiosSuccessResponse(undefined),
             {
                 id: 1,
             },

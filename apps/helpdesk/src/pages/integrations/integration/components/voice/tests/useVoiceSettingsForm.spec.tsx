@@ -74,7 +74,7 @@ describe('hooks', () => {
 
         it('should call update with full payload', async () => {
             updateAllPhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<null>),
+                Promise.resolve({} as HttpResponse<void>),
             )
 
             const { result } = render()
@@ -110,7 +110,7 @@ describe('hooks', () => {
 
         it('should call exclude recording notification changes if disabled', async () => {
             updateAllPhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<null>),
+                Promise.resolve({} as HttpResponse<void>),
             )
 
             const { result } = render()
@@ -195,7 +195,7 @@ describe('hooks', () => {
 
         it('should call delete with correct id', async () => {
             deleteIntegrationMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<null>),
+                Promise.resolve({} as HttpResponse<void>),
             )
 
             const { result } = render()
