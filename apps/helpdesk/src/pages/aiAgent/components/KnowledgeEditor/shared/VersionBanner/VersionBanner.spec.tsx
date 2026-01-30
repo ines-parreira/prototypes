@@ -15,8 +15,14 @@ jest.mock('state/currentUser/selectors', () => ({
     getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
 }))
 
+const mockUseGetUser = jest.fn().mockReturnValue({ data: undefined })
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    useGetUser: (...args: unknown[]) => mockUseGetUser(...args),
+}))
+
 type HistoricalVersion = {
     publishedDatetime: string | null
+    publisherUserId?: number
     commitMessage?: string
 } | null
 
@@ -52,6 +58,7 @@ function renderComponent(overrides?: Partial<typeof defaultProps>) {
 describe('VersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseGetUser.mockReturnValue({ data: undefined })
     })
 
     describe('when banner should not be shown', () => {
@@ -232,18 +239,56 @@ describe('VersionBanner', () => {
             ).toBeInTheDocument()
         })
 
-        it('shows commit message if provided', () => {
+        it('shows commit message without author when only commit message is provided', () => {
             renderComponent(historicalVersionProps)
 
             expect(
-                screen.getByText(/Changes in this version:/i),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText(/Fixed typo in greeting/i),
+                screen.getByText(
+                    /Changes in this version: Fixed typo in greeting/i,
+                ),
             ).toBeInTheDocument()
         })
 
-        it('does not show commit message if not provided', () => {
+        it('shows author name without commit message when only author is available', () => {
+            mockUseGetUser.mockReturnValue({
+                data: { data: { name: 'John Doe' } },
+            })
+
+            renderComponent({
+                isViewingHistoricalVersion: true,
+                historicalVersion: {
+                    publishedDatetime: '2024-01-01T12:00:00Z',
+                    publisherUserId: 42,
+                },
+            })
+
+            expect(
+                screen.getByText('Last published by John Doe'),
+            ).toBeInTheDocument()
+        })
+
+        it('shows commit message with author name when both are available', () => {
+            mockUseGetUser.mockReturnValue({
+                data: { data: { name: 'Jane Smith' } },
+            })
+
+            renderComponent({
+                isViewingHistoricalVersion: true,
+                historicalVersion: {
+                    publishedDatetime: '2024-01-01T12:00:00Z',
+                    publisherUserId: 42,
+                    commitMessage: 'Fixed typo in greeting',
+                },
+            })
+
+            expect(
+                screen.getByText(
+                    'Changes by Jane Smith: Fixed typo in greeting',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('does not show description when neither commit message nor author is provided', () => {
             renderComponent({
                 isViewingHistoricalVersion: true,
                 historicalVersion: {
@@ -251,8 +296,9 @@ describe('VersionBanner', () => {
                 },
             })
 
+            expect(screen.queryByText(/Changes/i)).not.toBeInTheDocument()
             expect(
-                screen.queryByText(/Changes in this version/i),
+                screen.queryByText(/Last published by/i),
             ).not.toBeInTheDocument()
         })
 

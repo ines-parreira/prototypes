@@ -21,6 +21,10 @@ jest.mock('state/currentUser/selectors', () => ({
     getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
 }))
 
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    useGetUser: () => ({ data: undefined }),
+}))
+
 jest.mock('./hooks/useVersionBanner', () => ({
     useVersionBanner: jest.fn(),
 }))

@@ -34,6 +34,10 @@ jest.mock('./context', () => ({
 
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
 
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    useGetUser: () => ({ data: undefined }),
+}))
+
 jest.mock('state/currentUser/selectors', () => ({
     getTimezone: jest.fn(),
     getDateAndTimeFormatter: jest.fn(() => () => {}),

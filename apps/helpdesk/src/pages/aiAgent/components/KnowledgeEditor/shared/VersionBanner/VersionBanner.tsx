@@ -1,6 +1,7 @@
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { Banner, Box, Button } from '@gorgias/axiom'
+import { useGetUser } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,6 +13,7 @@ import css from './VersionBanner.less'
 
 type HistoricalVersion = {
     publishedDatetime: string | null
+    publisherUserId?: number
     commitMessage?: string
 } | null
 
@@ -43,6 +45,13 @@ export function VersionBanner({
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
 
+    const publisherUserId = historicalVersion?.publisherUserId
+    const { data: publisherData } = useGetUser<{ data: { name: string } }>(
+        publisherUserId ?? 0,
+        { query: { enabled: !!publisherUserId } },
+    )
+    const publisherName = publisherData?.data?.name
+
     if (isViewingHistoricalVersion) {
         const formattedDate = historicalVersion?.publishedDatetime
             ? formatDatetime(
@@ -55,6 +64,21 @@ export function VersionBanner({
             : 'unknown date'
         const commitMessage = historicalVersion?.commitMessage
 
+        const getVersionDescription = () => {
+            if (commitMessage && publisherName) {
+                return `Changes by ${publisherName}: ${commitMessage}`
+            }
+            if (commitMessage) {
+                return `Changes in this version: ${commitMessage}`
+            }
+            if (publisherName) {
+                return `Last published by ${publisherName}`
+            }
+            return null
+        }
+
+        const versionDescription = getVersionDescription()
+
         return (
             <div className={`${css.bannerWrapper} ${className ?? ''}`}>
                 <Banner
@@ -66,10 +90,8 @@ export function VersionBanner({
                     title={`You are viewing a previous version published on ${formattedDate}.`}
                     description={
                         <>
-                            {commitMessage && (
-                                <div>
-                                    Changes in this version: {commitMessage}
-                                </div>
+                            {versionDescription && (
+                                <div>{versionDescription}</div>
                             )}
                             <Box flexDirection="row" gap="sm" marginTop="xs">
                                 <Button

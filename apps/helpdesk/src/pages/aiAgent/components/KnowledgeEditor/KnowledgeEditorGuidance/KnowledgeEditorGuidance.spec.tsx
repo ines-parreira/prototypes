@@ -183,6 +183,11 @@ jest.mock('models/api/types', () => ({
     isGorgiasApiError: jest.fn(),
 }))
 
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetUser: () => ({ data: undefined }),
+}))
+
 const queryClient = mockQueryClient()
 const defaultState = {
     currentUser: fromJS({
