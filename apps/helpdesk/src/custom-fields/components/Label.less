@@ -48,3 +48,14 @@
         color: var(--content-error-primary);
     }
 }
+
+// Remove width constraint when Label is used inside TicketHeader
+.axiom [class*='TicketFields'] :local {
+    .labelWrapper {
+        width: 100% !important;
+    }
+
+    .wrapper > :not(.labelWrapper) {
+        width: 100% !important;
+    }
+}

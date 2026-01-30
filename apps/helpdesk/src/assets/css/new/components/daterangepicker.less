@@ -352,8 +352,8 @@
         }
 
         &.in-range:not(.active):not(.off) {
-            background-color: var(--main-primary-0); // legacy;
-            color: var(--main-primary); // legacy;
+            background-color: var(--surface-accent-secondary);
+            color: var(--content-neutral-default);
         }
     }
 
@@ -598,6 +598,7 @@
         &.active,
         &.active:hover {
             background-color: var(--surface-accent-default) !important;
+            color: var(--content-accent-default) !important;
         }
 
         &:hover,
@@ -641,12 +642,10 @@
                             background-color: var(
                                 --surface-accent-default
                             ) !important;
-                            color: var(--content-selected-accent) !important;
+                            color: var(--content-accent-default) !important;
 
                             &::after {
-                                color: var(
-                                    --content-selected-accent
-                                ) !important;
+                                color: var(--content-accent-default) !important;
                             }
                         }
                     }

@@ -183,6 +183,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         <Tag
             className={classnames(css.item, className, {
                 [css.disabled]: isDisabled,
+                [css.selected]: isSelected,
             })}
             role="option"
             onClick={() => handleClick(option.value)}

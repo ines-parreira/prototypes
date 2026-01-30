@@ -14,7 +14,7 @@ exports[`<DropdownItem /> should render 1`] = `
 
 exports[`<DropdownItem /> should render when selected and multiple selection is enabled 1`] = `
 <li
-  class="item"
+  class="item selected"
   role="option"
   tabindex="0"
 >

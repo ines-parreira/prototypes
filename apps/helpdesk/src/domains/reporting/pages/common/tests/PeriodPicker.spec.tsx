@@ -4,7 +4,10 @@ import moment from 'moment-timezone'
 import { useTheme } from 'core/theme'
 import type { Props } from 'domains/reporting/pages/common/PeriodPicker'
 import { PeriodPickerContainer } from 'domains/reporting/pages/common/PeriodPicker'
+import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import type { Props as MockDateRangePickerProps } from 'utils/wrappers/DateRangePicker'
+
+jest.mock('hooks/useAxiomMigration')
 
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()
@@ -54,10 +57,13 @@ jest.mock(
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
 
+jest.mock('core/theme')
+
 describe('PeriodPicker', () => {
-    const theme = useTheme()
+    const mockTheme = { resolvedName: 'light' }
 
     beforeEach(() => {
+        jest.mocked(useTheme).mockReturnValue(mockTheme as any)
         class MockMutationObserver implements MutationObserver {
             constructor(private callback: MutationCallback) {}
 
@@ -75,6 +81,15 @@ describe('PeriodPicker', () => {
         }
 
         global.MutationObserver = MockMutationObserver as any
+
+        jest.mocked(useAxiomMigration).mockReturnValue({
+            hasFlag: false,
+            isEnabled: false,
+            isDebugging: false,
+            isHighlightingTokens: false,
+            onToggle: jest.fn(),
+            onToggleTokenHighlighting: jest.fn(),
+        })
     })
 
     const PickerWithDefaultProps = (additionalProps?: Partial<Props>) => {
@@ -165,7 +180,7 @@ describe('PeriodPicker', () => {
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenCalledWith(
-            theme.resolvedName,
+            mockTheme.resolvedName,
             'displayed',
         )
         expect(periodPickerRangesClassListMockSpy).toHaveBeenCalledWith(
@@ -302,5 +317,54 @@ describe('PeriodPicker', () => {
             5,
             'range-dates-in-footer',
         )
+    })
+
+    it('should add axiom class when axiom migration is enabled', () => {
+        jest.mocked(useAxiomMigration).mockReturnValue({
+            hasFlag: true,
+            isEnabled: true,
+            isDebugging: false,
+            isHighlightingTokens: false,
+            onToggle: jest.fn(),
+            onToggleTokenHighlighting: jest.fn(),
+        })
+
+        const { getByTestId } = render(<PickerWithDefaultProps />)
+
+        getByTestId(mockDateRangePickerTestId).click()
+
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            1,
+            'axiom',
+            mockTheme.resolvedName,
+            'displayed',
+        )
+    })
+
+    it('should not add axiom class when axiom migration is disabled', () => {
+        jest.mocked(useAxiomMigration).mockReturnValue({
+            hasFlag: false,
+            isEnabled: false,
+            isDebugging: false,
+            isHighlightingTokens: false,
+            onToggle: jest.fn(),
+            onToggleTokenHighlighting: jest.fn(),
+        })
+
+        const { getByTestId } = render(<PickerWithDefaultProps />)
+
+        getByTestId(mockDateRangePickerTestId).click()
+
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            1,
+            mockTheme.resolvedName,
+            'displayed',
+        )
+
+        expect(
+            periodPickerClassListMockSpy.mock.calls.some((call: string[]) =>
+                call.includes('axiom'),
+            ),
+        ).toBe(false)
     })
 })
