@@ -10,6 +10,8 @@ import {
     TextAreaField,
 } from '@gorgias/axiom'
 
+const COMMIT_MESSAGE_CHARACTER_LIMIT = 280
+
 type PublishConfirmationModalProps = {
     isOpen: boolean
     isPublishing: boolean
@@ -24,6 +26,10 @@ export const PublishConfirmationModal = ({
     onPublish,
 }: PublishConfirmationModalProps) => {
     const [commitMessage, setCommitMessage] = useState('')
+
+    const handleCommitMessageChange = (value: string) => {
+        setCommitMessage(value.slice(0, COMMIT_MESSAGE_CHARACTER_LIMIT))
+    }
 
     const handlePublish = () => {
         onPublish(commitMessage).then(() => setCommitMessage(''))
@@ -45,13 +51,14 @@ export const PublishConfirmationModal = ({
         <Modal isOpen={isOpen} onOpenChange={handleClose} size="sm">
             <OverlayHeader title="Publish changes" />
             <OverlayContent>
-                <Box paddingBottom="md" width="100%">
+                <Box width="100%">
                     <TextAreaField
                         label="Add a short description of your changes (optional)"
                         placeholder="e.g. Updated pricing information"
                         value={commitMessage}
-                        onChange={setCommitMessage}
+                        onChange={handleCommitMessageChange}
                         onKeyDown={handleKeyDown}
+                        caption={`${commitMessage.length}/${COMMIT_MESSAGE_CHARACTER_LIMIT}`}
                         autoFocus
                         rows={3}
                     />
