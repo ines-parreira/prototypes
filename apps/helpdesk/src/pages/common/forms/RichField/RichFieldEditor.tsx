@@ -468,6 +468,10 @@ export class RichFieldEditor extends Component<Props, State> {
             return null
         }
 
+        if (KeyBindingUtil.hasCommandModifier(e) || e.altKey) {
+            return undefined
+        }
+
         return getDefaultKeyBinding(e)
     }
 

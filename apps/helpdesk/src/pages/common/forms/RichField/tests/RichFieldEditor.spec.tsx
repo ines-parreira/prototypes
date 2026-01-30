@@ -349,4 +349,58 @@ describe('RichFieldEditor', () => {
 
         expect(spyOnchange).toHaveBeenCalled()
     })
+
+    it('should allow modifier keys to be handled by default Draft.js behavior', () => {
+        const spyOnchange = jest.fn()
+        const WrappedRichFieldEditor = provideToolbarPlugin(RichFieldEditor)
+
+        const { container } = render(
+            <WrappedRichFieldEditor
+                {..._omit(defaultProps, 'createToolbarPlugin')}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={spyOnchange}
+            />,
+        )
+
+        const editor = container.querySelector('.public-DraftEditor-content')!
+
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'b', keyCode: 66 })
+        expect(spyOnchange).toHaveBeenCalled()
+
+        spyOnchange.mockClear()
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'i', keyCode: 73 })
+        expect(spyOnchange).toHaveBeenCalled()
+
+        spyOnchange.mockClear()
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'u', keyCode: 85 })
+        expect(spyOnchange).toHaveBeenCalled()
+    })
+
+    it('should open link modal when Cmd+K is pressed', () => {
+        const mockOnLinkCreate = jest.fn()
+
+        const { container } = render(
+            <Provider store={mockStore({})}>
+                <RichFieldEditor
+                    {...defaultProps}
+                    createToolbarPlugin={(imageDecorator) =>
+                        toolbarPlugin({
+                            imageDecorator,
+                            onLinkEdit: jest.fn(),
+                            onLinkCreate: mockOnLinkCreate,
+                            getDisplayedActions: jest.fn(),
+                        })
+                    }
+                    editorKey="editor"
+                    editorState={editorState}
+                />
+            </Provider>,
+        )
+
+        const editor = container.querySelector('.public-DraftEditor-content')!
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'k', keyCode: 75 })
+
+        expect(mockOnLinkCreate).toHaveBeenCalled()
+    })
 })
