@@ -38,11 +38,13 @@ export function PolicySection() {
                 )}
             </Box>
             <Box flexDirection="column" gap="sm">
-                <FormField
-                    name="business_hours_only"
-                    field={ToggleField}
-                    label="Pause SLA timer outside of business hours"
-                />
+                {!isVoiceChannelSelected && (
+                    <FormField
+                        name="business_hours_only"
+                        field={ToggleField}
+                        label="Pause SLA timer outside of business hours"
+                    />
+                )}
                 <FormField
                     name="active"
                     field={ToggleField}

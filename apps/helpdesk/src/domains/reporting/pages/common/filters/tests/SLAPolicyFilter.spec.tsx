@@ -65,6 +65,12 @@ describe('SLAPolicyFilter', () => {
         name: 'XYZ',
         uuid: '456',
     }
+    const phonePolicy = {
+        ...policy,
+        name: 'Phone Policy',
+        uuid: 'phone-001',
+        target_channels: ['phone'],
+    }
     const policies: SLAPolicy[] = [
         aPolicy,
         anotherPolicy,
@@ -111,26 +117,8 @@ describe('SLAPolicyFilter', () => {
     })
 
     it('should render available policies', () => {
-        renderWithStore(
-            <SLAPolicyFilter
-                value={undefined}
-                dispatchUpdate={dispatchUpdate}
-                dispatchStatFiltersDirty={dispatchStatFiltersDirty}
-                dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />,
-            defaultState,
-        )
-
-        userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
-
-        policies.forEach((policy) => {
-            expect(screen.getByText(policy.name)).toBeInTheDocument()
-        })
-    })
-
-    it('should render when no policies', () => {
         useListSlaPoliciesMock.mockReturnValue({
-            data: undefined,
+            data: { data: { data: [...policies, phonePolicy] } },
             isError: false,
             isLoading: false,
         } as any)
@@ -147,13 +135,41 @@ describe('SLAPolicyFilter', () => {
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
 
-        expect(
-            screen.getByRole('option', {
-                name: new RegExp(FILTER_SELECT_ALL_LABEL),
-            }),
-        ).toBeInTheDocument()
-        expect(screen.queryAllByRole('option').length).toEqual(1)
+        policies.forEach((policy) => {
+            expect(screen.getByText(policy.name)).toBeInTheDocument()
+        })
+        expect(screen.queryByText(phonePolicy.name)).not.toBeInTheDocument()
     })
+
+    it.each([undefined, { data: { data: undefined } }])(
+        'should render when no policies',
+        (data) => {
+            useListSlaPoliciesMock.mockReturnValue({
+                data: data,
+                isError: false,
+                isLoading: false,
+            } as any)
+
+            renderWithStore(
+                <SLAPolicyFilter
+                    value={undefined}
+                    dispatchUpdate={dispatchUpdate}
+                    dispatchStatFiltersDirty={dispatchStatFiltersDirty}
+                    dispatchStatFiltersClean={dispatchStatFiltersClean}
+                />,
+                defaultState,
+            )
+
+            userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
+
+            expect(
+                screen.getByRole('option', {
+                    name: new RegExp(FILTER_SELECT_ALL_LABEL),
+                }),
+            ).toBeInTheDocument()
+            expect(screen.queryAllByRole('option').length).toEqual(1)
+        },
+    )
 
     it('should render selected options', () => {
         const selectedPolicies = withDefaultLogicalOperator([aPolicy.uuid])

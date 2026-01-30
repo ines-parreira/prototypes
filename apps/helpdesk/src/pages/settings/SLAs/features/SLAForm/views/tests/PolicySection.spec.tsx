@@ -37,7 +37,7 @@ describe('<PolicySection />', () => {
     })
 
     it.each([['phone'], ['email']])(
-        'should render the pause and enable sla fields',
+        'should render enable sla field',
         (channels) => {
             render(
                 <Form
@@ -53,11 +53,6 @@ describe('<PolicySection />', () => {
                 </Form>,
             )
 
-            expect(
-                screen.getByRole('switch', {
-                    name: /pause sla timer outside of business hours/i,
-                }),
-            ).toBeInTheDocument()
             expect(
                 screen.getByRole('switch', {
                     name: /enable sla/i,
@@ -106,6 +101,12 @@ describe('<PolicySection />', () => {
 
             expect(
                 screen.queryByText('MetricsFieldArray'),
+            ).not.toBeInTheDocument()
+
+            expect(
+                screen.queryByRole('switch', {
+                    name: /pause sla timer outside of business hours/i,
+                }),
             ).not.toBeInTheDocument()
         })
     })

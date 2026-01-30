@@ -44,10 +44,12 @@ export const SLAPolicyFilter = ({
 }: Props) => {
     const { data } = useListSlaPolicies()
     const policies = useMemo(() => data?.data.data || [], [data?.data.data])
-    const filterOptions = policies?.map((policy) => ({
-        value: policy.uuid,
-        label: policy.name,
-    }))
+    const filterOptions = policies
+        .filter((policy) => !policy.target_channels.includes('phone'))
+        .map((policy) => ({
+            value: policy.uuid,
+            label: policy.name,
+        }))
 
     const selectedPolicies = value.values
     const selectedOptions = useMemo(
