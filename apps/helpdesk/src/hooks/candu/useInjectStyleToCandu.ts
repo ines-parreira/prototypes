@@ -41,10 +41,6 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
                 box-shadow: var(--effects-shadow-container) !important;
             }
 
-            .candu-button {
-                color: var(--content-accent-default) !important;
-            }
-
             .candu-checklist--group-title {
                 --color: var(--content-neutral-default) !important;
             }
