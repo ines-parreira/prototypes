@@ -156,9 +156,10 @@ describe('TitleCell', () => {
         expect(screen.queryByText('Draft')).not.toBeInTheDocument()
     })
 
-    it('renders Draft tag for published FAQ with null draftVersionId', () => {
+    it('renders Draft edits tag for published FAQ with null draftVersionId', () => {
         // When draftVersionId is null but publishedVersionId exists,
         // isDraft returns true because draftVersionId !== publishedVersionId
+        // This shows "Draft edits" because there's a published version
         const faqRow = {
             ...mockRow,
             original: {
@@ -169,12 +170,17 @@ describe('TitleCell', () => {
             },
         } as any
 
-        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
 
-        expect(screen.getByText('Draft')).toBeInTheDocument()
+        expect(screen.getByText('Draft edits')).toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).not.toBeInTheDocument()
     })
 
-    it('renders Draft tag for FAQ with unpublished draft', () => {
+    it('renders Draft edits tag for FAQ with unpublished draft', () => {
         const faqRow = {
             ...mockRow,
             original: {
@@ -185,9 +191,14 @@ describe('TitleCell', () => {
             },
         } as any
 
-        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
 
-        expect(screen.getByText('Draft')).toBeInTheDocument()
+        expect(screen.getByText('Draft edits')).toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).not.toBeInTheDocument()
     })
 
     it('renders Draft tag for FAQ without published version', () => {
@@ -201,9 +212,14 @@ describe('TitleCell', () => {
             },
         } as any
 
-        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
 
         expect(screen.getByText('Draft')).toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).toBeInTheDocument()
     })
 
     it('renders Draft tag for FAQ with only draft version (undefined published)', () => {
@@ -217,9 +233,106 @@ describe('TitleCell', () => {
             },
         } as any
 
-        render(<TitleCell row={faqRow} searchTerm="" availableActions={[]} />)
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
 
         expect(screen.getByText('Draft')).toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).toBeInTheDocument()
+    })
+
+    it('renders "Draft edits" tag for FAQ with published version and draft changes', () => {
+        const faqRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.FAQ,
+                draftVersionId: 2,
+                publishedVersionId: 1,
+            },
+        } as any
+
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
+
+        const tag = screen.getByText('Draft edits')
+        expect(tag).toBeInTheDocument()
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).not.toBeInTheDocument()
+    })
+
+    it('renders "Draft" tag for FAQ with no published version', () => {
+        const faqRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.FAQ,
+                draftVersionId: 1,
+                publishedVersionId: null,
+            },
+        } as any
+
+        const { container } = render(
+            <TitleCell row={faqRow} searchTerm="" availableActions={[]} />,
+        )
+
+        const tag = screen.getByText('Draft')
+        expect(tag).toBeInTheDocument()
+        expect(screen.queryByText('Draft edits')).not.toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).toBeInTheDocument()
+    })
+
+    it('renders "Draft edits" tag for Guidance with published version and draft changes', () => {
+        const guidanceRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.Guidance,
+                draftVersionId: 2,
+                publishedVersionId: 1,
+            },
+        } as any
+
+        const { container } = render(
+            <TitleCell row={guidanceRow} searchTerm="" availableActions={[]} />,
+        )
+
+        const tag = screen.getByText('Draft edits')
+        expect(tag).toBeInTheDocument()
+        expect(screen.queryByText('Draft')).not.toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).not.toBeInTheDocument()
+    })
+
+    it('renders "Draft" tag for Guidance with no published version', () => {
+        const guidanceRow = {
+            ...mockRow,
+            original: {
+                ...mockRow.original,
+                type: KnowledgeType.Guidance,
+                draftVersionId: 1,
+                publishedVersionId: null,
+            },
+        } as any
+
+        const { container } = render(
+            <TitleCell row={guidanceRow} searchTerm="" availableActions={[]} />,
+        )
+
+        const tag = screen.getByText('Draft')
+        expect(tag).toBeInTheDocument()
+        expect(screen.queryByText('Draft edits')).not.toBeInTheDocument()
+
+        const tagElement = container.querySelector('[color="grey"]')
+        expect(tagElement).toBeInTheDocument()
     })
 
     it('renders GuidanceActionsBadge for guidance items with article', () => {

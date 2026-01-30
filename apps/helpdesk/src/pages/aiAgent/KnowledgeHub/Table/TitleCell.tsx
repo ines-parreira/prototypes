@@ -9,7 +9,7 @@ import { KnowledgeType, typeConfig } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 
-import { isDraft } from '../utils/articleUtils'
+import { hasDraftEdits, isDraft } from '../utils/articleUtils'
 
 import css from './KnowledgeHubTable.less'
 
@@ -67,11 +67,13 @@ export const TitleCell = ({
 
     const shouldMakeClickable = !!columnOnClick
 
-    const isArticleDraft = isDraft({
+    const articleVersionInfo = {
         id: id,
         draftVersionId: row.original.draftVersionId,
         publishedVersionId: row.original.publishedVersionId,
-    })
+    }
+    const isArticleDraft = isDraft(articleVersionInfo)
+    const hasArticleDraftEdits = hasDraftEdits(articleVersionInfo)
 
     const getIcon = () => {
         if (!isGrouped) {
@@ -116,8 +118,11 @@ export const TitleCell = ({
                     (type === KnowledgeType.FAQ ||
                         type === KnowledgeType.Guidance) &&
                     isArticleDraft && (
-                        <Tag id={row.original.id} color="grey">
-                            Draft
+                        <Tag
+                            id={row.original.id}
+                            color={hasArticleDraftEdits ? undefined : 'grey'}
+                        >
+                            {hasArticleDraftEdits ? 'Draft edits' : 'Draft'}
                         </Tag>
                     )}
                 {!isGrouped && source && (

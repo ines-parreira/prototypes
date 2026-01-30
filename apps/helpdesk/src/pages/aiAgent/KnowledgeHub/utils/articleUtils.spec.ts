@@ -1,7 +1,7 @@
 import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import type { FilteredKnowledgeHubArticle } from '../types'
-import { getVersionStatus, isDraft } from './articleUtils'
+import { getVersionStatus, hasDraftEdits, isDraft } from './articleUtils'
 
 describe('articleUtils', () => {
     describe('isDraft', () => {
@@ -155,6 +155,84 @@ describe('articleUtils', () => {
             const result = getVersionStatus(article)
 
             expect(result).toBe(GetArticleVersionStatus.LatestDraft)
+        })
+    })
+
+    describe('hasDraftEdits', () => {
+        it('should return true when article is published with draft changes', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                publishedVersionId: 1,
+                draftVersionId: 2,
+                visibility: 'PUBLIC',
+            }
+
+            const result = hasDraftEdits(article)
+
+            expect(result).toBe(true)
+        })
+
+        it('should return false when article was never published', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                publishedVersionId: null,
+                draftVersionId: 1,
+                visibility: 'PUBLIC',
+            }
+
+            const result = hasDraftEdits(article)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return false when publishedVersionId is undefined', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                publishedVersionId: undefined,
+                draftVersionId: 1,
+                visibility: 'PUBLIC',
+            }
+
+            const result = hasDraftEdits(article)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return false when draft and published versions are the same', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                publishedVersionId: 1,
+                draftVersionId: 1,
+                visibility: 'PUBLIC',
+            }
+
+            const result = hasDraftEdits(article)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return false when article is undefined', () => {
+            const result = hasDraftEdits(undefined)
+
+            expect(result).toBe(false)
+        })
+
+        it('should return true when draft version is significantly ahead of published', () => {
+            const article: FilteredKnowledgeHubArticle = {
+                id: 123,
+                title: '',
+                publishedVersionId: 5,
+                draftVersionId: 10,
+                visibility: 'PUBLIC',
+            }
+
+            const result = hasDraftEdits(article)
+
+            expect(result).toBe(true)
         })
     })
 })

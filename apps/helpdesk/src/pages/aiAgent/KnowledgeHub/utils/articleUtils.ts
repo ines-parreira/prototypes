@@ -79,3 +79,42 @@ export function isDraft(
     }
     return true
 }
+
+/**
+ * Checks if an article has draft edits on top of a published version.
+ * Returns true when BOTH publishedVersionId exists AND draftVersionId differs from it.
+ *
+ * @param article - Article with version IDs
+ * @returns true if article is published but has unpublished draft changes
+ *
+ * @example
+ * ```tsx
+ * hasDraftEdits({ publishedVersionId: 1, draftVersionId: 2 })
+ * // Returns true - published article with draft edits
+ *
+ * hasDraftEdits({ publishedVersionId: null, draftVersionId: 1 })
+ * // Returns false - never published (no publishedVersionId)
+ *
+ * hasDraftEdits({ publishedVersionId: 1, draftVersionId: 1 })
+ * // Returns false - published with no draft changes
+ * ```
+ */
+export function hasDraftEdits(
+    article:
+        | Pick<
+              FilteredKnowledgeHubArticle,
+              'id' | 'draftVersionId' | 'publishedVersionId'
+          >
+        | undefined,
+): boolean {
+    if (!article) {
+        return false
+    }
+    if (!article.publishedVersionId) {
+        return false
+    }
+    if (article.draftVersionId === article.publishedVersionId) {
+        return false
+    }
+    return true
+}
