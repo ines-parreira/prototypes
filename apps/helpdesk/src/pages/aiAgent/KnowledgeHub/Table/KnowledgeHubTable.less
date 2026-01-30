@@ -144,6 +144,14 @@
             background-color: var(--hover-default);
         }
 
+        table tbody tr[data-selected-article='true'] {
+            background-color: var(--hover-default) !important;
+        }
+
+        table tbody tr[data-selected-article='true']:hover {
+            background-color: var(--hover-default) !important;
+        }
+
         // Disable hover effect for empty state rows
         table tbody tr:has([data-empty-state='no-results']):hover {
             background-color: transparent !important;
@@ -236,5 +244,19 @@
         align-items: center;
         opacity: 0;
         transition: opacity 0.15s ease-in-out;
+    }
+
+    .selectedRow {
+        background-color: var(
+            --surface-brand-secondary,
+            rgba(59, 130, 246, 0.1)
+        ) !important;
+
+        &:hover {
+            background-color: var(
+                --surface-brand-tertiary,
+                rgba(59, 130, 246, 0.15)
+            ) !important;
+        }
     }
 }

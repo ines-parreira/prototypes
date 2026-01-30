@@ -4,12 +4,16 @@ import classNames from 'classnames'
 import moment from 'moment-timezone'
 
 import {
+    flexRender,
     HeaderRowGroup,
+    type Row,
     type SortingState,
     TableBodyContent,
+    TableCell,
     TableHeader,
     TablePagination,
     TableRoot,
+    TableRow,
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
@@ -64,6 +68,8 @@ type KnowledgeHubTableProps = {
     onSnippetRowClick?: (articleId: number, type: KnowledgeType) => void
     onFaqEditorOpen?: () => void
     selectedFolder: GroupedKnowledgeItem | null
+    selectedArticleType?: string
+    selectedArticleId?: string
     selectedTypeFilter?: KnowledgeType | null
     searchTerm: string
     onSearchChange: (value: string) => void
@@ -94,6 +100,8 @@ export const KnowledgeHubTable = ({
     onSnippetRowClick,
     onFaqEditorOpen,
     selectedFolder,
+    selectedArticleType,
+    selectedArticleId,
     selectedTypeFilter = null,
     searchTerm,
     onSearchChange,
@@ -305,6 +313,43 @@ export const KnowledgeHubTable = ({
             onRowClick?.(row)
         },
         [onRowClick, onGuidanceRowClick, onFaqRowClick, onSnippetRowClick],
+    )
+
+    const renderRows = useCallback(
+        (rows: Row<GroupedKnowledgeItem>[]) => {
+            return rows.map((row) => {
+                const isSelectedArticle =
+                    !!selectedArticleId &&
+                    !!selectedArticleType &&
+                    row.original.id === selectedArticleId &&
+                    row.original.type === selectedArticleType
+
+                return (
+                    <TableRow
+                        key={row.id}
+                        data-name="table-body-row"
+                        data-state={
+                            row.getIsSelected() ? 'selected' : undefined
+                        }
+                        data-selected-article={isSelectedArticle}
+                        aria-selected={row.getIsSelected()}
+                        className={classNames({
+                            [css.selectedRow]: isSelectedArticle,
+                        })}
+                    >
+                        {row.getVisibleCells().map((cell) => (
+                            <TableCell key={cell.id}>
+                                {flexRender(
+                                    cell.column.columnDef.cell,
+                                    cell.getContext(),
+                                )}
+                            </TableCell>
+                        ))}
+                    </TableRow>
+                )
+            })
+        },
+        [selectedArticleId, selectedArticleType],
     )
 
     const columnsWithHighlight = useMemo(() => {
@@ -598,6 +643,7 @@ export const KnowledgeHubTable = ({
                     rows={table.getRowModel().rows}
                     columnCount={table.getAllColumns().length}
                     table={table}
+                    renderRows={renderRows}
                     renderEmptyStateComponent={() => {
                         return (
                             <EmptyStateNoSearchResults

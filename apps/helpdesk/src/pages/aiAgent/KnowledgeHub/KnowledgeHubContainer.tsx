@@ -637,6 +637,8 @@ export const KnowledgeHubContainer = () => {
                 onFaqEditorOpen={handleFaqEditorOpen}
                 onSnippetRowClick={handleOpenSnippetEditor}
                 selectedFolder={selectedFolder}
+                selectedArticleType={type}
+                selectedArticleId={id}
                 selectedTypeFilter={selectedFilter}
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
