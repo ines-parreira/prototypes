@@ -1,3 +1,5 @@
+import { Tag } from '@gorgias/axiom'
+
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 
 import {
@@ -24,6 +26,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         lastUpdatedDatetime,
         isUpdating,
         isDraft,
+        isViewingHistoricalVersion,
         guidanceMode,
     } = useGuidanceDetailsFromContext()
 
@@ -39,7 +42,9 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         },
         {
             left: 'Status',
-            right: (
+            right: isViewingHistoricalVersion ? (
+                <Tag key="status">Previous Version</Tag>
+            ) : (
                 <KnowledgeEditorSidePanelFieldStatus
                     key="status"
                     isDraft={isDraft}

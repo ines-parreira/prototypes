@@ -68,6 +68,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                     available_locales: ['en-US'],
                 },
                 currentLocale: 'en-US',
+                historicalVersion: null,
             },
             config: {
                 supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -228,6 +229,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: { available_locales: ['en-US'] },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -263,6 +265,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: { available_locales: ['en-US', 'fr-FR'] },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [
@@ -302,6 +305,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: { available_locales: ['en-US', 'fr-FR'] },
                     currentLocale: 'fr-FR',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [
@@ -341,6 +345,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: { available_locales: ['en-US', 'es-ES'] },
                     currentLocale: 'es-ES',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -377,6 +382,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: { available_locales: [] },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -412,6 +418,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: undefined,
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -442,6 +449,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         isCurrent: true,
                     },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -488,6 +496,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         isCurrent: false,
                     },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -528,6 +537,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         isCurrent: true,
                     },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -574,6 +584,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         isCurrent: true,
                     },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -616,6 +627,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         isCurrent: true,
                     },
                     currentLocale: 'en-US',
+                    historicalVersion: null,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -640,6 +652,151 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 lastUpdatedDatetime: new Date('2025-06-17'),
                 articleUrl:
                     'https://caitlynminimalist.com/products/duo-baguette-birthstone-ring',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const checked = screen.getByTestId('ai-agent-checked')
+            expect(checked).toHaveTextContent('false')
+        })
+    })
+
+    describe('Historical version viewing', () => {
+        it('shows Previous Version status when viewing a historical version', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                    },
+                    currentLocale: 'en-US',
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl: 'https://example.com/article',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Previous Version')).toBeInTheDocument()
+            expect(screen.queryByText('Published')).not.toBeInTheDocument()
+        })
+
+        it('shows restore tooltip when viewing a historical version', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                    },
+                    currentLocale: 'en-US',
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl: 'https://example.com/article',
+                helpCenter: {
+                    label: 'My Help Center',
+                    id: 1,
+                },
+            })
+
+            renderComponent()
+
+            const tooltip = screen.getByTestId('ai-agent-tooltip')
+            expect(tooltip).toHaveTextContent(
+                'Restore this version to be able to use it.',
+            )
+        })
+
+        it('shows AI agent status as unchecked when viewing a historical version', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    article: {
+                        available_locales: ['en-US'],
+                    },
+                    currentLocale: 'en-US',
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+                config: {
+                    supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
+                    helpCenter: { id: 1 },
+                },
+            })
+
+            mockUseArticleDetailsFromContext.mockReturnValue({
+                article: {
+                    id: 123,
+                    title: 'Test Article',
+                    draftVersionId: 100,
+                    publishedVersionId: 100,
+                    isCurrent: true,
+                },
+                createdDatetime: new Date('2025-06-17'),
+                lastUpdatedDatetime: new Date('2025-06-17'),
+                articleUrl: 'https://example.com/article',
                 helpCenter: {
                     label: 'My Help Center',
                     id: 1,

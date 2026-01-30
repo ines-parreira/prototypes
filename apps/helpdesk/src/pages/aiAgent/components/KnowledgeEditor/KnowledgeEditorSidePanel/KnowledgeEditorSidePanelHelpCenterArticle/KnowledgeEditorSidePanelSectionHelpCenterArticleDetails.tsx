@@ -37,6 +37,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     const currentLocale = state.currentLocale
     const supportedLocales = config.supportedLocales
 
+    const isViewingHistoricalVersion = state.historicalVersion !== null
     const isPublished = article ? article.isCurrent : undefined
     const isDraft = !article?.isCurrent
     const isUnlisted =
@@ -55,6 +56,10 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     }
 
     const getAiAgentVisibilityTooltip = () => {
+        if (isViewingHistoricalVersion) {
+            return 'Restore this version to be able to use it.'
+        }
+
         if (isDraft) {
             return 'Articles become available for AI Agent when published and made public.'
         }
@@ -84,24 +89,30 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                     },
                     {
                         left: 'Status',
-                        right:
-                            isPublished !== undefined ? (
-                                <Tag
-                                    key="status"
-                                    color={isPublished ? 'green' : 'grey'}
-                                >
-                                    {isPublished ? 'Published' : 'Draft'}
-                                </Tag>
-                            ) : (
-                                '-'
-                            ),
+                        right: isViewingHistoricalVersion ? (
+                            <Tag key="status">Previous Version</Tag>
+                        ) : isPublished !== undefined ? (
+                            <Tag
+                                key="status"
+                                color={isPublished ? 'green' : 'grey'}
+                            >
+                                {isPublished ? 'Published' : 'Draft'}
+                            </Tag>
+                        ) : (
+                            '-'
+                        ),
                     },
                     {
                         left: 'In use by AI Agent',
                         right: (
                             <KnowledgeEditorSidePanelFieldAIAgentStatus
                                 key="ai-agent-status"
-                                checked={!isDraft && !isUnlisted}
+                                checked={
+                                    !isViewingHistoricalVersion &&
+                                    !isDraft &&
+                                    !isUnlisted
+                                }
+                                isDisabled={isViewingHistoricalVersion}
                                 tooltip={getAiAgentVisibilityTooltip()}
                                 showMultiLanguageInfo={
                                     availableLocales.length > 1

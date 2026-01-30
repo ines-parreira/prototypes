@@ -41,6 +41,7 @@ describe('useGuidanceDetailsFromContext', () => {
         isUpdating: false,
         isAutoSaving: false,
         guidanceMode: 'edit' as const,
+        historicalVersion: null,
     }
 
     const defaultContextValue: Partial<GuidanceContextValue> = {
@@ -447,6 +448,109 @@ describe('useGuidanceDetailsFromContext', () => {
         })
     })
 
+    describe('isViewingHistoricalVersion', () => {
+        it('should return false when historicalVersion is null', () => {
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.isViewingHistoricalVersion).toBe(false)
+        })
+
+        it('should return true when historicalVersion exists', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    ...defaultState,
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.isViewingHistoricalVersion).toBe(true)
+        })
+
+        it('should return restore tooltip when viewing historical version', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    ...defaultState,
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.aiAgentStatus.tooltip).toBe(
+                'Restore this version to be able to use it.',
+            )
+        })
+
+        it('should return false for aiAgentStatus value when viewing historical version', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    ...defaultState,
+                    visibility: true,
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.aiAgentStatus.value).toBe(false)
+        })
+
+        it('should return isUpdating true when viewing historical version', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: {
+                    ...defaultState,
+                    historicalVersion: {
+                        versionId: 1,
+                        version: 1,
+                        title: 'Old version',
+                        content: '<p>Old</p>',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                        publisherUserId: 1,
+                        commitMessage: null,
+                        impactDateRange: null,
+                    },
+                },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.isUpdating).toBe(true)
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
@@ -459,6 +563,7 @@ describe('useGuidanceDetailsFromContext', () => {
             expect(result.current).toHaveProperty('lastUpdatedDatetime')
             expect(result.current).toHaveProperty('isUpdating')
             expect(result.current).toHaveProperty('isDraft')
+            expect(result.current).toHaveProperty('isViewingHistoricalVersion')
             expect(result.current).toHaveProperty('guidanceMode')
         })
     })

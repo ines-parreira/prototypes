@@ -14,6 +14,7 @@ export type GuidanceDetailsData = {
     lastUpdatedDatetime?: Date
     isUpdating: boolean
     isDraft: boolean
+    isViewingHistoricalVersion: boolean
     guidanceMode: GuidanceModeType
 }
 
@@ -22,7 +23,11 @@ const getAiAgentStatusTooltip = (
     isAtLimit: boolean,
     visibility: boolean,
     limitMessage: string,
+    isViewingHistoricalVersion: boolean,
 ): string | undefined => {
+    if (isViewingHistoricalVersion) {
+        return 'Restore this version to be able to use it.'
+    }
     if (isDraft) {
         return 'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.'
     }
@@ -41,17 +46,22 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
         state.guidance?.isCurrent === undefined
             ? false
             : !state.guidance?.isCurrent
+    const isViewingHistoricalVersion = state.historicalVersion !== null
 
     return useMemo(
         () => ({
             aiAgentStatus: {
-                value: isDraft ? false : state.visibility,
+                value:
+                    isDraft || isViewingHistoricalVersion
+                        ? false
+                        : state.visibility,
                 onChange: toggleVisibility,
                 tooltip: getAiAgentStatusTooltip(
                     isDraft,
                     isAtLimit,
                     state.visibility,
                     limitMessage,
+                    isViewingHistoricalVersion,
                 ),
             },
             createdDatetime: guidanceArticle
@@ -61,8 +71,12 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
                 ? new Date(guidanceArticle.lastUpdated)
                 : undefined,
             isUpdating:
-                isDisabled || isDraft || (isAtLimit && !state.visibility),
+                isDisabled ||
+                isDraft ||
+                isViewingHistoricalVersion ||
+                (isAtLimit && !state.visibility),
             isDraft,
+            isViewingHistoricalVersion,
             guidanceMode: state.guidanceMode,
         }),
         [
@@ -73,6 +87,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             limitMessage,
             isDraft,
             isDisabled,
+            isViewingHistoricalVersion,
             state.guidanceMode,
         ],
     )
