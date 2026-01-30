@@ -49,6 +49,7 @@ exports[`<AddDiscountCode/> should render the discount picker when the popover i
       >
         <div
           class="popover-inner"
+          data-react-aria-top-layer="true"
           role="tooltip"
         >
           <div
@@ -160,6 +161,7 @@ exports[`<AddDiscountCode/> should render the discount picker when there is a cu
       >
         <div
           class="popover-inner"
+          data-react-aria-top-layer="true"
           role="tooltip"
         >
           <div
@@ -258,6 +260,7 @@ exports[`<AddDiscountCode/> should render the store picker because of multiple i
       >
         <div
           class="popover-inner"
+          data-react-aria-top-layer="true"
           role="tooltip"
         >
           <div

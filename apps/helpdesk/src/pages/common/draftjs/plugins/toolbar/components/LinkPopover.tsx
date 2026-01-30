@@ -102,6 +102,7 @@ export default function LinkPopover({
                                 onMouseLeave={handleMouseLeave}
                                 trigger="legacy"
                                 container={context.ref}
+                                data-react-aria-top-layer="true"
                             >
                                 <a
                                     className={css.url}

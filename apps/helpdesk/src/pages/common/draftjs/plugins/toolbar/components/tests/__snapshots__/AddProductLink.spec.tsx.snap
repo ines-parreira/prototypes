@@ -49,6 +49,7 @@ exports[`<AddProductLink/> should render the product picker when the popover is 
       >
         <div
           class="popover-inner"
+          data-react-aria-top-layer="true"
           role="tooltip"
         >
           <div
@@ -147,6 +148,7 @@ exports[`<AddProductLink/> should render the store picker because of multiple in
       >
         <div
           class="popover-inner"
+          data-react-aria-top-layer="true"
           role="tooltip"
         >
           <div

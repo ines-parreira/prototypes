@@ -47,6 +47,7 @@ exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
             >
               <div
                 class="popover-inner inner"
+                data-react-aria-top-layer="true"
                 role="tooltip"
               >
                 <a

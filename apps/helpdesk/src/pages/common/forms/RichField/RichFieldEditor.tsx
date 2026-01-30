@@ -12,7 +12,13 @@ import { Component } from 'react'
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { ContentState } from 'draft-js'
-import { EditorState, KeyBindingUtil, Modifier, RichUtils } from 'draft-js'
+import {
+    EditorState,
+    getDefaultKeyBinding,
+    KeyBindingUtil,
+    Modifier,
+    RichUtils,
+} from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
@@ -462,7 +468,7 @@ export class RichFieldEditor extends Component<Props, State> {
             return null
         }
 
-        return
+        return getDefaultKeyBinding(e)
     }
 
     render() {

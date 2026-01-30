@@ -118,6 +118,7 @@ export default function ButtonPopover({
                         container={context.ref ?? appNode ?? undefined}
                         trigger="legacy"
                         placement="right-end"
+                        data-react-aria-top-layer="true"
                     >
                         {children}
                     </Popover>
