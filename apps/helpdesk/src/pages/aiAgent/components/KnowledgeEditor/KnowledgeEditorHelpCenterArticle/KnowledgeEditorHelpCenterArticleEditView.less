@@ -3,6 +3,14 @@
         width: 100%;
         height: 100%;
         overflow-x: auto;
+
+        @media (min-width: 841px) {
+            max-width: 696px; // including 2*48px padding on sides
+        }
+
+        @media (max-width: 840px) {
+            max-width: 548px; // including 2x24px padding on sides
+        }
     }
 
     .editor {

@@ -5,9 +5,17 @@
         flex-direction: column;
         gap: var(--spacing-lg);
         width: 100%;
-        // 600px+48px+48px
-        max-width: 696px;
         flex: 1;
+
+        @media (min-width: 841px) {
+            max-width: 696px; // including 2*48px padding on sides
+        }
+
+        @media (max-width: 840px) {
+            max-width: 548px; // including 2x24px padding on sides
+            padding-left: var(--spacing-lg);
+            padding-right: var(--spacing-lg);
+        }
     }
 
     .editorContainer {
