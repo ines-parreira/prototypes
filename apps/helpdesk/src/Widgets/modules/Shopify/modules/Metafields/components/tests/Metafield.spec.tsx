@@ -24,6 +24,7 @@ import {
     shopifyListDatetime,
     shopifyListDimension,
     shopifyListFileReference,
+    shopifyListLink,
     shopifyListMetaobjectReference,
     shopifyListMixedReference,
     shopifyListNumberDecimal,
@@ -478,6 +479,21 @@ describe('<MetafieldNew />', () => {
                 renderWithProviders(<Metafield metafield={shopifyListUrl()} />)
                 expect(screen.getByText('gorgias.com/about'))
                 expect(screen.getByText('admin.shopify.com/st...'))
+                expect(screen.getAllByRole('button').length).toBe(2)
+            })
+        })
+
+        describe('list link metafields', () => {
+            it('should render with list.link', () => {
+                renderWithProviders(
+                    <Metafield metafield={shopifyListLink() as any} />,
+                )
+                expect(
+                    screen.getByRole('link', { name: 'Gorgias' }),
+                ).toHaveAttribute('href', 'https://gorgias.com')
+                expect(
+                    screen.getByRole('link', { name: 'Shopify' }),
+                ).toHaveAttribute('href', 'https://shopify.com')
                 expect(screen.getAllByRole('button').length).toBe(2)
             })
         })

@@ -12,7 +12,7 @@ import type {
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
 } from '@gorgias/helpdesk-queries'
-import type { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import CopyButton from 'components/CopyButton/CopyButton'
 import { Badge } from 'gorgias-design-system/Badge/Badge'
@@ -145,7 +145,7 @@ export function ReferenceMetafield({
     type,
 }: {
     value: string
-    type: ShopifyMetafieldType
+    type: MetafieldType | string
 }) {
     const integrationContext = useContext(IntegrationContext)
     const gid = extractGid(value)
@@ -161,6 +161,21 @@ export function ReferenceMetafield({
         ) : null
     }
     return null
+}
+
+export function LinkMetafield({
+    value,
+}: {
+    value: { text: string; url: string }
+}) {
+    const displayText = value.text || shortenUrl(value.url)
+    return (
+        <FieldWithCopyButton value={value.url}>
+            <a href={value.url} target="_blank" rel="noreferrer">
+                {displayText}
+            </a>
+        </FieldWithCopyButton>
+    )
 }
 
 export function RichTextFieldMetafield({

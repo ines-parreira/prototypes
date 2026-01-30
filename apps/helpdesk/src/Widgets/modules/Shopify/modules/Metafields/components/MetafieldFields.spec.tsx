@@ -10,7 +10,7 @@ import type { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
 import type { IntegrationContextType } from 'providers/infobar/IntegrationContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import { ReferenceMetafield } from './MetafieldFields'
+import { LinkMetafield, ReferenceMetafield } from './MetafieldFields'
 
 const mockStore = configureMockStore()
 const store = mockStore({
@@ -91,5 +91,60 @@ describe('ReferenceMetafield', () => {
             expect(container.querySelector('a')).not.toBeInTheDocument()
             expect(container.firstChild).toBeNull()
         })
+    })
+})
+
+const renderLinkMetafield = (value: { text: string; url: string }) => {
+    return render(
+        <Provider store={store}>
+            <LinkMetafield value={value} />
+        </Provider>,
+    )
+}
+
+describe('LinkMetafield', () => {
+    it('should render link with custom text when text is provided', () => {
+        const value = {
+            text: 'Click here',
+            url: 'https://example.com/page',
+        }
+        renderLinkMetafield(value)
+
+        const link = screen.getByRole('link', { name: 'Click here' })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', 'https://example.com/page')
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noreferrer')
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
+
+    it('should render link with shortened URL when text is empty', () => {
+        const value = {
+            text: '',
+            url: 'https://example.com/page',
+        }
+        renderLinkMetafield(value)
+
+        const link = screen.getByRole('link', { name: 'example.com/page' })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', 'https://example.com/page')
+        expect(screen.getByRole('button')).toBeInTheDocument()
+    })
+
+    it('should truncate long URLs when text is not provided', () => {
+        const value = {
+            text: '',
+            url: 'https://example.com/very/long/path/that/exceeds/twenty/characters',
+        }
+        renderLinkMetafield(value)
+
+        const link = screen.getByRole('link', {
+            name: 'example.com/very/lon...',
+        })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute(
+            'href',
+            'https://example.com/very/long/path/that/exceeds/twenty/characters',
+        )
     })
 })

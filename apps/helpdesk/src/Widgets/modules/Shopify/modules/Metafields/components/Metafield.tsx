@@ -2,8 +2,9 @@ import type { ReactNode } from 'react'
 
 import { startCase } from 'lodash'
 
-import type { ShopifyMetafield } from '@gorgias/helpdesk-queries'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
+import type { FullShopifyMetafield } from '../types'
 import {
     BooleanMetafield,
     ColorMetafield,
@@ -13,6 +14,7 @@ import {
     FieldWithCopyButton,
     FieldWrapper,
     JsonMetafield,
+    LinkMetafield,
     MoneyMetafield,
     RatingMetafield,
     ReferenceMetafield,
@@ -21,11 +23,11 @@ import {
 } from './MetafieldFields'
 import { TextFieldMetafield } from './TextFieldMetafield'
 
-export type ExtendedShopifyMetafield = ShopifyMetafield & {
+export type ExtendedShopifyMetafield = FullShopifyMetafield & {
     owner_resource: string
 }
 
-export type MetafieldWithName = ShopifyMetafield & { name?: string }
+export type MetafieldWithName = FullShopifyMetafield & { name?: string }
 
 export type Props = {
     metafield: MetafieldWithName
@@ -79,12 +81,22 @@ export default function Metafield({ metafield }: Props) {
         case 'product_reference':
         case 'collection_reference':
         case 'page_reference':
+        case 'customer_reference':
+        case 'company_reference':
             return renderField(
                 <ReferenceMetafield
-                    value={metafield.value}
-                    type={metafield.type}
+                    value={metafield.value as string}
+                    type={metafield.type as MetafieldType}
                 />,
             )
+
+        case 'id':
+            return renderField(
+                <FieldWithCopyButton value={String(metafield.value)} />,
+            )
+
+        case 'link':
+            return renderField(<LinkMetafield value={metafield.value} />)
 
         case 'url':
             return renderField(<UrlMetafield value={metafield.value} />)
@@ -139,11 +151,13 @@ export default function Metafield({ metafield }: Props) {
         case 'list.product_reference':
         case 'list.collection_reference':
         case 'list.page_reference':
+        case 'list.customer_reference':
+        case 'list.company_reference':
             return renderField(
-                metafield.value.map((value, index) => (
+                (metafield.value as string[]).map((value, index) => (
                     <ReferenceMetafield
                         value={value}
-                        type={metafield.type}
+                        type={metafield.type as MetafieldType}
                         key={index}
                     />
                 )),
@@ -151,6 +165,9 @@ export default function Metafield({ metafield }: Props) {
 
         case 'list.url':
             return renderListItems(metafield.value, UrlMetafield)
+
+        case 'list.link':
+            return renderListItems(metafield.value, LinkMetafield)
 
         case 'list.color':
             return renderListItems(metafield.value, ColorMetafield)

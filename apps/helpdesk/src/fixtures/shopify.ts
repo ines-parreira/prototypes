@@ -2525,6 +2525,21 @@ export const shopifyListUrl = (): UrlListShopifyMetafield => ({
     type: 'list.url',
 })
 
+export const shopifyListLink = (): {
+    namespace: string
+    key: string
+    value: Array<{ text: string; url: string }>
+    type: 'list.link'
+} => ({
+    namespace: 'custom',
+    key: 'test_link',
+    value: [
+        { text: 'Gorgias', url: 'https://gorgias.com' },
+        { text: 'Shopify', url: 'https://shopify.com' },
+    ],
+    type: 'list.link',
+})
+
 export const shopifyListColor = (): ColorListShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',

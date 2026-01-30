@@ -58,6 +58,42 @@ describe('prepareGuidUrl()', () => {
         )
     })
 
+    it('should return customer admin url when given customer_reference type', () => {
+        const storeName = 'test-store'
+        const gid = '213213'
+        const url = prepareGidUrl('customer_reference', storeName, gid)
+        expect(url).toEqual(
+            `https://admin.shopify.com/store/${storeName}/customers/${gid}`,
+        )
+    })
+
+    it('should return customer admin url when given list.customer_reference type', () => {
+        const storeName = 'test-store'
+        const gid = '213213'
+        const url = prepareGidUrl('list.customer_reference', storeName, gid)
+        expect(url).toEqual(
+            `https://admin.shopify.com/store/${storeName}/customers/${gid}`,
+        )
+    })
+
+    it('should return company admin url when given company_reference type', () => {
+        const storeName = 'test-store'
+        const gid = '213213'
+        const url = prepareGidUrl('company_reference', storeName, gid)
+        expect(url).toEqual(
+            `https://admin.shopify.com/store/${storeName}/companies/${gid}`,
+        )
+    })
+
+    it('should return company admin url when given list.company_reference type', () => {
+        const storeName = 'test-store'
+        const gid = '213213'
+        const url = prepareGidUrl('list.company_reference', storeName, gid)
+        expect(url).toEqual(
+            `https://admin.shopify.com/store/${storeName}/companies/${gid}`,
+        )
+    })
+
     it('should return undefined for any other type', () => {
         const storeName = 'test-store'
         const gid = '213213'

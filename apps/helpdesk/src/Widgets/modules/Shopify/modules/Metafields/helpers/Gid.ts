@@ -1,4 +1,4 @@
-import type { ShopifyMetafieldType } from '@gorgias/helpdesk-types'
+import type { MetafieldType } from '@gorgias/helpdesk-types'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 
@@ -13,7 +13,7 @@ export function extractGid(url: string) {
 }
 
 export function prepareGidUrl(
-    type: ShopifyMetafieldType,
+    type: MetafieldType | string,
     storeName: string,
     gid: string,
 ) {
@@ -27,6 +27,12 @@ export function prepareGidUrl(
         case 'list.page_reference':
         case 'page_reference':
             return `${shopifyAdminBaseUrl(storeName)}/pages/${gid}`
+        case 'list.customer_reference':
+        case 'customer_reference':
+            return `${shopifyAdminBaseUrl(storeName)}/customers/${gid}`
+        case 'list.company_reference':
+        case 'company_reference':
+            return `${shopifyAdminBaseUrl(storeName)}/companies/${gid}`
         default: {
             return undefined
         }
