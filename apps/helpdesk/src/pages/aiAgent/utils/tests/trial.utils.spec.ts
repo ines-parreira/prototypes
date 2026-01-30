@@ -1,3 +1,5 @@
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import type { AutomatePlan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { AccountFeature } from 'state/currentAccount/types'
@@ -13,6 +15,7 @@ const createMockAutomatePlan = (generation?: number): AutomatePlan => ({
     extra_ticket_cost: 10,
     plan_id: 'test-plan',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'Test Automate Plan',
     public: true,
     generation,

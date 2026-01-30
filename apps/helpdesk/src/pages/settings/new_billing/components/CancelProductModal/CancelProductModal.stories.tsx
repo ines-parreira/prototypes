@@ -6,6 +6,8 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import type {
     AutomatePlan,
     ConvertPlan,
@@ -26,6 +28,7 @@ const mockHelpdeskPlan: HelpdeskPlan = {
     extra_ticket_cost: 40,
     plan_id: 'pro_plan',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'Pro',
     public: true,
     integrations: 100,
@@ -43,6 +46,7 @@ const mockAutomatePlan: AutomatePlan = {
     extra_ticket_cost: 10,
     plan_id: 'automate_starter',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'Starter',
     public: true,
     features: {} as any,
@@ -57,6 +61,7 @@ const mockVoicePlan: SMSOrVoicePlan = {
     extra_ticket_cost: 10,
     plan_id: 'voice_plan',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'Voice Plan',
     public: true,
 }
@@ -70,6 +75,7 @@ const mockSMSPlan: SMSOrVoicePlan = {
     extra_ticket_cost: 10,
     plan_id: 'sms_plan',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'SMS Plan',
     public: true,
 }
@@ -83,6 +89,7 @@ const mockConvertPlan: ConvertPlan = {
     extra_ticket_cost: 0,
     plan_id: 'convert_plan',
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     name: 'Convert Plan',
     public: true,
 }

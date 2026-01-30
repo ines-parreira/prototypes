@@ -1,3 +1,5 @@
+import type { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import type {
     AccountFeature,
     AccountFeatureMetadata,
@@ -63,6 +65,7 @@ type BasePlan = {
     extra_ticket_cost: number
     plan_id: PlanId
     cadence: Cadence
+    invoice_cadence: InvoiceCadence
     name: string
     public: boolean
     // Set as optional to prevent breaking changes

@@ -1,5 +1,7 @@
 import { renderHook } from '@repo/testing'
 
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import { useAiAgentGeneration6Plan } from 'models/billing/queries'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
@@ -51,6 +53,7 @@ describe('useAiAgentUpgradePlan', () => {
             extra_ticket_cost: 0,
             plan_id: 'plan-123',
             cadence: Cadence.Month,
+            invoice_cadence: InvoiceCadence.Month,
             name: 'AI Agent Plan',
             public: true,
         }
