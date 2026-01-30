@@ -9,13 +9,17 @@ import {
     ButtonGroup,
     ButtonGroupItem,
     Icon,
+    Modal,
+    ModalSize,
     OverlayHeader,
     SidePanel,
 } from '@gorgias/axiom'
 
+import aiFaqsDemoPoster from 'assets/img/ai-agent/ai-faqs-demo-poster.png'
 import spqManualInstallStep1 from 'assets/img/spq/spq-manual-install-step-1.png'
 import spqManualInstallStep2 from 'assets/img/spq/spq-manual-install-step-2.png'
 import spqManualInstallStep3 from 'assets/img/spq/spq-manual-install-step-3.png'
+import aiFaqsDemoVideo from 'assets/video/ai-faqs-demo.mp4'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import { notify } from 'state/notifications/actions'
@@ -31,10 +35,31 @@ enum InstallationMethods {
 const BLOCK_ID = `${getGorgiasMainThemeAppExtensionId()}/spq`
 const SHOPIFY_THEME_EXTENSION_LINK_BASE = `https://{shopName}.myshopify.com/admin/themes/current/editor?template=product&addAppBlockId=${BLOCK_ID}&target=mainSection`
 
-const QuickInstallationContent = ({ shopName }: { shopName: string }) => {
+const QuickInstallationContent = ({
+    shopName,
+    isVideoModalOpen,
+    setIsVideoModalOpen,
+}: {
+    shopName: string
+    isVideoModalOpen: boolean
+    setIsVideoModalOpen: (isOpen: boolean) => void
+}) => {
     return (
         <>
             <Box className={css.listItem} flexDirection="column" gap={12}>
+                <button
+                    type="button"
+                    className={css.videoThumbnailButton}
+                    onClick={() => setIsVideoModalOpen(true)}
+                    aria-label="Play AI FAQs Demo video"
+                >
+                    <div className={css.videoThumbnail}>
+                        <img src={aiFaqsDemoPoster} alt="AI FAQs Demo" />
+                        <div className={css.playIconOverlay}>
+                            <Icon name="media-play-circle" size="lg" />
+                        </div>
+                    </div>
+                </button>
                 Help shoppers get answers faster by embedding AI FAQs in your
                 product pages. Use your Shopify editor to place the widget and
                 customize it to match your store.
@@ -60,7 +85,7 @@ const QuickInstallationContent = ({ shopName }: { shopName: string }) => {
                         icon="info"
                         intent="info"
                         isClosable={false}
-                        title="Turning off this feature won’t remove the code from your site"
+                        title="Turning off this feature won't remove the code from your site"
                     >
                         Shoppers won&apos;t see the AI FAQs, but the code will
                         stay in your Shopify theme. To remove them completely,
@@ -68,6 +93,23 @@ const QuickInstallationContent = ({ shopName }: { shopName: string }) => {
                     </Banner>
                 </Box>
             </Box>
+
+            <Modal
+                isOpen={isVideoModalOpen}
+                onOpenChange={setIsVideoModalOpen}
+                size={ModalSize.Xl}
+                aria-label="AI FAQs Demo video"
+            >
+                <div className={css.videoModalContent}>
+                    <video
+                        src={aiFaqsDemoVideo}
+                        className={css.video}
+                        controls
+                        autoPlay
+                        playsInline
+                    />
+                </div>
+            </Modal>
         </>
     )
 }
@@ -183,9 +225,14 @@ export const EmbeddedSpqSettingsDrawer = ({
     const [selectedMethod, setSelectedMethod] = useState(
         InstallationMethods.QuickInstall,
     )
+    const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
 
     return (
-        <SidePanel isOpen={isOpen} onOpenChange={onClose}>
+        <SidePanel
+            isOpen={isOpen}
+            onOpenChange={onClose}
+            isDismissable={!isVideoModalOpen}
+        >
             <OverlayHeader
                 title="AI FAQs: Embedded in page"
                 description={
@@ -212,7 +259,11 @@ export const EmbeddedSpqSettingsDrawer = ({
             <div className={css.overlayContent}>
                 <div className={css.installInstructions}>
                     {selectedMethod === InstallationMethods.QuickInstall && (
-                        <QuickInstallationContent shopName={shopName} />
+                        <QuickInstallationContent
+                            shopName={shopName}
+                            isVideoModalOpen={isVideoModalOpen}
+                            setIsVideoModalOpen={setIsVideoModalOpen}
+                        />
                     )}
                     {selectedMethod === InstallationMethods.Manual && (
                         <ManualInstallationContent shopName={shopName} />

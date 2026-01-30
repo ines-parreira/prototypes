@@ -61,4 +61,47 @@
     .manualSteps img {
         padding-right: var(--md, 16px);
     }
+
+    .videoThumbnailButton {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .videoThumbnail {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: var(--sm, 12px);
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .playIconOverlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--content-neutral-on-solid);
+    }
+
+    .videoModalContent {
+        width: 100%;
+        border-radius: var(--sm, 12px);
+        overflow: hidden;
+        background: var(--elevation-neutral-bg);
+    }
+
+    .video {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
 }
