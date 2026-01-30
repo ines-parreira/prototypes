@@ -12,8 +12,14 @@ export function getMetafieldsFromResponse(
     const fields = response?.data?.data as ShopifyMetafield[] | undefined
     return fields?.filter(
         (field) =>
-            !['customer_reference', 'company_reference', 'id', 'link'].includes(
-                field.type,
-            ),
+            ![
+                'customer_reference',
+                'company_reference',
+                'id',
+                'link',
+                'list.company_reference',
+                'list.customer_reference',
+                'list.link',
+            ].includes(field.type),
     )
 }
