@@ -7,6 +7,7 @@ type ExtendedMetafieldType =
     | MetafieldType
     | 'list.company_reference'
     | 'list.customer_reference'
+    | 'list.link'
 
 export type CategoryDefinition = {
     label: string
@@ -87,6 +88,7 @@ export const TYPE_CONFIG: Partial<
         label: 'Company list',
     },
     'list.customer_reference': { icon: 'user', label: 'Customer list' },
+    'list.link': { icon: 'link-horizontal', label: 'Link list' },
 }
 
 export const SUPPORTED_METAFIELD_TYPES: ExtendedMetafieldType[] = [
@@ -127,6 +129,7 @@ export const SUPPORTED_METAFIELD_TYPES: ExtendedMetafieldType[] = [
     'list.weight',
     'list.company_reference',
     'list.customer_reference',
+    'list.link',
 ]
 
 export const METAFIELD_TYPE_OPTIONS = Object.values(MetafieldType).map(
