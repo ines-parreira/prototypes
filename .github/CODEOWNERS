@@ -45,19 +45,19 @@ apps/helpdesk/src/domains/reporting/models/cubes/ai-sales-agent/ @gorgias/conv-a
 apps/helpdesk/src/domains/reporting/models/queryFactories/ai-sales-agent @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
 
-# Conv AI: Flywheel scope @gorgias/conv-ai-flywheel
+# CXP: Coaching & Trust scope @gorgias/cxp-coaching-trust
 
-apps/helpdesk/src/domains/reporting/hooks/automate/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/domains/reporting/models/cubes/automate/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/domains/reporting/models/cubes/automate_v2/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/domains/reporting/pages/automate/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/conv-ai-flywheel
-apps/helpdesk/src/pages/aiAgent/KnowledgeHub/ @gorgias/conv-ai-flywheel
+apps/helpdesk/src/domains/reporting/hooks/automate/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/domains/reporting/models/cubes/automate/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/domains/reporting/models/cubes/automate_v2/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/domains/reporting/pages/automate/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/cxp-coaching-trust
+apps/helpdesk/src/pages/aiAgent/KnowledgeHub/ @gorgias/cxp-coaching-trust
 
 # Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
 apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
