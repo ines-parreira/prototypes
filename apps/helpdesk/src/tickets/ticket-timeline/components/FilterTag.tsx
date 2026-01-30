@@ -22,6 +22,8 @@ type FilterTagProps<T extends { id: string | number; label: string }> = {
     sections?: Section<T>[]
     selectedItems?: T[]
     onSelect?: (items: T[]) => void
+    isOpen?: boolean
+    onOpenChange?: (isOpen: boolean) => void
 }
 
 export function FilterTag<T extends { id: string | number; label: string }>({
@@ -31,6 +33,8 @@ export function FilterTag<T extends { id: string | number; label: string }>({
     sections,
     selectedItems = [],
     onSelect,
+    isOpen,
+    onOpenChange,
 }: FilterTagProps<T>) {
     // If no items and no sections, just show a simple tag
     if (items.length === 0 && !sections) {
@@ -70,6 +74,8 @@ export function FilterTag<T extends { id: string | number; label: string }>({
                 onSelect={onSelect as any}
                 selectionBehavior="toggle"
                 trigger={triggerButton}
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
             >
                 {(section: Section<T>) => (
                     <ListSection
@@ -99,6 +105,8 @@ export function FilterTag<T extends { id: string | number; label: string }>({
             onSelect={onSelect}
             selectionBehavior="toggle"
             trigger={triggerButton}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
         >
             {(item: T) => (
                 <ListItem

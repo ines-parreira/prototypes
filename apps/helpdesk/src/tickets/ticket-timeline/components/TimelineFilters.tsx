@@ -199,6 +199,9 @@ export function TimelineFilters({
     const [activeFilters, setActiveFilters] = useState<Set<FilterType>>(
         new Set(['interactionType']),
     )
+    const [openDropdown, setOpenDropdown] = useState<
+        'filteringButton' | FilterType | null
+    >(null)
 
     const dateFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.ShortDateWithYear,
@@ -273,6 +276,8 @@ export function TimelineFilters({
     // Handle filter selection from the main Filter button
     const handleFilterSelect = (filterType: FilterType) => {
         setActiveFilters((prev) => new Set(prev).add(filterType))
+        // Close the FilteringButton dropdown and open the selected filter's dropdown
+        setOpenDropdown(filterType)
     }
 
     // Handle filter removal
@@ -330,6 +335,12 @@ export function TimelineFilters({
                         <FilteringButton
                             onFilterSelect={handleFilterSelect}
                             activeFilters={activeFilters}
+                            isOpen={openDropdown === 'filteringButton'}
+                            onOpenChange={(isOpen) =>
+                                setOpenDropdown(
+                                    isOpen ? 'filteringButton' : null,
+                                )
+                            }
                         />
                     </Box>
                 </OverflowListItem>
@@ -341,6 +352,10 @@ export function TimelineFilters({
                                 onChange={handleDateRangeChange}
                                 presets={presets}
                                 aria-label="Timeline date range picker"
+                                isOpen={openDropdown === 'dateRange'}
+                                onOpenChange={(isOpen) =>
+                                    setOpenDropdown(isOpen ? 'dateRange' : null)
+                                }
                                 trigger={(renderProps) => {
                                     // Filter out React-specific props that shouldn't go to DOM
                                     const {
@@ -397,6 +412,12 @@ export function TimelineFilters({
                             onRemove={() =>
                                 handleRemoveFilter('interactionType')
                             }
+                            isOpen={openDropdown === 'interactionType'}
+                            onOpenChange={(isOpen) =>
+                                setOpenDropdown(
+                                    isOpen ? 'interactionType' : null,
+                                )
+                            }
                             sections={[
                                 {
                                     id: 'interaction-type',
@@ -435,6 +456,10 @@ export function TimelineFilters({
                         <FilterTag
                             label={getTicketStatusLabel()}
                             onRemove={() => handleRemoveFilter('ticketStatus')}
+                            isOpen={openDropdown === 'ticketStatus'}
+                            onOpenChange={(isOpen) =>
+                                setOpenDropdown(isOpen ? 'ticketStatus' : null)
+                            }
                             sections={[
                                 {
                                     id: 'ticket-status',

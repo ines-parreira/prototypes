@@ -5,6 +5,8 @@ type FilterType = 'dateRange' | 'interactionType' | 'ticketStatus'
 type FilteringButtonProps = {
     onFilterSelect: (filterType: FilterType) => void
     activeFilters: Set<FilterType>
+    isOpen?: boolean
+    onOpenChange?: (isOpen: boolean) => void
 }
 
 type FilterOption = {
@@ -21,6 +23,8 @@ const FILTER_OPTIONS: FilterOption[] = [
 export function FilteringButton({
     onFilterSelect,
     activeFilters,
+    isOpen,
+    onOpenChange,
 }: FilteringButtonProps) {
     // Convert active filters Set to array of FilterOption objects
     const selectedItems = FILTER_OPTIONS.filter((option) =>
@@ -45,6 +49,8 @@ export function FilteringButton({
             selectedItems={selectedItems}
             onSelect={handleSelect}
             selectionBehavior="toggle"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
             trigger={({ ref }) => (
                 <Button
                     ref={ref}

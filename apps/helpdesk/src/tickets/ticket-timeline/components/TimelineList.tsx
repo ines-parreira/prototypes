@@ -77,10 +77,10 @@ export function TimelineList({
 
     return (
         <Box
-            padding-left="md"
-            padding-right="md"
-            padding-bottom="md"
-            padding-top="xs"
+            paddingLeft="md"
+            paddingRight="md"
+            paddingBottom="md"
+            paddingTop="xs"
             flexDirection="column"
         >
             <ol className={css.timelineList}>
