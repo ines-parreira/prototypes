@@ -6,22 +6,19 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, Radio, RadioGroup, Text } from '@gorgias/axiom'
+import { Button, Card, Heading, Radio, RadioGroup } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type { IntegrationFromType } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
-    GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
@@ -52,19 +49,6 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
-    const [currentStoreIntegration, setCurrentStoreIntegration] =
-        useState<
-            IntegrationFromType<
-                | IntegrationType.Shopify
-                | IntegrationType.BigCommerce
-                | IntegrationType.Magento2
-            >
-        >()
-
-    const gorgiasChatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
-    )
-
     const storeIntegrations = useAppSelector(
         getIntegrationsByTypes([
             IntegrationType.Shopify,
@@ -75,11 +59,9 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
 
-    const storeIntegration =
-        currentStoreIntegration ??
-        storeIntegrations.find(
-            (storeIntegration) => storeIntegration.id === shopIntegrationId,
-        )
+    const storeIntegration = storeIntegrations.find(
+        (storeIntegration) => storeIntegration.id === shopIntegrationId,
+    )
 
     const isOneClickInstallationAllowed =
         storeIntegration?.type === IntegrationType.Shopify
@@ -205,7 +187,6 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep
-                step={GorgiasChatCreationWizardSteps.Installation}
                 preview={null}
                 footer={
                     <div className={css.wizardButtons}>
@@ -242,42 +223,11 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                     </div>
                 }
             >
-                <>
-                    {shopIntegrationId && (
-                        <>
-                            <Text variant="bold" className={css.title}>
-                                Connected store
-                            </Text>
-                            <div className={css.section}>
-                                <StorePicker
-                                    selectedStoreIntegrationId={
-                                        storeIntegration?.id ?? null
-                                    }
-                                    gorgiasChatIntegrations={
-                                        gorgiasChatIntegrations
-                                    }
-                                    storeIntegrations={storeIntegrations}
-                                    onChange={(storeIntegrationId: number) => {
-                                        const newStoreIntegration =
-                                            storeIntegrations.find(
-                                                (integration) =>
-                                                    integration?.id ===
-                                                    storeIntegrationId,
-                                            )!
-
-                                        setCurrentStoreIntegration(
-                                            newStoreIntegration,
-                                        )
-                                    }}
-                                    label={''}
-                                />
-                            </div>
-                        </>
-                    )}
-                    <div className={css.section}>
-                        <Text variant="bold" className={css.title}>
+                <Card p="lg">
+                    <div className={css.content}>
+                        <Heading size="md" className={css.heading}>
                             Installation method
-                        </Text>
+                        </Heading>
                         <RadioGroup
                             value={installationMethod}
                             onChange={(value) => {
@@ -311,7 +261,7 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             />
                         </RadioGroup>
                     </div>
-                </>
+                </Card>
             </GorgiasChatCreationWizardStep>
         </>
     )

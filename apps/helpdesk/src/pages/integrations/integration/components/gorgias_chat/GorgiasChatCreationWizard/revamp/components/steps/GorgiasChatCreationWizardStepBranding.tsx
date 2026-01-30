@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, Text } from '@gorgias/axiom'
+import { Button, Card, Heading, Text } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
@@ -135,7 +135,6 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep
-                step={GorgiasChatCreationWizardSteps.Branding}
                 preview={null}
                 footer={
                     <div className={css.wizardButtons}>
@@ -169,47 +168,56 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                     </div>
                 }
             >
-                <>
-                    <div className={css.section}>
-                        <Text variant="bold" size="md">
-                            Brand color
-                        </Text>
-                        <Text size="sm" color="secondary">
-                            Make your chat fit in with your brand color
-                        </Text>
-                        <ColorPicker
-                            className={css.colorPicker}
-                            value={mainColor}
-                            defaultValue={
-                                integration.getIn(
-                                    ['decoration', 'main_color'],
-                                    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
-                                ) as string
-                            }
-                            onChange={setCurrentMainColor}
-                            label="Main color"
-                        />
+                <Card p="lg">
+                    <div className={css.content}>
+                        <div className={css.heading}>
+                            <Heading size="md">Brand</Heading>
+                            <Text size="md">
+                                Give the chat widget your brand&apos;s look and
+                                feel
+                            </Text>
+                        </div>
+                        <div className={css.section}>
+                            <Text variant="bold" size="md">
+                                Brand color
+                            </Text>
+                            <Text size="sm" color="secondary">
+                                Make your chat fit in with your brand color
+                            </Text>
+                            <ColorPicker
+                                className={css.colorPicker}
+                                value={mainColor}
+                                defaultValue={
+                                    integration.getIn(
+                                        ['decoration', 'main_color'],
+                                        GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
+                                    ) as string
+                                }
+                                onChange={setCurrentMainColor}
+                                label="Main color"
+                            />
+                        </div>
+                        <div className={css.section}>
+                            <Text variant="bold" size="md">
+                                Home page logo
+                            </Text>
+                            <Text size="sm" color="secondary">
+                                Add a PNG, JPG or GIF horizontal logo with a
+                                transparent background.
+                            </Text>
+                            <LogoUpload
+                                url={headerPictureUrl}
+                                onChange={setCurrentHeaderPictureUrl}
+                            />
+                        </div>
+                        <div className={css.section}>
+                            <LauncherPositionPicker
+                                value={position}
+                                onChange={setCurrentPosition}
+                            />
+                        </div>
                     </div>
-                    <div className={css.section}>
-                        <Text variant="bold" size="md">
-                            Home page logo
-                        </Text>
-                        <Text size="sm" color="secondary">
-                            Add a PNG, JPG or GIF horizontal logo with a
-                            transparent background.
-                        </Text>
-                        <LogoUpload
-                            url={headerPictureUrl}
-                            onChange={setCurrentHeaderPictureUrl}
-                        />
-                    </div>
-                    <div className={css.section}>
-                        <LauncherPositionPicker
-                            value={position}
-                            onChange={setCurrentPosition}
-                        />
-                    </div>
-                </>
+                </Card>
             </GorgiasChatCreationWizardStep>
         </>
     )

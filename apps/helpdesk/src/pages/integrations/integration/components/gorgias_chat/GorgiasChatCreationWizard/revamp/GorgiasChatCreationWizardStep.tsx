@@ -3,19 +3,15 @@ import { useRef } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
 
-import { Card } from '@gorgias/axiom'
-
-import type { GorgiasChatCreationWizardSteps } from 'models/integration/types/gorgiasChat'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 import { StepperProgressHeader } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/components/StepperProgressHeader'
 
 import useLogWizardEvent from '../hooks/useLogWizardEvent'
-import { STEP_DESCRIPTIONS, STEP_LABELS } from './constants'
+import { STEP_LABELS } from './constants'
 
 import css from './GorgiasChatCreationWizardStep.less'
 
 type Props = {
-    step: GorgiasChatCreationWizardSteps
     children: React.ReactNode
     preview: React.ReactNode
     showPreviewPlaceholder?: boolean
@@ -23,7 +19,6 @@ type Props = {
 }
 
 export const GorgiasChatCreationWizardStep = ({
-    step,
     children,
     preview,
     showPreviewPlaceholder,
@@ -47,17 +42,7 @@ export const GorgiasChatCreationWizardStep = ({
                         labels={STEP_LABELS}
                         className={css.wizardProgressHeader}
                     />
-                    <Card p="lg" gap={0}>
-                        <div className={css.heading}>
-                            <div className={css.title}>{STEP_LABELS[step]}</div>
-                            {STEP_DESCRIPTIONS[step] && (
-                                <div className={css.description}>
-                                    {STEP_DESCRIPTIONS[step]}
-                                </div>
-                            )}
-                        </div>
-                        {children}
-                    </Card>
+                    {children}
                     <div className={css.footer}>
                         {!contentIsIntersecting && (
                             <div className={css.footerShadow} />

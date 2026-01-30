@@ -38,7 +38,6 @@ const mockStoreState = {
 }
 
 const defaultProps = {
-    step: GorgiasChatCreationWizardSteps.Basics,
     children: <div>Step content</div>,
     preview: <div>Preview content</div>,
     footer: <button>Next</button>,
@@ -69,10 +68,9 @@ describe('GorgiasChatCreationWizardStep', () => {
         mockUseIsIntersecting.mockReturnValue(true)
     })
 
-    it('renders step title and content', () => {
-        const { getByText, getAllByText } = renderComponent()
+    it('renders children and footer', () => {
+        const { getByText } = renderComponent()
 
-        expect(getAllByText('Set up the basics').length).toBeGreaterThan(0)
         expect(getByText('Step content')).toBeInTheDocument()
         expect(getByText('Preview content')).toBeInTheDocument()
         expect(getByText('Next')).toBeInTheDocument()
@@ -84,26 +82,6 @@ describe('GorgiasChatCreationWizardStep', () => {
         expect(mockLogWizardEvent).toHaveBeenCalledWith(
             SegmentEvent.ChatWidgetWizardStepStarted,
         )
-    })
-
-    it('renders description for steps that have one', () => {
-        const { getByText } = renderComponent({
-            step: GorgiasChatCreationWizardSteps.Branding,
-        })
-
-        expect(
-            getByText("Give the chat widget your brand's look and feel"),
-        ).toBeInTheDocument()
-    })
-
-    it('does not render description for Basics step', () => {
-        const { queryByText } = renderComponent({
-            step: GorgiasChatCreationWizardSteps.Basics,
-        })
-
-        expect(
-            queryByText("Give the chat widget your brand's look and feel"),
-        ).not.toBeInTheDocument()
     })
 
     it('shows footer shadow when content is not intersecting viewport', () => {
