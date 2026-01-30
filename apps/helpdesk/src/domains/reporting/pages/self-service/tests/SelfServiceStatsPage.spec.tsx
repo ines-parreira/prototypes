@@ -114,7 +114,8 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: jest.fn(() => ({
-            enabled: true,
+            enabledInStatistics: true,
+            enabledInSettings: true,
         })),
     }),
 )

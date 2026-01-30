@@ -831,4 +831,128 @@ describe('ConnectedChannelsView', () => {
             fireEvent.click(screen.getByText('Help Center Channel'))
         })
     })
+
+    describe('Article recommendation visibility for Shopify integrations', () => {
+        it('should hide Article Recommendation section when storeIntegration is Shopify and enabledInSettings is false', () => {
+            ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+                selfServiceConfiguration: mockSelfServiceConfiguration,
+                storeIntegration: {
+                    type: 'shopify',
+                    meta: {
+                        shop_domain: 'test-store.myshopify.com',
+                        shop_name: 'test-store',
+                    },
+                },
+                isFetchPending: false,
+            })
+            ;(
+                useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
+            ).mockReturnValue({ enabledInSettings: false })
+
+            renderWithQueryClientProvider(
+                <Router history={history}>
+                    <Provider store={mockedStore}>
+                        <ConnectedChannelsChatView />
+                    </Provider>
+                </Router>,
+            )
+
+            expect(
+                screen.queryByText(/Article Recommendation/i),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText(/Enable Article Recommendation/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show Article Recommendation section when storeIntegration is Shopify and enabledInSettings is true', () => {
+            ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+                selfServiceConfiguration: mockSelfServiceConfiguration,
+                storeIntegration: {
+                    type: 'shopify',
+                    meta: {
+                        shop_domain: 'test-store.myshopify.com',
+                        shop_name: 'test-store',
+                    },
+                },
+                isFetchPending: false,
+            })
+            ;(
+                useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
+            ).mockReturnValue({ enabledInSettings: true })
+
+            renderWithQueryClientProvider(
+                <Router history={history}>
+                    <Provider store={mockedStore}>
+                        <ConnectedChannelsChatView />
+                    </Provider>
+                </Router>,
+            )
+
+            expect(
+                screen.getByRole('switch', {
+                    name: /Enable Article Recommendation/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show Article Recommendation section when storeIntegration is non-Shopify (BigCommerce) regardless of enabledInSettings', () => {
+            ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+                selfServiceConfiguration: mockSelfServiceConfiguration,
+                storeIntegration: {
+                    type: 'bigcommerce',
+                    meta: {
+                        shop_domain: 'test-store.mybigcommerce.com',
+                        store_hash: 'abc123',
+                    },
+                },
+                isFetchPending: false,
+            })
+            ;(
+                useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
+            ).mockReturnValue({ enabledInSettings: false })
+
+            renderWithQueryClientProvider(
+                <Router history={history}>
+                    <Provider store={mockedStore}>
+                        <ConnectedChannelsChatView />
+                    </Provider>
+                </Router>,
+            )
+
+            expect(
+                screen.getByRole('switch', {
+                    name: /Enable Article Recommendation/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show Article Recommendation section when storeIntegration is non-Shopify (Magento2) regardless of enabledInSettings', () => {
+            ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+                selfServiceConfiguration: mockSelfServiceConfiguration,
+                storeIntegration: {
+                    type: 'magento2',
+                    meta: { store_url: 'https://test-store.com' },
+                },
+                isFetchPending: false,
+            })
+            ;(
+                useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
+            ).mockReturnValue({ enabledInSettings: false })
+
+            renderWithQueryClientProvider(
+                <Router history={history}>
+                    <Provider store={mockedStore}>
+                        <ConnectedChannelsChatView />
+                    </Provider>
+                </Router>,
+            )
+
+            expect(
+                screen.getByRole('switch', {
+                    name: /Enable Article Recommendation/i,
+                }),
+            ).toBeInTheDocument()
+        })
+    })
 })

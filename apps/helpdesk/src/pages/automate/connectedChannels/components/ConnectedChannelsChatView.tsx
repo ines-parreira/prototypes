@@ -11,6 +11,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
+import { IntegrationType } from 'models/integration/constants'
 import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
@@ -256,17 +257,21 @@ export const ConnectedChannelsChatView = ({
         )
     }, [applicationsAutomationSettings, selectedChannel])
 
-    const { enabled: isArticleRecEnabledWhileSunset } =
+    const { enabledInSettings } =
         useIsArticleRecommendationsEnabledWhileSunset()
 
     const isArticleRecommendationEnabled = useMemo(() => {
         if (!selectedChannel) return false
 
-        return (
-            applicationsAutomationSettings?.[selectedChannel]
-                ?.articleRecommendation.enabled ?? false
-        )
-    }, [applicationsAutomationSettings, selectedChannel])
+        if (
+            storeIntegration?.type === IntegrationType.Shopify &&
+            !enabledInSettings
+        ) {
+            return false
+        }
+
+        return true
+    }, [selectedChannel, storeIntegration?.type, enabledInSettings])
 
     if (chatChannels.length === 0)
         return (
@@ -349,8 +354,7 @@ export const ConnectedChannelsChatView = ({
                     onToggle={updateSettings('orderManagement')}
                 />
 
-                {(isArticleRecommendationEnabled ||
-                    isArticleRecEnabledWhileSunset) && (
+                {isArticleRecommendationEnabled && (
                     <FeatureSettings
                         title="Article Recommendation"
                         label="Enable Article Recommendation"

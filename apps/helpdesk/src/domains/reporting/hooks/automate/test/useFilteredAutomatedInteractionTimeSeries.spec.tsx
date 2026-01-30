@@ -37,7 +37,7 @@ describe('useFilteredAutomatedInteractionTimeSeries', () => {
 
     it('should filter out article recommendations when feature is disabled', () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabled: false,
+            enabledInStatistics: false,
         })
 
         const { result } = renderHook(() =>
@@ -58,7 +58,7 @@ describe('useFilteredAutomatedInteractionTimeSeries', () => {
 
     it('should include all data when article recommendations feature is enabled', () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabled: true,
+            enabledInStatistics: true,
         })
 
         const { result } = renderHook(() =>
@@ -79,7 +79,7 @@ describe('useFilteredAutomatedInteractionTimeSeries', () => {
 
     it('should return correct colors for filtered data', () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabled: false,
+            enabledInStatistics: false,
         })
 
         const { result } = renderHook(() =>
@@ -99,7 +99,7 @@ describe('useFilteredAutomatedInteractionTimeSeries', () => {
 
     it('should handle empty data', () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabled: true,
+            enabledInStatistics: true,
         })
 
         const { result } = renderHook(() =>

@@ -224,7 +224,7 @@ describe('SettingsNavbar', () => {
             })
             mockUseStoreIntegrations.mockReturnValue([{ id: 1 }] as any)
             mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabled: true,
+                enabledInSettings: true,
             })
 
             renderComponent()

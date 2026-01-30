@@ -12,7 +12,7 @@ interface UseFilteredAutomatedInteractionTimeSeriesProps {
 export const useFilteredAutomatedInteractionTimeSeries = ({
     automatedInteractionByEventTypesTimeSeriesData,
 }: UseFilteredAutomatedInteractionTimeSeriesProps) => {
-    const { enabled: isArticleRecommendationsEnabledWhileSunset } =
+    const { enabledInStatistics: isArticleRecommendationsEnabledWhileSunset } =
         useIsArticleRecommendationsEnabledWhileSunset()
 
     const filteredData = useMemo(() => {

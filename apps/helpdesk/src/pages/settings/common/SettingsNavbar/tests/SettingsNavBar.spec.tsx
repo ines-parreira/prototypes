@@ -85,7 +85,8 @@ describe('SettingsNavbar', () => {
             isLoading: false,
         })
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-            enabled: true,
+            enabledInStatistics: true,
+            enabledInSettings: true,
         })
         mockUseFlag.mockImplementation(() => false)
     })
@@ -194,9 +195,10 @@ describe('SettingsNavbar', () => {
     })
 
     describe('Article Recommendations visibility', () => {
-        it('shows Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabled: true', () => {
+        it('shows Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabledInSettings: true', () => {
             mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabled: true,
+                enabledInStatistics: true,
+                enabledInSettings: true,
             })
 
             renderComponent()
@@ -206,9 +208,10 @@ describe('SettingsNavbar', () => {
             ).toBeInTheDocument()
         })
 
-        it('hides Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabled: false', () => {
+        it('hides Article Recommendations menu item when useIsArticleRecommendationsEnabledWhileSunset returns enabledInSettings: false', () => {
             mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabled: false,
+                enabledInStatistics: true,
+                enabledInSettings: false,
             })
 
             renderComponent()
@@ -220,7 +223,8 @@ describe('SettingsNavbar', () => {
 
         it('Article Recommendations menu item requires agent role', () => {
             mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
-                enabled: true,
+                enabledInStatistics: true,
+                enabledInSettings: true,
             })
 
             // Set user to basic role (not agent or admin)

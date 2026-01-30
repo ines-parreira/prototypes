@@ -1,11 +1,13 @@
 import cn from 'classnames'
 import { NavLink, Route, Switch, useRouteMatch } from 'react-router-dom'
 
+import { IntegrationType } from 'models/integration/constants'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import ArticleRecommendationView from 'pages/automate/articleRecommendation/ArticleRecommendationView'
 import Header from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { useStoreSelector } from 'settings/automate'
 
 import { AutomateSettingsChannelsRoute } from './flows-routes/AutomateSettingsFlowsChannelsRoute'
@@ -16,7 +18,14 @@ export const BASE_PATH = '/app/settings/article-recommendations'
 
 export function ArticleRecommendationsSettings() {
     const { path } = useRouteMatch()
-    const { integrations, onChange, selected } = useStoreSelector(BASE_PATH)
+    const { enabledInSettings } =
+        useIsArticleRecommendationsEnabledWhileSunset()
+
+    const { integrations, onChange, selected } = useStoreSelector(BASE_PATH, [
+        ...(enabledInSettings ? [IntegrationType.Shopify] : []),
+        IntegrationType.BigCommerce,
+        IntegrationType.Magento2,
+    ])
 
     const selectedName = selected
         ? getShopNameFromStoreIntegration(selected)

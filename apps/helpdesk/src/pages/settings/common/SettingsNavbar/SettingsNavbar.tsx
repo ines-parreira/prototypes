@@ -61,7 +61,7 @@ const SettingsNavbar = () => {
 
     // If there is no usage of article recommendations during the last month,
     // for any of stores, we will not show the them in the settings navbar.
-    const { enabled: isArticleRecEnabledWhileSunset } =
+    const { enabledInSettings: isArticleRecEnabledWhileSunset } =
         useIsArticleRecommendationsEnabledWhileSunset()
 
     const isAgentUnavailabilityEnabled = useFlag(

@@ -224,4 +224,5 @@ export enum FeatureFlagKey {
     ReportingP3MetricMigration = 'linear.project_new-stats-api.p3-metric-migration',
     ReportingUnsortedMetricMigration = 'linear.project_new-stats-api.reporting-unsorted-metric-migration',
     EmbeddedSpqSettings = 'embedded-spq-settings',
+    DisableArticleRecommendationForShopify = 'linear.task_AIEXP-8184.article-recommendation-shopify-kill-switch',
 }

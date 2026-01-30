@@ -179,7 +179,7 @@ const SelfServiceStatsPageCore = (): JSX.Element => {
 
     // Article recommendations sunset:
     // We still want to show the stats if the feature is enabled
-    const { enabled: isArticleRecommendationsEnabledWhileSunset } =
+    const { enabledInStatistics: isArticleRecommendationsEnabledWhileSunset } =
         useIsArticleRecommendationsEnabledWhileSunset()
 
     const [
