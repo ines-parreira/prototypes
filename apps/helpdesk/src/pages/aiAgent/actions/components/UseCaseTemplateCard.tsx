@@ -30,6 +30,10 @@ const categoryTagStyleMap: {
         color: 'var(--accessory-orange-3)',
         backgroundColor: 'var(--accessory-orange-1)',
     },
+    Marketing: {
+        color: 'var(--accessory-green-3)',
+        backgroundColor: 'var(--accessory-green-1)',
+    },
 }
 
 export default function UseCaseTemplateCard({

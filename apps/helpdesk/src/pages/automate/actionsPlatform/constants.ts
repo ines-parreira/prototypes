@@ -13,4 +13,5 @@ export const CATEGORIES = [
     'Orders',
     'Subscriptions',
     'Returns & Exchanges',
+    'Marketing',
 ] as const
