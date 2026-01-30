@@ -1,0 +1,245 @@
+import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockEcommerceData,
+    mockGetEcommerceDataByExternalIdHandler,
+} from '@gorgias/ecommerce-storage-mocks'
+import { mockListIntegrationsHandler } from '@gorgias/helpdesk-mocks'
+import type { Integration } from '@gorgias/helpdesk-types'
+
+import { CustomerInfo } from '../'
+import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const mockShopifyIntegration = {
+    id: 1,
+    name: 'Test Shopify Store',
+    type: 'shopify',
+    created_datetime: '2024-01-01T00:00:00Z',
+    meta: { shop_name: 'test-store' },
+} as Integration
+
+const associatedShopifyCustomerIds = new Set([1])
+const externalIdMap = new Map([[1, '456']])
+
+const mockListIntegrations = mockListIntegrationsHandler(async () =>
+    HttpResponse.json({
+        data: [mockShopifyIntegration],
+        meta: {
+            next_cursor: null,
+            prev_cursor: null,
+        },
+        object: 'list',
+        uri: '/api/integrations',
+    }),
+)
+
+const mockShopperData = {
+    id: 12345,
+    first_name: 'John',
+    last_name: 'Doe',
+    created_at: '2024-01-01T00:00:00Z',
+    updated_at: '2024-01-01T00:00:00Z',
+    state: 'enabled',
+    note: '',
+    verified_email: true,
+    multipass_identifier: null,
+    tax_exempt: false,
+    email: 'john.doe@example.com',
+    phone: null,
+    currency: 'USD',
+    addresses: [],
+    tax_exemptions: [],
+    admin_graphql_api_id: 'gid://shopify/Customer/12345',
+    default_address: null,
+    tags: '',
+}
+
+const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(async () =>
+    HttpResponse.json(
+        mockEcommerceData({
+            data: mockShopperData,
+        }),
+    ),
+)
+
+beforeEach(() => {
+    server.use(mockListIntegrations.handler, mockGetEcommerceData.handler)
+})
+
+describe('CustomerInfo', () => {
+    it('renders the store picker with the selected integration', async () => {
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toHaveValue(
+                mockShopifyIntegration.name,
+            )
+        })
+    })
+
+    it('calls onStoreChange when an integration is loaded', async () => {
+        const onStoreChange = vi.fn()
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                onStoreChange={onStoreChange}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(onStoreChange).toHaveBeenCalledWith(
+                mockShopifyIntegration.id,
+            )
+        })
+    })
+
+    it('calls onStoreChange when user selects a different store', async () => {
+        const secondIntegration = {
+            id: 2,
+            name: 'Second Shopify Store',
+            type: 'shopify',
+            created_datetime: '2024-01-02T00:00:00Z',
+            meta: {},
+        } as Integration
+
+        const multipleassociatedShopifyCustomerIds = new Set([1, 2])
+        const multipleExternalIdMap = new Map([
+            [1, '456'],
+            [2, '789'],
+        ])
+
+        const mockListIntegrations = mockListIntegrationsHandler(async () =>
+            HttpResponse.json({
+                data: [mockShopifyIntegration, secondIntegration],
+                meta: {
+                    next_cursor: null,
+                    prev_cursor: null,
+                },
+                object: 'list',
+                uri: '/api/integrations',
+            }),
+        )
+
+        server.use(mockListIntegrations.handler)
+
+        const onStoreChange = vi.fn()
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={
+                    multipleassociatedShopifyCustomerIds
+                }
+                externalIdMap={multipleExternalIdMap}
+                onStoreChange={onStoreChange}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(onStoreChange).toHaveBeenCalledWith(
+                mockShopifyIntegration.id,
+            )
+        })
+
+        onStoreChange.mockClear()
+
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: /test shopify store/i }),
+            ),
+        )
+
+        await act(() =>
+            user.click(
+                screen.getByRole('option', { name: /second shopify store/i }),
+            ),
+        )
+
+        expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
+    })
+
+    it('only shows integrations that are in the ticket', async () => {
+        const secondIntegration = {
+            id: 2,
+            name: 'Second Shopify Store',
+            type: 'shopify',
+            created_datetime: '2024-01-02T00:00:00Z',
+            meta: {},
+        } as Integration
+
+        const mockListIntegrations = mockListIntegrationsHandler(async () =>
+            HttpResponse.json({
+                data: [mockShopifyIntegration, secondIntegration],
+                meta: {
+                    next_cursor: null,
+                    prev_cursor: null,
+                },
+                object: 'list',
+                uri: '/api/integrations',
+            }),
+        )
+
+        server.use(mockListIntegrations.handler)
+
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toHaveValue(
+                mockShopifyIntegration.name,
+            )
+        })
+
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: /test shopify store/i }),
+            ),
+        )
+
+        expect(
+            screen.queryByRole('option', { name: /second shopify store/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders the customer link with correct Shopify URL', async () => {
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+            />,
+        )
+
+        await waitFor(() => {
+            const link = screen.getByRole('link', { name: /john doe/i })
+            expect(link).toHaveAttribute(
+                'href',
+                'https://admin.shopify.com/store/test-store/customers/12345',
+            )
+        })
+    })
+})

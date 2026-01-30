@@ -17,6 +17,7 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
@@ -27,6 +28,7 @@
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
         "@repo/routing": "workspace:*",
+        "@repo/tickets": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "classnames": "catalog:styles",
@@ -35,10 +37,13 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
-        "zod": "catalog:zod"
+        "zod": "catalog:zod",
+        "pluralize": "^8.0.0"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/ecommerce-storage-mocks": "catalog:rest-api-sdk",
+        "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
@@ -49,6 +54,7 @@
         "@repo/logging": "workspace:*",
         "@repo/navigation": "workspace:*",
         "@repo/routing": "workspace:*",
+        "@repo/tickets": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
@@ -58,6 +64,7 @@
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/classnames": "catalog:styles",
+        "@types/pluralize": "^0.0.33",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@types/react-router": "catalog:react-router",

@@ -1712,10 +1712,19 @@ importers:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.151
+      pluralize:
+        specifier: ^8.0.0
+        version: 8.0.0
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.163.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@gorgias/ecommerce-storage-mocks':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.9(@types/node@22.13.13)(typescript@5.3.3)
+      '@gorgias/ecommerce-storage-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.10(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.92
@@ -1746,6 +1755,9 @@ importers:
       '@repo/routing':
         specifier: workspace:*
         version: link:../routing
+      '@repo/tickets':
+        specifier: workspace:*
+        version: link:../tickets
       '@repo/types':
         specifier: workspace:*
         version: link:../types
@@ -1773,6 +1785,9 @@ importers:
       '@types/classnames':
         specifier: catalog:styles
         version: 2.2.10
+      '@types/pluralize':
+        specifier: ^0.0.33
+        version: 0.0.33
       '@types/react':
         specifier: catalog:react
         version: 18.2.67

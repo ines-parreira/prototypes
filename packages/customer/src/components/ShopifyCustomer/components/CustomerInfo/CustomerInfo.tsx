@@ -1,39 +1,54 @@
-import { useEffect, useState } from 'react'
+import { Box } from '@gorgias/axiom'
 
-import { useShopifyIntegrations } from '../../hooks'
+import { useIntegrationSelection } from '../../hooks'
+import { useGetShopper } from '../../hooks/useGetShopper'
+import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 
 type Props = {
+    associatedShopifyCustomerIds: Set<number>
+    externalIdMap: Map<number, string>
+    isLoadingTicket?: boolean
     onStoreChange?: (integrationId: number) => void
 }
 
-export function CustomerInfo({ onStoreChange }: Props) {
-    const { integrations, isLoading } = useShopifyIntegrations()
-    const [selectedIntegrationId, setSelectedIntegrationId] = useState<
-        number | undefined
-    >()
+export function CustomerInfo({
+    associatedShopifyCustomerIds,
+    externalIdMap,
+    isLoadingTicket,
+    onStoreChange,
+}: Props) {
+    const {
+        filteredIntegrations,
+        selectedIntegration,
+        selectedExternalId,
+        handleStoreChange,
+        isLoading: isLoadingIntegrations,
+    } = useIntegrationSelection({
+        associatedShopifyCustomerIds,
+        externalIdMap,
+        onStoreChange,
+    })
 
-    useEffect(() => {
-        if (integrations.length > 0 && !selectedIntegrationId) {
-            const firstIntegrationId = integrations[0].id
-            setSelectedIntegrationId(firstIntegrationId)
-            onStoreChange?.(firstIntegrationId)
-        }
-    }, [integrations, selectedIntegrationId, onStoreChange])
-
-    const handleStoreChange = (integrationId: number) => {
-        setSelectedIntegrationId(integrationId)
-        onStoreChange?.(integrationId)
-    }
+    const { shopper } = useGetShopper({
+        integrationId: selectedIntegration?.id,
+        externalId: selectedExternalId,
+    })
 
     return (
-        <>
+        <Box flexDirection="column" gap="sm" padding={'sm'}>
             <StorePicker
-                integrations={integrations}
-                selectedIntegrationId={selectedIntegrationId}
+                integrations={filteredIntegrations}
+                selectedIntegrationId={selectedIntegration?.id}
                 onChange={handleStoreChange}
-                isLoading={isLoading}
+                isLoading={isLoadingIntegrations || isLoadingTicket}
             />
-        </>
+
+            <CustomerLink
+                selectedIntegration={selectedIntegration}
+                shopper={shopper}
+                isLoading={isLoadingIntegrations}
+            />
+        </Box>
     )
 }

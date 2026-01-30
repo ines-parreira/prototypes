@@ -6,7 +6,7 @@ import type { Integration } from '@gorgias/helpdesk-types'
 type Props = {
     integrations: Integration[]
     selectedIntegrationId?: number
-    onChange: (integrationId: number) => void
+    onChange: (integration: Integration) => void
     isLoading?: boolean
     isDisabled?: boolean
     placeholder?: string
@@ -30,7 +30,7 @@ export function StorePicker({
         <SelectField<Integration>
             items={integrations}
             value={selectedIntegration}
-            onChange={(store) => onChange(store.id)}
+            onChange={(store) => onChange(store)}
             aria-label="Select a store"
             isDisabled={isLoading}
             isSearchable

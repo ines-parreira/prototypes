@@ -2,11 +2,32 @@ import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockListIntegrationsHandler } from '@gorgias/helpdesk-mocks'
+import { mockGetEcommerceDataByExternalIdHandler } from '@gorgias/ecommerce-storage-mocks'
+import {
+    mockGetTicketHandler,
+    mockListIntegrationsHandler,
+    mockTicket,
+    mockTicketCustomer,
+} from '@gorgias/helpdesk-mocks'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { ShopifyCustomer } from '../'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const mockShopifyIntegration = {
     id: 1,
@@ -15,6 +36,20 @@ const mockShopifyIntegration = {
     created_datetime: '2024-01-01T00:00:00Z',
     meta: {},
 } as Integration
+
+const ticketWithShopifyCustomer = mockTicket({
+    id: 123,
+    customer: mockTicketCustomer({
+        integrations: {
+            '1': {
+                __integration_type__: 'shopify',
+                customer: {
+                    id: 456,
+                },
+            },
+        },
+    }),
+})
 
 const mockListIntegrations = mockListIntegrationsHandler(async () =>
     HttpResponse.json({
@@ -28,28 +63,26 @@ const mockListIntegrations = mockListIntegrationsHandler(async () =>
     }),
 )
 
-const server = setupServer(mockListIntegrations.handler)
+const mockGetTicket = mockGetTicketHandler(async () =>
+    HttpResponse.json(ticketWithShopifyCustomer),
+)
 
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
+const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler()
 
 beforeEach(() => {
-    server.use(mockListIntegrations.handler)
-})
-
-afterEach(() => {
-    server.resetHandlers()
-    testAppQueryClient.clear()
-})
-
-afterAll(() => {
-    server.close()
+    server.use(
+        mockListIntegrations.handler,
+        mockGetTicket.handler,
+        mockGetEcommerceData.handler,
+    )
 })
 
 describe('ShopifyCustomer', () => {
-    it('renders the store picker', async () => {
-        render(<ShopifyCustomer />)
+    it('renders the store picker with integrations from the ticket', async () => {
+        render(<ShopifyCustomer />, {
+            initialEntries: ['/app/views/1/123'],
+            path: '/app/views/:viewId/:ticketId',
+        })
 
         await waitFor(() => {
             expect(screen.getByRole('textbox')).toHaveValue(
