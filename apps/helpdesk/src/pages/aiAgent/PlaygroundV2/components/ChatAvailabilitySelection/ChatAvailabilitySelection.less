@@ -17,11 +17,13 @@
 
     .axios {
         [type='radio'] {
-            &:checked {
-                border-color: var(--border-neutral-default, --main-primary);
-            }
             &::before {
-                box-shadow: inset 1em 1em var(--content-selected-accent);
+                box-shadow: inset 1em 1em var(--main-primary);
+            }
+
+            &:checked {
+                border-color: var(--main-primary);
+                accent-color: var(--content-neutral-default);
             }
         }
     }
