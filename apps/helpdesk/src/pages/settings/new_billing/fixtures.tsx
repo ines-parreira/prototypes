@@ -1,6 +1,8 @@
 import { fromJS } from 'immutable'
 import moment from 'moment/moment'
 
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -168,6 +170,7 @@ const upcomingInvoice: UpcomingInvoiceSummary = {
 const subscription: SubscriptionSummary = {
     status: SubscriptionStatus.ACTIVE,
     cadence: Cadence.Month,
+    invoice_cadence: InvoiceCadence.Month,
     is_trialing: false,
     trial_start_datetime: null,
     trial_end_datetime: null,

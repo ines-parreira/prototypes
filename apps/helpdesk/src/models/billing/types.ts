@@ -185,6 +185,7 @@ export type StripePaymentMethodType =
 export type SubscriptionSummary = {
     status: SubscriptionStatus
     cadence: Cadence
+    invoice_cadence: InvoiceCadence
     is_trialing: boolean
     trial_start_datetime: string | null
     trial_end_datetime: string | null
