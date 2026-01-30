@@ -6,6 +6,7 @@ import {
     useReducer,
 } from 'react'
 
+import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 
 import { guidanceReducer } from './KnowledgeEditorGuidanceReducer'
@@ -60,7 +61,7 @@ export const KnowledgeEditorGuidanceProvider = ({
     const hasPendingChanges = useMemo(() => {
         if (state.guidanceMode === 'read') return false
         return (
-            state.title !== state.savedSnapshot.title ||
+            !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
             state.content !== state.savedSnapshot.content
         )
     }, [state.title, state.content, state.savedSnapshot, state.guidanceMode])

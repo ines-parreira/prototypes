@@ -3,6 +3,7 @@ import { useCallback, useRef } from 'react'
 import { useDebouncedCallback } from '@repo/hooks'
 
 import { useNotify } from 'hooks/useNotify'
+import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 
@@ -53,14 +54,16 @@ export const useGuidanceAutoSave = () => {
                 return
             }
 
-            if (
-                title === savedSnapshot.title &&
-                content === savedSnapshot.content
-            ) {
+            const titleMatchesSnapshot = areTrimmedStringsEqual(
+                title,
+                savedSnapshot.title,
+            )
+            const contentMatchesSnapshot = content === savedSnapshot.content
+
+            if (titleMatchesSnapshot && contentMatchesSnapshot) {
                 dispatch({ type: 'SET_AUTO_SAVING', payload: false })
                 return
             }
-
             pendingSaveRef.current = { title, content }
 
             try {
@@ -205,6 +208,16 @@ export const useGuidanceAutoSave = () => {
                 return
             }
 
+            const titleMatches = areTrimmedStringsEqual(
+                newTitle,
+                state.savedSnapshot.title,
+            )
+            const contentMatches = newContent === state.savedSnapshot.content
+            const hasChanges = !titleMatches || !contentMatches
+
+            if (!hasChanges) {
+                return
+            }
             triggerAutoSave({
                 title: newTitle,
                 content: newContent,

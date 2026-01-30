@@ -6,6 +6,7 @@ import {
     useReducer,
 } from 'react'
 
+import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 
 import { articleReducer } from './ArticleReducer'
@@ -64,7 +65,7 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
     const hasPendingContentChanges = useMemo(() => {
         if (state.articleMode === 'read') return false
         return (
-            state.title !== state.savedSnapshot.title ||
+            !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
             state.content !== state.savedSnapshot.content
         )
     }, [state.title, state.content, state.savedSnapshot, state.articleMode])

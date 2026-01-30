@@ -30,6 +30,7 @@ jest.mock('../KnowledgeEditorGuidanceContext', () => ({
 }))
 
 jest.mock('../utils', () => ({
+    ...jest.requireActual<typeof import('../utils')>('../utils'),
     fromArticleTranslation: jest.fn(),
     fromArticleTranslationResponse: jest.fn(),
 }))
@@ -710,6 +711,99 @@ describe('useGuidanceAutoSave', () => {
                 }),
                 expect.any(Object),
             )
+        })
+    })
+
+    describe('whitespace handling', () => {
+        it('should not trigger autosave when title has only trailing whitespace changes', async () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    title: 'Test Title',
+                    content: 'Test Content',
+                    savedSnapshot: {
+                        title: 'Test Title   ',
+                        content: 'Test Content',
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
+                result.current.onChangeField('title', 'Test Title')
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('should not trigger autosave when title has only leading whitespace changes', async () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    title: 'Test Title',
+                    content: 'Test Content',
+                    savedSnapshot: {
+                        title: '   Test Title',
+                        content: 'Test Content',
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
+                result.current.onChangeField('title', 'Test Title')
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('should trigger autosave when meaningful title changes exist', async () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    title: 'New Title',
+                    content: 'Test Content',
+                    savedSnapshot: {
+                        title: 'Old Title   ',
+                        content: 'Test Content',
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            mockUpdateGuidanceArticle.mockResolvedValue({
+                title: 'New Title',
+                content: 'Test Content',
+            })
+            ;(fromArticleTranslationResponse as jest.Mock).mockReturnValue({
+                id: 123,
+                title: 'New Title',
+                content: 'Test Content',
+            })
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
+                result.current.onChangeField('title', 'New Title')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
         })
     })
 })

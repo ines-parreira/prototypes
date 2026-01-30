@@ -8,6 +8,7 @@ import {
     useCreateArticleTranslation,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/mutations'
+import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -59,7 +60,7 @@ export const useArticleAutoSave = () => {
             }
 
             if (
-                title === savedSnapshot.title &&
+                areTrimmedStringsEqual(title, savedSnapshot.title) &&
                 content === savedSnapshot.content
             ) {
                 dispatch({ type: 'SET_AUTO_SAVING', payload: false })
@@ -264,7 +265,7 @@ export const useArticleAutoSave = () => {
 
             const isValid = newTitle.trim() !== '' && newContent.trim() !== ''
             const isSameContent =
-                newTitle === state.savedSnapshot.title &&
+                areTrimmedStringsEqual(newTitle, state.savedSnapshot.title) &&
                 newContent === state.savedSnapshot.content
             if (!isValid || isSameContent) {
                 return

@@ -389,6 +389,134 @@ describe('useArticleAutoSave', () => {
                 payload: true,
             })
         })
+
+        it('does not trigger auto-save when title only differs by leading whitespace', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    title: 'Test Article',
+                    content: '<p>Test content</p>',
+                    savedSnapshot: {
+                        title: 'Test Article',
+                        content: '<p>Test content</p>',
+                    },
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useArticleAutoSave())
+
+            act(() => {
+                result.current.onChangeField('title', '   Test Article')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: '   Test Article',
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('does not trigger auto-save when title only differs by trailing whitespace', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    title: 'Test Article',
+                    content: '<p>Test content</p>',
+                    savedSnapshot: {
+                        title: 'Test Article',
+                        content: '<p>Test content</p>',
+                    },
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useArticleAutoSave())
+
+            act(() => {
+                result.current.onChangeField('title', 'Test Article   ')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: 'Test Article   ',
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('does not trigger auto-save when title only differs by both leading and trailing whitespace', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    title: 'Test Article',
+                    content: '<p>Test content</p>',
+                    savedSnapshot: {
+                        title: 'Test Article',
+                        content: '<p>Test content</p>',
+                    },
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useArticleAutoSave())
+
+            act(() => {
+                result.current.onChangeField('title', '   Test Article   ')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: '   Test Article   ',
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('triggers auto-save when title actually changes (not just whitespace)', () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    title: 'Test Article',
+                    content: '<p>Test content</p>',
+                    savedSnapshot: {
+                        title: 'Test Article',
+                        content: '<p>Test content</p>',
+                    },
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            const { result } = renderHook(() => useArticleAutoSave())
+
+            act(() => {
+                result.current.onChangeField('title', 'New Test Article')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_TITLE',
+                payload: 'New Test Article',
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
     })
 
     describe('performAutoSave - create mode with new translation', () => {
@@ -560,6 +688,108 @@ describe('useArticleAutoSave', () => {
                     savedSnapshot: {
                         title: 'Same Title',
                         content: '<p>Same content</p>',
+                    },
+                })
+            })
+
+            expect(mockCreateArticleMutateAsync).not.toHaveBeenCalled()
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: false,
+            })
+        })
+
+        it('does not save when title only differs by leading whitespace', async () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    translationMode: 'new',
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            renderHook(() => useArticleAutoSave())
+
+            await act(async () => {
+                await debouncedCallback?.({
+                    title: '   Test Title',
+                    content: '<p>Test content</p>',
+                    mode: 'create',
+                    translationMode: 'new',
+                    articleId: undefined,
+                    savedSnapshot: {
+                        title: 'Test Title',
+                        content: '<p>Test content</p>',
+                    },
+                })
+            })
+
+            expect(mockCreateArticleMutateAsync).not.toHaveBeenCalled()
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: false,
+            })
+        })
+
+        it('does not save when title only differs by trailing whitespace', async () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    translationMode: 'new',
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            renderHook(() => useArticleAutoSave())
+
+            await act(async () => {
+                await debouncedCallback?.({
+                    title: 'Test Title   ',
+                    content: '<p>Test content</p>',
+                    mode: 'create',
+                    translationMode: 'new',
+                    articleId: undefined,
+                    savedSnapshot: {
+                        title: 'Test Title',
+                        content: '<p>Test content</p>',
+                    },
+                })
+            })
+
+            expect(mockCreateArticleMutateAsync).not.toHaveBeenCalled()
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: false,
+            })
+        })
+
+        it('does not save when title only differs by both leading and trailing whitespace', async () => {
+            const mockContext = createMockContextValue({
+                state: {
+                    ...createMockContextValue().state,
+                    articleMode: 'create',
+                    translationMode: 'new',
+                },
+            })
+            mockContext.dispatch = mockDispatch
+            mockUseArticleContext.mockReturnValue(mockContext)
+
+            renderHook(() => useArticleAutoSave())
+
+            await act(async () => {
+                await debouncedCallback?.({
+                    title: '   Test Title   ',
+                    content: '<p>Test content</p>',
+                    mode: 'create',
+                    translationMode: 'new',
+                    articleId: undefined,
+                    savedSnapshot: {
+                        title: 'Test Title',
+                        content: '<p>Test content</p>',
                     },
                 })
             })
