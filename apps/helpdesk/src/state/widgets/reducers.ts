@@ -201,6 +201,9 @@ export default function reducer(
                           isDraggingARootSource
                               ? preparedData[key as string]
                               : preparedData,
+                          '',
+                          false,
+                          widgetType === 'shopify',
                       ),
             ) as Map<any, any>
 

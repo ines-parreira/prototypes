@@ -271,7 +271,12 @@ export function makeWrapper({
 /**
  * Translate json to template configuration for widgets
  */
-export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
+export function jsonToTemplate(
+    value: any,
+    key = '',
+    isChildOfList = false,
+    isShopifyContext = false,
+) {
     try {
         // if array of objects
         if (isArrayOfObjects(value)) {
@@ -281,7 +286,9 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
                 widgets: Record<string, unknown>[]
             } = {
                 type: 'list',
-                widgets: [jsonToTemplate(value[0], key, true)],
+                widgets: [
+                    jsonToTemplate(value[0], key, true, isShopifyContext),
+                ],
             }
 
             if (!isChildOfList) {
@@ -292,9 +299,12 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
         }
 
         if (isObject(value)) {
-            // remove private keys from source
-            const filteredValue = _omitBy(value, (v, k: string) =>
-                k.startsWith('_'),
+            // Filter private keys always, metafields only in Shopify context
+            const filteredValue = _omitBy(
+                value,
+                (v, k: string) =>
+                    k.startsWith('_') ||
+                    (isShopifyContext && k === 'metafields'),
             )
 
             let enhancedValues: Record<string, unknown> = {}
@@ -314,7 +324,9 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
             }
 
             const widgets: Record<string, unknown>[] = []
-            _forIn(enhancedValues, (v, k) => widgets.push(jsonToTemplate(v, k)))
+            _forIn(enhancedValues, (v, k) =>
+                widgets.push(jsonToTemplate(v, k, false, isShopifyContext)),
+            )
 
             const response: {
                 type: string
@@ -485,16 +497,18 @@ export function jsonToWidgets(
                 return null
             }
 
-            const template = jsonToTemplate(source)
-
-            if (!template || !_size(template)) {
-                return null
-            }
-
             const widgetType = typeByPath.getIn(
                 [sourcePath, 'type'],
                 CUSTOM_WIDGET_TYPE,
             )
+            const isShopifyContext = widgetType === 'shopify'
+
+            const template = jsonToTemplate(source, '', false, isShopifyContext)
+
+            /* istanbul ignore next, defensive check */
+            if (!template || !_size(template)) {
+                return null
+            }
 
             return fromJS({
                 type: widgetType,

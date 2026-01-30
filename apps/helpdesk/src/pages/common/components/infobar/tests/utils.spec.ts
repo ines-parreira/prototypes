@@ -227,6 +227,48 @@ describe('widgets infobar utils', () => {
         it('templating OK', () => {
             expect(utils.jsonToTemplate(source)).toEqual(result)
         })
+
+        it('should filter out metafields only from Shopify integrations', () => {
+            const sourceWithShopifyMetafields = {
+                integrations: {
+                    '123': {
+                        __integration_type__: 'shopify',
+                        customer: {
+                            name: 'John',
+                            metafields: [{ key: 'vip', value: 'true' }],
+                        },
+                    },
+                },
+            }
+            const result = utils.jsonToTemplate(
+                sourceWithShopifyMetafields,
+                '',
+                false,
+                true,
+            )
+            expect(JSON.stringify(result)).not.toContain('metafields')
+        })
+
+        it('should NOT filter out metafields from non-Shopify integrations', () => {
+            const sourceWithOtherMetafields = {
+                integrations: {
+                    '456': {
+                        __integration_type__: 'other',
+                        customer: {
+                            name: 'Jane',
+                            metafields: [{ key: 'tier', value: 'gold' }],
+                        },
+                    },
+                },
+            }
+            const result = utils.jsonToTemplate(
+                sourceWithOtherMetafields,
+                '',
+                false,
+                false,
+            )
+            expect(JSON.stringify(result)).toContain('metafields')
+        })
     })
 
     describe('getLocalTime()', () => {
