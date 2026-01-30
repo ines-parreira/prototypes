@@ -360,8 +360,8 @@ describe('SettingsNavbar', () => {
             expect(screen.getByText('REST API')).toBeInTheDocument()
         })
 
-        describe('Historical Imports feature flag', () => {
-            it('should render Historical Imports when feature flag is enabled', () => {
+        describe('Imports feature flag', () => {
+            it('should render Imports when feature flag is enabled', () => {
                 mockUseFlag.mockImplementation((flag: string) => {
                     if (flag === 'historical-imports') return true
                     return false
@@ -372,9 +372,7 @@ describe('SettingsNavbar', () => {
                 expect(
                     screen.getByTestId('item-historical-imports'),
                 ).toBeInTheDocument()
-                expect(
-                    screen.getByText('Historical Imports'),
-                ).toBeInTheDocument()
+                expect(screen.getByText('Imports')).toBeInTheDocument()
                 expect(
                     screen.queryByTestId('item-import-email'),
                 ).not.toBeInTheDocument()

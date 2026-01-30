@@ -311,7 +311,7 @@ const SettingsNavbar = () => {
                         {isHistoricalImportsEnabled ? (
                             <Item
                                 to="historical-imports"
-                                text="Historical Imports"
+                                text="Imports"
                                 requiredRole={UserRole.Admin}
                             />
                         ) : (

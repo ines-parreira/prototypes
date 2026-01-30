@@ -7,6 +7,8 @@ import IconLink from 'core/ui/components/IconLink'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 
+import importCss from './Import.less'
+
 type HeaderImportEmailProps = {
     onOpenCreateImportModal: () => void
     showCta: boolean
@@ -29,7 +31,7 @@ export const HeaderImport = ({
                     <Button onClick={onOpenCreateImportModal}>Import</Button>
                 )}
             </PageHeader>
-            <div className={css.pageContainer}>
+            <div className={importCss.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>
                     <div className={classnames(css.mb32)}>
                         {historicalImportsEnabled ? (

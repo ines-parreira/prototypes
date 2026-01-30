@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { EmptyState } from './EmptyState'
 
@@ -25,7 +26,7 @@ describe('EmptyState', () => {
             ).toBeInTheDocument()
         })
 
-        it('calls callback when CTA button is clicked', () => {
+        it('calls callback when CTA button is clicked', async () => {
             const mockCallback = jest.fn()
 
             render(
@@ -38,7 +39,8 @@ describe('EmptyState', () => {
             )
 
             const button = screen.getByRole('button', { name: 'Click Me' })
-            button.click()
+
+            await act(() => userEvent.click(button))
 
             expect(mockCallback).toHaveBeenCalledTimes(1)
         })
