@@ -166,7 +166,7 @@ describe('NewSummaryPaymentSection', () => {
         // and merchant can activate its Shopify Billing
         expect(
             screen.getByText('Activate Billing with Shopify'),
-        ).toHaveAttribute('href', '/integrations/shopify/billing/activate/')
+        ).toHaveAttribute('href', '/integrations/shopify/billing/activate')
     })
 
     it('should render the activated-shopify-billing use-case', async () => {

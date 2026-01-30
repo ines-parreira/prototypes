@@ -12,6 +12,7 @@ import type { TagDropdownMenu } from 'tags'
 import TagDropdown from '../TagDropdown'
 
 jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     useConditionalShortcuts: jest.fn(),
 }))
 const useConditionalShortcutsMock = assumeMock(useConditionalShortcuts)

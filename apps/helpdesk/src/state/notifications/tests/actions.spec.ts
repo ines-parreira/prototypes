@@ -1,9 +1,11 @@
+import { fromJS } from 'immutable'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { AlertBannerTypes } from 'AlertBanners'
+import { account } from 'fixtures/account'
 
 import type { StoreDispatch } from '../../types'
 import { handleUsageBanner, INITIAL_MESSAGE, notify } from '../actions'
@@ -19,10 +21,12 @@ const types = {
 }
 const initialState = {
     notifications: [],
+    currentAccount: fromJS(account),
 }
 
 type MockedRootState = {
     notifications: Array<Notification>
+    currentAccount: any
 }
 
 describe('actions', () => {
@@ -154,6 +158,7 @@ describe('actions', () => {
 
             store = mockStore({
                 notifications: [notification.payload as Notification],
+                currentAccount: fromJS(account),
             })
 
             await store.dispatch(notify(notification.payload as Notification))
@@ -173,6 +178,7 @@ describe('actions', () => {
 
             store = mockStore({
                 notifications: [notification.payload as Notification],
+                currentAccount: fromJS(account),
             })
 
             await store.dispatch(notify(notification.payload as Notification))
@@ -329,6 +335,174 @@ describe('actions', () => {
                     type: types.upsertNotification,
                     payload: expect.objectContaining({
                         CTA: externalCTA,
+                    }),
+                },
+            ])
+        })
+
+        it('should use Shopify activation CTA when Shopify billing is inactive', () => {
+            const stateWithInactiveShopify = {
+                notifications: [],
+                currentAccount: fromJS({
+                    ...account,
+                    meta: {
+                        should_pay_with_shopify: true,
+                        shopify_billing: {
+                            subscription_id: null,
+                        },
+                    },
+                }),
+            }
+            const storeWithShopify = mockStore(stateWithInactiveShopify)
+
+            const messageNotification = 'Payment is past due'
+            storeWithShopify.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'past_due',
+                    currentAccountStatus: 'past_due',
+                    notification: {
+                        id: 'past-due-banner',
+                        type: AlertBannerTypes.Critical,
+                        message: messageNotification,
+                    },
+                }),
+            )
+            const expectedActions = storeWithShopify.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: {
+                            type: 'internal',
+                            text: 'Activate Billing with Shopify',
+                            to: '/integrations/shopify/billing/activate',
+                            opensInNewTab: true,
+                        },
+                    }),
+                },
+            ])
+        })
+
+        it('should use default CTA when Shopify billing is active', () => {
+            const stateWithActiveShopify = {
+                notifications: [],
+                currentAccount: fromJS({
+                    ...account,
+                    meta: {
+                        should_pay_with_shopify: true,
+                        shopify_billing: {
+                            active: true,
+                            subscription_id: 'sub_123',
+                        },
+                    },
+                }),
+            }
+            const storeWithShopify = mockStore(stateWithActiveShopify)
+
+            const messageNotification = 'Account usage notification'
+            storeWithShopify.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'usage-banner',
+                        type: AlertBannerTypes.Warning,
+                        message: messageNotification,
+                    },
+                }),
+            )
+            const expectedActions = storeWithShopify.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: {
+                            type: 'internal',
+                            text: 'Go to billing page',
+                            to: '/app/settings/billing',
+                        },
+                    }),
+                },
+            ])
+        })
+
+        it('should use default CTA when Shopify billing is canceled', () => {
+            const stateWithCanceledShopify = {
+                notifications: [],
+                currentAccount: fromJS({
+                    ...account,
+                    meta: {
+                        should_pay_with_shopify: true,
+                        shopify_billing: {
+                            charge_id: 'chr_123',
+                            active: false,
+                        },
+                    },
+                }),
+            }
+            const storeWithShopify = mockStore(stateWithCanceledShopify)
+
+            const messageNotification = 'Account usage notification'
+            storeWithShopify.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'usage-banner',
+                        type: AlertBannerTypes.Warning,
+                        message: messageNotification,
+                    },
+                }),
+            )
+            const expectedActions = storeWithShopify.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: {
+                            type: 'internal',
+                            text: 'Go to billing page',
+                            to: '/app/settings/billing',
+                        },
+                    }),
+                },
+            ])
+        })
+
+        it('should use default CTA when not using Shopify billing', () => {
+            const stateWithoutShopify = {
+                notifications: [],
+                currentAccount: fromJS({
+                    ...account,
+                    meta: {
+                        should_pay_with_shopify: false,
+                    },
+                }),
+            }
+            const storeWithoutShopify = mockStore(stateWithoutShopify)
+
+            const messageNotification = 'Account usage notification'
+            storeWithoutShopify.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    notification: {
+                        id: 'usage-banner',
+                        type: AlertBannerTypes.Warning,
+                        message: messageNotification,
+                    },
+                }),
+            )
+            const expectedActions = storeWithoutShopify.getActions()
+            expect(expectedActions).toMatchObject([
+                {
+                    type: types.upsertNotification,
+                    payload: expect.objectContaining({
+                        CTA: {
+                            type: 'internal',
+                            text: 'Go to billing page',
+                            to: '/app/settings/billing',
+                        },
                     }),
                 },
             ])

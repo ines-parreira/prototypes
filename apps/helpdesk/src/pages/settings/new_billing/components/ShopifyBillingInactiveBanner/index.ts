@@ -1,0 +1,1 @@
+export { ShopifyBillingInactiveBanner } from './ShopifyBillingInactiveBanner'

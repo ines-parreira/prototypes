@@ -16,13 +16,16 @@ import useSaveCondition from '../useSaveCondition'
 import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'
 
 jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
     useQueryClient: jest.fn(),
 }))
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
     useCreateCustomFieldCondition: jest.fn(),
     queryKeys: {
+        ...jest.requireActual('@gorgias/helpdesk-queries').queryKeys,
         customFieldConditions: {
             listCustomFieldConditions: jest.fn(),
             getCustomFieldCondition: jest.fn(),
@@ -30,15 +33,23 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     },
 }))
 jest.mock('../useUpdateCustomFieldCondition')
-jest.mock('state/notifications/actions')
-jest.mock('pages/settings/SLAs/utils/handleApiError')
+jest.mock('state/notifications/actions', () => ({
+    ...jest.requireActual('state/notifications/actions'),
+    notify: jest.fn(),
+}))
+jest.mock('pages/settings/SLAs/utils/handleApiError', () => ({
+    ...jest.requireActual('pages/settings/SLAs/utils/handleApiError'),
+}))
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
     history: {
         push: jest.fn(),
     },
 }))
-jest.mock('utils')
+jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
+    errorToChildren: jest.fn(),
+}))
 
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useQueryClientMock = assumeMock(useQueryClient)

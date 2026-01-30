@@ -5,6 +5,7 @@ import { useLocation } from 'react-router'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'
+import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
@@ -41,6 +42,7 @@ const PaymentInformationView = ({
 
     return (
         <div className={css.container}>
+            <ShopifyBillingInactiveBanner />
             <Section icon="credit_card" title="Payment method">
                 <NewSummaryPaymentSection
                     className={css.summaryPaymentSection}

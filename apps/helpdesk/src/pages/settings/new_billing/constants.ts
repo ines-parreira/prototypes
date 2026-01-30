@@ -17,7 +17,7 @@ export const SELECTED_PRODUCTS_SESSION_STORAGE_KEY =
     'billing:trialOrCanceledSubscription:selectedProducts'
 
 export const ACTIVATE_PAYMENT_WITH_SHOPIFY_URL =
-    '/integrations/shopify/billing/activate/'
+    '/integrations/shopify/billing/activate'
 
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
 

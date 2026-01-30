@@ -7,6 +7,7 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
 import KnowledgeSourcePopover from '../KnowledgeSourcePopover'
 
 jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
     stripHTML: (html: string) => html,
 }))
 

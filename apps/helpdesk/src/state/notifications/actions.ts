@@ -12,6 +12,7 @@ import {
 
 import { AlertBannerTypes } from 'AlertBanners/types'
 
+import { ShopifyBillingStatus } from '../currentAccount/types'
 import type { RootState, StoreDispatch } from '../types'
 import type { HandleUsageBanner, Notification } from './types'
 import {
@@ -157,7 +158,7 @@ export const handleUsageBanner =
         currentAccountStatus,
         notification,
     }: HandleUsageBanner) =>
-    (dispatch: StoreDispatch) => {
+    (dispatch: StoreDispatch, getState: () => RootState) => {
         const USAGE_NOTIFICATION_BANNER = '99'
 
         if (currentAccountStatus !== newAccountStatus) {
@@ -165,10 +166,36 @@ export const handleUsageBanner =
         }
 
         if (notification) {
+            const state = getState()
+            const accountMeta = state.currentAccount?.get('meta')
+
+            const shouldPayWithShopify = !!accountMeta?.get(
+                'should_pay_with_shopify',
+            )
+
+            let shopifyBillingStatus = ShopifyBillingStatus.Inactive
+            if (shouldPayWithShopify) {
+                const shopifyBilling = accountMeta?.get('shopify_billing')
+                if (shopifyBilling?.get('active')) {
+                    shopifyBillingStatus = ShopifyBillingStatus.Active
+                } else if (shopifyBilling?.get('charge_id')) {
+                    shopifyBillingStatus = ShopifyBillingStatus.Canceled
+                }
+            }
+
+            const isShopifyBillingInactive =
+                shouldPayWithShopify &&
+                shopifyBillingStatus === ShopifyBillingStatus.Inactive
+
             const defaultCTA = {
                 type: 'internal' as const,
-                text: 'Go to billing page',
-                to: '/app/settings/billing',
+                text: isShopifyBillingInactive
+                    ? 'Activate Billing with Shopify'
+                    : 'Go to billing page',
+                to: isShopifyBillingInactive
+                    ? '/integrations/shopify/billing/activate'
+                    : '/app/settings/billing',
+                ...(isShopifyBillingInactive && { opensInNewTab: true }),
             }
 
             void dispatch(

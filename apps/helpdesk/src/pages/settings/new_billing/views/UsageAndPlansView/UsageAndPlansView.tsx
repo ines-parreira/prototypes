@@ -15,6 +15,7 @@ import { getCadenceName, getProductInfo } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
+import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import {
     getCurrentAutomatePlan,
     getCurrentConvertPlan,
@@ -212,6 +213,7 @@ const UsageAndPlansView = ({
 
     return (
         <div className={css.container}>
+            <ShopifyBillingInactiveBanner />
             <div className={css.generalInfo}>
                 <div className={css.generalInfoItem}>
                     {isTrialingSubscription ? (

@@ -20,7 +20,12 @@ import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRo
 import { isTeamLead } from 'utils'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
-jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
+jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
+    ...jest.requireActual(
+        'domains/reporting/hooks/dashboards/useDashboardActions',
+    ),
+    useDashboardActions: jest.fn(),
+}))
 
 const useDashboardActionsMock = assumeMock(useDashboardActions)
 
@@ -40,18 +45,28 @@ jest.mock(
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
 jest.mock('state/currentUser/selectors', () => ({
+    ...jest.requireActual('state/currentUser/selectors'),
     getCurrentUser: jest.fn(),
 }))
 
-jest.mock('utils')
+jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
+    isTeamLead: jest.fn(),
+}))
 const isTeamLeadMock = assumeMock(isTeamLead)
 
-jest.mock('@repo/logging')
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+}))
 const logEventMock = assumeMock(logEvent)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
     () => ({
+        ...jest.requireActual(
+            'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
+        ),
         useReportChartRestrictions: jest.fn(),
     }),
 )
