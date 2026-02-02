@@ -476,21 +476,13 @@ describe('TicketTranslationMenu', () => {
             )
             server.use(handler)
 
-            const { user } = render(<TicketTranslationMenu ticket={ticket} />)
+            render(<TicketTranslationMenu ticket={ticket} />)
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', { name: /translate/i }),
-                ).toBeInTheDocument()
-            })
-
-            await act(() =>
-                user.hover(screen.getByRole('button', { name: /translate/i })),
-            )
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText(/Ticket translated from German/i),
+                    screen.getByRole('button', {
+                        name: /Ticket translated from German/i,
+                    }),
                 ).toBeInTheDocument()
             })
         })

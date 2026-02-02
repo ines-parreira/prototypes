@@ -1,2 +1,6 @@
 export { TeamAssignee } from './components/TeamAssignee'
 export { UserAssignee } from './components/UserAssignee'
+export { TeamAssigneeSelect } from './components/TeamAssigneeSelect'
+export { UserAssigneeSelect } from './components/UserAssigneeSelect'
+export type { TeamAssigneeSelectProps } from './components/TeamAssigneeSelect'
+export type { UserAssigneeSelectProps } from './components/UserAssigneeSelect'

@@ -184,54 +184,6 @@ describe('TeamAssignee', () => {
         })
     })
 
-    it('should disable trigger while updating team', async () => {
-        const mockUpdateTicketSlow = mockUpdateTicketHandler(
-            async () =>
-                new Promise((resolve) =>
-                    setTimeout(
-                        () =>
-                            resolve(
-                                HttpResponse.json(
-                                    mockTicket({
-                                        id: ticketId,
-                                        assignee_team: mockTicketTeam(team1),
-                                    }),
-                                ),
-                            ),
-                        100,
-                    ),
-                ),
-        )
-
-        server.use(mockUpdateTicketSlow.handler)
-
-        const { user } = render(
-            <TeamAssignee ticketId={ticketId} currentTeam={null} />,
-        )
-
-        const select = await waitUntilLoaded()
-        expect(select).not.toBeDisabled()
-
-        await act(async () => {
-            await user.click(select)
-        })
-
-        const supportOption = screen.getByRole('option', {
-            name: 'Support',
-        })
-        await act(async () => {
-            await user.click(supportOption)
-        })
-
-        await waitFor(() => {
-            expect(select).toBeDisabled()
-        })
-
-        await waitFor(() => {
-            expect(select).not.toBeDisabled()
-        })
-    })
-
     it('should clear search when dropdown is closed', async () => {
         const { user } = render(
             <TeamAssignee ticketId={ticketId} currentTeam={null} />,

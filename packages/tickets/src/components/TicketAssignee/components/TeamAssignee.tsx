@@ -1,24 +1,9 @@
 import { useCallback } from 'react'
 
-import { Emoji } from 'emoji-mart'
-import { isNumber } from 'lodash'
+import type { Team, TicketTeam } from '@gorgias/helpdesk-queries'
 
-import {
-    Icon,
-    ListItem,
-    ListSection,
-    Select,
-    StatusButton,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-import type { TicketTeam } from '@gorgias/helpdesk-queries'
-
-import type { TeamOption, TeamSection } from '../hooks/useTeamOptions'
-import { NO_TEAM_OPTION, useTeamOptions } from '../hooks/useTeamOptions'
 import { useUpdateTicketTeam } from '../hooks/useUpdateTicketTeam'
-
-import css from './SelectStyles.less'
+import { TeamAssigneeSelect } from './TeamAssigneeSelect'
 
 type Props = {
     ticketId: number
@@ -26,145 +11,16 @@ type Props = {
 }
 
 export function TeamAssignee({ ticketId, currentTeam }: Props) {
-    const { updateTicketTeam, isLoading: isUpdatingTeam } =
-        useUpdateTicketTeam(ticketId)
-
-    const {
-        teamsMap,
-        teamSections,
-        selectedOption,
-        isLoading,
-        search,
-        setSearch,
-        onLoad,
-        shouldLoadMore,
-    } = useTeamOptions({ currentTeam })
+    const { updateTicketTeam } = useUpdateTicketTeam(ticketId)
 
     const handleChange = useCallback(
-        async (option: TeamOption) => {
+        async (team: Team | null) => {
             try {
-                if (option.id === NO_TEAM_OPTION.id) {
-                    await updateTicketTeam(null)
-                } else {
-                    const team = teamsMap.get(option.id)
-                    if (team) {
-                        await updateTicketTeam(team)
-                    }
-                }
+                await updateTicketTeam(team)
             } catch {}
         },
-        [teamsMap, updateTicketTeam],
+        [updateTicketTeam],
     )
 
-    const clearSearch = useCallback(
-        (isOpen: boolean) => {
-            if (!isOpen) {
-                setSearch('')
-            }
-        },
-        [setSearch],
-    )
-
-    return (
-        <Select
-            placeholder="No team"
-            items={teamSections}
-            isSearchable={true}
-            searchValue={search}
-            onSearchChange={setSearch}
-            // @ts-expect-error - the generic expects a TeamSection
-            selectedItem={selectedOption}
-            // @ts-expect-error - the generic expects a TeamSection handler
-            onSelect={handleChange}
-            isLoading={isLoading}
-            isDisabled={isUpdatingTeam || isLoading}
-            minWidth={210}
-            maxWidth={210}
-            maxHeight={220}
-            onLoadMore={() => shouldLoadMore && onLoad()}
-            onOpenChange={clearSearch}
-            aria-label="Team selection"
-            size="sm"
-            autoFocus={false}
-            trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
-                const emoji = isNumber(selectedOption?.id)
-                    ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
-                    : null
-                return (
-                    <Tooltip placement="bottom">
-                        <StatusButton
-                            ref={ref}
-                            leadingSlot={
-                                !!emoji ? (
-                                    <span
-                                        style={{
-                                            display: 'flex',
-                                        }}
-                                    >
-                                        <Emoji emoji={emoji} size={16} />{' '}
-                                    </span>
-                                ) : (
-                                    <Icon name="users" size="sm" />
-                                )
-                            }
-                            trailingSlot={
-                                <Icon
-                                    name={
-                                        isOpen
-                                            ? 'arrow-chevron-up'
-                                            : 'arrow-chevron-down'
-                                    }
-                                    size="xs"
-                                />
-                            }
-                            className={css.trigger}
-                        >
-                            {isPlaceholder ? 'No team' : selectedText}
-                        </StatusButton>
-                        <TooltipContent
-                            title={
-                                isPlaceholder ? 'Assign team' : 'Assigned team'
-                            }
-                        />
-                    </Tooltip>
-                )
-            }}
-        >
-            {(section: TeamSection) => (
-                <ListSection
-                    id={section.id}
-                    name={section.name}
-                    items={section.items}
-                >
-                    {(option) => {
-                        const emoji =
-                            option.id !== NO_TEAM_OPTION.id
-                                ? teamsMap.get(option.id)?.decoration?.emoji
-                                : null
-
-                        return (
-                            <ListItem
-                                key={option.id}
-                                textValue={option.label}
-                                label={option.label}
-                                leadingSlot={
-                                    !!emoji ? (
-                                        <span
-                                            style={{
-                                                display: 'flex',
-                                            }}
-                                        >
-                                            <Emoji emoji={emoji} size={16} />
-                                        </span>
-                                    ) : (
-                                        <Icon name="user" size="sm" />
-                                    )
-                                }
-                            />
-                        )
-                    }}
-                </ListSection>
-            )}
-        </Select>
-    )
+    return <TeamAssigneeSelect value={currentTeam} onChange={handleChange} />
 }

@@ -255,52 +255,6 @@ describe('UserAssignee', () => {
         })
     })
 
-    it('should disable trigger while updating user', async () => {
-        const mockUpdateTicketSlow = mockUpdateTicketHandler(
-            async () =>
-                new Promise((resolve) =>
-                    setTimeout(
-                        () =>
-                            resolve(
-                                HttpResponse.json(
-                                    mockTicket({
-                                        id: ticketId,
-                                        assignee_user: currentTicketAssignee,
-                                    }),
-                                ),
-                            ),
-                        100,
-                    ),
-                ),
-        )
-
-        server.use(mockUpdateTicketSlow.handler)
-
-        const { user } = render(
-            <UserAssignee ticketId={ticketId} currentAssignee={null} />,
-        )
-
-        const select = await waitUntilLoaded()
-        expect(select).not.toBeDisabled()
-
-        await act(async () => {
-            await user.click(select)
-        })
-
-        const yourselfOptions = await screen.findAllByText('Assign yourself')
-        await act(async () => {
-            await user.click(yourselfOptions[yourselfOptions.length - 1])
-        })
-
-        await waitFor(() => {
-            expect(select).toBeDisabled()
-        })
-
-        await waitFor(() => {
-            expect(select).not.toBeDisabled()
-        })
-    })
-
     it('should clear search when dropdown is closed', async () => {
         const { user } = render(
             <UserAssignee ticketId={ticketId} currentAssignee={null} />,

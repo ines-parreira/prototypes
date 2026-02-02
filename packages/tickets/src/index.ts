@@ -4,6 +4,9 @@ export type { TagsMultiSelectProps } from './components/InfobarTicketDetails/com
 export { InfobarTicketCustomerDetails } from './components/InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
 export { MultiLevelSelect } from './components/MultiLevelSelect'
 export { TeamAssignee } from './components/TicketAssignee'
+export { TeamAssigneeSelect } from './components/TicketAssignee'
+export { UserAssigneeSelect } from './components/TicketAssignee'
+export { PrioritySelect } from './components/TicketPriority'
 export { TicketHeader } from './components/TicketHeader/TicketHeader'
 export { TicketInfobarNavigation } from './components/TicketInfobarNavigation'
 export type {

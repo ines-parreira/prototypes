@@ -1,12 +1,25 @@
 import { Handle, Panel } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
-import { render, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import {
+    mockGetCurrentUserHandler,
+    mockListTeamsHandler,
+    mockListUsersHandler,
+    mockTeam,
+    mockUser,
+} from '@gorgias/helpdesk-mocks'
+
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 import { InfobarNavigationPanel } from 'tickets/navigation'
 
 import { NewTicketPage } from '../NewTicketPage'
 
 jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
     useTicketInfobarNavigation: jest.fn(),
 }))
 const useTicketInfobarNavigationMock = jest.mocked(useTicketInfobarNavigation)
@@ -34,25 +47,84 @@ jest.mock('tickets/navigation', () => ({
     )),
 }))
 
-jest.mock('@repo/tickets', () => ({
-    TicketHeaderContainer: jest.fn(({ children }) => (
-        <header role="banner">{children}</header>
-    )),
-    TicketHeaderLeft: jest.fn(({ children }) => <div>{children}</div>),
-    TicketHeaderRight: jest.fn(({ children }) => <div>{children}</div>),
-    TicketLayout: jest.fn(({ children }) => <div>{children}</div>),
-    TicketLayoutContent: jest.fn(({ children }) => <div>{children}</div>),
-}))
-
 const mockedPanel = jest.mocked(Panel)
 const mockedHandle = jest.mocked(Handle)
 const mockedInfobarNavigationPanel = jest.mocked(InfobarNavigationPanel)
 
-describe('NewTicketPage', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
+const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
+const team2 = mockTeam({ id: 2, name: 'Sales', decoration: { emoji: '💰' } })
 
+const user1 = mockUser({ id: 1, name: 'John Doe' })
+const user2 = mockUser({ id: 2, name: 'Jane Smith' })
+
+const mockListTeams = mockListTeamsHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [team1, team2],
+        meta: {
+            prev_cursor: null,
+            next_cursor: null,
+        },
+    }),
+)
+
+const mockListUsers = mockListUsersHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        data: [user1, user2],
+        meta: {
+            prev_cursor: null,
+            next_cursor: null,
+        },
+    }),
+)
+
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+beforeEach(() => {
+    server.use(
+        mockListTeams.handler,
+        mockListUsers.handler,
+        mockGetCurrentUser.handler,
+    )
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const renderComponent = () => {
+    const user = userEvent.setup()
+    const result = renderWithStoreAndQueryClientAndRouter(
+        <NewTicketPage />,
+        {},
+        {
+            path: '/app/tickets/new',
+            route: '/app/tickets/new',
+        },
+    )
+    return { ...result, user }
+}
+
+const waitForSelectsToLoad = async () => {
+    await waitFor(() => {
+        const prioritySelect = screen.getAllByLabelText('Priority selection')
+        expect(prioritySelect[0]).not.toBeDisabled()
+    })
+}
+
+describe('NewTicketPage', () => {
     describe('when infobar is expanded', () => {
         beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
@@ -60,44 +132,49 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders the header with title', () => {
-            render(<NewTicketPage />)
+        it('renders the header with title', async () => {
+            renderComponent()
 
             expect(screen.getByText('New ticket')).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the main content panel', () => {
-            render(<NewTicketPage />)
+        it('renders the main content panel', async () => {
+            renderComponent()
 
             expect(screen.getByText('Main content here')).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the infobar container with expanded panel config', () => {
-            render(<NewTicketPage />)
+        it('renders the infobar container with expanded panel config', async () => {
+            renderComponent()
 
             expect(
                 screen.getByRole('complementary', {
                     name: 'Ticket Information',
                 }),
             ).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the infobar navigation panel', () => {
-            render(<NewTicketPage />)
+        it('renders the infobar navigation panel', async () => {
+            renderComponent()
 
             expect(
                 screen.getByRole('navigation', { name: 'Infobar Navigation' }),
             ).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the panel handle', () => {
-            render(<NewTicketPage />)
+        it('renders the panel handle', async () => {
+            renderComponent()
 
             expect(screen.getByRole('separator')).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders Panel with expanded config', () => {
-            render(<NewTicketPage />)
+        it('renders Panel with expanded config', async () => {
+            renderComponent()
 
             const expandedPanelCalls = mockedPanel.mock.calls.filter(
                 (call) => call[0].name === 'infobar-expanded',
@@ -109,6 +186,7 @@ describe('NewTicketPage', () => {
                 minSize: 340,
                 maxSize: 0.33,
             })
+            await waitForSelectsToLoad()
         })
     })
 
@@ -119,30 +197,33 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders the header with title', () => {
-            render(<NewTicketPage />)
+        it('renders the header with title', async () => {
+            renderComponent()
 
             expect(screen.getByText('New ticket')).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the main content panel', () => {
-            render(<NewTicketPage />)
+        it('renders the main content panel', async () => {
+            renderComponent()
 
             expect(screen.getByText('Main content here')).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders the infobar container', () => {
-            render(<NewTicketPage />)
+        it('renders the infobar container', async () => {
+            renderComponent()
 
             expect(
                 screen.getByRole('complementary', {
                     name: 'Ticket Information',
                 }),
             ).toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        it('renders Panel with collapsed config', () => {
-            render(<NewTicketPage />)
+        it('renders Panel with collapsed config', async () => {
+            renderComponent()
 
             const collapsedPanelCalls = mockedPanel.mock.calls.filter(
                 (call) => call[0].name === 'infobar-collapsed',
@@ -154,6 +235,7 @@ describe('NewTicketPage', () => {
                 minSize: 0,
                 maxSize: 0,
             })
+            await waitForSelectsToLoad()
         })
     })
 
@@ -164,8 +246,8 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders ticket detail panel with correct config', () => {
-            render(<NewTicketPage />)
+        it('renders ticket detail panel with correct config', async () => {
+            renderComponent()
 
             const ticketDetailPanelCalls = mockedPanel.mock.calls.filter(
                 (call) => call[0].name === 'ticket-detail',
@@ -177,18 +259,124 @@ describe('NewTicketPage', () => {
                 minSize: 300,
                 maxSize: Infinity,
             })
+            await waitForSelectsToLoad()
         })
 
-        it('renders Handle component between panels', () => {
-            render(<NewTicketPage />)
+        it('renders Handle component between panels', async () => {
+            renderComponent()
 
             expect(mockedHandle).toHaveBeenCalledWith({}, {})
+            await waitForSelectsToLoad()
         })
 
-        it('renders InfobarNavigationPanel', () => {
-            render(<NewTicketPage />)
+        it('renders InfobarNavigationPanel', async () => {
+            renderComponent()
 
             expect(mockedInfobarNavigationPanel).toHaveBeenCalled()
+            await waitForSelectsToLoad()
+        })
+    })
+
+    describe('header select components', () => {
+        beforeEach(() => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: true,
+            } as any)
+        })
+
+        describe('PrioritySelect', () => {
+            it('renders with default "Normal" placeholder', async () => {
+                renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const normalTexts = screen.getAllByText('Normal')
+                expect(normalTexts.length).toBeGreaterThan(0)
+            })
+
+            it('allows selecting a different priority', async () => {
+                const { user } = renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const prioritySelect =
+                    screen.getAllByLabelText('Priority selection')[0]
+                await act(() => user.click(prioritySelect))
+
+                const highOptions = await screen.findAllByText('High')
+                await act(() => user.click(highOptions[highOptions.length - 1]))
+
+                await waitFor(() => {
+                    const highTexts = screen.getAllByText('High')
+                    expect(highTexts.length).toBeGreaterThan(0)
+                })
+            })
+        })
+
+        describe('UserAssigneeSelect', () => {
+            it('renders with "Unassigned" placeholder', async () => {
+                renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const unassignedTexts = screen.getAllByText('Unassigned')
+                expect(unassignedTexts.length).toBeGreaterThan(0)
+            })
+
+            it('allows selecting a user', async () => {
+                const { user } = renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const userSelect = screen.getAllByLabelText('User selection')[0]
+                await act(() => user.click(userSelect))
+
+                await waitFor(() => {
+                    expect(screen.getByText('John Doe')).toBeInTheDocument()
+                })
+
+                const johnOptions = await screen.findAllByText('John Doe')
+                await act(() => user.click(johnOptions[johnOptions.length - 1]))
+
+                await waitFor(() => {
+                    const johnTexts = screen.getAllByText('John Doe')
+                    expect(johnTexts.length).toBeGreaterThan(0)
+                })
+            })
+        })
+
+        describe('TeamAssigneeSelect', () => {
+            it('renders with "No team" placeholder', async () => {
+                renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const noTeamTexts = screen.getAllByText('No team')
+                expect(noTeamTexts.length).toBeGreaterThan(0)
+            })
+
+            it('allows selecting a team', async () => {
+                const { user } = renderComponent()
+
+                await waitForSelectsToLoad()
+
+                const teamSelect = screen.getAllByLabelText('Team selection')[0]
+                await act(() => user.click(teamSelect))
+
+                await waitFor(() => {
+                    expect(screen.getByText('Support')).toBeInTheDocument()
+                })
+
+                const supportOptions = await screen.findAllByText('Support')
+                await act(() =>
+                    user.click(supportOptions[supportOptions.length - 1]),
+                )
+
+                await waitFor(() => {
+                    const supportTexts = screen.getAllByText('Support')
+                    expect(supportTexts.length).toBeGreaterThan(0)
+                })
+            })
         })
     })
 })
