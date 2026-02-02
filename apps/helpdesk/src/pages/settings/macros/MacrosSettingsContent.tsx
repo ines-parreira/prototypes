@@ -22,6 +22,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { errorToChildren } from 'utils'
 
+import { useMacroListSearchParams } from './hooks/useMacroListSearchParams'
 import { MacrosCreateDropdown } from './MacrosCreateDropdown'
 import MacrosSettingsTable from './MacrosSettingsTable'
 
@@ -33,9 +34,7 @@ export function MacrosSettingsContent() {
     const dispatch = useAppDispatch()
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
 
-    const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
-        order_by: 'created_datetime:asc',
-    })
+    const [listMacrosParams, setListMacrosParams] = useMacroListSearchParams()
     const { data, isLoading, isError } = useListMacros(
         {
             ...listMacrosParams,
@@ -135,7 +134,7 @@ export function MacrosSettingsContent() {
                 ...listMacrosParams,
                 order_by: `${order_by}:${order_dir}`,
             }),
-        [listMacrosParams],
+        [listMacrosParams, setListMacrosParams],
     )
 
     const fetchNextItems = useCallback(() => {
@@ -144,7 +143,7 @@ export function MacrosSettingsContent() {
             cursor: data?.data.meta.next_cursor ?? undefined,
         })
         setSelectedMacrosIds([])
-    }, [data?.data.meta.next_cursor, listMacrosParams])
+    }, [data?.data.meta.next_cursor, listMacrosParams, setListMacrosParams])
 
     const fetchPrevItems = useCallback(() => {
         setListMacrosParams({
@@ -152,7 +151,7 @@ export function MacrosSettingsContent() {
             cursor: data?.data.meta.prev_cursor ?? undefined,
         })
         setSelectedMacrosIds([])
-    }, [data?.data.meta.prev_cursor, listMacrosParams])
+    }, [data?.data.meta.prev_cursor, listMacrosParams, setListMacrosParams])
 
     const onMacroSearchChange = useCallback(
         (search: string) => {
@@ -163,7 +162,7 @@ export function MacrosSettingsContent() {
                 cursor: undefined,
             })
         },
-        [listMacrosParams],
+        [listMacrosParams, setListMacrosParams],
     )
 
     const onMacroFilterChange = useCallback(
@@ -175,7 +174,7 @@ export function MacrosSettingsContent() {
                 cursor: undefined,
             })
         },
-        [listMacrosParams],
+        [listMacrosParams, setListMacrosParams],
     )
 
     return (

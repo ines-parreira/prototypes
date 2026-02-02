@@ -180,7 +180,7 @@ const MacrosSettingsForm = () => {
                                     status: NotificationStatus.Success,
                                 }),
                             )
-                            history.push('/app/settings/macros')
+                            history.goBack()
                         },
                     },
                 )
@@ -197,7 +197,7 @@ const MacrosSettingsForm = () => {
                                     status: NotificationStatus.Success,
                                 }),
                             )
-                            history.push('/app/settings/macros')
+                            history.goBack()
                         },
                     },
                 )
@@ -233,7 +233,7 @@ const MacrosSettingsForm = () => {
             } else {
                 bulkArchiveMacros({ data: { ids: [parseInt(macroId)] } })
             }
-            history.push(`/app/settings/macros${isArchived ? '/archived' : ''}`)
+            history.goBack()
         }
     }
 
@@ -252,7 +252,7 @@ const MacrosSettingsForm = () => {
                                 status: NotificationStatus.Success,
                             }),
                         )
-                        history.push('/app/settings/macros')
+                        history.goBack()
                     },
                 },
             )

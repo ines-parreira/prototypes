@@ -7,6 +7,7 @@ import { Provider } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
 import { useListMacros } from '@gorgias/helpdesk-queries'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
@@ -33,6 +34,34 @@ jest.mock('@repo/routing', () => ({
     history: {
         push: jest.fn(),
     },
+}))
+
+let mockListMacrosParams: Pick<
+    ListMacrosParams,
+    'search' | 'tags' | 'languages' | 'order_by' | 'cursor'
+> = {
+    order_by: 'created_datetime:asc',
+}
+const mockSetListMacrosParams = jest.fn(
+    (
+        updater:
+            | typeof mockListMacrosParams
+            | ((
+                  prev: typeof mockListMacrosParams,
+              ) => typeof mockListMacrosParams),
+    ) => {
+        mockListMacrosParams =
+            typeof updater === 'function'
+                ? updater(mockListMacrosParams)
+                : updater
+    },
+)
+
+jest.mock('../hooks/useMacroListSearchParams', () => ({
+    useMacroListSearchParams: () => [
+        mockListMacrosParams,
+        mockSetListMacrosParams,
+    ],
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -102,6 +131,8 @@ const mockMutateBulkUnarchive = jest.fn()
 
 describe('<MacrosSettingsContent/>', () => {
     beforeEach(() => {
+        mockListMacrosParams = { order_by: 'created_datetime:asc' }
+        mockSetListMacrosParams.mockClear()
         useAppDispatchMock.mockReturnValue(jest.fn())
         mockUseListMacros.mockReturnValue({
             data: {
@@ -199,32 +230,16 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         await userEvent.click(screen.getByText('keyboard_arrow_right'))
-        expect(mockUseListMacros).toHaveBeenNthCalledWith(
-            2,
-            {
-                order_by: 'created_datetime:asc',
-                cursor: 'next_cursor',
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
-        )
+        expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+            order_by: 'created_datetime:asc',
+            cursor: 'next_cursor',
+        })
 
         await userEvent.click(screen.getByText('keyboard_arrow_left'))
-        expect(mockUseListMacros).toHaveBeenNthCalledWith(
-            3,
-            {
-                order_by: 'created_datetime:asc',
-                cursor: 'prev_cursor',
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
-        )
+        expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+            order_by: 'created_datetime:asc',
+            cursor: 'prev_cursor',
+        })
     })
 
     it('should fetch macros when sorting options change', async () => {
@@ -240,17 +255,9 @@ describe('<MacrosSettingsContent/>', () => {
 
         await userEvent.click(screen.getByText('Macro'))
 
-        expect(mockUseListMacros).toHaveBeenNthCalledWith(
-            2,
-            {
-                order_by: `name:${mockOrder}`,
-            },
-            {
-                query: {
-                    staleTime: expect.any(Number),
-                },
-            },
-        )
+        expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+            order_by: `name:${mockOrder}`,
+        })
     })
 
     it('should refetch macros at previous page if last page is empty', async () => {
@@ -288,18 +295,10 @@ describe('<MacrosSettingsContent/>', () => {
         )[1].onSettled()
 
         await waitFor(() => {
-            expect(mockUseListMacros).toHaveBeenNthCalledWith(
-                2,
-                {
-                    order_by: `${mockProperty}:${mockOrder}`,
-                    cursor: 'prev_cursor',
-                },
-                {
-                    query: {
-                        staleTime: expect.any(Number),
-                    },
-                },
-            )
+            expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+                order_by: `${mockProperty}:${mockOrder}`,
+                cursor: 'prev_cursor',
+            })
         })
     })
 
@@ -351,18 +350,10 @@ describe('<MacrosSettingsContent/>', () => {
         )[1].onSettled()
 
         await waitFor(() => {
-            expect(mockUseListMacros).toHaveBeenNthCalledWith(
-                3,
-                {
-                    order_by: `${mockProperty}:${mockOrder}`,
-                    cursor: undefined,
-                },
-                {
-                    query: {
-                        staleTime: expect.any(Number),
-                    },
-                },
-            )
+            expect(mockSetListMacrosParams).toHaveBeenLastCalledWith({
+                order_by: `${mockProperty}:${mockOrder}`,
+                cursor: undefined,
+            })
         })
     })
 
@@ -407,18 +398,11 @@ describe('<MacrosSettingsContent/>', () => {
         })
 
         await waitFor(() =>
-            expect(mockUseListMacros).toHaveBeenNthCalledWith(
-                2,
-                {
-                    order_by: `${mockProperty}:${mockOrder}`,
-                    search: searchTerm,
-                },
-                {
-                    query: {
-                        staleTime: expect.any(Number),
-                    },
-                },
-            ),
+            expect(mockSetListMacrosParams).toHaveBeenCalledWith({
+                order_by: `${mockProperty}:${mockOrder}`,
+                search: searchTerm,
+                cursor: undefined,
+            }),
         )
     })
 
@@ -549,17 +533,11 @@ describe('<MacrosSettingsContent/>', () => {
         })
 
         await waitFor(() =>
-            expect(mockUseListMacros).toHaveBeenCalledWith(
-                {
-                    order_by: 'created_datetime:asc',
+            expect(mockSetListMacrosParams).toHaveBeenCalledWith(
+                expect.objectContaining({
                     search: searchTerm,
                     cursor: undefined,
-                },
-                {
-                    query: {
-                        staleTime: expect.any(Number),
-                    },
-                },
+                }),
             ),
         )
     })
@@ -601,17 +579,14 @@ describe('<MacrosSettingsContent/>', () => {
         // Trigger the filter change through the exposed onChange handler
         ;(global as any).mockMacroFiltersOnChange(mockFilterParams)
 
-        // Wait for and verify the last call to useListMacros
+        // Wait for and verify the call to setListMacrosParams
         await waitFor(() => {
-            const lastCall =
-                mockUseListMacros.mock.calls[
-                    mockUseListMacros.mock.calls.length - 1
-                ]
-            expect(lastCall[0]).toMatchObject({
-                order_by: expect.any(String),
-                cursor: undefined,
-                ...mockFilterParams,
-            })
+            expect(mockSetListMacrosParams).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    cursor: undefined,
+                    ...mockFilterParams,
+                }),
+            )
         })
     })
 })

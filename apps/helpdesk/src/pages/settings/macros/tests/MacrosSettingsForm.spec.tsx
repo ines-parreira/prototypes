@@ -41,6 +41,7 @@ jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
     history: {
         push: jest.fn(),
+        goBack: jest.fn(),
     },
 }))
 jest.mock(
@@ -236,7 +237,7 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully created macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -275,7 +276,7 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully updated macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -346,7 +347,7 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully updated macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -396,7 +397,7 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully created macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -416,7 +417,7 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully deleted macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -513,7 +514,7 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(history.push).toHaveBeenCalledWith('/app/settings/macros')
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 
@@ -544,9 +545,7 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/macros/archived',
-            )
+            expect(history.goBack).toHaveBeenCalled()
         })
     })
 })
