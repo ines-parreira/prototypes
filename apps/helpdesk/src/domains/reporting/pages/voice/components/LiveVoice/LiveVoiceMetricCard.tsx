@@ -198,6 +198,8 @@ const getV2MeasureFromMetricName = (
             return 'averageTalkTimeInSeconds'
         case VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime:
             return 'averageWaitTimeInSeconds'
+        case VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate:
+            return 'slaAchievementRate'
     }
     return ''
 }

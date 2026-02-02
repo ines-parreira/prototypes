@@ -448,6 +448,12 @@ describe('LiveVoiceMetricCard', () => {
                     v2Key: 'averageWaitTimeInSeconds',
                     value: 100,
                 },
+                {
+                    measure:
+                        VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate,
+                    v2Key: 'slaAchievementRate',
+                    value: 110,
+                },
             ])(
                 'extracts value from V2 format for $measure',
                 ({ measure, v2Key, value }) => {

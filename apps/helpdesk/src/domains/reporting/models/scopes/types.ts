@@ -81,6 +81,7 @@ export type DimensionName =
     | 'callDirection'
     | 'callRecordingAvailable'
     | 'callRecordingUrl'
+    | 'callSlaStatus'
     | 'createdDatetime'
     | 'customerId'
     | 'destination'

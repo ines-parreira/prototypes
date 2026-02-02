@@ -372,21 +372,24 @@ describe('voiceCallTableContentCells', () => {
                 expect(screen.getByText('Breached')).toBeInTheDocument()
             })
 
-            it('should render "-" when callSlaStatus is null', () => {
-                const columns = [VoiceCallTableColumn.SlaStatus]
-                const mockVoiceCall = {
-                    callSlaStatus: null,
-                } as VoiceCallSummary
+            it.each([null, undefined])(
+                'should render "-" when callSlaStatus is %s',
+                (callSlaStatus) => {
+                    const columns = [VoiceCallTableColumn.SlaStatus]
+                    const mockVoiceCall = {
+                        callSlaStatus,
+                    } as VoiceCallSummary
 
-                const result = getOrderedCells({
-                    item: mockVoiceCall,
-                    columns,
-                    isTableScrolled: false,
-                })
+                    const result = getOrderedCells({
+                        item: mockVoiceCall,
+                        columns,
+                        isTableScrolled: false,
+                    })
 
-                render(result[0].props.children as any)
-                expect(screen.getByText('-')).toBeInTheDocument()
-            })
+                    render(result[0].props.children as any)
+                    expect(screen.getByText('-')).toBeInTheDocument()
+                },
+            )
         })
     })
 })

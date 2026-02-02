@@ -415,6 +415,7 @@ describe('voiceCallsScope', () => {
                     'agentId',
                     'customerId',
                     'callDirection',
+                    'callSlaStatus',
                     'integrationId',
                     'createdDatetime',
                     'status',

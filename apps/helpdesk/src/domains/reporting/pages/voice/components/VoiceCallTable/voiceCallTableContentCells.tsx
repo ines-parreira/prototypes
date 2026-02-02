@@ -364,7 +364,8 @@ export const getOrderedCells = ({
             props: {
                 className: css.smallCell,
                 children:
-                    item.callSlaStatus !== null
+                    item.callSlaStatus !== null &&
+                    item.callSlaStatus !== undefined
                         ? item.callSlaStatus === '0'
                             ? 'Achieved'
                             : 'Breached'
