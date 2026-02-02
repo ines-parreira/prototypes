@@ -1,9 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
+
+import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import {
     Box,
     Button,
-    Heading,
     ListItem,
     Select,
     Skeleton,
@@ -13,42 +14,90 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { useIsTruncated } from 'pages/common/hooks/useIsTruncated'
+import {
+    getDateAndTimeFormatter,
+    getTimezone,
+} from 'state/currentUser/selectors'
+
 import type { VersionHistoryButtonProps, VersionItem } from './types'
+import { useVersionUsers } from './useVersionUsers'
+
+import css from './VersionHistoryButton.less'
 
 type VersionOption<V extends VersionItem> = {
     id: string
     value: string
-    label: string
     version: V
 }
 
-function formatDate(dateString: string | null): string {
-    if (!dateString) return ''
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-    })
-}
-
-function truncateText(text: string, maxLength: number): string {
-    if (text.length <= maxLength) return text
-    return `${text.slice(0, maxLength)}...`
-}
-
-function formatVersionLabel(version: VersionItem, isCurrent: boolean): string {
-    const parts: string[] = [`Version ${version.version}`]
+function buildVersionLabel(
+    version: VersionItem,
+    isCurrent: boolean,
+    formatDate: (dateString: string) => string,
+): string {
+    const dateText = version.published_datetime
+        ? formatDate(version.published_datetime)
+        : ''
+    const parts: string[] = [dateText || `Version ${version.version}`]
     if (isCurrent) {
         parts.push('(Current)')
     }
-    if (version.commit_message) {
-        parts.push(`- ${truncateText(version.commit_message, 25)}`)
-    }
-    if (version.published_datetime) {
-        parts.push(`• ${formatDate(version.published_datetime)}`)
-    }
     return parts.join(' ')
+}
+
+function buildCaptionText(
+    version: VersionItem,
+    userName: string | undefined,
+): string | undefined {
+    const commitMessage = version.commit_message
+
+    if (!userName && !commitMessage) return undefined
+
+    if (!commitMessage) {
+        return `Published by: ${userName}`
+    }
+
+    return userName ? `${userName}: ${commitMessage}` : commitMessage
+}
+
+function VersionCaption({
+    version,
+    userName,
+}: {
+    version: VersionItem
+    userName: string | undefined
+}) {
+    const textRef = useRef<HTMLDivElement>(null)
+    const commitMessage = version.commit_message
+    const hasUserAndMessage = Boolean(userName && commitMessage)
+    const fullText = buildCaptionText(version, userName)
+    const isTruncated = useIsTruncated(textRef, fullText)
+
+    if (!fullText) return null
+
+    return (
+        <Tooltip delay={300} placement="bottom left" isDisabled={!isTruncated}>
+            <TooltipTrigger>
+                <div ref={textRef} className={css.caption}>
+                    <Text size="sm" variant="regular">
+                        {hasUserAndMessage ? (
+                            <>
+                                <Text as="span" size="sm" variant="bold">
+                                    {userName}
+                                </Text>
+                                {`: ${commitMessage}`}
+                            </>
+                        ) : (
+                            fullText
+                        )}
+                    </Text>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent title={fullText} />
+        </Tooltip>
+    )
 }
 
 export function VersionHistoryButton<V extends VersionItem>({
@@ -62,22 +111,28 @@ export function VersionHistoryButton<V extends VersionItem>({
     onLoadMore,
     shouldLoadMore,
 }: VersionHistoryButtonProps<V>) {
+    const timezone = useAppSelector(getTimezone)
+    const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
+    const { userNames, isLoading: isLoadingUsers } = useVersionUsers(versions)
+
+    const formatDate = useCallback(
+        (dateString: string) =>
+            formatDatetime(
+                dateString,
+                dateAndTimeFormatter(DateAndTimeFormatting.CompactDateWithTime),
+                timezone,
+            ),
+        [dateAndTimeFormatter, timezone],
+    )
+
     const items: VersionOption<V>[] = useMemo(
         () =>
-            versions.map((version) => {
-                const id = String(version.id)
-                const label = formatVersionLabel(
-                    version,
-                    version.id === currentVersionId,
-                )
-                return {
-                    id,
-                    value: id,
-                    label,
-                    version,
-                }
-            }),
-        [versions, currentVersionId],
+            versions.map((version) => ({
+                id: String(version.id),
+                value: String(version.id),
+                version,
+            })),
+        [versions],
     )
 
     const currentlySelectedVersionId =
@@ -128,7 +183,7 @@ export function VersionHistoryButton<V extends VersionItem>({
         )
     }
 
-    if (isLoading) {
+    if (isLoading || isLoadingUsers) {
         return <Skeleton width={36} height={36} />
     }
 
@@ -156,20 +211,40 @@ export function VersionHistoryButton<V extends VersionItem>({
                     padding="sm"
                     paddingBottom="xs"
                 >
-                    <Heading size="sm">Version History</Heading>
                     <Text size="sm" color="secondary">
                         Select a version to preview
                     </Text>
                 </Box>
             }
         >
-            {(option: VersionOption<V>) => (
-                <ListItem
-                    key={option.id}
-                    textValue={option.label}
-                    label={option.label}
-                />
-            )}
+            {(option: VersionOption<V>) => {
+                const { version } = option
+                const isCurrent = version.id === currentVersionId
+                const userName = version.publisher_user_id
+                    ? userNames.get(version.publisher_user_id)
+                    : undefined
+                const label = buildVersionLabel(version, isCurrent, formatDate)
+                const captionText = buildCaptionText(version, userName)
+
+                return (
+                    <ListItem
+                        label={
+                            <Text size="md" variant="regular">
+                                {label}
+                            </Text>
+                        }
+                        caption={
+                            <VersionCaption
+                                version={version}
+                                userName={userName}
+                            />
+                        }
+                        textValue={[label, captionText]
+                            .filter(Boolean)
+                            .join(' ')}
+                    />
+                )
+            }}
         </Select>
     )
 }

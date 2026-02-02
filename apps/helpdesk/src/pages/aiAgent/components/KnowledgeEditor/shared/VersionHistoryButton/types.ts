@@ -3,6 +3,7 @@ export interface VersionItem {
     version: number
     commit_message?: string
     published_datetime?: string | null
+    publisher_user_id?: number
 }
 
 export type VersionHistoryButtonProps<V extends VersionItem> = {

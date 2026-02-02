@@ -1,8 +1,31 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { VersionHistoryButtonProps, VersionItem } from './types'
 import { VersionHistoryButton } from './VersionHistoryButton'
+
+jest.mock('@repo/utils', () => ({
+    DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
+    formatDatetime: jest.fn(() => 'Jan 1, 2024 12:00 PM'),
+}))
+
+jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
+
+jest.mock('state/currentUser/selectors', () => ({
+    getTimezone: jest.fn(() => 'UTC'),
+    getDateAndTimeFormatter: jest.fn(() => () => 'MM/dd/yyyy HH:mm'),
+}))
+
+jest.mock('./useVersionUsers', () => ({
+    useVersionUsers: jest
+        .fn()
+        .mockReturnValue({ userNames: new Map(), isLoading: false }),
+}))
+
+const { useVersionUsers } = jest.requireMock('./useVersionUsers') as {
+    useVersionUsers: jest.Mock
+}
 
 const mockVersions: VersionItem[] = [
     {
@@ -10,12 +33,14 @@ const mockVersions: VersionItem[] = [
         version: 3,
         commit_message: 'Latest update',
         published_datetime: '2025-03-15T10:00:00Z',
+        publisher_user_id: 1,
     },
     {
         id: 2,
         version: 2,
         commit_message: 'Second revision',
         published_datetime: '2025-02-10T08:00:00Z',
+        publisher_user_id: 2,
     },
     {
         id: 1,
@@ -32,10 +57,18 @@ const defaultProps: VersionHistoryButtonProps<VersionItem> = {
     isDisabled: false,
 }
 
+const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+})
+
 function renderComponent(
     overrides?: Partial<VersionHistoryButtonProps<VersionItem>>,
 ) {
-    return render(<VersionHistoryButton {...defaultProps} {...overrides} />)
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <VersionHistoryButton {...defaultProps} {...overrides} />
+        </QueryClientProvider>,
+    )
 }
 
 function getTriggerButton() {
@@ -45,6 +78,10 @@ function getTriggerButton() {
 describe('VersionHistoryButton', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useVersionUsers.mockReturnValue({
+            userNames: new Map(),
+            isLoading: false,
+        })
     })
 
     it('renders a skeleton when loading', () => {
@@ -66,20 +103,19 @@ describe('VersionHistoryButton', () => {
         expect(getTriggerButton()).toBeInTheDocument()
     })
 
-    it('renders version options with correct labels', async () => {
+    it('renders version options with date and commit message', async () => {
         const user = userEvent.setup()
         renderComponent()
 
         await user.click(getTriggerButton())
 
-        const options = screen.getAllByRole('option')
-        const labels = options.map((o) => o.textContent)
-
-        expect(labels).toContain(
-            'Version 3 (Current) - Latest update • Mar 15, 2025',
-        )
-        expect(labels).toContain('Version 2 - Second revision • Feb 10, 2025')
-        expect(labels).toContain('Version 1')
+        const dateOptions = screen.getAllByRole('option', {
+            name: /Jan 1, 2024/i,
+        })
+        expect(dateOptions).toHaveLength(2)
+        expect(
+            screen.getByRole('option', { name: /Version 1/i }),
+        ).toBeInTheDocument()
     })
 
     it('marks the current version with "(Current)" label', async () => {
@@ -88,18 +124,71 @@ describe('VersionHistoryButton', () => {
 
         await user.click(getTriggerButton())
 
-        const options = screen.getAllByRole('option')
-        const labels = options.map((o) => o.textContent)
-
-        expect(labels).toContain(
-            'Version 2 (Current) - Second revision • Feb 10, 2025',
-        )
-        expect(labels).not.toContain(
-            expect.stringContaining('Version 3 (Current)'),
-        )
+        const currentOption = screen.getByRole('option', {
+            name: /Jan 1, 2024.*\(Current\)/i,
+        })
+        expect(currentOption).toBeInTheDocument()
     })
 
-    it('truncates long commit messages', async () => {
+    it('shows "Published by: Name" when user has no commit message', async () => {
+        useVersionUsers.mockReturnValue({
+            userNames: new Map([
+                [1, 'Iris Ebert'],
+                [2, 'Felipe Mora'],
+            ]),
+            isLoading: false,
+        })
+        const user = userEvent.setup()
+        renderComponent({
+            versions: [
+                {
+                    id: 10,
+                    version: 10,
+                    published_datetime: '2025-03-15T10:00:00Z',
+                    publisher_user_id: 1,
+                },
+            ],
+            currentVersionId: null,
+        })
+
+        await user.click(getTriggerButton())
+
+        expect(
+            screen.getByRole('option', {
+                name: /Published by: Iris Ebert/i,
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows "Name: commit message" when user and commit message are present', async () => {
+        useVersionUsers.mockReturnValue({
+            userNames: new Map([[1, 'Iris Ebert']]),
+            isLoading: false,
+        })
+        const user = userEvent.setup()
+        renderComponent({
+            versions: [
+                {
+                    id: 10,
+                    version: 10,
+                    commit_message: 'Latest update',
+                    published_datetime: '2025-03-15T10:00:00Z',
+                    publisher_user_id: 1,
+                },
+            ],
+            currentVersionId: null,
+        })
+
+        await user.click(getTriggerButton())
+
+        expect(
+            screen.getByRole('option', {
+                name: /Iris Ebert.*Latest update/i,
+            }),
+        ).toBeInTheDocument()
+    })
+
+    it('renders the full commit message text (CSS handles visual truncation)', async () => {
         const user = userEvent.setup()
         renderComponent({
             versions: [
@@ -108,6 +197,7 @@ describe('VersionHistoryButton', () => {
                     version: 1,
                     commit_message:
                         'This is a very long commit message that exceeds the limit',
+                    published_datetime: '2025-01-01T12:00:00Z',
                 },
             ],
             currentVersionId: null,
@@ -115,26 +205,10 @@ describe('VersionHistoryButton', () => {
 
         await user.click(getTriggerButton())
 
-        const option = screen.getByRole('option', {
-            name: /Version 1/,
-        })
-
+        const option = screen.getByRole('option')
         expect(option).toHaveTextContent(
-            'Version 1 - This is a very long commi...',
+            'This is a very long commit message that exceeds the limit',
         )
-    })
-
-    it('displays formatted dates in version labels', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        await user.click(getTriggerButton())
-
-        const options = screen.getAllByRole('option')
-        const labels = options.map((o) => o.textContent)
-
-        expect(labels.some((l) => l?.includes('Mar 15, 2025'))).toBe(true)
-        expect(labels.some((l) => l?.includes('Feb 10, 2025'))).toBe(true)
     })
 
     it('calls onSelectVersion when an option is selected', async () => {
@@ -144,8 +218,10 @@ describe('VersionHistoryButton', () => {
 
         await user.click(getTriggerButton())
 
-        const option = screen.getByRole('option', { name: /Version 2 -/ })
-        await user.click(option)
+        const options = screen.getAllByRole('option', {
+            name: /Jan 1, 2024/i,
+        })
+        await user.click(options[1])
 
         expect(onSelectVersion).toHaveBeenCalledWith(mockVersions[1])
     })
@@ -156,64 +232,43 @@ describe('VersionHistoryButton', () => {
         expect(getTriggerButton()).toHaveAttribute('aria-disabled', 'true')
     })
 
-    it('selects the version matching selectedVersionId', () => {
-        renderComponent({ selectedVersionId: 2 })
+    it('displays formatted dates in version options', async () => {
+        const user = userEvent.setup()
+        renderComponent()
 
-        const nativeSelect = document.querySelector('select')
-        expect(nativeSelect).toHaveValue('2')
+        await user.click(getTriggerButton())
+
+        const dateTexts = screen.getAllByText(/Jan 1, 2024/)
+        expect(dateTexts.length).toBeGreaterThanOrEqual(2)
     })
 
-    it('falls back to currentVersionId when selectedVersionId is null', () => {
-        renderComponent({
-            currentVersionId: 3,
-            selectedVersionId: null,
-        })
+    it('falls back to "Version X" when no date is available', async () => {
+        const user = userEvent.setup()
+        renderComponent()
 
-        const nativeSelect = document.querySelector('select')
-        expect(nativeSelect).toHaveValue('3')
+        await user.click(getTriggerButton())
+
+        expect(
+            screen.getByRole('option', { name: /Version 1/i }),
+        ).toBeInTheDocument()
     })
 
     describe('pagination', () => {
-        it('does not pass onLoadMore to Select when shouldLoadMore is false', async () => {
-            const onLoadMore = jest.fn()
-            const user = userEvent.setup()
-            renderComponent({
-                shouldLoadMore: false,
-                onLoadMore,
-            })
+        it('selects the version matching selectedVersionId', () => {
+            renderComponent({ selectedVersionId: 2 })
 
-            await user.click(getTriggerButton())
-
-            const listbox = screen.getByRole('listbox')
-            expect(listbox).toBeInTheDocument()
+            const nativeSelect = document.querySelector('select')
+            expect(nativeSelect).toHaveValue('2')
         })
 
-        it('passes onLoadMore to Select when shouldLoadMore is true', async () => {
-            const onLoadMore = jest.fn()
-            const user = userEvent.setup()
+        it('falls back to currentVersionId when selectedVersionId is null', () => {
             renderComponent({
-                shouldLoadMore: true,
-                onLoadMore,
+                currentVersionId: 3,
+                selectedVersionId: null,
             })
 
-            await user.click(getTriggerButton())
-
-            const listbox = screen.getByRole('listbox')
-            expect(listbox).toBeInTheDocument()
-        })
-
-        it('does not trigger onLoadMore when shouldLoadMore is false', async () => {
-            const onLoadMore = jest.fn()
-            const user = userEvent.setup()
-            renderComponent({
-                shouldLoadMore: false,
-                onLoadMore,
-            })
-
-            await user.click(getTriggerButton())
-
-            const listbox = screen.getByRole('listbox')
-            expect(listbox).toBeInTheDocument()
+            const nativeSelect = document.querySelector('select')
+            expect(nativeSelect).toHaveValue('3')
         })
     })
 })

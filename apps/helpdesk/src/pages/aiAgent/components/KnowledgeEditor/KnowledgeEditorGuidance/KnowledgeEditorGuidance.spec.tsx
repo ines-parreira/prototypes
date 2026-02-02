@@ -163,6 +163,15 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/shared/VersionHistoryButton/useVersionUsers',
+    () => ({
+        useVersionUsers: jest
+            .fn()
+            .mockReturnValue({ userNames: new Map(), isLoading: false }),
+    }),
+)
+
 jest.mock('models/helpCenter/queries', () => ({
     ...jest.requireActual('models/helpCenter/queries'),
     useGetArticleTranslationVersions: jest.fn(() => ({
