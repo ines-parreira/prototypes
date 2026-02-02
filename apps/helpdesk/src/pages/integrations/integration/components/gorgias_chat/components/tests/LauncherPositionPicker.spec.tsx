@@ -171,4 +171,88 @@ describe('<LauncherPositionPicker />', () => {
             screen.getByRole('option', { name: /top left/i }),
         ).toBeInTheDocument()
     })
+
+    it('should increment horizontal offset when pressing ArrowUp', async () => {
+        const onChange = jest.fn()
+        render(
+            <LauncherPositionPicker
+                {...defaultProps}
+                value={{ ...defaultPosition, offsetX: 10 }}
+                onChange={onChange}
+            />,
+        )
+
+        const textboxes = screen.getAllByRole('textbox')
+        const horizontalInput = textboxes[1]
+
+        await userEvent.type(horizontalInput, '{ArrowUp}')
+
+        expect(onChange).toHaveBeenCalledWith({
+            ...defaultPosition,
+            offsetX: 11,
+        })
+    })
+
+    it('should decrement horizontal offset when pressing ArrowDown', async () => {
+        const onChange = jest.fn()
+        render(
+            <LauncherPositionPicker
+                {...defaultProps}
+                value={{ ...defaultPosition, offsetX: 10 }}
+                onChange={onChange}
+            />,
+        )
+
+        const textboxes = screen.getAllByRole('textbox')
+        const horizontalInput = textboxes[1]
+
+        await userEvent.type(horizontalInput, '{ArrowDown}')
+
+        expect(onChange).toHaveBeenCalledWith({
+            ...defaultPosition,
+            offsetX: 9,
+        })
+    })
+
+    it('should increment vertical offset when pressing ArrowUp', async () => {
+        const onChange = jest.fn()
+        render(
+            <LauncherPositionPicker
+                {...defaultProps}
+                value={{ ...defaultPosition, offsetY: 20 }}
+                onChange={onChange}
+            />,
+        )
+
+        const textboxes = screen.getAllByRole('textbox')
+        const verticalInput = textboxes[2]
+
+        await userEvent.type(verticalInput, '{ArrowUp}')
+
+        expect(onChange).toHaveBeenCalledWith({
+            ...defaultPosition,
+            offsetY: 21,
+        })
+    })
+
+    it('should decrement vertical offset when pressing ArrowDown', async () => {
+        const onChange = jest.fn()
+        render(
+            <LauncherPositionPicker
+                {...defaultProps}
+                value={{ ...defaultPosition, offsetY: 20 }}
+                onChange={onChange}
+            />,
+        )
+
+        const textboxes = screen.getAllByRole('textbox')
+        const verticalInput = textboxes[2]
+
+        await userEvent.type(verticalInput, '{ArrowDown}')
+
+        expect(onChange).toHaveBeenCalledWith({
+            ...defaultPosition,
+            offsetY: 19,
+        })
+    })
 })

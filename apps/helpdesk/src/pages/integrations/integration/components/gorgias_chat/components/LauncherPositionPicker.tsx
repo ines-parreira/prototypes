@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { ListItem, SelectField, Text, TextField } from '@gorgias/axiom'
@@ -77,21 +78,32 @@ export function LauncherPositionPicker({
         return isNaN(numValue) ? 0 : numValue
     }
 
-    const handleOffsetXChange = useCallback(
-        (inputValue: string) => {
+    const handleOffsetChange = useCallback(
+        (
+            inputValue: string,
+            offsetKey: keyof Pick<GorgiasChatPosition, 'offsetX' | 'offsetY'>,
+        ) => {
             onChange({
                 ...position,
-                offsetX: parseNumericValue(inputValue),
+                [offsetKey]: parseNumericValue(inputValue),
             })
         },
         [onChange, position],
     )
 
-    const handleOffsetYChange = useCallback(
-        (inputValue: string) => {
+    const handleOffsetKeyDown = useCallback(
+        (
+            event: KeyboardEvent<HTMLInputElement>,
+            offsetKey: keyof Pick<GorgiasChatPosition, 'offsetX' | 'offsetY'>,
+        ) => {
+            if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') {
+                return
+            }
+            event.preventDefault()
+            const increment = event.key === 'ArrowUp' ? 1 : -1
             onChange({
                 ...position,
-                offsetY: parseNumericValue(inputValue),
+                [offsetKey]: position[offsetKey] + increment,
             })
         },
         [onChange, position],
@@ -130,7 +142,10 @@ export function LauncherPositionPicker({
                         <TextField
                             label="Move horizontally"
                             value={String(position.offsetX)}
-                            onChange={handleOffsetXChange}
+                            onChange={(val) =>
+                                handleOffsetChange(val, 'offsetX')
+                            }
+                            onKeyDown={(e) => handleOffsetKeyDown(e, 'offsetX')}
                             aria-label="Move launcher horizontally in pixels"
                         />
                         <span className={css.pixelSuffix}>px</span>
@@ -141,7 +156,10 @@ export function LauncherPositionPicker({
                         <TextField
                             label="Move vertically"
                             value={String(position.offsetY)}
-                            onChange={handleOffsetYChange}
+                            onChange={(val) =>
+                                handleOffsetChange(val, 'offsetY')
+                            }
+                            onKeyDown={(e) => handleOffsetKeyDown(e, 'offsetY')}
                             aria-label="Move launcher vertically in pixels"
                         />
                         <span className={css.pixelSuffix}>px</span>
