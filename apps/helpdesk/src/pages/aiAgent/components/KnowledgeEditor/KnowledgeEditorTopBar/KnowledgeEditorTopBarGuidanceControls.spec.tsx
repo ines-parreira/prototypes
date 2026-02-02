@@ -11,17 +11,6 @@ import type {
 jest.mock('./useGuidanceToolbar')
 jest.mock('../KnowledgeEditorGuidance/context')
 jest.mock('../KnowledgeEditorGuidance/hooks/useVersionHistory')
-jest.mock('../shared/DuplicateGuidance/DuplicateGuidance', () => ({
-    DuplicateGuidance: ({
-        trigger,
-    }: {
-        isDisabled: boolean
-        trigger: (props: { ref: null }) => JSX.Element
-    }) => {
-        const TriggerComponent = trigger
-        return <TriggerComponent ref={null} />
-    },
-}))
 jest.mock('../shared/VersionHistoryButton', () => ({
     VersionHistoryButton: ({
         isDisabled,
@@ -100,11 +89,11 @@ const renderComponent = () => {
 }
 
 const mockActions: GuidanceToolbarActions = {
-    duplicateGuidanceToShops: jest.fn(),
     onClickEdit: jest.fn(),
     onClickPublish: jest.fn(),
     onOpenDiscardModal: jest.fn(),
     onOpenDeleteModal: jest.fn(),
+    onOpenDuplicateModal: jest.fn(),
     onDiscardCreate: jest.fn(),
 }
 
@@ -198,19 +187,23 @@ describe('GuidanceToolbarControls', () => {
                 screen.getByRole('button', { name: /edit/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /delete/i }),
+                screen.getByRole('button', {
+                    name: /dots-kebab-vertical/i,
+                }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /test/i }),
             ).toBeInTheDocument()
         })
 
-        it('renders delete button disabled', () => {
+        it('renders more actions menu button disabled', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /delete/i }),
-            ).toBeDisabled()
+                screen.getByRole('button', {
+                    name: /dots-kebab-vertical/i,
+                }),
+            ).toHaveAttribute('aria-disabled', 'true')
         })
 
         it('renders test button disabled when playground is closed', () => {
@@ -276,11 +269,13 @@ describe('GuidanceToolbarControls', () => {
             ).toBeInTheDocument()
         })
 
-        it('renders delete and test buttons', () => {
+        it('renders more actions menu and test buttons', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /delete/i }),
+                screen.getByRole('button', {
+                    name: /dots-kebab-vertical/i,
+                }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /test/i }),
@@ -314,7 +309,9 @@ describe('GuidanceToolbarControls', () => {
                 screen.getByRole('button', { name: /edit/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /delete/i }),
+                screen.getByRole('button', {
+                    name: /dots-kebab-vertical/i,
+                }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /test/i }),

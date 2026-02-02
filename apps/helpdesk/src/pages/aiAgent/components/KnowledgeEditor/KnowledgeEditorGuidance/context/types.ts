@@ -14,6 +14,7 @@ export type ModalType =
     | 'delete'
     | 'publish'
     | 'restore'
+    | 'duplicate'
     | null
 
 export type ImpactDateRange = {

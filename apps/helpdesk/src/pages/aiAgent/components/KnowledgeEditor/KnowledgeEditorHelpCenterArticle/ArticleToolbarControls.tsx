@@ -32,6 +32,7 @@ export const ArticleToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
+                    <EditIconButton disabled={true} />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -47,11 +48,7 @@ export const ArticleToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton disabled={true} />
-                    <DeleteButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={true}
-                    />
+                    <DeleteButton disabled={true} />
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={true} />
                     )}
@@ -61,6 +58,10 @@ export const ArticleToolbarControls = () => {
         case 'published-with-draft':
             return (
                 <>
+                    <EditIconButton
+                        disabled={isDisabled}
+                        disabledReason={editDisabledReason}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -76,10 +77,6 @@ export const ArticleToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        disabled={isDisabled}
-                        disabledReason={editDisabledReason}
-                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -93,6 +90,10 @@ export const ArticleToolbarControls = () => {
         case 'published-without-draft':
             return (
                 <>
+                    <EditIconButton
+                        onEdit={canEdit ? onClickEdit : undefined}
+                        disabled={isDisabled}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -108,10 +109,6 @@ export const ArticleToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        onEdit={canEdit ? onClickEdit : undefined}
-                        disabled={isDisabled}
-                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -125,6 +122,10 @@ export const ArticleToolbarControls = () => {
         case 'draft-view':
             return (
                 <>
+                    <EditIconButton
+                        onEdit={onClickEdit}
+                        disabled={isDisabled}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -140,10 +141,6 @@ export const ArticleToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        onEdit={onClickEdit}
-                        disabled={isDisabled}
-                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}

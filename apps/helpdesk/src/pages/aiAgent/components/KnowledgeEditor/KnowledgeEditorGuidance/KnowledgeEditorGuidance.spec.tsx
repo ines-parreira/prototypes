@@ -611,7 +611,9 @@ describe('KnowledgeEditorGuidance', () => {
         })
     })
 
-    it('shows delete and duplicate buttons in read mode', () => {
+    it('shows delete and duplicate options in read mode kebab menu', async () => {
+        const user = userEvent.setup()
+
         render(
             <Provider store={mockStore(defaultState)}>
                 <KnowledgeEditorGuidance
@@ -627,11 +629,18 @@ describe('KnowledgeEditorGuidance', () => {
             </Provider>,
         )
 
-        // Delete and duplicate buttons should be present in read mode
+        // Open the kebab menu
+        await user.click(
+            screen.getByRole('button', { name: /dots-kebab-vertical/i }),
+        )
+
+        // Delete and duplicate menu items should be present
         expect(
-            screen.getByRole('button', { name: 'delete' }),
+            screen.getByRole('menuitem', { name: /delete/i }),
         ).toBeInTheDocument()
-        expect(screen.getByRole('button', { name: 'copy' })).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitem', { name: /duplicate/i }),
+        ).toBeInTheDocument()
     })
 
     it('renders create mode with empty state', () => {

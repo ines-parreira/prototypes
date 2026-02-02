@@ -113,9 +113,6 @@ describe('ArticleToolbarControls', () => {
             expect(
                 screen.queryByRole('button', { name: /publish/i }),
             ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: 'Delete' }),
-            ).not.toBeInTheDocument()
         })
 
         it('should disable edit button (no onEdit handler)', () => {
@@ -124,13 +121,12 @@ describe('ArticleToolbarControls', () => {
             expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled()
         })
 
-        it('should call onOpenDeleteModal when delete is clicked', async () => {
-            const user = userEvent.setup()
+        it('should render delete button', () => {
             render(<ArticleToolbarControls />)
 
-            await user.click(screen.getByRole('button', { name: /delete/i }))
-
-            expect(mockOnOpenDeleteModal).toHaveBeenCalled()
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
         })
 
         it('should call onTest when test is clicked', async () => {
@@ -210,13 +206,12 @@ describe('ArticleToolbarControls', () => {
             expect(mockOnClickEdit).not.toHaveBeenCalled()
         })
 
-        it('should call onOpenDeleteModal when delete is clicked', async () => {
-            const user = userEvent.setup()
+        it('should render delete button', () => {
             render(<ArticleToolbarControls />)
 
-            await user.click(screen.getByRole('button', { name: /delete/i }))
-
-            expect(mockOnOpenDeleteModal).toHaveBeenCalled()
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
         })
 
         it('should call onTest when test is clicked', async () => {
@@ -303,13 +298,12 @@ describe('ArticleToolbarControls', () => {
             ).toBeDisabled()
         })
 
-        it('should call onOpenDeleteModal when delete is clicked', async () => {
-            const user = userEvent.setup()
+        it('should render delete button', () => {
             render(<ArticleToolbarControls />)
 
-            await user.click(screen.getByRole('button', { name: /delete/i }))
-
-            expect(mockOnOpenDeleteModal).toHaveBeenCalled()
+            expect(
+                screen.getByRole('button', { name: /delete/i }),
+            ).toBeInTheDocument()
         })
     })
 

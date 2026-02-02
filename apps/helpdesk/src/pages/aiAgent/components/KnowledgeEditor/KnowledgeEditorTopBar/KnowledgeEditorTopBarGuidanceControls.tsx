@@ -1,13 +1,9 @@
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Menu, MenuItem } from '@gorgias/axiom'
 
 import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
 import { useVersionHistory } from '../KnowledgeEditorGuidance/hooks/useVersionHistory'
-import { DuplicateGuidance } from '../shared/DuplicateGuidance/DuplicateGuidance'
-import { ButtonRenderMode } from '../shared/DuplicateGuidance/types'
-import type { TriggerProps } from '../shared/DuplicateGuidance/types'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
 import {
-    DeleteButton,
     DeleteDraftButton,
     EditIconButton,
     TestButton,
@@ -18,6 +14,53 @@ export type GuidanceMode =
     | { mode: 'read' }
     | { mode: 'edit' }
     | { mode: 'create' }
+
+const MoreActionsMenu = ({
+    allDisabled,
+    isDisabled,
+    showDuplicate,
+    onOpenDeleteModal,
+    onOpenDuplicateModal,
+}: {
+    allDisabled: boolean
+    isDisabled: boolean
+    showDuplicate: boolean
+    onOpenDeleteModal: () => void
+    onOpenDuplicateModal: () => void
+}) => {
+    return (
+        <Menu
+            placement="bottom right"
+            trigger={
+                <Button
+                    variant="secondary"
+                    icon="dots-kebab-vertical"
+                    isDisabled={allDisabled}
+                />
+            }
+        >
+            <>
+                {showDuplicate && (
+                    <MenuItem
+                        id="duplicate"
+                        label="Duplicate"
+                        leadingSlot="copy"
+                        onAction={onOpenDuplicateModal}
+                        isDisabled={isDisabled}
+                    />
+                )}
+                <MenuItem
+                    id="delete"
+                    label="Delete"
+                    leadingSlot="trash-empty"
+                    intent="destructive"
+                    onAction={onOpenDeleteModal}
+                    isDisabled={isDisabled}
+                />
+            </>
+        </Menu>
+    )
+}
 
 export const GuidanceToolbarControls = () => {
     const {
@@ -33,55 +76,25 @@ export const GuidanceToolbarControls = () => {
     } = useGuidanceToolbar()
 
     const {
-        duplicateGuidanceToShops,
         onClickEdit,
         onClickPublish,
         onOpenDiscardModal,
         onOpenDeleteModal,
+        onOpenDuplicateModal,
         onDiscardCreate,
     } = actions
 
     const { state, config } = useGuidanceContext()
     const articleId = state.guidance?.id
     const shopName = config.shopName
+    const showDuplicate = !!articleId && !!shopName
     const versionHistory = useVersionHistory()
 
-    const copyButtonTrigger = ({ ref }: TriggerProps) => {
-        const button = (
-            <Button
-                ref={ref}
-                slot="button"
-                variant="secondary"
-                isDisabled={isDisabled}
-                icon="copy"
-            />
-        )
-
-        if (isDisabled) {
-            return button
-        }
-
-        return (
-            <Tooltip placement="bottom">
-                <TooltipTrigger>{button}</TooltipTrigger>
-                <TooltipContent title="Duplicate" />
-            </Tooltip>
-        )
-    }
-
-    const disabledCopyButtonTrigger = ({ ref }: TriggerProps) => (
-        <Button
-            ref={ref}
-            slot="button"
-            variant="secondary"
-            isDisabled={true}
-            icon="copy"
-        />
-    )
     switch (toolbarState.type) {
         case 'viewing-historical-version':
             return (
                 <>
+                    <EditIconButton disabled={true} />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -97,21 +110,12 @@ export const GuidanceToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton disabled={true} />
-                    {articleId && shopName && (
-                        <DuplicateGuidance
-                            articleIds={[articleId]}
-                            shopName={shopName}
-                            isDisabled={true}
-                            renderMode={ButtonRenderMode.Visible}
-                            trigger={disabledCopyButtonTrigger}
-                            placement="bottom right"
-                            onDuplicate={duplicateGuidanceToShops}
-                        />
-                    )}
-                    <DeleteButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={true}
+                    <MoreActionsMenu
+                        allDisabled={true}
+                        isDisabled={true}
+                        showDuplicate={showDuplicate}
+                        onOpenDeleteModal={onOpenDeleteModal}
+                        onOpenDuplicateModal={onOpenDuplicateModal}
                     />
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={true} />
@@ -122,6 +126,10 @@ export const GuidanceToolbarControls = () => {
         case 'published-with-draft':
             return (
                 <>
+                    <EditIconButton
+                        disabled={isDisabled}
+                        disabledReason={editDisabledReason}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -137,24 +145,12 @@ export const GuidanceToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        disabled={isDisabled}
-                        disabledReason={editDisabledReason}
-                    />
-                    {articleId && shopName && (
-                        <DuplicateGuidance
-                            articleIds={[articleId]}
-                            shopName={shopName}
-                            isDisabled={isDisabled}
-                            renderMode={ButtonRenderMode.Visible}
-                            trigger={copyButtonTrigger}
-                            placement="bottom right"
-                            onDuplicate={duplicateGuidanceToShops}
-                        />
-                    )}
-                    <DeleteButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={isDisabled}
+                    <MoreActionsMenu
+                        allDisabled={isDisabled}
+                        isDisabled={isDisabled}
+                        showDuplicate={showDuplicate}
+                        onOpenDeleteModal={onOpenDeleteModal}
+                        onOpenDuplicateModal={onOpenDuplicateModal}
                     />
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
@@ -165,6 +161,10 @@ export const GuidanceToolbarControls = () => {
         case 'published-without-draft':
             return (
                 <>
+                    <EditIconButton
+                        onEdit={canEdit ? onClickEdit : undefined}
+                        disabled={isDisabled}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -180,24 +180,12 @@ export const GuidanceToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        onEdit={canEdit ? onClickEdit : undefined}
-                        disabled={isDisabled}
-                    />
-                    {articleId && shopName && (
-                        <DuplicateGuidance
-                            articleIds={[articleId]}
-                            shopName={shopName}
-                            isDisabled={isDisabled}
-                            renderMode={ButtonRenderMode.Visible}
-                            trigger={copyButtonTrigger}
-                            placement="bottom right"
-                            onDuplicate={duplicateGuidanceToShops}
-                        />
-                    )}
-                    <DeleteButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={isDisabled}
+                    <MoreActionsMenu
+                        allDisabled={isDisabled}
+                        isDisabled={isDisabled}
+                        showDuplicate={showDuplicate}
+                        onOpenDeleteModal={onOpenDeleteModal}
+                        onOpenDuplicateModal={onOpenDuplicateModal}
                     />
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={isDisabled} />
@@ -208,6 +196,10 @@ export const GuidanceToolbarControls = () => {
         case 'draft-view':
             return (
                 <>
+                    <EditIconButton
+                        onEdit={onClickEdit}
+                        disabled={isDisabled}
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -223,24 +215,12 @@ export const GuidanceToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <EditIconButton
-                        onEdit={onClickEdit}
-                        disabled={isDisabled}
-                    />
-                    {articleId && shopName && (
-                        <DuplicateGuidance
-                            articleIds={[articleId]}
-                            shopName={shopName}
-                            isDisabled={isDisabled}
-                            renderMode={ButtonRenderMode.Visible}
-                            trigger={copyButtonTrigger}
-                            placement="bottom right"
-                            onDuplicate={duplicateGuidanceToShops}
-                        />
-                    )}
-                    <DeleteButton
-                        onDelete={onOpenDeleteModal}
-                        disabled={isDisabled}
+                    <MoreActionsMenu
+                        allDisabled={isDisabled}
+                        isDisabled={isDisabled}
+                        showDuplicate={showDuplicate}
+                        onOpenDeleteModal={onOpenDeleteModal}
+                        onOpenDuplicateModal={onOpenDuplicateModal}
                     />
                     <Button
                         onClick={onClickPublish}

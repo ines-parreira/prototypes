@@ -20,17 +20,11 @@ export type GuidanceToolbarState =
     | { type: 'viewing-historical-version' }
 
 export type GuidanceToolbarActions = {
-    duplicateGuidanceToShops: (
-        articleIds: number[],
-        shopNames: string[],
-    ) => Promise<{
-        success: boolean
-        shopNames?: string[]
-    }>
     onClickEdit: () => void
     onClickPublish: () => void | Promise<void>
     onOpenDiscardModal: () => void
     onOpenDeleteModal: () => void
+    onOpenDuplicateModal: () => void
     onDiscardCreate: () => void
 }
 
@@ -64,44 +58,12 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 
     const { guidanceHelpCenter } = config
 
-    const { onCopyFn, onUpdateFn } = config
+    const { onUpdateFn } = config
 
-    const { duplicate, updateGuidanceArticle, isGuidanceArticleUpdating } =
+    const { updateGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({
             guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
         })
-
-    /**
-     * Duplicates guidance articles to specified shops.
-     *
-     * This wrapper function adds application-specific behavior around the raw duplicate mutation:
-     * - Updates Knowledge Editor context state (SET_UPDATING)
-     * - Executes the onCopyFn callback after successful duplication
-     * - Returns success/failure status (error notifications handled by DuplicateGuidance component)
-     *
-     * @param articleIds - Array of article IDs to duplicate
-     * @param shopNames - Array of shop names to duplicate articles to
-     * @returns Promise resolving to success status and shop names
-     */
-    const duplicateGuidanceToShops = useCallback(
-        async (articleIds: number[], shopNames: string[]) => {
-            if (articleIds.length === 0) {
-                return { success: false }
-            }
-
-            dispatch({ type: 'SET_UPDATING', payload: true })
-            try {
-                await duplicate(articleIds, shopNames)
-                onCopyFn?.()
-                return { success: true, shopNames }
-            } catch {
-                return { success: false }
-            } finally {
-                dispatch({ type: 'SET_UPDATING', payload: false })
-            }
-        },
-        [duplicate, onCopyFn, dispatch],
-    )
 
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
@@ -165,6 +127,10 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         dispatch({ type: 'SET_MODAL', payload: 'delete' })
     }, [dispatch])
 
+    const onOpenDuplicateModal = useCallback(() => {
+        dispatch({ type: 'SET_MODAL', payload: 'duplicate' })
+    }, [dispatch])
+
     const onDiscardCreate = useCallback(() => {
         const hasNoContent = !state.title && !state.content
         if (hasNoContent) {
@@ -191,13 +157,13 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     return {
         state: toolbarState,
         actions: {
-            duplicateGuidanceToShops,
             onClickEdit,
             onClickPublish: isVersionHistoryEnabled
                 ? onOpenPublishModal
                 : onClickPublishLegacy,
             onOpenDiscardModal,
             onOpenDeleteModal,
+            onOpenDuplicateModal,
             onDiscardCreate,
         },
         isDisabled,
