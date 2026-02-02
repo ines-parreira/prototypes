@@ -64,6 +64,7 @@ describe('<PreviewArticle />', () => {
                                         published_datetime: null,
                                         publisher_user_id: null,
                                         commit_message: null,
+                                        version: null,
                                         article_id: 1,
                                         article_unlisted_id: '1',
                                         category_id: 1,

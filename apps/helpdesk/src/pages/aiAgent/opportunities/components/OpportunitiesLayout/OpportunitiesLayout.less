@@ -20,9 +20,20 @@
         overflow: hidden; // Prevent page scroll
     }
 
+    .layoutNoGap {
+        gap: 0;
+    }
+
     @media (max-width: 1024px) {
         .layout {
             padding-left: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .layout {
+            padding: 0;
+            padding-top: var(--spacing-xs);
         }
     }
 }

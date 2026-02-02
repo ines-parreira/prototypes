@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useRef } from 'react'
 
 import {
     Button,
@@ -49,9 +49,7 @@ export const OpportunityDetailsHeader = ({
     onOpenDismissModal,
     isFormDirty = false,
 }: OpportunityDetailsHeaderProps) => {
-    const [containerWidth, setContainerWidth] = useState(0)
     const approveButtonRef = useRef<HTMLButtonElement>(null)
-    const headerRef = useRef<HTMLDivElement>(null)
 
     const { isSidebarVisible, setIsSidebarVisible } = useOpportunitiesSidebar()
 
@@ -74,6 +72,8 @@ export const OpportunityDetailsHeader = ({
     const isResolveConflict =
         selectedOpportunity?.type === OpportunityType.RESOLVE_CONFLICT
 
+    const isRelevant = selectedOpportunity?.isRelevant !== false
+
     const isApproveDisabled =
         isKnowledgeGap &&
         (isLoadingGuidanceCount || guidanceCount >= MAX_GUIDANCES)
@@ -82,22 +82,6 @@ export const OpportunityDetailsHeader = ({
         isKnowledgeGap &&
         !isLoadingGuidanceCount &&
         guidanceCount >= MAX_GUIDANCES
-
-    useLayoutEffect(() => {
-        if (!headerRef.current) return
-
-        const resizeObserver = new ResizeObserver((entries) => {
-            for (const entry of entries) {
-                setContainerWidth(entry.contentRect.width)
-            }
-        })
-
-        resizeObserver.observe(headerRef.current)
-
-        return () => {
-            resizeObserver.disconnect()
-        }
-    }, [])
 
     const handleShowSidebar = useCallback(() => {
         setIsSidebarVisible(true)
@@ -130,7 +114,7 @@ export const OpportunityDetailsHeader = ({
     }
 
     return (
-        <div className={css.header} ref={headerRef}>
+        <div className={css.header}>
             <div className={css.headerLeft}>
                 {!isSidebarVisible && (
                     <Button
@@ -140,6 +124,7 @@ export const OpportunityDetailsHeader = ({
                         size="sm"
                         onClick={handleShowSidebar}
                         aria-label="Show sidebar"
+                        className={css.sidebarButton}
                     />
                 )}
                 <SelectedOpportunityTitle />
@@ -152,10 +137,13 @@ export const OpportunityDetailsHeader = ({
                         selectCertainOpportunity={selectCertainOpportunity}
                         totalCount={totalCount}
                         allowedOpportunityIds={allowedOpportunityIds}
-                        hideCount={containerWidth < 582}
                     />
                     <div className={css.headerActionDelimiter} />
-                    <Button variant="tertiary" onClick={onOpenDismissModal}>
+                    <Button
+                        variant="tertiary"
+                        onClick={onOpenDismissModal}
+                        isDisabled={!isRelevant}
+                    >
                         Dismiss
                     </Button>
 
@@ -165,7 +153,7 @@ export const OpportunityDetailsHeader = ({
                             leadingSlot="check"
                             onClick={handleResolve}
                             isLoading={isProcessing}
-                            isDisabled={!isFormDirty}
+                            isDisabled={!isFormDirty || !isRelevant}
                         >
                             Resolve
                         </Button>
@@ -181,7 +169,9 @@ export const OpportunityDetailsHeader = ({
                                         leadingSlot="check"
                                         onClick={handleApprove}
                                         isLoading={isProcessing}
-                                        isDisabled={isApproveDisabled}
+                                        isDisabled={
+                                            isApproveDisabled || !isRelevant
+                                        }
                                     >
                                         Publish and enable
                                     </Button>
@@ -209,7 +199,7 @@ export const OpportunityDetailsHeader = ({
                                 leadingSlot="check"
                                 onClick={handleApprove}
                                 isLoading={isProcessing}
-                                isDisabled={isApproveDisabled}
+                                isDisabled={isApproveDisabled || !isRelevant}
                             >
                                 Publish and enable
                             </Button>

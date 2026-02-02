@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
     Button,
@@ -30,9 +30,12 @@ export const DeleteOpportunityModal = ({
     const [isConfirmed, setIsConfirmed] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const resetForm = useCallback(() => {
-        setIsConfirmed(false)
-    }, [])
+    useEffect(() => {
+        if (isOpen) {
+            setIsSubmitting(false)
+            setIsConfirmed(false)
+        }
+    }, [isOpen])
 
     const handleConfirm = useCallback(() => {
         if (!opportunity || !isConfirmed) {
@@ -40,15 +43,12 @@ export const DeleteOpportunityModal = ({
         }
 
         setIsSubmitting(true)
-        resetForm()
         onConfirm()
-        onClose()
-    }, [opportunity, isConfirmed, onConfirm, onClose, resetForm])
+    }, [opportunity, isConfirmed, onConfirm])
 
     const handleCancel = useCallback(() => {
-        resetForm()
         onClose()
-    }, [onClose, resetForm])
+    }, [onClose])
 
     return (
         <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">

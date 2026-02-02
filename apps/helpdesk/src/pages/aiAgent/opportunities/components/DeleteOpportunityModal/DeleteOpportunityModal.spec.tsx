@@ -94,7 +94,6 @@ describe('DeleteOpportunityModal', () => {
             await user.click(deleteButton)
 
             expect(mockOnConfirm).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
         })
 
         it('should not call onConfirm when checkbox is not checked', async () => {
@@ -105,10 +104,9 @@ describe('DeleteOpportunityModal', () => {
             await user.click(deleteButton)
 
             expect(mockOnConfirm).not.toHaveBeenCalled()
-            expect(mockOnClose).not.toHaveBeenCalled()
         })
 
-        it('should call onConfirm and onClose when confirmed', async () => {
+        it('should call onConfirm when confirmed', async () => {
             const user = userEvent.setup()
             render(<DeleteOpportunityModal {...defaultProps} />)
 
@@ -122,58 +120,6 @@ describe('DeleteOpportunityModal', () => {
 
             await waitFor(() => {
                 expect(mockOnConfirm).toHaveBeenCalledTimes(1)
-                expect(mockOnClose).toHaveBeenCalledTimes(1)
-            })
-        })
-
-        it('should reset form state when confirmed', async () => {
-            const user = userEvent.setup()
-            render(<DeleteOpportunityModal {...defaultProps} />)
-
-            const checkbox = screen.getByRole('checkbox', {
-                name: /I understand this action cannot be undone/i,
-            })
-            await user.click(checkbox)
-
-            expect(checkbox).toBeChecked()
-
-            const deleteButton = screen.getByRole('button', { name: /Delete/i })
-            await user.click(deleteButton)
-
-            await waitFor(() => {
-                expect(mockOnConfirm).toHaveBeenCalled()
-            })
-        })
-
-        it('should call handlers in correct sequence when confirmed', async () => {
-            const user = userEvent.setup()
-            const callOrder: string[] = []
-
-            const trackingOnConfirm = jest.fn(() => {
-                callOrder.push('onConfirm')
-            })
-            const trackingOnClose = jest.fn(() => {
-                callOrder.push('onClose')
-            })
-
-            render(
-                <DeleteOpportunityModal
-                    {...defaultProps}
-                    onConfirm={trackingOnConfirm}
-                    onClose={trackingOnClose}
-                />,
-            )
-
-            const checkbox = screen.getByRole('checkbox', {
-                name: /I understand this action cannot be undone/i,
-            })
-            await user.click(checkbox)
-
-            const deleteButton = screen.getByRole('button', { name: /Delete/i })
-            await user.click(deleteButton)
-
-            await waitFor(() => {
-                expect(callOrder).toEqual(['onConfirm', 'onClose'])
             })
         })
     })
@@ -197,7 +143,7 @@ describe('DeleteOpportunityModal', () => {
             })
         })
 
-        it('should reset form when modal is cancelled', async () => {
+        it('should reset form when modal is reopened', async () => {
             const user = userEvent.setup()
             const { rerender } = render(
                 <DeleteOpportunityModal {...defaultProps} />,
@@ -210,19 +156,24 @@ describe('DeleteOpportunityModal', () => {
 
             expect(checkbox).toBeChecked()
 
-            await user.keyboard('{Escape}')
+            rerender(
+                <DeleteOpportunityModal {...defaultProps} isOpen={false} />,
+            )
 
             await waitFor(() => {
-                expect(mockOnClose).toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('heading', {
+                        name: /Delete knowledge item\?/i,
+                    }),
+                ).not.toBeInTheDocument()
             })
 
-            mockOnClose.mockClear()
-            rerender(<DeleteOpportunityModal {...defaultProps} />)
+            rerender(<DeleteOpportunityModal {...defaultProps} isOpen={true} />)
 
-            const checkboxAfterCancel = screen.getByRole('checkbox', {
+            const checkboxAfterReopen = screen.getByRole('checkbox', {
                 name: /I understand this action cannot be undone/i,
             })
-            expect(checkboxAfterCancel).not.toBeChecked()
+            expect(checkboxAfterReopen).not.toBeChecked()
         })
     })
 

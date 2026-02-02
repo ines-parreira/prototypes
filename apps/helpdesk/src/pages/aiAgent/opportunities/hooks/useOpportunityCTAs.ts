@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
+import _get from 'lodash/get'
 
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
@@ -94,6 +96,42 @@ export const useOpportunityCTAs = ({
         },
     })
 
+    const handleOpportunityProcessError = useCallback(
+        async (error: unknown, errorMessage: string, context: string) => {
+            if (!selectedOpportunity) return
+
+            const isConflictError =
+                isAxiosError(error) && _get(error, 'response.status') === 409
+            if (isConflictError) {
+                onArchive(selectedOpportunity.key)
+
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Info,
+                        message:
+                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                    }),
+                )
+            } else {
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: errorMessage,
+                    }),
+                )
+            }
+
+            reportError(error, {
+                tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                extra: {
+                    context,
+                    opportunityId: selectedOpportunity?.id,
+                },
+            })
+        },
+        [dispatch, selectedOpportunity, onArchive],
+    )
+
     const handleApprove = useCallback(async () => {
         if (!selectedOpportunity) return
 
@@ -148,12 +186,11 @@ export const useOpportunityCTAs = ({
                 opportunityId: selectedOpportunity.id,
                 opportunityType: selectedOpportunity.type,
             })
-        } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to create guidance. Please try again.',
-                }),
+        } catch (error) {
+            await handleOpportunityProcessError(
+                error,
+                'Failed to create guidance. Please try again.',
+                'Failed to approve opportunity',
             )
         } finally {
             setIsProcessing(false)
@@ -171,6 +208,7 @@ export const useOpportunityCTAs = ({
         processOpportunity,
         onArchive,
         shopIntegrationId,
+        handleOpportunityProcessError,
     ])
 
     const handleResolve = useCallback(async () => {
@@ -203,12 +241,11 @@ export const useOpportunityCTAs = ({
                     message: 'Conflict resolved successfully',
                 }),
             )
-        } catch {
-            dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to resolve conflict. Please try again.',
-                }),
+        } catch (error) {
+            await handleOpportunityProcessError(
+                error,
+                'Failed to resolve conflict. Please try again.',
+                'Failed to resolve conflict opportunity',
             )
         } finally {
             setIsProcessing(false)
@@ -220,6 +257,7 @@ export const useOpportunityCTAs = ({
         processOpportunity,
         shopIntegrationId,
         onArchive,
+        handleOpportunityProcessError,
     ])
 
     const handleFeedback = useCallback(
@@ -239,7 +277,7 @@ export const useOpportunityCTAs = ({
     )
 
     const handleDismiss = useCallback(
-        async (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {
+        async (feedbackData?: { feedbackToUpsert: FeedbackMutation[] }) => {
             if (!selectedOpportunity) return
 
             setIsProcessing(true)
@@ -263,7 +301,9 @@ export const useOpportunityCTAs = ({
                     ])
                 }
 
-                handleFeedback(feedbackData)
+                if (feedbackData) {
+                    handleFeedback(feedbackData)
+                }
 
                 dispatch(
                     notify({
@@ -277,20 +317,11 @@ export const useOpportunityCTAs = ({
                     opportunityType: selectedOpportunity.type,
                 })
             } catch (error) {
-                dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Failed to dismiss opportunity. Please try again.',
-                    }),
+                await handleOpportunityProcessError(
+                    error,
+                    'Failed to dismiss opportunity. Please try again.',
+                    'Failed to dismiss opportunity',
                 )
-                reportError(error, {
-                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
-                    extra: {
-                        context: 'Failed to dismiss opportunity',
-                        opportunityId: selectedOpportunity.id,
-                    },
-                })
             } finally {
                 setIsProcessing(false)
             }
@@ -306,6 +337,7 @@ export const useOpportunityCTAs = ({
             onOpportunityDismissed,
             shopIntegrationId,
             handleFeedback,
+            handleOpportunityProcessError,
         ],
     )
 

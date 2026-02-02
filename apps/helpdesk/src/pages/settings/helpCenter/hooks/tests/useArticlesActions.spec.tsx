@@ -394,6 +394,7 @@ describe('useArticlesActions()', () => {
                         published_datetime: null,
                         publisher_user_id: null,
                         commit_message: null,
+                        version: null,
                     },
                     rating: {
                         up: 0,
@@ -457,6 +458,7 @@ describe('useArticlesActions()', () => {
                         published_datetime: null,
                         publisher_user_id: null,
                         commit_message: null,
+                        version: null,
                     },
                     rating: {
                         up: 0,

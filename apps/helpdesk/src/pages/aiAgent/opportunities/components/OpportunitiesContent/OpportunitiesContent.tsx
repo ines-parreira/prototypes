@@ -267,6 +267,7 @@ export const OpportunitiesContent = ({
                 opportunityConfig={opportunityConfig}
                 onTicketCountClick={handleOpenTicketDrillDownModal}
                 onFormValuesChange={handleFormValuesChange}
+                onOpportunityRemoved={opportunityCTAs.handleDismiss}
             />
 
             <DismissOpportunityModal

@@ -5456,6 +5456,7 @@
                     },
                     "publisher_user_id": { "type": "number", "nullable": true },
                     "commit_message": { "type": "string", "nullable": true },
+                    "version": { "type": "number", "nullable": true },
                     "rating": { "$ref": "#/components/schemas/Rating" },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
@@ -5482,6 +5483,7 @@
                     "published_datetime",
                     "publisher_user_id",
                     "commit_message",
+                    "version",
                     "rating"
                 ]
             },
@@ -5761,6 +5763,7 @@
                     },
                     "publisher_user_id": { "type": "number", "nullable": true },
                     "commit_message": { "type": "string", "nullable": true },
+                    "version": { "type": "number", "nullable": true },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["available", "default"],
@@ -5785,7 +5788,8 @@
                     "published_version_id",
                     "published_datetime",
                     "publisher_user_id",
-                    "commit_message"
+                    "commit_message",
+                    "version"
                 ]
             },
             "ArticleWithLocalTranslation": {
@@ -6164,6 +6168,7 @@
                     },
                     "publisher_user_id": { "type": "number", "nullable": true },
                     "commit_message": { "type": "string", "nullable": true },
+                    "version": { "type": "number", "nullable": true },
                     "rating": { "$ref": "#/components/schemas/Rating" }
                 },
                 "required": [
@@ -6185,6 +6190,7 @@
                     "published_datetime",
                     "publisher_user_id",
                     "commit_message",
+                    "version",
                     "rating"
                 ]
             },
@@ -6273,7 +6279,8 @@
                         "nullable": true
                     },
                     "publisher_user_id": { "type": "number", "nullable": true },
-                    "commit_message": { "type": "string", "nullable": true }
+                    "commit_message": { "type": "string", "nullable": true },
+                    "version": { "type": "number", "nullable": true }
                 },
                 "required": [
                     "created_datetime",
@@ -6293,7 +6300,8 @@
                     "published_version_id",
                     "published_datetime",
                     "publisher_user_id",
-                    "commit_message"
+                    "commit_message",
+                    "version"
                 ]
             },
             "UpdateArticleTranslationDto": {

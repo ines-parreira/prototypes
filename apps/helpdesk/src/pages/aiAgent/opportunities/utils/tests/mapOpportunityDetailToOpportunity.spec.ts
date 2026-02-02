@@ -291,6 +291,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '789',
                 key: 'ks_789',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 7,
                 detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
                 resources: [
                     {
@@ -343,6 +344,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '999',
                 key: 'ks_999',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 2,
                 detectionObjectIds: ['60', '61'],
                 resources: [],
             })
@@ -377,6 +379,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '888',
                 key: 'ks_888',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 2,
                 detectionObjectIds: ['70', '71'],
                 resources: [
                     {
@@ -420,6 +423,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '777',
                 key: 'ks_777',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 2,
                 detectionObjectIds: ['80', '81'],
                 resources: [
                     {
@@ -463,6 +467,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '666',
                 key: 'ks_666',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 2,
                 detectionObjectIds: ['90', '91'],
                 resources: [
                     {
@@ -516,6 +521,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 id: '1000',
                 key: 'ks_1000',
                 type: OpportunityType.RESOLVE_CONFLICT,
+                ticketCount: 3,
                 detectionObjectIds: ['110', '111', '112'],
                 resources: [
                     {

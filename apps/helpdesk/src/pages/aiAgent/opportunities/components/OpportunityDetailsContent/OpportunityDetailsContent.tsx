@@ -1,4 +1,6 @@
-import { Box } from '@gorgias/axiom'
+import cn from 'classnames'
+
+import { Banner, Box, Button } from '@gorgias/axiom'
 
 import { OpportunityType } from '../../enums'
 import type {
@@ -23,6 +25,7 @@ interface OpportunityDetailsContentProps {
         resourceIndex: number,
         fields: ResourceFormFields,
     ) => void
+    onOpportunityRemoved: () => void
 }
 
 export const OpportunityDetailsContent = ({
@@ -30,6 +33,7 @@ export const OpportunityDetailsContent = ({
     opportunityConfig,
     onTicketCountClick,
     onFormValuesChange,
+    onOpportunityRemoved,
 }: OpportunityDetailsContentProps) => {
     const renderResourceEditor = (
         resource: OpportunityResource,
@@ -58,6 +62,7 @@ export const OpportunityDetailsContent = ({
                     <OpportunityArticleEditor
                         key={key}
                         resource={resource}
+                        shopName={opportunityConfig.shopName}
                         onValuesChange={(fields) =>
                             onFormValuesChange(index, fields)
                         }
@@ -79,15 +84,42 @@ export const OpportunityDetailsContent = ({
         }
     }
 
+    const isRelevant = selectedOpportunity?.isRelevant !== false
+
     return (
         <div className={css.contentBody}>
-            <div className={css.opportunityDetails}>
+            {!isRelevant && (
+                <div className={css.customBannerWrapper}>
+                    <Banner
+                        intent="info"
+                        size="md"
+                        isClosable={false}
+                        icon="info"
+                        description="This opportunity is no longer relevant and was addressed by recent knowledge updates."
+                        variant="inline"
+                    >
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            onClick={() => onOpportunityRemoved()}
+                        >
+                            Remove and View Next
+                        </Button>
+                    </Banner>
+                </div>
+            )}
+            <div
+                className={cn(
+                    css.opportunityDetails,
+                    !isRelevant && css.uninteractive,
+                )}
+            >
                 <OpportunityDetailsCard
                     type={selectedOpportunity.type}
                     ticketCount={selectedOpportunity.ticketCount}
                     onTicketCountClick={onTicketCountClick}
                 />
-                <Box flexDirection="row" gap="md">
+                <Box flexDirection="row" gap="md" flexWrap="wrap">
                     {selectedOpportunity.resources.map((resource, index) => (
                         <div
                             key={`${selectedOpportunity.key}-${index}`}

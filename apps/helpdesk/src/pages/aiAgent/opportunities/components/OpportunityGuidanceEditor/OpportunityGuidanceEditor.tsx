@@ -157,8 +157,12 @@ export const OpportunityGuidanceEditor = ({
                 </Box>
 
                 {resource.insight && (
-                    <div className={css.summary}>
-                        <Text variant="bold" size="md">
+                    <div
+                        className={classNames(css.summary, {
+                            [css.disabled]: !formFields.isVisible,
+                        })}
+                    >
+                        <Text variant="regular" size="md">
                             {resource.insight}
                         </Text>
                     </div>

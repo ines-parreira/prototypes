@@ -114,6 +114,7 @@ describe('OpportunityDetailsContent', () => {
         opportunityConfig: mockOpportunityConfig,
         onTicketCountClick: jest.fn(),
         onFormValuesChange: jest.fn(),
+        onOpportunityRemoved: jest.fn(),
     }
 
     beforeEach(() => {
@@ -466,6 +467,104 @@ describe('OpportunityDetailsContent', () => {
             if (resourceEditor) {
                 expect(resourceEditor.children.length).toBe(0)
             }
+        })
+    })
+
+    describe('Irrelevant Opportunity', () => {
+        it('should not display banner when opportunity is relevant', () => {
+            const relevantOpportunity: Opportunity = {
+                ...mockOpportunity,
+                isRelevant: true,
+            }
+
+            renderComponent({
+                selectedOpportunity: relevantOpportunity,
+            })
+
+            expect(
+                screen.queryByText(
+                    'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /remove and view next/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should display banner when opportunity is not relevant', () => {
+            const irrelevantOpportunity: Opportunity = {
+                ...mockOpportunity,
+                isRelevant: false,
+            }
+
+            renderComponent({
+                selectedOpportunity: irrelevantOpportunity,
+            })
+
+            expect(
+                screen.getByText(
+                    'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /remove and view next/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should display banner when isRelevant is undefined', () => {
+            const opportunityWithUndefinedRelevance: Opportunity = {
+                ...mockOpportunity,
+                isRelevant: undefined,
+            }
+
+            renderComponent({
+                selectedOpportunity: opportunityWithUndefinedRelevance,
+            })
+
+            expect(
+                screen.queryByText(
+                    'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call onOpportunityRemoved when Remove and View Next button is clicked', async () => {
+            const user = userEvent.setup()
+            const onOpportunityRemoved = jest.fn()
+            const irrelevantOpportunity: Opportunity = {
+                ...mockOpportunity,
+                isRelevant: false,
+            }
+
+            renderComponent({
+                selectedOpportunity: irrelevantOpportunity,
+                onOpportunityRemoved,
+            })
+
+            const removeButton = screen.getByRole('button', {
+                name: /remove and view next/i,
+            })
+            await user.click(removeButton)
+
+            expect(onOpportunityRemoved).toHaveBeenCalledTimes(1)
+        })
+
+        it('should render opportunity details when not relevant', () => {
+            const irrelevantOpportunity: Opportunity = {
+                ...mockOpportunity,
+                isRelevant: false,
+            }
+
+            renderComponent({
+                selectedOpportunity: irrelevantOpportunity,
+            })
+
+            expect(
+                screen.getByTestId('opportunity-details-card'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByTestId('opportunity-guidance-editor'),
+            ).toBeInTheDocument()
         })
     })
 })

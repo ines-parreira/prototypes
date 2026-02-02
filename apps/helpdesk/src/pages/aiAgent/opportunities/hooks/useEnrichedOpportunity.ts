@@ -10,6 +10,7 @@ import type {
 
 import { ResourceType } from '../types'
 import { enrichOpportunityWithIngestion } from '../utils/enrichOpportunityWithIngestion'
+import { useCheckOpportunityRelevance } from './useCheckOpportunityRelevance'
 import { useFindOneOpportunity } from './useFindOneOpportunity'
 
 type ArticleWithIngestion = Components.Schemas.ArticleWithLocalTranslation & {
@@ -42,6 +43,9 @@ export const useEnrichedOpportunity = (
         opportunityId,
         options,
     )
+
+    const { isRelevant, isLoading: isLoadingRelevance } =
+        useCheckOpportunityRelevance(opportunityQuery.data)
 
     const externalSnippetResources = useMemo(() => {
         if (!opportunityQuery.data) return []
@@ -94,30 +98,39 @@ export const useEnrichedOpportunity = (
     })
 
     const isLoadingArticles = articleQueries.some((query) => query.isLoading)
-    const isLoading = opportunityQuery.isLoading || isLoadingArticles
+    const isLoading =
+        opportunityQuery.isLoading || isLoadingArticles || isLoadingRelevance
 
     const enrichedData = useMemo(() => {
         if (!opportunityQuery.data) {
             return undefined
         }
 
-        if (externalSnippetResources.length === 0) {
-            return opportunityQuery.data
+        let result = opportunityQuery.data
+
+        if (externalSnippetResources.length > 0) {
+            const allArticlesLoaded = articleQueries.every(
+                (query) => !query.isLoading,
+            )
+
+            if (allArticlesLoaded) {
+                result = enrichOpportunityWithIngestion(
+                    opportunityQuery.data,
+                    articleQueries,
+                )
+            }
         }
 
-        const allArticlesLoaded = articleQueries.every(
-            (query) => !query.isLoading,
-        )
-
-        if (!allArticlesLoaded) {
-            return opportunityQuery.data
+        return {
+            ...result,
+            isRelevant,
         }
-
-        return enrichOpportunityWithIngestion(
-            opportunityQuery.data,
-            articleQueries,
-        )
-    }, [opportunityQuery.data, externalSnippetResources, articleQueries])
+    }, [
+        opportunityQuery.data,
+        externalSnippetResources,
+        articleQueries,
+        isRelevant,
+    ])
 
     return {
         ...opportunityQuery,

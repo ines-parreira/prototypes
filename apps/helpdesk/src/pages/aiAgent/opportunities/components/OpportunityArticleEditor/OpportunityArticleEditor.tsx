@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import classNames from 'classnames'
+
 import {
     Box,
     Button,
@@ -11,21 +13,23 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
+import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import type {
     OpportunityResource,
     ResourceFormFields,
 } from 'pages/aiAgent/opportunities/types'
-import TextArea from 'pages/common/forms/TextArea'
 
 import css from './OpportunityArticleEditor.less'
 
 interface OpportunityArticleEditorProps {
     resource: OpportunityResource
+    shopName: string
     onValuesChange?: (fields: ResourceFormFields) => void
 }
 
 export const OpportunityArticleEditor = ({
     resource,
+    shopName,
     onValuesChange,
 }: OpportunityArticleEditorProps) => {
     const [formFields, setFormFields] = useState<ResourceFormFields>({
@@ -55,11 +59,9 @@ export const OpportunityArticleEditor = ({
                 >
                     <Heading
                         size="md"
-                        className={
-                            !formFields.isVisible
-                                ? css.disabledTitle
-                                : undefined
-                        }
+                        className={classNames({
+                            [css.disabled]: !formFields.isVisible,
+                        })}
                     >
                         Help Center article
                     </Heading>
@@ -83,8 +85,9 @@ export const OpportunityArticleEditor = ({
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                                Make article private to hide it from your Help
-                                Center and disable it for AI Agent.
+                                {formFields.isVisible
+                                    ? 'Make article private to hide it from your Help Center and disable it for AI Agent.'
+                                    : 'Make article public to display it in your Help Center and enable it for AI Agent.'}
                             </TooltipContent>
                         </Tooltip>
                         <Button
@@ -102,33 +105,52 @@ export const OpportunityArticleEditor = ({
                 </Box>
 
                 {resource.insight && (
-                    <div className={css.summary}>
-                        <Text variant="bold" size="md">
+                    <div
+                        className={classNames(css.summary, {
+                            [css.disabled]: !formFields.isVisible,
+                        })}
+                    >
+                        <Text variant="regular" size="md">
                             {resource.insight}
                         </Text>
                     </div>
                 )}
             </Box>
             <Box flexDirection="column" gap="md" className={css.body}>
-                <TextField
-                    label="Title"
-                    value={formFields.title}
-                    onChange={(value) => handleFieldChange({ title: value })}
-                    error={!formFields.title ? 'Title is required' : undefined}
-                    isInvalid={!formFields.title}
-                    isRequired
-                    isDisabled={!formFields.isVisible}
-                />
-                <TextArea
-                    autoRowHeight
-                    label="Body"
-                    value={formFields.content}
-                    onChange={(value) => handleFieldChange({ content: value })}
-                    error={!formFields.content ? 'Body is required' : undefined}
-                    isRequired
-                    isDisabled={!formFields.isVisible}
-                    className={css.bodyField}
-                />
+                <div className={css.titleField}>
+                    <TextField
+                        label="Title"
+                        value={formFields.title}
+                        onChange={(value) =>
+                            handleFieldChange({ title: value })
+                        }
+                        error={
+                            !formFields.title ? 'Title is required' : undefined
+                        }
+                        isInvalid={!formFields.title}
+                        isRequired
+                        isDisabled={!formFields.isVisible}
+                    />
+                </div>
+
+                <div
+                    className={classNames(css.articleBodyField, {
+                        [css.disabled]: !formFields.isVisible,
+                    })}
+                >
+                    <GuidanceEditor
+                        content={formFields.content}
+                        handleUpdateContent={(content) =>
+                            handleFieldChange({ content })
+                        }
+                        label="Body"
+                        availableActions={[]}
+                        showActionsButton={false}
+                        showVariablesButton={false}
+                        shopName={shopName}
+                        showDefaultToolbarActions={false}
+                    />
+                </div>
             </Box>
         </Box>
     )

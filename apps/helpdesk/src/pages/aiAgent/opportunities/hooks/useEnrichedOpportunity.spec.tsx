@@ -7,15 +7,22 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
 import { ResourceType } from '../types'
+import * as useCheckOpportunityRelevanceModule from './useCheckOpportunityRelevance'
 import { useEnrichedOpportunity } from './useEnrichedOpportunity'
 import * as useFindOneOpportunityModule from './useFindOneOpportunity'
 
 jest.mock('./useFindOneOpportunity')
+jest.mock('./useCheckOpportunityRelevance')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 
 const mockUseFindOneOpportunity =
     useFindOneOpportunityModule.useFindOneOpportunity as jest.MockedFunction<
         typeof useFindOneOpportunityModule.useFindOneOpportunity
+    >
+
+const mockUseCheckOpportunityRelevance =
+    useCheckOpportunityRelevanceModule.useCheckOpportunityRelevance as jest.MockedFunction<
+        typeof useCheckOpportunityRelevanceModule.useCheckOpportunityRelevance
     >
 
 const mockUseHelpCenterApi =
@@ -106,6 +113,11 @@ describe('useEnrichedOpportunity', () => {
         }
 
         mockUseHelpCenterApi.mockReturnValue({ client: mockClient })
+
+        mockUseCheckOpportunityRelevance.mockReturnValue({
+            isRelevant: true,
+            isLoading: false,
+        })
     })
 
     afterEach(() => {
@@ -148,8 +160,56 @@ describe('useEnrichedOpportunity', () => {
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-        expect(result.current.data).toEqual(mockOpportunity)
+        expect(result.current.data).toEqual({
+            ...mockOpportunity,
+            isRelevant: true,
+        })
         expect(mockClient.getArticle).not.toHaveBeenCalled()
+    })
+
+    it('should return loading state while opportunity is being fetched', () => {
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+            error: null,
+        } as any)
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
+        expect(result.current.data).toBeUndefined()
+    })
+
+    it('should return loading state while checking opportunity relevance', () => {
+        const mockOpportunity: Opportunity = {
+            id: '123',
+            key: 'ks_123',
+            type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [],
+        }
+
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: mockOpportunity,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
+
+        mockUseCheckOpportunityRelevance.mockReturnValue({
+            isRelevant: true,
+            isLoading: true,
+        })
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        expect(result.current.isLoading).toBe(true)
     })
 
     it('should fetch and enrich external_snippet resources', async () => {
@@ -208,6 +268,8 @@ describe('useEnrichedOpportunity', () => {
                 articleIngestionLog: mockIngestionLog,
             },
         })
+
+        expect(result.current.data?.isRelevant).toBe(true)
     })
 
     it('should handle multiple external_snippet resources in parallel', async () => {
@@ -327,6 +389,68 @@ describe('useEnrichedOpportunity', () => {
         })
     })
 
+    it('should handle mixed resource types', async () => {
+        const mockOpportunity: Opportunity = {
+            id: '123',
+            key: 'ks_123',
+            type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [
+                {
+                    title: 'Article Title',
+                    content: 'Article content',
+                    type: ResourceType.ARTICLE,
+                    isVisible: true,
+                },
+                {
+                    title: 'Snippet Title',
+                    content: 'Snippet content',
+                    type: ResourceType.EXTERNAL_SNIPPET,
+                    isVisible: true,
+                    identifiers: {
+                        resourceId: '789',
+                        resourceSetId: '456',
+                        resourceLocale: 'en-US',
+                        resourceVersion: 'v1',
+                    },
+                },
+            ],
+        }
+
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: mockOpportunity,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
+
+        const mockIngestionLog = createMockIngestionLog()
+        const mockArticleData = createMockArticleData(mockIngestionLog)
+
+        ;(mockClient.getArticle as jest.Mock).mockResolvedValue({
+            data: mockArticleData,
+        })
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(mockClient.getArticle).toHaveBeenCalledTimes(1)
+
+        expect(result.current.data?.resources[0]).toEqual(
+            mockOpportunity.resources[0],
+        )
+
+        expect(result.current.data?.resources[1]).toEqual({
+            ...mockOpportunity.resources[1],
+            meta: {
+                articleIngestionLog: mockIngestionLog,
+            },
+        })
+    })
+
     it('should not fetch articles when opportunity query is disabled', async () => {
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
@@ -420,7 +544,10 @@ describe('useEnrichedOpportunity', () => {
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-        expect(result.current.data).toEqual(mockOpportunity)
+        expect(result.current.data).toEqual({
+            ...mockOpportunity,
+            isRelevant: true,
+        })
         expect(mockClient.getArticle).not.toHaveBeenCalled()
     })
 
@@ -453,6 +580,11 @@ describe('useEnrichedOpportunity', () => {
             error: null,
         } as any)
 
+        mockUseCheckOpportunityRelevance.mockReturnValue({
+            isRelevant: false,
+            isLoading: false,
+        })
+
         const { result } = renderHook(
             () => useEnrichedOpportunity(123, 456, {}),
             { wrapper },
@@ -460,7 +592,94 @@ describe('useEnrichedOpportunity', () => {
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
-        expect(result.current.data).toEqual(mockOpportunity)
+        expect(result.current.data).toEqual({
+            ...mockOpportunity,
+            isRelevant: false,
+        })
         expect(mockClient.getArticle).not.toHaveBeenCalled()
+    })
+
+    it('should include isRelevant field in enriched data', async () => {
+        const mockOpportunity: Opportunity = {
+            id: '123',
+            key: 'ks_123',
+            type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [],
+        }
+
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: mockOpportunity,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
+
+        mockUseCheckOpportunityRelevance.mockReturnValue({
+            isRelevant: false,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.data).toEqual({
+            ...mockOpportunity,
+            isRelevant: false,
+        })
+    })
+
+    it('should include isRelevant as true when loading or not yet determined', async () => {
+        const mockOpportunity: Opportunity = {
+            id: '123',
+            key: 'ks_123',
+            type: OpportunityType.RESOLVE_CONFLICT,
+            resources: [],
+        }
+
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: mockOpportunity,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
+
+        mockUseCheckOpportunityRelevance.mockReturnValue({
+            isRelevant: true,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.data).toEqual({
+            ...mockOpportunity,
+            isRelevant: true,
+        })
+    })
+
+    it('should return undefined data when opportunity is undefined', async () => {
+        mockUseFindOneOpportunity.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
+
+        const { result } = renderHook(
+            () => useEnrichedOpportunity(123, 456, {}),
+            { wrapper },
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.data).toBeUndefined()
     })
 })

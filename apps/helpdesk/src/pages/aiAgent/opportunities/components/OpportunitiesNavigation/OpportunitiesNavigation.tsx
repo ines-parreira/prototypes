@@ -16,7 +16,6 @@ interface OpportunityNavigationProps {
     selectCertainOpportunity?: (index: number) => void
     totalCount: number
     allowedOpportunityIds?: number[]
-    hideCount?: boolean
 }
 
 export const OpportunitiesNavigation = ({
@@ -25,7 +24,6 @@ export const OpportunitiesNavigation = ({
     selectCertainOpportunity,
     totalCount,
     allowedOpportunityIds,
-    hideCount = false,
 }: OpportunityNavigationProps) => {
     const {
         isFirst,
@@ -90,11 +88,9 @@ export const OpportunitiesNavigation = ({
             >
                 Right navigation button
             </Button>
-            {!hideCount && (
-                <Text size="md" variant="regular">
-                    {position + 1} of {totalCount}
-                </Text>
-            )}
+            <Text size="md" variant="regular" className={css.countText}>
+                {position + 1} of {totalCount}
+            </Text>
         </div>
     )
 }

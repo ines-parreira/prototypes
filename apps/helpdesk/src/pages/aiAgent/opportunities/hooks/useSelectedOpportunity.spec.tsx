@@ -6,10 +6,10 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { OpportunityType } from '../enums'
 import type { Opportunity, OpportunityListItem } from '../types'
 import { ResourceType } from '../types'
-import { useFindOneOpportunity } from './useFindOneOpportunity'
+import { useEnrichedOpportunity } from './useEnrichedOpportunity'
 import { useSelectedOpportunity } from './useSelectedOpportunity'
 
-jest.mock('./useFindOneOpportunity')
+jest.mock('./useEnrichedOpportunity')
 
 const mockHistoryReplace = jest.fn()
 jest.mock('react-router', () => ({
@@ -102,6 +102,7 @@ describe('useSelectedOpportunity', () => {
                 isVisible: true,
             },
         ],
+        isRelevant: true,
     }
 
     beforeEach(() => {
@@ -110,8 +111,8 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should initialize with no selected opportunity when opportunities array is empty', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
-        mockUseFindOneOpportunity.mockReturnValue({
+        const mockUseEnrichedOpportunity = useEnrichedOpportunity as jest.Mock
+        mockUseEnrichedOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
         })
@@ -127,7 +128,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should auto-select first opportunity when opportunities are provided', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -148,7 +149,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should return base selected opportunity when useKnowledgeService is false', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -173,7 +174,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should not fetch opportunity details when useKnowledgeService is false', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -205,7 +206,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should fetch opportunity details when useKnowledgeService is true and opportunity is selected', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -238,7 +239,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should not fetch opportunity details when no opportunity is selected', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -268,7 +269,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should show loading state when fetching opportunity details', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: true,
@@ -292,7 +293,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should return opportunity details when fetched successfully', async () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -327,7 +328,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should return null when opportunity details are loading in KS flow', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: true,
@@ -352,7 +353,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should return null when selected opportunity is not found in opportunities array', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -375,7 +376,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should update selected opportunity when selecting a different opportunity', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -404,7 +405,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should re-select first opportunity when setting id to null while opportunities exist', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -434,7 +435,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should switch from base to detailed opportunity when useKnowledgeService changes', async () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -474,7 +475,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should not show loading state when useKnowledgeService is false', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: true,
@@ -497,7 +498,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should handle opportunities array updates correctly', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -546,7 +547,7 @@ describe('useSelectedOpportunity', () => {
     })
 
     it('should return null when selected opportunity is removed from opportunities array', () => {
-        const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+        const mockUseFindOneOpportunity = useEnrichedOpportunity as jest.Mock
         mockUseFindOneOpportunity.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -577,7 +578,8 @@ describe('useSelectedOpportunity', () => {
 
     describe('URL parameter handling', () => {
         it('should initialize with initialOpportunityId from URL', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -600,7 +602,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should fetch opportunity details from API when initialOpportunityId is not in loaded list', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: mockOpportunityDetails,
                 isLoading: false,
@@ -632,7 +635,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should not fallback when no opportunities are available', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -653,7 +657,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should display opportunity details when accessing via direct URL', async () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: mockOpportunityDetails,
                 isLoading: false,
@@ -678,7 +683,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should update URL when opportunity is selected', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -699,7 +705,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should not update URL when selectedOpportunityId matches initialOpportunityId', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -721,7 +728,8 @@ describe('useSelectedOpportunity', () => {
 
     describe('free tier filtering with allowedOpportunityIds', () => {
         it('should only select from allowed opportunities when allowedOpportunityIds is provided', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -741,7 +749,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should not preselect any opportunity when allowedOpportunityIds is empty', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -762,7 +771,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should select first opportunity when allowedOpportunityIds is undefined (premium user)', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -782,7 +792,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should fallback to first allowed opportunity when initialOpportunityId fails', async () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,
@@ -807,7 +818,8 @@ describe('useSelectedOpportunity', () => {
         })
 
         it('should redirect to first allowed opportunity when selecting a restricted one', () => {
-            const mockUseFindOneOpportunity = useFindOneOpportunity as jest.Mock
+            const mockUseFindOneOpportunity =
+                useEnrichedOpportunity as jest.Mock
             mockUseFindOneOpportunity.mockReturnValue({
                 data: undefined,
                 isLoading: false,

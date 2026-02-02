@@ -33,6 +33,7 @@ describe('utils', () => {
         published_datetime: null,
         publisher_user_id: null,
         commit_message: null,
+        version: null,
     }
 
     const mockArticle: ArticleWithLocalTranslation = {
@@ -141,6 +142,7 @@ describe('utils', () => {
                 published_datetime: null,
                 publisher_user_id: null,
                 commit_message: null,
+                version: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)
@@ -172,6 +174,7 @@ describe('utils', () => {
                 published_datetime: null,
                 publisher_user_id: null,
                 commit_message: null,
+                version: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)
@@ -202,6 +205,7 @@ describe('utils', () => {
                 published_datetime: null,
                 publisher_user_id: null,
                 commit_message: null,
+                version: null,
             }
 
             const result = mergeTranslationResponse(mockArticle, response)

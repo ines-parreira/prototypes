@@ -30,7 +30,8 @@ export const OpportunityDetailsCard = ({
                         className={css.handoverTickets}
                         onClick={handleTicketCountClick}
                     >
-                        {ticketCount} tickets.
+                        {ticketCount} {ticketCount === 1 ? 'ticket' : 'tickets'}
+                        .
                     </span>{' '}
                 </Text>
             </div>

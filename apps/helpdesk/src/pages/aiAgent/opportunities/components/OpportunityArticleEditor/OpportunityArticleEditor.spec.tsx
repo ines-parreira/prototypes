@@ -1,20 +1,19 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import type { OpportunityResource } from '../../types'
 import { ResourceType } from '../../types'
 import { OpportunityArticleEditor } from './OpportunityArticleEditor'
 
-jest.mock('pages/common/forms/TextArea', () => ({
-    __esModule: true,
-    default: ({ label, value, onChange, isDisabled }: any) => (
+jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
+    GuidanceEditor: ({ content, handleUpdateContent, label }: any) => (
         <div>
-            {label && <label htmlFor="article-body">{label}</label>}
+            {label && <label htmlFor="guidance-editor">{label}</label>}
             <textarea
-                id="article-body"
-                data-testid="article-body"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={isDisabled}
+                id="guidance-editor"
+                data-testid="guidance-editor"
+                value={content}
+                onChange={(e) => handleUpdateContent(e.target.value)}
             />
         </div>
     ),
@@ -30,6 +29,7 @@ const mockResource: OpportunityResource = {
 describe('OpportunityArticleEditor', () => {
     const defaultProps = {
         resource: mockResource,
+        shopName: 'test-shop',
     }
 
     it('should render article editor heading', () => {
@@ -41,11 +41,11 @@ describe('OpportunityArticleEditor', () => {
     it('should render body field with content', () => {
         render(<OpportunityArticleEditor {...defaultProps} />)
 
-        const bodyTextarea = screen.getByLabelText('Body')
-        expect(bodyTextarea).toHaveValue('Test article body content')
+        const bodyEditor = screen.getByLabelText('Body')
+        expect(bodyEditor).toHaveValue('Test article body content')
     })
 
-    it('should disable body textarea when isVisible is false', () => {
+    it('should render body editor when isVisible is false', () => {
         render(
             <OpportunityArticleEditor
                 {...defaultProps}
@@ -53,7 +53,53 @@ describe('OpportunityArticleEditor', () => {
             />,
         )
 
-        const bodyTextarea = screen.getByLabelText('Body')
-        expect(bodyTextarea).toBeDisabled()
+        const bodyEditor = screen.getByLabelText('Body')
+        expect(bodyEditor).toHaveValue('Test article body content')
+    })
+
+    it('should call onValuesChange when title is changed', async () => {
+        const user = userEvent.setup()
+        const onValuesChange = jest.fn()
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                onValuesChange={onValuesChange}
+            />,
+        )
+
+        const titleInput = screen.getByRole('textbox', { name: /title/i })
+        await user.type(titleInput, ' Updated')
+
+        expect(onValuesChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: 'Test Article Title Updated',
+                content: 'Test article body content',
+                isVisible: true,
+                isDeleted: false,
+            }),
+        )
+    })
+
+    it('should call onValuesChange when content is changed', async () => {
+        const user = userEvent.setup()
+        const onValuesChange = jest.fn()
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                onValuesChange={onValuesChange}
+            />,
+        )
+
+        const bodyEditor = screen.getByLabelText('Body')
+        await user.type(bodyEditor, ' Updated')
+
+        expect(onValuesChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                title: 'Test Article Title',
+                content: 'Test article body content Updated',
+                isVisible: true,
+                isDeleted: false,
+            }),
+        )
     })
 })

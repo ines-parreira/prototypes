@@ -92,6 +92,7 @@ export const useCreateArticle = (
                     published_datetime: null,
                     publisher_user_id: null,
                     commit_message: null,
+                    version: null,
                     rating: { up: 0, down: 0 },
                     category_id: translation.category_id ?? null,
                     created_datetime: nowIso,

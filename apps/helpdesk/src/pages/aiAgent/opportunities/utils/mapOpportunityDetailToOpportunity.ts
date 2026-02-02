@@ -87,6 +87,7 @@ export const mapOpportunityDetailToOpportunity = (
     return {
         ...baseOpportunity,
         type: OpportunityType.RESOLVE_CONFLICT,
+        ticketCount: conflict.detectionCount,
         detectionObjectIds: conflict.detectionObjectIds,
         resources,
     }

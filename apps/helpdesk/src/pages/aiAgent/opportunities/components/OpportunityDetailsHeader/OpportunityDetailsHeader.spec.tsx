@@ -90,6 +90,10 @@ describe('OpportunityDetailsHeader', () => {
         jest.clearAllMocks()
     })
 
+    afterEach(() => {
+        jest.restoreAllMocks()
+    })
+
     const renderComponent = (props = {}) => {
         return render(<OpportunityDetailsHeader {...defaultProps} {...props} />)
     }
@@ -311,6 +315,61 @@ describe('OpportunityDetailsHeader', () => {
             await user.click(resolveButton)
 
             expect(handleResolve).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Sidebar Button', () => {
+        it('should show sidebar button when sidebar is hidden', () => {
+            const {
+                useOpportunitiesSidebar,
+            } = require('../../hooks/useOpportunitiesSidebar')
+            useOpportunitiesSidebar.mockReturnValue({
+                isSidebarVisible: false,
+                setIsSidebarVisible: jest.fn(),
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /show sidebar/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should hide sidebar button when sidebar is visible', () => {
+            const {
+                useOpportunitiesSidebar,
+            } = require('../../hooks/useOpportunitiesSidebar')
+            useOpportunitiesSidebar.mockReturnValue({
+                isSidebarVisible: true,
+                setIsSidebarVisible: jest.fn(),
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /show sidebar/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call setIsSidebarVisible when sidebar button is clicked', async () => {
+            const user = userEvent.setup()
+            const setIsSidebarVisible = jest.fn()
+            const {
+                useOpportunitiesSidebar,
+            } = require('../../hooks/useOpportunitiesSidebar')
+            useOpportunitiesSidebar.mockReturnValue({
+                isSidebarVisible: false,
+                setIsSidebarVisible,
+            })
+
+            renderComponent()
+
+            const sidebarButton = screen.getByRole('button', {
+                name: /show sidebar/i,
+            })
+            await user.click(sidebarButton)
+
+            expect(setIsSidebarVisible).toHaveBeenCalledWith(true)
         })
     })
 })

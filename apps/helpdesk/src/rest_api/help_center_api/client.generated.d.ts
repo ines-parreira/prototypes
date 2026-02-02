@@ -269,6 +269,7 @@ declare namespace Components {
             published_datetime: string | null // date-time
             publisher_user_id: number | null
             commit_message: string | null
+            version: number | null
             rating: Rating
             /**
              * Gives details on how the translation fallback was chosen:
@@ -403,6 +404,7 @@ declare namespace Components {
             published_datetime: string | null // date-time
             publisher_user_id: number | null
             commit_message: string | null
+            version: number | null
         }
         export interface ArticleTranslationSeoMeta {
             title: string | null
@@ -467,6 +469,7 @@ declare namespace Components {
             published_datetime: string | null // date-time
             publisher_user_id: number | null
             commit_message: string | null
+            version: number | null
             rating: Rating
         }
         export interface ArticleTranslationsListPageDto {
@@ -1119,6 +1122,7 @@ declare namespace Components {
                 published_datetime: string | null // date-time
                 publisher_user_id: number | null
                 commit_message: string | null
+                version: number | null
             } | null
             draft: ArticleTranslationResponseDto
         }
@@ -2828,6 +2832,7 @@ declare namespace Components {
             published_datetime: string | null // date-time
             publisher_user_id: number | null
             commit_message: string | null
+            version: number | null
             /**
              * Gives details on how the translation fallback was chosen:
              * - `undefined`: the translation is the requested one

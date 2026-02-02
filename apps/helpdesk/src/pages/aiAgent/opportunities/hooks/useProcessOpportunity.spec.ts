@@ -1,3 +1,8 @@
+import React from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { renderHook, waitFor } from '@testing-library/react'
+
 import type { ProcessOpportunityOneOfSeven } from '@gorgias/knowledge-service-types'
 import {
     ProcessOpportunityOneOfAction,
@@ -16,7 +21,26 @@ import {
     buildApprovePayload,
     buildDismissPayload,
     buildResolveConflictPayload,
+    useProcessOpportunity,
 } from './useProcessOpportunity'
+
+jest.mock('@gorgias/knowledge-service-queries', () => ({
+    ...jest.requireActual('@gorgias/knowledge-service-queries'),
+    useProcessOpportunityForShopOpportunity: jest.fn(),
+    queryKeys: {
+        opportunities: {
+            findOpportunitiesByShopOpportunity: jest.fn((shopId: number) => [
+                'opportunities',
+                shopId,
+            ]),
+        },
+    },
+}))
+
+jest.mock('axios', () => ({
+    ...jest.requireActual('axios'),
+    isAxiosError: jest.fn(),
+}))
 
 describe('useProcessOpportunity', () => {
     describe('buildApprovePayload', () => {
@@ -341,6 +365,276 @@ describe('useProcessOpportunity', () => {
 
                 expect(result).toBeNull()
             })
+        })
+    })
+
+    describe('useProcessOpportunity hook', () => {
+        const { useProcessOpportunityForShopOpportunity } = jest.requireMock(
+            '@gorgias/knowledge-service-queries',
+        )
+        const { isAxiosError } = jest.requireMock('axios')
+
+        let queryClient: QueryClient
+        let wrapper: React.FC<{ children: React.ReactNode }>
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            queryClient = new QueryClient({
+                defaultOptions: {
+                    queries: { retry: false },
+                },
+            })
+            wrapper = ({ children }: { children: React.ReactNode }) =>
+                React.createElement(
+                    QueryClientProvider,
+                    { client: queryClient },
+                    children,
+                )
+        })
+
+        afterEach(() => {
+            queryClient.clear()
+        })
+
+        it('should invalidate queries on successful mutation', async () => {
+            const shopIntegrationId = 789
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(shopIntegrationId), {
+                wrapper,
+            })
+
+            await mockMutationCallbacks.onSuccess()
+
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: ['opportunities', shopIntegrationId],
+                })
+            })
+        })
+
+        it('should not invalidate queries on success when shopIntegrationId is not provided', async () => {
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(undefined), {
+                wrapper,
+            })
+
+            await mockMutationCallbacks.onSuccess()
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
+        it('should invalidate queries on 409 error', async () => {
+            const shopIntegrationId = 789
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(shopIntegrationId), {
+                wrapper,
+            })
+
+            const conflictError = {
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'Conflict detected',
+                        },
+                    },
+                },
+            }
+
+            isAxiosError.mockReturnValue(true)
+
+            await mockMutationCallbacks.onError(conflictError)
+
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: ['opportunities', shopIntegrationId],
+                })
+            })
+        })
+
+        it('should not invalidate queries on non-409 error', async () => {
+            const shopIntegrationId = 789
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(shopIntegrationId), {
+                wrapper,
+            })
+
+            const serverError = {
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+            }
+
+            isAxiosError.mockReturnValue(true)
+
+            await mockMutationCallbacks.onError(serverError)
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
+        it('should not invalidate queries on 409 error when shopIntegrationId is not provided', async () => {
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(undefined), {
+                wrapper,
+            })
+
+            const conflictError = {
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'Conflict detected',
+                        },
+                    },
+                },
+            }
+
+            isAxiosError.mockReturnValue(true)
+
+            await mockMutationCallbacks.onError(conflictError)
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+        })
+
+        it('should not invalidate queries on error without response', async () => {
+            const shopIntegrationId = 789
+            const mockMutationCallbacks = {
+                onSuccess: jest.fn(),
+                onError: jest.fn(),
+            }
+
+            useProcessOpportunityForShopOpportunity.mockImplementation(
+                ({ mutation }: any) => {
+                    mockMutationCallbacks.onSuccess = mutation.onSuccess
+                    mockMutationCallbacks.onError = mutation.onError
+                    return {
+                        mutate: jest.fn(),
+                        mutateAsync: jest.fn(),
+                    }
+                },
+            )
+
+            const invalidateQueriesSpy = jest.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            renderHook(() => useProcessOpportunity(shopIntegrationId), {
+                wrapper,
+            })
+
+            const networkError = new Error('Network error')
+
+            isAxiosError.mockReturnValue(false)
+
+            await mockMutationCallbacks.onError(networkError)
+
+            expect(invalidateQueriesSpy).not.toHaveBeenCalled()
         })
     })
 })

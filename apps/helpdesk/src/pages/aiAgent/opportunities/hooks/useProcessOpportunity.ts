@@ -1,4 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
+import _get from 'lodash/get'
 
 import {
     queryKeys,
@@ -40,6 +42,20 @@ export const useProcessOpportunity = (shopIntegrationId?: number) => {
                             shopIntegrationId,
                         ),
                 })
+            },
+            onError: async (error) => {
+                if (
+                    isAxiosError(error) &&
+                    _get(error, 'response.status') === 409 &&
+                    shopIntegrationId
+                ) {
+                    await queryClient.invalidateQueries({
+                        queryKey:
+                            queryKeys.opportunities.findOpportunitiesByShopOpportunity(
+                                shopIntegrationId,
+                            ),
+                    })
+                }
             },
         },
     })

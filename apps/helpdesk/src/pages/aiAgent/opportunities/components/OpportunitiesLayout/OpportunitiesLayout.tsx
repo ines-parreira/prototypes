@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
+import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -232,7 +233,11 @@ export const OpportunitiesLayout = () => {
             value={{ isSidebarVisible, setIsSidebarVisible }}
         >
             <div className={css.wrapper} data-ai-opportunities ref={wrapperRef}>
-                <div className={css.layout}>
+                <div
+                    className={classNames(css.layout, {
+                        [css.layoutNoGap]: !isSidebarVisible,
+                    })}
+                >
                     <OpportunitiesSidebar
                         isLoading={isLoading}
                         opportunitiesPageState={opportunityPageState}

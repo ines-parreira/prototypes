@@ -55,6 +55,7 @@ const createMockArticle = (
             published_datetime: null,
             publisher_user_id: null,
             commit_message: null,
+            version: null,
         },
         ...overrides,
     }) as ArticleWithLocalTranslation

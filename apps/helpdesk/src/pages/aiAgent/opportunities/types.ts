@@ -74,6 +74,7 @@ export interface OpportunityListItem extends OpportunityBase {
 export interface Opportunity extends OpportunityBase {
     detectionObjectIds?: string[]
     resources: OpportunityResource[]
+    isRelevant?: boolean
 }
 
 export type SidebarOpportunityItem = OpportunityListItem | Opportunity

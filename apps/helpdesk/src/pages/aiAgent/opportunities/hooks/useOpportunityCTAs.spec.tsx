@@ -9,6 +9,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 import { useGuidanceArticleMutation } from '../../hooks/useGuidanceArticleMutation'
 import { OpportunityType } from '../enums'
@@ -30,6 +33,8 @@ jest.mock('models/knowledgeService/mutations')
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
+jest.mock('utils/errors')
+jest.mock('state/notifications/actions')
 
 const mockStore = configureStore([])
 
@@ -440,6 +445,13 @@ describe('useOpportunityCTAs', () => {
     })
 
     describe('Error handling', () => {
+        let mockDispatch: jest.Mock
+
+        beforeEach(() => {
+            mockDispatch = jest.fn()
+            ;(useAppDispatch as jest.Mock).mockReturnValue(mockDispatch)
+        })
+
         it('should handle approval errors gracefully', async () => {
             const mutateAsync = jest
                 .fn()
@@ -487,6 +499,283 @@ describe('useOpportunityCTAs', () => {
 
             await waitFor(() => {
                 expect(result.current.isProcessing).toBe(false)
+            })
+        })
+
+        it('should show info notification for 409 conflict errors on approve', async () => {
+            const conflictError = {
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'Resource has been modified',
+                        },
+                    },
+                },
+                isAxiosError: true,
+            }
+            const mutateAsync = jest.fn().mockRejectedValue(conflictError)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleApprove()
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledWith(
+                    notify({
+                        status: NotificationStatus.Info,
+                        message:
+                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                    }),
+                )
+            })
+        })
+
+        it('should show error notification for non-409 errors on approve', async () => {
+            const genericError = {
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+                isAxiosError: true,
+            }
+            const mutateAsync = jest.fn().mockRejectedValue(genericError)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleApprove()
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledWith(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: 'Failed to create guidance. Please try again.',
+                    }),
+                )
+            })
+        })
+
+        it('should report all errors to Sentry on approve', async () => {
+            const error = new Error('API Error')
+            const mutateAsync = jest.fn().mockRejectedValue(error)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleApprove()
+
+            await waitFor(() => {
+                expect(reportError).toHaveBeenCalledWith(error, {
+                    tags: { team: 'convai-knowledge' },
+                    extra: {
+                        context: 'Failed to approve opportunity',
+                        opportunityId: '123',
+                    },
+                })
+            })
+        })
+
+        it('should show info notification for 409 conflict errors on resolve', async () => {
+            const conflictError = {
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'Resource version mismatch',
+                        },
+                    },
+                },
+                isAxiosError: true,
+            }
+            const mutateAsync = jest.fn().mockRejectedValue(conflictError)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+                resources: [
+                    {
+                        title: 'Test Resource',
+                        content: 'Test content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'res-1',
+                            resourceSetId: 'set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: '1.0',
+                        },
+                    },
+                ],
+            }
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: conflictOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleResolve()
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledWith(
+                    notify({
+                        status: NotificationStatus.Info,
+                        message:
+                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                    }),
+                )
+            })
+        })
+
+        it('should show info notification for 409 conflict errors on dismiss', async () => {
+            const conflictError = {
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'Opportunity already processed',
+                        },
+                    },
+                },
+                isAxiosError: true,
+            }
+            const mutateAsync = jest.fn().mockRejectedValue(conflictError)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleDismiss({ feedbackToUpsert: [] })
+
+            await waitFor(() => {
+                expect(mockDispatch).toHaveBeenCalledWith(
+                    notify({
+                        status: NotificationStatus.Info,
+                        message:
+                            'This opportunity is no longer relevant and was addressed by recent knowledge updates.',
+                    }),
+                )
+            })
+        })
+
+        it('should report errors to Sentry for all handlers', async () => {
+            const error = new Error('Generic error')
+            const mutateAsync = jest.fn().mockRejectedValue(error)
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+                resources: [
+                    {
+                        title: 'Test Resource',
+                        content: 'Test content',
+                        type: ResourceType.GUIDANCE,
+                        isVisible: true,
+                        identifiers: {
+                            resourceId: 'res-1',
+                            resourceSetId: 'set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: '1.0',
+                        },
+                    },
+                ],
+            }
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: conflictOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            // Test handleResolve
+            await result.current.handleResolve()
+
+            await waitFor(() => {
+                expect(reportError).toHaveBeenCalledWith(error, {
+                    tags: { team: 'convai-knowledge' },
+                    extra: {
+                        context: 'Failed to resolve conflict opportunity',
+                        opportunityId: '123',
+                    },
+                })
+            })
+
+            // Clear mocks for next test
+            jest.clearAllMocks()
+            ;(useProcessOpportunity as jest.Mock).mockReturnValue({
+                mutateAsync,
+            })
+
+            // Test handleDismiss
+            await result.current.handleDismiss({ feedbackToUpsert: [] })
+
+            await waitFor(() => {
+                expect(reportError).toHaveBeenCalledWith(error, {
+                    tags: { team: 'convai-knowledge' },
+                    extra: {
+                        context: 'Failed to dismiss opportunity',
+                        opportunityId: '123',
+                    },
+                })
             })
         })
     })
