@@ -3,19 +3,24 @@
 :local {
     .wrapper {
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: top;
+        height: 24px;
+        line-height: 24px;
     }
 
     .container {
         position: relative;
         display: inline-flex;
+        align-items: center;
         vertical-align: top;
+        height: 24px;
         padding: var(--layout-spacing-xxs) var(--layout-spacing-xs);
         border-radius: var(--layout-spacing-xs);
         background: var(--neutral-grey-3); // legacy
         .caption-semibold();
+        line-height: 1;
         color: var(--neutral-grey-6); // legacy
-        margin: 1px;
+        margin: 0;
     }
 
     .invalid {

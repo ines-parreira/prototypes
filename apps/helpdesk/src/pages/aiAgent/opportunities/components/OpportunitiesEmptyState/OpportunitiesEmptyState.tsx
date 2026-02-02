@@ -21,27 +21,29 @@ export const OpportunitiesEmptyState = ({
 
     return (
         <div className={css.containerContent}>
-            {opportunitiesPageState.media && (
-                <div className={css.mediaFrame}>
-                    <img
-                        className={css.media}
-                        src={opportunitiesPageState.media}
-                        alt="Opportunities empty state"
-                    />
-                </div>
-            )}
-            <Box flexDirection="column" gap="xs" alignItems="center">
-                <Heading size="lg" className={css.title}>
-                    {opportunitiesPageState.title}
-                </Heading>
-                <Text
-                    size="md"
-                    variant="regular"
-                    align="center"
-                    className={css.description}
-                >
-                    {opportunitiesPageState.description}
-                </Text>
+            <Box flexDirection="column" alignItems="center">
+                {opportunitiesPageState.media && (
+                    <div className={css.mediaFrame}>
+                        <img
+                            className={css.media}
+                            src={opportunitiesPageState.media}
+                            alt="Opportunities empty state"
+                        />
+                    </div>
+                )}
+                <Box flexDirection="column" gap="xs" alignItems="center">
+                    <Heading size="lg" className={css.title}>
+                        {opportunitiesPageState.title}
+                    </Heading>
+                    <Text
+                        size="md"
+                        variant="regular"
+                        align="center"
+                        className={css.description}
+                    >
+                        {opportunitiesPageState.description}
+                    </Text>
+                </Box>
             </Box>
             {opportunitiesPageState.primaryCta && (
                 <Button variant="primary" onClick={redirectTo}>
