@@ -91,6 +91,10 @@ const ProductPlanSelection = ({
         FeatureFlagKey.EnableConsolidatedCancellationModal,
         false,
     )
+    const useConsolidatedCancellationModalPhone = useFlag(
+        FeatureFlagKey.EnableConsolidatedCancellationModalPhone,
+        false,
+    )
 
     const isActive = useMemo(() => {
         if (!currentPlan) return false
@@ -238,8 +242,16 @@ const ProductPlanSelection = ({
     const showCancelProductModal = useMemo(
         () =>
             (type === ProductType.Helpdesk && isCancellationAvailable) ||
-            (type !== ProductType.Helpdesk && useConsolidatedCancellationModal),
-        [type, isCancellationAvailable, useConsolidatedCancellationModal],
+            ([ProductType.Voice, ProductType.SMS].includes(type) &&
+                useConsolidatedCancellationModalPhone) ||
+            ([ProductType.Automation, ProductType.Convert].includes(type) &&
+                useConsolidatedCancellationModal),
+        [
+            type,
+            isCancellationAvailable,
+            useConsolidatedCancellationModalPhone,
+            useConsolidatedCancellationModal,
+        ],
     )
 
     const statusBadge = useMemo(() => {
@@ -462,14 +474,14 @@ const ProductPlanSelection = ({
             return renderRemoveProductButton(handleConvertClose)
         } else if (
             type === ProductType.SMS &&
-            useConsolidatedCancellationModal
+            useConsolidatedCancellationModalPhone
         ) {
             return renderRemoveProductButton(() => {
                 setIsCancellationFlowOpen(true)
             })
         } else if (
             type === ProductType.Voice &&
-            useConsolidatedCancellationModal
+            useConsolidatedCancellationModalPhone
         ) {
             return renderRemoveProductButton(() => {
                 setIsCancellationFlowOpen(true)

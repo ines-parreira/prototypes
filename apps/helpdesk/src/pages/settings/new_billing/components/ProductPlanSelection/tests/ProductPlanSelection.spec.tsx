@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
@@ -91,7 +91,10 @@ describe('ProductPlanSelection', () => {
         mockContactBilling.mockReset()
 
         useFlagMock.mockReset()
-        useFlagMock.mockReturnValue(false)
+        useFlagMock.mockImplementation(() => {
+            // By default, all flags are false
+            return false
+        })
 
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockReset()
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
@@ -666,7 +669,7 @@ describe('ProductPlanSelection', () => {
         }
 
         it('shows CancelAAOModal when consolidated modal feature flag is OFF', async () => {
-            useFlagMock.mockReturnValue(false)
+            useFlagMock.mockImplementation(() => false)
 
             const { getByRole, getByTestId } = render(
                 <Provider store={store}>
@@ -693,7 +696,14 @@ describe('ProductPlanSelection', () => {
         })
 
         it('shows CancelProductModal when consolidated modal feature flag is ON', async () => {
-            useFlagMock.mockReturnValue(true)
+            useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                if (
+                    key === FeatureFlagKey.EnableConsolidatedCancellationModal
+                ) {
+                    return true
+                }
+                return false
+            })
 
             const { getByRole, getByTestId } = render(
                 <Provider store={store}>
@@ -775,7 +785,7 @@ describe('ProductPlanSelection', () => {
 
                 if (hasButtonWhenFlagOff) {
                     it('does NOT show modal when Remove product button is clicked with feature flag OFF', async () => {
-                        useFlagMock.mockReturnValue(false)
+                        useFlagMock.mockImplementation(() => false)
 
                         const { getByRole, queryByTestId } = render(
                             <Provider store={store}>
@@ -799,7 +809,32 @@ describe('ProductPlanSelection', () => {
                     })
                 } else {
                     it('does NOT show Remove product button when feature flag is OFF', async () => {
-                        useFlagMock.mockReturnValue(false)
+                        useFlagMock.mockImplementation(() => false)
+
+                        const { queryByRole } = render(
+                            <Provider store={store}>
+                                <ProductPlanSelection {...productProps} />
+                            </Provider>,
+                        )
+
+                        const removeButton = queryByRole('button', {
+                            name: 'Remove product',
+                        })
+                        expect(removeButton).not.toBeInTheDocument()
+                    })
+
+                    it('does NOT show Remove product button when wrong feature flag (EnableConsolidatedCancellationModal) is ON', async () => {
+                        useFlagMock.mockImplementation(
+                            (key: FeatureFlagKey) => {
+                                if (
+                                    key ===
+                                    FeatureFlagKey.EnableConsolidatedCancellationModal
+                                ) {
+                                    return true
+                                }
+                                return false
+                            },
+                        )
 
                         const { queryByRole } = render(
                             <Provider store={store}>
@@ -815,7 +850,26 @@ describe('ProductPlanSelection', () => {
                 }
 
                 it('shows CancelProductModal when consolidated modal feature flag is ON', async () => {
-                    useFlagMock.mockReturnValue(true)
+                    useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                        // Convert uses EnableConsolidatedCancellationModal
+                        // Voice and SMS use EnableConsolidatedCancellationModalPhone
+                        if (
+                            productType === ProductType.Convert &&
+                            key ===
+                                FeatureFlagKey.EnableConsolidatedCancellationModal
+                        ) {
+                            return true
+                        }
+                        if (
+                            (productType === ProductType.Voice ||
+                                productType === ProductType.SMS) &&
+                            key ===
+                                FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                        ) {
+                            return true
+                        }
+                        return false
+                    })
 
                     const { getByRole, getByTestId } = render(
                         <Provider store={store}>
@@ -866,7 +920,7 @@ describe('ProductPlanSelection', () => {
             }
 
             it('calls handleConvertProductRemoved when Convert is removed with feature flag OFF', async () => {
-                useFlagMock.mockReturnValue(false)
+                useFlagMock.mockImplementation(() => false)
 
                 const convertStore = mockStore({
                     billing: fromJS(billingState),
@@ -898,7 +952,15 @@ describe('ProductPlanSelection', () => {
             })
 
             it('calls handleConvertProductRemoved when Convert is removed after confirmation with feature flag ON', async () => {
-                useFlagMock.mockReturnValue(true)
+                useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                    if (
+                        key ===
+                        FeatureFlagKey.EnableConsolidatedCancellationModal
+                    ) {
+                        return true
+                    }
+                    return false
+                })
 
                 const convertStore = mockStore({
                     billing: fromJS(billingState),
@@ -958,7 +1020,7 @@ describe('ProductPlanSelection', () => {
                     useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
                         () => true,
                     )
-                    useFlagMock.mockReturnValue(false)
+                    useFlagMock.mockImplementation(() => false)
                 },
             },
             {
@@ -968,7 +1030,15 @@ describe('ProductPlanSelection', () => {
                 availablePlans: [basicMonthlyAutomationPlan],
                 buttonName: 'Remove product',
                 setupMock: () => {
-                    useFlagMock.mockReturnValue(true)
+                    useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                        if (
+                            key ===
+                            FeatureFlagKey.EnableConsolidatedCancellationModal
+                        ) {
+                            return true
+                        }
+                        return false
+                    })
                 },
             },
             {
@@ -978,7 +1048,15 @@ describe('ProductPlanSelection', () => {
                 availablePlans: [smsPlan1],
                 buttonName: 'Remove product',
                 setupMock: () => {
-                    useFlagMock.mockReturnValue(true)
+                    useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                        if (
+                            key ===
+                            FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                        ) {
+                            return true
+                        }
+                        return false
+                    })
                 },
             },
             {
@@ -988,7 +1066,15 @@ describe('ProductPlanSelection', () => {
                 availablePlans: [voicePlan1],
                 buttonName: 'Remove product',
                 setupMock: () => {
-                    useFlagMock.mockReturnValue(true)
+                    useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                        if (
+                            key ===
+                            FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                        ) {
+                            return true
+                        }
+                        return false
+                    })
                 },
             },
         ])(
@@ -1188,7 +1274,17 @@ describe('ProductPlanSelection', () => {
 
                 beforeEach(() => {
                     if (requiresFlag) {
-                        useFlagMock.mockReturnValue(true)
+                        useFlagMock.mockImplementation(
+                            (key: FeatureFlagKey) => {
+                                if (
+                                    key ===
+                                    FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                                ) {
+                                    return true
+                                }
+                                return false
+                            },
+                        )
                     }
 
                     productProps = {
@@ -1476,7 +1572,15 @@ describe('ProductPlanSelection', () => {
         })
 
         it('should track event when Remove product button is clicked for SMS', async () => {
-            useFlagMock.mockReturnValue(true)
+            useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                if (
+                    key ===
+                    FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                ) {
+                    return true
+                }
+                return false
+            })
 
             const smsProps = {
                 ...props,
@@ -1512,7 +1616,15 @@ describe('ProductPlanSelection', () => {
         })
 
         it('should track event when Remove product button is clicked for Voice', async () => {
-            useFlagMock.mockReturnValue(true)
+            useFlagMock.mockImplementation((key: FeatureFlagKey) => {
+                if (
+                    key ===
+                    FeatureFlagKey.EnableConsolidatedCancellationModalPhone
+                ) {
+                    return true
+                }
+                return false
+            })
 
             const voiceProps = {
                 ...props,
