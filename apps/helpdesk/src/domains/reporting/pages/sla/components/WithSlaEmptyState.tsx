@@ -6,8 +6,17 @@ import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 
 import { ServiceLevelAgreementsEmptyState } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
 
-export const WithSlaEmptyState = ({ children }: PropsWithChildren<unknown>) => {
-    const { data, isLoading } = useListSlaPolicies()
+export type WithSlaEmptyStateProps = {
+    targetChannel?: string
+}
+
+export const WithSlaEmptyState = ({
+    children,
+    targetChannel,
+}: PropsWithChildren<WithSlaEmptyStateProps>) => {
+    const { data, isLoading } = useListSlaPolicies({
+        target_channel: targetChannel,
+    })
 
     if (isLoading) {
         return <Skeleton />

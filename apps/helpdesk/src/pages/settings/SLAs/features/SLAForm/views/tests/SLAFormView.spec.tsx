@@ -9,7 +9,7 @@ import {
 } from '@gorgias/helpdesk-types'
 
 import type { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
-import { renderWithRouter } from 'utils/testing'
+import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
 
 import { SLAFormView } from '../SLAFormView'
 
@@ -77,7 +77,7 @@ describe('SLAFormView', () => {
     })
 
     it('renders the form', () => {
-        renderWithRouter(<SLAFormView {...defaultProps} />)
+        renderWithQueryClientAndRouter(<SLAFormView {...defaultProps} />)
 
         expect(screen.getByDisplayValue('Foo SLA')).toBeInTheDocument()
         expect(
@@ -89,7 +89,7 @@ describe('SLAFormView', () => {
     })
 
     it('renders the delete button when policy is provided', () => {
-        renderWithRouter(
+        renderWithQueryClientAndRouter(
             <SLAFormView
                 {...defaultProps}
                 policy={defaultValues as unknown as MappedFormSLAPolicy}

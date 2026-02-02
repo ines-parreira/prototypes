@@ -6,21 +6,12 @@ import {
     CONTENT_HEADER_TEXT,
     CONTENT_SET_UP_BUTTON_TEXT,
     NO_BANNER_ALT_TEXT,
-    PAGE_TITLE,
     SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
     ServiceLevelAgreementsEmptyState,
 } from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState'
 import { renderWithRouter } from 'utils/testing'
 
 describe('ServiceLevelAgreementsEmptyState', () => {
-    it('renders page header title', () => {
-        renderWithRouter(<ServiceLevelAgreementsEmptyState />)
-
-        expect(
-            screen.getByRole('heading', { name: PAGE_TITLE }),
-        ).toBeInTheDocument()
-    })
-
     it('renders banner with correct alt text', () => {
         renderWithRouter(<ServiceLevelAgreementsEmptyState />)
 

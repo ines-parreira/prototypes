@@ -51,6 +51,10 @@ jest.mock('domains/reporting/hooks/useCleanStatsFilters', () => ({
     useCleanStatsFilters: () => {},
 }))
 
+jest.mock('domains/reporting/pages/sla/voice/VoiceSlaTargetInfoBanner', () => ({
+    VoiceSlaTargetInfoBanner: () => <div>Voice SLA Target Info Banner</div>,
+}))
+
 describe('<VoiceServiceLevelAgreements />', () => {
     const baseState: Partial<RootState> = {
         billing: fromJS({
@@ -93,6 +97,17 @@ describe('<VoiceServiceLevelAgreements />', () => {
         )
 
         expect(await screen.findByText('Analytics Footer')).toBeInTheDocument()
+    })
+
+    it('should render VoiceSlaTargetInfoBanner', async () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <VoiceServiceLevelAgreements />,
+            baseState,
+        )
+
+        expect(
+            await screen.findByText('Voice SLA Target Info Banner'),
+        ).toBeInTheDocument()
     })
 
     it('should show empty state when there are no SLA policies', async () => {

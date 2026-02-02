@@ -12,15 +12,14 @@ import {
     VoiceServiceLevelAgreementsChart,
     VoiceServiceLevelAgreementsReportConfig,
 } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
-
-const OVERVIEW_SECTION_LABEL = 'Overview'
+import { VoiceSlaTargetInfoBanner } from 'domains/reporting/pages/sla/voice/VoiceSlaTargetInfoBanner'
 
 export function VoiceServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
 
     return (
-        <WithSlaEmptyState>
+        <WithSlaEmptyState targetChannel="phone">
             <DashboardSection>
                 <DashboardGridCell size={getGridCellSize(12)} className="pb-0">
                     <FiltersPanelWrapper
@@ -41,8 +40,9 @@ export function VoiceServiceLevelAgreements() {
                         }}
                     />
                 </DashboardGridCell>
-            </DashboardSection>
-            <DashboardSection title={OVERVIEW_SECTION_LABEL} className="pb-0">
+                <DashboardGridCell size={getGridCellSize(12)}>
+                    <VoiceSlaTargetInfoBanner />
+                </DashboardGridCell>
                 <DashboardGridCell size={getGridCellSize(6)}>
                     <DashboardComponent
                         chart={

@@ -2,18 +2,24 @@ import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
+import { appQueryClient } from 'api/queryClient'
 import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { ChannelSelectBox } from '../ChannelSelectBox'
+
+const server = setupServer()
 
 /* the channels query doesn't seem to be available in the sdk */
 jest.mock('services/channels')
@@ -36,6 +42,27 @@ mockGetChannels.mockReturnValue([
         slug: TicketChannel.Email,
     } as Channel,
 ])
+
+const mockListSlaPolicies = mockListSlaPoliciesHandler()
+
+const localHandlers = [mockListSlaPolicies.handler]
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+beforeEach(() => {
+    server.use(...localHandlers)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    appQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 describe('ChannelSelectBox', () => {
     it('should render the component with all channels', async () => {
@@ -80,6 +107,15 @@ describe('ChannelSelectBox', () => {
         const user = userEvent.setup()
         const handleSubmit = jest.fn()
 
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [{ id: 1, target_channel: 'phone' }],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
         renderWithStoreAndQueryClientProvider(
             <Form
                 defaultValues={
@@ -104,12 +140,15 @@ describe('ChannelSelectBox', () => {
         await act(() => user.click(screen.getByText('Select')))
 
         await waitFor(() => {
-            expect(screen.getByRole('option', { name: 'Voice' })).toBeVisible()
+            expect(screen.getAllByText('Voice').length).toBeGreaterThan(0)
         })
 
-        const voiceOption = screen.getByRole('option', { name: 'Voice' })
+        const voiceOption = screen
+            .getAllByText('Voice')
+            .find((el) => el.closest('[role="option"]'))
+            ?.closest('[role="option"]')
 
-        await act(() => user.click(voiceOption))
+        await act(() => user.click(voiceOption!))
 
         await act(() => user.keyboard('{Escape}'))
 
@@ -134,6 +173,15 @@ describe('ChannelSelectBox', () => {
     it('should set non-voice metrics when voice channel is deselected', async () => {
         const user = userEvent.setup()
         const handleSubmit = jest.fn()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [{ id: 1, target_channel: 'phone' }],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
 
         renderWithStoreAndQueryClientProvider(
             <Form
@@ -168,11 +216,14 @@ describe('ChannelSelectBox', () => {
         await act(() => user.click(button))
 
         await waitFor(() => {
-            expect(screen.getByRole('option', { name: 'Voice' })).toBeVisible()
+            expect(screen.getAllByText('Voice').length).toBeGreaterThan(0)
         })
 
-        const voiceOption = screen.getByRole('option', { name: 'Voice' })
-        await act(() => user.click(voiceOption))
+        const voiceOption = screen
+            .getAllByText('Voice')
+            .find((el) => el.closest('[role="option"]'))
+            ?.closest('[role="option"]')
+        await act(() => user.click(voiceOption!))
 
         await waitFor(() => {
             expect(screen.getByRole('option', { name: 'Email' })).toBeVisible()
@@ -324,5 +375,89 @@ describe('ChannelSelectBox', () => {
             }),
             expect.anything(),
         )
+    })
+
+    it('should show caption when voice channel has existing policy', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [
+                        {
+                            id: 1,
+                            target_channel: 'phone',
+                            metrics: [
+                                {
+                                    name: SLAPolicyMetricType.WaitTime,
+                                    threshold: 1,
+                                    unit: SLAPolicyMetricUnit.Minute,
+                                },
+                            ],
+                        },
+                    ],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await act(() => user.click(screen.getByText('Select')))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('A Voice SLA has already been created.'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should show default caption when no voice policy exists', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await act(() => user.click(screen.getByText('Select')))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Voice uses a different SLA policy and cannot be combined with other channels.',
+                ),
+            ).toBeInTheDocument()
+        })
     })
 })

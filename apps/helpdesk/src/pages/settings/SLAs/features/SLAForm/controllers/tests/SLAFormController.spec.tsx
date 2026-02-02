@@ -33,10 +33,6 @@ const localHandlers = [
     mockArchiveSlaPolicy.handler,
 ]
 
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
 beforeEach(() => {
     server.use(...localHandlers)
 })

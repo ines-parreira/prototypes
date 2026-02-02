@@ -5,7 +5,6 @@ import { Button } from '@gorgias/axiom'
 import icon from 'assets/img/slas/no-slas-icon.png'
 import css from 'domains/reporting/pages/sla/ServiceLevelAgreementsEmptyState.less'
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
-import PageHeader from 'pages/common/components/PageHeader'
 
 export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/sla'
 export const NO_BANNER_ALT_TEXT = 'No SLAs banner'
@@ -20,7 +19,6 @@ export const CONTENT_SET_UP_BUTTON_TEXT = 'Set up your first SLA'
 
 export const ServiceLevelAgreementsEmptyState = () => (
     <div className={`full-height ${css.container}`}>
-        <PageHeader title={PAGE_TITLE} />
         <div className={css.contentWrapper}>
             <ImageContainer>
                 <img

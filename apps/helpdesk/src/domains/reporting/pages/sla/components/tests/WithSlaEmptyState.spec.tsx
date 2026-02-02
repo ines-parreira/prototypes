@@ -44,4 +44,38 @@ describe('WithSlaEmptyState', () => {
 
         expect(screen.getByText(child)).toBeInTheDocument()
     })
+
+    it('should pass targetChannel to useListSlaPolicies', () => {
+        const useListSlaPoliciesSpy = jest
+            .spyOn(api, 'useListSlaPolicies')
+            .mockReturnValue({
+                isLoading: false,
+                data: { data: { data: [{}] } },
+            } as any)
+
+        renderWithRouter(
+            <WithSlaEmptyState targetChannel="phone">
+                something
+            </WithSlaEmptyState>,
+        )
+
+        expect(useListSlaPoliciesSpy).toHaveBeenCalledWith({
+            target_channel: 'phone',
+        })
+    })
+
+    it('should call useListSlaPolicies without targetChannel when not provided', () => {
+        const useListSlaPoliciesSpy = jest
+            .spyOn(api, 'useListSlaPolicies')
+            .mockReturnValue({
+                isLoading: false,
+                data: { data: { data: [{}] } },
+            } as any)
+
+        renderWithRouter(<WithSlaEmptyState>something</WithSlaEmptyState>)
+
+        expect(useListSlaPoliciesSpy).toHaveBeenCalledWith({
+            target_channel: undefined,
+        })
+    })
 })

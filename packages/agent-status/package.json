@@ -28,7 +28,7 @@
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
-        "@gorgias/helpdesk-mocks": "^0.8.35",
+        "@gorgias/helpdesk-mocks": "^0.8.40",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/forms": "workspace:*",

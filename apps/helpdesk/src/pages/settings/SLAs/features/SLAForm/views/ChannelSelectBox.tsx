@@ -2,6 +2,7 @@ import { FormField, useFormContext } from '@repo/forms'
 
 import type { MultiSelectFieldProps } from '@gorgias/axiom'
 import { ListItem, MultiSelectField } from '@gorgias/axiom'
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
     SLAPolicyMetricUnit,
@@ -21,6 +22,9 @@ const FIELD_NAME = 'target_channels'
 const PHONE_CHANNEL_SLUG = 'phone'
 
 export function ChannelSelectBox() {
+    const { data: voicePolicies } = useListSlaPolicies({
+        target_channel: 'phone',
+    })
     const { watch, setValue } = useFormContext<SLAFormValues>()
     const defaultValues = useFormValues()
 
@@ -35,7 +39,10 @@ export function ChannelSelectBox() {
 
     const hasSelection = !!value.length
     const isVoiceChannelSelected = value.includes(PHONE_CHANNEL_SLUG)
-    const isVoiceChannelDisabled = hasSelection && !isVoiceChannelSelected
+    const isNonVoiceChannelSelected = hasSelection && !isVoiceChannelSelected
+    const hasExistingVoicePolicy = !!voicePolicies?.data.data.length
+    const isVoiceChannelDisabled =
+        !hasExistingVoicePolicy || isNonVoiceChannelSelected
 
     const handleChannelChange = (newValue: Option[]) => {
         const isNewChannelVoice = newValue.find(
@@ -83,7 +90,13 @@ export function ChannelSelectBox() {
                     option.id === PHONE_CHANNEL_SLUG ? (
                         <ListItem
                             label={option.name}
+                            textValue={option.name}
                             isDisabled={isVoiceChannelDisabled}
+                            caption={
+                                hasExistingVoicePolicy
+                                    ? 'A Voice SLA has already been created.'
+                                    : `Voice uses a different SLA policy and cannot be combined with other channels.`
+                            }
                         />
                     ) : (
                         <ListItem
