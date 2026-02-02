@@ -47,20 +47,6 @@ export function formatDateRangeSubtitle(dateRange?: ImpactDateRange): string {
     return `${startStr} – ${endStr}`
 }
 
-const MAX_DATE_RANGE_DAYS = 365
-const MS_PER_DAY = 1000 * 60 * 60 * 24
-
-/**
- * Calculate the date range for a specific version's impact data.
- *
- * The range spans from when this version was published until the next version
- * was published (or current time if it's the latest version).
- * The end date is capped at 365 days from the start date.
- *
- * @param versionId - The ID of the version we're calculating the range for
- * @param versions - Array of versions ordered by published_datetime DESC (newest first)
- * @returns DateRange for the version's active period (max 365 days)
- */
 export function getVersionImpactDateRange(
     versionId: number,
     versions: ArticleTranslationVersion[],
@@ -77,15 +63,9 @@ export function getVersionImpactDateRange(
         return getLast28DaysDateRange()
     }
 
-    // The "next version" (published after this one) is at index - 1
-    // because the array is sorted newest-first
     const nextVersion = currentIndex > 0 ? versions[currentIndex - 1] : null
 
     const startDatetime = currentVersion.published_datetime
-    const startDate = new Date(startDatetime)
-    const maxEndDate = new Date(
-        startDate.getTime() + MAX_DATE_RANGE_DAYS * MS_PER_DAY,
-    )
 
     let endDate: Date
 
@@ -95,11 +75,6 @@ export function getVersionImpactDateRange(
         const now = new Date()
         now.setHours(now.getHours() + 1, 0, 0, 0)
         endDate = now
-    }
-
-    // Cap end date at 365 days from start
-    if (endDate > maxEndDate) {
-        endDate = maxEndDate
     }
 
     return {

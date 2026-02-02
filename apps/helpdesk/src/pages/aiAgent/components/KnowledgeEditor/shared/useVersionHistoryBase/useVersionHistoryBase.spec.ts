@@ -550,8 +550,8 @@ describe('getVersionImpactDateRange', () => {
         })
     })
 
-    describe('365-day cap', () => {
-        it('should cap end date at 365 days when next version is more than 365 days later', () => {
+    describe('no date range cap', () => {
+        it('should use full range when next version is more than 365 days later', () => {
             const twoYearsLater = '2027-01-05T10:00:00Z'
             const versionsWithLongGap: ArticleTranslationVersion[] = [
                 createVersion(2, twoYearsLater),
@@ -560,27 +560,13 @@ describe('getVersionImpactDateRange', () => {
 
             const result = getVersionImpactDateRange(1, versionsWithLongGap)
 
-            expect(result.start_datetime).toBe('2025-01-05T10:00:00Z')
-
-            const startDate = new Date('2025-01-05T10:00:00Z')
-            const endDate = new Date(result.end_datetime)
-            const diffDays =
-                (endDate.getTime() - startDate.getTime()) /
-                (1000 * 60 * 60 * 24)
-
-            expect(diffDays).toBe(365)
-        })
-
-        it('should not cap when next version is within 365 days', () => {
-            const result = getVersionImpactDateRange(1, versionsFixture)
-
             expect(result).toEqual({
                 start_datetime: '2025-01-05T10:00:00Z',
-                end_datetime: '2025-02-10T10:00:00.000Z',
+                end_datetime: '2027-01-05T10:00:00.000Z',
             })
         })
 
-        it('should cap at exactly 365 days for latest version published more than 365 days ago', () => {
+        it('should use full range for latest version published more than 365 days ago', () => {
             jest.useFakeTimers()
             const oldDate = '2020-01-01T10:00:00Z'
             const now = new Date('2025-01-01T12:00:00Z')
@@ -593,30 +579,6 @@ describe('getVersionImpactDateRange', () => {
             const result = getVersionImpactDateRange(1, oldVersions)
 
             expect(result.start_datetime).toBe(oldDate)
-
-            const startDate = new Date(oldDate)
-            const endDate = new Date(result.end_datetime)
-            const diffDays =
-                (endDate.getTime() - startDate.getTime()) /
-                (1000 * 60 * 60 * 24)
-
-            expect(diffDays).toBe(365)
-
-            jest.useRealTimers()
-        })
-
-        it('should not cap for latest version published within last 365 days', () => {
-            jest.useFakeTimers()
-            const now = new Date('2025-06-01T12:00:00Z')
-            jest.setSystemTime(now)
-
-            const recentVersion: ArticleTranslationVersion[] = [
-                createVersion(1, '2025-03-15T10:00:00Z'),
-            ]
-
-            const result = getVersionImpactDateRange(1, recentVersion)
-
-            expect(result.start_datetime).toBe('2025-03-15T10:00:00Z')
 
             const expectedEnd = new Date(now)
             expectedEnd.setHours(expectedEnd.getHours() + 1, 0, 0, 0)
