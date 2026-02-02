@@ -154,3 +154,8 @@ export const VALIDATION = {
     NAME_MAX_LENGTH: 30,
     DESCRIPTION_MAX_LENGTH: 70,
 } as const
+
+/**
+ * Custom unavailability statuses (w/ predefined ones)
+ */
+export const CUSTOM_UNAVAILABILITY_STATUS_LIMIT = 25

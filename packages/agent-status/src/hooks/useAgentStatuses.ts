@@ -2,7 +2,10 @@ import { useMemo } from 'react'
 
 import { useListCustomUserAvailabilityStatuses } from '@gorgias/helpdesk-queries'
 
-import { SYSTEM_STATUSES } from '../constants'
+import {
+    CUSTOM_UNAVAILABILITY_STATUS_LIMIT,
+    SYSTEM_STATUSES,
+} from '../constants'
 import type { AgentStatusWithSystem } from '../types'
 
 export const useAgentStatuses = () => {
@@ -21,9 +24,14 @@ export const useAgentStatuses = () => {
         return [...SYSTEM_STATUSES, ...customStatuses]
     }, [tableData])
 
+    const hasReachedCreateLimit = useMemo(() => {
+        return tableData.length >= CUSTOM_UNAVAILABILITY_STATUS_LIMIT
+    }, [tableData.length])
+
     return {
         ...queryResult,
         data: allStatuses,
         isLoading,
+        hasReachedCreateLimit,
     }
 }

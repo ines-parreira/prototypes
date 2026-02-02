@@ -469,4 +469,102 @@ describe('AgentUnavailabilityStatuses', () => {
             expect(link).toHaveAttribute('rel', 'noopener noreferrer')
         })
     })
+
+    describe('Custom Status Limit', () => {
+        it('should not show limit banner when under 25 custom statuses', async () => {
+            renderComponent()
+
+            await waitFor(() =>
+                expect(screen.getByText('Lunch break')).toBeInTheDocument(),
+            )
+
+            expect(
+                screen.queryByText(/reached the 25 custom status limit/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show limit banner when 25 or more custom statuses exist', async () => {
+            const customStatuses = Array.from({ length: 25 }, (_, i) => ({
+                id: `${i + 1}`,
+                name: `Status ${i + 1}`,
+                duration_unit: null,
+                duration_value: null,
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-01T00:00:00Z',
+            }))
+
+            const mockList = mockListCustomUserAvailabilityStatusesHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: customStatuses,
+                    }),
+            )
+            server.use(mockList.handler)
+
+            renderComponent()
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText(
+                        'You have reached the 25 custom status limit',
+                    ),
+                ).toBeInTheDocument(),
+            )
+
+            expect(
+                screen.getByText(
+                    /Delete existing custom statuses to add more/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should disable create button when limit is reached', async () => {
+            const customStatuses = Array.from({ length: 25 }, (_, i) => ({
+                id: `${i + 1}`,
+                name: `Status ${i + 1}`,
+                duration_unit: null,
+                duration_value: null,
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-01-01T00:00:00Z',
+            }))
+
+            const mockList = mockListCustomUserAvailabilityStatusesHandler(
+                async ({ data }) =>
+                    HttpResponse.json({
+                        ...data,
+                        data: customStatuses,
+                    }),
+            )
+            server.use(mockList.handler)
+
+            renderComponent()
+
+            await waitFor(() =>
+                expect(
+                    screen.getByText(
+                        'You have reached the 25 custom status limit',
+                    ),
+                ).toBeInTheDocument(),
+            )
+
+            const createButton = screen.getByRole('button', {
+                name: /create status/i,
+            })
+            expect(createButton).toBeDisabled()
+        })
+
+        it('should enable create button when under limit', async () => {
+            renderComponent()
+
+            await waitFor(() =>
+                expect(screen.getByText('Lunch break')).toBeInTheDocument(),
+            )
+
+            const createButton = screen.getByRole('button', {
+                name: /create status/i,
+            })
+            expect(createButton).not.toBeDisabled()
+        })
+    })
 })

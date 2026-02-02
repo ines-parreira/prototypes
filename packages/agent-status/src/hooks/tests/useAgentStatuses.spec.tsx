@@ -252,4 +252,46 @@ describe('useAgentStatuses', () => {
             })
         })
     })
+
+    describe('hasReachedCreateLimit', () => {
+        it.each([
+            { returnedStatusCount: 0, expectedHasReachedLimit: false },
+            { returnedStatusCount: 24, expectedHasReachedLimit: false },
+            { returnedStatusCount: 25, expectedHasReachedLimit: true },
+            { returnedStatusCount: 26, expectedHasReachedLimit: true },
+        ])(
+            'should return $expectedHasReachedLimit when $returnedStatusCount custom statuses exist',
+            ({ returnedStatusCount, expectedHasReachedLimit }) => {
+                const customStatuses = Array.from(
+                    { length: returnedStatusCount },
+                    (_, i) => ({
+                        id: `${i}`,
+                        name: `Status ${i}`,
+                        duration_unit: 'minutes' as const,
+                        duration_value: 30,
+                        created_datetime: '2024-01-01T00:00:00Z',
+                        updated_datetime: '2024-01-01T00:00:00Z',
+                    }),
+                )
+
+                vi.mocked(
+                    helpdeskQueries.useListCustomUserAvailabilityStatuses,
+                ).mockReturnValue({
+                    data: {
+                        data: {
+                            data: customStatuses,
+                        },
+                    },
+                    isLoading: false,
+                    isError: false,
+                } as any)
+
+                const { result } = renderHook(() => useAgentStatuses())
+
+                expect(result.current.hasReachedCreateLimit).toBe(
+                    expectedHasReachedLimit,
+                )
+            },
+        )
+    })
 })

@@ -24,10 +24,13 @@ import { Banner, Box, Button, Icon } from '@gorgias/axiom'
 import PageHeader from 'pages/common/components/PageHeader'
 import { useAgentStatusLegacyBridgeFunctions } from 'pages/settings/agentUnavailability/useAgentStatusLegacyBridgeFunctions'
 
+import { CUSTOM_UNAVAILABILITY_STATUS_LIMIT } from '../../../../../../packages/agent-status/src/constants'
+
 function AgentUnavailabilityStatuses() {
     const bridgeFunctions = useAgentStatusLegacyBridgeFunctions()
     const { dispatchNotification } = bridgeFunctions
-    const { data, isLoading, isError, refetch } = useAgentStatuses()
+    const { data, isLoading, isError, refetch, hasReachedCreateLimit } =
+        useAgentStatuses()
 
     const createMutation = useCreateAgentStatus()
     const updateMutation = useUpdateAgentStatus()
@@ -127,7 +130,10 @@ function AgentUnavailabilityStatuses() {
                         >
                             Learning resources
                         </Button>
-                        <Button onClick={createModal.open}>
+                        <Button
+                            onClick={createModal.open}
+                            isDisabled={hasReachedCreateLimit}
+                        >
                             Create status
                         </Button>
                     </Box>
@@ -144,6 +150,14 @@ function AgentUnavailabilityStatuses() {
                         is spent. You can track this{' '}
                         <Link to="/app/stats/live-agents">here</Link>.
                     </p>
+                    {hasReachedCreateLimit && (
+                        <Banner
+                            variant="inline"
+                            intent="destructive"
+                            title={`You have reached the ${CUSTOM_UNAVAILABILITY_STATUS_LIMIT} custom status limit`}
+                            description="Delete existing custom statuses to add more."
+                        />
+                    )}
                     {isError && (
                         <Banner
                             variant="inline"
