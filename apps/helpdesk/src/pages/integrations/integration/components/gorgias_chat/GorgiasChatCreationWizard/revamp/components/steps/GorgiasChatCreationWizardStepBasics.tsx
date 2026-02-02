@@ -7,10 +7,10 @@ import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
 import type { Map } from 'immutable'
-import { Link } from 'react-router-dom'
 
 import {
     Button,
+    ButtonVariant,
     Card,
     Heading,
     Radio,
@@ -472,10 +472,32 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 preview={null}
                 footer={
-                    <>
-                        {isUpdate ? (
+                    <div className={css.wizardButtons}>
+                        <div className={css.wizardNavigationButtons}>
+                            {!isUpdate && (
+                                <Button
+                                    variant={ButtonVariant.Secondary}
+                                    isDisabled={isSubmitting}
+                                    onClick={() =>
+                                        history.push(
+                                            '/app/settings/channels/gorgias_chat',
+                                        )
+                                    }
+                                >
+                                    Cancel
+                                </Button>
+                            )}
                             <Button
-                                variant="tertiary"
+                                onClick={() => onSave(true, false, true)}
+                                isLoading={isSubmitting}
+                                variant={ButtonVariant.Primary}
+                            >
+                                Continue
+                            </Button>
+                        </div>
+                        {isUpdate && (
+                            <Button
+                                variant={ButtonVariant.Tertiary}
                                 onClick={() =>
                                     onSave()?.then(() => {
                                         history.push(
@@ -485,26 +507,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 }
                                 isDisabled={isSubmitting}
                             >
-                                {'Save & Customize Later'}
+                                Save and Exit
                             </Button>
-                        ) : (
-                            <Link to="/app/settings/channels/gorgias_chat">
-                                <Button
-                                    variant="secondary"
-                                    isDisabled={isSubmitting}
-                                >
-                                    Cancel
-                                </Button>
-                            </Link>
                         )}
-                        <Button
-                            onClick={() => onSave(true, false, true)}
-                            isLoading={isSubmitting}
-                            variant="primary"
-                        >
-                            {isUpdate ? 'Continue' : 'Create & Customize'}
-                        </Button>
-                    </>
+                    </div>
                 }
             >
                 <Card p="lg">

@@ -92,7 +92,7 @@ describe('<StorePicker />', () => {
         render(<StorePicker {...defaultProps} />)
 
         expect(
-            screen.getByText(/Connect a store to use AI Agent features/),
+            screen.getByText(/Link your store to enable AI Agent features/),
         ).toBeInTheDocument()
     })
 

@@ -119,7 +119,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>,
         )
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(getAllByText('This field is required.')).toHaveLength(2)
 
@@ -131,7 +131,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             getByLabelText('Ecommerce platforms', { selector: 'input' }),
         ).toBeChecked()
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(getAllByText('This field is required.')).toHaveLength(2)
     })
@@ -157,7 +157,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
         const [formData, , silentUpdate, , goToNextStep, successMessage] =
@@ -275,9 +275,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         )
 
         expect(getByRole('button', { name: 'Cancel' })).toBeAriaDisabled()
-        expect(
-            getByRole('button', { name: /Create & Customize/ }),
-        ).toBeAriaDisabled()
+        expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()
     })
 
     it('disables buttons when submitting update form', () => {
@@ -297,7 +295,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         )
 
         expect(
-            getByRole('button', { name: 'Save & Customize Later' }),
+            getByRole('button', { name: 'Save and Exit' }),
         ).toBeAriaDisabled()
         expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()
     })
@@ -324,7 +322,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
         const [formData] = spy.mock.calls[0]
@@ -474,7 +472,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
 
         expect(spy).toHaveBeenCalledTimes(1)
         const [formData] = spy.mock.calls[0]
@@ -483,7 +481,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         expect(form.meta.preferences.live_chat_availability).toBe('offline')
     })
 
-    it('should save and redirect when clicking Save & Customize Later in update mode', async () => {
+    it('should save and redirect when clicking Save and Exit in update mode', async () => {
         const integrationWithName = fromJS({
             id: 1,
             name: 'Existing Chat',
@@ -518,7 +516,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', { name: 'Save & Customize Later' }))
+        fireEvent.click(getByRole('button', { name: 'Save and Exit' }))
 
         await waitFor(() => {
             expect(spy).toHaveBeenCalledTimes(1)
@@ -579,7 +577,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>,
         )
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
         expect(queryAllByText('This field is required.')).toHaveLength(2)
 
         fireEvent.click(
@@ -590,7 +588,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             target: { value: 'Test' },
         })
 
-        fireEvent.click(getByRole('button', { name: 'Create & Customize' }))
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
         expect(queryAllByText('This field is required.')).toHaveLength(0)
     })
 })

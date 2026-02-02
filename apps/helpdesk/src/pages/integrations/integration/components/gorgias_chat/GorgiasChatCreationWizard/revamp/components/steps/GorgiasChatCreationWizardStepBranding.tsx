@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, Card, Heading, Text } from '@gorgias/axiom'
+import { Button, ButtonVariant, Card, Heading, Text } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
@@ -140,6 +140,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>
                             <Button
+                                variant={ButtonVariant.Secondary}
                                 onClick={goToPreviousStep}
                                 isDisabled={isSubmitting}
                             >
@@ -161,9 +162,9 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 })
                             }
                             isDisabled={isSubmitting}
-                            variant={'tertiary'}
+                            variant={ButtonVariant.Tertiary}
                         >
-                            {'Save & Customize Later'}
+                            Save and Exit
                         </Button>
                     </div>
                 }

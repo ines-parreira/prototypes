@@ -50,18 +50,18 @@ describe('<LanguagePicker />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should show Add More Languages button when multi-language is enabled', () => {
+    it('should show Add language button when multi-language is enabled', () => {
         render(<LanguagePicker {...defaultProps} isMultiLanguageEnabled />)
 
-        expect(screen.getByText('Add More Languages')).toBeInTheDocument()
+        expect(screen.getByText('Add language')).toBeInTheDocument()
     })
 
-    it('should not show Add More Languages button when multi-language is disabled', () => {
+    it('should not show Add language button when multi-language is disabled', () => {
         render(
             <LanguagePicker {...defaultProps} isMultiLanguageEnabled={false} />,
         )
 
-        expect(screen.queryByText('Add More Languages')).not.toBeInTheDocument()
+        expect(screen.queryByText('Add language')).not.toBeInTheDocument()
     })
 
     it('should display selected languages as tags', () => {
@@ -120,7 +120,7 @@ describe('<LanguagePicker />', () => {
             )
 
             const addButton = screen.getByRole('button', {
-                name: /Add More Languages/i,
+                name: /Add language/i,
             })
             await act(() => user.click(addButton))
 
@@ -163,7 +163,7 @@ describe('<LanguagePicker />', () => {
             )
 
             const addButton = screen.getByRole('button', {
-                name: /Add More Languages/i,
+                name: /Add language/i,
             })
             await act(() => user.click(addButton))
 
@@ -217,7 +217,7 @@ describe('<LanguagePicker />', () => {
             ])
         })
 
-        it('should not show Add More Languages button when all languages are selected', () => {
+        it('should not show Add language button when all languages are selected', () => {
             const allLanguagesSelected: Language[] = [
                 { value: 'en-US', label: 'English (US)', isDefault: true },
                 { value: 'fr-FR', label: 'French' },
@@ -234,7 +234,7 @@ describe('<LanguagePicker />', () => {
             )
 
             expect(
-                screen.queryByRole('button', { name: /Add More Languages/i }),
+                screen.queryByRole('button', { name: /Add language/i }),
             ).not.toBeInTheDocument()
         })
     })

@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, Card } from '@gorgias/axiom'
+import { Button, ButtonVariant, Card } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -256,7 +256,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>
                             <Button
-                                variant="secondary"
+                                variant={ButtonVariant.Secondary}
                                 onClick={goToPreviousStep}
                                 isDisabled={isFormSubmitting}
                             >
@@ -270,7 +270,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             </Button>
                         </div>
                         <Button
-                            variant="tertiary"
+                            variant={ButtonVariant.Tertiary}
                             onClick={() =>
                                 onSave(false, true).then(() => {
                                     history.push(
@@ -280,7 +280,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             }
                             isDisabled={isFormSubmitting}
                         >
-                            {'Save & Customize Later'}
+                            Save and Exit
                         </Button>
                     </div>
                 }

@@ -93,12 +93,7 @@ export const StorePicker = ({
         [chatsPerStore],
     )
 
-    const helperText = useMemo(() => {
-        return `Connect a store to use AI Agent features in chat and
-        to enable
-        ${shouldUseThemeAppExtensionInstallation ? 'quick' : '1-click'}
-        install for Shopify.`
-    }, [shouldUseThemeAppExtensionInstallation])
+    const helperText = `Link your store to enable AI Agent features and ${shouldUseThemeAppExtensionInstallation ? 'quick' : '1-click'} Shopify installation.`
 
     return (
         <>

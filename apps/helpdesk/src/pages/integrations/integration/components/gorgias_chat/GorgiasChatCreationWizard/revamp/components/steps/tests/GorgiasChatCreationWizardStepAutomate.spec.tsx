@@ -109,7 +109,7 @@ describe('<GorgiasChatCreationWizardStepAutomate />', () => {
         const { getByRole } = renderComponent()
 
         expect(
-            getByRole('button', { name: 'Save & Customize Later' }),
+            getByRole('button', { name: 'Save and Exit' }),
         ).toBeInTheDocument()
         expect(getByRole('button', { name: 'Back' })).toBeInTheDocument()
         expect(getByRole('button', { name: 'Continue' })).toBeInTheDocument()
@@ -119,7 +119,7 @@ describe('<GorgiasChatCreationWizardStepAutomate />', () => {
         const { getByRole } = renderComponent({ isSubmitting: true })
 
         expect(
-            getByRole('button', { name: 'Save & Customize Later' }),
+            getByRole('button', { name: 'Save and Exit' }),
         ).toBeAriaDisabled()
         expect(getByRole('button', { name: 'Back' })).toBeAriaDisabled()
         expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()

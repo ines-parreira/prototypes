@@ -177,7 +177,7 @@ export function LanguagePicker({
                                 leadingSlot="add"
                                 size="sm"
                             >
-                                Add More Languages
+                                Add language
                             </Button>
                         )}
                     >

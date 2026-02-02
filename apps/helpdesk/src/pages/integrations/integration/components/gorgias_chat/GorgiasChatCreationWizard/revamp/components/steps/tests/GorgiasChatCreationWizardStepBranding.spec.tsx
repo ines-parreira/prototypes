@@ -146,7 +146,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
         )
 
         expect(
-            getByRole('button', { name: 'Save & Customize Later' }),
+            getByRole('button', { name: 'Save and Exit' }),
         ).toBeAriaDisabled()
         expect(getByRole('button', { name: 'Back' })).toBeAriaDisabled()
         expect(getByRole('button', { name: /Continue/ })).toBeAriaDisabled()

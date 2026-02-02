@@ -6,7 +6,14 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, Card, Heading, Radio, RadioGroup } from '@gorgias/axiom'
+import {
+    Button,
+    ButtonVariant,
+    Card,
+    Heading,
+    Radio,
+    RadioGroup,
+} from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -192,7 +199,7 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                     <div className={css.wizardButtons}>
                         <div className={css.wizardNavigationButtons}>
                             <Button
-                                variant="secondary"
+                                variant={ButtonVariant.Secondary}
                                 onClick={goToPreviousStep}
                                 isDisabled={isSubmitting}
                             >
@@ -201,14 +208,14 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             <Button
                                 onClick={() => onSave(true)}
                                 isLoading={isSubmitting}
-                                variant="primary"
+                                variant={ButtonVariant.Primary}
                             >
                                 Install{' '}
                                 {isOneClickInstallation ? '' : 'Manually'}
                             </Button>
                         </div>
                         <Button
-                            variant="tertiary"
+                            variant={ButtonVariant.Tertiary}
                             onClick={() =>
                                 onSave(false, true)?.then(() => {
                                     history.push(
