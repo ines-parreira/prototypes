@@ -250,6 +250,18 @@ describe('MultiStoreFilter', () => {
         expect(screen.getByText('0')).toBeInTheDocument()
     })
 
+    it('should call statFiltersDirty when opening dropdown and statFiltersClean when closing dropdown', async () => {
+        renderComponent()
+
+        await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        expect(dispatchStatFiltersDirty).toHaveBeenCalled()
+
+        await userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+        expect(dispatchStatFiltersClean).toHaveBeenCalled()
+    })
+
     describe('MultiStoreFilterWithState', () => {
         it('should render MultiStoreFilterWithState component', async () => {
             const spy = jest.spyOn(

@@ -31,6 +31,10 @@ import {
 } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import {
+    statFiltersClean,
+    statFiltersDirty,
+} from 'domains/reporting/state/ui/stats/actions'
+import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
@@ -130,6 +134,7 @@ export default function MultiStoreFilter({
     const handleDropdownOpen = () => {
         dispatchStatFiltersDirty()
     }
+
     const handleDropdownClosed = () => {
         logSegmentEvent(FilterKey.Stores, LogicalOperatorLabel[value.operator])
         dispatchStatFiltersClean()
@@ -183,6 +188,8 @@ export const MultiStoreFilterWithState = connect(
             mergeStatsFiltersWithLogicalOperator({
                 stores: emptyFilter,
             }),
+        dispatchStatFiltersDirty: statFiltersDirty,
+        dispatchStatFiltersClean: statFiltersClean,
     },
 )(MultiStoreFilter)
 
