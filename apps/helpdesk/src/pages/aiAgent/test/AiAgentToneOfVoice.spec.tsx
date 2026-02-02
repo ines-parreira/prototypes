@@ -68,21 +68,22 @@ jest.mock('components/EmojiPicker/EmojiPicker', () => ({
     ),
 }))
 jest.mock(
-    'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent',
+    'pages/aiAgent/components/StoreConfigForm/FormComponents/PersonalitySelector',
     () => ({
-        ToneOfVoiceComponent: ({ value, onChange }: any) => (
-            <div role="group" aria-label="Select tone of voice">
+        PersonalitySelector: ({ value, onChange }: any) => (
+            <div role="group" aria-label="Select personality">
                 {['Friendly', 'Professional', 'Sophisticated', 'Custom'].map(
-                    (tone) => (
-                        <label key={tone}>
+                    (personality) => (
+                        <label key={personality} htmlFor={personality}>
                             <input
-                                type="radio"
-                                name="toneOfVoice"
-                                value={tone}
-                                checked={value === tone}
-                                onChange={() => onChange(tone)}
+                                id={personality}
+                                type="checkbox"
+                                name="personality"
+                                value={personality}
+                                checked={value === personality}
+                                onChange={() => onChange(personality)}
                             />
-                            {tone}
+                            {personality}
                         </label>
                     ),
                 )}

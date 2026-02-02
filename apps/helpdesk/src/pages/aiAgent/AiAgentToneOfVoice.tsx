@@ -22,7 +22,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { useDisplayPlaygroundButtonInLayoutHeader } from './components/AiAgentLayout/usePlaygroundButtonInLayoutHeader'
-import { ToneOfVoiceComponent } from './components/StoreConfigForm/FormComponents/ToneOfVoiceComponent'
+import { PersonalitySelector } from './components/StoreConfigForm/FormComponents/PersonalitySelector'
 import type { ToneOfVoice } from './constants'
 import { CHANGES_SAVED_SUCCESS } from './constants'
 import { usePlaygroundPanel } from './hooks/usePlaygroundPanel'
@@ -356,7 +356,7 @@ export function AiAgentToneOfVoice() {
                     width="100%"
                     gap="md"
                 >
-                    <ToneOfVoiceComponent
+                    <PersonalitySelector
                         value={genericToneOfVoice}
                         onChange={setGenericToneOfVoice}
                     />
