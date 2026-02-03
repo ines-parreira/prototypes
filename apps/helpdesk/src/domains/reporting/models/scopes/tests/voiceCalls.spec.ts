@@ -6,6 +6,8 @@ import {
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import {
     mapVoiceCallDirectionToScopeOrder,
+    voiceCallsAchievedExposures,
+    voiceCallsAchievedExposuresQueryFactoryV2,
     voiceCallsAverageTalkTime,
     voiceCallsAverageTalkTimeQueryFactoryV2,
     voiceCallsAverageWaitTime,
@@ -149,6 +151,19 @@ describe('voiceCallsScope', () => {
         })
     })
 
+    describe('voiceCallsAchievedExposures', () => {
+        it('creates query with correct metric name and measures', () => {
+            const actual = voiceCallsAchievedExposures.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['achievedExposures'],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_CALL_ACHIEVED_EXPOSURES_TREND,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+    })
+
     describe('voiceCallsSlaAchievementRateQueryFactoryV2', () => {
         it('returns query with inboundCalls segment', () => {
             const result = voiceCallsSlaAchievementRateQueryFactoryV2(context)
@@ -183,6 +198,57 @@ describe('voiceCallsScope', () => {
                 (f: { member: string }) => f.member === 'agentId',
             )
             expect(agentIdFilter).toBeUndefined()
+        })
+    })
+
+    describe('voiceCallsAchievedExposuresQueryFactoryV2', () => {
+        it('returns query without segment filters when no segment provided', () => {
+            const result = voiceCallsAchievedExposuresQueryFactoryV2(context)
+
+            const callDirectionFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'callDirection',
+            )
+            expect(callDirectionFilter).toBeUndefined()
+        })
+
+        it('includes agentId filter when assignedCallsOnly is true', () => {
+            const result = voiceCallsAchievedExposuresQueryFactoryV2(
+                context,
+                undefined,
+                true,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: 'agentId',
+                operator: 'set',
+                values: [],
+            })
+        })
+
+        it('does not include agentId filter when assignedCallsOnly is false', () => {
+            const result = voiceCallsAchievedExposuresQueryFactoryV2(
+                context,
+                undefined,
+                false,
+            )
+
+            const agentIdFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'agentId',
+            )
+            expect(agentIdFilter).toBeUndefined()
+        })
+
+        it('applies segment filters when segment is provided', () => {
+            const result = voiceCallsAchievedExposuresQueryFactoryV2(
+                context,
+                VoiceCallSegment.inboundCalls,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
         })
     })
 

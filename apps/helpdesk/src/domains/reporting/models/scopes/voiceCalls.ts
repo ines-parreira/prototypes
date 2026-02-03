@@ -21,6 +21,7 @@ const voiceCallsScope = defineScope({
         'averageWaitTimeInSeconds',
         'slaAchievementRate',
         'voiceCallsCount',
+        'achievedExposures',
     ],
     dimensions: [
         'agentId',
@@ -354,5 +355,40 @@ export const voiceCallsCountPerFilteringAgentQueryFactoryV2 = (
             segment,
         ),
         limit: 10000,
+    })
+}
+
+export const voiceCallsAchievedExposures = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_CALL_ACHIEVED_EXPOSURES_TREND)
+    .defineQuery(() => ({
+        measures: ['achievedExposures'] as const,
+    }))
+
+export const voiceCallsAchievedExposuresQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    segment?: VoiceCallSegment,
+    assignedCallsOnly = false,
+    temporaryFixPeriod = true,
+) => {
+    // TODO(2026): remove getAdvancedVoicePeriodFilters as we won't be able to query data before 2024
+    return voiceCallsAchievedExposures.build({
+        ...ctx,
+        filters: withVoiceCallSegment(
+            {
+                ...(assignedCallsOnly
+                    ? {
+                          [APIOnlyFilterKey.AgentId]: withLogicalOperator(
+                              [],
+                              ApiOnlyOperatorEnum.SET,
+                          ),
+                      }
+                    : {}),
+                ...ctx.filters,
+                period: temporaryFixPeriod
+                    ? getAdvancedVoicePeriodFilters(ctx.filters.period)
+                    : ctx.filters.period,
+            },
+            segment,
+        ),
     })
 }

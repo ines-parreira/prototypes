@@ -35,6 +35,7 @@ export const TrendCard = ({
     metricFormat,
     chartId,
     dashboard,
+    titleExtra,
 }: {
     useTrend: MetricTrendHook
     hint?: TooltipData
@@ -47,6 +48,7 @@ export const TrendCard = ({
         | SatisfactionMetric
         | TrendMetric
     tip?: ReactNode
+    titleExtra?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
 } & DashboardChartProps) => {
@@ -68,6 +70,7 @@ export const TrendCard = ({
             dashboard={dashboard}
             chartId={chartId}
             tip={tip}
+            titleExtra={titleExtra}
         >
             <BigNumberMetric
                 isLoading={!trend.data}

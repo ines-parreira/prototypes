@@ -469,6 +469,7 @@ export const METRIC_NAMES = {
     VOICE_MISSED_CALLS_BY_AGENT: 'voice-missed-calls-by-agent',
     VOICE_OUTBOUND_CALLS_BY_AGENT: 'voice-outbound-calls-by-agent',
     VOICE_INBOUND_CALL_BY_AGENT: 'voice-inbound-call-by-agent',
+    VOICE_CALL_ACHIEVED_EXPOSURES_TREND: 'voice-call-achieved-exposures-trend',
     VOICE_CALL_COUNT_TREND: 'voice-call-count-trend',
     VOICE_CALL_COUNT_OUTBOUND_TREND: 'voice-call-count-outbound-trend',
     VOICE_CALL_COUNT_INBOUND_TREND: 'voice-call-count-inbound-trend',

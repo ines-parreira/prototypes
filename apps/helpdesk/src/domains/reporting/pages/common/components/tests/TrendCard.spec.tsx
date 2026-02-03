@@ -381,4 +381,22 @@ describe('<TrendCard />', () => {
             DEFAULT_TIMEZONE,
         )
     })
+
+    it('should render titleExtra when provided', () => {
+        const metric = OverviewMetric.CustomerSatisfaction
+        const titleExtra = <span data-testid="title-extra">Extra Content</span>
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <TrendCard
+                    {...OverviewMetricConfig[metric]}
+                    drillDownMetric={metric}
+                    titleExtra={titleExtra}
+                />
+            </Provider>,
+        )
+
+        expect(screen.getByTestId('title-extra')).toBeInTheDocument()
+        expect(screen.getByText('Extra Content')).toBeInTheDocument()
+    })
 })
