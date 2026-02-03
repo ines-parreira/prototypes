@@ -60,7 +60,9 @@ export const PurchaseGuidanceSection = () => {
                 }}
             />
             <Box padding="md" className={css.banner}>
-                {PersuasionLevelLabels[salesPersuasionLevel]?.description}
+                <Text size="sm">
+                    {PersuasionLevelLabels[salesPersuasionLevel].description}
+                </Text>
             </Box>
         </Card>
     )

@@ -12,7 +12,7 @@ type Props = {
 
 export const OnboardingNavigationButtons = (props: Props) => {
     const { step, totalSteps, onBackClick, onNextClick, isLoading } = props
-    const nextBtnText = step === totalSteps ? 'Finish' : 'Next'
+    const nextBtnText = step === totalSteps ? 'Finish setup' : 'Next'
 
     return (
         <div className={css.navigationButtonsContainer}>

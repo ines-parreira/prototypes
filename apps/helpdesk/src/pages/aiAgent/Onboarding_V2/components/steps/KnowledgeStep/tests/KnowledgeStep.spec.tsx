@@ -378,7 +378,7 @@ describe('KnowledgeStep', () => {
         const { history } = renderWithProvider()
         jest.runAllTimers()
 
-        const nextButton = screen.getByText('Finish')
+        const nextButton = screen.getByText('Finish setup')
 
         act(() => {
             userEvent.click(nextButton)
@@ -435,7 +435,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Finish')
+            const nextButton = screen.getByText('Finish setup')
 
             act(() => {
                 userEvent.click(nextButton)
@@ -462,7 +462,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Finish')
+            const nextButton = screen.getByText('Finish setup')
 
             act(() => {
                 userEvent.click(nextButton)
@@ -491,7 +491,7 @@ describe('KnowledgeStep', () => {
             const { history } = renderWithProvider()
             jest.runAllTimers()
 
-            const nextButton = screen.getByText('Finish')
+            const nextButton = screen.getByText('Finish setup')
 
             act(() => {
                 userEvent.click(nextButton)

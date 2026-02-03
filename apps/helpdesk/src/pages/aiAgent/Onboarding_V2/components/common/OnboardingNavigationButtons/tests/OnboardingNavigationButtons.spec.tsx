@@ -27,7 +27,7 @@ describe('OnboardingNavigationButtons', () => {
         expect(screen.getByText('Next')).toBeInTheDocument()
     })
 
-    it('shows "Finish" instead of "Next" on final step', () => {
+    it('shows "Finish setup" instead of "Next" on final step', () => {
         render(
             <OnboardingNavigationButtons
                 {...defaultProps}
@@ -36,7 +36,7 @@ describe('OnboardingNavigationButtons', () => {
             />,
         )
 
-        expect(screen.getByText('Finish')).toBeInTheDocument()
+        expect(screen.getByText('Finish setup')).toBeInTheDocument()
         expect(screen.getByText('Back')).toBeInTheDocument()
     })
 

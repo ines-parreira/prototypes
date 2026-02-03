@@ -120,10 +120,12 @@ export const DiscountStrategySection = () => {
                 }}
             />
             <Box padding="md" className={css.banner}>
-                {
-                    DiscountStrategyLabels[salesDiscountStrategyLevel]
-                        ?.description
-                }
+                <Text size="sm">
+                    {
+                        DiscountStrategyLabels[salesDiscountStrategyLevel]
+                            .description
+                    }
+                </Text>
             </Box>
             <Box marginTop="md" marginBottom="md">
                 <Separator />
