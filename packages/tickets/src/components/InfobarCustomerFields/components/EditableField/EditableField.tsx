@@ -157,6 +157,7 @@ export function EditableField<T extends string | number = string | number>(
                 error={error}
                 isInvalid={isInvalid}
                 autoResize
+                maxRows={3}
             />
         )
     }
