@@ -24,7 +24,6 @@ import {
 } from 'models/integration/types'
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
@@ -36,6 +35,7 @@ import useThemeAppExtensionInstallation, {
 } from '../../../../hooks/useThemeAppExtensionInstallation'
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
 
@@ -188,7 +188,7 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     return (
         <>
-            <UnsavedChangesPrompt
+            <SaveChangesPrompt
                 onSave={() => onSave()}
                 when={!!currentInstallationMethod && !hasSubmitted}
                 shouldRedirectAfterSave

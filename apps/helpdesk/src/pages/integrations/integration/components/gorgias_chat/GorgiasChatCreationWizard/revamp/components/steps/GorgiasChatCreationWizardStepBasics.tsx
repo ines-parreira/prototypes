@@ -55,7 +55,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import type { Language } from 'pages/integrations/integration/components/gorgias_chat/components/LanguagePicker'
 import { LanguagePicker } from 'pages/integrations/integration/components/gorgias_chat/components/LanguagePicker'
@@ -69,6 +68,7 @@ import {
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
+import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
 
@@ -458,7 +458,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     !redirectAction.redirectId
                 }
             />
-            <UnsavedChangesPrompt
+            <SaveChangesPrompt
                 onSave={() => onSave()}
                 when={
                     isUpdate &&

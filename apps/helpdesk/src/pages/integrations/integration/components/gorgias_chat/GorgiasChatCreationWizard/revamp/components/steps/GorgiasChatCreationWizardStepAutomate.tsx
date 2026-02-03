@@ -20,7 +20,6 @@ import {
 import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
 import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
@@ -32,6 +31,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { FeatureToggle } from '../../../../components/FeatureToggle'
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
 
@@ -244,7 +244,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     return (
         <>
-            <UnsavedChangesPrompt
+            <SaveChangesPrompt
                 onSave={() => onSave()}
                 when={!isPristine && !hasSubmitted}
                 shouldRedirectAfterSave

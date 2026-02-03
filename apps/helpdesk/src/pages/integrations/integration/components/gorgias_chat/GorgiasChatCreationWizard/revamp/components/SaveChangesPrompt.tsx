@@ -12,13 +12,19 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import css from './DiscardNewChatPrompt.less'
+import css from './SaveChangesPrompt.less'
 
 type Props = {
     when: boolean
+    onSave: () => Promise<unknown> | void
+    shouldRedirectAfterSave?: boolean
 }
 
-const DiscardNewChatPrompt: React.FC<Props> = ({ when }) => {
+const SaveChangesPrompt: React.FC<Props> = ({
+    when,
+    onSave,
+    shouldRedirectAfterSave = false,
+}) => {
     const isDiscarding = useRef(false)
     const [isOpen, setIsOpen] = useState(false)
     const [location, setLocation] = useState<Location>()
@@ -49,6 +55,20 @@ const DiscardNewChatPrompt: React.FC<Props> = ({ when }) => {
 
     const hideModal = useCallback(() => setIsOpen(false), [])
 
+    const handleSave = async () => {
+        if (shouldRedirectAfterSave) {
+            await onSave()
+            redirectToOriginalLocation()
+        } else {
+            await onSave()
+            hideModal()
+        }
+    }
+
+    const handleDiscard = () => {
+        redirectToOriginalLocation()
+    }
+
     return (
         <>
             <Prompt
@@ -63,28 +83,32 @@ const DiscardNewChatPrompt: React.FC<Props> = ({ when }) => {
                 }}
             />
             <Modal isOpen={isOpen} onOpenChange={hideModal} size="sm">
-                <OverlayHeader title="Leave without saving?" />
+                <OverlayHeader title="Save changes?" />
                 <OverlayContent>
                     <Text>
-                        If you leave now, everything you&apos;ve entered will be
-                        lost.
+                        If you leave without saving, your changes will be lost.
                     </Text>
                 </OverlayContent>
                 <div className={css.footer}>
-                    <Button variant="secondary" onClick={hideModal}>
-                        Stay on page
-                    </Button>
                     <Button
                         variant="tertiary"
                         intent="destructive"
-                        onClick={redirectToOriginalLocation}
+                        onClick={handleDiscard}
                     >
-                        Leave anyway
+                        Discard changes
                     </Button>
+                    <div className={css.rightButtons}>
+                        <Button variant="secondary" onClick={hideModal}>
+                            Keep editing
+                        </Button>
+                        <Button variant="primary" onClick={handleSave}>
+                            Save changes
+                        </Button>
+                    </div>
                 </div>
             </Modal>
         </>
     )
 }
 
-export default DiscardNewChatPrompt
+export default SaveChangesPrompt

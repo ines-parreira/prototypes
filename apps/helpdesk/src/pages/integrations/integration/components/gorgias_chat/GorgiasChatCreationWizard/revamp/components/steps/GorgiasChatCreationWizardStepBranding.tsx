@@ -18,7 +18,6 @@ import {
     GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/components/ColorPicker'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/components/LauncherPositionPicker'
@@ -27,6 +26,7 @@ import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepBranding.less'
 
@@ -129,7 +129,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
 
     return (
         <>
-            <UnsavedChangesPrompt
+            <SaveChangesPrompt
                 onSave={() => onSave()}
                 when={!isPristine && !hasSubmitted}
                 shouldRedirectAfterSave
