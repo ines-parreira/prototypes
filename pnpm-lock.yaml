@@ -1535,12 +1535,18 @@ importers:
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
         version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/helpdesk-types':
+        specifier: catalog:rest-api-sdk
+        version: 0.9.77
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
       '@repo/forms':
         specifier: workspace:*
         version: link:../forms
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@tanstack/react-query':
         specifier: 4.36.1
         version: 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)

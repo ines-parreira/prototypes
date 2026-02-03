@@ -69,7 +69,16 @@ jest.mock('../AxiomMigrationToggle', () => ({
     ),
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
-jest.mock('../StatusMenu', () => () => <div>StatusMenu</div>)
+jest.mock(
+    '../StatusMenu',
+    () =>
+        ({ onUpdateStatusStart }: { onUpdateStatusStart: () => void }) => (
+            <div>
+                StatusMenu
+                <button onClick={onUpdateStatusStart}>MockStatusUpdate</button>
+            </div>
+        ),
+)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
 
 jest.mock('@repo/agent-status', () => ({
@@ -456,6 +465,43 @@ describe('UserMenu', () => {
 
         expect(screen.queryByText('StatusMenu')).not.toBeInTheDocument()
         expect(screen.queryByText('AvailabilityToggle')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        ).toBeInTheDocument()
+        expect(screen.getByText('Your profile')).toBeInTheDocument()
+    })
+
+    it('should navigate back to main menu when status is updated', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
+
+        const { getByRole, getByText } = render(
+            <UserMenu onClose={onClose} />,
+            {
+                wrapper,
+            },
+        )
+
+        userEvent.click(
+            getByRole('button', {
+                name: /change status.*current status: available/i,
+            }),
+        )
+
+        expect(getByText('StatusMenu')).toBeInTheDocument()
+
+        userEvent.click(getByText('MockStatusUpdate'))
+
+        expect(screen.queryByText('StatusMenu')).not.toBeInTheDocument()
         expect(
             screen.getByRole('button', {
                 name: /change status.*current status: available/i,

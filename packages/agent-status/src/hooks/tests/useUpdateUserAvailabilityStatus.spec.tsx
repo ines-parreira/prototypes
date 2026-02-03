@@ -1,177 +1,190 @@
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { queryKeys, useUpdateUserAvailability } from '@gorgias/helpdesk-queries'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
 
 import {
-    createTestQueryClient,
-    getMutationConfig,
-    renderHook,
-} from '../../tests/render.utils'
+    mockUpdateUserAvailabilityHandler,
+    mockUserAvailability,
+} from '@gorgias/helpdesk-mocks'
+import * as helpdeskQueries from '@gorgias/helpdesk-queries'
+
+import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUpdateUserAvailabilityStatus } from '../useUpdateUserAvailabilityStatus'
 
-type UpdateUserAvailabilityConfig = NonNullable<
-    Parameters<typeof useUpdateUserAvailability>[0]
->
-
-vi.mock('@tanstack/react-query', async () => {
-    const actual = await vi.importActual('@tanstack/react-query')
-    return {
-        ...actual,
-        useQueryClient: vi.fn(),
-    }
-})
+const renderUseUpdateUserAvailabilityStatus = (
+    callback = useUpdateUserAvailabilityStatus,
+) => {
+    return renderHook(callback)
+}
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual('@gorgias/helpdesk-queries')
+    const actual = await vi.importActual<typeof helpdeskQueries>(
+        '@gorgias/helpdesk-queries',
+    )
     return {
         ...actual,
         useUpdateUserAvailability: vi.fn(),
     }
 })
 
-beforeEach(() => {
-    vi.clearAllMocks()
+const server = setupServer()
 
-    const { queryClient } = createTestQueryClient()
-    vi.mocked(useQueryClient).mockReturnValue(queryClient)
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    testAppQueryClient.clear()
+    vi.clearAllMocks()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useUpdateUserAvailabilityStatus', () => {
     const userId = 123
 
-    describe('updateStatusAsync function', () => {
-        it('should call mutateAsync with correct data for available status', async () => {
-            const mockMutateAsync = vi.fn().mockResolvedValue(undefined)
-            vi.mocked(useUpdateUserAvailability).mockReturnValue({
-                mutate: vi.fn(),
-                mutateAsync: mockMutateAsync,
-            } as any)
-
-            const { result } = renderHook(() =>
-                useUpdateUserAvailabilityStatus(),
-            )
-
-            await result.current.updateStatusAsync(userId, 'available')
-
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                userId,
-                data: {
-                    user_status: 'available',
-                },
-            })
-        })
-
-        it('should call mutateAsync with correct data for unavailable status', async () => {
-            const mockMutateAsync = vi.fn().mockResolvedValue(undefined)
-            vi.mocked(useUpdateUserAvailability).mockReturnValue({
-                mutate: vi.fn(),
-                mutateAsync: mockMutateAsync,
-            } as any)
-
-            const { result } = renderHook(() =>
-                useUpdateUserAvailabilityStatus(),
-            )
-
-            await result.current.updateStatusAsync(userId, 'unavailable')
-
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                userId,
-                data: {
-                    user_status: 'unavailable',
-                },
-            })
-        })
-
-        it('should call mutateAsync with correct data for custom status', async () => {
-            const mockMutateAsync = vi.fn().mockResolvedValue(undefined)
-            vi.mocked(useUpdateUserAvailability).mockReturnValue({
-                mutate: vi.fn(),
-                mutateAsync: mockMutateAsync,
-            } as any)
-
-            const { result } = renderHook(() =>
-                useUpdateUserAvailabilityStatus(),
-            )
-
-            await result.current.updateStatusAsync(userId, 'custom-123')
-
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                userId,
-                data: {
-                    user_status: 'custom',
-                    custom_user_availability_status_id: 'custom-123',
-                },
-            })
-        })
+    beforeEach(async () => {
+        const actual = await vi.importActual<typeof helpdeskQueries>(
+            '@gorgias/helpdesk-queries',
+        )
+        vi.mocked(helpdeskQueries.useUpdateUserAvailability).mockImplementation(
+            actual.useUpdateUserAvailability,
+        )
     })
 
-    describe('mutation callbacks', () => {
-        it('should invalidate getUserAvailability query on success', () => {
-            const { queryClient, spies } = createTestQueryClient({
-                withInvalidateQueriesSpy: true,
-            })
+    afterEach(() => {
+        vi.clearAllMocks()
+    })
 
-            vi.mocked(useQueryClient).mockReturnValue(queryClient)
-            renderHook(() => useUpdateUserAvailabilityStatus(), {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        {children}
-                    </QueryClientProvider>
+    it('updates availability status to available', async () => {
+        const mockUpdatedAvailability = mockUserAvailability({
+            user_id: userId,
+            user_status: 'available',
+        })
+
+        const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
+            async () => HttpResponse.json(mockUpdatedAvailability),
+        )
+
+        server.use(mockUpdateUserAvailability.handler)
+
+        const { result } = renderUseUpdateUserAvailabilityStatus()
+
+        await result.current.updateStatusAsync(userId, 'available')
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(result.current.data?.data).toEqual(mockUpdatedAvailability)
+    })
+
+    it('updates availability status to unavailable', async () => {
+        const mockUpdatedAvailability = mockUserAvailability({
+            user_id: userId,
+            user_status: 'unavailable',
+        })
+
+        const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
+            async () => HttpResponse.json(mockUpdatedAvailability),
+        )
+
+        server.use(mockUpdateUserAvailability.handler)
+
+        const { result } = renderUseUpdateUserAvailabilityStatus()
+
+        await result.current.updateStatusAsync(userId, 'unavailable')
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(result.current.data?.data).toEqual(mockUpdatedAvailability)
+    })
+
+    it('updates availability status to custom status', async () => {
+        const customStatusId = 'custom-123'
+        const mockUpdatedAvailability = mockUserAvailability({
+            user_id: userId,
+            user_status: 'custom',
+            custom_user_availability_status_id: customStatusId,
+        })
+
+        const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
+            async () => HttpResponse.json(mockUpdatedAvailability),
+        )
+
+        server.use(mockUpdateUserAvailability.handler)
+
+        const { result } = renderUseUpdateUserAvailabilityStatus()
+
+        await result.current.updateStatusAsync(userId, customStatusId)
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(result.current.data?.data).toEqual(mockUpdatedAvailability)
+        expect(
+            result.current.data?.data.custom_user_availability_status_id,
+        ).toBe(customStatusId)
+    })
+
+    it('handles API errors', async () => {
+        const initialAvailability = mockUserAvailability({
+            user_id: userId,
+            user_status: 'unavailable',
+        })
+
+        const queryKey =
+            helpdeskQueries.queryKeys.userAvailability.getUserAvailability(
+                userId,
+            )
+        testAppQueryClient.setQueryData(queryKey, { data: initialAvailability })
+
+        const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
+            async () =>
+                HttpResponse.json(
+                    {
+                        error: { msg: 'Failed to update status' },
+                    } as any,
+                    { status: 500 },
                 ),
-            })
+        )
 
-            const config = getMutationConfig<UpdateUserAvailabilityConfig>(
-                vi.mocked(useUpdateUserAvailability),
-            )
+        server.use(mockUpdateUserAvailability.handler)
 
-            const mockData = {
-                data: {
-                    id: userId,
-                    user_status: 'available' as const,
-                },
-            }
+        const { result } = renderUseUpdateUserAvailabilityStatus()
 
-            const variables = {
-                userId,
-                data: { user_status: 'available' as const },
-            }
+        await expect(
+            result.current.updateStatusAsync(userId, 'available'),
+        ).rejects.toThrow()
 
-            config?.mutation?.onSuccess?.(mockData as any, variables, undefined)
-
-            expect(spies.invalidateQueries).toHaveBeenCalledWith(
-                queryKeys.userAvailability.getUserAvailability(userId),
-            )
+        await waitFor(() => {
+            expect(result.current.isError).toBe(true)
         })
-    })
 
-    describe('mutation result passthrough', () => {
-        it('should pass through all other properties from useUpdateUserAvailability', () => {
-            const mockMutationResult = {
-                mutate: vi.fn(),
-                mutateAsync: vi.fn(),
-                isLoading: true,
-                isError: false,
-                isSuccess: false,
-                error: null,
-                data: undefined,
-                reset: vi.fn(),
-            }
+        expect(result.current.error).toBeTruthy()
 
-            vi.mocked(useUpdateUserAvailability).mockReturnValue(
-                mockMutationResult as any,
-            )
-
-            const { result } = renderHook(() =>
-                useUpdateUserAvailabilityStatus(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
-            expect(result.current.isError).toBe(false)
-            expect(result.current.isSuccess).toBe(false)
-            expect(result.current.error).toBeNull()
-            expect(result.current.data).toBeUndefined()
-            expect(result.current.reset).toBe(mockMutationResult.reset)
-        })
+        const cacheData = testAppQueryClient.getQueryData(queryKey) as {
+            data: typeof initialAvailability
+        }
+        expect(cacheData?.data).toEqual(initialAvailability)
     })
 })

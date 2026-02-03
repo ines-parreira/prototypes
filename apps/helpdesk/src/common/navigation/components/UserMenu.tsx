@@ -476,7 +476,11 @@ export default function UserMenu({ onClose }: Props) {
                     Back
                 </DropdownHeader>
                 <DropdownBody>
-                    <StatusMenu />
+                    <StatusMenu
+                        onUpdateStatusStart={() => {
+                            setActiveScreen(ActiveScreen.Main)
+                        }}
+                    />
                 </DropdownBody>
             </Screen>
 

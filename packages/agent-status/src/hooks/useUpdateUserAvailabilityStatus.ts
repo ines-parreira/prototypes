@@ -5,18 +5,37 @@ import { useQueryClient } from '@tanstack/react-query'
 import type { UserAvailabilityStatus } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateUserAvailability } from '@gorgias/helpdesk-queries'
 
+import { updateUserAvailabilityInCache } from '../utils'
 import { buildUpdateData } from '../utils/buildUpdateData'
 
 export const useUpdateUserAvailabilityStatus = () => {
     const client = useQueryClient()
     const { mutateAsync, ...rest } = useUpdateUserAvailability({
         mutation: {
-            onSuccess: (_data, variables) => {
-                client.invalidateQueries(
-                    queryKeys.userAvailability.getUserAvailability(
+            onMutate: async (variables) => {
+                const queryKey = queryKeys.userAvailability.getUserAvailability(
+                    variables.userId,
+                )
+                await client.cancelQueries({ queryKey })
+
+                return updateUserAvailabilityInCache(client, variables)
+            },
+            onError: (_error, variables, context) => {
+                if (context?.previousData) {
+                    client.setQueryData(
+                        queryKeys.userAvailability.getUserAvailability(
+                            variables.userId,
+                        ),
+                        context.previousData,
+                    )
+                }
+            },
+            onSettled: (_data, _error, variables) => {
+                client.invalidateQueries({
+                    queryKey: queryKeys.userAvailability.getUserAvailability(
                         variables.userId,
                     ),
-                )
+                })
             },
         },
     })

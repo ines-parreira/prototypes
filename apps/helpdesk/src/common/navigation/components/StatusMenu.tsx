@@ -17,7 +17,11 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import css from './UserMenu.less'
 
-export default function StatusMenu() {
+export default function StatusMenu({
+    onUpdateStatusStart,
+}: {
+    onUpdateStatusStart: () => void
+}) {
     const dispatch = useAppDispatch()
     const currentUserId = useAppSelector(getCurrentUserId)
     const { activeStatusId, isLoading: isLoadingAvailability } =
@@ -30,8 +34,8 @@ export default function StatusMenu() {
     const handleStatusUpdate = useCallback(
         async (statusId: string) => {
             try {
+                onUpdateStatusStart()
                 await updateStatusAsync(currentUserId, statusId)
-
                 logEvent(SegmentEvent.MenuUserLinkClicked, {
                     link: 'status-update',
                     status_id: statusId,
@@ -47,7 +51,7 @@ export default function StatusMenu() {
                 )
             }
         },
-        [updateStatusAsync, currentUserId, dispatch],
+        [updateStatusAsync, currentUserId, dispatch, onUpdateStatusStart],
     )
 
     if (isLoadingStatuses || isLoadingAvailability) {

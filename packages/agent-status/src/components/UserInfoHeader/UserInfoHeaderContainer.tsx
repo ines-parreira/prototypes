@@ -1,3 +1,5 @@
+import { DurationInMs } from '@repo/utils'
+
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import {
     useGetCurrentUser,
@@ -12,6 +14,7 @@ export function UserInfoHeaderContainer() {
     const { data } = useGetUserAvailability(currentUser?.data.id!, {
         query: {
             enabled: !!currentUser?.data.id,
+            staleTime: DurationInMs.FiveMinutes,
         },
     })
 

@@ -96,10 +96,12 @@ const mockStatuses = [
 describe('StatusMenu', () => {
     let updateStatusAsync: jest.Mock
     let dispatch: jest.Mock
+    let onUpdateStatusStart: jest.Mock
 
     beforeEach(() => {
         updateStatusAsync = jest.fn().mockResolvedValue(undefined)
         dispatch = jest.fn()
+        onUpdateStatusStart = jest.fn()
 
         useAppDispatchMock.mockReturnValue(dispatch)
         isGorgiasApiErrorMock.mockReturnValue(false)
@@ -123,7 +125,9 @@ describe('StatusMenu', () => {
     })
 
     it.each(mockStatuses)('should render the $name status', ({ name }) => {
-        const { getByText } = render(<StatusMenu />)
+        const { getByText } = render(
+            <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+        )
         expect(getByText(name)).toBeInTheDocument()
     })
 
@@ -163,7 +167,9 @@ describe('StatusMenu', () => {
                 isLoading: false,
             } as any)
 
-            const { getByText } = render(<StatusMenu />)
+            const { getByText } = render(
+                <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+            )
             const button = getByText(displayName).closest('button')!
 
             expect(within(button).getByText('done')).toBeInTheDocument()
@@ -192,7 +198,9 @@ describe('StatusMenu', () => {
     ])(
         'should update to $name status and log event',
         async ({ displayName, statusId, expectedArgs }) => {
-            const { getByText } = render(<StatusMenu />)
+            const { getByText } = render(
+                <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+            )
 
             await act(() => userEvent.click(getByText(displayName)))
 
@@ -233,7 +241,9 @@ describe('StatusMenu', () => {
     ])('should show loading state when $scenario', ({ setupMocks }) => {
         setupMocks()
 
-        const { getByText } = render(<StatusMenu />)
+        const { getByText } = render(
+            <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+        )
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -244,8 +254,41 @@ describe('StatusMenu', () => {
             isLoading: false,
         } as any)
 
-        const { queryByText } = render(<StatusMenu />)
+        const { queryByText } = render(
+            <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+        )
         expect(queryByText('done')).not.toBeInTheDocument()
+    })
+
+    it('should call onUpdateStatusStart callback when a status is clicked', async () => {
+        const { getByText } = render(
+            <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+        )
+
+        await act(() => userEvent.click(getByText('Available')))
+
+        expect(onUpdateStatusStart).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call onUpdateStatusStart before status update', async () => {
+        const callOrder: string[] = []
+
+        onUpdateStatusStart.mockImplementation(() => {
+            callOrder.push('callback')
+        })
+
+        updateStatusAsync.mockImplementation(() => {
+            callOrder.push('update')
+            return Promise.resolve()
+        })
+
+        const { getByText } = render(
+            <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+        )
+
+        await act(() => userEvent.click(getByText('Unavailable')))
+
+        expect(callOrder).toEqual(['callback', 'update'])
     })
 
     describe('error handling', () => {
@@ -293,7 +336,9 @@ describe('StatusMenu', () => {
                 updateStatusAsync.mockRejectedValueOnce(error)
                 isGorgiasApiErrorMock.mockReturnValueOnce(isApiError)
 
-                const { getByText } = render(<StatusMenu />)
+                const { getByText } = render(
+                    <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
+                )
 
                 await act(() => userEvent.click(getByText(displayName)))
 
