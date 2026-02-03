@@ -215,12 +215,37 @@
     .option {
         color: var(--content-neutral-default);
 
-        &.option--focused {
+        &.option--focused:not(.option--selected) {
             background: var(--hover-input);
             color: var(--content-neutral-default);
 
             &.option--disabled {
                 background: var(--elevation-neutral-default) !important;
+            }
+        }
+
+        &.option--selected {
+            background-color: var(--surface-accent-default);
+            color: var(--content-accent-default);
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                opacity: 0;
+                box-shadow: inset 0 0 0 9999px var(--hover-default);
+                pointer-events: none;
+                transition: opacity 0.2s ease;
+            }
+
+            &.option--focused::before {
+                opacity: 1;
+            }
+
+            .selectedIcon {
+                color: var(--content-accent-default);
             }
         }
     }

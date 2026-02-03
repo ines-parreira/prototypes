@@ -1,9 +1,5 @@
 import type React from 'react'
-import { useMemo } from 'react'
 
-import classNames from 'classnames'
-
-import { useAxiomMigration } from 'hooks/useAxiomMigration'
 import RadioButton from 'pages/common/components/RadioButton'
 
 import css from './ChatAvailabilitySelection.less'
@@ -16,20 +12,8 @@ type ChatAvailabilitySelectionProps = {
 const ChatAvailabilitySelection: React.FC<ChatAvailabilitySelectionProps> = (
     props,
 ) => {
-    const { isEnabled } = useAxiomMigration()
-
-    const classes = useMemo(() => {
-        const base = [css.chatAvailabilitySelection]
-
-        if (isEnabled) {
-            base.push(css.axios)
-        }
-
-        return base
-    }, [isEnabled])
-
     return (
-        <div className={classNames(...classes)}>
+        <div className={css.chatAvailabilitySelection}>
             <span className={css.label}>Availability</span>
             <RadioButton
                 isSelected={props.value === 'online'}

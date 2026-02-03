@@ -138,18 +138,47 @@
     }
 
     .tabNavigator {
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
         border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .searchInput {
+        background-color: transparent;
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default);
+
+        &:hover {
+            background: var(--hover-input);
+        }
+
+        &:focus-within {
+            background: transparent;
+            box-shadow:
+                var(--effects-inner-shadow),
+                inset 0 0 0 1px var(--border-neutral-secondary) !important;
+        }
+
+        input {
+            color: var(--content-neutral-default);
+            background-color: transparent;
+
+            &::placeholder {
+                color: var(--content-neutral-tertiary);
+            }
+        }
     }
 
     .textInput {
         border-bottom: 1px solid var(--border-neutral-default) !important;
+        border-top-left-radius: var(--spacing-sm) !important;
+        border-top-right-radius: var(--spacing-sm) !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
     }
 
     .modalBody {
         background:
             linear-gradient(
-                    var(--elevation-neutral-default) 30%,
+                    var(--elevation-neutral-mid) 30%,
                     rgba(255, 255, 255, 0)
                 )
                 center top,
@@ -157,7 +186,7 @@
     }
 
     .footer {
-        background-color: var(--elevation-neutral-default);
+        background-color: var(--elevation-neutral-mid);
         border-top: 1px solid var(--border-neutral-default);
     }
 

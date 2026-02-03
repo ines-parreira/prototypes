@@ -674,6 +674,9 @@ export default class SelectField extends Component<Props, State> {
                                                         [`${css['option--focused']}`]:
                                                             index ===
                                                             selectedOptionIndex,
+                                                        [`${css['option--selected']}`]:
+                                                            item.value ===
+                                                            value,
                                                         [css[
                                                             'option--disabled'
                                                         ]]: item.isDisabled,

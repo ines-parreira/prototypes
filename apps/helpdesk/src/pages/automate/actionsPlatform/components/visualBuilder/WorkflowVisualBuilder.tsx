@@ -11,7 +11,9 @@ import {
     useNodesState,
 } from '@xyflow/react'
 
-import { gorgiasColors } from 'gorgias-design-system/styles'
+import { THEME_NAME } from '@gorgias/design-tokens'
+
+import { useTheme } from 'core/theme'
 import { VisualBuilderBackground } from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
@@ -77,6 +79,7 @@ const WorkflowVisualBuilder = ({
     isDisabled = false,
 }: Props) => {
     const { visualBuilderGraph, dispatch } = useVisualBuilderContext()
+    const theme = useTheme()
 
     const [nodes, setNodes, onNodesChange] = useNodesState<VisualBuilderNode>(
         visualBuilderGraph.nodes,
@@ -121,6 +124,11 @@ const WorkflowVisualBuilder = ({
             <div className={css.reactFlowContainer}>
                 <ReactFlowProvider>
                     <ReactFlow
+                        colorMode={
+                            theme.resolvedName === THEME_NAME.Dark
+                                ? 'dark'
+                                : 'light'
+                        }
                         proOptions={{
                             hideAttribution: true,
                         }}
@@ -154,8 +162,6 @@ const WorkflowVisualBuilder = ({
                                 pannable
                                 position="top-left"
                                 className={css.minimap}
-                                maskColor={gorgiasColors.neutralGrey0}
-                                nodeColor={gorgiasColors.neutralGrey3}
                             />
                         )}
                         <VisualBuilderControls

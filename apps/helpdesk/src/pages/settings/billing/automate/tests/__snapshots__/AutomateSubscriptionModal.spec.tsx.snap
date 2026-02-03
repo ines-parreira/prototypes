@@ -553,7 +553,7 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                               </span>
                             </button>
                             <button
-                              class="option dropdown-item"
+                              class="option option--selected dropdown-item"
                               role="menuitem"
                               tabindex="0"
                               type="button"
