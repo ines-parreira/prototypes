@@ -15,7 +15,7 @@ describe('OpportunityDetailsCard', () => {
 
             expect(
                 screen.getByText(
-                    /Review and approve this AI-generated Guidance based on your customers' top asked questions/,
+                    /Review and approve this AI-generated guidance based on your customers' top asked questions/,
                 ),
             ).toBeInTheDocument()
         })
@@ -32,7 +32,7 @@ describe('OpportunityDetailsCard', () => {
             )
 
             expect(
-                screen.getByText(/This Guidance was generated based on/),
+                screen.getByText(/This guidance was generated based on/),
             ).toBeInTheDocument()
             expect(screen.getByText(/5 handover tickets/)).toBeInTheDocument()
             expect(
@@ -115,7 +115,7 @@ describe('OpportunityDetailsCard', () => {
             ).not.toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /Review and approve this AI-generated Guidance/,
+                    /Review and approve this AI-generated guidance/,
                 ),
             ).toBeInTheDocument()
         })
@@ -132,7 +132,7 @@ describe('OpportunityDetailsCard', () => {
             ).not.toBeInTheDocument()
             expect(
                 screen.getByText(
-                    /Review and approve this AI-generated Guidance/,
+                    /Review and approve this AI-generated guidance/,
                 ),
             ).toBeInTheDocument()
         })

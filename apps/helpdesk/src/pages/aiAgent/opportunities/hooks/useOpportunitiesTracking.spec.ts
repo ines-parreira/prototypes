@@ -99,7 +99,7 @@ describe('useOpportunitiesTracking', () => {
     })
 
     describe('onOpportunityAccepted', () => {
-        it('should log opportunity accepted event with full context', () => {
+        it('should log opportunity accepted event for FILL_KNOWLEDGE_GAP without operations', () => {
             const accountId = 123
             const userId = 456
             const opportunityContext = {
@@ -121,6 +121,78 @@ describe('useOpportunitiesTracking', () => {
                     userId,
                     opportunityId: 'opp-789',
                     opportunityType: 'FILL_KNOWLEDGE_GAP',
+                },
+            )
+        })
+
+        it('should log opportunity accepted event for RESOLVE_CONFLICT with operations', () => {
+            const accountId = 123
+            const userId = 456
+            const opportunityContext = {
+                opportunityId: 'opp-999',
+                opportunityType: 'RESOLVE_CONFLICT',
+                operations: [
+                    {
+                        action: 'EDIT',
+                        resourceId: 'resource-1',
+                        resourceSetId: 'set-1',
+                        resourceLocale: 'en',
+                        resourceVersion: 'v1',
+                    },
+                    {
+                        action: 'DELETE',
+                        resourceId: 'resource-2',
+                        resourceSetId: 'set-2',
+                        resourceLocale: 'en',
+                        resourceVersion: 'v2',
+                    },
+                    {
+                        action: 'DISABLE',
+                        resourceId: 'resource-3',
+                        resourceSetId: 'set-3',
+                        resourceLocale: null,
+                        resourceVersion: null,
+                    },
+                ],
+            }
+
+            const { result } = renderHook(() =>
+                useOpportunitiesTracking({ accountId, userId }),
+            )
+
+            result.current.onOpportunityAccepted(opportunityContext)
+
+            expect(mockLogEvent).toHaveBeenCalledTimes(1)
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.OpportunityAccepted,
+                {
+                    accountId,
+                    userId,
+                    opportunityId: 'opp-999',
+                    opportunityType: 'RESOLVE_CONFLICT',
+                    operations: [
+                        {
+                            action: 'EDIT',
+                            resourceId: 'resource-1',
+                            resourceSetId: 'set-1',
+                            resourceLocale: 'en',
+                            resourceVersion: 'v1',
+                        },
+                        {
+                            action: 'DELETE',
+                            resourceId: 'resource-2',
+                            resourceSetId: 'set-2',
+                            resourceLocale: 'en',
+                            resourceVersion: 'v2',
+                        },
+                        {
+                            action: 'DISABLE',
+                            resourceId: 'resource-3',
+                            resourceSetId: 'set-3',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                        },
+                    ],
                 },
             )
         })

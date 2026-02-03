@@ -2,6 +2,8 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
+import type { OpportunityOperation } from 'pages/aiAgent/opportunities/types'
+
 interface UseOpportunitiesTrackingProps {
     accountId: number
     userId: number
@@ -17,6 +19,7 @@ interface OpportunitiesTrackingCallbacks {
 interface OpportunityContext {
     opportunityId: string
     opportunityType: string
+    operations?: OpportunityOperation[]
 }
 
 export const useOpportunitiesTracking = ({

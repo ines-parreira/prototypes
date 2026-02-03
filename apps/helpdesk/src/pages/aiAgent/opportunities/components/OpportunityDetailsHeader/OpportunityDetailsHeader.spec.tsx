@@ -103,7 +103,7 @@ describe('OpportunityDetailsHeader', () => {
             renderComponent()
 
             expect(
-                screen.getByText(/Fill knowledge gap: Test Opportunity Title/),
+                screen.getByText(/Create guidance: Test Opportunity Title/),
             ).toBeInTheDocument()
         })
 

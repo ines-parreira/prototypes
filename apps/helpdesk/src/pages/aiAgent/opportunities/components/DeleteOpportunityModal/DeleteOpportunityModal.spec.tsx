@@ -39,11 +39,11 @@ describe('DeleteOpportunityModal', () => {
         render(<DeleteOpportunityModal {...defaultProps} />)
 
         expect(
-            screen.getByRole('heading', { name: /Delete knowledge item\?/i }),
+            screen.getByRole('heading', { name: /Delete this content\?/i }),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Deleting this knowledge item will remove it from your knowledge base/,
+                /Deleting this content will remove it from AI Agent’s available knowledge and resolve the conflict/,
             ),
         ).toBeInTheDocument()
     })
@@ -183,7 +183,7 @@ describe('DeleteOpportunityModal', () => {
 
             expect(
                 screen.queryByRole('heading', {
-                    name: /Delete knowledge item\?/i,
+                    name: /Delete this content\?/i,
                 }),
             ).not.toBeInTheDocument()
         })

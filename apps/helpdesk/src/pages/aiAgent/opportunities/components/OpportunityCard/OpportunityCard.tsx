@@ -52,7 +52,7 @@ export const OpportunityCard = ({
             default:
                 return {
                     icon: 'nav-map',
-                    text: 'Fill knowledge gap',
+                    text: 'Create guidance',
                 }
         }
     }

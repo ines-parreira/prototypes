@@ -2,7 +2,7 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-import { LegacyBadge as Badge, Skeleton } from '@gorgias/axiom'
+import { Skeleton, Tag } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
@@ -133,12 +133,12 @@ export const ActionDrivenNavigationItems = ({
                                                     }
                                                 >
                                                     <span>{subItem.title}</span>
-                                                    <Badge
-                                                        type={'blue'}
-                                                        upperCase={false}
+                                                    <Tag
+                                                        size="sm"
+                                                        color="purple"
                                                     >
                                                         New
-                                                    </Badge>
+                                                    </Tag>
                                                 </div>
                                                 <div
                                                     className={css.navItemCount}
@@ -176,9 +176,9 @@ export const ActionDrivenNavigationItems = ({
                             <div className={css.navItemWithBadge}>
                                 <div className={css.navItemWithBadgeContent}>
                                     <span>{item.title}</span>
-                                    <Badge type={'blue'} upperCase={false}>
+                                    <Tag size="sm" color="purple">
                                         New
-                                    </Badge>
+                                    </Tag>
                                 </div>
                                 <div className={css.navItemCount}>
                                     {isLoadingOpportunities ? (

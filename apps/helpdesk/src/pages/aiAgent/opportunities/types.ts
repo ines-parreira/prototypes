@@ -38,6 +38,14 @@ export interface ResourceFormFields {
     isDeleted?: boolean
 }
 
+export interface OpportunityOperation {
+    action: string
+    resourceId: string
+    resourceSetId: string
+    resourceLocale: string | null
+    resourceVersion: string | null
+}
+
 export interface OpportunityConfig {
     shopName: string
     shopIntegrationId: number | undefined
@@ -53,6 +61,7 @@ export interface OpportunityConfig {
     onOpportunityAccepted?: (context: {
         opportunityId: string
         opportunityType: string
+        operations?: OpportunityOperation[]
     }) => void
     onOpportunityDismissed?: (context: {
         opportunityId: string

@@ -281,9 +281,9 @@ describe('OpportunitiesContent', () => {
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+        expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
         expect(
-            screen.getByText(/Review and approve this AI-generated Guidance/),
+            screen.getByText(/Review and approve this AI-generated guidance/),
         ).toBeInTheDocument()
 
         expect(
@@ -688,7 +688,7 @@ describe('OpportunitiesContent', () => {
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+        expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
 
         await waitFor(() => {
             expect(screen.getByText('Guidance name')).toBeInTheDocument()
@@ -949,7 +949,7 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
         })
 
         it('should handle missing detectionObjectIds with console.warn', () => {
@@ -963,7 +963,7 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
 
             consoleWarnSpy.mockRestore()
         })
@@ -981,7 +981,7 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
+            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /Publish and enable/i }),
             ).toBeInTheDocument()
@@ -998,7 +998,7 @@ describe('OpportunitiesContent', () => {
             })
 
             expect(
-                screen.queryByText(/Fill knowledge gap/),
+                screen.queryByText(/Create guidance/),
             ).not.toBeInTheDocument()
 
             const skeletons = container.querySelectorAll('[class*="skeleton"]')
@@ -1165,7 +1165,7 @@ describe('OpportunitiesContent', () => {
             })
 
             expect(
-                screen.queryByText(/Fill knowledge gap/),
+                screen.queryByText(/Create guidance/),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /Dismiss/i }),

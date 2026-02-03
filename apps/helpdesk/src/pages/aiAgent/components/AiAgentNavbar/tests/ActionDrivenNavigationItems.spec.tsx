@@ -522,7 +522,7 @@ describe('ActionDrivenNavigationItems', () => {
     })
 
     describe('Opportunities feature', () => {
-        it('renders Opportunities with NEW badge and count in nested items', () => {
+        it('renders Opportunities with NEW tag and count in nested items', () => {
             const navItemsWithOpportunities: NavigationItem[] = [
                 {
                     route: '',
@@ -555,7 +555,7 @@ describe('ActionDrivenNavigationItems', () => {
             expect(screen.getByText('5')).toBeInTheDocument()
         })
 
-        it('renders Opportunities with NEW badge and count in top-level items', () => {
+        it('renders Opportunities with NEW tag and count in top-level items', () => {
             const navItemsWithOpportunities: NavigationItem[] = [
                 {
                     route: '/app/ai-agent/shopify/test-store/opportunities',

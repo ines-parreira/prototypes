@@ -52,12 +52,13 @@ export const DeleteOpportunityModal = ({
 
     return (
         <Modal isOpen={isOpen} onOpenChange={handleCancel} size="sm">
-            <OverlayHeader title="Delete knowledge item?" />
+            <OverlayHeader title="Delete this content?" />
             <OverlayContent>
                 <div className={css.modalContent}>
                     <Text>
-                        Deleting this knowledge item will remove it from your
-                        knowledge base and resolve the knowledge conflict.
+                        Deleting this content will remove it from AI Agent’s
+                        available knowledge and resolve the conflict. This
+                        action can’t be undone.
                     </Text>
 
                     <div className={css.checkboxContainer}>

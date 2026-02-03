@@ -241,6 +241,22 @@ export const useOpportunityCTAs = ({
                     message: 'Conflict resolved successfully',
                 }),
             )
+
+            if ('resolutions' in payload && payload.resolutions) {
+                const operations = payload.resolutions.map((resolution) => {
+                    const { resourceIdentifier } = resolution
+                    return {
+                        action: resolution.action,
+                        ...resourceIdentifier,
+                    }
+                })
+
+                onOpportunityAccepted?.({
+                    opportunityId: selectedOpportunity.id,
+                    opportunityType: selectedOpportunity.type,
+                    operations,
+                })
+            }
         } catch (error) {
             await handleOpportunityProcessError(
                 error,
@@ -257,6 +273,7 @@ export const useOpportunityCTAs = ({
         processOpportunity,
         shopIntegrationId,
         onArchive,
+        onOpportunityAccepted,
         handleOpportunityProcessError,
     ])
 

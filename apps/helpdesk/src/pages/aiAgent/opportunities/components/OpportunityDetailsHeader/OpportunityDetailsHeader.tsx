@@ -93,7 +93,7 @@ export const OpportunityDetailsHeader = ({
                 return 'Resolve conflict'
             case OpportunityType.FILL_KNOWLEDGE_GAP:
             default:
-                return 'Fill knowledge gap'
+                return 'Create guidance'
         }
     }
 

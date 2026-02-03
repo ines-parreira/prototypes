@@ -101,7 +101,7 @@ export const OpportunityDetailsContent = ({
                         <Button
                             variant="tertiary"
                             size="sm"
-                            onClick={() => onOpportunityRemoved()}
+                            onClick={onOpportunityRemoved}
                         >
                             Remove and View Next
                         </Button>

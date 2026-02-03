@@ -43,7 +43,7 @@ export const OpportunityDetailsCard = ({
             return (
                 <div className={css.banner}>
                     <Text size="md">
-                        Review and approve this AI-generated Guidance based on
+                        Review and approve this AI-generated guidance based on
                         your customers&apos; top asked questions to improve AI
                         Agent&apos;s performance. Note: you may already have an
                         existing Guidance addressing this topic.
@@ -55,7 +55,7 @@ export const OpportunityDetailsCard = ({
         return (
             <div className={css.banner}>
                 <Text size="md">
-                    This Guidance was generated based on{' '}
+                    This guidance was generated based on{' '}
                     <span
                         className={css.handoverTickets}
                         onClick={handleTicketCountClick}
