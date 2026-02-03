@@ -23,6 +23,8 @@ export function ShopifyCustomer() {
         { query: { enabled: !!ticketId } },
     )
 
+    const customerId = ticket?.data?.customer?.id
+
     const { associatedShopifyCustomerIds, externalIdMap } = useMemo(() => {
         const integrations = (ticket?.data?.customer?.integrations ??
             {}) as Record<string, CustomerIntegrationData>
@@ -48,6 +50,8 @@ export function ShopifyCustomer() {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 isLoadingTicket={isLoadingTicket}
+                ticketId={ticketId}
+                customerId={customerId}
             />
         </Box>
     )

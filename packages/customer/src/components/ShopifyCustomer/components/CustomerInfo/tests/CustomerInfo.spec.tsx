@@ -89,6 +89,7 @@ describe('CustomerInfo', () => {
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
+                ticketId="123"
             />,
         )
 
@@ -106,6 +107,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 onStoreChange={onStoreChange}
+                ticketId="123"
             />,
         )
 
@@ -153,6 +155,7 @@ describe('CustomerInfo', () => {
                 }
                 externalIdMap={multipleExternalIdMap}
                 onStoreChange={onStoreChange}
+                ticketId="123"
             />,
         )
 
@@ -206,6 +209,7 @@ describe('CustomerInfo', () => {
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
+                ticketId="123"
             />,
         )
 
@@ -231,6 +235,7 @@ describe('CustomerInfo', () => {
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
+                ticketId="123"
             />,
         )
 
