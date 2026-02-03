@@ -4,12 +4,25 @@
         margin-top: var(--spacing-md);
         justify-content: space-between;
         gap: var(--spacing-xs);
+        padding-right: var(--spacing-lg);
     }
 
     .buttonGroup {
         // Prevent text wrapping in button group items
         :global(button) {
             white-space: nowrap !important;
+        }
+
+        @media (max-width: 680px) {
+            :global(button:has([data-name='icon'])) {
+                [data-name='text'] {
+                    display: none;
+                }
+
+                [class*='buttonslot'][class*='leading'] {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }

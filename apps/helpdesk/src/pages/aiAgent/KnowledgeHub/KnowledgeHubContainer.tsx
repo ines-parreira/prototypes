@@ -598,61 +598,63 @@ export const KnowledgeHubContainer = () => {
                 syncTooltipMessage={syncTooltipMessage}
                 isPlaygroundOpen={isPlaygroundOpen}
             />
-            <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
-                <SyncStoreDomainBanner
-                    syncStatus={syncStatus}
-                    shopName={shopName}
-                    type="domain"
-                />
-                <SyncStoreDomainBanner
-                    syncStatus={urlSyncStatus}
-                    shopName={shopName}
-                    type="url"
-                    completedCount={urlPendingCount}
-                    totalCount={urlTotalCount}
-                />
-                <SyncStoreDomainBanner
-                    syncStatus={fileIngestionStatus}
-                    shopName={shopName}
-                    type="file"
-                    completedCount={filePendingCount}
-                />
-
-                {!selectedFolder && (
-                    <DocumentFilters
-                        selectedFilter={selectedFilter}
-                        onFilterChange={handleDocumentFilterChange}
+            <div className={css.scrollContainer}>
+                <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
+                    <SyncStoreDomainBanner
+                        syncStatus={syncStatus}
+                        shopName={shopName}
+                        type="domain"
                     />
-                )}
-            </Box>
-            <KnowledgeHubTable
-                data={enrichedTableData}
-                metricsDateRange={metricsDateRange}
-                isMetricsEnabled={isPerformanceStatsEnabled}
-                isMetricsLoading={isMetricsLoading}
-                isLoading={isInitialLoading || isUrlFolderSyncing}
-                onRowClick={onClick}
-                onGuidanceRowClick={handleOpenGuidanceEditor}
-                onFaqRowClick={handleOpenFaqEditor}
-                onFaqEditorOpen={handleFaqEditorOpen}
-                onSnippetRowClick={handleOpenSnippetEditor}
-                selectedFolder={selectedFolder}
-                selectedArticleType={type}
-                selectedArticleId={id}
-                selectedTypeFilter={selectedFilter}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                dateRange={dateRange}
-                onDateRangeChange={setDateRange}
-                inUseByAIFilter={inUseByAIFilter}
-                onInUseByAIChange={setInUseByAIFilter}
-                faqHelpCenterId={faqHelpCenterId}
-                shopName={shopName}
-                shopType={shopType}
-                guidanceHelpCenterId={guidanceHelpCenterId}
-                snippetHelpCenterId={snippetHelpCenterId}
-                clearSearchParams={clearSearchParams}
-            />
+                    <SyncStoreDomainBanner
+                        syncStatus={urlSyncStatus}
+                        shopName={shopName}
+                        type="url"
+                        completedCount={urlPendingCount}
+                        totalCount={urlTotalCount}
+                    />
+                    <SyncStoreDomainBanner
+                        syncStatus={fileIngestionStatus}
+                        shopName={shopName}
+                        type="file"
+                        completedCount={filePendingCount}
+                    />
+
+                    {!selectedFolder && (
+                        <DocumentFilters
+                            selectedFilter={selectedFilter}
+                            onFilterChange={handleDocumentFilterChange}
+                        />
+                    )}
+                </Box>
+                <KnowledgeHubTable
+                    data={enrichedTableData}
+                    metricsDateRange={metricsDateRange}
+                    isMetricsEnabled={isPerformanceStatsEnabled}
+                    isMetricsLoading={isMetricsLoading}
+                    isLoading={isInitialLoading || isUrlFolderSyncing}
+                    onRowClick={onClick}
+                    onGuidanceRowClick={handleOpenGuidanceEditor}
+                    onFaqRowClick={handleOpenFaqEditor}
+                    onFaqEditorOpen={handleFaqEditorOpen}
+                    onSnippetRowClick={handleOpenSnippetEditor}
+                    selectedFolder={selectedFolder}
+                    selectedArticleType={type}
+                    selectedArticleId={id}
+                    selectedTypeFilter={selectedFilter}
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    dateRange={dateRange}
+                    onDateRangeChange={setDateRange}
+                    inUseByAIFilter={inUseByAIFilter}
+                    onInUseByAIChange={setInUseByAIFilter}
+                    faqHelpCenterId={faqHelpCenterId}
+                    shopName={shopName}
+                    shopType={shopType}
+                    guidanceHelpCenterId={guidanceHelpCenterId}
+                    snippetHelpCenterId={snippetHelpCenterId}
+                    clearSearchParams={clearSearchParams}
+                />
+            </div>
             <Modal
                 isOpen={isAddKnowledgeModalOpen}
                 onOpenChange={onKnowledgeModalOpenChange}
