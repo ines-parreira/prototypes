@@ -230,9 +230,9 @@ export default function CampaignsTable<TData, TValue>({
                                         intent="regular"
                                         leadingSlot="columns"
                                         size="md"
-                                        variant="secondary"
+                                        variant="tertiary"
                                     >
-                                        Edit metrics
+                                        Edit table
                                     </Button>
                                 ),
                             },
