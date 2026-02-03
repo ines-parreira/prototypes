@@ -6,7 +6,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -70,20 +69,22 @@ describe('useCategoriesOptions()', () => {
             },
         )
 
-        const actualResult: SelectableOption[] = []
-        result.current.forEach((option) => {
-            if ('value' in option)
-                actualResult.push({
-                    text: option.text,
-                    value: option.value,
-                })
-        })
+        const actualResult = result.current.map((option) => ({
+            id: option.id,
+            value: option.value,
+            textValue: option.textValue,
+        }))
 
         const expectedResult = [
-            { value: 'null' },
+            {
+                id: 'no-category',
+                value: null,
+                textValue: '- no category -',
+            },
             ...categories.filter(isNonRootCategory).map((category) => ({
-                text: category.translation.title,
+                id: `category-${category.id}`,
                 value: category.id,
+                textValue: category.translation.title,
             })),
         ]
 

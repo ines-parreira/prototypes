@@ -104,76 +104,138 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       <div
         class="categorySelect"
       >
-        <div>
+        <template
+          data-react-aria-hidden="true"
+        >
           <div
-            class="dropdown"
+            class="ui-list-list-b1d8 ui-list-high-b1d8 ui-list-issearchable-b1d8"
+            data-name="list"
+            style="max-width: 266px;"
           >
             <div
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="select noCategory"
-              data-toggle="dropdown"
+              class="ui-searchfield-searchfield-7412"
+              data-name="search-field-wrapper"
             >
               <div
-                class="select dropdown-toggle selectFullWidth"
-              >
-                <span
-                  class="label"
-                  style="min-width: 10px; opacity: 1;"
-                >
-                  - No Category -
-                </span>
-                <input
-                  autocomplete="chrome-off"
-                  class="input"
-                  style="min-width: 10px;"
-                  type="text"
-                  value=""
-                />
-                <i
-                  class="material-icons dropdownIcon"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
+                class="ui-searchfield-clearbutton-7412 ui-searchfield-hidden-7412"
+                data-testid="search-field-clear-button"
+              />
             </div>
-            <div
-              aria-hidden="true"
-              class="options categoryDropdown optionsFullWidth dropdown-menu"
-              role="menu"
+          </div>
+        </template>
+        <div
+          class="react-aria-Select"
+          data-name="select"
+          data-rac=""
+        >
+          <span
+            class="react-aria-SelectValue"
+            data-name="select-custom-trigger"
+            data-rac=""
+            id="react-aria-:r9:"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              aria-label="Select article category"
+              aria-labelledby="react-aria-:r9: react-aria-:r4:"
+              class="ui-selecttrigger-selecttrigger-671d"
+              data-name="select-trigger"
+              data-rac=""
+              data-react-aria-pressable="true"
+              id="react-aria-:r4:"
+              slot="trigger"
               tabindex="-1"
+              type="button"
             >
-              <button
-                class="option dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
+              <div
+                class="ui-textfield-field-b7d8"
+                data-name="text-field"
+                data-rac=""
               >
-                <span>
-                  - No category -
-                </span>
-              </button>
-              <button
-                class="option dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
+                <label
+                  class="ui-label-label-3864"
+                  data-name="label"
+                  for="react-aria-:rc:"
+                  id="react-aria-:rd:"
+                >
+                  <span
+                    class="typography-medium-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left;"
+                  >
+                    Help Center category
+                  </span>
+                </label>
+                <div
+                  class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hastrailingslot-8e5a ui-input-hastrailingicon-8e5a"
+                  data-name="input"
+                >
+                  <label>
+                    <input
+                      aria-disabled="false"
+                      aria-invalid="false"
+                      aria-labelledby="react-aria-:rd:"
+                      class="ui-input-input-8e5a typography-regular-md"
+                      data-rac=""
+                      id="react-aria-:rc:"
+                      tabindex="0"
+                      title=""
+                      type="text"
+                      value="No category"
+                    />
+                    <span
+                      class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5 ui-inputslot-icon-0bf5"
+                    >
+                      <span
+                        class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"
+                        data-name="icon"
+                      >
+                        <svg
+                          aria-label="arrow-chevron-down"
+                          role="img"
+                        >
+                          <use
+                            href="#arrow-chevron-down"
+                          />
+                        </svg>
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </button>
+          </span>
+          <div
+            aria-hidden="true"
+            data-a11y-ignore="aria-hidden-focus"
+            data-react-aria-prevent-focus="true"
+            data-testid="hidden-select-container"
+            style="border: 0px; clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; width: 1px; white-space: nowrap; top: 0px; left: 0px;"
+          >
+            <label>
+              <select
+                tabindex="-1"
+                title=""
               >
-                <span>
+                <option />
+                <option
+                  value="no-category"
+                >
+                  No category
+                </option>
+                <option
+                  value="category-1"
+                >
                   Orders
-                </span>
-              </button>
-              <button
-                class="option dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                <span>
+                </option>
+                <option
+                  value="category-2"
+                >
                   Pricing
-                </span>
-              </button>
-            </div>
+                </option>
+              </select>
+            </label>
           </div>
         </div>
       </div>

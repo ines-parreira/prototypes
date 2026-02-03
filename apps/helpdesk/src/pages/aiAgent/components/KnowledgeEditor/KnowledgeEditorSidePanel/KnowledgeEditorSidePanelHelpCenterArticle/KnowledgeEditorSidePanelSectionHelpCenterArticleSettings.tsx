@@ -1,8 +1,7 @@
 import { Icon, IconSize } from '@gorgias/axiom'
 
 import { useSettingsAutoSave } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
-import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
-import { ArticleLanguageSelect } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect/ArticleLanguageSelect'
+import ArticleCategorySelect from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelect'
 import SelectVisibilityStatus from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 
@@ -55,31 +54,16 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
         >
             <div className={css.settings}>
                 <div className={css.setting}>
-                    <div className={css.label}>Help Center category</div>
                     <div>
-                        <ArticleCategorySelectField
+                        <ArticleCategorySelect
+                            locale={language.locale}
                             categoryId={category.categoryId}
-                            categoryTitlesById={category.categoryTitlesById}
-                            options={category.categoryOptions}
                             onChange={category.onChangeCategory}
                             isDisabled={isCreationMode}
                         />
                     </div>
                 </div>
                 <div className={css.setting}>
-                    <div className={css.label}>Language</div>
-                    <div>
-                        <ArticleLanguageSelect
-                            selected={language.locale}
-                            list={language.localeOptions}
-                            onSelect={language.onChangeLanguage}
-                            onActionClick={language.onActionClick}
-                            className={css.inlineLanguageSelect}
-                        />
-                    </div>
-                </div>
-                <div className={css.setting}>
-                    <div className={css.label}>Visibility status</div>
                     <div>
                         <SelectVisibilityStatus
                             onChange={visibility.onChangeVisibility}

@@ -68,9 +68,14 @@ jest.mock('../../../providers/SupportedLocales')
 
 jest.mock('../ArticleCategorySelect/hooks/useCategoriesOptions')
 ;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
-    { label: '- No category -', value: 'null' },
-    { label: 'Orders', value: 1 },
-    { label: 'Pricing', value: 2 },
+    {
+        id: 'no-category',
+        label: '- no category -',
+        value: null,
+        textValue: 'No category',
+    },
+    { id: 'category-1', label: 'Orders', value: 1, textValue: 'Orders' },
+    { id: 'category-2', label: 'Pricing', value: 2, textValue: 'Pricing' },
 ])
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({

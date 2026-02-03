@@ -164,7 +164,6 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     />
                 </div>
                 <div>
-                    <Label>Visibility status</Label>
                     <SelectVisibilityStatus
                         onChange={(status: VisibilityStatus) => {
                             onChange({

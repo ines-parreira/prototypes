@@ -34,11 +34,6 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 jest.mock(
     'pages/settings/helpCenter/components/articles/ArticleCategorySelect/hooks/useCategoriesOptions',
 )
-;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
-    { label: '- No category -', value: 'null' },
-    { label: 'Orders', value: 1 },
-    { label: 'Pricing', value: 2 },
-])
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
@@ -94,6 +89,26 @@ describe('AIArticlesLibraryArticleEditor', () => {
         jest.mocked(useSupportedLocales).mockReturnValue(
             getLocalesResponseFixture,
         )
+        jest.mocked(useCategoriesOptions).mockImplementation(() => [
+            {
+                id: 'no-category',
+                label: '- no category -',
+                value: null,
+                textValue: 'No category',
+            },
+            {
+                id: 'category-1',
+                label: 'Orders',
+                value: 1,
+                textValue: 'Orders',
+            },
+            {
+                id: 'category-2',
+                label: 'Pricing',
+                value: 2,
+                textValue: 'Pricing',
+            },
+        ])
     })
     it('renders without crashing', () => {
         render(

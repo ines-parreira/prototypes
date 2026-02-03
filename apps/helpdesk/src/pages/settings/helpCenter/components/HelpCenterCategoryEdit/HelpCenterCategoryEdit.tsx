@@ -70,6 +70,16 @@ import { eligibleParentCategories, isOneOfParentsUnlisted } from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
 
+const convertCategoryOptionToLegacyOption = (
+    categoryOption: ReturnType<typeof getCategoryDropdownOption>,
+): Option => {
+    return {
+        label: categoryOption.label,
+        text: categoryOption.textValue,
+        value: categoryOption.value as number,
+    }
+}
+
 type Props = {
     isOpen: boolean
     isCreate?: boolean
@@ -245,14 +255,16 @@ export const HelpCenterCategoryEdit = ({
     useEffect(() => {
         setParentOptions([
             ...categoryOptionCandidates.map((category) =>
-                getCategoryDropdownOption(category),
+                convertCategoryOptionToLegacyOption(
+                    getCategoryDropdownOption(category, categoriesById),
+                ),
             ),
             {
                 value: 0,
                 label: clearSelectionText,
             },
         ])
-    }, [categoryOptionCandidates])
+    }, [categoryOptionCandidates, categoriesById])
 
     useEffect(() => {
         if (parentCategory) {

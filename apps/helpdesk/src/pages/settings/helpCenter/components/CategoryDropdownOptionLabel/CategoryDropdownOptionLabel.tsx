@@ -1,7 +1,5 @@
 import classnames from 'classnames'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-
 import useAppSelector from 'hooks/useAppSelector'
 import type { Category } from 'models/helpCenter/types'
 import { getCategoriesById } from 'state/entities/helpCenter/categories'
@@ -36,7 +34,6 @@ export const CategoryDropdownOptionLabel = ({
     category,
 }: {
     category: Category
-    fullText?: boolean
 }) => {
     const categoriesById = useAppSelector(getCategoriesById)
 
@@ -44,35 +41,11 @@ export const CategoryDropdownOptionLabel = ({
         ? getParentsInfo(category, categoriesById)
         : ''
     return (
-        <>
-            <div id={`categoryOption-${category.id}`}>
-                <div className={css['category']}>
-                    {category.translation?.title}
-                </div>
-                <div
-                    className={classnames(
-                        css['parents'],
-                        css['trimTextFromTheLeft'],
-                    )}
-                >
-                    {parentsString}
-                </div>
+        <div>
+            <div className={css.category}>{category.translation?.title}</div>
+            <div className={classnames(css.parents, css.trimTextFromTheLeft)}>
+                {parentsString}
             </div>
-            <Tooltip
-                placement="top-start"
-                target={`categoryOption-${category.id}`}
-                delay={{ show: 1000, hide: 200 }}
-                boundariesElement="body"
-            >
-                <div className={css['tooltip']}>
-                    <div className={css['category']}>
-                        {category.translation?.title}
-                    </div>
-                    <div className={classnames(css['parents'])}>
-                        {parentsString}
-                    </div>
-                </div>
-            </Tooltip>
-        </>
+        </div>
     )
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
@@ -17,6 +18,7 @@ import type {
 import { isOneOfParentsUnlisted } from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit/utils'
 import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { getCategoriesById } from 'state/entities/helpCenter/categories'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { SettingsChanges } from '../context/types'
@@ -54,6 +56,7 @@ export const useSettingsAutoSave = () => {
     const { state, dispatch, config, hasPendingContentChanges } =
         useArticleContext()
     const { helpCenter, supportedLocales, categories, onUpdatedFn } = config
+    const categoriesById = useAppSelector(getCategoriesById)
     const { error: notifyError } = useNotify()
     const [isSettingsAutoSaving, setIsSettingsAutoSaving] = useState(false)
     const [showSavedState, setShowSavedState] = useState(false)
@@ -85,8 +88,9 @@ export const useSettingsAutoSave = () => {
     )
 
     const categoryOptions = useMemo(
-        () => getCategoryOptions(categories, state.currentLocale),
-        [categories, state.currentLocale],
+        () =>
+            getCategoryOptions(categories, state.currentLocale, categoriesById),
+        [categories, state.currentLocale, categoriesById],
     )
 
     const localeOptions = useMemo(

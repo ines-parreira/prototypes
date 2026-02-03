@@ -36,10 +36,7 @@ describe('<CategoryDropdownOptionLabel />', () => {
         const category = getCategoriesFlatSorted[1]
         const { container } = render(
             <Provider store={store}>
-                <CategoryDropdownOptionLabel
-                    category={category}
-                    fullText={true}
-                />
+                <CategoryDropdownOptionLabel category={category} />
             </Provider>,
         )
 

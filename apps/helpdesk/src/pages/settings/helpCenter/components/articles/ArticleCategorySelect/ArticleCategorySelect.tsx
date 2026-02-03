@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react'
+import type { RefObject } from 'react'
+import { useMemo } from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
+import { ListItem, Select, SelectTrigger, TextField } from '@gorgias/axiom'
+
 import type { LocaleCode } from 'models/helpCenter/types'
-import ArticleCategorySelectField from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField'
-import { getCategoriesById } from 'state/entities/helpCenter/categories'
 
-import useCategoriesOptions from './hooks/useCategoriesOptions'
+import useCategoriesOptions, {
+    type CategoryOption,
+} from './hooks/useCategoriesOptions'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
@@ -21,28 +23,49 @@ const ArticleCategorySelect = ({
     isDisabled = false,
 }: ArticleCategorySelectProps): JSX.Element => {
     const options = useCategoriesOptions({ locale })
-    const categoriesById = useAppSelector(getCategoriesById)
 
-    const categoryTitlesById = useMemo(() => {
-        const titlesById: Record<string, string> = {}
+    const selectedOption = useMemo(() => {
+        return options.find((opt) => opt.value === categoryId) || options[0]
+    }, [options, categoryId])
 
-        for (const [id, category] of Object.entries(categoriesById)) {
-            if (category.translation?.title) {
-                titlesById[id] = category.translation.title
-            }
+    const handleSelect = (option: CategoryOption) => {
+        if (onChange) {
+            onChange(option.value)
         }
-
-        return titlesById
-    }, [categoriesById])
+    }
 
     return (
-        <ArticleCategorySelectField
-            categoryId={categoryId}
-            categoryTitlesById={categoryTitlesById}
-            options={options}
-            onChange={onChange}
+        <Select<CategoryOption>
+            trigger={({ ref, selectedText, isOpen }) => (
+                <SelectTrigger>
+                    <TextField
+                        inputRef={ref as RefObject<HTMLInputElement>}
+                        value={selectedText}
+                        label="Help Center category"
+                        isDisabled={isDisabled}
+                        isFocused={isOpen}
+                        trailingSlot={
+                            isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'
+                        }
+                    />
+                </SelectTrigger>
+            )}
+            items={options}
+            selectedItem={selectedOption}
+            onSelect={handleSelect}
+            aria-label="Select article category"
             isDisabled={isDisabled}
-        />
+            isSearchable={options.length > 1}
+            maxWidth={266}
+        >
+            {(option: CategoryOption) => (
+                <ListItem
+                    id={option.id}
+                    label={option.textValue}
+                    textValue={option.textValue}
+                />
+            )}
+        </Select>
     )
 }
 

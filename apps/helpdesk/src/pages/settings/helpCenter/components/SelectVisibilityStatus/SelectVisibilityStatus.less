@@ -5,69 +5,6 @@
         position: relative;
     }
 
-    .select {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        line-height: 20px;
-        padding: 5px 7px 5px 14px;
-        border: 1px solid var(--neutral-grey-3); // legacy
-        border-radius: 0.25rem;
-        background-clip: padding-box;
-        -webkit-background-clip: padding-box;
-        background-image: none;
-        background-color: var(--neutral-grey-0); // legacy
-        font-size: 1rem;
-        color: var(--neutral-grey-6); // legacy
-        white-space: nowrap;
-        box-sizing: border-box;
-        cursor: pointer;
-
-        &::after {
-            display: none;
-        }
-    }
-
-    .status {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .icon {
-        color: var(--neutral-grey-4); // legacy
-        font-size: 20px;
-    }
-
-    .dropdown {
-        .option {
-            padding: 8px;
-            display: flex;
-            column-gap: 8px;
-            cursor: pointer;
-
-            .icon {
-                color: var(--neutral-grey-6); // legacy
-            }
-
-            .details {
-                .title {
-                    font-weight: 500;
-                    font-size: 14px;
-                    line-height: 20px;
-                }
-                .description {
-                    font-weight: 400;
-                    font-size: 12px;
-                    color: var(--neutral-grey-5); // legacy
-                    white-space: normal;
-                }
-            }
-        }
-    }
-
     .notificationWrapper {
         min-width: 380px;
         position: absolute;
@@ -82,43 +19,10 @@
     .gotItButton {
         margin-top: 16px;
     }
-
-    .dropdownIcon {
-        font-size: 20px;
-        color: var(--neutral-grey-4); // legacy
-    }
 }
 
 .axiom :local {
-    .select {
-        border: 1px solid var(--border-neutral-default);
-        background-color: var(--elevation-neutral-default);
-        color: var(--content-neutral-default);
-    }
-
-    .icon {
-        color: var(--content-neutral-secondary);
-    }
-
-    .dropdown {
-        .option {
-            .icon {
-                color: var(--content-neutral-default);
-            }
-
-            .details {
-                .description {
-                    color: var(--content-neutral-secondary);
-                }
-            }
-        }
-    }
-
     .notificationWrapper {
         background-color: var(--elevation-neutral-default);
-    }
-
-    .dropdownIcon {
-        color: var(--content-neutral-secondary);
     }
 }

@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import type { RefObject } from 'react'
+import React, { useMemo } from 'react'
 
 import classnames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import {
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown,
-} from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import {
+    Button,
+    ListItem,
+    Select,
+    SelectTrigger,
+    TextField,
+} from '@gorgias/axiom'
 
 import type { VisibilityStatus } from 'models/helpCenter/types'
-import { objKeys } from 'utils'
 
 import css from './SelectVisibilityStatus.less'
 
@@ -27,6 +27,15 @@ export type SelectVisibilityStatusProps = {
     isDisabled?: boolean
 }
 
+type VisibilityOption = {
+    id: string
+    value: VisibilityStatus
+    title: string
+    icon: string
+    description: string
+    descriptionInheritUnlisted?: string
+}
+
 const SelectVisibilityStatus = ({
     status = 'PUBLIC',
     onChange,
@@ -37,106 +46,94 @@ const SelectVisibilityStatus = ({
     type,
     isDisabled = false,
 }: SelectVisibilityStatusProps) => {
-    const [isToggleOpen, setIsToggleOpen] = useState(false)
+    const options: VisibilityOption[] = useMemo(
+        () => [
+            {
+                id: 'visibility-unlisted',
+                value: 'UNLISTED',
+                title: 'Unlisted',
+                description: `Accessible only via direct link, not indexed by search engines or AI Agent`,
+                icon: 'hide',
+            },
+            {
+                id: 'visibility-public',
+                value: 'PUBLIC',
+                title: 'Public',
+                description: `Visible to Help Center visitors.`,
+                descriptionInheritUnlisted: `${_upperFirst(
+                    type,
+                )} is currently only accessible via direct link because one of its parent categories is unlisted.`,
+                icon: 'show',
+            },
+        ],
+        [type],
+    )
 
-    const optionsVisibilityStatus: Record<
-        VisibilityStatus,
-        {
-            title: string
-            icon: string
-            description: string
-            descriptionInheritUnlisted?: string
-        }
-    > = {
-        UNLISTED: {
-            title: 'Unlisted',
-            description: `Accessible only via direct link, not indexed by search engines or AI Agent`,
-            icon: 'visibility_off',
-        },
-        PUBLIC: {
-            title: 'Public',
-            description: `Visible to Help Center visitors.`,
-            descriptionInheritUnlisted: `${_upperFirst(
-                type,
-            )} is currently only accessible via direct link because one of its parent categories is unlisted.`,
-            icon: 'visibility',
-        },
+    const selectedOption = useMemo(
+        () => options.find((opt) => opt.value === status) || options[1],
+        [options, status],
+    )
+
+    const handleSelect = (option: VisibilityOption) => {
+        onChange(option.value)
     }
+
+    const selectedText = useMemo(() => {
+        const isPublicButUnlisted =
+            isParentUnlisted && selectedOption.value === 'PUBLIC'
+        return isPublicButUnlisted
+            ? `${selectedOption.title} (currently Unlisted)`
+            : selectedOption.title
+    }, [selectedOption, isParentUnlisted])
 
     return (
         <div className={classnames(className, css.wrapper)}>
-            <UncontrolledDropdown
-                toggle={() => setIsToggleOpen(!isToggleOpen)}
-                isOpen={isToggleOpen}
-                disabled={isDisabled}
+            <Select<VisibilityOption>
+                trigger={({ ref, isOpen }) => (
+                    <SelectTrigger>
+                        <TextField
+                            inputRef={ref as RefObject<HTMLInputElement>}
+                            value={selectedText}
+                            label="Visibility status"
+                            isDisabled={isDisabled}
+                            isFocused={isOpen}
+                            leadingSlot={selectedOption.icon}
+                            trailingSlot={
+                                isOpen
+                                    ? 'arrow-chevron-up'
+                                    : 'arrow-chevron-down'
+                            }
+                        />
+                    </SelectTrigger>
+                )}
+                items={options}
+                selectedItem={selectedOption}
+                onSelect={handleSelect}
+                aria-label="Select visibility status"
+                isDisabled={isDisabled}
+                maxWidth={266}
             >
-                <DropdownToggle tag="div" data-toggle="dropdown">
-                    <div className={classnames(css.select, 'dropdown-toggle')}>
-                        <div className={css.status}>
-                            <i
-                                className={classnames(
-                                    css.icon,
-                                    'material-icons',
-                                )}
-                            >
-                                {optionsVisibilityStatus[status].icon}
-                            </i>
-                            <div>
-                                {optionsVisibilityStatus[status].title}
-                                {isParentUnlisted &&
-                                    status === 'PUBLIC' &&
-                                    ' (currently Unlisted)'}
-                            </div>
-                        </div>
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                css.dropdownIcon,
-                            )}
-                        >
-                            arrow_drop_down
-                        </i>
-                    </div>
-                </DropdownToggle>
-                <DropdownMenu className={css.dropdown}>
-                    {objKeys(optionsVisibilityStatus).map((key) => {
-                        const isPublicButUnlisted =
-                            isParentUnlisted && key === 'PUBLIC'
+                {(option: VisibilityOption) => {
+                    const isPublicButUnlisted =
+                        isParentUnlisted && option.value === 'PUBLIC'
+                    const title = isPublicButUnlisted
+                        ? `${option.title} (currently Unlisted)`
+                        : option.title
+                    const description = isPublicButUnlisted
+                        ? option.descriptionInheritUnlisted
+                        : option.description
 
-                        const title = isPublicButUnlisted
-                            ? `${optionsVisibilityStatus[key].title} (currently Unlisted)`
-                            : optionsVisibilityStatus[key].title
-                        const description = isPublicButUnlisted
-                            ? optionsVisibilityStatus[key]
-                                  .descriptionInheritUnlisted
-                            : optionsVisibilityStatus[key].description
-
-                        return (
-                            <DropdownItem
-                                key={key}
-                                className={css.option}
-                                onClick={() => onChange(key)}
-                                tag="div"
-                            >
-                                <i
-                                    className={classnames(
-                                        css.icon,
-                                        'material-icons',
-                                    )}
-                                >
-                                    {optionsVisibilityStatus[key].icon}
-                                </i>
-                                <div className={css.details}>
-                                    <div className={css.title}>{title}</div>
-                                    <div className={css.description}>
-                                        {description}
-                                    </div>
-                                </div>
-                            </DropdownItem>
-                        )
-                    })}
-                </DropdownMenu>
-            </UncontrolledDropdown>
+                    return (
+                        <ListItem
+                            id={option.id}
+                            label={title}
+                            caption={description}
+                            textValue={title}
+                            leadingSlot={option.icon}
+                        />
+                    )
+                }}
+            </Select>
             {showNotification && status === 'PUBLIC' && (
                 <div className={css.notificationWrapper}>
                     <div>
@@ -146,9 +143,8 @@ const SelectVisibilityStatus = ({
                         categories is unlisted.
                     </div>
                     <Button
-                        type="button"
-                        intent="secondary"
-                        size="small"
+                        variant="secondary"
+                        size="sm"
                         onClick={() => setShowNotification(false)}
                         className={css.gotItButton}
                     >

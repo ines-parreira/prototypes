@@ -2,9 +2,7 @@
 
 exports[`<CategoryDropdownOptionLabel /> matches snapshot 1`] = `
 <div>
-  <div
-    id="categoryOption-5"
-  >
+  <div>
     <div
       class="category"
     >

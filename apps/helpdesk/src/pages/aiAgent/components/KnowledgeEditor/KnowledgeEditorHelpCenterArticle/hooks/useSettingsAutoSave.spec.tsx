@@ -1,6 +1,7 @@
 import { useDebouncedEffect } from '@repo/hooks'
 import { act, renderHook, waitFor } from '@testing-library/react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type {
@@ -18,6 +19,7 @@ jest.mock('@repo/hooks', () => ({
 }))
 
 jest.mock('hooks/useNotify')
+jest.mock('hooks/useAppSelector')
 jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext')
 
@@ -57,6 +59,7 @@ jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => ({
 
 const mockUseDebouncedEffect = useDebouncedEffect as jest.Mock
 const mockUseNotify = useNotify as jest.Mock
+const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseUpdateArticleTranslation = useUpdateArticleTranslation as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
@@ -228,6 +231,7 @@ describe('useSettingsAutoSave', () => {
         mockMutateAsync = jest.fn()
 
         mockUseNotify.mockReturnValue({ error: mockNotifyError })
+        mockUseAppSelector.mockReturnValue({})
         mockUseUpdateArticleTranslation.mockReturnValue({
             mutateAsync: mockMutateAsync,
         })

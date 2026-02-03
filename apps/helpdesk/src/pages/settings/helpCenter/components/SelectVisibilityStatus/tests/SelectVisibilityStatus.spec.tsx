@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import SelectVisibilityStatus from '../SelectVisibilityStatus'
 
@@ -8,8 +9,13 @@ const onChange = jest.fn()
 const setShowNotification = jest.fn()
 
 describe('<SelectVisibilityStatus />', () => {
-    it('should show selected option', () => {
-        const { container, getByText, getAllByText } = render(
+    beforeEach(() => {
+        onChange.mockClear()
+        setShowNotification.mockClear()
+    })
+
+    it('should render with correct initial value', () => {
+        render(
             <SelectVisibilityStatus
                 status="PUBLIC"
                 onChange={onChange}
@@ -20,17 +26,34 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        expect(container).toMatchSnapshot()
+        const input = screen.getByRole('textbox', {
+            name: /visibility status/i,
+        })
+        expect(input).toHaveValue('Public')
+    })
 
-        fireEvent.click(getAllByText(/Public/)[0])
+    it('should render unlisted as initial value', () => {
+        render(
+            <SelectVisibilityStatus
+                status="UNLISTED"
+                onChange={onChange}
+                isParentUnlisted={false}
+                setShowNotification={setShowNotification}
+                type="article"
+                showNotification={false}
+            />,
+        )
 
-        fireEvent.click(getByText(/Unlisted/))
-
-        expect(onChange).toHaveBeenLastCalledWith('UNLISTED')
+        const input = screen.getByRole('textbox', {
+            name: /visibility status/i,
+        })
+        expect(input).toHaveValue('Unlisted')
     })
 
     it('should show the notification popup', async () => {
-        const { findByText, getByText } = render(
+        const user = userEvent.setup()
+
+        render(
             <SelectVisibilityStatus
                 status="PUBLIC"
                 onChange={onChange}
@@ -41,10 +64,65 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        expect(await findByText(/Got it/)).toBeTruthy()
+        const gotItButton = screen.getByRole('button', { name: /got it/i })
+        expect(gotItButton).toBeInTheDocument()
 
-        fireEvent.click(getByText(/Got it/))
+        await user.click(gotItButton)
 
         expect(setShowNotification).toHaveBeenCalled()
+    })
+
+    it('should show "(currently Unlisted)" when parent is unlisted', () => {
+        render(
+            <SelectVisibilityStatus
+                status="PUBLIC"
+                onChange={onChange}
+                isParentUnlisted={true}
+                setShowNotification={setShowNotification}
+                type="article"
+                showNotification={false}
+            />,
+        )
+
+        const input = screen.getByRole('textbox', {
+            name: /visibility status/i,
+        })
+        expect(input).toHaveValue('Public (currently Unlisted)')
+    })
+
+    it('should be disabled when isDisabled is true', () => {
+        render(
+            <SelectVisibilityStatus
+                status="PUBLIC"
+                onChange={onChange}
+                isParentUnlisted={false}
+                setShowNotification={setShowNotification}
+                type="article"
+                showNotification={false}
+                isDisabled={true}
+            />,
+        )
+
+        const input = screen.getByRole('textbox', {
+            name: /visibility status/i,
+        })
+        expect(input).toBeDisabled()
+    })
+
+    it('should default to PUBLIC when status prop is not provided', () => {
+        render(
+            <SelectVisibilityStatus
+                onChange={onChange}
+                isParentUnlisted={false}
+                setShowNotification={setShowNotification}
+                type="article"
+                showNotification={false}
+            />,
+        )
+
+        const input = screen.getByRole('textbox', {
+            name: /visibility status/i,
+        })
+        expect(input).toHaveValue('Public')
     })
 })
