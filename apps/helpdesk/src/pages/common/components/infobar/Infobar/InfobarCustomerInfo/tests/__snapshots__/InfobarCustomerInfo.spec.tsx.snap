@@ -6,7 +6,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
   data-candu-id="infobar-widgets-list-edition"
 >
   <div
-    class="customerInfo"
+    class="customerInfo customerInfoWithPadding"
   >
     <div
       class="customerProfile"
@@ -126,7 +126,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
   data-candu-id="infobar-widgets-list-view"
 >
   <div
-    class="customerInfo"
+    class="customerInfo customerInfoWithPadding"
   >
     <div
       class="customerProfile"
