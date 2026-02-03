@@ -184,6 +184,7 @@ export type StringFilterName =
     | 'callTerminationStatus'
     | 'callDirection'
     | 'displayStatus'
+    | 'customFieldId'
 
 export type NumberFilterName =
     | 'agentId'

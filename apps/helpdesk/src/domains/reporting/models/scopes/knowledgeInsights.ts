@@ -1,8 +1,16 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import {
+    type ApiStatsFilters,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
+
+import type { StringStandardFilter } from './types'
+import { createScopeFilters } from './utils'
 
 const knowledgeStatisticsScope = defineScope({
     scope: MetricScope.KnowledgeInsights,
@@ -34,8 +42,12 @@ const knowledgeStatisticsScope = defineScope({
 
 export const knowledgeTicketsCount = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_TICKETS)
-    .defineQuery(({ ctx }) => {
+    .defineQuery(({ ctx, config }) => {
         const query = {
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                ...getCustomFilterIdFilters(ctx.filters),
+            ] as any,
             measures: ['ticketCount'] as const,
             dimensions: [
                 'resourceType',
@@ -62,8 +74,12 @@ export const knowledgeTicketsCountQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeHandoverTicketsCount = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
-    .defineQuery(({ ctx }) => {
+    .defineQuery(({ ctx, config }) => {
         const query = {
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                ...getCustomFilterIdFilters(ctx.filters),
+            ] as any,
             measures: ['ticketCount'] as const,
             dimensions: [
                 'resourceType',
@@ -90,8 +106,12 @@ export const knowledgeHandoverTicketsCountQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeCSAT = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_CSAT)
-    .defineQuery(({ ctx }) => {
+    .defineQuery(({ ctx, config }) => {
         const query = {
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                ...getCustomFilterIdFilters(ctx.filters),
+            ] as any,
             measures: ['averageSurveyScore'] as const,
             dimensions: [
                 'resourceType',
@@ -118,8 +138,12 @@ export const knowledgeCSATQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeIntents = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_INTENTS)
-    .defineQuery(({ ctx }) => {
+    .defineQuery(({ ctx, config }) => {
         const query = {
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                ...getCustomFilterIdFilters(ctx.filters),
+            ] as any,
             measures: ['ticketCount'] as const,
             dimensions: [
                 'customFieldTop2LevelsValue',
@@ -150,7 +174,11 @@ export const knowledgeIntentsQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeTicketsDrillDown = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_TICKETS)
-    .defineQuery(() => ({
+    .defineQuery(({ ctx, config }) => ({
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            ...getCustomFilterIdFilters(ctx.filters),
+        ] as any,
         measures: [] as const,
         dimensions: [
             'ticketId',
@@ -166,7 +194,11 @@ export const knowledgeTicketsDrillDownQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeHandoverTicketsDrillDown = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
-    .defineQuery(() => ({
+    .defineQuery(({ ctx, config }) => ({
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            ...getCustomFilterIdFilters(ctx.filters),
+        ] as any,
         measures: [] as const,
         dimensions: [
             'ticketId',
@@ -182,7 +214,11 @@ export const knowledgeHandoverTicketsDrillDownQueryV2Factory = (ctx: Context) =>
 
 export const knowledgeCSATDrillDown = knowledgeStatisticsScope
     .defineMetricName(METRIC_NAMES.KNOWLEDGE_CSAT)
-    .defineQuery(() => ({
+    .defineQuery(({ ctx, config }) => ({
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            ...getCustomFilterIdFilters(ctx.filters),
+        ] as any,
         measures: ['averageSurveyScore'] as const,
         dimensions: [
             'ticketId',
@@ -195,3 +231,24 @@ export const knowledgeCSATDrillDown = knowledgeStatisticsScope
 
 export const knowledgeCSATDrillDownQueryV2Factory = (ctx: Context) =>
     knowledgeCSATDrillDown.build(ctx)
+
+export const getCustomFilterIdFilters = (
+    filters: ApiStatsFilters,
+): StringStandardFilter[] => {
+    // We have custom logic that adds a customFieldId filter for each value in the customFields filter
+    const additionalFilters: StringStandardFilter[] = []
+
+    if (
+        filters[FilterKey.CustomFields] &&
+        filters[FilterKey.CustomFields].length > 0
+    ) {
+        filters[FilterKey.CustomFields].forEach((cf) => {
+            additionalFilters.push({
+                member: 'customFieldId' as const,
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [cf.customFieldId.toString()],
+            })
+        })
+    }
+    return additionalFilters
+}
