@@ -1,31 +1,20 @@
-import type { ReactNode } from 'react'
-import React, { useRef } from 'react'
+import type { FC, ReactNode } from 'react'
+import { useRef } from 'react'
 
 import { TicketModalContext } from '../TicketModalContext'
+
+import css from './TicketModalProvider.less'
 
 interface TicketModalProviderProps {
     children: ReactNode
     isInsideSidePanel?: boolean
 }
 
-export const TicketModalProvider: React.FC<TicketModalProviderProps> = ({
+export const TicketModalProvider: FC<TicketModalProviderProps> = ({
     children,
     isInsideSidePanel = false,
 }) => {
-    const containerRef = useRef<HTMLElement>(null)
-
-    // Add a ref to the first eligible child element
-    let refIsSet = false
-    const childrenWithRef = React.Children.map(children, (child) => {
-        if (!refIsSet && React.isValidElement(child)) {
-            refIsSet = true
-            return React.cloneElement(child, {
-                ref: containerRef,
-                ...child.props,
-            })
-        }
-        return child
-    })
+    const containerRef = useRef<HTMLDivElement>(null)
 
     const contextValue = {
         isInsideTicketModal: true,
@@ -35,7 +24,9 @@ export const TicketModalProvider: React.FC<TicketModalProviderProps> = ({
 
     return (
         <TicketModalContext.Provider value={contextValue}>
-            {childrenWithRef}
+            <div ref={containerRef} className={css.container}>
+                {children}
+            </div>
         </TicketModalContext.Provider>
     )
 }

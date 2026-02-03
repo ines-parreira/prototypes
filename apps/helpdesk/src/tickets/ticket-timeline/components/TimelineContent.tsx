@@ -138,7 +138,7 @@ export function TimelineContent({
                 />
             </div>
             <TicketTimelineSidePanelPreview
-                ticket={selectedTicket?.ticket ?? null}
+                enrichedTicket={selectedTicket}
                 isOpen={isOpen}
                 onOpenChange={setIsOpen}
                 onNext={handleNext}

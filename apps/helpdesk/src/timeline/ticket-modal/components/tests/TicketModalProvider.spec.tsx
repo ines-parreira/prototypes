@@ -22,7 +22,7 @@ describe('TicketModalProvider', () => {
         expect(screen.getByText('true')).toBeInTheDocument()
     })
 
-    it('adds ref to the first valid child element', () => {
+    it('wraps children in a container element', () => {
         render(
             <TicketModalProvider>
                 <div data-testid="child">Child Content</div>
@@ -31,22 +31,17 @@ describe('TicketModalProvider', () => {
 
         const childElement = screen.getByTestId('child')
         expect(childElement).toBeInTheDocument()
+        expect(childElement.parentElement).toHaveClass('container')
     })
 
-    it('provides a container ref that references the first child element', () => {
+    it('provides a container ref that references the wrapper element', () => {
         let containerRef: any = null
 
-        const TestRefComponent = React.forwardRef<HTMLDivElement>(
-            (props, ref) => {
-                const context = useContext(TicketModalContext)
-                containerRef = context?.containerRef
-                return (
-                    <div ref={ref} data-testid="ref-test">
-                        Test
-                    </div>
-                )
-            },
-        )
+        const TestRefComponent = () => {
+            const context = useContext(TicketModalContext)
+            containerRef = context?.containerRef
+            return <div data-testid="child-element">Test</div>
+        }
 
         render(
             <TicketModalProvider>
@@ -56,27 +51,45 @@ describe('TicketModalProvider', () => {
 
         expect(containerRef).not.toBeNull()
         expect(containerRef.current).toBeInstanceOf(HTMLDivElement)
-        expect(containerRef.current).toBe(screen.getByTestId('ref-test'))
+        expect(containerRef.current).toHaveClass('container')
+
+        const childElement = screen.getByTestId('child-element')
+        expect(containerRef.current).toContainElement(childElement)
     })
 
-    it('handles multiple children by adding ref to first valid element only', () => {
-        let containerRef: any = null
+    it('provides isInsideSidePanel as false by default', () => {
+        let contextValue: any = null
 
-        const RefTestComponent = () => {
-            const context = useContext(TicketModalContext)
-            containerRef = context?.containerRef
+        const TestContextComponent = () => {
+            contextValue = useContext(TicketModalContext)
             return null
         }
 
         render(
             <TicketModalProvider>
-                {null}
-                <div data-testid="second-child">Second</div>
-                <RefTestComponent />
+                <TestContextComponent />
             </TicketModalProvider>,
         )
 
-        const secondChild = screen.getByTestId('second-child')
-        expect(containerRef.current).toBe(secondChild)
+        expect(contextValue).not.toBeNull()
+        expect(contextValue.isInsideSidePanel).toBe(false)
+    })
+
+    it('provides isInsideSidePanel as true when prop is set', () => {
+        let contextValue: any = null
+
+        const TestContextComponent = () => {
+            contextValue = useContext(TicketModalContext)
+            return null
+        }
+
+        render(
+            <TicketModalProvider isInsideSidePanel={true}>
+                <TestContextComponent />
+            </TicketModalProvider>,
+        )
+
+        expect(contextValue).not.toBeNull()
+        expect(contextValue.isInsideSidePanel).toBe(true)
     })
 })

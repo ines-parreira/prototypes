@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { TicketCustomField } from '@repo/tickets'
 import cn from 'classnames'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
+import { Box, Skeleton } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
 import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
@@ -19,6 +21,11 @@ type Props = {
     summary?: TicketCompact
     ticketId: number
     additionalHeaderActions?: ReactNode
+    enrichmentData?: {
+        customFields: TicketCustomField[]
+        iconName: IconName
+        conditionsLoading: boolean
+    }
 }
 
 export function TicketDetail({
@@ -46,10 +53,16 @@ export function TicketDetail({
                     />
                 )}
                 {isLoading || !ticket ? (
-                    <div className={css.loading}>
-                        <LoadingSpinner size="big" />
-                        <p>Loading ticket...</p>
-                    </div>
+                    <Box
+                        flexDirection="column"
+                        gap="md"
+                        padding="md"
+                        className={css.loading}
+                    >
+                        <Skeleton height="60px" />
+                        <Skeleton height="100px" />
+                        <Skeleton height="80px" />
+                    </Box>
                 ) : (
                     <TicketBody
                         elements={body}

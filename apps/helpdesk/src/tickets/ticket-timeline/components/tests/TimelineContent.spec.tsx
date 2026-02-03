@@ -42,27 +42,6 @@ jest.mock('../../hooks/useOrderProducts', () => ({
     useOrderProducts: jest.fn(),
 }))
 
-jest.mock('tickets/ticket-detail/components/TicketDetail', () => ({
-    TicketDetail: ({
-        ticketId,
-        additionalHeaderActions,
-    }: {
-        ticketId: number
-        additionalHeaderActions: React.ReactNode
-    }) => (
-        <div data-testid="ticket-detail">
-            <span>Ticket #{ticketId}</span>
-            {additionalHeaderActions}
-        </div>
-    ),
-}))
-
-jest.mock('timeline/ticket-modal/components/TicketModalProvider', () => ({
-    TicketModalProvider: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid="ticket-modal-provider">{children}</div>
-    ),
-}))
-
 const useTicketListMock = assumeMock(useTicketList)
 const useGetCustomerMock = assumeMock(useGetCustomer)
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -428,7 +407,9 @@ describe('TimelineContent', () => {
             await user.click(screen.getByText('First Ticket'))
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #1')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -459,7 +440,9 @@ describe('TimelineContent', () => {
             await user.click(screen.getByText('First Ticket'))
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #1')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
             })
 
             const nextButton = screen.getByRole('button', {
@@ -468,7 +451,9 @@ describe('TimelineContent', () => {
             await user.click(nextButton)
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #2')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -481,7 +466,9 @@ describe('TimelineContent', () => {
             await user.click(screen.getByText('Second Ticket'))
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #2')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
             })
 
             const prevButton = screen.getByRole('button', {
@@ -490,7 +477,9 @@ describe('TimelineContent', () => {
             await user.click(prevButton)
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #1')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -535,7 +524,9 @@ describe('TimelineContent', () => {
             await user.click(screen.getByText('First Ticket'))
 
             await waitFor(() => {
-                expect(screen.getByText('Ticket #1')).toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
             })
 
             const closeButton = screen.getByRole('button', {
@@ -544,7 +535,9 @@ describe('TimelineContent', () => {
             await user.click(closeButton)
 
             await waitFor(() => {
-                expect(screen.queryByText('Ticket #1')).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /first ticket/i }),
+                ).not.toBeInTheDocument()
             })
         })
     })
@@ -666,8 +659,8 @@ describe('TimelineContent', () => {
         })
     })
 
-    describe('Expand ticket link', () => {
-        it('should render expand ticket link with correct href', async () => {
+    describe('Expand ticket button', () => {
+        it('should render expand ticket button in side panel', async () => {
             const user = userEvent.setup()
             const ticket = createMockTicket({
                 id: 456,
@@ -694,10 +687,10 @@ describe('TimelineContent', () => {
             await user.click(screen.getByText('Test Ticket For Expand'))
 
             await waitFor(() => {
-                const expandLink = screen.getByRole('link', {
+                const expandButton = screen.getByRole('button', {
                     name: /expand ticket/i,
                 })
-                expect(expandLink).toHaveAttribute('href', '/app/ticket/456')
+                expect(expandButton).toBeInTheDocument()
             })
         })
     })

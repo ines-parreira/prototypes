@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-02T11:44:12.611Z",
-  "total": 4188,
+  "date": "2026-02-03T13:42:45.921Z",
+  "total": 4177,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -532,7 +532,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "SelectField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SelectField />` from @gorgias/axiom instead.\n * @date 2026-01-13\n * @type ui-kit-migration\n ",
-      "count": 84,
+      "count": 83,
       "filePath": "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
       "usages": [
         {
@@ -602,7 +602,6 @@
             "apps/helpdesk/src/pages/settings/contactForm/components/LanguageInputSection/LanguageInputSection.tsx",
             "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticleArchiveModal/AIArticleArchiveModal.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelectField.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCategoryEdit/HelpCenterCategoryEdit.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
@@ -3386,11 +3385,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1460,
+      "count": 1454,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 583,
+          "count": 581,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -3734,7 +3733,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBasics.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBranding.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepInstallation.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/components/DiscardNewChatPrompt.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/components/UploadLogoModal.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore.tsx",
@@ -3860,7 +3858,6 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/ManageEmbedments/ManageEmbedments.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/ManageRedirects/ManageRedirects.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/SearchView/SearchView.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/SubjectLines/SubjectLines.tsx",
             "apps/helpdesk/src/pages/settings/historicalImports/Modal/EmailImportModalWizard.tsx",
             "apps/helpdesk/src/pages/settings/historicalImports/Modal/ZendeskImportModalWizard.tsx",
@@ -3979,7 +3976,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 299,
+          "count": 298,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -4180,7 +4177,6 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/ArticlesTable/components/ArticleRow/ArticleRow.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableRow/CategoriesTableRow.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/CategoryDropdownOptionLabel/CategoryDropdownOptionLabel.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/ConnectToShopSection/ConnectToShopSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/EditingState/EditingState.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterAutoEmbedCard/HelpCenterAutoEmbedCard.tsx",
@@ -4432,7 +4428,7 @@
         },
         {
           "name": "LegacyBadge",
-          "count": 123,
+          "count": 122,
           "files": [
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
             "apps/helpdesk/src/auto_qa/components/SaveBadge.tsx",
@@ -4449,7 +4445,6 @@
             "apps/helpdesk/src/pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/BadgeWithTooltip.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/AiAgentNavbar/ActionDrivenNavigationItems.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/AiGuidanceEmptyState/AiGuidanceEmptyState.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/ConfigurationSection/ConfigurationSection.tsx",
@@ -4561,7 +4556,7 @@
         },
         {
           "name": "LegacyLoadingSpinner",
-          "count": 105,
+          "count": 104,
           "files": [
             "apps/helpdesk/src/AIJourney/pages/Activation/Activation.tsx",
             "apps/helpdesk/src/AIJourney/pages/Analytics/Analytics.tsx",
@@ -4661,7 +4656,6 @@
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/MetaLabel.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/TranslationLoader.tsx",
             "apps/helpdesk/src/tickets/ticket-detail/components/MessageActions.tsx",
-            "apps/helpdesk/src/tickets/ticket-detail/components/TicketDetail.tsx",
             "apps/helpdesk/src/timeline/Timeline.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/DraftOrderModal.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx",
@@ -4672,7 +4666,7 @@
         },
         {
           "name": "LegacyIconButton",
-          "count": 52,
+          "count": 51,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
             "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
@@ -4722,7 +4716,6 @@
             "apps/helpdesk/src/pages/tickets/detail/components/TicketView.tsx",
             "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
             "apps/helpdesk/src/ticket-list-view/components/TicketListView.tsx",
-            "apps/helpdesk/src/tickets/ticket-timeline/components/TicketTimelineSidePanelPreview.tsx",
             "apps/helpdesk/src/tickets/translations/TranslationsOnboardingModal.tsx",
             "apps/helpdesk/src/timeline/Sort.tsx",
             "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx"
@@ -5002,7 +4995,7 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 1013,
+      "count": 1009,
       "usages": [
         {
           "name": "Container",
@@ -5240,7 +5233,7 @@
         },
         {
           "name": "DropdownItem",
-          "count": 60,
+          "count": 59,
           "files": [
             "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/Table/EditColumnsItem.tsx",
@@ -5284,7 +5277,6 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList/DynamicBadgeList.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus.tsx",
             "apps/helpdesk/src/pages/settings/macros/MacrosCreateDropdown.tsx",
             "apps/helpdesk/src/pages/settings/teams/members/AddMember.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/actions/AddInternalNoteAction.tsx",
@@ -5367,7 +5359,7 @@
         },
         {
           "name": "DropdownMenu",
-          "count": 54,
+          "count": 53,
           "files": [
             "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/Table/EditTableColumns.tsx",
@@ -5402,7 +5394,6 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList/DynamicBadgeList.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus.tsx",
             "apps/helpdesk/src/pages/settings/macros/MacrosCreateDropdown.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/RulesTriggerSelect.tsx",
             "apps/helpdesk/src/pages/settings/teams/members/AddMember.tsx",
@@ -5484,63 +5475,6 @@
           ]
         },
         {
-          "name": "DropdownToggle",
-          "count": 51,
-          "files": [
-            "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/Table/EditTableColumns.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/SelectFilter.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock.tsx",
-            "apps/helpdesk/src/pages/common/components/ast/actions/ActionSelect.tsx",
-            "apps/helpdesk/src/pages/common/components/ast/operations/AddActionOrIfStatement.tsx",
-            "apps/helpdesk/src/pages/common/components/ast/operations/AddLogicalCondition.tsx",
-            "apps/helpdesk/src/pages/common/components/ast/operations/AddSiblingCondition.tsx",
-            "apps/helpdesk/src/pages/common/components/ast/widget/RuleSelect.tsx",
-            "apps/helpdesk/src/pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber.tsx",
-            "apps/helpdesk/src/pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ButtonsGroup.tsx",
-            "apps/helpdesk/src/pages/common/components/navbar/NavbarBlock.tsx",
-            "apps/helpdesk/src/pages/common/components/RichDropdown/RichDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/FilterDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/ShowMoreFieldsDropdown.tsx",
-            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/Dropdown.tsx",
-            "apps/helpdesk/src/pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput.tsx",
-            "apps/helpdesk/src/pages/common/forms/RichFieldWithVariables.tsx",
-            "apps/helpdesk/src/pages/common/forms/SearchInput/SearchInput.tsx",
-            "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
-            "apps/helpdesk/src/pages/common/forms/TimedeltaPicker.tsx",
-            "apps/helpdesk/src/pages/customers/list/CustomerListActions.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailToStoreMapping/StoreNameDropdown.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRowActions.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList/DynamicBadgeList.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus.tsx",
-            "apps/helpdesk/src/pages/settings/macros/MacrosCreateDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/teams/members/AddMember.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/AddInternalNoteAction.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroEdit.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroMessageActionsHeader.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyVariablesDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/ChannelSelect.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketMacros.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/CollapsedSourceActions/CollapsedSourceActions.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedbackDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/TranslationsDropdown/TranslationsDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/TicketNavbarBlock.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/TicketNavbarSection.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx"
-          ]
-        },
-        {
           "name": "FormGroup",
           "count": 51,
           "files": [
@@ -5595,6 +5529,62 @@
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/EditOrderModal/components/OrderTotals.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/OrderForm/components/OrderFooter.tsx"
+          ]
+        },
+        {
+          "name": "DropdownToggle",
+          "count": 50,
+          "files": [
+            "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/Table/EditTableColumns.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/SelectFilter.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/actions/ActionSelect.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/operations/AddActionOrIfStatement.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/operations/AddLogicalCondition.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/operations/AddSiblingCondition.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/widget/RuleSelect.tsx",
+            "apps/helpdesk/src/pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber.tsx",
+            "apps/helpdesk/src/pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ButtonsGroup.tsx",
+            "apps/helpdesk/src/pages/common/components/navbar/NavbarBlock.tsx",
+            "apps/helpdesk/src/pages/common/components/RichDropdown/RichDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/FilterDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/ShowMoreFieldsDropdown.tsx",
+            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/Dropdown.tsx",
+            "apps/helpdesk/src/pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput.tsx",
+            "apps/helpdesk/src/pages/common/forms/RichFieldWithVariables.tsx",
+            "apps/helpdesk/src/pages/common/forms/SearchInput/SearchInput.tsx",
+            "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
+            "apps/helpdesk/src/pages/common/forms/TimedeltaPicker.tsx",
+            "apps/helpdesk/src/pages/customers/list/CustomerListActions.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailToStoreMapping/StoreNameDropdown.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRowActions.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList/DynamicBadgeList.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
+            "apps/helpdesk/src/pages/settings/macros/MacrosCreateDropdown.tsx",
+            "apps/helpdesk/src/pages/settings/teams/members/AddMember.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/AddInternalNoteAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroEdit.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroMessageActionsHeader.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/ShopifyVariablesDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/ChannelSelect.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketMacros.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/CollapsedSourceActions/CollapsedSourceActions.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedbackDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/TranslationsDropdown/TranslationsDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/TicketNavbarBlock.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/TicketNavbarSection.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx"
           ]
         },
         {
@@ -5944,27 +5934,6 @@
           ]
         },
         {
-          "name": "UncontrolledDropdown",
-          "count": 15,
-          "files": [
-            "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/SelectFilter.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ButtonsGroup.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/ShowMoreFieldsDropdown.tsx",
-            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/Dropdown.tsx",
-            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/tests/Dropdown.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/RichFieldWithVariables.tsx",
-            "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
-            "apps/helpdesk/src/pages/common/forms/TimedeltaPicker.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/ChannelSelect.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown.tsx"
-          ]
-        },
-        {
           "name": "UncontrolledButtonDropdown",
           "count": 14,
           "files": [
@@ -5982,6 +5951,26 @@
             "apps/helpdesk/src/pages/tickets/common/macros/components/MacroEdit.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/MacroMessageActionsHeader.tsx",
             "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx"
+          ]
+        },
+        {
+          "name": "UncontrolledDropdown",
+          "count": 14,
+          "files": [
+            "apps/helpdesk/src/common/navigation/components/MainNavigation.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/SelectFilter.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ButtonsGroup.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/ShowMoreFieldsDropdown.tsx",
+            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/Dropdown.tsx",
+            "apps/helpdesk/src/pages/common/forms/MultiSelectOptionsField/tests/Dropdown.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/RichFieldWithVariables.tsx",
+            "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
+            "apps/helpdesk/src/pages/common/forms/TimedeltaPicker.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/CsvColumnMatching/components/FieldMappingSelectorDropdown/FieldMappingSelectorDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/ChannelSelect.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown.tsx"
           ]
         },
         {

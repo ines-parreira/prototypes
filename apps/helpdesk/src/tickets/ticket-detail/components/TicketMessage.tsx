@@ -6,6 +6,7 @@ import {
 } from 'models/ticket/predicates'
 import { useSmartFollowUps } from 'pages/tickets/detail/components/TicketMessages/hooks/useSmartFollowUps'
 import SmartFollowUps from 'pages/tickets/detail/components/TicketMessages/SmartFollowUps'
+import { useTicketModalContext } from 'timeline/ticket-modal/hooks/useTicketModalContext'
 
 import { isErrorFlag } from '../helpers/isErrorFlag'
 import type { TicketMessageElement } from '../types'
@@ -25,6 +26,7 @@ export function TicketMessage({ element }: Props) {
     const isAI = element.flags?.includes('ai') ?? false
     const isMinimal = element.flags?.includes('minimal') ?? false
     const error = element.flags?.find(isErrorFlag)?.[1]
+    const { isInsideSidePanel } = useTicketModalContext()
 
     const {
         smartFollowUps,
@@ -54,6 +56,7 @@ export function TicketMessage({ element }: Props) {
     return (
         <div
             className={cn(css.container, {
+                [css.sidePanel]: isInsideSidePanel,
                 [css.minimal]: isMinimal,
                 [css.internal]: !isAI && !element.data.public,
                 [css.ai]: isAI,

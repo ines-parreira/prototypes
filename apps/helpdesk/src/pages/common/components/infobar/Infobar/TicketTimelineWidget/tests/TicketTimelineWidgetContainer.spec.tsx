@@ -17,6 +17,11 @@ import { useTicketTimelineData } from '../useTicketTimelineData'
 // Mock all the hooks
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
+    useHistory: jest.fn(() => ({
+        push: jest.fn(),
+        replace: jest.fn(),
+        goBack: jest.fn(),
+    })),
 }))
 
 jest.mock('@repo/navigation', () => ({

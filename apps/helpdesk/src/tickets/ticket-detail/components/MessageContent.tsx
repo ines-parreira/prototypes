@@ -1,12 +1,14 @@
-import { useMemo } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 
 import cn from 'classnames'
 import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
+import Ellipsis from 'pages/common/components/Ellipsis'
 import { parseHtml } from 'utils/html'
 
+import { MessageExpansionContext } from '../context/MessageExpansionContext'
 import { processContent } from '../helpers/processContent'
 
 import css from './MessageContent.less'
@@ -17,7 +19,11 @@ type MessageContentProps = {
 }
 
 export function MessageContent({ message, isFailed }: MessageContentProps) {
+    const { expandedMessages, toggleMessage } = useContext(
+        MessageExpansionContext,
+    )
     const {
+        id: messageId,
         body_html: rawHtml,
         body_text: rawText,
         stripped_html,
@@ -25,10 +31,35 @@ export function MessageContent({ message, isFailed }: MessageContentProps) {
         meta,
     } = message
 
-    const html = stripped_html?.trim() || rawHtml?.trim() || ''
-    const text = stripped_text?.trim() || rawText?.trim() || ''
-    const isHtml = Boolean(html)
-    const rawContent = html || text
+    const isMessageExpanded = useMemo(
+        () => !!messageId && expandedMessages.includes(messageId),
+        [messageId, expandedMessages],
+    )
+
+    const fullHtml = rawHtml?.trim() || ''
+    const fullText = rawText?.trim() || ''
+    const strippedHtml = stripped_html?.trim() || ''
+    const strippedText = stripped_text?.trim() || ''
+
+    const fullContent = fullHtml || fullText
+    const strippedContent = strippedHtml || strippedText
+    const isHtml = Boolean(fullHtml || strippedHtml)
+
+    const isStripped = useMemo(
+        () =>
+            !!strippedContent &&
+            strippedContent.replace(/\s+/g, '') !==
+                fullContent.replace(/\s+/g, ''),
+        [strippedContent, fullContent],
+    )
+
+    const contentToRender = useMemo(() => {
+        if (isStripped && !isMessageExpanded) {
+            return strippedContent
+        }
+        return fullContent
+    }, [isStripped, isMessageExpanded, strippedContent, fullContent])
+
     const isTruncated = (meta as Record<string, unknown>)?.[
         isHtml ? 'body_html_truncated' : 'body_text_truncated'
     ]
@@ -36,15 +67,19 @@ export function MessageContent({ message, isFailed }: MessageContentProps) {
     const forceDefaultTheme = useMemo(
         () =>
             isHtml &&
-            parseHtml(rawContent).querySelectorAll('[style*="color"]').length >
-                0,
-        [rawContent, isHtml],
+            parseHtml(contentToRender).querySelectorAll('[style*="color"]')
+                .length > 0,
+        [contentToRender, isHtml],
     )
 
     const { processedContent, videoUrls } = useMemo(
-        () => processContent(rawContent, isHtml),
-        [rawContent, isHtml],
+        () => processContent(contentToRender, isHtml),
+        [contentToRender, isHtml],
     )
+
+    const handleShowFullContent = useCallback(() => {
+        toggleMessage(messageId)
+    }, [messageId, toggleMessage])
 
     if (!processedContent) return null
 
@@ -70,6 +105,12 @@ export function MessageContent({ message, isFailed }: MessageContentProps) {
                         message, open it in the original provider.
                     </p>
                 </span>
+            )}
+            {isStripped && (
+                <Ellipsis
+                    title="Show full content"
+                    onClick={handleShowFullContent}
+                />
             )}
 
             {videoUrls.map((url) => (

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 
 import {
+    Box,
     OverflowList,
+    OverflowListShowLess,
     OverflowListShowMore,
     Skeleton,
     Text,
@@ -18,11 +20,13 @@ import css from '../TicketTimelineWidget.less'
 type TicketFieldsOverflowListProps = {
     customFields: TicketCustomField[]
     isLoading: boolean
+    nonExpandedLineCount?: number
 }
 
 export function TicketFieldsOverflowList({
     customFields,
     isLoading,
+    nonExpandedLineCount = 2,
 }: TicketFieldsOverflowListProps) {
     const [hiddenCount, setHiddenCount] = useState(0)
     const hasTicketFields = customFields.length > 0
@@ -33,36 +37,53 @@ export function TicketFieldsOverflowList({
 
     if (!hasTicketFields) {
         return (
-            <Text size="sm" variant="regular">
-                No ticket fields yet
-            </Text>
+            <Box height="lg" alignItems="center">
+                <Text size="sm" variant="regular">
+                    No ticket fields yet
+                </Text>
+            </Box>
         )
     }
 
     const hiddenFields = customFields.slice(customFields.length - hiddenCount)
 
     return (
-        <OverflowList gap="xxxs" nonExpandedLineCount={2} isExpanded={false}>
+        <OverflowList nonExpandedLineCount={nonExpandedLineCount}>
             {customFields.map((field) => (
                 <CustomFieldItem key={field.id} field={field} />
             ))}
 
-            {/* Structure: Tooltip wraps both OverflowListShowMore and TooltipContent as siblings.
-                The button (span) must be inside OverflowListShowMore to trigger the tooltip,
-                and TooltipContent must be at the same level to display the tooltip content. */}
             <Tooltip>
                 <OverflowListShowMore className={css.overflowListShowMore}>
                     {({ hiddenCount: count }) => {
                         if (count !== hiddenCount) {
                             setHiddenCount(count)
                         }
-                        return <span>+{count} more</span>
+                        return (
+                            <Box
+                                flexDirection="row"
+                                alignItems="center"
+                                gap="xxxs"
+                            >
+                                <Text className={css.secondaryText} size="sm">
+                                    +{count} more
+                                </Text>
+                            </Box>
+                        )
                     }}
                 </OverflowListShowMore>
                 <TooltipContent>
                     <ShowMoreContent hiddenFields={hiddenFields} />
                 </TooltipContent>
             </Tooltip>
+            <OverflowListShowLess
+                className={css.overflowListShowMore}
+                leadingSlot="arrow-chevron-up"
+            >
+                <Text className={css.secondaryText} size="sm">
+                    Show less
+                </Text>
+            </OverflowListShowLess>
         </OverflowList>
     )
 }

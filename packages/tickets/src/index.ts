@@ -20,6 +20,8 @@ export {
     TicketHeader as TicketTimelineHeader,
     formatTicketTime,
 } from './components/TicketTimelineWidget'
+export { AssigneeLabel } from './components/TicketTimelineWidget/AssigneeLabel'
+export { TicketFieldsOverflowList } from './components/TicketTimelineWidget/TicketFieldsOverflowList'
 export { TicketsLegacyBridgeProvider } from './utils/LegacyBridge'
 export type { LegacyBridgeContextType } from './utils/LegacyBridge/context'
 

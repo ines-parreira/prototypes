@@ -10,7 +10,12 @@ import { TicketDetail } from '../TicketDetail'
 import { TicketHeader } from '../TicketHeader'
 
 jest.mock('@gorgias/axiom', () => ({
-    LegacyLoadingSpinner: () => <div>LoadingSpinner</div>,
+    Box: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    Skeleton: ({ height }: any) => (
+        <div data-testid="skeleton" style={{ height }}>
+            Loading
+        </div>
+    ),
 }))
 
 jest.mock('../../hooks/useTicket', () => ({ useTicket: jest.fn() }))
@@ -43,10 +48,10 @@ describe('TicketDetail', () => {
         })
     })
 
-    it('should render a spinner while the page is loading', () => {
+    it('should render skeleton loaders while the page is loading', () => {
         render(<TicketDetail ticketId={1} />)
         expect(screen.queryByText('TicketHeader')).not.toBeInTheDocument()
-        expect(screen.getByText('LoadingSpinner')).toBeInTheDocument()
+        expect(screen.getAllByTestId('skeleton')).toHaveLength(3)
     })
 
     it('should render the header if a summary is given even if the ticket is loading and pass it the right props', () => {
@@ -60,7 +65,7 @@ describe('TicketDetail', () => {
             />,
         )
         expect(screen.getByText('TicketHeader')).toBeInTheDocument()
-        expect(screen.getByText('LoadingSpinner')).toBeInTheDocument()
+        expect(screen.getAllByTestId('skeleton')).toHaveLength(3)
 
         expect(TicketHeader).toHaveBeenCalledWith(
             {

@@ -11,10 +11,12 @@ type CustomFieldItemProps = {
 export function CustomFieldItem({ field }: CustomFieldItemProps) {
     return (
         <OverflowListItem key={field.id}>
-            <Box marginRight="xxs">
+            <Box marginRight="xxs" height="lg" alignItems="center">
                 <Text size="sm" variant="regular">
                     <span className={css.fieldLabel}>{`${field.label}: `}</span>
-                    <span>{field.shortValueLabel}</span>
+                    <span className={css.fieldValue}>
+                        {field.shortValueLabel}
+                    </span>
                 </Text>
             </Box>
         </OverflowListItem>

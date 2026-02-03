@@ -24,7 +24,10 @@ describe('useTicketModalContext', () => {
 
         expect(result.current.isInsideTicketModal).toBe(true)
         expect(result.current.containerRef).not.toBeNull()
-        expect(result.current.containerRef?.current).toBeNull() // ref not attached in test environment
+        expect(result.current.containerRef?.current).toBeInstanceOf(
+            HTMLDivElement,
+        )
+        expect(result.current.containerRef?.current).toHaveClass('container')
     })
 
     it('returns stable reference to containerRef', () => {
