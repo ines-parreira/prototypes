@@ -227,6 +227,18 @@
         mask-repeat: no-repeat;
         mask-size: cover;
     }
+
+    .progressBarWrapper {
+        max-width: 120px;
+
+        [class*='ui-progressbar-barcontainer'] {
+            background-color: var(--surface-neutral-secondary);
+        }
+
+        [class*='ui-progressbar-bar-'] {
+            background-color: var(--static-default-black);
+        }
+    }
 }
 
 .axiom :local {

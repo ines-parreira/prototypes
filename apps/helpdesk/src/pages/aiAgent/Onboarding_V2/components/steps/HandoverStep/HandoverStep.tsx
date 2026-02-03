@@ -6,13 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
-import { Heading, Tag } from '@gorgias/axiom'
+import { Tag } from '@gorgias/axiom'
 import type { EmailIntegration } from '@gorgias/helpdesk-types'
 
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Card } from 'pages/aiAgent/Onboarding_V2/components/Card'
+import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import GorgiasIcon from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
@@ -238,9 +239,7 @@ export const HandoverStep: FC<StepProps> = ({
                 onBackClick={onBackClick}
                 isLoading={isLoadingOnboardingData || isUpdatingOnboarding}
             >
-                <Heading size="xxl">
-                    Next, how do you want to manage handovers?
-                </Heading>
+                <StepHeader title="Next, how do you want to manage handovers?" />
                 <div className={css.handoverCardsContainer}>
                     <HandoverCard
                         label="Email"

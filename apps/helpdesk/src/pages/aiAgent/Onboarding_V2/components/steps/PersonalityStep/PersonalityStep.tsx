@@ -7,11 +7,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { Box, Heading, Text } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
+import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { DiscountStrategySection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategySection'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep.less'
@@ -210,18 +211,10 @@ export const PersonalityStep: FC<StepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <Box marginTop="md" marginBottom="md">
-                        <Heading size="xxl">
-                            Choose how AI Agent drives sales
-                        </Heading>
-                    </Box>
-                    <Box marginBottom="lg">
-                        <Text>
-                            Tailor how AI guides shoppers toward a purchase.
-                            Control how AI encourages purchases and uses
-                            discounts to boost sales.
-                        </Text>
-                    </Box>
+                    <StepHeader
+                        title="Choose how AI Agent drives sales"
+                        subtitle="Control how AI guides shoppers toward a purchase and uses discounts to boost sales. You can always update these settings later."
+                    />
                     <Box width="100%" flexDirection="column" gap="md">
                         <PurchaseGuidanceSection />
                         <DiscountStrategySection />

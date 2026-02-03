@@ -8,7 +8,6 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import {
     Box,
-    Heading,
     Icon,
     Skeleton,
     Text,
@@ -25,6 +24,7 @@ import {
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { KnowledgePreview } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
+import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import GorgiasIcon from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import { KnowledgeResourceLine } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeResourceLine'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep.less'
@@ -171,29 +171,27 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 onBackClick={onBackClick}
                 isLoading={isLoading}
             >
-                <Heading size="xxl">
-                    AI Agent is syncing your knowledge sources
-                </Heading>
-                <Box marginTop="md">
-                    <Text>
-                        <Text variant="bold">
-                            We&apos;re setting things up so AI Agent can respond
-                            with confidence.
-                        </Text>{' '}
-                        No action needed. Once your resources are synced, AI
-                        Agent will start responding automatically. We&apos;ll
-                        let you know when it&apos;s ready.
-                    </Text>
-                </Box>
+                <StepHeader
+                    title="AI Agent is syncing your knowledge sources"
+                    subtitle={
+                        <Text>
+                            <Text variant="bold">
+                                {`We're setting things up so AI Agent can respond with confidence.`}
+                            </Text>{' '}
+                            No action needed right now, but you can add more
+                            knowledge at any time later in settings.
+                        </Text>
+                    }
+                />
                 <Box
-                    marginTop="xxl"
+                    marginTop="lg"
                     marginBottom="md"
                     display="flex"
                     alignItems="center"
                     gap="xs"
                 >
                     <Text variant="bold">
-                        We&apos;re syncing these knowledge sources
+                        {`We're syncing these knowledge sources`}
                     </Text>
                     <Tooltip placement="top left" delay={0}>
                         <TooltipTrigger>

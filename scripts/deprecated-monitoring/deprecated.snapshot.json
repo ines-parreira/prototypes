@@ -1,5 +1,5 @@
 {
-  "date": "2026-01-29T15:11:53.835Z",
+  "date": "2026-02-02T11:44:12.611Z",
   "total": 4188,
   "deprecated": [
     {
@@ -3979,7 +3979,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 300,
+          "count": 299,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -4116,7 +4116,6 @@
             "apps/helpdesk/src/pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/Button.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceActionPicker.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariablePicker.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/Translate/Translate.tsx",
             "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker.tsx",
@@ -4969,6 +4968,13 @@
           "count": 1,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx"
+          ]
+        },
+        {
+          "name": "LegacyProgressBar",
+          "count": 1,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout.tsx"
           ]
         },
         {

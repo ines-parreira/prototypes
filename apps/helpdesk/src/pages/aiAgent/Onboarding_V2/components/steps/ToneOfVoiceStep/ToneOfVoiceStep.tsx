@@ -5,8 +5,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { Heading, Text } from '@gorgias/axiom'
-
 import useAppSelector from 'hooks/useAppSelector'
 import { ToneOfVoiceComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent'
 import {
@@ -15,6 +13,7 @@ import {
 } from 'pages/aiAgent/constants'
 import type { ConversationMessage } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
+import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
@@ -195,17 +194,10 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <Heading size="xxl" className={css.title}>
-                        Choose a tone that matches your brand
-                    </Heading>
-                    <div className={css.description}>
-                        <Text>
-                            Set the personality of your AI Agent. Pick how your
-                            AI Agent speaks so it feels aligned with your
-                            brand&apos;s voice and values, building trust with
-                            your customers.
-                        </Text>
-                    </div>
+                    <StepHeader
+                        title="Choose a tone that matches your brand"
+                        subtitle="Set the personality of your AI Agent. Pick how your AI Agent speaks so it feels aligned with your brand's voice and values, building trust with your customers."
+                    />
                     <ToneOfVoiceComponent
                         value={toneOfVoice}
                         onChange={handleToneOfVoiceChange}
@@ -226,10 +218,7 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                                 }
                             />
                             <div className={css.formInputFooterInfo}>
-                                Examples: &apos;Use a friendly and
-                                conversational tone&apos;, &apos;Speak casually,
-                                use emojis&apos;, &apos;Be professional and
-                                concise&apos;
+                                {`Examples: 'Use a friendly and conversational tone', 'Speak casually, use emojis', 'Be professional and concise'`}
                             </div>
                         </div>
                     )}
