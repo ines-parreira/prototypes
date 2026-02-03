@@ -18,3 +18,4 @@ export type {
 } from './useAgentStatusTable'
 
 export { useCustomUserUnavailabilityModal } from './useCustomUserUnavailabilityModal'
+export { useAgentPhoneStatus } from './useAgentPhoneStatus'

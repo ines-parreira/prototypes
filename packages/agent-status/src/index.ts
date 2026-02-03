@@ -20,7 +20,6 @@ export {
     useUserAvailability,
     useDeleteCustomUserAvailabilityStatus,
     useCustomUserUnavailabilityModal,
-    useAvailabilityStatusColor,
     useSelectableAgentAvailabilityStatuses,
     useUpdateUserAvailabilityStatus,
 } from './hooks'
@@ -51,3 +50,5 @@ export {
     useAgentStatusLegacyBridge,
 } from './utils/LegacyBridge'
 export { NotificationStatus } from './utils/LegacyBridge/context'
+
+export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'

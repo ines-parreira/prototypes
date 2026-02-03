@@ -1,4 +1,5 @@
 export const DurationInMs = {
+    OneMinute: 60 * 1000,
     FiveMinutes: 5 * 60 * 1000,
     FifteenMinutes: 15 * 60 * 1000,
     ThirtyMinutes: 30 * 60 * 1000,

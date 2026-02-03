@@ -1,4 +1,9 @@
-declare module '*.less' {
-    const resource: { [key: string]: string }
-    export = resource
+declare global {
+    interface Window {
+        DEVELOPMENT: boolean
+        PRODUCTION: boolean
+        STAGING: boolean
+    }
 }
+
+export {}
