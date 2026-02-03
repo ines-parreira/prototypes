@@ -38,6 +38,7 @@ export enum VoiceServiceLevelAgreementsChart {
 
 export const VOICE_SERVICE_LEVEL_OPTIONAL_FILTERS = [
     FilterKey.Integrations,
+    FilterKey.Agents,
     FilterKey.VoiceQueues,
     FilterKey.Stores,
     FilterKey.Tags,
