@@ -1,5 +1,3698 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GorgiasChatIntegrationAppearance/> render() conditional chat preview rendering based on AI agent access should not render chat preview when revamp is enabled and user has AI agent access 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              href="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Test Chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="formSection"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="100"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="Test Chat"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English - US
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French - FR
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <div
+                  class="introMessageHeader"
+                >
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    During business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="Welcome!"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We will be back soon"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Colors
+                </h2>
+                <div
+                  class="colorPickersWrapper"
+                >
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_main_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_main_color"
+                          id="color-picker-67"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(18, 52, 86);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#123456"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_conversation_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_conversation_color"
+                          id="color-picker-68"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#115cb5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title mb-1"
+                >
+                  Company logo
+                </h2>
+                <p
+                  class="mb-4"
+                >
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent previewSpacing"
+                >
+                  <div
+                    class="imagePreview imagePreviewAvatar"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="uploadLinkContainer"
+                >
+                  <a
+                    class="uploadLink"
+                    href="#"
+                  >
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-name-type-field-agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-image-type-field-agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-image-type-field-agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
+                        for="avatar-image-type-field-company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="avatar-image-type-field-company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Launcher
+                </h2>
+                <div
+                  class="launcherSettingsGrid"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Widget position on page
+                    </label>
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move left / right
+                        <span
+                          id="move-widget-left-right"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move up / down
+                        <span
+                          id="move-widget-up-down"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  aria-disabled="false"
+                  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                  type="submit"
+                >
+                  <span
+                    class="ui-button-content-cef1"
+                  >
+                    Save changes
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="stickyParent"
+          >
+            <div
+              class="preview"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() conditional chat preview rendering based on AI agent access should render chat preview when revamp is disabled 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              href="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Test Chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="formSection"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="100"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="Test Chat"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English - US
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French - FR
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <div
+                  class="introMessageHeader"
+                >
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    During business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="Welcome!"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We will be back soon"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Colors
+                </h2>
+                <div
+                  class="colorPickersWrapper"
+                >
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_main_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_main_color"
+                          id="color-picker-57"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(18, 52, 86);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#123456"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_conversation_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_conversation_color"
+                          id="color-picker-58"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#115cb5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title mb-1"
+                >
+                  Company logo
+                </h2>
+                <p
+                  class="mb-4"
+                >
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent previewSpacing"
+                >
+                  <div
+                    class="imagePreview imagePreviewAvatar"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="uploadLinkContainer"
+                >
+                  <a
+                    class="uploadLink"
+                    href="#"
+                  >
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-name-type-field-agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-image-type-field-agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-image-type-field-agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
+                        for="avatar-image-type-field-company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="avatar-image-type-field-company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Launcher
+                </h2>
+                <div
+                  class="launcherSettingsGrid"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Widget position on page
+                    </label>
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move left / right
+                        <span
+                          id="move-widget-left-right"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move up / down
+                        <span
+                          id="move-widget-up-down"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  aria-disabled="false"
+                  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                  type="submit"
+                >
+                  <span
+                    class="ui-button-content-cef1"
+                  >
+                    Save changes
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="stickyParent"
+          >
+            <div
+              class="preview"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="wrapper medium toggleButtonWrapper"
+                  role="radiogroup"
+                >
+                  <div
+                    aria-checked="true"
+                    class="option medium active withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    During Business Hours
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="option medium withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    Outside Business Hours
+                  </div>
+                </div>
+                <div
+                  class="light wrapper preview previewWithBackground"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+                >
+                  <div
+                    class="buttonWrapper bottom-right"
+                  >
+                    <div
+                      class="axisLauncherWrapper"
+                    >
+                      <button
+                        class="css-kv5pal"
+                        color="#123456"
+                      >
+                        <div
+                          class="css-m4oh12"
+                        >
+                          <svg
+                            aria-label="Bubble icon button"
+                            fill="none"
+                            height="28"
+                            role="img"
+                            viewBox="0 0 100 100"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <filter
+                              id="33c9df204aeec9aa096f1fd360bd4160"
+                            >
+                              <fegaussianblur
+                                in="SourceAlpha"
+                                stdDeviation="0,4"
+                              />
+                              <feoffset
+                                dx="0"
+                                dy="4"
+                                result="offsetblur"
+                              />
+                              <fecomponenttransfer>
+                                <fefunca
+                                  slope="0.4"
+                                  type="linear"
+                                />
+                              </fecomponenttransfer>
+                              <fecomposite
+                                in2="offsetblur"
+                                operator="in"
+                              />
+                              <femerge>
+                                <femergenode />
+                                <femergenode
+                                  in="SourceGraphic"
+                                />
+                              </femerge>
+                            </filter>
+                            <path
+                              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                              fill="#fff"
+                              filter="#33c9df204aeec9aa096f1fd360bd4160"
+                            />
+                          </svg>
+                        </div>
+                        <div
+                          class="css-199spez"
+                        >
+                          <svg
+                            fill="none"
+                            height="28"
+                            viewBox="0 0 28 28"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                              fill="#fff"
+                            />
+                          </svg>
+                        </div>
+                        <span
+                          class="css-1oft1bb"
+                          color="#fff"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="dialog"
+                      data-testid="previewHeader"
+                      style="background-color: rgb(18, 52, 86);"
+                    >
+                      <div
+                        class="css-cad7de"
+                        color="#123456"
+                        data-testid="gradientColor"
+                      />
+                      <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
+                        class="noise"
+                      />
+                      <div
+                        aria-label="Live chat window header"
+                        class="css-1v07zf4"
+                        role="region"
+                        style="z-index: 2;"
+                        title="Test Chat"
+                      >
+                        <div
+                          class="css-1ti7tcr"
+                        >
+                          <div
+                            class="css-1jtrw5v"
+                          >
+                            <div
+                              class="css-qiet1b"
+                            >
+                              Test Chat
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="conversationContentWrapper"
+                      >
+                        <div
+                          class="content"
+                        >
+                          <div
+                            class="d-flex flex-column"
+                          >
+                            <div
+                              class="conversationTimestamp"
+                            >
+                              June 24
+                            </div>
+                            <div
+                              class="bubble primary firstMessageOfAppUser lastMessage"
+                              style="background-color: rgb(17, 92, 181); color: rgb(255, 255, 255);"
+                            >
+                              Hi, could you give me an update on my order status?
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-1gjl7fn"
+                                    size="32"
+                                  >
+                                    <svg
+                                      aria-label="bot-icon"
+                                      fill="none"
+                                      height="22"
+                                      role="img"
+                                      viewBox="0 0 22 22"
+                                      width="22"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        clip-rule="evenodd"
+                                        d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+                                        fill="white"
+                                        fill-rule="evenodd"
+                                      />
+                                      <path
+                                        d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+                                        fill="white"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="title"
+                              >
+                                Test Chat Bot
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div
+                                class="bubble firstMessageOfAppMaker"
+                              >
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
+                              </div>
+                              <div
+                                class="optionalEmailCapture"
+                              >
+                                <div
+                                  class="css-63ugbz"
+                                >
+                                  <div
+                                    class="css-r0ijy4"
+                                  >
+                                    <label
+                                      aria-label="Email"
+                                      class="css-zs6vvb"
+                                      for="email-capture-intput"
+                                    >
+                                      Email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
+                                    </label>
+                                    <div
+                                      class="css-t0lbh8"
+                                    >
+                                      <input
+                                        aria-invalid="false"
+                                        class="css-1jkukg3"
+                                        id="email-capture-intput"
+                                        label="Email"
+                                        name="email-capture-intput"
+                                        placeholder="your@email.com"
+                                        readonly=""
+                                        required=""
+                                        type="email"
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="css-18kbys8"
+                                  >
+                                    <button
+                                      class="css-197xmfa"
+                                      fill="filled"
+                                      type="button"
+                                    >
+                                      <div
+                                        class="css-ouhew3"
+                                        fill="filled"
+                                      >
+                                        <svg
+                                          fill="none"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          width="24"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                                            fill="#fff"
+                                          />
+                                        </svg>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-hbesmq"
+                                    size="32"
+                                  >
+                                    J
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="user"
+                              >
+                                John
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="css-ctovm3"
+                        >
+                          <button
+                            aria-label="Add attachment"
+                            class="css-1dsoodl"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  class="withFill"
+                                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                          <div
+                            class="css-s53yqv"
+                          >
+                            <textarea
+                              aria-invalid="false"
+                              aria-label="Gorgias message input"
+                              class="css-qhufd7"
+                              id="chat-message-input"
+                              name="chat-message-input"
+                              placeholder="Type a message..."
+                              readonly=""
+                              style="height: 0px;"
+                            />
+                          </div>
+                          <button
+                            aria-label="Send message"
+                            class="css-1dsoodl"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g>
+                                  <path
+                                    class="withFill"
+                                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() conditional chat preview rendering based on AI agent access should render chat preview when revamp is enabled but user does not have AI agent access 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              href="/app/settings/channels/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Test Chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      data-testid="GorgiasChatIntegrationHeader"
+    />
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="formSection"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="100"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="Test Chat"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English - US
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French - FR
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French - CA
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <div
+                  class="introMessageHeader"
+                >
+                  <h2
+                    class="title"
+                  >
+                    Intro message
+                  </h2>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    During business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="Welcome!"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We will be back soon"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Colors
+                </h2>
+                <div
+                  class="colorPickersWrapper"
+                >
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_main_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_main_color"
+                          id="color-picker-62"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(18, 52, 86);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#123456"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField colorPicker form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="wrapper colorPicker"
+                      >
+                        <button
+                          aria-disabled="false"
+                          aria-label="color-picker-button_conversation_color"
+                          class="ui-button-wrapper-cef1 button ui-button-fill-cef1 ui-button-secondary-cef1"
+                          data-testid="color-picker-button_conversation_color"
+                          id="color-picker-63"
+                          type="button"
+                        >
+                          <span
+                            class="ui-button-content-cef1"
+                          >
+                            <div
+                              class="color"
+                              style="background-color: rgb(17, 92, 181);"
+                            />
+                          </span>
+                        </button>
+                        <input
+                          class="input form-control"
+                          data-testid="color-picker-input"
+                          placeholder="ex: #eeeeee"
+                          type="text"
+                          value="#115cb5"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Font
+                </h2>
+                <div
+                  class="formGroup fontInputWrapper"
+                >
+                  <div>
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <div
+                          class="select dropdown-toggle selectFullWidth"
+                        >
+                          <span
+                            class="label"
+                            style="min-width: 10px; opacity: 1;"
+                          >
+                            <span
+                              style="font-family: Inter;"
+                            >
+                              Inter
+                            </span>
+                          </span>
+                          <input
+                            autocomplete="chrome-off"
+                            class="input"
+                            style="min-width: 10px;"
+                            type="text"
+                            value=""
+                          />
+                          <i
+                            class="material-icons dropdownIcon"
+                          >
+                            arrow_drop_down
+                          </i>
+                        </div>
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options longDropdown optionsFullWidth dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <div>
+                          <h6
+                            class="action action--focused dropdown-header"
+                            tabindex="-1"
+                            type="button"
+                          >
+                            <div
+                              class="dropdownAction"
+                            >
+                              <div
+                                class="dropdownActionIcon"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  add
+                                </i>
+                              </div>
+                              <span>
+                                More fonts
+                              </span>
+                            </div>
+                          </h6>
+                        </div>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Arial;"
+                            >
+                              Arial
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Georgia;"
+                            >
+                              Georgia
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Impact;"
+                            >
+                              Impact
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Merriweather;"
+                            >
+                              Merriweather
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Source Code Pro;"
+                            >
+                              Source Code Pro
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Tahoma;"
+                            >
+                              Tahoma
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Times New Roman;"
+                            >
+                              Times New Roman
+                            </span>
+                          </span>
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          role="menuitem"
+                          tabindex="0"
+                          type="button"
+                        >
+                          <span>
+                            <span
+                              style="font-family: Verdana;"
+                            >
+                              Verdana
+                            </span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title mb-1"
+                >
+                  Company logo
+                </h2>
+                <p
+                  class="mb-4"
+                >
+                  Customize your team's or robot avatars by uploading your company's logo.
+                </p>
+                <div
+                  class="previewAvatarLogoContent previewSpacing"
+                >
+                  <div
+                    class="imagePreview imagePreviewAvatar"
+                  >
+                    <i
+                      class="material-icons"
+                    >
+                      image
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="uploadLinkContainer"
+                >
+                  <a
+                    class="uploadLink"
+                    href="#"
+                  >
+                    <b>
+                      Upload
+                       image
+                    </b>
+                  </a>
+                  <span
+                    class="imageInfo"
+                  >
+                    <span
+                      class="ml-1"
+                    >
+                       – 
+                    </span>
+                    <span>
+                      Recommended size 100 x 100 px. Max 500 KB.
+                    </span>
+                  </span>
+                </div>
+                <div
+                  class="d-none"
+                >
+                  <div>
+                    FileField component is required ? 
+                    false
+                  </div>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Agent avatar
+                </h2>
+                <div
+                  class="avatarInputsWrapper"
+                >
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-name-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Name
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-name"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-name-type-field-agent-first-name"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name only
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-first-last-name-initial"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-first-last-name-initial"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        First name, last name initial
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-agent-fullname"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-agent-fullname"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Full name
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-name-type-field-chat-title"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-name-type-field-chat-title"
+                          name="avatar-name-type-field"
+                          type="radio"
+                        />
+                        Use chat title instead of agent name
+                      </label>
+                    </div>
+                  </fieldset>
+                  <fieldset
+                    class="radioFieldSet"
+                    name="avatar-image-type-field"
+                  >
+                    <legend
+                      class="legend"
+                    >
+                      Image
+                    </legend>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-picture"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="avatar-image-type-field-agent-picture"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Profile picture
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c label"
+                        for="avatar-image-type-field-agent-initials"
+                      >
+                        <input
+                          class="input"
+                          id="avatar-image-type-field-agent-initials"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Initials
+                      </label>
+                    </div>
+                    <div
+                      class="option"
+                    >
+                      <label
+                        class="ui-label-label-a11c ui-label-isdisabled-a11c label"
+                        for="avatar-image-type-field-company-logo"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="avatar-image-type-field-company-logo"
+                          name="avatar-image-type-field"
+                          type="radio"
+                        />
+                        Logo
+                      </label>
+                      <div
+                        class="caption caption"
+                      >
+                        <a
+                          href="#"
+                        >
+                          Upload a logo
+                        </a>
+                         
+                        to enable this option
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+              <div
+                class="formSection"
+              >
+                <h2
+                  class="title"
+                >
+                  Launcher
+                </h2>
+                <div
+                  class="launcherSettingsGrid"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Widget position on page
+                    </label>
+                    <div
+                      class="select dropdown-toggle"
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move left / right
+                        <span
+                          id="move-widget-left-right"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                    <div>
+                      <label
+                        class="bold"
+                      >
+                        Move up / down
+                        <span
+                          id="move-widget-up-down"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
+                      >
+                        <input
+                          class="input isAlignedRight"
+                          max="200"
+                          min="-20"
+                          step="1"
+                          type="number"
+                          value="0"
+                        />
+                        <span
+                          class="suffix"
+                        >
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_up
+                              </i>
+                            </span>
+                          </button>
+                          <button
+                            aria-disabled="false"
+                            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                            type="button"
+                          >
+                            <span
+                              class="ui-button-content-cef1"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </span>
+                          </button>
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  aria-disabled="false"
+                  class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-primary-cef1"
+                  type="submit"
+                >
+                  <span
+                    class="ui-button-content-cef1"
+                  >
+                    Save changes
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="stickyParent"
+          >
+            <div
+              class="preview"
+            >
+              <div
+                class="container"
+              >
+                <div
+                  class="wrapper medium toggleButtonWrapper"
+                  role="radiogroup"
+                >
+                  <div
+                    aria-checked="true"
+                    class="option medium active withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    During Business Hours
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="option medium withLabel"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    Outside Business Hours
+                  </div>
+                </div>
+                <div
+                  class="light wrapper preview previewWithBackground"
+                  style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+                >
+                  <div
+                    class="buttonWrapper bottom-right"
+                  >
+                    <div
+                      class="axisLauncherWrapper"
+                    >
+                      <button
+                        class="css-kv5pal"
+                        color="#123456"
+                      >
+                        <div
+                          class="css-m4oh12"
+                        >
+                          <svg
+                            aria-label="Bubble icon button"
+                            fill="none"
+                            height="28"
+                            role="img"
+                            viewBox="0 0 100 100"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <filter
+                              id="33c9df204aeec9aa096f1fd360bd4160"
+                            >
+                              <fegaussianblur
+                                in="SourceAlpha"
+                                stdDeviation="0,4"
+                              />
+                              <feoffset
+                                dx="0"
+                                dy="4"
+                                result="offsetblur"
+                              />
+                              <fecomponenttransfer>
+                                <fefunca
+                                  slope="0.4"
+                                  type="linear"
+                                />
+                              </fecomponenttransfer>
+                              <fecomposite
+                                in2="offsetblur"
+                                operator="in"
+                              />
+                              <femerge>
+                                <femergenode />
+                                <femergenode
+                                  in="SourceGraphic"
+                                />
+                              </femerge>
+                            </filter>
+                            <path
+                              d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                              fill="#fff"
+                              filter="#33c9df204aeec9aa096f1fd360bd4160"
+                            />
+                          </svg>
+                        </div>
+                        <div
+                          class="css-199spez"
+                        >
+                          <svg
+                            fill="none"
+                            height="28"
+                            viewBox="0 0 28 28"
+                            width="28"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                              fill="#fff"
+                            />
+                          </svg>
+                        </div>
+                        <span
+                          class="css-1oft1bb"
+                          color="#fff"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    class=""
+                  >
+                    <div
+                      class="dialog"
+                      data-testid="previewHeader"
+                      style="background-color: rgb(18, 52, 86);"
+                    >
+                      <div
+                        class="css-cad7de"
+                        color="#123456"
+                        data-testid="gradientColor"
+                      />
+                      <div
+                        class="css-1vo7hu9"
+                      />
+                      <div
+                        class="noise"
+                      />
+                      <div
+                        aria-label="Live chat window header"
+                        class="css-1v07zf4"
+                        role="region"
+                        style="z-index: 2;"
+                        title="Test Chat"
+                      >
+                        <div
+                          class="css-1ti7tcr"
+                        >
+                          <div
+                            class="css-1jtrw5v"
+                          >
+                            <div
+                              class="css-qiet1b"
+                            >
+                              Test Chat
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="conversationContentWrapper"
+                      >
+                        <div
+                          class="content"
+                        >
+                          <div
+                            class="d-flex flex-column"
+                          >
+                            <div
+                              class="conversationTimestamp"
+                            >
+                              June 24
+                            </div>
+                            <div
+                              class="bubble primary firstMessageOfAppUser lastMessage"
+                              style="background-color: rgb(17, 92, 181); color: rgb(255, 255, 255);"
+                            >
+                              Hi, could you give me an update on my order status?
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-1gjl7fn"
+                                    size="32"
+                                  >
+                                    <svg
+                                      aria-label="bot-icon"
+                                      fill="none"
+                                      height="22"
+                                      role="img"
+                                      viewBox="0 0 22 22"
+                                      width="22"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        d="M9.21657 0.458334C9.02672 0.458334 8.87282 0.612236 8.87282 0.802084C8.87282 0.991932 9.02672 1.14583 9.21657 1.14583H13.1946C13.3844 1.14583 13.5383 0.991932 13.5383 0.802084C13.5383 0.612236 13.3844 0.458334 13.1946 0.458334H9.21657Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        clip-rule="evenodd"
+                                        d="M5.28205 3.64072C3.57316 3.64072 1.93382 4.57211 1.54009 6.33288C1.13715 8.13486 0.916656 10.3022 0.916656 11.5426C0.916656 17.2249 5.52307 21.8314 11.2054 21.8314C16.8877 21.8314 21.4941 17.2249 21.4941 11.5426C21.4941 10.3022 21.2736 8.13486 20.8707 6.33287C20.4769 4.57211 18.8376 3.64072 17.1287 3.64072H5.28205ZM2.21102 6.4829C2.51475 5.12461 3.79485 4.32822 5.28205 4.32822H17.1287C18.6159 4.32822 19.896 5.12461 20.1997 6.4829C20.5925 8.23922 20.8066 10.3562 20.8066 11.5426C20.8066 16.8452 16.508 21.1439 11.2054 21.1439C5.90277 21.1439 1.60416 16.8452 1.60416 11.5426C1.60416 10.3562 1.81829 8.23922 2.21102 6.4829Z"
+                                        fill="white"
+                                        fill-rule="evenodd"
+                                      />
+                                      <path
+                                        d="M6.03532 11.1451C5.15653 11.1451 4.44412 10.4327 4.44412 9.5539C4.44412 8.67511 5.15652 7.9627 6.03532 7.9627H16.3781C17.2569 7.9627 17.9693 8.67511 17.9693 9.5539C17.9693 10.4327 17.2569 11.1451 16.3781 11.1451H6.03532Z"
+                                        fill="white"
+                                      />
+                                      <path
+                                        d="M7.85409 15.6615C7.7122 15.5354 7.49492 15.5482 7.36879 15.6901C7.24267 15.832 7.25545 16.0492 7.39734 16.1754C7.88308 16.6071 8.53301 16.946 9.13703 17.1996C10.4592 17.7548 11.9526 17.7548 13.2748 17.1996C13.8788 16.946 14.5287 16.6071 15.0145 16.1754C15.1564 16.0492 15.1691 15.832 15.043 15.6901C14.9169 15.5482 14.6996 15.5354 14.5577 15.6615C14.1548 16.0196 13.5853 16.3236 13.0086 16.5657C11.8567 17.0494 10.5551 17.0494 9.4032 16.5657C8.82647 16.3236 8.25696 16.0196 7.85409 15.6615Z"
+                                        fill="white"
+                                      />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="title"
+                              >
+                                Test Chat Bot
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div
+                                class="bubble firstMessageOfAppMaker"
+                              >
+                                Thanks for reaching out! We will get back to you in about 5 minutes.
+                              </div>
+                              <div
+                                class="optionalEmailCapture"
+                              >
+                                <div
+                                  class="css-63ugbz"
+                                >
+                                  <div
+                                    class="css-r0ijy4"
+                                  >
+                                    <label
+                                      aria-label="Email"
+                                      class="css-zs6vvb"
+                                      for="email-capture-intput"
+                                    >
+                                      Email
+                                      <span
+                                        class="required"
+                                      >
+                                        *
+                                      </span>
+                                    </label>
+                                    <div
+                                      class="css-t0lbh8"
+                                    >
+                                      <input
+                                        aria-invalid="false"
+                                        class="css-1jkukg3"
+                                        id="email-capture-intput"
+                                        label="Email"
+                                        name="email-capture-intput"
+                                        placeholder="your@email.com"
+                                        readonly=""
+                                        required=""
+                                        type="email"
+                                        value=""
+                                      />
+                                    </div>
+                                  </div>
+                                  <div
+                                    class="css-18kbys8"
+                                  >
+                                    <button
+                                      class="css-197xmfa"
+                                      fill="filled"
+                                      type="button"
+                                    >
+                                      <div
+                                        class="css-ouhew3"
+                                        fill="filled"
+                                      >
+                                        <svg
+                                          fill="none"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          width="24"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M9.29 15.88L13.17 12L9.29 8.12C8.9 7.73 8.9 7.1 9.29 6.71C9.68 6.32 10.31 6.32 10.7 6.71L15.29 11.3C15.68 11.69 15.68 12.32 15.29 12.71L10.7 17.3C10.31 17.69 9.68 17.69 9.29 17.3C8.91 16.91 8.9 16.27 9.29 15.88Z"
+                                            fill="#fff"
+                                          />
+                                        </svg>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="appMakerMessageWrapper"
+                          >
+                            <div
+                              class="agent"
+                            >
+                              <div
+                                class="avatar"
+                              >
+                                <div
+                                  class="avatar-container css-1j6zot1"
+                                >
+                                  <div
+                                    class="avatar css-hbesmq"
+                                    size="32"
+                                  >
+                                    J
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                class="user"
+                              >
+                                John
+                              </div>
+                            </div>
+                            <div
+                              class="messages"
+                            >
+                              <div>
+                                <div
+                                  class="bubble firstMessageOfAppMaker"
+                                >
+                                  Hi there, thanks for your patience! Sure, let me check. What's your order number?
+                                </div>
+                              </div>
+                              <div
+                                class="automatedTimestamp"
+                              >
+                                Automated
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="css-ctovm3"
+                        >
+                          <button
+                            aria-label="Add attachment"
+                            class="css-1dsoodl"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  class="withFill"
+                                  d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                                />
+                              </svg>
+                            </div>
+                          </button>
+                          <div
+                            class="css-s53yqv"
+                          >
+                            <textarea
+                              aria-invalid="false"
+                              aria-label="Gorgias message input"
+                              class="css-qhufd7"
+                              id="chat-message-input"
+                              name="chat-message-input"
+                              placeholder="Type a message..."
+                              readonly=""
+                              style="height: 0px;"
+                            />
+                          </div>
+                          <button
+                            aria-label="Send message"
+                            class="css-1dsoodl"
+                            fill="ghost"
+                            type="button"
+                          >
+                            <div
+                              class="css-ouhew3"
+                              fill="ghost"
+                            >
+                              <svg
+                                fill="none"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <g>
+                                  <path
+                                    class="withFill"
+                                    d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                                  />
+                                </g>
+                              </svg>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when creating a new chat integration 1`] = `
 <div>
   <div

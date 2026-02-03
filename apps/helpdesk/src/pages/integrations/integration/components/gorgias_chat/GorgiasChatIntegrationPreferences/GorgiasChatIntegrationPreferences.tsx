@@ -45,6 +45,7 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import type RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { Tab } from 'pages/integrations/integration/types'
 import type {
     Texts,
@@ -54,6 +55,7 @@ import type {
 } from 'rest_api/gorgias_chat_protected_api/types'
 import { getCurrentConvertPlan } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 import { convertToHTML } from 'utils/editor'
 import { sanitizeHtmlDefault } from 'utils/html'
 
@@ -98,6 +100,7 @@ import OfflineMessages from '../GorgiasChatIntegrationPreview/OfflineMessages'
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import useShouldShowChatSettingsRevamp from '../hooks/useShouldShowChatSettingsRevamp'
 import ControlTicketVolumeControls from './ControlTicketVolumeControls'
 
 import css from './GorgiasChatIntegrationPreferences.less'
@@ -135,6 +138,7 @@ type Props = {
     articleRecommendationEnabled: boolean
     selfServiceConfiguration: SelfServiceConfiguration | null
     selfServiceConfigurationEnabled: boolean
+    shouldShowPreviewForRevamp: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -817,68 +821,80 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
             )
         }
 
+        const shouldShowPreview = this.props.shouldShowPreviewForRevamp
+
         const chatPreview = (
-            <ChatIntegrationPreview
-                name={chatTitle}
-                introductionText={integration.getIn([
-                    'decoration',
-                    'introduction_text',
-                ])}
-                offlineIntroductionText={integration.getIn([
-                    'decoration',
-                    'offline_introduction_text',
-                ])}
-                mainColor={mainColor}
-                mainFontFamily={integration.getIn(
-                    ['decoration', 'main_font_family'],
-                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+            <>
+                {shouldShowPreview && (
+                    <ChatIntegrationPreview
+                        name={chatTitle}
+                        introductionText={integration.getIn([
+                            'decoration',
+                            'introduction_text',
+                        ])}
+                        offlineIntroductionText={integration.getIn([
+                            'decoration',
+                            'offline_introduction_text',
+                        ])}
+                        mainColor={mainColor}
+                        mainFontFamily={integration.getIn(
+                            ['decoration', 'main_font_family'],
+                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+                        )}
+                        isOnline
+                        language={language}
+                        position={position}
+                        renderFooter={renderPreviewFooter}
+                        autoResponderEnabled={
+                            preview === PREVIEW_AUTO_RESPONDER &&
+                            autoResponderEnabled
+                        }
+                        autoResponderReply={autoResponderReply}
+                        renderPrivacyPolicyDisclaimer={previewRenderPrivacyPolicyDisclaimer(
+                            preview,
+                        )}
+                        privacyPolicyDisclaimerText={
+                            this.state.privacyPolicyDisclaimerText ||
+                            widgetTranslatedTexts.privacyPolicyDisclaimer
+                        }
+                        isWidgetConversation={previewIsWidgetConversation(
+                            preview,
+                        )}
+                        backgroundColorStyle={integration.getIn(
+                            ['decoration', 'background_color_style'],
+                            GorgiasChatBackgroundColorStyle.Gradient,
+                        )}
+                        avatar={avatar}
+                        displayBotLabel={integration.getIn(
+                            ['decoration', 'display_bot_label'],
+                            true,
+                        )}
+                        useMainColorOutsideBusinessHours={integration.getIn(
+                            [
+                                'decoration',
+                                'use_main_color_outside_business_hours',
+                            ],
+                            false,
+                        )}
+                    >
+                        <ChatIntegrationPreviewContent>
+                            {previewIsWidgetConversation(preview) && (
+                                <ConversationTimestamp />
+                            )}
+                            {showCustomerInitialMessages && (
+                                <CustomerInitialMessages
+                                    conversationColor={conversationColor}
+                                    messages={[
+                                        widgetTranslatedTexts.previewCustomerInitialMessage,
+                                    ]}
+                                    hideConversationTimestamp
+                                />
+                            )}
+                            {previewChildren}
+                        </ChatIntegrationPreviewContent>
+                    </ChatIntegrationPreview>
                 )}
-                isOnline
-                language={language}
-                position={position}
-                renderFooter={renderPreviewFooter}
-                autoResponderEnabled={
-                    preview === PREVIEW_AUTO_RESPONDER && autoResponderEnabled
-                }
-                autoResponderReply={autoResponderReply}
-                renderPrivacyPolicyDisclaimer={previewRenderPrivacyPolicyDisclaimer(
-                    preview,
-                )}
-                privacyPolicyDisclaimerText={
-                    this.state.privacyPolicyDisclaimerText ||
-                    widgetTranslatedTexts.privacyPolicyDisclaimer
-                }
-                isWidgetConversation={previewIsWidgetConversation(preview)}
-                backgroundColorStyle={integration.getIn(
-                    ['decoration', 'background_color_style'],
-                    GorgiasChatBackgroundColorStyle.Gradient,
-                )}
-                avatar={avatar}
-                displayBotLabel={integration.getIn(
-                    ['decoration', 'display_bot_label'],
-                    true,
-                )}
-                useMainColorOutsideBusinessHours={integration.getIn(
-                    ['decoration', 'use_main_color_outside_business_hours'],
-                    false,
-                )}
-            >
-                <ChatIntegrationPreviewContent>
-                    {previewIsWidgetConversation(preview) && (
-                        <ConversationTimestamp />
-                    )}
-                    {showCustomerInitialMessages && (
-                        <CustomerInitialMessages
-                            conversationColor={conversationColor}
-                            messages={[
-                                widgetTranslatedTexts.previewCustomerInitialMessage,
-                            ]}
-                            hideConversationTimestamp
-                        />
-                    )}
-                    {previewChildren}
-                </ChatIntegrationPreviewContent>
-            </ChatIntegrationPreview>
+            </>
         )
 
         const autoResponderOptions = [
@@ -1630,12 +1646,38 @@ const connector = connect(
             state,
         ),
         convertProduct: getCurrentConvertPlan(state),
+        storeIntegrations: getStoreIntegrations(state),
     }),
     {
         updateOrCreateIntegration,
     },
 )
 
-export default withFeatureFlags(
+const ConnectedComponent = withFeatureFlags(
     connector(GorgiasChatIntegrationPreferencesComponent),
 )
+
+type WrapperProps = {
+    currentUser: Map<any, any>
+    integration: Map<any, any>
+    actions: typeof IntegrationsActions
+    articleRecommendationEnabled: boolean
+    selfServiceConfiguration: SelfServiceConfiguration | null
+    selfServiceConfigurationEnabled: boolean
+}
+
+const GorgiasChatIntegrationPreferencesWrapper = (props: WrapperProps) => {
+    const { integration } = props
+    const { storeIntegration } = useStoreIntegration(integration)
+    const { shouldShowPreviewForRevamp } =
+        useShouldShowChatSettingsRevamp(storeIntegration)
+
+    return (
+        <ConnectedComponent
+            {...props}
+            shouldShowPreviewForRevamp={shouldShowPreviewForRevamp}
+        />
+    )
+}
+
+export default GorgiasChatIntegrationPreferencesWrapper

@@ -10,6 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { entitiesInitialState } from 'fixtures/entities'
 import { user } from 'fixtures/users'
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -40,6 +41,12 @@ jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
+
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
+const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 
 jest.mock('pages/common/forms/FileField', () => {
     type MockedProps = {
@@ -99,6 +106,11 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             supports: (): boolean => true,
             escape: realCSS?.escape,
         }
+
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
     })
 
     afterEach(() => {

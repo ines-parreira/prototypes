@@ -19,19 +19,23 @@ import {
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
 } from 'config/integrations/gorgias_chat'
+import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
+import type { StoreIntegration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
 import { Tab } from 'pages/integrations/integration/types'
 import type { RootState } from 'state/types'
 
 import { updateOrCreateIntegration } from '../../../../../../state/integrations/actions'
+import { getIntegrations } from '../../../../../../state/integrations/selectors'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
@@ -42,6 +46,8 @@ import css from './GorgiasChatIntegrationQuickReplies.less'
 
 type Props = {
     integration: Map<any, any>
+    storeIntegration?: StoreIntegration
+    shouldShowPreviewForRevamp: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -170,67 +176,79 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
             'reply',
         ])
 
+        const { shouldShowPreviewForRevamp } = this.props
+
         const chatPreview = (
-            <ChatIntegrationPreview
-                name={integration.get('name')}
-                introductionText={integration.getIn([
-                    'decoration',
-                    'introduction_text',
-                ])}
-                mainColor={integration.getIn(['decoration', 'main_color'])}
-                mainFontFamily={integration.getIn(
-                    ['decoration', 'main_font_family'],
-                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-                )}
-                language={integration.getIn(['meta', 'language'])}
-                isOnline
-                position={position}
-                autoResponderEnabled={autoResponderEnabled}
-                autoResponderReply={autoResponderReply}
-                backgroundColorStyle={integration.getIn(
-                    ['decoration', 'background_color_style'],
-                    GorgiasChatBackgroundColorStyle.Gradient,
-                )}
-                avatar={{
-                    imageType: integration.getIn(
-                        ['decoration', 'avatar', 'image_type'],
-                        GorgiasChatAvatarImageType.AGENT_PICTURE,
-                    ),
-                    nameType: integration.getIn(
-                        ['decoration', 'avatar', 'name_type'],
-                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
-                    ),
-                    companyLogoUrl: integration.getIn([
-                        'decoration',
-                        'avatar',
-                        'company_logo_url',
-                    ]),
-                }}
-                displayBotLabel={integration.getIn(
-                    ['decoration', 'display_bot_label'],
-                    true,
-                )}
-                useMainColorOutsideBusinessHours={integration.getIn(
-                    ['decoration', 'use_main_color_outside_business_hours'],
-                    false,
-                )}
-            >
-                <ChatIntegrationPreviewContent>
-                    <div className={chatCss.content} />
-                    <QuickRepliesPreview
-                        quickReplies={this.state.quickReplies
-                            .filter(
-                                (s: string | undefined) =>
-                                    s?.trim().length !== 0,
-                            )
-                            .toJS()}
+            <>
+                {shouldShowPreviewForRevamp && (
+                    <ChatIntegrationPreview
+                        name={integration.get('name')}
+                        introductionText={integration.getIn([
+                            'decoration',
+                            'introduction_text',
+                        ])}
                         mainColor={integration.getIn([
                             'decoration',
                             'main_color',
                         ])}
-                    />
-                </ChatIntegrationPreviewContent>
-            </ChatIntegrationPreview>
+                        mainFontFamily={integration.getIn(
+                            ['decoration', 'main_font_family'],
+                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+                        )}
+                        language={integration.getIn(['meta', 'language'])}
+                        isOnline
+                        position={position}
+                        autoResponderEnabled={autoResponderEnabled}
+                        autoResponderReply={autoResponderReply}
+                        backgroundColorStyle={integration.getIn(
+                            ['decoration', 'background_color_style'],
+                            GorgiasChatBackgroundColorStyle.Gradient,
+                        )}
+                        avatar={{
+                            imageType: integration.getIn(
+                                ['decoration', 'avatar', 'image_type'],
+                                GorgiasChatAvatarImageType.AGENT_PICTURE,
+                            ),
+                            nameType: integration.getIn(
+                                ['decoration', 'avatar', 'name_type'],
+                                GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                            ),
+                            companyLogoUrl: integration.getIn([
+                                'decoration',
+                                'avatar',
+                                'company_logo_url',
+                            ]),
+                        }}
+                        displayBotLabel={integration.getIn(
+                            ['decoration', 'display_bot_label'],
+                            true,
+                        )}
+                        useMainColorOutsideBusinessHours={integration.getIn(
+                            [
+                                'decoration',
+                                'use_main_color_outside_business_hours',
+                            ],
+                            false,
+                        )}
+                    >
+                        <ChatIntegrationPreviewContent>
+                            <div className={chatCss.content} />
+                            <QuickRepliesPreview
+                                quickReplies={this.state.quickReplies
+                                    .filter(
+                                        (s: string | undefined) =>
+                                            s?.trim().length !== 0,
+                                    )
+                                    .toJS()}
+                                mainColor={integration.getIn([
+                                    'decoration',
+                                    'main_color',
+                                ])}
+                            />
+                        </ChatIntegrationPreviewContent>
+                    </ChatIntegrationPreview>
+                )}
+            </>
         )
 
         return (
@@ -340,12 +358,52 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
 }
 
 const connector = connect(
-    (state: RootState) => ({
-        currentUser: state.currentUser,
-    }),
+    (state: RootState) => {
+        return {
+            currentUser: state.currentUser,
+        }
+    },
     {
         updateOrCreateIntegration,
     },
 )
 
-export default connector(GorgiasChatIntegrationQuickRepliesComponent)
+const ConnectedComponent = connector(
+    GorgiasChatIntegrationQuickRepliesComponent,
+)
+
+function GorgiasChatIntegrationQuickRepliesWithHook(props: {
+    integration: Map<any, any>
+}) {
+    const shopIntegrationId = props.integration.getIn([
+        'meta',
+        'shop_integration_id',
+    ])
+
+    const storeIntegration = useAppSelector((state: RootState) => {
+        if (!shopIntegrationId) return undefined
+
+        const integrations = getIntegrations(state)
+        return integrations.find(
+            (integration): integration is StoreIntegration =>
+                integration.id === shopIntegrationId &&
+                [
+                    IntegrationType.Shopify,
+                    IntegrationType.BigCommerce,
+                    IntegrationType.Magento2,
+                ].includes(integration.type),
+        )
+    })
+
+    const { shouldShowPreviewForRevamp } =
+        useShouldShowChatSettingsRevamp(storeIntegration)
+
+    return (
+        <ConnectedComponent
+            {...props}
+            shouldShowPreviewForRevamp={shouldShowPreviewForRevamp}
+        />
+    )
+}
+
+export default GorgiasChatIntegrationQuickRepliesWithHook

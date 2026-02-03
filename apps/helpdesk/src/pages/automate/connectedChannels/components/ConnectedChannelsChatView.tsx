@@ -20,6 +20,7 @@ import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelf
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
@@ -194,6 +195,9 @@ export const ConnectedChannelsChatView = ({
             isAutomateSettings,
         ],
     )
+
+    const { shouldShowPreviewForRevamp } =
+        useShouldShowChatSettingsRevamp(storeIntegration)
 
     const orderManagementExternalLink = useMemo(() => {
         if (!isAutomateSettings)
@@ -371,7 +375,7 @@ export const ConnectedChannelsChatView = ({
                 )}
             </div>
 
-            {selfServiceConfiguration && (
+            {selfServiceConfiguration && shouldShowPreviewForRevamp && (
                 <ConnectedChannelsPreview
                     channel={currentChannel}
                     selfServiceConfiguration={selfServiceConfiguration}

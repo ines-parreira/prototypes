@@ -1,5 +1,695 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GorgiasChatIntegrationQuickReplies/> conditional chat preview rendering should not render chat preview when shouldShowPreviewForRevamp is false 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            href="/app/settings/channels/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          Quick Replies Chat
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    data-testid="GorgiasChatIntegrationHeader"
+  />
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row row"
+    >
+      <div
+        class="col"
+      >
+        <form
+          class=""
+        >
+          <div
+            class="mb-4"
+          >
+            <h4>
+              Quick replies
+            </h4>
+            <p
+              class="section"
+            >
+              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
+              <br />
+              <a
+                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+              </a>
+               
+              about quick replies in our Help Center.
+            </p>
+            <div
+              class="d-flex align-items-center mb16"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable quick replies"
+                  class="ui-label-label-a11c ui-togglefield-label-9b7c"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable quick replies"
+                    class="ui-togglefield-input-9b7c"
+                    disabled=""
+                    type="checkbox"
+                  />
+                  <div
+                    class="ui-togglefield-slider-9b7c"
+                  />
+                  <div />
+                </label>
+              </div>
+              <div
+                class="ml-2"
+              >
+                <b>
+                  Enable quick replies
+                </b>
+              </div>
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <button
+              class="d-flex align-items-center addButton btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper my-0"
+                >
+                  <input
+                    class="input"
+                    data-resizable="false"
+                    id="input-text-9"
+                    maxlength="20"
+                    name="item-0"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="Hello"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper my-0"
+                >
+                  <input
+                    class="input"
+                    data-resizable="false"
+                    id="input-text-10"
+                    maxlength="20"
+                    name="item-1"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="How can I help?"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              aria-disabled="false"
+              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+              data-name="button"
+              data-rac=""
+              data-react-aria-pressable="true"
+              id="react-aria-:r8:"
+              tabindex="0"
+              type="submit"
+            >
+              <div
+                class="ui-button-surface-a432"
+              >
+                <span
+                  class="ui-button-content-a432"
+                >
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left; text-wrap: nowrap;"
+                  >
+                    <strong>
+                      Save Changes
+                    </strong>
+                  </span>
+                </span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div
+        class="col"
+      >
+        <div
+          class="stickyParent"
+        >
+          <div
+            class="preview"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationQuickReplies/> conditional chat preview rendering should render chat preview when shouldShowPreviewForRevamp is true 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            href="/app/settings/channels/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          Quick Replies Chat
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    data-testid="GorgiasChatIntegrationHeader"
+  />
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row row"
+    >
+      <div
+        class="col"
+      >
+        <form
+          class=""
+        >
+          <div
+            class="mb-4"
+          >
+            <h4>
+              Quick replies
+            </h4>
+            <p
+              class="section"
+            >
+              When a customer opens the chat, select the quick replies the customer can click on. Note that Quick Replies will only be available in the widget default language.
+              <br />
+              <a
+                href="https://docs.gorgias.com/en-US/quick-replies-81794"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+              </a>
+               
+              about quick replies in our Help Center.
+            </p>
+            <div
+              class="d-flex align-items-center mb16"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  aria-label="Enable quick replies"
+                  class="ui-label-label-a11c ui-togglefield-label-9b7c"
+                  role="switch"
+                >
+                  <input
+                    aria-label="Enable quick replies"
+                    class="ui-togglefield-input-9b7c"
+                    disabled=""
+                    type="checkbox"
+                  />
+                  <div
+                    class="ui-togglefield-slider-9b7c"
+                  />
+                  <div />
+                </label>
+              </div>
+              <div
+                class="ml-2"
+              >
+                <b>
+                  Enable quick replies
+                </b>
+              </div>
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <button
+              class="d-flex align-items-center addButton btn btn-secondary"
+              type="button"
+            >
+              <i
+                class="material-icons md-2"
+              >
+                add
+              </i>
+              <span
+                class="ml-2"
+              >
+                Add Quick Reply
+              </span>
+            </button>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper my-0"
+                >
+                  <input
+                    class="input"
+                    data-resizable="false"
+                    id="input-text-7"
+                    maxlength="20"
+                    name="item-0"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="Hello"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+            <div
+              class="row row"
+            >
+              <div
+                class="flex-grow pr-0 col"
+              >
+                <div
+                  class="wrapper my-0"
+                >
+                  <input
+                    class="input"
+                    data-resizable="false"
+                    id="input-text-8"
+                    maxlength="20"
+                    name="item-1"
+                    placeholder="Type something (limited to 20 characters)"
+                    required=""
+                    size="300"
+                    type="text"
+                    value="How can I help?"
+                  />
+                </div>
+              </div>
+              <div
+                class="d-flex col-sm-auto delete col"
+              >
+                <i
+                  class="material-icons md-2 text-danger"
+                >
+                  clear
+                </i>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              aria-disabled="false"
+              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+              data-name="button"
+              data-rac=""
+              data-react-aria-pressable="true"
+              id="react-aria-:r6:"
+              tabindex="0"
+              type="submit"
+            >
+              <div
+                class="ui-button-surface-a432"
+              >
+                <span
+                  class="ui-button-content-a432"
+                >
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left; text-wrap: nowrap;"
+                  >
+                    <strong>
+                      Save Changes
+                    </strong>
+                  </span>
+                </span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </div>
+      <div
+        class="col"
+      >
+        <div
+          class="stickyParent"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="light wrapper preview previewWithBackground"
+              style="font-family: Inter, Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;"
+            >
+              <div
+                class="buttonWrapper bottom-right"
+              >
+                <div
+                  class="axisLauncherWrapper"
+                >
+                  <button
+                    class="css-kv5pal"
+                    color="#123456"
+                  >
+                    <div
+                      class="css-m4oh12"
+                    >
+                      <svg
+                        aria-label="Bubble icon button"
+                        fill="none"
+                        height="28"
+                        role="img"
+                        viewBox="0 0 100 100"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <filter
+                          id="33c9df204aeec9aa096f1fd360bd4160"
+                        >
+                          <fegaussianblur
+                            in="SourceAlpha"
+                            stdDeviation="0,4"
+                          />
+                          <feoffset
+                            dx="0"
+                            dy="4"
+                            result="offsetblur"
+                          />
+                          <fecomponenttransfer>
+                            <fefunca
+                              slope="0.4"
+                              type="linear"
+                            />
+                          </fecomponenttransfer>
+                          <fecomposite
+                            in2="offsetblur"
+                            operator="in"
+                          />
+                          <femerge>
+                            <femergenode />
+                            <femergenode
+                              in="SourceGraphic"
+                            />
+                          </femerge>
+                        </filter>
+                        <path
+                          d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"
+                          fill="#fff"
+                          filter="#33c9df204aeec9aa096f1fd360bd4160"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      class="css-199spez"
+                    >
+                      <svg
+                        fill="none"
+                        height="28"
+                        viewBox="0 0 28 28"
+                        width="28"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M21.35 6.66166C20.895 6.20666 20.16 6.20666 19.705 6.66166L14 12.355L8.295 6.65C7.84 6.195 7.105 6.195 6.65 6.65C6.195 7.105 6.195 7.84 6.65 8.295L12.355 14L6.65 19.705C6.195 20.16 6.195 20.895 6.65 21.35C7.105 21.805 7.84 21.805 8.295 21.35L14 15.645L19.705 21.35C20.16 21.805 20.895 21.805 21.35 21.35C21.805 20.895 21.805 20.16 21.35 19.705L15.645 14L21.35 8.295C21.7933 7.85166 21.7933 7.105 21.35 6.66166Z"
+                          fill="#fff"
+                        />
+                      </svg>
+                    </div>
+                    <span
+                      class="css-1oft1bb"
+                      color="#fff"
+                    />
+                  </button>
+                </div>
+              </div>
+              <div
+                class=""
+              >
+                <div
+                  class="dialog"
+                  data-testid="previewHeader"
+                  style="background-color: rgb(18, 52, 86);"
+                >
+                  <div
+                    class="css-cad7de"
+                    color="#123456"
+                    data-testid="gradientColor"
+                  />
+                  <div
+                    class="css-1vo7hu9"
+                  />
+                  <div
+                    class="noise"
+                  />
+                  <div
+                    aria-label="Live chat window header"
+                    class="css-1v07zf4"
+                    role="region"
+                    style="z-index: 2;"
+                    title="Quick Replies Chat"
+                  >
+                    <div
+                      class="css-1ti7tcr"
+                    >
+                      <div
+                        class="css-1jtrw5v"
+                      >
+                        <div
+                          class="css-qiet1b"
+                        >
+                          Quick Replies Chat
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="conversationContentWrapper"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="content"
+                      />
+                      <div
+                        class="quickRepliesContent"
+                      >
+                        <div
+                          class="quickRepliesWrapper"
+                        >
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            Hello
+                          </button>
+                          <button
+                            class="btn btn-reply-action reply"
+                            style="color: rgb(18, 52, 86); border-color: #123456;"
+                          >
+                            How can I help?
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="css-ctovm3"
+                    >
+                      <button
+                        aria-label="Add attachment"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              class="withFill"
+                              d="M18 13H13V18C13 18.55 12.55 19 12 19C11.45 19 11 18.55 11 18V13H6C5.45 13 5 12.55 5 12C5 11.45 5.45 11 6 11H11V6C11 5.45 11.45 5 12 5C12.55 5 13 5.45 13 6V11H18C18.55 11 19 11.45 19 12C19 12.55 18.55 13 18 13Z"
+                            />
+                          </svg>
+                        </div>
+                      </button>
+                      <div
+                        class="css-s53yqv"
+                      >
+                        <textarea
+                          aria-invalid="false"
+                          aria-label="Gorgias message input"
+                          class="css-qhufd7"
+                          id="chat-message-input"
+                          name="chat-message-input"
+                          placeholder="Type a message..."
+                          readonly=""
+                          style="height: 0px;"
+                        />
+                      </div>
+                      <button
+                        aria-label="Send message"
+                        class="css-1dsoodl"
+                        fill="ghost"
+                        type="button"
+                      >
+                        <div
+                          class="css-ouhew3"
+                          fill="ghost"
+                        >
+                          <svg
+                            fill="none"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g>
+                              <path
+                                class="withFill"
+                                d="M16.445 2.58975L2.86592 10.0185C2.33564 10.3075 2.40303 11.0076 2.93037 11.2187L6.04463 12.4577L14.4616 5.42347C14.6228 5.28734 14.8513 5.4957 14.7136 5.65406L7.65596 13.8079V16.0443C7.65596 16.7 8.49092 16.9584 8.90108 16.4833L10.7614 14.3358L14.4118 15.786C14.8278 15.9527 15.3024 15.7054 15.3786 15.2804L17.488 3.27874C17.5876 2.71755 16.9519 2.31194 16.445 2.58975Z"
+                              />
+                            </g>
+                          </svg>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults because there is no quick replies in the integration 1`] = `
 <div
   class="full-width"

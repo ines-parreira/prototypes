@@ -1,5 +1,3 @@
-import type { ComponentProps } from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -15,9 +13,11 @@ import { integrationsState } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
-import GorgiasChatIntegrationQuickReplies, {
+import * as ChatIntegrationPreviewModule from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import GorgiasChatIntegrationQuickRepliesWithHook, {
     GorgiasChatIntegrationQuickRepliesComponent,
 } from '../GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
+import * as useRevampShouldShowChatPreviewModule from '../hooks/useShouldShowChatSettingsRevamp'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -58,15 +58,18 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
         },
     })
 
-    const minProps: ComponentProps<
+    const minProps: React.ComponentProps<
         typeof GorgiasChatIntegrationQuickRepliesComponent
     > = {
         integration: integration,
         currentUser: fromJS({}),
+        storeIntegration: undefined,
         updateOrCreateIntegration: jest.fn(),
+        shouldShowPreviewForRevamp: true,
     }
 
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    let chatPreviewSpy: jest.SpyInstance
 
     beforeEach(() => {
         store = mockStore({
@@ -74,13 +77,20 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             integrations: fromJS(integrationsState),
             billing: fromJS(billingState),
         } as unknown as RootState)
+        chatPreviewSpy = jest.spyOn(ChatIntegrationPreviewModule, 'default')
+    })
+
+    afterEach(() => {
+        chatPreviewSpy.mockRestore()
     })
 
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
             const { container } = renderWithRouter(
                 <Provider store={store}>
-                    <GorgiasChatIntegrationQuickReplies {...minProps} />
+                    <GorgiasChatIntegrationQuickRepliesComponent
+                        {...minProps}
+                    />
                 </Provider>,
             )
 
@@ -95,7 +105,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
             const { container } = renderWithRouter(
                 <Provider store={store}>
-                    <GorgiasChatIntegrationQuickReplies
+                    <GorgiasChatIntegrationQuickRepliesComponent
                         {...minProps}
                         integration={integration.setIn(
                             ['meta', 'quick_replies'],
@@ -147,6 +157,367 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             expect(updateOrCreateIntegrationSpy).toHaveBeenCalledWith(
                 expectedPayload,
             )
+        })
+    })
+
+    describe('conditional chat preview rendering', () => {
+        const quickRepliesIntegration = fromJS({
+            id: 1,
+            name: 'Quick Replies Chat',
+            meta: {
+                quick_replies: {
+                    enabled: true,
+                    replies: ['Hello', 'How can I help?'],
+                },
+            },
+            decoration: {
+                introduction_text: 'Welcome!',
+                main_color: '#123456',
+            },
+        })
+
+        it('should render chat preview when shouldShowPreviewForRevamp is true', () => {
+            const { container } = renderWithRouter(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationQuickRepliesComponent
+                        {...minProps}
+                        integration={quickRepliesIntegration}
+                        shouldShowPreviewForRevamp={true}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Hello')).toBeInTheDocument()
+            expect(screen.getByText('How can I help?')).toBeInTheDocument()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should not render chat preview when shouldShowPreviewForRevamp is false', () => {
+            const { container } = renderWithRouter(
+                <Provider store={store}>
+                    <GorgiasChatIntegrationQuickRepliesComponent
+                        {...minProps}
+                        integration={quickRepliesIntegration}
+                        shouldShowPreviewForRevamp={false}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Hello')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('How can I help?'),
+            ).not.toBeInTheDocument()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+    })
+
+    describe('GorgiasChatIntegrationQuickRepliesWithHook', () => {
+        const quickRepliesIntegration = fromJS({
+            id: 1,
+            name: 'Quick Replies Chat',
+            meta: {
+                quick_replies: {
+                    enabled: true,
+                    replies: ['Hello', 'How can I help?'],
+                },
+            },
+            decoration: {
+                introduction_text: 'Welcome!',
+                main_color: '#123456',
+            },
+        })
+
+        describe('when store integration exists', () => {
+            it('should render chat preview when hook returns shouldShowPreviewForRevamp as true', () => {
+                jest.spyOn(
+                    useRevampShouldShowChatPreviewModule,
+                    'default',
+                ).mockReturnValue({ shouldShowPreviewForRevamp: true })
+
+                const integrationWithShop = quickRepliesIntegration.setIn(
+                    ['meta', 'shop_integration_id'],
+                    123,
+                )
+
+                const storeWithShopIntegration = mockStore({
+                    entities: entitiesInitialState,
+                    integrations: fromJS({
+                        ...integrationsState,
+                        integrations: [
+                            ...integrationsState.integrations,
+                            {
+                                id: 123,
+                                type: 'shopify',
+                                name: 'Test Shop',
+                            },
+                        ],
+                    }),
+                    billing: fromJS(billingState),
+                } as unknown as RootState)
+
+                renderWithRouter(
+                    <Provider store={storeWithShopIntegration}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(chatPreviewSpy).toHaveBeenCalled()
+            })
+
+            it('should call useRevampShouldShowChatPreview with the correct Shopify store integration', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+
+                const shopifyIntegration = {
+                    id: 123,
+                    type: 'shopify',
+                    name: 'Test Shop',
+                }
+
+                const integrationWithShop = quickRepliesIntegration.setIn(
+                    ['meta', 'shop_integration_id'],
+                    123,
+                )
+
+                const storeWithShopIntegration = mockStore({
+                    entities: entitiesInitialState,
+                    integrations: fromJS({
+                        ...integrationsState,
+                        integrations: [
+                            ...integrationsState.integrations,
+                            shopifyIntegration,
+                        ],
+                    }),
+                    billing: fromJS(billingState),
+                } as unknown as RootState)
+
+                renderWithRouter(
+                    <Provider store={storeWithShopIntegration}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(shopifyIntegration)
+
+                useRevampSpy.mockRestore()
+            })
+
+            it('should call useRevampShouldShowChatPreview with the correct BigCommerce store integration', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+
+                const bigCommerceIntegration = {
+                    id: 234,
+                    type: 'bigcommerce',
+                    name: 'BigCommerce Store',
+                }
+
+                const integrationWithShop = quickRepliesIntegration.setIn(
+                    ['meta', 'shop_integration_id'],
+                    234,
+                )
+
+                const storeWithBigCommerce = mockStore({
+                    entities: entitiesInitialState,
+                    integrations: fromJS({
+                        ...integrationsState,
+                        integrations: [
+                            ...integrationsState.integrations,
+                            bigCommerceIntegration,
+                        ],
+                    }),
+                    billing: fromJS(billingState),
+                } as unknown as RootState)
+
+                renderWithRouter(
+                    <Provider store={storeWithBigCommerce}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(
+                    bigCommerceIntegration,
+                )
+
+                useRevampSpy.mockRestore()
+            })
+
+            it('should call useRevampShouldShowChatPreview with the correct Magento2 store integration', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+
+                const magentoIntegration = {
+                    id: 345,
+                    type: 'magento2',
+                    name: 'Magento Store',
+                }
+
+                const integrationWithShop = quickRepliesIntegration.setIn(
+                    ['meta', 'shop_integration_id'],
+                    345,
+                )
+
+                const storeWithMagento = mockStore({
+                    entities: entitiesInitialState,
+                    integrations: fromJS({
+                        ...integrationsState,
+                        integrations: [
+                            ...integrationsState.integrations,
+                            magentoIntegration,
+                        ],
+                    }),
+                    billing: fromJS(billingState),
+                } as unknown as RootState)
+
+                renderWithRouter(
+                    <Provider store={storeWithMagento}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(magentoIntegration)
+
+                useRevampSpy.mockRestore()
+            })
+        })
+
+        describe('when store integration does not exist', () => {
+            it('should not render chat preview when hook returns shouldShowPreviewForRevamp as false', () => {
+                jest.spyOn(
+                    useRevampShouldShowChatPreviewModule,
+                    'default',
+                ).mockReturnValue({ shouldShowPreviewForRevamp: false })
+
+                const integrationWithoutShop = quickRepliesIntegration
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithoutShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(chatPreviewSpy).not.toHaveBeenCalled()
+            })
+
+            it('should not render chat preview when shop_integration_id is not found in integrations', () => {
+                jest.spyOn(
+                    useRevampShouldShowChatPreviewModule,
+                    'default',
+                ).mockReturnValue({ shouldShowPreviewForRevamp: false })
+
+                const integrationWithInvalidShopId =
+                    quickRepliesIntegration.setIn(
+                        ['meta', 'shop_integration_id'],
+                        999,
+                    )
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithInvalidShopId}
+                        />
+                    </Provider>,
+                )
+
+                expect(chatPreviewSpy).not.toHaveBeenCalled()
+            })
+
+            it('should call useRevampShouldShowChatPreview with undefined when no shop_integration_id exists', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+
+                const integrationWithoutShop = quickRepliesIntegration
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithoutShop}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+
+                useRevampSpy.mockRestore()
+            })
+
+            it('should call useRevampShouldShowChatPreview with undefined when shop_integration_id is not found', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+
+                const integrationWithInvalidShopId =
+                    quickRepliesIntegration.setIn(
+                        ['meta', 'shop_integration_id'],
+                        999,
+                    )
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithInvalidShopId}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+
+                useRevampSpy.mockRestore()
+            })
+
+            it('should call useRevampShouldShowChatPreview with undefined when integration type is not supported', () => {
+                const useRevampSpy = jest
+                    .spyOn(useRevampShouldShowChatPreviewModule, 'default')
+                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+
+                const integrationWithUnsupportedType =
+                    quickRepliesIntegration.setIn(
+                        ['meta', 'shop_integration_id'],
+                        456,
+                    )
+
+                const storeWithUnsupportedIntegration = mockStore({
+                    entities: entitiesInitialState,
+                    integrations: fromJS({
+                        ...integrationsState,
+                        integrations: [
+                            ...integrationsState.integrations,
+                            {
+                                id: 456,
+                                type: 'woocommerce',
+                                name: 'Unsupported Store',
+                            },
+                        ],
+                    }),
+                    billing: fromJS(billingState),
+                } as unknown as RootState)
+
+                renderWithRouter(
+                    <Provider store={storeWithUnsupportedIntegration}>
+                        <GorgiasChatIntegrationQuickRepliesWithHook
+                            integration={integrationWithUnsupportedType}
+                        />
+                    </Provider>,
+                )
+
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+
+                useRevampSpy.mockRestore()
+            })
         })
     })
 })

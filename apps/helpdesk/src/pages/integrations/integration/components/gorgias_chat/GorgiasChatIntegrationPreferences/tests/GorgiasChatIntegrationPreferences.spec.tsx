@@ -1,5 +1,3 @@
-import type { ComponentProps } from 'react'
-
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { fireEvent, render } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -29,7 +27,9 @@ import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import { GorgiasChatIntegrationPreferencesComponent } from '../GorgiasChatIntegrationPreferences'
+import GorgiasChatIntegrationPreferencesWrapper, {
+    GorgiasChatIntegrationPreferencesComponent,
+} from '../GorgiasChatIntegrationPreferences'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -40,6 +40,9 @@ const defaultState = {
     entities: {
         chatInstallationStatus: { installed: true },
     },
+    integrations: fromJS({
+        integrations: [],
+    }),
 } as unknown as RootState
 
 jest.mock('@repo/feature-flags', () => ({
@@ -59,6 +62,20 @@ jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
     return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
 })
 
+const mockUseStoreIntegration = jest.fn()
+const mockUseRevampShouldShowChatPreview = jest.fn()
+
+jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
+    useStoreIntegration: (integration: any) =>
+        mockUseStoreIntegration(integration),
+}))
+
+jest.mock('../../hooks/useShouldShowChatSettingsRevamp', () => ({
+    __esModule: true,
+    default: (storeIntegration: any) =>
+        mockUseRevampShouldShowChatPreview(storeIntegration),
+}))
+
 const mockGetTranslations = IntegrationsActions.getTranslations as jest.Mock
 
 jest.mock('state/integrations/actions', () => {
@@ -70,7 +87,7 @@ jest.mock('state/integrations/actions', () => {
 })
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
-    const minProps: ComponentProps<
+    const minProps: React.ComponentProps<
         typeof GorgiasChatIntegrationPreferencesComponent
     > = {
         currentUser: fromJS({
@@ -78,6 +95,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         }),
         integration: fromJS({}),
         emailIntegrations: [],
+        storeIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
         articleRecommendationEnabled: true,
         convertProduct: undefined,
@@ -88,6 +106,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         } as unknown as typeof IntegrationsActions,
         selfServiceConfiguration: null,
         selfServiceConfigurationEnabled: false,
+        shouldShowPreviewForRevamp: true,
     }
 
     describe('componentDidMount()', () => {
@@ -292,10 +311,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 currentUser={minProps.currentUser}
                                 updateOrCreateIntegration={jest.fn()}
                                 integration={integration}
+                                emailIntegrations={[]}
+                                storeIntegrations={[]}
+                                convertProduct={undefined}
                                 articleRecommendationEnabled={true}
                                 actions={minProps.actions}
                                 selfServiceConfiguration={null}
                                 selfServiceConfigurationEnabled={false}
+                                shouldShowPreviewForRevamp={true}
                             />
                         </Provider>
                     </MemoryRouter>,
@@ -382,10 +405,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 currentUser={minProps.currentUser}
                                 updateOrCreateIntegration={jest.fn()}
                                 integration={integration}
+                                emailIntegrations={[]}
+                                storeIntegrations={[]}
+                                convertProduct={undefined}
                                 articleRecommendationEnabled={true}
                                 actions={minProps.actions}
                                 selfServiceConfiguration={null}
                                 selfServiceConfigurationEnabled={false}
+                                shouldShowPreviewForRevamp={true}
                             />
                         </Provider>
                     </MemoryRouter>,
@@ -795,6 +822,169 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             fireEvent.click(saveButton)
 
             expect(saveButton).toBeAriaDisabled()
+        })
+
+        describe('conditional chat preview rendering', () => {
+            const integrationWithChat = fromJS({
+                id: 1,
+                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                name: 'Preview Test Chat',
+                meta: {
+                    language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                    shop_integration_id: 1,
+                },
+                decoration: {
+                    main_color: '#123456',
+                },
+            })
+
+            it('should render chat preview when shouldShowPreviewForRevamp is true', () => {
+                const { container, getAllByText } = render(
+                    <MemoryRouter>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationPreferencesComponent
+                                {...minProps}
+                                integration={integrationWithChat}
+                                shouldShowPreviewForRevamp={true}
+                            />
+                        </Provider>
+                    </MemoryRouter>,
+                )
+
+                expect(
+                    getAllByText('Preview Test Chat').length,
+                ).toBeGreaterThan(1)
+                expect(container).toMatchSnapshot()
+            })
+
+            it('should not render chat preview when shouldShowPreviewForRevamp is false', () => {
+                const { container, getAllByText } = render(
+                    <MemoryRouter>
+                        <Provider store={mockStore(defaultState)}>
+                            <GorgiasChatIntegrationPreferencesComponent
+                                {...minProps}
+                                integration={integrationWithChat}
+                                shouldShowPreviewForRevamp={false}
+                            />
+                        </Provider>
+                    </MemoryRouter>,
+                )
+
+                expect(getAllByText('Preview Test Chat')).toHaveLength(1)
+                expect(container).toMatchSnapshot()
+            })
+        })
+    })
+})
+
+describe('<GorgiasChatIntegrationPreferencesWrapper />', () => {
+    const wrapperProps = {
+        currentUser: fromJS({
+            name: 'John Doe',
+        }),
+        integration: fromJS({
+            id: 1,
+            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+            meta: {
+                shop_integration_id: 1,
+                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+            },
+        }),
+        actions: {
+            getTranslations: jest.fn(),
+            getApplicationTexts: jest.fn(),
+            updateApplicationTexts: jest.fn(),
+        } as unknown as typeof IntegrationsActions,
+        articleRecommendationEnabled: true,
+        selfServiceConfiguration: null,
+        selfServiceConfigurationEnabled: false,
+    }
+
+    const mockStoreIntegration = {
+        id: 1,
+        type: IntegrationType.Shopify,
+        name: 'Test Store',
+    }
+
+    const stateWithBilling = {
+        ...defaultState,
+        billing: fromJS({
+            plan: null,
+            products: [],
+        }),
+    } as unknown as RootState
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: mockStoreIntegration,
+        })
+        mockUseRevampShouldShowChatPreview.mockReturnValue({
+            shouldShowPreviewForRevamp: true,
+        })
+    })
+
+    it('should call useStoreIntegration hook with the integration prop', () => {
+        render(
+            <MemoryRouter>
+                <Provider store={mockStore(stateWithBilling)}>
+                    <GorgiasChatIntegrationPreferencesWrapper
+                        {...wrapperProps}
+                    />
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        expect(mockUseStoreIntegration).toHaveBeenCalledTimes(1)
+        expect(mockUseStoreIntegration).toHaveBeenCalledWith(
+            wrapperProps.integration,
+        )
+    })
+
+    it('should call useRevampShouldShowChatPreview hook with the storeIntegration', () => {
+        render(
+            <MemoryRouter>
+                <Provider store={mockStore(stateWithBilling)}>
+                    <GorgiasChatIntegrationPreferencesWrapper
+                        {...wrapperProps}
+                    />
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        expect(mockUseRevampShouldShowChatPreview).toHaveBeenCalledTimes(1)
+        expect(mockUseRevampShouldShowChatPreview).toHaveBeenCalledWith(
+            mockStoreIntegration,
+        )
+    })
+
+    it('should pass shouldShowPreviewForRevamp value from hook to inner component', () => {
+        const testCases = [true, false]
+
+        testCases.forEach((hookReturnValue) => {
+            jest.clearAllMocks()
+            mockUseStoreIntegration.mockReturnValue({
+                storeIntegration: mockStoreIntegration,
+            })
+            mockUseRevampShouldShowChatPreview.mockReturnValue({
+                shouldShowPreviewForRevamp: hookReturnValue,
+            })
+
+            const { unmount } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(stateWithBilling)}>
+                        <GorgiasChatIntegrationPreferencesWrapper
+                            {...wrapperProps}
+                        />
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(mockUseRevampShouldShowChatPreview).toHaveBeenCalledWith(
+                mockStoreIntegration,
+            )
+
+            unmount()
         })
     })
 })
