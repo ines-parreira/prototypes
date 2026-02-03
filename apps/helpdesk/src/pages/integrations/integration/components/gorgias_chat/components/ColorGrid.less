@@ -1,0 +1,32 @@
+:local {
+    @swatch-size: 16px;
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(var(--grid-columns), @swatch-size);
+        gap: var(--spacing-xxxxs);
+        padding: var(--spacing-xxs);
+        background: var(--elevation-neutral-default);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xs);
+    }
+
+    .swatch {
+        width: @swatch-size;
+        height: @swatch-size;
+        border: none;
+        border-radius: var(--spacing-xxxxs);
+        padding: 0;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+
+        &:hover {
+            transform: scale(1.15);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+    }
+}

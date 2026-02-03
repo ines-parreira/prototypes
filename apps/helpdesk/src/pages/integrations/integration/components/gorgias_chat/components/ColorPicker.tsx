@@ -18,6 +18,8 @@ import cn from 'classnames'
 
 import { Button, TextField } from '@gorgias/axiom'
 
+import { ColorGrid } from './ColorGrid'
+
 import css from './ColorPicker.less'
 
 const HEX_COLOR_REGEX = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
@@ -26,42 +28,23 @@ function isValidHexColor(color: string): boolean {
     return HEX_COLOR_REGEX.test(color)
 }
 
-const defaultColors = [
-    '#EB144C',
-    '#FF6900',
-    '#FCB900',
-    '#B5CC18',
-    '#00D084',
-    '#7BDCB5',
-    '#8ED1FC',
-    '#0693E3',
-    '#9900EF',
-    '#E03997',
-    '#F78DA7',
-    '#A5673F',
-    '#ABB8C3',
-    '#767676',
-]
+const DEFAULT_COLOR = '#EB144C'
 
 export type ColorPickerProps = {
     className?: string
     value?: string | null
     defaultValue?: string
     onChange: (value: string) => void
-    colors?: string[]
     popupContainer?: HTMLElement | RefObject<HTMLElement> | string
     label?: string
-    shouldStopPropagation?: boolean
 }
 
 export function ColorPicker({
     className,
-    colors = defaultColors,
     value,
-    defaultValue,
+    defaultValue = DEFAULT_COLOR,
     onChange,
     label,
-    shouldStopPropagation,
 }: ColorPickerProps) {
     const [isOpen, setIsOpen] = useState(false)
 
@@ -102,7 +85,7 @@ export function ColorPicker({
 
     const handleBlur = useCallback(() => {
         if (!value || !isValidHexColor(value)) {
-            onChange(defaultValue ?? defaultColors[0])
+            onChange(defaultValue)
         }
     }, [value, defaultValue, onChange])
 
@@ -149,23 +132,7 @@ export function ColorPicker({
                             className={css.popup}
                             {...getFloatingProps()}
                         >
-                            <div className={css.colorGrid}>
-                                {colors.map((color) => (
-                                    <button
-                                        key={color}
-                                        type="button"
-                                        className={css.colorChoice}
-                                        style={{ backgroundColor: color }}
-                                        aria-label={`Select color ${color}`}
-                                        onClick={(e) => {
-                                            if (shouldStopPropagation) {
-                                                e.stopPropagation()
-                                            }
-                                            handleColorSelect(color)
-                                        }}
-                                    />
-                                ))}
-                            </div>
+                            <ColorGrid onColorSelect={handleColorSelect} />
                         </div>
                     </FloatingFocusManager>
                 </FloatingPortal>

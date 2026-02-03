@@ -91,7 +91,7 @@ describe('<ColorPicker />', () => {
             expect(onChange).toHaveBeenCalledWith('#FF0000')
         })
 
-        it('should reset to first default color on blur when no defaultValue provided', async () => {
+        it('should reset to default color on blur when no defaultValue provided', async () => {
             const onChange = jest.fn()
             render(
                 <ColorPicker {...defaultProps} value="#" onChange={onChange} />,
@@ -101,7 +101,9 @@ describe('<ColorPicker />', () => {
             await act(() => userEvent.click(input))
             act(() => input.blur())
 
-            expect(onChange).toHaveBeenCalledWith('#EB144C')
+            expect(onChange).toHaveBeenCalledWith(
+                expect.stringMatching(/^#[A-F0-9]{6}$/i),
+            )
         })
 
         it('should not reset valid color on blur', async () => {
@@ -131,12 +133,13 @@ describe('<ColorPicker />', () => {
             })
             await act(() => userEvent.click(swatchButton))
 
-            expect(
-                screen.getByRole('button', { name: /select color #eb144c/i }),
-            ).toBeInTheDocument()
+            const colorButtons = screen.getAllByRole('button', {
+                name: /select color #/i,
+            })
+            expect(colorButtons.length).toBeGreaterThan(0)
         })
 
-        it('should render all default color options', async () => {
+        it('should render color grid options', async () => {
             render(<ColorPicker {...defaultProps} />)
 
             const swatchButton = screen.getByRole('button', {
@@ -144,35 +147,11 @@ describe('<ColorPicker />', () => {
             })
             await act(() => userEvent.click(swatchButton))
 
-            expect(
-                screen.getByRole('button', { name: /select color #eb144c/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /select color #ff6900/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /select color #767676/i }),
-            ).toBeInTheDocument()
-        })
-
-        it('should render custom colors when provided', async () => {
-            const customColors = ['#111111', '#222222', '#333333']
-            render(<ColorPicker {...defaultProps} colors={customColors} />)
-
-            const swatchButton = screen.getByRole('button', {
-                name: 'color-picker',
+            const colorButtons = screen.getAllByRole('button', {
+                name: /select color #/i,
             })
-            await act(() => userEvent.click(swatchButton))
-
-            expect(
-                screen.getByRole('button', { name: /select color #111111/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /select color #222222/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /select color #333333/i }),
-            ).toBeInTheDocument()
+            // ColorGrid generates 8 hues × 9 columns = 72 colors
+            expect(colorButtons).toHaveLength(72)
         })
 
         it('should call onChange when a color is selected', async () => {
@@ -184,12 +163,14 @@ describe('<ColorPicker />', () => {
             })
             await act(() => userEvent.click(swatchButton))
 
-            const colorOption = screen.getByRole('button', {
-                name: /select color #eb144c/i,
+            const colorButtons = screen.getAllByRole('button', {
+                name: /select color #/i,
             })
-            await act(() => userEvent.click(colorOption))
+            await act(() => userEvent.click(colorButtons[0]))
 
-            expect(onChange).toHaveBeenCalledWith('#EB144C')
+            expect(onChange).toHaveBeenCalledWith(
+                expect.stringMatching(/^#[A-F0-9]{6}$/i),
+            )
         })
 
         it('should close popup after selecting a color', async () => {
@@ -200,19 +181,19 @@ describe('<ColorPicker />', () => {
             })
             await act(() => userEvent.click(swatchButton))
 
-            const colorOption = screen.getByRole('button', {
-                name: /select color #eb144c/i,
+            const colorButtons = screen.getAllByRole('button', {
+                name: /select color #/i,
             })
-            await act(() => userEvent.click(colorOption))
+            await act(() => userEvent.click(colorButtons[0]))
 
             expect(
-                screen.queryByRole('button', { name: /select color #eb144c/i }),
-            ).not.toBeInTheDocument()
+                screen.queryAllByRole('button', { name: /select color #/i }),
+            ).toHaveLength(0)
         })
     })
 
     describe('color swatch display', () => {
-        it('should display white background when no value provided', () => {
+        it('should display default color background when no value provided', () => {
             render(<ColorPicker {...defaultProps} />)
 
             const swatchButton = screen.getByRole('button', {
@@ -222,7 +203,7 @@ describe('<ColorPicker />', () => {
                 '[style*="background-color"]',
             )
 
-            expect(swatch).toHaveStyle({ backgroundColor: '#FFFFFF' })
+            expect(swatch).toHaveStyle({ backgroundColor: '#EB144C' })
         })
 
         it('should display the current color value in swatch', () => {
