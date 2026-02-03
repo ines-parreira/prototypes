@@ -119,6 +119,42 @@ export const getPlainTextFromStateWithPrediction = (
     return text.slice(0, -1)
 }
 
+/**
+ * Get entity keys that are referenced by blocks in valid contexts
+ * - Excludes image/video entities that are not in atomic blocks
+ * - Includes all other referenced entities
+ */
+const getValidReferencedEntityKeys = (
+    blocks: RawDraftContentBlock[],
+    entityMap: { [K in string]: any },
+): Set<string> => {
+    const validKeys = new Set<string>()
+
+    blocks.forEach((block) => {
+        block.entityRanges?.forEach((entityRange) => {
+            const entityKey = String(entityRange.key)
+            const entity = entityMap[entityKey]
+
+            if (!entity) {
+                return
+            }
+
+            // Image and video entities should only be in atomic blocks
+            if (
+                (entity.type === 'img' || entity.type === 'video') &&
+                block.type !== 'atomic'
+            ) {
+                // Skip - invalid context for image/video entity
+                return
+            }
+
+            validKeys.add(entityKey)
+        })
+    })
+
+    return validKeys
+}
+
 export const convertToRawWithoutPredictions = (
     contentState: ContentState,
 ): {
@@ -128,10 +164,23 @@ export const convertToRawWithoutPredictions = (
     }
 } => {
     const rawContent = convertToRaw(contentState)
+    const validKeys = getValidReferencedEntityKeys(
+        rawContent.blocks,
+        rawContent.entityMap,
+    )
+
     return {
         blocks: rawContent.blocks.slice(),
-        entityMap: _pickBy(rawContent.entityMap, (val) => {
-            return val.type !== PREDICTION_TYPE
+        entityMap: _pickBy(rawContent.entityMap, (val, key) => {
+            // Remove prediction entities
+            if (val.type === PREDICTION_TYPE) {
+                return false
+            }
+            // Remove entities that aren't referenced or are in invalid contexts
+            if (!validKeys.has(key)) {
+                return false
+            }
+            return true
         }),
     }
 }

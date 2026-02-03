@@ -365,6 +365,19 @@ export const toReplyAreaState = (
     return replyAreaState
 }
 
+/**
+ * Clean up orphaned and misplaced entities from contentState
+ * - Removes prediction entities
+ * - Removes orphaned entities
+ * - Removes image/video entities in non-atomic blocks
+ */
+const cleanupContentStateEntities = (
+    contentState: ContentState,
+): ContentState => {
+    const cleanedRaw = convertToRawWithoutPredictions(contentState)
+    return convertFromRaw(cleanedRaw)
+}
+
 export const updateNewMessageWithContentState = (
     prevNewMessage: NewMessage,
     contentState: ContentState,
@@ -374,17 +387,20 @@ export const updateNewMessageWithContentState = (
     delete newMessage.stripped_html
     delete newMessage.stripped_text
 
+    // Clean up orphaned and misplaced entities before converting to HTML
+    const cleanedContentState = cleanupContentStateEntities(contentState)
+
     if (emailThreadSizeFF) {
-        const userInput = deleteReplyThreadContent(contentState)
+        const userInput = deleteReplyThreadContent(cleanedContentState)
         newMessage.body_html = convertToHTML(userInput)
         newMessage.body_text = userInput.getPlainText()
     } else {
-        newMessage.body_html = convertToHTML(contentState)
-        newMessage.body_text = contentState.getPlainText()
+        newMessage.body_html = convertToHTML(cleanedContentState)
+        newMessage.body_text = cleanedContentState.getPlainText()
     }
 
-    if (hasEmailExtraContent(contentState)) {
-        const userInput = deleteEmailExtraContent(contentState)
+    if (hasEmailExtraContent(cleanedContentState)) {
+        const userInput = deleteEmailExtraContent(cleanedContentState)
         newMessage.stripped_text = userInput.getPlainText()
         newMessage.stripped_html = convertToHTML(userInput)
     }
