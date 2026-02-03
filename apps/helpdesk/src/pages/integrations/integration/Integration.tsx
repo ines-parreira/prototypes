@@ -75,7 +75,7 @@ import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrati
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationLanguages from './components/gorgias_chat/GorgiasChatIntegrationLanguages'
-import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
+import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'

@@ -110,9 +110,10 @@ jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationInstall',
     () => () => <div>GorgiasChatIntegrationInstall</div>,
 )
-jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => () => (
-    <div>GorgiasChatIntegrationList</div>
-))
+jest.mock(
+    '../components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList',
+    () => () => <div>GorgiasChatIntegrationList</div>,
+)
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
     () => () => <div>GorgiasChatIntegrationPreferences</div>,

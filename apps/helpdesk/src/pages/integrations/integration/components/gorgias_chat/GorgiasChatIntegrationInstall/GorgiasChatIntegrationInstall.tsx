@@ -1,5 +1,5 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { fromJS, type List, type Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { List, Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
@@ -24,7 +24,6 @@ import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectS
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
-import GorgiasChatIntegrationInstallRevamped from './revamp/GorgiasChatIntegrationInstall'
 
 import css from './GorgiasChatIntegrationInstall.less'
 
@@ -42,7 +41,6 @@ const GorgiasChatIntegrationInstall = ({
     actions: { updateOrCreateIntegration, deleteIntegration },
     isUpdate,
 }: Props) => {
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const { installed } = useAppSelector(getChatInstallationStatus)
     const applicationId: string = integration.getIn(['meta', 'app_id'])
@@ -74,15 +72,6 @@ const GorgiasChatIntegrationInstall = ({
     } = useThemeAppExtensionInstallation(
         isConnectedToShopify ? storeIntegration : undefined,
     )
-
-    if (isRevampEnabled) {
-        return (
-            <GorgiasChatIntegrationInstallRevamped
-                integration={integration}
-                actions={{ deleteIntegration }}
-            ></GorgiasChatIntegrationInstallRevamped>
-        )
-    }
 
     return (
         <>

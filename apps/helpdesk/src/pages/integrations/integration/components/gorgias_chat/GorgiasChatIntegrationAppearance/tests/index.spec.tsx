@@ -126,27 +126,4 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         expect(screen.queryByText(/REVAMP VERSION/)).not.toBeInTheDocument()
         expect(screen.getByText('Chat title')).toBeInTheDocument()
     })
-
-    it('should render the revamp component when ChatSettingsRevamp flag is enabled', () => {
-        mockUseFlag.mockImplementation((key, defaultValue) => {
-            if (key === FeatureFlagKey.ChatSettingsRevamp) {
-                return true
-            }
-            return defaultValue
-        })
-
-        render(
-            <Router history={history}>
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearance {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </Router>,
-        )
-
-        expect(
-            screen.getByRole('heading', { name: 'Settings' }),
-        ).toBeInTheDocument()
-    })
 })
