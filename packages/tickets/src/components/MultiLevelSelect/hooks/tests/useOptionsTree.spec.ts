@@ -42,18 +42,18 @@ describe('useOptionsTree', () => {
                 result.current.goToLevel(statusOption as TreeOption)
             })
 
-            expect(result.current.selectOptions).toHaveLength(3)
+            expect(result.current.selectOptions).toHaveLength(2)
             expect(result.current.selectOptions[0]).toMatchObject({
-                type: OptionEnum.Back,
-                label: 'Status',
-            })
-            expect(result.current.selectOptions[1]).toMatchObject({
                 type: OptionEnum.Option,
                 label: 'Open',
             })
-            expect(result.current.selectOptions[2]).toMatchObject({
+            expect(result.current.selectOptions[1]).toMatchObject({
                 type: OptionEnum.Option,
                 label: 'Closed',
+            })
+            expect(result.current.navigationState).toEqual({
+                canGoBack: true,
+                parentLevelName: 'Status',
             })
         })
 
@@ -67,7 +67,8 @@ describe('useOptionsTree', () => {
                 result.current.goToLevel(statusOption as TreeOption)
             })
 
-            expect(result.current.selectOptions).toHaveLength(3)
+            expect(result.current.selectOptions).toHaveLength(2)
+            expect(result.current.navigationState.canGoBack).toBe(true)
 
             act(() => {
                 result.current.goBack()
@@ -75,6 +76,7 @@ describe('useOptionsTree', () => {
 
             expect(result.current.selectOptions).toHaveLength(2)
             expect(result.current.selectOptions[0].type).toBe(OptionEnum.Option)
+            expect(result.current.navigationState.canGoBack).toBe(false)
         })
     })
 
@@ -100,8 +102,11 @@ describe('useOptionsTree', () => {
                 useOptionsTree({ choices, selectedValue: 'Status::Open' }),
             )
 
-            expect(result.current.selectOptions).toHaveLength(3)
-            expect(result.current.selectOptions[0].type).toBe(OptionEnum.Back)
+            expect(result.current.selectOptions).toHaveLength(2)
+            expect(result.current.navigationState).toEqual({
+                canGoBack: true,
+                parentLevelName: 'Status',
+            })
         })
 
         it('should reset to selected value path on resetPath', () => {
@@ -114,12 +119,17 @@ describe('useOptionsTree', () => {
             })
 
             expect(result.current.selectOptions).toHaveLength(2)
+            expect(result.current.navigationState.canGoBack).toBe(false)
 
             act(() => {
                 result.current.resetPath()
             })
 
-            expect(result.current.selectOptions).toHaveLength(3)
+            expect(result.current.selectOptions).toHaveLength(2)
+            expect(result.current.navigationState).toEqual({
+                canGoBack: true,
+                parentLevelName: 'Status',
+            })
         })
     })
 
@@ -179,7 +189,7 @@ describe('useOptionsTree', () => {
             ])
         })
 
-        it('should not show back button when searching', () => {
+        it('should not allow going back when searching', () => {
             const { result } = renderHook(() =>
                 useOptionsTree({
                     choices,
@@ -188,11 +198,7 @@ describe('useOptionsTree', () => {
                 }),
             )
 
-            const backButton = result.current.selectOptions.find(
-                (opt) => opt.type === OptionEnum.Back,
-            )
-
-            expect(backButton).toBeUndefined()
+            expect(result.current.navigationState.canGoBack).toBe(false)
         })
     })
 })

@@ -1,8 +1,5 @@
-import type { BACK_BUTTON_ID } from './constants'
-
 export enum OptionEnum {
     Option = 'option',
-    Back = 'back',
 }
 
 export type TreeValue = string | boolean
@@ -17,10 +14,7 @@ export type TreeOption = {
     caption?: string
 }
 
-export type BackButtonOption = {
-    type: OptionEnum.Back
-    id: typeof BACK_BUTTON_ID
-    label: string
+export type NavigationState = {
+    canGoBack: boolean
+    parentLevelName: string | null
 }
-
-export type Option = TreeOption | BackButtonOption

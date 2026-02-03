@@ -127,12 +127,10 @@ describe('MultiLevelSelect', () => {
 
         await screen.findAllByText('Open')
 
-        const backButton = screen
-            .getAllByRole('option')
-            .find((el) => el.querySelector('[aria-label="arrow-chevron-left"]'))
+        const backButton = screen.getByRole('button', { name: /Status/i })
         expect(backButton).toBeInTheDocument()
 
-        await act(() => userEvent.click(backButton!))
+        await act(() => userEvent.click(backButton))
 
         await screen.findAllByText('Priority')
     })
@@ -245,10 +243,8 @@ describe('MultiLevelSelect', () => {
         await screen.findAllByText('Open')
         await screen.findAllByText('Closed')
 
-        const backButton = screen
-            .getAllByRole('option')
-            .find((el) => el.querySelector('[aria-label="arrow-chevron-left"]'))
-        await act(() => userEvent.click(backButton!))
+        const backButton = screen.getByRole('button', { name: /Status/i })
+        await act(() => userEvent.click(backButton))
 
         await screen.findAllByText('Priority')
 

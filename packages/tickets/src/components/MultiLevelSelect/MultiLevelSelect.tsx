@@ -6,15 +6,16 @@ import {
     Icon,
     IconName,
     ListFooter,
+    ListHeader,
     ListItem,
     Select,
     SelectTrigger,
     TextField,
 } from '@gorgias/axiom'
 
-import { getDisplayLabel, isBackButton } from './helpers/tree'
+import { getDisplayLabel } from './helpers/tree'
 import { useOptionsTree } from './hooks/useOptionsTree'
-import type { Option, TreeValue } from './types'
+import type { TreeOption, TreeValue } from './types'
 
 type Props = {
     id?: string
@@ -46,21 +47,21 @@ export function MultiLevelSelect(props: Props) {
     // serves as a flag to prevent closing the dropdown when navigating
     const isNavigatingRef = useRef(false)
 
-    const { selectOptions, selectedOption, goBack, goToLevel, resetPath } =
-        useOptionsTree({
-            choices,
-            selectedValue,
-            searchTerm: searchValue,
-        })
+    const {
+        selectOptions,
+        selectedOption,
+        goBack,
+        goToLevel,
+        resetPath,
+        navigationState,
+    } = useOptionsTree({
+        choices,
+        selectedValue,
+        searchTerm: searchValue,
+    })
 
     const handleSelect = useCallback(
-        (option: Option) => {
-            if (isBackButton(option)) {
-                isNavigatingRef.current = true
-                goBack()
-                return
-            }
-
+        (option: TreeOption) => {
             if (option.hasChildren && !searchValue) {
                 isNavigatingRef.current = true
                 goToLevel(option)
@@ -70,8 +71,13 @@ export function MultiLevelSelect(props: Props) {
             onSelect(option.value)
             isNavigatingRef.current = false
         },
-        [onSelect, goToLevel, goBack, searchValue],
+        [onSelect, goToLevel, searchValue],
     )
+
+    const handleGoBack = useCallback(() => {
+        isNavigatingRef.current = true
+        goBack()
+    }, [goBack])
 
     const handleClear = useCallback(() => {
         onSelect(undefined)
@@ -157,6 +163,20 @@ export function MultiLevelSelect(props: Props) {
             maxWidth={139}
             maxHeight={258}
             size="sm"
+            header={
+                navigationState.canGoBack && (
+                    <ListHeader>
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={handleGoBack}
+                            leadingSlot={IconName.ArrowChevronLeft}
+                        >
+                            {navigationState.parentLevelName}
+                        </Button>
+                    </ListHeader>
+                )
+            }
             footer={
                 !!selectedOption && (
                     <ListFooter>
@@ -171,40 +191,19 @@ export function MultiLevelSelect(props: Props) {
                 )
             }
         >
-            {(option: Option) => {
-                if (isBackButton(option)) {
-                    return (
-                        <ListItem
-                            key={option.id}
-                            textValue={option.label}
-                            label={option.label}
-                            leadingSlot={
-                                <Icon
-                                    name={IconName.ArrowChevronLeft}
-                                    size="sm"
-                                />
-                            }
-                        />
-                    )
-                }
-
-                return (
-                    <ListItem
-                        key={option.id}
-                        textValue={option.label}
-                        label={option.label}
-                        caption={option.caption}
-                        trailingSlot={
-                            option.hasChildren && !searchValue ? (
-                                <Icon
-                                    name={IconName.ArrowChevronRight}
-                                    size="sm"
-                                />
-                            ) : undefined
-                        }
-                    />
-                )
-            }}
+            {(option: TreeOption) => (
+                <ListItem
+                    key={option.id}
+                    textValue={option.label}
+                    label={option.label}
+                    caption={option.caption}
+                    trailingSlot={
+                        option.hasChildren && !searchValue ? (
+                            <Icon name={IconName.ArrowChevronRight} size="sm" />
+                        ) : undefined
+                    }
+                />
+            )}
         </Select>
     )
 }

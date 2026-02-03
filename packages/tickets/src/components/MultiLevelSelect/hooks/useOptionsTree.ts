@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { BACK_BUTTON_ID } from '../constants'
 import {
     buildTreeFromChoices,
     flattenTreeWithCaptions,
     getOptionsAtPath,
     getPathFromValue,
 } from '../helpers/tree'
-import type { BackButtonOption, Option, TreeOption, TreeValue } from '../types'
-import { OptionEnum } from '../types'
+import type { NavigationState, TreeOption, TreeValue } from '../types'
 
 type UseOptionsTreeParams = {
     choices: TreeValue[]
@@ -61,32 +59,24 @@ export function useOptionsTree({
         setCurrentPath(initialPath)
     }, [initialPath])
 
-    const selectOptions = useMemo((): Option[] => {
-        const result: Option[] = [...options]
-
-        if (!isSearching) {
-            if (currentPath.length > 0) {
-                const backButton: BackButtonOption = {
-                    type: OptionEnum.Back,
-                    id: BACK_BUTTON_ID,
-                    label: currentPath[currentPath.length - 1] || 'Back',
-                }
-                result.unshift(backButton)
-            }
-        }
-
-        return result
-    }, [currentPath, isSearching, options])
+    const navigationState = useMemo(
+        (): NavigationState => ({
+            canGoBack: currentPath.length > 0 && !isSearching,
+            parentLevelName: currentPath[currentPath.length - 1] || null,
+        }),
+        [currentPath, isSearching],
+    )
 
     const selectedOption = useMemo(() => {
         return options.find((opt) => opt.value === selectedValue)
     }, [options, selectedValue])
 
     return {
-        selectOptions,
+        selectOptions: options,
         selectedOption,
         goBack,
         goToLevel,
         resetPath,
+        navigationState,
     }
 }

@@ -1,5 +1,5 @@
 import { NESTING_DELIMITER } from '../constants'
-import type { BackButtonOption, Option, TreeOption, TreeValue } from '../types'
+import type { TreeOption, TreeValue } from '../types'
 import { OptionEnum } from '../types'
 
 type TreeNode = {
@@ -180,8 +180,4 @@ export function getDisplayLabel(value: TreeValue | undefined): string | null {
 
     const parts = value.split(NESTING_DELIMITER)
     return parts[parts.length - 1]
-}
-
-export function isBackButton(option: Option): option is BackButtonOption {
-    return option.type === OptionEnum.Back
 }

@@ -5,7 +5,6 @@ import {
     getDisplayLabel,
     getOptionsAtPath,
     getPathFromValue,
-    isBackButton,
 } from '../tree'
 
 describe('buildTreeFromChoices', () => {
@@ -189,30 +188,5 @@ describe('getDisplayLabel', () => {
         expect(getDisplayLabel(42)).toBe('42')
         //@ts-ignore
         expect(getDisplayLabel(0)).toBe('0')
-    })
-})
-
-describe('isBackButton', () => {
-    it('should identify back button options', () => {
-        const option = {
-            type: OptionEnum.Back as const,
-            id: '__back_button__' as const,
-            label: 'Back',
-        }
-
-        expect(isBackButton(option)).toBe(true)
-    })
-
-    it('should return false for other options', () => {
-        const option = {
-            type: OptionEnum.Option as const,
-            id: 'test',
-            label: 'Test',
-            value: 'test',
-            path: [],
-            hasChildren: false,
-        }
-
-        expect(isBackButton(option)).toBe(false)
     })
 })
