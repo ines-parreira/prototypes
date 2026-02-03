@@ -1,4 +1,4 @@
-import { type Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import { Text } from '@gorgias/axiom'
 

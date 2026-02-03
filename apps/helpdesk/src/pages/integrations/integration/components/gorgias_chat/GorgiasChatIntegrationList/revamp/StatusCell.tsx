@@ -161,7 +161,9 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
                         )
                     }
                 >
-                    <TooltipTrigger>{getStatusTag(chatStatus)}</TooltipTrigger>
+                    <TooltipTrigger>
+                        <span role="button">{getStatusTag(chatStatus)}</span>
+                    </TooltipTrigger>
                     <TooltipContent>
                         {chatIsHiddenOutsideBusinessHours && (
                             <Text size="md" variant="medium">

@@ -50,6 +50,15 @@ const MockActionsCell = jest.fn(({ chat, storeIntegration }) => (
     </div>
 ))
 
+const MockAiAgentStatusCell = jest.fn(({ chat, storeIntegration }) => (
+    <div data-testid="ai-agent-status-cell">
+        <span data-testid="ai-agent-chat-id">{chat.get('id')}</span>
+        <span data-testid="ai-agent-store-id">
+            {storeIntegration?.get('id') || 'no-store'}
+        </span>
+    </div>
+))
+
 jest.mock('./ChatCell', () => ({
     ChatCell: (props: any) => MockChatCell(props),
 }))
@@ -64,6 +73,10 @@ jest.mock('./StatusCell', () => ({
 
 jest.mock('./ActionsCell', () => ({
     ActionsCell: (props: any) => MockActionsCell(props),
+}))
+
+jest.mock('./AiAgentStatusCell', () => ({
+    AiAgentStatusCell: (props: any) => MockAiAgentStatusCell(props),
 }))
 
 const MockHeaderRowGroup = jest.fn(({ headerGroups }) => (
@@ -171,7 +184,7 @@ describe('ChatIntegrationsTable', () => {
 
             renderComponent({ chats })
 
-            expect(screen.getByTestId('columns-count')).toHaveTextContent('4')
+            expect(screen.getByTestId('columns-count')).toHaveTextContent('5')
         })
     })
 
@@ -216,11 +229,9 @@ describe('ChatIntegrationsTable', () => {
             const calls = MockTableBodyContent.mock.calls[0][0]
             const rowData = calls.rows[0].original
 
-            expect(rowData.storeIntegration).toEqual(
-                expect.objectContaining({
-                    storeIntegration: expect.any(Object),
-                }),
-            )
+            expect(rowData.storeIntegration).toEqual({
+                storeIntegration: integrations.get(0),
+            })
         })
 
         it('creates correct status field structure', () => {
@@ -239,12 +250,10 @@ describe('ChatIntegrationsTable', () => {
             const calls = MockTableBodyContent.mock.calls[0][0]
             const rowData = calls.rows[0].original
 
-            expect(rowData.status).toEqual(
-                expect.objectContaining({
-                    chat: expect.any(Object),
-                    loading: expect.any(Object),
-                }),
-            )
+            expect(rowData.status).toEqual({
+                chat: chats.get(0),
+                loading,
+            })
         })
 
         it('creates correct actions field structure', () => {
@@ -268,12 +277,37 @@ describe('ChatIntegrationsTable', () => {
             const calls = MockTableBodyContent.mock.calls[0][0]
             const rowData = calls.rows[0].original
 
-            expect(rowData.actions).toEqual(
-                expect.objectContaining({
-                    chat: expect.any(Object),
-                    storeIntegration: expect.any(Object),
-                }),
-            )
+            expect(rowData.actions).toEqual({
+                chat: chats.get(0),
+                storeIntegration: integrations.get(0),
+            })
+        })
+
+        it('creates correct aiAgentStatus field structure', () => {
+            const chats = fromJS([
+                {
+                    id: 1,
+                    name: 'Chat 1',
+                    meta: { shop_integration_id: 100 },
+                },
+            ])
+
+            const integrations = fromJS([
+                {
+                    id: 100,
+                    name: 'Shopify Store',
+                },
+            ])
+
+            renderComponent({ chats, integrations })
+
+            const calls = MockTableBodyContent.mock.calls[0][0]
+            const rowData = calls.rows[0].original
+
+            expect(rowData.aiAgentStatus).toEqual({
+                chat: chats.get(0),
+                storeIntegration: integrations.get(0),
+            })
         })
     })
 

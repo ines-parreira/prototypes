@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { history } from '@repo/routing'
-import { type List, type Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import { Button, Heading, Text } from '@gorgias/axiom'
 

@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
 
 import { history } from '@repo/routing'
-import { type List, type Map } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import {
-    type ColumnDef,
     createSortableColumn,
     HeaderRowGroup,
     TableBodyContent,
@@ -12,9 +11,11 @@ import {
     TableRoot,
     useTable,
 } from '@gorgias/axiom'
+import type { ColumnDef } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types'
+import { AiAgentStatusCell } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationList/revamp/AiAgentStatusCell'
 import { Tab } from 'pages/integrations/integration/types'
 
 import { ActionsCell } from './ActionsCell'
@@ -42,11 +43,17 @@ type ActionsField = {
     storeIntegration: Map<any, any>
 }
 
+type AiAgentStatusField = {
+    chat: Map<any, any>
+    storeIntegration: Map<any, any>
+}
+
 type ChatIntegrationFields = {
     chat: Map<any, any>
     storeIntegration: StoreIntegrationField
     status: StatusField
     actions: ActionsField
+    aiAgentStatus: AiAgentStatusField
 }
 
 export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
@@ -104,6 +111,10 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
                     chat,
                     storeIntegration,
                 },
+                aiAgentStatus: {
+                    chat,
+                    storeIntegration,
+                },
             }
         })
     }, [chats, integrations, loading])
@@ -135,6 +146,22 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
                 cell: (data) => {
                     const { chat, loading } = data.getValue<StatusField>()
                     return <StatusCell chat={chat} loading={loading} />
+                },
+            },
+            {
+                accessorKey: 'aiAgentStatus',
+                header: 'AI Agent Status',
+                enableSorting: false,
+                cell: (data) => {
+                    const { chat, storeIntegration } =
+                        data.getValue<AiAgentStatusField>()
+
+                    return (
+                        <AiAgentStatusCell
+                            chat={chat}
+                            storeIntegration={storeIntegration}
+                        />
+                    )
                 },
             },
             {
