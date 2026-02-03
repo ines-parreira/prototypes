@@ -1,8 +1,12 @@
 import { useMemo } from 'react'
 
+import { THEME_NAME } from '@gorgias/design-tokens'
+
 import aiAgentButtonEnableGif from 'assets/img/ai-agent/ai-agent-button-enable.gif'
 import aiAgentScanGif from 'assets/img/ai-agent/ai-agent-scan.gif'
-import aiAgentUpgradeOpportunities from 'assets/img/ai-agent/ai-agent-upgrade-oppportunities.jpg'
+import aiAgentUpgradeOpportunitiesDark from 'assets/img/ai-agent/ai-agent-upgrade-opportunities-dark.svg'
+import aiAgentUpgradeOpportunitiesLight from 'assets/img/ai-agent/ai-agent-upgrade-opportunities-light.svg'
+import { useTheme } from 'core/theme'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -49,6 +53,7 @@ export interface UseOpportunityPageStateParams {
 const getStateConfig = (
     shopType: string,
     shopName: string,
+    isDarkTheme: boolean,
 ): Record<State, OpportunityPageState> => ({
     [State.LOADING]: {
         state: State.LOADING,
@@ -70,9 +75,9 @@ const getStateConfig = (
     },
     [State.ENABLED_NO_OPPORTUNITIES]: {
         state: State.ENABLED_NO_OPPORTUNITIES,
-        title: 'AI Agent is learning from your conversations',
+        title: 'No opportunities to review right now',
         description:
-            "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
+            'AI Agent reviews real customer conversations to identify patterns and improvement opportunities. Once there’s enough data, we’ll surface actionable insights here.',
         media: aiAgentScanGif,
         primaryCta: null,
         showEmptyState: true,
@@ -109,7 +114,9 @@ const getStateConfig = (
         title: 'Upgrade to unlock more AI Agent opportunities',
         // TODO: expose the hardcoded 3 as metadata from the backend
         description: `You've reviewed 3 opportunities for AI Agent. To continue discovering and acting on new opportunities based on real customer conversations, upgrade your plan.`,
-        media: aiAgentUpgradeOpportunities,
+        media: isDarkTheme
+            ? aiAgentUpgradeOpportunitiesDark
+            : aiAgentUpgradeOpportunitiesLight,
         primaryCta: {
             label: 'Try for 14 days',
         },
@@ -126,6 +133,7 @@ export function useOpportunityPageState({
     shopType,
     allowedOpportunityIds,
 }: UseOpportunityPageStateParams): OpportunityPageState {
+    const theme = useTheme()
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiAgentStoreConfigurationContext()
     const {
@@ -209,7 +217,8 @@ export function useOpportunityPageState({
         totalCount,
     ])
 
-    const stateConfig = getStateConfig(shopType, shopName)
+    const isDarkTheme = theme.resolvedName === THEME_NAME.Dark
+    const stateConfig = getStateConfig(shopType, shopName, isDarkTheme)
 
     return stateConfig[state]
 }

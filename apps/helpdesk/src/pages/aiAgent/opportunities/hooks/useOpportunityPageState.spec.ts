@@ -1,5 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
+import { THEME_NAME } from '@gorgias/design-tokens'
+
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     PostStoreInstallationStepStatus,
@@ -13,11 +15,13 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/hooks/useOpportunitiesCount')
 jest.mock('pages/aiAgent/utils/store-configuration.utils')
 jest.mock('models/aiAgentPostStoreInstallationSteps/queries')
+jest.mock('core/theme')
 
 const mockUseAiAgentStoreConfigurationContext = jest.fn()
 const mockUseOpportunitiesCount = jest.fn()
 const mockIsAiAgentEnabledForStore = jest.fn()
 const mockUseGetPostStoreInstallationStepsPure = jest.fn()
+const mockUseTheme = jest.fn()
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -35,6 +39,14 @@ beforeEach(() => {
     const postStoreQueries = require('models/aiAgentPostStoreInstallationSteps/queries')
     postStoreQueries.useGetPostStoreInstallationStepsPure =
         mockUseGetPostStoreInstallationStepsPure
+
+    const theme = require('core/theme')
+    theme.useTheme = mockUseTheme
+    mockUseTheme.mockReturnValue({
+        name: THEME_NAME.Light,
+        resolvedName: THEME_NAME.Light,
+        tokens: {},
+    })
 })
 
 describe('useOpportunityPageState', () => {
@@ -304,10 +316,10 @@ describe('useOpportunityPageState', () => {
             expect(result.current.isLoading).toBe(false)
             expect(result.current.showEmptyState).toBe(true)
             expect(result.current.title).toBe(
-                'AI Agent is learning from your conversations',
+                'No opportunities to review right now',
             )
             expect(result.current.description).toContain(
-                "As AI Agent handles more conversations, we'll surface opportunities",
+                'AI Agent reviews real customer conversations to identify patterns',
             )
             expect(result.current.media).toBe('test-file-stub')
             expect(result.current.primaryCta).toBeNull()
@@ -531,6 +543,74 @@ describe('useOpportunityPageState', () => {
             )
             expect(result.current.primaryCta?.label).toBe('Try for 14 days')
             expect(result.current.media).toBeDefined()
+        })
+
+        it('uses light theme SVG when theme is light', () => {
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Light,
+                resolvedName: THEME_NAME.Light,
+                tokens: {},
+            })
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 0,
+                isLoading: false,
+                totalCount: 20,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
+            expect(result.current.media).toBe('test-file-stub')
+        })
+
+        it('uses dark theme SVG when theme is dark', () => {
+            mockUseTheme.mockReturnValue({
+                name: THEME_NAME.Dark,
+                resolvedName: THEME_NAME.Dark,
+                tokens: {},
+            })
+
+            mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+                storeConfiguration: createMockStoreConfiguration(),
+                isLoading: false,
+            })
+
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 0,
+                isLoading: false,
+                totalCount: 20,
+            })
+
+            mockUseGetPostStoreInstallationStepsPure.mockReturnValue({
+                data: createMockPostStoreInstallationSteps(),
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useOpportunityPageState({
+                    ...defaultParams,
+                    allowedOpportunityIds: [],
+                }),
+            )
+
+            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
+            expect(result.current.media).toBe('test-file-stub')
         })
 
         it('returns HAS_OPPORTUNITIES when restricted user still has allowed opportunities', () => {
