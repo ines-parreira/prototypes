@@ -3,6 +3,7 @@ import { useState as mockUseState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -157,6 +158,9 @@ jest.mock(
 jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
+jest.mock('@repo/tickets')
+const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
+
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual('state/ticket/actions'),
     setCustomer: jest.fn(() => () => Promise.resolve()),
@@ -199,6 +203,7 @@ const customerId = 7
 
 describe('<Infobar/>', () => {
     beforeEach(() => {
+        useHelpdeskV2MS1FlagMock.mockReturnValue(false)
         useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
         dateNowSpy = jest
             .spyOn(Date, 'now')

@@ -15,6 +15,12 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import PanelRoutes from '../PanelRoutes'
 
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
+    useHelpdeskV2MS1Dot5Flag: jest.fn().mockReturnValue(false),
+}))
+
 jest.mock('core/navigation', () => ({
     GlobalNavigationPanel: () => <div>GlobalNavigationPanel</div>,
 }))

@@ -1,15 +1,13 @@
 import { FeatureFlagKey } from '../featureFlagKey'
 import { useFlag } from '../useFlag'
+import { useHelpdeskV2BaselineFlag } from './useHelpdeskV2BaselineFlag'
 
 export function useHelpdeskV2WayfindingMS1Flag() {
-    const hasUIVisionBetaBaseline = useFlag(
-        FeatureFlagKey.UIVisionBetaBaseline,
-        false,
-    )
+    const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
     const hasUIVisionWayfindingMS1 = useFlag(
         FeatureFlagKey.UIVisionWayfindingMS1,
         false,
     )
 
-    return hasUIVisionBetaBaseline && hasUIVisionWayfindingMS1
+    return hasUIVisionBeta && hasUIVisionWayfindingMS1
 }

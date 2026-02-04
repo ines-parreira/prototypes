@@ -1,4 +1,8 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2BaselineFlag,
+} from '@repo/feature-flags'
 import { useIsMobileResolution } from '@repo/hooks'
 import { useParams } from 'react-router-dom'
 
@@ -7,10 +11,10 @@ import { useHelpdeskV2MS1Flag } from '../useHelpdeskV2MS1Flag'
 
 vi.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
-        UIVisionBetaBaseline: 'UIVisionBetaBaseline',
         UIVisionMilestone1: 'UIVisionMilestone1',
     },
     useFlag: vi.fn(),
+    useHelpdeskV2BaselineFlag: vi.fn(),
 }))
 
 vi.mock('@repo/hooks', () => ({
@@ -31,8 +35,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return true when all conditions are met', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
             return false
         })
@@ -45,8 +53,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return false when UIVisionBetaBaseline is disabled', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: false,
+            hasUIVisionBeta: false,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return false
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
             return false
         })
@@ -59,8 +71,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return false when UIVisionMilestone1 is disabled', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return false
             return false
         })
@@ -73,8 +89,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return false when on mobile resolution', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
             return false
         })
@@ -87,8 +107,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return false when ticketId is "new"', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
             return false
         })
@@ -101,8 +125,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return true when ticketId is undefined', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return true
             if (key === FeatureFlagKey.UIVisionMilestone1) return true
             return false
         })
@@ -115,8 +143,12 @@ describe('useHelpdeskV2MS1Flag', () => {
     })
 
     it('should return false when all conditions are not met', () => {
+        vi.mocked(useHelpdeskV2BaselineFlag).mockReturnValue({
+            hasUIVisionBetaBaselineFlag: false,
+            hasUIVisionBeta: false,
+            onToggle: vi.fn(),
+        })
         vi.mocked(useFlag).mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.UIVisionBetaBaseline) return false
             if (key === FeatureFlagKey.UIVisionMilestone1) return false
             return false
         })

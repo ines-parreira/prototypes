@@ -16,6 +16,11 @@ let history = createMemoryHistory()
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useHelpdeskV2BaselineFlag: jest.fn().mockReturnValue({
+        hasUIVisionBetaBaselineFlag: false,
+        hasUIVisionBeta: false,
+        onToggle: jest.fn(),
+    }),
 }))
 const useFlagMock = assumeMock(useFlag)
 

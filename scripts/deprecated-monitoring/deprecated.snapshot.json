@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-03T13:42:45.921Z",
-  "total": 4177,
+  "date": "2026-02-03T16:44:47.570Z",
+  "total": 4178,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -3385,7 +3385,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1454,
+      "count": 1455,
       "usages": [
         {
           "name": "LegacyButton",
@@ -4723,10 +4723,11 @@
         },
         {
           "name": "LegacyToggleField",
-          "count": 47,
+          "count": 48,
           "files": [
             "apps/helpdesk/src/common/navigation/components/AvailabilityToggle.tsx",
             "apps/helpdesk/src/common/navigation/components/AxiomMigrationToggle.tsx",
+            "apps/helpdesk/src/common/navigation/components/HelpdeskV2BetaToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormView.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionsRow.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",

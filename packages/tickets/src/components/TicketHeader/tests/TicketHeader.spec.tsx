@@ -29,6 +29,11 @@ import { TicketHeader } from '../TicketHeader'
 vi.mock('@repo/feature-flags', async () => ({
     ...(await vi.importActual('@repo/feature-flags')),
     useFlag: vi.fn(),
+    useHelpdeskV2BaselineFlag: vi.fn().mockReturnValue({
+        hasUIVisionBetaBaselineFlag: false,
+        hasUIVisionBeta: false,
+        onToggle: vi.fn(),
+    }),
 }))
 
 const mockUseFlag = vi.mocked(useFlag)

@@ -163,7 +163,15 @@ const mockUseIsTicketNavigationAvailable =
 
 const useParamsMock = useParams as jest.Mock
 
-jest.mock('@repo/feature-flags')
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+    useHelpdeskV2BaselineFlag: jest.fn().mockReturnValue({
+        hasUIVisionBetaBaselineFlag: false,
+        hasUIVisionBeta: false,
+        onToggle: jest.fn(),
+    }),
+}))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('@repo/tickets', () => ({

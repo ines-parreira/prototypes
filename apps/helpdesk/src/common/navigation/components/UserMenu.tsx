@@ -4,11 +4,16 @@ import {
     UserInfoHeaderContainer,
     useUserAvailabilityStatus,
 } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2BaselineFlag,
+} from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
 
+import { HelpdeskV2BetaToggle } from 'common/navigation/components/HelpdeskV2BetaToggle'
 import { THEME_CONFIGS, useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
@@ -48,6 +53,7 @@ type Props = {
 
 export default function UserMenu({ onClose }: Props) {
     const { hasFlag: hasAxiomMigration } = useAxiomMigration()
+    const { hasUIVisionBetaBaselineFlag } = useHelpdeskV2BaselineFlag()
     const theme = useTheme()
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = useAppSelector(getCurrentUserId)
@@ -116,6 +122,12 @@ export default function UserMenu({ onClose }: Props) {
                     <>
                         <hr className={css.separator} />
                         <AxiomMigrationToggle />
+                    </>
+                )}
+                {hasUIVisionBetaBaselineFlag && (
+                    <>
+                        <hr className={css.separator} />
+                        <HelpdeskV2BetaToggle />
                     </>
                 )}
                 <hr className={css.separator} />

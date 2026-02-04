@@ -39,6 +39,14 @@ jest.mock('tickets/tickets-list', () => ({
 jest.mock('tickets/view', () => ({
     ViewPanel: () => <div>ViewPanel</div>,
 }))
+jest.mock('../TicketDetailWithInfobar', () => ({
+    TicketDetailWithInfobar: () => (
+        <>
+            <div>TicketDetailPanel</div>
+            <div>TicketInfobarPanel</div>
+        </>
+    ),
+}))
 
 type STVValue = ReturnType<typeof useSplitTicketView>
 

@@ -24,6 +24,7 @@ import UserMenu from '../UserMenu'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useHelpdeskV2BaselineFlag: jest.fn(),
 }))
 
 jest.mock('@repo/logging', () => ({
@@ -57,14 +58,24 @@ jest.mock('core/theme', () => ({
 const useThemeMock = assumeMock(useTheme)
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
-const { useFlag } = jest.requireMock('@repo/feature-flags')
+const { useFlag, useHelpdeskV2BaselineFlag } = jest.requireMock(
+    '@repo/feature-flags',
+)
 const useFlagMock = useFlag as jest.Mock
+const useHelpdeskV2BaselineFlagMock = useHelpdeskV2BaselineFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
 jest.mock('../AxiomMigrationToggle', () => ({
     AxiomMigrationToggle: () => (
         <div>
             <span>New UI</span>
+        </div>
+    ),
+}))
+jest.mock('../HelpdeskV2BetaToggle', () => ({
+    HelpdeskV2BetaToggle: () => (
+        <div>
+            <span>Helpdesk 2.0 Beta</span>
         </div>
     ),
 }))
@@ -109,6 +120,11 @@ describe('UserMenu', () => {
         useAxiomMigrationMock.mockReturnValue({ hasFlag: false })
         useFlagMock.mockImplementation(() => {
             return false
+        })
+        useHelpdeskV2BaselineFlagMock.mockReturnValue({
+            hasUIVisionBetaBaselineFlag: false,
+            hasUIVisionBeta: false,
+            onToggle: jest.fn(),
         })
         useThemeMock.mockReturnValue({
             name: THEME_NAME.Classic,
@@ -508,5 +524,24 @@ describe('UserMenu', () => {
             }),
         ).toBeInTheDocument()
         expect(screen.getByText('Your profile')).toBeInTheDocument()
+    })
+    it('should render the Helpdesk 2.0 Beta toggle when baseline flag is enabled', () => {
+        useHelpdeskV2BaselineFlagMock.mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: jest.fn(),
+        })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(screen.getByText('Helpdesk 2.0 Beta')).toBeInTheDocument()
+    })
+
+    it('should not render the Helpdesk 2.0 Beta toggle when baseline flag is disabled', () => {
+        useHelpdeskV2BaselineFlagMock.mockReturnValue({
+            hasUIVisionBetaBaselineFlag: false,
+            hasUIVisionBeta: false,
+            onToggle: jest.fn(),
+        })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(screen.queryByText('Helpdesk 2.0 Beta')).not.toBeInTheDocument()
     })
 })
