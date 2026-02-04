@@ -1,15 +1,27 @@
 import { formatMetricValue } from '@repo/reporting'
 
-import type { ColumnDef } from '@gorgias/axiom'
+import type { ColumnDef, TableMeta } from '@gorgias/axiom'
 import { Box, createSortableColumn } from '@gorgias/axiom'
+import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import { MetricCell } from 'AIJourney/components'
+import { CampaignsRowAdditionalOptions } from 'AIJourney/components/JourneysTable/CampaignsRowAdditionalOptions/CampaignsRowAdditionalOptions'
+import { FlowsRowAdditionalOptions } from 'AIJourney/components/JourneysTable/FlowsRowAdditionalOptions/FlowsRowAdditionalOptions'
 import { JourneyName } from 'AIJourney/components/JourneysTable/JourneyName/JourneyName'
 import { JourneyStateBadge } from 'AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge'
-import { RowAdditionalOptions } from 'AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions'
+import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
+
+interface CampaignsTableMeta extends TableMeta<JourneyApiDTO> {
+    onRemoveClick: (id: string) => void
+    onSendClick: (id: string) => void
+    onCancelClick: (id: string) => void
+    onDuplicateClick: (journey: JourneyApiDTO) => void
+    onChangeStatus: (id: string, status: UpdatableJourneyCampaignState) => void
+    currency: string
+}
 
 export const journeysColumns: ColumnDef<TableRow>[] = [
     {
@@ -149,7 +161,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
     ),
     createSortableColumn<TableRow>(
         'metrics.optOutRate',
-        'Out out rate',
+        'Opt out rate',
         (info) => {
             const value = info.getValue()
             return (
@@ -180,13 +192,50 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
     ),
 ]
 
-export const actionColumns: ColumnDef<TableRow, unknown>[] = [
+export const flowsActionColumns: ColumnDef<TableRow, unknown>[] = [
     {
         id: 'actions',
         cell: (info) => {
             return (
                 <Box gap="xs">
-                    <RowAdditionalOptions journeyRowData={info.row.original} />
+                    <FlowsRowAdditionalOptions
+                        journeyRowData={info.row.original}
+                    />
+                </Box>
+            )
+        },
+    },
+]
+
+export const campaignsActionColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
+    {
+        id: 'actions',
+        cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            return (
+                <Box gap="xs">
+                    <CampaignsRowAdditionalOptions
+                        shopName={info.row.original.store_name}
+                        journeyId={info.row.original.id}
+                        state={info.row.original.campaign?.state!}
+                        handleChangeStatus={(
+                            status: UpdatableJourneyCampaignState,
+                        ) => {
+                            meta.onChangeStatus(info.row.original.id, status)
+                        }}
+                        handleCancelClick={() =>
+                            meta.onCancelClick(info.row.original.id)
+                        }
+                        handleRemoveClick={() =>
+                            meta.onRemoveClick(info.row.original.id)
+                        }
+                        handleSendClick={() =>
+                            meta.onSendClick(info.row.original.id)
+                        }
+                        handleDuplicateClick={() =>
+                            meta.onDuplicateClick(info.row.original)
+                        }
+                    />
                 </Box>
             )
         },

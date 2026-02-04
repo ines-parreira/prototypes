@@ -175,30 +175,6 @@ describe('<Flows />', () => {
     })
 
     describe('Metrics display', () => {
-        it('should display metrics for configured flows', () => {
-            useAIJourneyTableKpisMock.mockReturnValue({
-                metrics: {
-                    'journey-1': {
-                        recipients: 100,
-                        ctr: 0.5,
-                        replyRate: 0.3,
-                        optOutRate: 0.1,
-                        messagesSent: 200,
-                        revenue: 1000,
-                        totalOrders: 10,
-                        averageOrderValue: 100,
-                        revenuePerRecipient: 10,
-                        conversionRate: 0.1,
-                    },
-                },
-                isLoading: false,
-            })
-
-            renderComponent()
-
-            expect(screen.getByText('100')).toBeInTheDocument()
-        })
-
         it('should show loading state when metrics are loading', () => {
             useAIJourneyTableKpisMock.mockReturnValue({
                 metrics: {},

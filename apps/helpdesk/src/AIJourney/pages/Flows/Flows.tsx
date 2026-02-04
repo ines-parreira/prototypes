@@ -13,7 +13,7 @@ import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import { JourneysTable } from 'AIJourney/components'
 import { journeyTableDataMetrics } from 'AIJourney/components/JourneysTable/constants'
 import {
-    actionColumns,
+    flowsActionColumns,
     journeysColumns,
     metricColumns,
 } from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
@@ -107,7 +107,7 @@ export const Flows = () => {
         return [
             ...journeysColumns,
             ...orderedMetricColumns,
-            ...actionColumns,
+            ...flowsActionColumns,
         ] as ColumnDef<TableRow>[]
     }, [flowsTableKpisConfig])
 

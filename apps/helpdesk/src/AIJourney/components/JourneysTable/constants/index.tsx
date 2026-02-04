@@ -1,37 +1,52 @@
 export const journeyTableDataMetrics = [
     {
         id: 'recipients',
-        label: 'Total Recipients',
+        label: 'Recipients',
         visibility: true,
     },
     {
         id: 'revenue',
-        label: 'GMV Influenced',
+        label: 'Revenue',
         visibility: true,
     },
     {
-        id: 'conversionRate',
-        label: 'Conversion Rate',
-        visibility: true,
-    },
-    {
-        id: 'averageOrderValue',
-        label: 'Average Order Value',
-        visibility: true,
-    },
-    {
-        id: 'revenuePerRecipient',
-        label: 'Revenue Per Recipient',
+        id: 'totalOrders',
+        label: 'Orders',
         visibility: false,
     },
     {
-        id: 'replyRate',
-        label: 'Response Rate',
+        id: 'revenuePerRecipient',
+        label: 'Revenue per Recipient',
+        visibility: false,
+    },
+    {
+        id: 'averageOrderValue',
+        label: 'AOV',
+        visibility: false,
+    },
+    {
+        id: 'messagesSent',
+        label: 'Messages Sent',
         visibility: false,
     },
     {
         id: 'ctr',
-        label: 'Click Through Rate',
+        label: 'CTR',
+        visibility: true,
+    },
+    {
+        id: 'replyRate',
+        label: 'Reply rate',
+        visibility: true,
+    },
+    {
+        id: 'optOutRate',
+        label: 'Opt Out rate',
+        visibility: false,
+    },
+    {
+        id: 'conversionRate',
+        label: 'Conversion rate',
         visibility: false,
     },
 ]

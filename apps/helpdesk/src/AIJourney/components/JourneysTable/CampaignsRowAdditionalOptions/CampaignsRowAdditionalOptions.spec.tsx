@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { renderWithRouter } from 'utils/testing'
 
-import { MoreOptions } from './MoreOptions'
+import { CampaignsRowAdditionalOptions } from './CampaignsRowAdditionalOptions'
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -21,7 +21,7 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: (key: string) => mockUseFlag(key),
 }))
 
-describe('<MoreOptions />', () => {
+describe('<CampaignsRowAdditionalOptions />', () => {
     const defaultProps = {
         shopName: 'test-shop',
         journeyId: 'journey-123',
@@ -42,7 +42,7 @@ describe('<MoreOptions />', () => {
     describe('Options visibility based on state', () => {
         it('should return null when no options are available', () => {
             const { container } = renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={'unknown' as JourneyCampaignStateEnum}
                 />,
@@ -56,7 +56,7 @@ describe('<MoreOptions />', () => {
         it('should show Edit, Send, Duplicate, and Delete options for Draft state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
                 />,
@@ -74,7 +74,7 @@ describe('<MoreOptions />', () => {
         it('should show Duplicate and Cancel options for Scheduled state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Scheduled}
                 />,
@@ -90,7 +90,7 @@ describe('<MoreOptions />', () => {
         it('should show Duplicate, Pause, and Cancel options for Active state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
                 />,
@@ -107,7 +107,7 @@ describe('<MoreOptions />', () => {
         it('should show Resume and Cancel options for Paused state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Paused}
                 />,
@@ -123,7 +123,7 @@ describe('<MoreOptions />', () => {
         it('should show only Duplicate option for Canceled state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Canceled}
                 />,
@@ -141,7 +141,7 @@ describe('<MoreOptions />', () => {
         it('should show only Duplicate option for Sent state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Sent}
                 />,
@@ -162,7 +162,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleSendClick = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     handleSendClick={handleSendClick}
                 />,
@@ -186,7 +186,9 @@ describe('<MoreOptions />', () => {
 
         it('should navigate to edit page when Edit option is clicked', async () => {
             const user = userEvent.setup()
-            renderWithRouter(<MoreOptions {...defaultProps} />)
+            renderWithRouter(
+                <CampaignsRowAdditionalOptions {...defaultProps} />,
+            )
 
             const trigger = screen.getByLabelText('Open options')
             await user.click(trigger)
@@ -210,7 +212,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleRemoveClick = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     handleRemoveClick={handleRemoveClick}
                 />,
@@ -236,7 +238,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleDuplicateClick = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     handleDuplicateClick={handleDuplicateClick}
                 />,
@@ -262,7 +264,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleCancelClick = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
                     handleCancelClick={handleCancelClick}
@@ -289,7 +291,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleChangeStatus = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Active}
                     handleChangeStatus={handleChangeStatus}
@@ -316,7 +318,7 @@ describe('<MoreOptions />', () => {
             const user = userEvent.setup()
             const handleChangeStatus = jest.fn()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Paused}
                     handleChangeStatus={handleChangeStatus}
@@ -346,7 +348,7 @@ describe('<MoreOptions />', () => {
 
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
                 />,
@@ -363,7 +365,7 @@ describe('<MoreOptions />', () => {
 
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
                 />,
@@ -384,7 +386,7 @@ describe('<MoreOptions />', () => {
 
             const user = userEvent.setup()
             renderWithRouter(
-                <MoreOptions
+                <CampaignsRowAdditionalOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
                 />,

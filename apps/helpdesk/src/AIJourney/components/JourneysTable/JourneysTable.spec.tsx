@@ -1,28 +1,71 @@
-import React from 'react'
-
 import { formatMetricValue } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
-import { Box, createSortableColumn } from '@gorgias/axiom'
+import {
+    Box,
+    createSortableColumn,
+    TableBodyContent,
+    TableHeader,
+    TableRoot,
+    useTable,
+} from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
-import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
+import {
+    JourneyCampaignStateEnum,
+    JourneyStatusEnum,
+    JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import { MetricCell } from 'AIJourney/components'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
+import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 import {
     DEFAULT_TABLE_METRICS,
     LOADING_TABLE_METRICS,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
+import { useJourneyContext } from 'AIJourney/providers'
 import { ThemeProvider } from 'core/theme'
-import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
+import { campaignsActionColumns } from './JourneysColumns/JourneysColumns'
 import { JourneysTable } from './JourneysTable'
 
-jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+jest.mock('AIJourney/providers')
 
-const useCurrencyMock = assumeMock(useCurrency)
+jest.mock(
+    'AIJourney/components/JourneysTable/CampaignsRowAdditionalOptions/CampaignsRowAdditionalOptions',
+    () => ({
+        CampaignsRowAdditionalOptions: ({
+            handleChangeStatus,
+            handleCancelClick,
+            handleRemoveClick,
+            handleSendClick,
+            handleDuplicateClick,
+        }: {
+            handleChangeStatus: (status: UpdatableJourneyCampaignState) => void
+            handleCancelClick: () => void
+            handleRemoveClick: () => void
+            handleSendClick: () => void
+            handleDuplicateClick: () => void
+        }) => (
+            <div>
+                <button onClick={() => handleChangeStatus('paused')}>
+                    Change Status
+                </button>
+                <button onClick={handleCancelClick}>Cancel</button>
+                <button onClick={handleRemoveClick}>Remove</button>
+                <button onClick={handleSendClick}>Send</button>
+                <button onClick={handleDuplicateClick}>Duplicate</button>
+            </div>
+        ),
+    }),
+)
+
+const useJourneyContextMock = assumeMock(useJourneyContext)
 
 const mockColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
     {
@@ -76,29 +119,47 @@ const renderComponent = (
         data: JourneyApiDTO[]
         onEditColumns?: () => void
         isLoading?: boolean
+        isCampaign?: boolean
     }> = {},
+    historyInstance = createMemoryHistory(),
 ) => {
     const defaultProps = {
         columns: mockColumns,
         data: mockJourneyData,
         isLoading: false,
+        isCampaign: false,
     }
 
-    return render(
-        <ThemeProvider>
-            <JourneysTable<JourneyApiDTO, unknown>
-                {...defaultProps}
-                {...props}
-            />
-        </ThemeProvider>,
-    )
+    return {
+        ...render(
+            <Router history={historyInstance}>
+                <ThemeProvider>
+                    <JourneysTable<JourneyApiDTO, unknown>
+                        {...defaultProps}
+                        {...props}
+                    />
+                </ThemeProvider>
+            </Router>,
+        ),
+        history: historyInstance,
+    }
 }
 
 describe('JourneysTable', () => {
     beforeEach(() => {
-        useCurrencyMock.mockReturnValue({
+        useJourneyContextMock.mockReturnValue({
             currency: 'USD',
-            isCurrencyUSD: true,
+            shopName: 'test-shop',
+            journeys: [],
+            campaigns: [],
+            journeyData: undefined,
+            currentIntegration: undefined,
+            isLoading: false,
+            isLoadingJourneys: false,
+            isLoadingJourneyData: false,
+            isLoadingIntegrations: false,
+            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            storeConfiguration: undefined,
         })
     })
 
@@ -114,18 +175,30 @@ describe('JourneysTable', () => {
         it('should render empty state when no data', () => {
             renderComponent({ data: [] })
 
-            expect(screen.getByText('No journeys selected')).toBeInTheDocument()
+            expect(
+                screen.getByText('Create your first campaign'),
+            ).toBeInTheDocument()
         })
 
         it('should pass currency to table meta', () => {
-            useCurrencyMock.mockReturnValue({
+            useJourneyContextMock.mockReturnValue({
                 currency: 'EUR',
-                isCurrencyUSD: false,
+                shopName: 'test-shop',
+                journeys: [],
+                campaigns: [],
+                journeyData: undefined,
+                currentIntegration: undefined,
+                isLoading: false,
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isLoadingIntegrations: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                storeConfiguration: undefined,
             })
 
             renderComponent()
 
-            expect(useCurrencyMock).toHaveBeenCalled()
+            expect(useJourneyContextMock).toHaveBeenCalled()
         })
     })
 
@@ -161,7 +234,7 @@ describe('JourneysTable', () => {
             const editButton = screen.getByRole('button', {
                 name: /edit table/i,
             })
-            await user.click(editButton)
+            await act(() => user.click(editButton))
 
             expect(onEditColumns).toHaveBeenCalledTimes(1)
         })
@@ -349,6 +422,443 @@ describe('JourneysTable', () => {
             })
 
             expect(screen.getByText('250')).toBeInTheDocument()
+        })
+
+        it('should render opt out rate metric as percentage', () => {
+            const optOutRateColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
+                createSortableColumn<JourneyApiDTO>(
+                    'metrics.optOutRate',
+                    'Opt out rate',
+                    (info) => {
+                        const value = info.getValue()
+                        return (
+                            <MetricCell value={value}>
+                                {typeof value === 'number'
+                                    ? formatMetricValue(
+                                          value,
+                                          'percent-precision-1',
+                                      )
+                                    : (value as string)}
+                            </MetricCell>
+                        )
+                    },
+                ),
+            ]
+
+            const dataWithOptOutRate = [
+                {
+                    ...mockJourneyData[0],
+                    metrics: {
+                        ...DEFAULT_TABLE_METRICS,
+                        optOutRate: 0.05,
+                    },
+                },
+            ]
+
+            renderComponent({
+                columns: [...mockColumns, ...optOutRateColumn],
+                data: dataWithOptOutRate,
+            })
+
+            const formattedOptOutRate = formatMetricValue(
+                0.05,
+                'percent-precision-1',
+            )
+            expect(screen.getByText(formattedOptOutRate)).toBeInTheDocument()
+        })
+
+        it('should render opt out rate as string when value is not a number', () => {
+            const optOutRateColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
+                createSortableColumn<JourneyApiDTO>(
+                    'metrics.optOutRate',
+                    'Opt out rate',
+                    (info) => {
+                        const value = info.getValue()
+                        return (
+                            <MetricCell value={value}>
+                                {typeof value === 'number'
+                                    ? formatMetricValue(
+                                          value,
+                                          'percent-precision-1',
+                                      )
+                                    : (value as string)}
+                            </MetricCell>
+                        )
+                    },
+                ),
+            ]
+
+            const dataWithOptOutRateString = [
+                {
+                    ...mockJourneyData[0],
+                    metrics: {
+                        ...DEFAULT_TABLE_METRICS,
+                        optOutRate: 'N/A' as any,
+                    },
+                },
+            ]
+
+            renderComponent({
+                columns: [...mockColumns, ...optOutRateColumn],
+                data: dataWithOptOutRateString,
+            })
+
+            expect(screen.getByText('N/A')).toBeInTheDocument()
+        })
+    })
+
+    describe('Create campaign button', () => {
+        it('should not render Create campaign button when isCampaign is false', () => {
+            renderComponent({ isCampaign: false })
+
+            expect(
+                screen.queryByRole('button', { name: /create campaign/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render Create campaign button when isCampaign is true', () => {
+            renderComponent({ isCampaign: true })
+
+            expect(
+                screen.getByRole('button', { name: /create campaign/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should navigate to campaign setup page when Create campaign button is clicked', async () => {
+            const user = userEvent.setup()
+            const history = createMemoryHistory()
+            const shopName = 'test-shop'
+
+            useJourneyContextMock.mockReturnValue({
+                currency: 'USD',
+                shopName,
+                journeys: [],
+                campaigns: [],
+                journeyData: undefined,
+                currentIntegration: undefined,
+                isLoading: false,
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isLoadingIntegrations: false,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                storeConfiguration: undefined,
+            })
+
+            renderComponent({ isCampaign: true }, history)
+
+            const createButton = screen.getByRole('button', {
+                name: /create campaign/i,
+            })
+
+            await act(() => user.click(createButton))
+
+            expect(history.location.pathname).toBe(
+                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+            )
+        })
+
+        it('should use correct shopName from context in navigation', async () => {
+            const user = userEvent.setup()
+            const history = createMemoryHistory()
+            const customShopName = 'my-custom-shop'
+
+            useJourneyContextMock.mockReturnValue({
+                currency: 'USD',
+                shopName: customShopName,
+                journeys: [],
+                campaigns: [],
+                journeyData: undefined,
+                currentIntegration: undefined,
+                isLoading: false,
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isLoadingIntegrations: false,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                storeConfiguration: undefined,
+            })
+
+            renderComponent({ isCampaign: true }, history)
+
+            const createButton = screen.getByRole('button', {
+                name: /create campaign/i,
+            })
+
+            await act(() => user.click(createButton))
+
+            expect(history.location.pathname).toContain(customShopName)
+            expect(history.location.pathname).toBe(
+                `/app/ai-journey/${customShopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+            )
+        })
+    })
+
+    describe('Empty state', () => {
+        it('should not render Create campaign button when isCampaign is false', () => {
+            renderComponent({ data: [], isCampaign: false })
+
+            expect(
+                screen.queryAllByRole('button', { name: /create campaign/i }),
+            ).toHaveLength(1)
+        })
+
+        it('should render Create campaign button when isCampaign is true', () => {
+            renderComponent({ data: [], isCampaign: true })
+
+            expect(
+                screen.queryAllByRole('button', { name: /create campaign/i }),
+            ).toHaveLength(2)
+        })
+
+        it('should navigate to campaign setup page when Create campaign button is clicked', async () => {
+            const user = userEvent.setup()
+            const history = createMemoryHistory()
+            const shopName = 'test-shop'
+
+            useJourneyContextMock.mockReturnValue({
+                currency: 'USD',
+                shopName,
+                journeys: [],
+                campaigns: [],
+                journeyData: undefined,
+                currentIntegration: undefined,
+                isLoading: false,
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isLoadingIntegrations: false,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                storeConfiguration: undefined,
+            })
+
+            renderComponent({ isCampaign: true }, history)
+
+            const createButton = screen.getByRole('button', {
+                name: /create campaign/i,
+            })
+            await act(() => user.click(createButton))
+
+            expect(history.location.pathname).toBe(
+                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+            )
+        })
+
+        it('should use correct shopName from context in navigation', async () => {
+            const user = userEvent.setup()
+            const history = createMemoryHistory()
+            const customShopName = 'my-custom-shop'
+
+            useJourneyContextMock.mockReturnValue({
+                currency: 'USD',
+                shopName: customShopName,
+                journeys: [],
+                campaigns: [],
+                journeyData: undefined,
+                currentIntegration: undefined,
+                isLoading: false,
+                isLoadingJourneys: false,
+                isLoadingJourneyData: false,
+                isLoadingIntegrations: false,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                storeConfiguration: undefined,
+            })
+
+            renderComponent({ isCampaign: true }, history)
+
+            const createButton = screen.getByRole('button', {
+                name: /create campaign/i,
+            })
+            await act(() => user.click(createButton))
+
+            expect(history.location.pathname).toContain(customShopName)
+            expect(history.location.pathname).toBe(
+                `/app/ai-journey/${customShopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+            )
+        })
+    })
+
+    describe('Campaign action columns', () => {
+        const mockJourneyWithCampaign: JourneyApiDTO = {
+            ...mockJourneyData[0],
+            campaign: {
+                title: 'Test Campaign',
+                state: JourneyCampaignStateEnum.Draft,
+            },
+        }
+
+        interface TestTableProps {
+            data: JourneyApiDTO[]
+            meta: {
+                onRemoveClick: (id: string) => void
+                onSendClick: (id: string) => void
+                onCancelClick: (id: string) => void
+                onDuplicateClick: (journey: JourneyApiDTO) => void
+                onChangeStatus: (
+                    id: string,
+                    status: UpdatableJourneyCampaignState,
+                ) => void
+                currency: string
+            }
+        }
+
+        function TestTableWithActions({ data, meta }: TestTableProps) {
+            const table = useTable({
+                data,
+                columns: [
+                    ...mockColumns,
+                    ...campaignsActionColumns,
+                ] as ColumnDef<JourneyApiDTO, unknown>[],
+                additionalOptions: {
+                    meta,
+                },
+            })
+
+            return (
+                <TableRoot withBorder>
+                    <TableHeader />
+                    <TableBodyContent
+                        isLoading={false}
+                        rows={table.getRowModel().rows}
+                        columnCount={
+                            mockColumns.length + campaignsActionColumns.length
+                        }
+                        table={table}
+                    />
+                </TableRoot>
+            )
+        }
+
+        const renderTableWithActions = (props: TestTableProps) => {
+            return render(
+                <ThemeProvider>
+                    <TestTableWithActions {...props} />
+                </ThemeProvider>,
+            )
+        }
+
+        it('should call onChangeStatus with correct journey id and status when change status is triggered', async () => {
+            const user = userEvent.setup()
+            const onChangeStatus = jest.fn()
+            const meta = {
+                onRemoveClick: jest.fn(),
+                onSendClick: jest.fn(),
+                onCancelClick: jest.fn(),
+                onDuplicateClick: jest.fn(),
+                onChangeStatus,
+                currency: 'USD',
+            }
+
+            renderTableWithActions({
+                data: [mockJourneyWithCampaign],
+                meta,
+            })
+
+            const changeStatusButton = screen.getByRole('button', {
+                name: /change status/i,
+            })
+            await user.click(changeStatusButton)
+
+            expect(onChangeStatus).toHaveBeenCalledWith('1', 'paused')
+        })
+
+        it('should call onCancelClick with correct journey id when cancel is triggered', async () => {
+            const user = userEvent.setup()
+            const onCancelClick = jest.fn()
+            const meta = {
+                onRemoveClick: jest.fn(),
+                onSendClick: jest.fn(),
+                onCancelClick,
+                onDuplicateClick: jest.fn(),
+                onChangeStatus: jest.fn(),
+                currency: 'USD',
+            }
+
+            renderTableWithActions({
+                data: [mockJourneyWithCampaign],
+                meta,
+            })
+
+            const cancelButton = screen.getByRole('button', {
+                name: /cancel/i,
+            })
+            await user.click(cancelButton)
+
+            expect(onCancelClick).toHaveBeenCalledWith('1')
+        })
+
+        it('should call onRemoveClick with correct journey id when remove is triggered', async () => {
+            const user = userEvent.setup()
+            const onRemoveClick = jest.fn()
+            const meta = {
+                onRemoveClick,
+                onSendClick: jest.fn(),
+                onCancelClick: jest.fn(),
+                onDuplicateClick: jest.fn(),
+                onChangeStatus: jest.fn(),
+                currency: 'USD',
+            }
+
+            renderTableWithActions({
+                data: [mockJourneyWithCampaign],
+                meta,
+            })
+
+            const removeButton = screen.getByRole('button', {
+                name: /remove/i,
+            })
+            await user.click(removeButton)
+
+            expect(onRemoveClick).toHaveBeenCalledWith('1')
+        })
+
+        it('should call onSendClick with correct journey id when send is triggered', async () => {
+            const user = userEvent.setup()
+            const onSendClick = jest.fn()
+            const meta = {
+                onRemoveClick: jest.fn(),
+                onSendClick,
+                onCancelClick: jest.fn(),
+                onDuplicateClick: jest.fn(),
+                onChangeStatus: jest.fn(),
+                currency: 'USD',
+            }
+
+            renderTableWithActions({
+                data: [mockJourneyWithCampaign],
+                meta,
+            })
+
+            const sendButton = screen.getByRole('button', {
+                name: /send/i,
+            })
+            await user.click(sendButton)
+
+            expect(onSendClick).toHaveBeenCalledWith('1')
+        })
+
+        it('should call onDuplicateClick with correct journey object when duplicate is triggered', async () => {
+            const user = userEvent.setup()
+            const onDuplicateClick = jest.fn()
+            const meta = {
+                onRemoveClick: jest.fn(),
+                onSendClick: jest.fn(),
+                onCancelClick: jest.fn(),
+                onDuplicateClick,
+                onChangeStatus: jest.fn(),
+                currency: 'USD',
+            }
+
+            renderTableWithActions({
+                data: [mockJourneyWithCampaign],
+                meta,
+            })
+
+            const duplicateButton = screen.getByRole('button', {
+                name: /duplicate/i,
+            })
+            await user.click(duplicateButton)
+
+            expect(onDuplicateClick).toHaveBeenCalledWith(
+                mockJourneyWithCampaign,
+            )
         })
     })
 })

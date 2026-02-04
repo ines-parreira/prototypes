@@ -11,7 +11,7 @@ import {
     UpdatableJourneyCampaignState,
 } from 'AIJourney/constants'
 
-import css from './MoreOptions.less'
+import css from './CampaignsRowAdditionalOptions.less'
 
 const Options = {
     Send: 'send',
@@ -48,7 +48,7 @@ export const CAMPAIGN_STATE_TO_FIELDS: Record<
 
 type OptionEntry = { id: Options; name: string; icon: string }
 
-export const MoreOptions = ({
+export const CampaignsRowAdditionalOptions = ({
     shopName,
     journeyId,
     state,
