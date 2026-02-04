@@ -8,7 +8,6 @@
     }
 
     .icon {
-        color: white; // legacy
         border-radius: 100%;
         padding: 2px;
         background: linear-gradient(
@@ -17,9 +16,10 @@
             #f78671 30%,
             #905bd2 90%,
             #c8b1f9 200%
-        ); // legacy
-
+        );
         box-shadow: 1px 4px 4px 0 rgba(255, 255, 255, 0.6) inset;
+        width: 24px;
+        height: 24px;
 
         margin-bottom: var(--layout-spacing-s);
     }
@@ -43,13 +43,6 @@
 .axiom :local {
     .icon {
         color: var(--content-inverted-default);
-        background: linear-gradient(
-            90deg,
-            var(--surface-brand-secondary) -20%,
-            var(--surface-additional-coral) 30%,
-            var(--surface-additional-plum) 90%,
-            var(--surface-brand-subtle) 200%
-        );
     }
 
     .content {
