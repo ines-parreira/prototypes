@@ -106,7 +106,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                     {
                         left: 'Status',
                         right: isViewingHistoricalVersion ? (
-                            <Tag key="status">Previous Version</Tag>
+                            <Tag key="status">Previous version</Tag>
                         ) : isPublished !== undefined ? (
                             <Tag
                                 key="status"

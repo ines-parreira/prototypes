@@ -666,7 +666,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
     })
 
     describe('Historical version viewing', () => {
-        it('shows Previous Version status when viewing a historical version', () => {
+        it('shows Previous version status when viewing a historical version', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     article: {
@@ -709,7 +709,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Previous Version')).toBeInTheDocument()
+            expect(screen.getByText('Previous version')).toBeInTheDocument()
             expect(screen.queryByText('Published')).not.toBeInTheDocument()
         })
 
