@@ -2,44 +2,38 @@ import { formatMetricValue } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
 import { Box, createSortableColumn } from '@gorgias/axiom'
+import type { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { MetricCell } from 'AIJourney/components'
-import { JourneyName } from 'AIJourney/components/JourneysTable/JourneyName/JourneyName'
-import { JourneyStateBadge } from 'AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge'
-import { RowAdditionalOptions } from 'AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions'
-import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
 
-import type { TableRow } from '../../../pages/Flows/Flows'
+import type { UpdatableJourneyCampaignState } from '../../constants'
+import { type TableRow } from '../../pages/Campaigns/Campaigns'
+import CampaignName from './CampaignName/CampaignName'
+import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
+import { MoreOptions } from './MoreOptions/MoreOptions'
+import type { CampaignsTableMeta } from './types'
 
-export const journeysColumns: ColumnDef<TableRow>[] = [
-    {
-        id: 'title',
-        accessorFn: (row) =>
-            row.campaign?.title || JOURNEY_TYPE_MAP_TO_STRING[row.type],
-        header: 'Title',
-        cell: (info) => {
-            const storeName = info.row.original.store_name
-            const journeyType = info.row.original.type
-            const journeyId = info.row.original.id
-            return (
-                <Box gap="xs">
-                    <JourneyName
-                        name={info.getValue() as string}
-                        storeName={storeName}
-                        journeyType={journeyType}
-                        journeyId={journeyId}
-                    />
-                </Box>
-            )
-        },
-        enableSorting: true,
-    },
-    createSortableColumn<TableRow>('stateLabel', 'Status', (info) => {
-        const state = info.row.original.state
-
+export const columns: ColumnDef<TableRow>[] = [
+    createSortableColumn<TableRow>('campaign.title', 'Title', (info) => {
+        const storeName = info.row.original.store_name
+        const journeyType = info.row.original.type
+        const journeyId = info.row.original.id
         return (
             <Box gap="xs">
-                <JourneyStateBadge state={state} />
+                <CampaignName
+                    name={info.getValue() as string}
+                    storeName={storeName}
+                    journeyType={journeyType}
+                    journeyId={journeyId}
+                />
+            </Box>
+        )
+    }),
+    createSortableColumn<TableRow>('stateLabel', 'Status', (info) => {
+        const state = info.row.original.campaign?.state
+        return (
+            <Box gap="xs">
+                <CampaignStateBadge state={state as JourneyCampaignStateEnum} />
             </Box>
         )
     }),
@@ -61,11 +55,13 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
         },
     ),
     createSortableColumn<TableRow>('metrics.revenue', 'Revenue', (info) => {
-        const meta = info.table.options.meta as { currency: string }
+        const meta = info.table.options.meta as CampaignsTableMeta
         const value = info.getValue()
         return (
             <MetricCell value={value}>
-                {formatMetricValue(value as number, 'currency', meta.currency)}
+                {typeof value === 'number'
+                    ? formatMetricValue(value, 'currency', meta.currency)
+                    : (value as string)}
             </MetricCell>
         )
     }),
@@ -73,7 +69,9 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
         const value = info.getValue()
         return (
             <MetricCell value={value}>
-                {formatMetricValue(value as number, 'integer')}
+                {typeof value === 'number'
+                    ? formatMetricValue(value, 'integer')
+                    : (value as string)}
             </MetricCell>
         )
     }),
@@ -81,15 +79,13 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
         'metrics.revenuePerRecipient',
         'Revenue per Recipient',
         (info) => {
-            const meta = info.table.options.meta as { currency: string }
+            const meta = info.table.options.meta as CampaignsTableMeta
             const value = info.getValue()
             return (
                 <MetricCell value={value}>
-                    {formatMetricValue(
-                        value as number,
-                        'currency',
-                        meta.currency,
-                    )}
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'currency', meta.currency)
+                        : (value as string)}
                 </MetricCell>
             )
         },
@@ -98,15 +94,13 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
         'metrics.averageOrderValue',
         'AOV',
         (info) => {
-            const meta = info.table.options.meta as { currency: string }
+            const meta = info.table.options.meta as CampaignsTableMeta
             const value = info.getValue()
             return (
                 <MetricCell value={value}>
-                    {formatMetricValue(
-                        value as number,
-                        'currency',
-                        meta.currency,
-                    )}
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'currency', meta.currency)
+                        : (value as string)}
                 </MetricCell>
             )
         },
@@ -118,7 +112,9 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             const value = info.getValue()
             return (
                 <MetricCell value={value}>
-                    {formatMetricValue(value as number, 'integer')}
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'integer')
+                        : (value as string)}
                 </MetricCell>
             )
         },
@@ -135,7 +131,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
     }),
     createSortableColumn<TableRow>(
         'metrics.replyRate',
-        'Response rate',
+        'Reply rate',
         (info) => {
             const value = info.getValue()
             return (
@@ -184,9 +180,31 @@ export const actionColumns: ColumnDef<TableRow, unknown>[] = [
     {
         id: 'actions',
         cell: (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
             return (
                 <Box gap="xs">
-                    <RowAdditionalOptions journeyRowData={info.row.original} />
+                    <MoreOptions
+                        shopName={info.row.original.store_name}
+                        journeyId={info.row.original.id}
+                        state={info.row.original.campaign?.state!}
+                        handleChangeStatus={(
+                            status: UpdatableJourneyCampaignState,
+                        ) => {
+                            meta.onChangeStatus(info.row.original.id, status)
+                        }}
+                        handleCancelClick={() =>
+                            meta.onCancelClick(info.row.original.id)
+                        }
+                        handleRemoveClick={() =>
+                            meta.onRemoveClick(info.row.original.id)
+                        }
+                        handleSendClick={() =>
+                            meta.onSendClick(info.row.original.id)
+                        }
+                        handleDuplicateClick={() =>
+                            meta.onDuplicateClick(info.row.original)
+                        }
+                    />
                 </Box>
             )
         },

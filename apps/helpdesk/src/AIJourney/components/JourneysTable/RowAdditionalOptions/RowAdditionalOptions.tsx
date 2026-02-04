@@ -4,8 +4,10 @@ import { NotificationStatus } from '@repo/agent-status'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
-import { JourneyStatusEnum } from '@gorgias/convert-client'
-import type { JourneyTypeEnum } from '@gorgias/convert-client'
+import {
+    JourneyStatusEnum,
+    type JourneyTypeEnum,
+} from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
@@ -14,7 +16,7 @@ import { getSetupStepPath } from 'AIJourney/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 
-import css from './FlowsRowAdditionalOptions.less'
+import css from './RowAdditionalOptions.less'
 
 const Options = {
     Edit: 'edit',
@@ -44,7 +46,7 @@ export const CAMPAIGN_STATE_TO_FIELDS: Record<JourneyStatusEnum, Options[]> = {
 
 type OptionEntry = { id: Options; name: string; icon: string }
 
-export const FlowsRowAdditionalOptions = ({
+export const RowAdditionalOptions = ({
     journeyRowData,
 }: {
     journeyRowData: {
@@ -138,7 +140,7 @@ export const FlowsRowAdditionalOptions = ({
                     break
             }
         },
-        [shopName, journeyId, history, journeyType, handleUpdateJourneyState],
+        [shopName, journeyId, history, journeyType],
     )
 
     const options = useMemo(() => {

@@ -8,12 +8,12 @@ import { Box, Heading } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
-import { JourneysTable } from 'AIJourney/components'
+import CampaignsTable from 'AIJourney/components/CampaignsTable/CampaignsTable'
 import {
-    campaignsActionColumns,
-    journeysColumns,
+    actionColumns,
+    columns,
     metricColumns,
-} from 'AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns'
+} from 'AIJourney/components/CampaignsTable/Columns'
 import {
     DEFAULT_TABLE_METRICS,
     LOADING_TABLE_METRICS,
@@ -115,13 +115,11 @@ export const Campaigns = () => {
                     return item.id === columnId.replace('metrics.', '')
                 })
             })
-            .filter((option) => option !== undefined)
+            .filter(
+                (option): option is ColumnDef<TableRow> => option !== undefined,
+            )
 
-        return [
-            ...journeysColumns,
-            ...orderedMetricColumns,
-            ...campaignsActionColumns,
-        ] as ColumnDef<TableRow>[]
+        return [...columns, ...orderedMetricColumns, ...actionColumns]
     }, [keyKpisConfig])
 
     return (
@@ -149,12 +147,11 @@ export const Campaigns = () => {
                         },
                     }}
                 />
-                <JourneysTable
+                <CampaignsTable
                     columns={visibleColumns}
                     data={campaignRows || []}
                     onEditColumns={() => setIsEditModalOpen(true)}
                     isLoading={isLoadingIntegrations || isLoadingCampaigns}
-                    isCampaign
                 />
                 <DrillDownModal />
                 <ConfigureMetricsModal

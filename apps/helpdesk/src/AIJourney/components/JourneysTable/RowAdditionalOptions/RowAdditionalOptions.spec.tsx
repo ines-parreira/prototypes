@@ -1,6 +1,6 @@
 import { NotificationStatus } from '@repo/agent-status'
 import { act, screen } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
@@ -12,7 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { renderWithRouter } from 'utils/testing'
 
-import { FlowsRowAdditionalOptions } from './FlowsRowAdditionalOptions'
+import { RowAdditionalOptions } from './RowAdditionalOptions'
 
 jest.mock('AIJourney/hooks')
 jest.mock('AIJourney/providers')
@@ -39,7 +39,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
-describe('<FlowsRowAdditionalOptions />', () => {
+describe('<RowAdditionalOptions />', () => {
     const mockDispatch = jest.fn()
     const mockHandleUpdate = jest.fn()
 
@@ -80,7 +80,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should show Edit option for Draft state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Draft,
@@ -98,7 +98,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should show Edit, Test, Activation, and Pause options for Active state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -118,7 +118,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should show Edit, Test, Activation, and Play options for Paused state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Paused,
@@ -140,7 +140,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate to setup page when Edit option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -169,7 +169,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate to test page when Test option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -198,7 +198,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate to activation page when Activation option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -229,7 +229,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should call handleUpdate with Paused state when Pause option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -259,7 +259,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should call handleUpdate with Active state when Play option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Paused,
@@ -294,7 +294,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
 
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -332,7 +332,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
             } as any)
 
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -365,7 +365,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
             } as any)
 
             const { container } = renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         state: JourneyStatusEnum.Active,
@@ -385,7 +385,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate with correct path for PostPurchase journey type', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         type: JourneyTypeEnum.PostPurchase,
@@ -415,7 +415,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate with correct path for Welcome journey type', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         type: JourneyTypeEnum.Welcome,
@@ -445,7 +445,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should navigate with correct path for WinBack journey type', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         type: JourneyTypeEnum.WinBack,
@@ -478,7 +478,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
             const user = userEvent.setup()
             const customInstructions = 'Custom message instructions'
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         message_instructions: customInstructions,
@@ -509,7 +509,7 @@ describe('<FlowsRowAdditionalOptions />', () => {
         it('should handle null message instructions', async () => {
             const user = userEvent.setup()
             renderWithRouter(
-                <FlowsRowAdditionalOptions
+                <RowAdditionalOptions
                     journeyRowData={{
                         ...mockJourneyRowData,
                         message_instructions: null,

@@ -1,5 +1,3 @@
-import { useHistory } from 'react-router-dom'
-
 import type { ColumnDef, ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
@@ -12,9 +10,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
-import EmptyCampaignsState from 'AIJourney/components/JourneysTable/EmptyCampaignsState/EmptyCampaignsState'
-import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
-import { useJourneyContext } from 'AIJourney/providers'
+import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import styles from './JourneysTable.less'
 
@@ -23,20 +19,15 @@ type journeysTableProps<TData, TValue> = {
     data: TData[]
     onEditColumns?: () => void
     isLoading?: boolean
-    isCampaign?: boolean
 }
-
-const TABLE_PAGE_SIZE = 10
 
 export const JourneysTable = <TData, TValue>({
     columns,
     data,
     onEditColumns,
     isLoading = false,
-    isCampaign = false,
 }: journeysTableProps<TData, TValue>) => {
-    const history = useHistory()
-    const { currency, shopName } = useJourneyContext()
+    const { currency } = useCurrency()
 
     const table = useTable({
         data,
@@ -48,7 +39,7 @@ export const JourneysTable = <TData, TValue>({
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
-            pageSize: TABLE_PAGE_SIZE,
+            pageSize: 10,
             initialPageIndex: 0,
         },
         globalFilterConfig: {
@@ -62,57 +53,35 @@ export const JourneysTable = <TData, TValue>({
         },
     })
 
-    const shouldRenderPaginationComponent =
-        table.getRowModel().rows.length > TABLE_PAGE_SIZE
-    const bottomToolbarElements: ToolbarRow = shouldRenderPaginationComponent
-        ? { right: ['pagination'] }
-        : {}
-
-    const topToolbarElements: ToolbarRow = {
-        left: ['search'],
-        right: [
-            'totalCount',
-            {
-                key: 'edit',
-                content: (
-                    <Button
-                        onClick={onEditColumns}
-                        intent="regular"
-                        leadingSlot="columns"
-                        size="sm"
-                        variant="tertiary"
-                    >
-                        Edit table
-                    </Button>
-                ),
-            },
-            ...(isCampaign
-                ? [
-                      {
-                          key: 'create',
-                          content: (
-                              <Button
-                                  onClick={() =>
-                                      history.push(
-                                          `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
-                                      )
-                                  }
-                              >
-                                  Create campaign
-                              </Button>
-                          ),
-                      },
-                  ]
-                : []),
-        ],
-    }
+    const shouldRenderPaginationComponent = table.getRowModel().rows.length > 10
+    const tableToolbarBottonRowElements: ToolbarRow =
+        shouldRenderPaginationComponent ? {} : { right: ['pagination'] }
 
     return (
         <>
             <div className={styles.tableWrapper}>
                 <TableToolbar<TData>
                     table={table}
-                    bottomRow={topToolbarElements}
+                    bottomRow={{
+                        left: ['search'],
+                        right: [
+                            'totalCount',
+                            {
+                                key: 'edit',
+                                content: (
+                                    <Button
+                                        onClick={onEditColumns}
+                                        intent="regular"
+                                        leadingSlot="columns"
+                                        size="sm"
+                                        variant="tertiary"
+                                    >
+                                        Edit table
+                                    </Button>
+                                ),
+                            },
+                        ],
+                    }}
                 />
                 <TableRoot withBorder className={styles.tableRoot}>
                     <TableHeader>
@@ -128,12 +97,15 @@ export const JourneysTable = <TData, TValue>({
                         table={table}
                         renderEmptyStateComponent={() => (
                             <Box alignItems="center" justifyContent="center">
-                                <EmptyCampaignsState />
+                                No journeys selected
                             </Box>
                         )}
                     />
                 </TableRoot>
-                <TableToolbar table={table} bottomRow={bottomToolbarElements} />
+                <TableToolbar
+                    table={table}
+                    bottomRow={tableToolbarBottonRowElements}
+                />
             </div>
         </>
     )
