@@ -11,7 +11,6 @@ import { OPPORTUNITY_CARD_HEIGHT } from '../../constants'
 import { OPPORTUNITIES_PAGE_SIZE } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesSidebar } from '../../hooks/useOpportunitiesSidebar'
 import type { Opportunity, SidebarOpportunityItem } from '../../types'
-import { getOpportunitySidebarDisplayText } from '../../types'
 import { checkAndTriggerAutoFetch } from '../../utils/autoFetchScrollChecker'
 import { OpportunityCard } from '../OpportunityCard/OpportunityCard'
 import { OpportunityCardSkeleton } from '../OpportunityCardSkeleton/OpportunityCardSkeleton'
@@ -127,7 +126,7 @@ export const OpportunitiesSidebar = ({
         (_index: number, opportunity: SidebarOpportunityItem) => {
             return (
                 <OpportunityCard
-                    title={getOpportunitySidebarDisplayText(opportunity)}
+                    title={opportunity.insight}
                     type={opportunity.type}
                     ticketCount={opportunity.ticketCount}
                     selected={selectedOpportunity?.id === opportunity.id}

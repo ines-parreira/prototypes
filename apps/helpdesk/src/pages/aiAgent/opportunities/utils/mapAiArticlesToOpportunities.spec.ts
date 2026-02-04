@@ -26,6 +26,7 @@ describe('mapAiArticlesToOpportunities', () => {
             id: 'test-article-1',
             key: 'test-article-1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Test Article Title',
             resources: [
                 {
                     title: 'Test Article Title',
@@ -62,6 +63,7 @@ describe('mapAiArticlesToOpportunities', () => {
             id: 'test-article-1',
             key: 'test-article-1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Test Article Title',
             resources: [
                 {
                     title: 'Test Article Title',
@@ -75,6 +77,7 @@ describe('mapAiArticlesToOpportunities', () => {
             id: 'test-article-2',
             key: 'test-article-2',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Second Article',
             resources: [
                 {
                     title: 'Second Article',
@@ -88,6 +91,7 @@ describe('mapAiArticlesToOpportunities', () => {
             id: 'test-article-3',
             key: 'test-article-3',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Third Article',
             resources: [
                 {
                     title: 'Third Article',
@@ -166,6 +170,7 @@ describe('mapAiArticlesToOpportunities', () => {
 
         result.forEach((opportunity, index) => {
             expect(opportunity.resources[0].title).toBe(titles[index])
+            expect(opportunity.insight).toBe(titles[index])
         })
     })
 

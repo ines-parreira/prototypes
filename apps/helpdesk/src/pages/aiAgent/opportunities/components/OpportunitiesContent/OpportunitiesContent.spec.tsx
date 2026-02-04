@@ -159,6 +159,7 @@ describe('OpportunitiesContent', () => {
         id: '1',
         key: 'ai_1',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        insight: 'Test opportunity',
         resources: [
             {
                 title: 'Test opportunity',
@@ -559,6 +560,7 @@ describe('OpportunitiesContent', () => {
             selectedOpportunity: {
                 id: '1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Test',
@@ -594,6 +596,7 @@ describe('OpportunitiesContent', () => {
             selectedOpportunity: {
                 id: '1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Test',
@@ -633,6 +636,7 @@ describe('OpportunitiesContent', () => {
             selectedOpportunity: {
                 id: '1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Test',
@@ -931,6 +935,7 @@ describe('OpportunitiesContent', () => {
                 id: '1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 key: 'ai_1',
+                insight: 'Test opportunity',
                 ticketCount: 10,
                 detectionObjectIds: ['123', '456'],
                 resources: [
@@ -1148,6 +1153,7 @@ describe('OpportunitiesContent', () => {
                 id: '1',
                 key: 'key-1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: "What's your return policy?",
                 resources: [
                     {
                         title: "What's your return policy?",

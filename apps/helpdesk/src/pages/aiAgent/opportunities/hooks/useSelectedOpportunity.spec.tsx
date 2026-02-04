@@ -47,6 +47,7 @@ describe('useSelectedOpportunity', () => {
             key: 'opportunity-1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: 5,
+            insight: 'First Opportunity',
             resources: [
                 {
                     title: 'First Opportunity',
@@ -61,6 +62,7 @@ describe('useSelectedOpportunity', () => {
             key: 'opportunity-2',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: 10,
+            insight: 'Second Opportunity',
             resources: [
                 {
                     title: 'Second Opportunity',
@@ -94,6 +96,7 @@ describe('useSelectedOpportunity', () => {
         key: 'ks_1',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
         ticketCount: 5,
+        insight: 'First Opportunity with Details',
         resources: [
             {
                 title: 'First Opportunity with Details',
@@ -528,6 +531,7 @@ describe('useSelectedOpportunity', () => {
                 key: 'opportunity-2',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 15,
+                insight: 'Updated Second Opportunity',
                 resources: [
                     {
                         title: 'Updated Second Opportunity',

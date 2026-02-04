@@ -43,7 +43,11 @@ describe('useFindOneOpportunity', () => {
             createdDatetime: '2024-01-01T00:00:00Z',
             detectionCount: 5,
             detectionObjectIds: ['1', '2', '3', '4', '5'],
+            insight: 'Test opportunity insight',
             knowledgeResource: {
+                id: 1,
+                sourceId: 'source-123',
+                sourceSetId: 'source-set-123',
                 title: 'Test Opportunity',
                 body: '<p>Test content</p>',
                 locale: 'en',

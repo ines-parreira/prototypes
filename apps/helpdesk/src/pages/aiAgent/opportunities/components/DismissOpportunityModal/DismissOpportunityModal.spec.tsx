@@ -36,6 +36,7 @@ describe('DismissOpportunityModal', () => {
         id: 'test-opportunity-id',
         key: 'test-opportunity-key',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        insight: 'Test Opportunity',
         resources: [
             {
                 title: 'Test Opportunity',

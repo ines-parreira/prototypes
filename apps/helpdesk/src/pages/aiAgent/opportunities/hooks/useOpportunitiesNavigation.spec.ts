@@ -12,6 +12,7 @@ describe('useOpportunitiesNavigation', () => {
             id: '1',
             key: 'ai_1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'First Opportunity',
             resources: [
                 {
                     title: 'First Opportunity',
@@ -25,6 +26,7 @@ describe('useOpportunitiesNavigation', () => {
             id: '2',
             key: 'ai_2',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Second Opportunity',
             resources: [
                 {
                     title: 'Second Opportunity',
@@ -38,6 +40,7 @@ describe('useOpportunitiesNavigation', () => {
             id: '3',
             key: 'ai_3',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Third Opportunity',
             resources: [
                 {
                     title: 'Third Opportunity',
@@ -184,6 +187,7 @@ describe('useOpportunitiesNavigation', () => {
                 id: 'non-existent',
                 key: 'non-existent',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'Non-existent',
                 resources: [
                     {
                         title: 'Non-existent',
@@ -250,6 +254,7 @@ describe('useOpportunitiesNavigation', () => {
                 id: 'non-existent',
                 key: 'non-existent',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'Non-existent opportunity',
                 resources: [
                     {
                         title: 'Non-existent',

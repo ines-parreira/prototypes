@@ -101,8 +101,7 @@ export const OpportunityDetailsHeader = ({
         if (!selectedOpportunity) return null
 
         const typeLabel = getOpportunityTypeLabel(selectedOpportunity.type)
-        const resourceTitle = selectedOpportunity.resources[0]?.title
-        const titleText = `${typeLabel}: ${resourceTitle}`
+        const titleText = `${typeLabel}: ${selectedOpportunity.insight}`
 
         return (
             <Heading size="md" className={css.title}>

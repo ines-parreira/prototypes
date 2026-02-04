@@ -19,13 +19,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
                 detectionObjectIds: ['1', '2', '3', '4', '5'],
+                insight: 'Test Knowledge Gap Title',
                 knowledgeResource: {
+                    id: 123,
                     title: 'Test Knowledge Gap Title',
                     body: '<p>Test knowledge gap content</p>',
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: 1,
+                    sourceId: 'source-123',
+                    sourceSetId: 'source-set-123',
                 },
                 resources: [],
             }
@@ -38,6 +42,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['1', '2', '3', '4', '5'],
+                insight: 'Test Knowledge Gap Title',
                 resources: [
                     {
                         title: 'Test Knowledge Gap Title',
@@ -59,13 +64,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
                 detectionObjectIds: [],
+                insight: '',
                 knowledgeResource: {
+                    id: 1,
                     title: '',
                     body: '',
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: null,
+                    sourceId: 'source-empty',
+                    sourceSetId: 'source-set-empty',
                 },
                 resources: [],
             }
@@ -78,6 +87,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: [],
+                insight: '',
                 resources: [
                     {
                         title: 'Untitled',
@@ -99,6 +109,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
                 detectionObjectIds: ['10', '11'],
+                insight: undefined as any,
                 knowledgeResource: undefined as any,
                 resources: [],
             }
@@ -111,6 +122,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['10', '11'],
+                insight: undefined,
                 resources: [],
             })
         })
@@ -125,13 +137,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
                 detectionObjectIds: ['20'],
+                insight: null as any,
                 knowledgeResource: {
+                    id: 2,
                     title: null as any,
                     body: null as any,
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: null,
+                    sourceId: 'source-null',
+                    sourceSetId: 'source-set-null',
                 },
                 resources: [],
             }
@@ -144,6 +160,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['20'],
+                insight: null,
                 resources: [
                     {
                         title: 'Untitled',
@@ -165,13 +182,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 5,
                 detectionObjectIds: ['30', '31', '32'],
+                insight: undefined as any,
                 knowledgeResource: {
+                    id: 3,
                     title: undefined as any,
                     body: undefined as any,
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: null,
+                    sourceId: 'source-undefined',
+                    sourceSetId: 'source-set-undefined',
                 },
                 resources: [],
             }
@@ -184,6 +205,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['30', '31', '32'],
+                insight: undefined,
                 resources: [
                     {
                         title: 'Untitled',
@@ -205,13 +227,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 3,
                 detectionObjectIds: ['40', '41', '42'],
+                insight: 'Guidance Title',
                 knowledgeResource: {
+                    id: 4,
                     title: 'Guidance Title',
                     body: '<p>Guidance content</p>',
                     locale: 'en',
                     type: 'guidance',
                     origin: 'internal',
                     version: 2,
+                    sourceId: 'source-guidance',
+                    sourceSetId: 'source-set-guidance',
                 },
                 resources: [],
             }
@@ -224,6 +250,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 3,
                 detectionObjectIds: ['40', '41', '42'],
+                insight: 'Guidance Title',
                 resources: [
                     {
                         title: 'Guidance Title',
@@ -247,22 +274,29 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 7,
                 detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 1,
                         title: 'First Conflict Title',
                         body: '<p>First conflict content</p>',
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 1,
+                        sourceId: 'resource-1',
+                        sourceSetId: 'resource-set-1',
                     },
                     {
+                        id: 2,
                         title: 'Second Conflict Title',
                         body: '<p>Second conflict content</p>',
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 2,
+                        sourceId: 'resource-2',
+                        sourceSetId: 'resource-set-2',
                     },
                 ],
                 resources: [
@@ -270,17 +304,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         resourceId: 'resource-1',
                         resourceSetId: 'resource-set-1',
                         resourceLocale: 'en',
-                        resourceVersion: '1.0.0',
+                        resourceVersion: '1',
                         resourceTitle: 'test',
-                        resourceType: 'guidance',
+                        resourceType: 'article',
                     },
                     {
                         resourceId: 'resource-2',
                         resourceSetId: 'resource-set-2',
                         resourceLocale: 'en',
-                        resourceVersion: '2.0.0',
+                        resourceVersion: '2',
                         resourceTitle: 'test',
-                        resourceType: 'guidance',
+                        resourceType: 'article',
                     },
                 ],
             }
@@ -293,6 +327,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 7,
                 detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
+                insight: 'test',
                 resources: [
                     {
                         title: 'First Conflict Title',
@@ -304,7 +339,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                             resourceId: 'resource-1',
                             resourceSetId: 'resource-set-1',
                             resourceLocale: 'en',
-                            resourceVersion: '1.0.0',
+                            resourceVersion: '1',
                         },
                     },
                     {
@@ -317,7 +352,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                             resourceId: 'resource-2',
                             resourceSetId: 'resource-set-2',
                             resourceLocale: 'en',
-                            resourceVersion: '2.0.0',
+                            resourceVersion: '2',
                         },
                     },
                 ],
@@ -334,6 +369,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
                 detectionObjectIds: ['60', '61'],
+                insight: 'test',
                 conflictingResources: [],
                 resources: [],
             }
@@ -346,6 +382,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['60', '61'],
+                insight: 'test',
                 resources: [],
             })
         })
@@ -360,14 +397,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
                 detectionObjectIds: ['70', '71'],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 3,
                         title: null as any,
                         body: null as any,
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 1,
+                        sourceId: 'resource-null',
+                        sourceSetId: 'resource-set-null',
                     },
                 ],
                 resources: [],
@@ -381,6 +422,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['70', '71'],
+                insight: 'test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -404,14 +446,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
                 detectionObjectIds: ['80', '81'],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 4,
                         title: undefined as any,
                         body: undefined as any,
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 1,
+                        sourceId: 'resource-undefined',
+                        sourceSetId: 'resource-set-undefined',
                     },
                 ],
                 resources: [],
@@ -425,6 +471,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['80', '81'],
+                insight: 'test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -448,14 +495,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 2,
                 detectionObjectIds: ['90', '91'],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 5,
                         title: '',
                         body: '',
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 1,
+                        sourceId: 'resource-empty',
+                        sourceSetId: 'resource-set-empty',
                     },
                 ],
                 resources: [],
@@ -469,6 +520,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['90', '91'],
+                insight: 'test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -492,14 +544,18 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 3,
                 detectionObjectIds: ['110', '111', '112'],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 6,
                         title: 'Resource with Insight',
                         body: '<p>Content with insight</p>',
                         locale: 'en',
                         type: 'article',
                         origin: null,
                         version: 1,
+                        sourceId: 'resource-with-insight',
+                        sourceSetId: 'resource-set-1',
                     },
                 ],
                 resources: [
@@ -507,7 +563,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         resourceId: 'resource-with-insight',
                         resourceSetId: 'resource-set-1',
                         resourceLocale: 'en',
-                        resourceVersion: '1.0.0',
+                        resourceVersion: '1',
                         resourceTitle: 'test',
                         resourceType: 'article',
                         insight: 'This article conflicts with another policy',
@@ -523,6 +579,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 3,
                 detectionObjectIds: ['110', '111', '112'],
+                insight: 'test',
                 resources: [
                     {
                         title: 'Resource with Insight',
@@ -534,14 +591,14 @@ describe('mapOpportunityDetailToOpportunity', () => {
                             resourceId: 'resource-with-insight',
                             resourceSetId: 'resource-set-1',
                             resourceLocale: 'en',
-                            resourceVersion: '1.0.0',
+                            resourceVersion: '1',
                         },
                     },
                 ],
             })
         })
 
-        it('should only use first conflicting resource when multiple exist', () => {
+        it('should map all conflicting resources when multiple exist', () => {
             const conflictDetail: ConflictOpportunityDetail = {
                 id: 555,
                 accountId: 456,
@@ -562,22 +619,29 @@ describe('mapOpportunityDetailToOpportunity', () => {
                     '108',
                     '109',
                 ],
+                insight: 'test',
                 conflictingResources: [
                     {
+                        id: 7,
                         title: 'Keep This Title',
                         body: '<p>Keep this content</p>',
                         locale: 'en',
                         type: 'guidance',
                         origin: 'internal',
                         version: 1,
+                        sourceId: 'resource-keep',
+                        sourceSetId: 'resource-set-keep',
                     },
                     {
+                        id: 8,
                         title: 'Ignore This Title',
                         body: '<p>Ignore this content</p>',
                         locale: 'fr',
                         type: 'article',
                         origin: null,
                         version: 2,
+                        sourceId: 'resource-ignore',
+                        sourceSetId: 'resource-set-ignore',
                     },
                 ],
                 resources: [
@@ -602,12 +666,25 @@ describe('mapOpportunityDetailToOpportunity', () => {
 
             const result = mapOpportunityDetailToOpportunity(conflictDetail)
 
+            expect(result.insight).toBe('test')
             expect(result.resources[0].title).toBe('Keep This Title')
             expect(result.resources[0].content).toBe('<p>Keep this content</p>')
+            expect(result.resources[0].identifiers).toEqual({
+                resourceId: 'resource-keep',
+                resourceSetId: 'resource-set-keep',
+                resourceLocale: 'en',
+                resourceVersion: '1.0',
+            })
             expect(result.resources[1].title).toBe('Ignore This Title')
             expect(result.resources[1].content).toBe(
                 '<p>Ignore this content</p>',
             )
+            expect(result.resources[1].identifiers).toEqual({
+                resourceId: 'resource-ignore',
+                resourceSetId: 'resource-set-ignore',
+                resourceLocale: 'fr',
+                resourceVersion: '2.0',
+            })
             expect(result.type).toBe(OpportunityType.RESOLVE_CONFLICT)
         })
     })
@@ -623,13 +700,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 1,
                 detectionObjectIds: ['200'],
+                insight: 'Test',
                 knowledgeResource: {
+                    id: 12345,
                     title: 'Test',
                     body: 'Test',
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: null,
+                    sourceId: 'source-12345',
+                    sourceSetId: 'source-set-12345',
                 },
                 resources: [],
             }
@@ -650,13 +731,17 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 createdDatetime: '2024-01-01T00:00:00Z',
                 detectionCount: 1,
                 detectionObjectIds: ['300'],
+                insight: 'Test',
                 knowledgeResource: {
+                    id: 42,
                     title: 'Test',
                     body: 'Test',
                     locale: 'en',
                     type: 'article',
                     origin: null,
                     version: null,
+                    sourceId: 'source-42',
+                    sourceSetId: 'source-set-42',
                 },
                 resources: [],
             }

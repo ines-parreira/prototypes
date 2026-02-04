@@ -49,6 +49,7 @@ const mockOpportunity: Opportunity = {
     key: 'ai_123',
     type: OpportunityType.FILL_KNOWLEDGE_GAP,
     ticketCount: 5,
+    insight: 'Test Opportunity Title',
     resources: [
         {
             title: 'Test Opportunity Title',

@@ -73,6 +73,7 @@ describe('OpportunitiesSidebar', () => {
             id: '1',
             key: 'ai_1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: "What's your return policy?",
             resources: [
                 {
                     title: "What's your return policy?",
@@ -87,6 +88,7 @@ describe('OpportunitiesSidebar', () => {
             id: '2',
             key: 'ai_2',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'How do I access my store account?',
             resources: [
                 {
                     title: 'How do I access my store account?',
@@ -101,6 +103,7 @@ describe('OpportunitiesSidebar', () => {
             id: '3',
             key: 'ai_3',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'How can I apply a discount?',
             resources: [
                 {
                     title: 'How can I apply a discount?',
@@ -115,6 +118,7 @@ describe('OpportunitiesSidebar', () => {
             id: '4',
             key: 'ai_4',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Topic',
             resources: [
                 {
                     title: 'Topic',
@@ -222,6 +226,7 @@ describe('OpportunitiesSidebar', () => {
                 id: '2',
                 key: 'ai_2',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'How do I access my store account?',
                 resources: [
                     {
                         title: 'How do I access my store account?',
@@ -493,6 +498,7 @@ describe('OpportunitiesSidebar', () => {
                     id: '5',
                     key: 'ai_5',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Additional opportunity 1',
                     resources: [
                         {
                             title: 'Additional opportunity 1',
@@ -506,6 +512,7 @@ describe('OpportunitiesSidebar', () => {
                     id: '6',
                     key: 'ai_6',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Additional opportunity 2',
                     resources: [
                         {
                             title: 'Additional opportunity 2',
@@ -519,6 +526,7 @@ describe('OpportunitiesSidebar', () => {
                     id: '7',
                     key: 'ai_7',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Additional opportunity 3',
                     resources: [
                         {
                             title: 'Additional opportunity 3',
@@ -532,6 +540,7 @@ describe('OpportunitiesSidebar', () => {
                     id: '8',
                     key: 'ai_8',
                     type: OpportunityType.RESOLVE_CONFLICT,
+                    insight: 'Additional opportunity 4',
                     resources: [
                         {
                             title: 'Additional opportunity 4',
@@ -709,12 +718,13 @@ describe('OpportunitiesSidebar', () => {
             ).toBeInTheDocument()
         })
 
-        it('should display title for Opportunity (legacy flow)', () => {
+        it('should display insight for Opportunity', () => {
             const opportunities: Opportunity[] = [
                 {
                     id: '1',
                     key: 'ai_1',
                     type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Opportunity insight text',
                     resources: [
                         {
                             title: 'Fallback Title',
@@ -734,7 +744,9 @@ describe('OpportunitiesSidebar', () => {
                 />,
             )
 
-            expect(screen.getByText('Fallback Title')).toBeInTheDocument()
+            expect(
+                screen.getByText('Opportunity insight text'),
+            ).toBeInTheDocument()
         })
     })
 

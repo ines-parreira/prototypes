@@ -14,6 +14,7 @@ describe('DeleteOpportunityModal', () => {
         id: '1',
         key: 'test_key',
         type: OpportunityType.RESOLVE_CONFLICT,
+        insight: 'Test Resource',
         resources: [
             {
                 title: 'Test Resource',

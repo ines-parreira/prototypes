@@ -136,6 +136,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Article Title',
             resources: [
                 {
                     title: 'Article Title',
@@ -189,6 +190,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Resolve conflict opportunity',
             resources: [],
         }
 
@@ -217,6 +219,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Snippet Title',
             detectionObjectIds: ['ticket_1'],
             resources: [
                 {
@@ -277,6 +280,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Multiple snippets',
             detectionObjectIds: ['ticket_1'],
             resources: [
                 {
@@ -394,6 +398,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Mixed resource types',
             resources: [
                 {
                     title: 'Article Title',
@@ -475,6 +480,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Snippet Title',
             detectionObjectIds: ['ticket_1'],
             resources: [
                 {
@@ -519,6 +525,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Snippet Title',
             detectionObjectIds: ['ticket_1'],
             resources: [
                 {
@@ -556,6 +563,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Snippet Title',
             detectionObjectIds: ['ticket_1'],
             resources: [
                 {
@@ -604,6 +612,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Test opportunity',
             resources: [],
         }
 
@@ -637,6 +646,7 @@ describe('useEnrichedOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Test opportunity',
             resources: [],
         }
 

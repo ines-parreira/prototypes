@@ -36,6 +36,7 @@ describe('OpportunitiesNavigation', () => {
             id: '1',
             key: 'ai_1',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'First Opportunity',
             resources: [
                 {
                     title: 'First Opportunity',
@@ -49,6 +50,7 @@ describe('OpportunitiesNavigation', () => {
             id: '2',
             key: 'ai_2',
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: 'Second Opportunity',
             resources: [
                 {
                     title: 'Second Opportunity',
@@ -62,6 +64,7 @@ describe('OpportunitiesNavigation', () => {
             id: '3',
             key: 'ai_3',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Third Opportunity',
             resources: [
                 {
                     title: 'Third Opportunity',

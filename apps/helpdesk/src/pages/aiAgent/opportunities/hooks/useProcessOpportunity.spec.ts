@@ -112,6 +112,7 @@ describe('useProcessOpportunity', () => {
             id: '123',
             key: 'ks_123',
             type: OpportunityType.RESOLVE_CONFLICT,
+            insight: 'Resolve conflict opportunity',
             resources,
             detectionObjectIds: ['1', '2', '3'],
         })

@@ -74,6 +74,7 @@ interface OpportunityBase {
     key: string
     type: OpportunityType
     ticketCount?: number
+    insight: string
 }
 
 export interface OpportunityListItem extends OpportunityBase {
@@ -88,23 +89,8 @@ export interface Opportunity extends OpportunityBase {
 
 export type SidebarOpportunityItem = OpportunityListItem | Opportunity
 
-export const isOpportunityListItem = (
-    item: SidebarOpportunityItem,
-): item is OpportunityListItem => {
-    return 'insight' in item
-}
-
 export const isOpportunity = (
     item: SidebarOpportunityItem,
 ): item is Opportunity => {
     return 'resources' in item
-}
-
-export const getOpportunitySidebarDisplayText = (
-    item: SidebarOpportunityItem,
-): string => {
-    if (isOpportunityListItem(item)) {
-        return item.insight
-    }
-    return item.resources[0]?.title
 }

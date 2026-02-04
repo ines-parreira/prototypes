@@ -20,6 +20,7 @@ export const mapAiArticlesToOpportunities = (
             id: removeAiPrefix(article.key),
             key: article.key,
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+            insight: article.title,
             resources: [
                 {
                     title: article.title,

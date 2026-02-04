@@ -56,6 +56,7 @@ export const mapOpportunityDetailToOpportunity = (
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: knowledgeGap.detectionCount,
             detectionObjectIds: knowledgeGap.detectionObjectIds,
+            insight: knowledgeGap.insight,
             resources,
         }
     }
@@ -63,8 +64,12 @@ export const mapOpportunityDetailToOpportunity = (
     const conflict = detail as ConflictOpportunityDetail
 
     const resources: OpportunityResource[] = conflict.conflictingResources.map(
-        (conflictingResource, index) => {
-            const resourceMeta = conflict.resources[index]
+        (conflictingResource) => {
+            const resourceMeta = conflict.resources.find(
+                (resource) =>
+                    conflictingResource.sourceId === resource.resourceId &&
+                    conflictingResource.sourceSetId === resource.resourceSetId,
+            )
 
             return {
                 title: conflictingResource.title || 'Untitled',
@@ -89,6 +94,7 @@ export const mapOpportunityDetailToOpportunity = (
         type: OpportunityType.RESOLVE_CONFLICT,
         ticketCount: conflict.detectionCount,
         detectionObjectIds: conflict.detectionObjectIds,
+        insight: conflict.insight,
         resources,
     }
 }

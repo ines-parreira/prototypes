@@ -231,6 +231,7 @@ describe('OpportunitiesLayout', () => {
                 id: article.key,
                 key: article.key,
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: article.title,
                 resources: [
                     {
                         title: article.title,
@@ -423,6 +424,7 @@ describe('OpportunitiesLayout', () => {
             const [selected, setSelected] = React.useState({
                 id: 'article-1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'First Article',
                 resources: [
                     {
                         title: 'First Article',
@@ -440,6 +442,7 @@ describe('OpportunitiesLayout', () => {
                         const opportunities = mockArticles.map((article) => ({
                             id: article.key,
                             type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                            insight: article.title,
                             resources: [
                                 {
                                     title: article.title,
@@ -495,6 +498,7 @@ describe('OpportunitiesLayout', () => {
             const [selected, setSelected] = React.useState({
                 id: 'article-1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'First Article',
                 resources: [
                     {
                         title: 'First Article',
@@ -513,6 +517,7 @@ describe('OpportunitiesLayout', () => {
                             {
                                 id: 'article-1',
                                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                                insight: 'First Article',
                                 resources: [
                                     {
                                         title: 'First Article',
@@ -646,6 +651,7 @@ describe('OpportunitiesLayout', () => {
                     expect.objectContaining({
                         id: 'article-1',
                         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                        insight: 'First Article',
                         resources: expect.arrayContaining([
                             expect.objectContaining({
                                 title: 'First Article',
@@ -866,6 +872,7 @@ describe('OpportunitiesLayout', () => {
                 id: '1',
                 key: 'ks_1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'KS Opportunity 1',
                 ticketCount: 5,
                 resources: [
                     {
@@ -921,6 +928,7 @@ describe('OpportunitiesLayout', () => {
                 id: '1',
                 key: 'ks_1',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'KS Opportunity 1',
                 ticketCount: 5,
                 resources: [
                     {
@@ -935,6 +943,7 @@ describe('OpportunitiesLayout', () => {
                 id: '2',
                 key: 'ks_2',
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                insight: 'KS Opportunity 2',
                 ticketCount: 3,
                 resources: [
                     {

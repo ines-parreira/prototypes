@@ -91,6 +91,7 @@ describe('enrichOpportunityWithIngestion', () => {
         id: '123',
         key: 'ks_123',
         type: OpportunityType.RESOLVE_CONFLICT,
+        insight: 'Base opportunity for testing',
         detectionObjectIds: ['ticket_1'],
         resources: [],
     }
