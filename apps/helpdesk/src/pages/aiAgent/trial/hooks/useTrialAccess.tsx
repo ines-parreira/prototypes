@@ -236,6 +236,12 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
     const hasAnyTrialActive =
         currentTrials?.some((trial) => hasTrialActive(trial)) || false
 
+    // Calculate onboarding state early, needed for CTA logic below
+    const isOnboarded =
+        onboardingState === OnboardingState.Loading
+            ? undefined
+            : onboardingState === OnboardingState.Onboarded
+
     // System Banner: Global application banner (requires AI Agent on chat)
     const canSeeSystemBanner = Boolean(
         (isAdminUser || isTeamLeadUser) && !hasAnyTrialStarted,
@@ -287,11 +293,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         trialType === TrialType.AiAgent &&
         hasCurrentStoreTrialStarted &&
         !hasCurrentStoreTrialExpired
-
-    const isOnboarded =
-        onboardingState === OnboardingState.Loading
-            ? undefined
-            : onboardingState === OnboardingState.Onboarded
 
     return {
         canNotifyAdmin,

@@ -577,14 +577,6 @@ const PaywallWrapperComponent = ({
         [],
     )
 
-    const StartAIAgentAction = useMemo(
-        (): AIAgentCTAOptions => ({
-            label: 'Start AI Agent only',
-            onClick: onOnboardingWizardClick,
-        }),
-        [onOnboardingWizardClick],
-    )
-
     const BookDemoAction = useMemo(
         (): AIAgentCTAOptions => ({
             label: 'Book a demo',
@@ -633,15 +625,9 @@ const PaywallWrapperComponent = ({
                     ? null
                     : LearnMoreAction
 
-            // As the merchant has AIAgent we need to let them through the paywall
-            const startAIAgent = StartAIAgentAction
-
-            actionsOrderedByPriority.push(
-                selfService,
-                bookADemo,
-                learnMore,
-                startAIAgent,
-            )
+            // "Start AI Agent only" button should NOT appear on Shopping Assistant paywall
+            // It should only appear on the AI Agent paywall (handled by useAiAgentPaywallCTA)
+            actionsOrderedByPriority.push(selfService, bookADemo, learnMore)
         }
 
         // Actions are ordered but can be null, filter the nulls out

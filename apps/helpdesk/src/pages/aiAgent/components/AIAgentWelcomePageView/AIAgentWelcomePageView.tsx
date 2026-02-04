@@ -326,7 +326,7 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         canSeeSubscribeNow,
         isAdmin,
         learnMoreUrl,
-
+        isOnboarded: !!trialAccess.isOnboarded,
         onOpenWizard: onOnboardingWizardClick,
         onOpenSubscribeModal: () => setIsAutomationModalOpened(true),
         onOpenTrialUpgradeModal: trialFlow.openTrialUpgradeModal,

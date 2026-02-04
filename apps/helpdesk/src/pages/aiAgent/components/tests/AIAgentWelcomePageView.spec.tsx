@@ -644,6 +644,127 @@ describe('<AIAgentWelcomePageView />', () => {
         })
     })
 
+    describe('Trial CTA visibility based on onboarding status', () => {
+        it('should show trial CTA when Shopping Assistant user has NOT onboarded AI Agent for current store', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: false,
+                canSeeTrialCTA: true,
+                isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.getByRole('button', {
+                    name: /Try for 14 days/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should NOT show trial CTA when Shopping Assistant user HAS onboarded AI Agent for current store', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: true,
+                canSeeTrialCTA: false, // Should be false when onboarded
+                isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            expect(
+                screen.queryByRole('button', {
+                    name: /Try for 14 days/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show "Start AI Agent only" when has Automate but AI Agent not onboarded for current store', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: false,
+                canSeeTrialCTA: false, // No trial CTA
+                canSeeSubscribeNowCTA: false,
+                canBookDemo: false,
+                isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            // Should show "Start AI Agent only" as tertiary CTA
+            expect(screen.getByText(/Start AI Agent only/i)).toBeInTheDocument()
+        })
+
+        it('should NOT show "Start AI Agent only" when has Automate and AI Agent IS onboarded for current store', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: true, // Already onboarded
+                canSeeTrialCTA: false, // No trial CTA
+                canSeeSubscribeNowCTA: false,
+                canBookDemo: false,
+                isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            // Should NOT show "Start AI Agent only" when already onboarded
+            expect(
+                screen.queryByText(/Start AI Agent only/i),
+            ).not.toBeInTheDocument()
+            // Should also NOT show trial CTA
+            expect(
+                screen.queryByRole('button', {
+                    name: /Try for 14 days/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show "Learn more" for Enterprise Admin Shopping Assistant when onboarded', () => {
+            mockUseTrialAccess.mockReturnValue({
+                ...DEFAULT_TRIAL_ACCESS_MOCK,
+                currentAutomatePlan: { generation: 5 },
+                isOnboarded: true, // Already onboarded
+                canSeeTrialCTA: false, // No trial CTA because onboarded
+                canSeeSubscribeNowCTA: false,
+                canBookDemo: true, // Enterprise tier can book demo
+                isAdminUser: true,
+                trialType: TrialType.ShoppingAssistant,
+            })
+
+            renderWithProvider()
+
+            // Should show "Book a demo" as primary CTA for Enterprise tier
+            expect(
+                screen.getByRole('button', {
+                    name: /Book a demo/i,
+                }),
+            ).toBeInTheDocument()
+
+            // Should show "Learn more" as secondary CTA
+            expect(screen.getByText(/Learn more/i)).toBeInTheDocument()
+
+            // Should NOT show trial CTA
+            expect(
+                screen.queryByRole('button', {
+                    name: /Try for 14 days/i,
+                }),
+            ).not.toBeInTheDocument()
+
+            // Should NOT show "Start AI Agent only"
+            expect(
+                screen.queryByText(/Start AI Agent only/i),
+            ).not.toBeInTheDocument()
+        })
+    })
+
     describe('Paywall type selection based on trial conditions', () => {
         it('should display AI Agent logo when in AI Agent trial', () => {
             mockUseTrialAccess.mockReturnValue({

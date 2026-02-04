@@ -18,7 +18,7 @@ import {
     basicMonthlyAutomationPlan,
 } from 'fixtures/plans'
 import { user } from 'fixtures/users'
-import { trialsKeys } from 'models/aiAgent/queries'
+import { storeConfigurationKeys, trialsKeys } from 'models/aiAgent/queries'
 import type { ResponseTrial } from 'models/aiAgent/types'
 import { SubscriptionStatus } from 'models/billing/types'
 import { CompanyTier } from 'state/currentCompany/currentCompanySlice'
@@ -97,6 +97,26 @@ const storyConfig: Meta<typeof AIAgentWelcomePageView> = {
                 data: [] satisfies ResponseTrial[],
             })
 
+            // Set up store configuration query data based on isOnboarded parameter
+            if (parameters.isOnboarded !== undefined) {
+                const shopName = 'My Shop'
+                queryClient.setQueryData(
+                    storeConfigurationKeys.account({
+                        accountDomain: account.domain,
+                    }),
+                    {
+                        storeConfigurations: parameters.isOnboarded
+                            ? [
+                                  {
+                                      storeName: shopName,
+                                      // No wizard = legacy store = completed/onboarded
+                                  },
+                              ]
+                            : [], // Empty array = not onboarded
+                    },
+                )
+            }
+
             return (
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
@@ -161,13 +181,29 @@ export const Commercial_Admin_AIAgent: Story = {
     },
 }
 
-export const Commercial_Admin_ShoppingAssistant: Story = {
-    args: { ...defaultProps },
+export const Commercial_Admin_ShoppingAssistant_NotOnboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
     parameters: {
         ...templateParameters,
         userRole: UserRole.Admin,
         trialType: TrialType.ShoppingAssistant,
         fixed_gmv_band: CompanyTier.Band2,
+        isOnboarded: false,
+    },
+}
+
+export const Commercial_Admin_ShoppingAssistant_Onboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band2,
+        isOnboarded: true,
     },
 }
 
@@ -181,13 +217,29 @@ export const Enterprise_Admin_AIAgent: Story = {
     },
 }
 
-export const Enterprise_Admin_ShoppingAssistant: Story = {
-    args: { ...defaultProps },
+export const Enterprise_Admin_ShoppingAssistant_NotOnboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
     parameters: {
         ...templateParameters,
         userRole: UserRole.Admin,
         trialType: TrialType.ShoppingAssistant,
         fixed_gmv_band: CompanyTier.Band3,
+        isOnboarded: false,
+    },
+}
+
+export const Enterprise_Admin_ShoppingAssistant_Onboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band3,
+        isOnboarded: true,
     },
 }
 
@@ -201,13 +253,29 @@ export const NamedAccounts_Admin_AIAgent: Story = {
     },
 }
 
-export const NamedAccounts_Admin_ShoppingAssistant: Story = {
-    args: { ...defaultProps },
+export const NamedAccounts_Admin_ShoppingAssistant_NotOnboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
     parameters: {
         ...templateParameters,
         userRole: UserRole.Admin,
         trialType: TrialType.ShoppingAssistant,
         fixed_gmv_band: CompanyTier.Band4,
+        isOnboarded: false,
+    },
+}
+
+export const NamedAccounts_Admin_ShoppingAssistant_Onboarded: Story = {
+    args: {
+        ...defaultProps,
+    },
+    parameters: {
+        ...templateParameters,
+        userRole: UserRole.Admin,
+        trialType: TrialType.ShoppingAssistant,
+        fixed_gmv_band: CompanyTier.Band4,
+        isOnboarded: true,
     },
 }
 

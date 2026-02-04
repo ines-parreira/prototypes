@@ -25,7 +25,7 @@ export type AiAgentCtasParams = {
     canSeeSubscribeNow: boolean
     isAdmin: boolean
     learnMoreUrl: string
-
+    isOnboarded: boolean
     onOpenWizard: () => void
     onOpenSubscribeModal: () => void
     onOpenTrialUpgradeModal: () => void
@@ -70,6 +70,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         canSeeSubscribeNow,
         isAdmin,
         learnMoreUrl,
+        isOnboarded,
         onOpenWizard,
         onOpenSubscribeModal,
         onOpenTrialUpgradeModal,
@@ -249,8 +250,10 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
                   ? null
                   : LearnMoreAction
 
-            // If the merchant has AIAgent we need to let them through the paywall
-            const startAIAgent = hasAutomate ? StartAIAgentAction : null
+            // Show "Start AI Agent only" if merchant has AI Agent subscription
+            // but hasn't onboarded it yet on the current store
+            const startAIAgent =
+                hasAutomate && !isOnboarded ? StartAIAgentAction : null
 
             actionsOrderedByPriority.push(
                 selfService,
@@ -354,6 +357,7 @@ export const useAiAgentCtas = (props: AiAgentCtasParams): AiAgentCtas => {
         canSeeTrial,
         canSeeSubscribeNow,
         isAdmin,
+        isOnboarded,
         SetupAIAgentAction,
         SubscribeNowAction,
         TryTrialAction,

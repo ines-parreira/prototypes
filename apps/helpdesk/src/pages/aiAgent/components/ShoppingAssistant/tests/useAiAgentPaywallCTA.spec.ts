@@ -30,6 +30,7 @@ const createDefaultProps = (overrides = {}): AiAgentCtasParams => ({
     onOpenTrialRequestModal: jest.fn(),
     onCloseTrialRequestModal: jest.fn(),
     onCloseTrialFinishSetupModal: jest.fn(),
+    isOnboarded: false,
     isNotifyAdminDisabled: false,
     trialModals: {
         isTrialModalOpen: false,
@@ -705,6 +706,75 @@ describe('useAiAgentCtas', () => {
                     expect(onOpenWizard).toHaveBeenCalled()
                 },
             )
+
+            it.each([true, false])(
+                'does NOT return StartAIAgentAction when AI Agent is already onboarded [canBookDemo: %s]',
+                async (canBookDemo: boolean) => {
+                    const mockWindowOpen = jest.fn()
+                    global.window.open = mockWindowOpen
+
+                    const onOpenSubscribeModal = jest.fn()
+                    const onOpenWizard = jest.fn()
+
+                    const props = createDefaultProps({
+                        isAdmin: true,
+                        hasAutomate: true,
+                        isOnboarded: true, // AI Agent already onboarded
+                        canSeeSubscribeNow: true,
+                        canBookDemo,
+                        learnMoreUrl: 'http://foo.bar.com/',
+                        onOpenSubscribeModal,
+                        onOpenWizard,
+                    })
+
+                    const { result } = renderHook(() => useAiAgentCtas(props))
+                    const {
+                        primaryButtonText,
+                        secondaryButtonText,
+                        tertiaryButtonText,
+                    } = extract(result)
+
+                    expect(primaryButtonText).toBe('Upgrade now')
+
+                    if (canBookDemo) {
+                        expect(secondaryButtonText).toBe('Book a demo')
+                        // No tertiary button when canBookDemo is true
+                        expect(tertiaryButtonText).toBeUndefined()
+                    } else {
+                        expect(secondaryButtonText).toBe('Learn more')
+                        // No tertiary button because AI Agent is already onboarded
+                        expect(tertiaryButtonText).toBeUndefined()
+                    }
+                },
+            )
+
+            it('does NOT return StartAIAgentAction when AI Agent is already onboarded with trial CTA', async () => {
+                const onOpenTrialUpgradeModal = jest.fn()
+                const onOpenWizard = jest.fn()
+
+                const props = createDefaultProps({
+                    isAdmin: true,
+                    hasAutomate: true,
+                    isOnboarded: true, // AI Agent already onboarded
+                    canSeeTrial: true,
+                    canBookDemo: false,
+                    learnMoreUrl: 'http://foo.bar.com/',
+                    onOpenTrialUpgradeModal,
+                    onOpenWizard,
+                })
+
+                const { result } = renderHook(() => useAiAgentCtas(props))
+                const {
+                    primaryButtonText,
+                    secondaryButtonText,
+                    tertiaryButtonText,
+                } = extract(result)
+
+                expect(primaryButtonText).toBe('Try for 14 days')
+                expect(secondaryButtonText).toBe('Learn more')
+                // No tertiary button because AI Agent is already onboarded
+                expect(tertiaryButtonText).toBeUndefined()
+            })
         })
     })
 })
