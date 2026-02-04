@@ -38,11 +38,17 @@ export function TicketFooter({
 
     return (
         <Box gap="xs" alignItems="center">
-            <Tag color={color}>{label}</Tag>
-            <AssigneeLabel owner={assignee?.name} />
-            <Text size="sm" variant="regular" className={css.messagesCount}>
-                {`${messagesCount} message${messagesCount > 1 ? 's' : ''}`}
-            </Text>
+            <Box flexShrink="0">
+                <Tag color={color}>{label}</Tag>
+            </Box>
+            <Box minWidth={0} className={css.noWrap}>
+                <AssigneeLabel owner={assignee?.name} />
+            </Box>
+            <Box flexShrink="0" className={css.noWrap}>
+                <Text size="sm" variant="regular" className={css.messagesCount}>
+                    {`${messagesCount} message${messagesCount > 1 ? 's' : ''}`}
+                </Text>
+            </Box>
         </Box>
     )
 }

@@ -2,7 +2,7 @@ import type { IconName } from '@gorgias/axiom'
 import { Box, Icon, Text } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
-import css from './TicketHeader.less'
+import css from './TicketTimelineWidget.less'
 
 type TicketHeaderProps = Pick<Ticket, 'subject'> & {
     time: string
@@ -24,13 +24,17 @@ export function TicketHeader({ subject, time, iconName }: TicketHeaderProps) {
                 minWidth={0}
                 gap="xxxs"
             >
-                <Text size="sm" variant="bold" overflow="ellipsis">
-                    {subject}
-                </Text>
+                <Box minWidth={0}>
+                    <Text size="sm" variant="bold" overflow="ellipsis">
+                        {subject}
+                    </Text>
+                </Box>
 
-                <Text size="sm" variant="regular">
-                    {time}
-                </Text>
+                <Box flexShrink="0" className={css.noWrap}>
+                    <Text size="sm" variant="regular" className={css.dateText}>
+                        {time}
+                    </Text>
+                </Box>
             </Box>
         </Box>
     )

@@ -13,21 +13,24 @@ export function AssigneeLabel({ owner }: AssigneeLabelProps) {
     const iconColor = owner ? undefined : 'var(--content-warning-primary)'
 
     return (
-        <Box alignItems="center" gap="xxxs">
-            {owner ? (
-                <Avatar name={owner} size="sm" />
-            ) : (
-                <Icon
-                    name="user"
-                    color={iconColor}
-                    intent="regular"
-                    size="sm"
-                />
-            )}
+        <Box alignItems="center" gap="xxxs" minWidth={0}>
+            <Box flexShrink="0">
+                {owner ? (
+                    <Avatar name={owner} size="sm" />
+                ) : (
+                    <Icon
+                        name="user"
+                        color={iconColor}
+                        intent="regular"
+                        size="sm"
+                    />
+                )}
+            </Box>
 
             <Text
                 size="sm"
                 variant="regular"
+                overflow="ellipsis"
                 className={classNames({
                     [css.unassignedLabel]: !owner,
                 })}
