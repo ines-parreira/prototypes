@@ -31,7 +31,7 @@ const useHelpCentersAutomationSettings = (
         { loading: isFetchPending },
         handleHelpCenterAutomationSettingsFetch,
     ] = useAsyncFn(async () => {
-        if (!client) {
+        if (!client || !helpCenterId) {
             return
         }
 
@@ -81,7 +81,7 @@ const useHelpCentersAutomationSettings = (
             automationSettings: Partial<HelpCenterAutomationSettings>,
             notificationMessage?: string,
         ) => {
-            if (!client) {
+            if (!client || !helpCenterId) {
                 return
             }
 
@@ -125,6 +125,9 @@ const useHelpCentersAutomationSettings = (
     )
 
     useEffect(() => {
+        // Don't fetch if helpCenterId is not provided or invalid
+        if (!helpCenterId) return
+
         const valueMissing =
             helpCentersAutomationSettings[helpCenterId.toString()] === undefined
 

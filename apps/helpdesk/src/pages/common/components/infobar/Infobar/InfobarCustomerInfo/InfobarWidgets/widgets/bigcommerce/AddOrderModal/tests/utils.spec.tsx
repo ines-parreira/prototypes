@@ -26,6 +26,7 @@ import {
     getAvailableLineItems,
     onCancel,
     onInit,
+    onReset,
     removeRow,
     updateLineItemModifiers,
     updateRow,
@@ -117,6 +118,48 @@ describe('utils', () => {
             })
 
             expect(setCartMock).toHaveBeenCalledWith(null)
+        })
+    })
+
+    describe('onReset', () => {
+        it('should reset all modal state for CreateOrder action', () => {
+            const setCartMock = jest.fn()
+            const setProductsMock = jest.fn()
+            const setCommentMock = jest.fn()
+            const setNoteMock = jest.fn()
+
+            onReset({
+                actionName: BigCommerceActionType.CreateOrder,
+                setCart: setCartMock,
+                setProducts: setProductsMock,
+                setComment: setCommentMock,
+                setNote: setNoteMock,
+            })
+
+            expect(setCartMock).toHaveBeenCalledWith(null)
+            expect(setProductsMock).toHaveBeenCalledWith(new Map())
+            expect(setCommentMock).toHaveBeenCalledWith('')
+            expect(setNoteMock).toHaveBeenCalledWith('')
+        })
+
+        it('should reset all modal state for DuplicateOrder action', () => {
+            const setCartMock = jest.fn()
+            const setProductsMock = jest.fn()
+            const setCommentMock = jest.fn()
+            const setNoteMock = jest.fn()
+
+            onReset({
+                actionName: BigCommerceActionType.DuplicateOrder,
+                setCart: setCartMock,
+                setProducts: setProductsMock,
+                setComment: setCommentMock,
+                setNote: setNoteMock,
+            })
+
+            expect(setCartMock).toHaveBeenCalledWith(null)
+            expect(setProductsMock).toHaveBeenCalledWith(new Map())
+            expect(setCommentMock).toHaveBeenCalledWith('')
+            expect(setNoteMock).toHaveBeenCalledWith('')
         })
     })
 

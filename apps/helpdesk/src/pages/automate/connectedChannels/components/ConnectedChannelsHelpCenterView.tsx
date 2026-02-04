@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import React, { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -83,7 +82,7 @@ export const ConnectedChannelsHelpCenterView = ({
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
         () =>
-            helpCenter
+            helpCenter?.id
                 ? helpCenter.id
                 : channelId
                   ? Number(channelId)
@@ -95,7 +94,9 @@ export const ConnectedChannelsHelpCenterView = ({
             (channel) => channel.value.id === selectedChannel,
         ) ?? helpCenterChannels?.[0]
 
-    const currentChannelId = currentChannel?.value.id ?? ''
+    const currentChannelId = helpCenter?.id
+        ? helpCenter.id
+        : (currentChannel?.value.id ?? '')
 
     const dispatch = useAppDispatch()
 

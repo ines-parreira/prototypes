@@ -103,7 +103,8 @@ const CurrentHelpCenter: React.FC = () => {
     // ? If we access the help center via URL, set the current help center
     // ? and the default locale
     useEffect(() => {
-        if (!helpCenter?.id) {
+        // Always sync Redux state with URL parameter to prevent stale help center ID
+        if (helpCenterId && helpCenter?.id !== helpCenterId) {
             dispatch(changeHelpCenterId(helpCenterId))
         }
 

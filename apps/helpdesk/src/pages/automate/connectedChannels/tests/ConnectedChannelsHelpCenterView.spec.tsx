@@ -286,6 +286,144 @@ describe('ConnectedChannelsContactFormView', () => {
         })
     })
 
+    it('should use helpCenter.id when helpCenter prop is provided instead of channel list', async () => {
+        const mockUpdateHelpCenterMutateAsync = jest.fn().mockResolvedValue({
+            data: {
+                ...mockHelpCenterChannels[0].value,
+                self_service_deactivated_datetime: '2024-09-04T10:02:02.163Z',
+            },
+        })
+
+        const mockChannelsWithDeactivated = produce(
+            mockHelpCenterChannels,
+            (draft) => {
+                draft[0].value.self_service_deactivated_datetime =
+                    '2024-09-04T10:02:02.163Z'
+            },
+        )
+
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
+            mockChannelsWithDeactivated,
+        )
+        ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync: mockUpdateHelpCenterMutateAsync,
+        })
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView
+                        helpCenter={mockChannelsWithDeactivated[0].value}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Enable Order Management'),
+            ).toBeInTheDocument()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Order Management'))
+        })
+
+        await waitFor(() => {
+            expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: mockChannelsWithDeactivated[0].value.id },
+                {
+                    self_service_deactivated: false,
+                },
+            ])
+        })
+    })
+
+    it('should prioritize helpCenter.id over channel list id when both are available', async () => {
+        const differentHelpCenterId = 999
+        const mockUpdateHelpCenterMutateAsync = jest.fn().mockResolvedValue({
+            data: {
+                ...mockHelpCenterChannels[0].value,
+                id: differentHelpCenterId,
+                self_service_deactivated_datetime: '2024-09-04T10:02:02.163Z',
+            },
+        })
+
+        const providedHelpCenter = {
+            ...mockHelpCenterChannels[0].value,
+            id: differentHelpCenterId,
+            self_service_deactivated_datetime: '2024-09-04T10:02:02.163Z',
+        }
+
+        // Create a modified channel list with deactivated order management
+        const mockChannelsWithDeactivated = produce(
+            mockHelpCenterChannels,
+            (draft) => {
+                draft[0].value.self_service_deactivated_datetime =
+                    '2024-09-04T10:02:02.163Z'
+            },
+        )
+
+        ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
+            mockChannelsWithDeactivated,
+        )
+        ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
+            mutateAsync: mockUpdateHelpCenterMutateAsync,
+        })
+
+        // Mock useHelpCentersAutomationSettings to capture the helpCenterId passed to it
+        const mockHandleUpdate = jest.fn()
+        ;(useHelpCentersAutomationSettings as jest.Mock).mockImplementation(
+            (helpCenterId) => {
+                // Verify the correct helpCenterId is passed
+                expect(helpCenterId).toBe(differentHelpCenterId)
+                return {
+                    automationSettings: {
+                        workflows: [],
+                        order_management: {
+                            enabled: false,
+                        },
+                    },
+                    isFetchPending: false,
+                    handleHelpCenterAutomationSettingsUpdate: mockHandleUpdate,
+                }
+            },
+        )
+
+        renderWithRouter(
+            <Provider store={mockedStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ConnectedChannelsHelpCenterView
+                        helpCenter={providedHelpCenter}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Enable Order Management'),
+            ).toBeInTheDocument()
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Enable Order Management'))
+        })
+
+        // Verify that the update uses the helpCenter.id (differentHelpCenterId)
+        // instead of the channel list's first item id (42)
+        await waitFor(() => {
+            expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: differentHelpCenterId },
+                {
+                    self_service_deactivated: false,
+                },
+            ])
+        })
+    })
+
     it('should render an empty state when there are no channels', () => {
         ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue([])
 
