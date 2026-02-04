@@ -118,8 +118,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const isFormSubmitting = isSubmitting || isSubmittingAutomation
 
-    const showPreviewPlaceholder = !storeIntegration
-
     const isPristine = currentIsOrderManagementEnabled === undefined
 
     const { handleSelfServiceConfigurationUpdate } =
@@ -250,7 +248,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep
-                showPreviewPlaceholder={showPreviewPlaceholder}
                 preview={null}
                 footer={
                     <div className={css.wizardButtons}>
