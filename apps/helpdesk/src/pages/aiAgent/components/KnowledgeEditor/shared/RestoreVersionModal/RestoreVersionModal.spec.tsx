@@ -40,7 +40,7 @@ describe('RestoreVersionModal', () => {
 
         expect(
             screen.getByText(
-                'Restoring this version will create a new draft with its content. Any existing draft will be overwritten.',
+                'Restoring this version will create a new draft with its content, overriding any existing draft.',
             ),
         ).toBeInTheDocument()
     })

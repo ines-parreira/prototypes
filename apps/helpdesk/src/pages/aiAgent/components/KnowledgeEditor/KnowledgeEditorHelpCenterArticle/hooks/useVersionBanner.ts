@@ -1,10 +1,7 @@
 import { useCallback } from 'react'
 
-import { useNotify } from 'hooks/useNotify'
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
-import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-
 import { useArticleContext } from '../context'
+import { useSwitchVersion } from './useSwitchVersion'
 
 export type VersionBannerState = {
     isViewingDraft: boolean
@@ -15,11 +12,7 @@ export type VersionBannerState = {
 }
 
 export function useVersionBanner(): VersionBannerState {
-    const { state, dispatch, config, hasDraft } = useArticleContext()
-    const { error: notifyError } = useNotify()
-    const { client } = useHelpCenterApi()
-
-    const { helpCenter } = config
+    const { state, hasDraft } = useArticleContext()
 
     const isViewingDraft = state.article?.translation.is_current === false
 
@@ -28,46 +21,12 @@ export function useVersionBanner(): VersionBannerState {
 
     const isDisabled = state.isUpdating || state.isAutoSaving
 
-    const switchVersion = useCallback(async () => {
-        if (!state.article?.id) return
+    const { switchToVersion } = useSwitchVersion()
 
-        dispatch({ type: 'SET_UPDATING', payload: true })
-        try {
-            const isCurrent = state.article.translation.is_current
-            const response = await getHelpCenterArticle(
-                client,
-                {
-                    help_center_id: helpCenter.id,
-                    id: state.article.id,
-                },
-                {
-                    locale: state.currentLocale,
-                    version_status: isCurrent ? 'latest_draft' : 'current',
-                },
-            )
-            if (response) {
-                dispatch({
-                    type: 'SWITCH_VERSION',
-                    payload: {
-                        article: response,
-                        versionStatus: isCurrent ? 'latest_draft' : 'current',
-                    },
-                })
-            }
-        } catch {
-            notifyError('An error occurred while switching version.')
-        } finally {
-            dispatch({ type: 'SET_UPDATING', payload: false })
-        }
-    }, [
-        dispatch,
-        client,
-        helpCenter.id,
-        state.article?.id,
-        state.article?.translation.is_current,
-        state.currentLocale,
-        notifyError,
-    ])
+    const switchVersion = useCallback(async () => {
+        const isCurrent = state.article?.translation.is_current
+        await switchToVersion(isCurrent ? 'latest_draft' : 'current')
+    }, [switchToVersion, state.article?.translation.is_current])
 
     return {
         isViewingDraft,

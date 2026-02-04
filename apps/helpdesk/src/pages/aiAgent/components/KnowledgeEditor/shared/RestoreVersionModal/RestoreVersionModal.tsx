@@ -28,7 +28,7 @@ export const RestoreVersionModal = ({
                 <Box paddingBottom="md">
                     <Text>
                         Restoring this version will create a new draft with its
-                        content. Any existing draft will be overwritten.
+                        content, overriding any existing draft.
                     </Text>
                 </Box>
             </OverlayContent>

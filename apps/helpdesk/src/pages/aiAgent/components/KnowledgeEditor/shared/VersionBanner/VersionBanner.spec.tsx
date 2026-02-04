@@ -262,9 +262,7 @@ describe('VersionBanner', () => {
                 },
             })
 
-            expect(
-                screen.getByText('Last published by John Doe'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('By John Doe')).toBeInTheDocument()
         })
 
         it('shows commit message with author name when both are available', () => {
@@ -282,9 +280,7 @@ describe('VersionBanner', () => {
             })
 
             expect(
-                screen.getByText(
-                    'Changes by Jane Smith: Fixed typo in greeting',
-                ),
+                screen.getByText('By Jane Smith: Fixed typo in greeting'),
             ).toBeInTheDocument()
         })
 
@@ -296,10 +292,10 @@ describe('VersionBanner', () => {
                 },
             })
 
-            expect(screen.queryByText(/Changes/i)).not.toBeInTheDocument()
             expect(
-                screen.queryByText(/Last published by/i),
+                screen.queryByText(/Changes in this version/i),
             ).not.toBeInTheDocument()
+            expect(screen.queryByText(/^By /)).not.toBeInTheDocument()
         })
 
         it('shows "unknown date" when publishedDatetime is null', () => {
@@ -327,7 +323,7 @@ describe('VersionBanner', () => {
             })
 
             await user.click(
-                screen.getByRole('button', { name: /Back to current/i }),
+                screen.getByRole('button', { name: /Back to latest/i }),
             )
 
             expect(onGoToLatest).toHaveBeenCalledTimes(1)
@@ -356,7 +352,7 @@ describe('VersionBanner', () => {
             })
 
             expect(
-                screen.getByRole('button', { name: /Back to current/i }),
+                screen.getByRole('button', { name: /Back to latest/i }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', { name: /Restore this version/i }),

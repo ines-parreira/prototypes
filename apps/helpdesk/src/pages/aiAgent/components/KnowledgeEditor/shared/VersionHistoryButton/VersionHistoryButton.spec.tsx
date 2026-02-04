@@ -130,7 +130,7 @@ describe('VersionHistoryButton', () => {
         expect(currentOption).toBeInTheDocument()
     })
 
-    it('shows "Published by: Name" when user has no commit message', async () => {
+    it('shows user name when user has no commit message', async () => {
         useVersionUsers.mockReturnValue({
             userNames: new Map([
                 [1, 'Iris Ebert'],
@@ -155,7 +155,7 @@ describe('VersionHistoryButton', () => {
 
         expect(
             screen.getByRole('option', {
-                name: /Published by: Iris Ebert/i,
+                name: /Iris Ebert/i,
             }),
         ).toBeInTheDocument()
     })

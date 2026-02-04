@@ -37,11 +37,13 @@ function buildVersionLabel(
     isCurrent: boolean,
     formatDate: (dateString: string) => string,
 ): string {
-    const dateText = version.published_datetime
-        ? formatDate(version.published_datetime)
-        : ''
+    const isDraft = version.published_datetime === null
+    const dateSource = version.published_datetime ?? version.created_datetime
+    const dateText = dateSource ? formatDate(dateSource) : ''
     const parts: string[] = [dateText || `Version ${version.version}`]
-    if (isCurrent) {
+    if (isDraft) {
+        parts.push('(Draft)')
+    } else if (isCurrent) {
         parts.push('(Current)')
     }
     return parts.join(' ')
@@ -56,7 +58,7 @@ function buildCaptionText(
     if (!userName && !commitMessage) return undefined
 
     if (!commitMessage) {
-        return `Published by: ${userName}`
+        return userName
     }
 
     return userName ? `${userName}: ${commitMessage}` : commitMessage
@@ -71,7 +73,6 @@ function VersionCaption({
 }) {
     const textRef = useRef<HTMLDivElement>(null)
     const commitMessage = version.commit_message
-    const hasUserAndMessage = Boolean(userName && commitMessage)
     const fullText = buildCaptionText(version, userName)
     const isTruncated = useIsTruncated(textRef, fullText)
 
@@ -82,16 +83,10 @@ function VersionCaption({
             <TooltipTrigger>
                 <div ref={textRef} className={css.caption}>
                     <Text size="sm" variant="regular">
-                        {hasUserAndMessage ? (
-                            <>
-                                <Text as="span" size="sm" variant="bold">
-                                    {userName}
-                                </Text>
-                                {`: ${commitMessage}`}
-                            </>
-                        ) : (
-                            fullText
-                        )}
+                        <Text as="span" size="sm" variant="bold">
+                            {userName}
+                        </Text>
+                        {commitMessage ? `: ${commitMessage}` : ''}
                     </Text>
                 </div>
             </TooltipTrigger>
@@ -193,6 +188,7 @@ export function VersionHistoryButton<V extends VersionItem>({
 
     return (
         <Select<VersionOption<V>>
+            key={currentlySelectedVersionId}
             trigger={trigger}
             items={items}
             selectedItem={selectedItem}

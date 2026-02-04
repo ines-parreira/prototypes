@@ -174,6 +174,10 @@ jest.mock(
 
 jest.mock('models/helpCenter/queries', () => ({
     ...jest.requireActual('models/helpCenter/queries'),
+    useGetArticleTranslationVersion: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
     useGetArticleTranslationVersions: jest.fn(() => ({
         data: undefined,
         isLoading: false,

@@ -2,6 +2,7 @@ export interface VersionItem {
     id: number
     version: number
     commit_message?: string
+    created_datetime?: string
     published_datetime?: string | null
     publisher_user_id?: number
 }

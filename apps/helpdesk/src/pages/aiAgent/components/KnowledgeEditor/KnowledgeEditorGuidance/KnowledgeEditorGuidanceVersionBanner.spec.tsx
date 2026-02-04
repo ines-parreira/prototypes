@@ -265,7 +265,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             renderComponent()
 
             await user.click(
-                screen.getByRole('button', { name: /Back to current/i }),
+                screen.getByRole('button', { name: /Back to latest/i }),
             )
 
             expect(mockOnGoToLatest).toHaveBeenCalledTimes(1)
@@ -297,7 +297,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /Back to current/i }),
+                screen.getByRole('button', { name: /Back to latest/i }),
             ).toBeDisabled()
             expect(
                 screen.getByRole('button', {

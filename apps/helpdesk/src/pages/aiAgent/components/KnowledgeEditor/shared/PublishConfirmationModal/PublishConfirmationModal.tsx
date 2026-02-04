@@ -53,8 +53,8 @@ export const PublishConfirmationModal = ({
             <OverlayContent>
                 <Box width="100%">
                     <TextAreaField
-                        label="Add a short description of your changes (optional)"
-                        placeholder="e.g. Updated pricing information"
+                        label="Describe your changes for version history (optional)"
+                        placeholder="e.g. Updated return policy"
                         value={commitMessage}
                         onChange={handleCommitMessageChange}
                         onKeyDown={handleKeyDown}

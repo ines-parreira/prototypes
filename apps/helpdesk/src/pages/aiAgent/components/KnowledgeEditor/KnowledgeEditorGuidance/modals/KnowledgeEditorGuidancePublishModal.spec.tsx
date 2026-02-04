@@ -50,7 +50,7 @@ describe('KnowledgeEditorGuidancePublishModal', () => {
         render(<KnowledgeEditorGuidancePublishModal />)
 
         expect(
-            screen.getByLabelText(/Add a short description of your changes/i),
+            screen.getByLabelText(/Describe your changes for version history/i),
         ).toBeInTheDocument()
     })
 
@@ -86,7 +86,7 @@ describe('KnowledgeEditorGuidancePublishModal', () => {
         render(<KnowledgeEditorGuidancePublishModal />)
 
         const textField = screen.getByLabelText(
-            /Add a short description of your changes/i,
+            /Describe your changes for version history/i,
         )
         await user.type(textField, 'Updated guidance content')
 

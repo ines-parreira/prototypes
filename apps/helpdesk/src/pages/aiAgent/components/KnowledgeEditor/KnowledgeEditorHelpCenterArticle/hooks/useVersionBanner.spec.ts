@@ -1,39 +1,24 @@
 import { act, renderHook } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { LocaleCode } from 'models/helpCenter/types'
-import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue } from '../context/types'
 import { useVersionBanner } from './useVersionBanner'
 
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
-
-jest.mock('models/helpCenter/resources', () => ({
-    getHelpCenterArticle: jest.fn(),
-}))
-
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useHelpCenterApi: jest.fn(),
-}))
-
 jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
 
-const mockUseNotify = useNotify as jest.Mock
-const mockGetHelpCenterArticle = getHelpCenterArticle as jest.Mock
-const mockUseHelpCenterApi = useHelpCenterApi as jest.Mock
+const mockSwitchToVersion = jest.fn()
+jest.mock('./useSwitchVersion', () => ({
+    useSwitchVersion: () => ({ switchToVersion: mockSwitchToVersion }),
+}))
+
 const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('useVersionBanner', () => {
     let mockDispatch: jest.Mock
-    let mockNotifyError: jest.Mock
-    let mockClient: { getArticle: jest.Mock }
 
     const mockTranslation = {
         locale: 'en-US' as const,
@@ -79,64 +64,56 @@ describe('useVersionBanner', () => {
             config: Partial<ArticleContextValue['config']>
             hasDraft: boolean
         }> = {},
-    ): ArticleContextValue => ({
-        state: {
-            articleMode: 'edit',
-            isFullscreen: false,
-            isDetailsView: true,
-            title: 'Test Article',
-            content: '<p>Test content</p>',
-            savedSnapshot: {
+    ): ArticleContextValue =>
+        ({
+            state: {
+                articleMode: 'edit',
+                isFullscreen: false,
+                isDetailsView: true,
                 title: 'Test Article',
                 content: '<p>Test content</p>',
+                savedSnapshot: {
+                    title: 'Test Article',
+                    content: '<p>Test content</p>',
+                },
+                isAutoSaving: false,
+                article: mockArticle,
+                translationMode: 'existing',
+                currentLocale: 'en-US',
+                pendingSettingsChanges: {},
+                versionStatus: 'latest_draft',
+                activeModal: null,
+                isUpdating: false,
+                templateKey: undefined,
+                ...overrides.state,
+            } as ArticleContextValue['state'],
+            dispatch: mockDispatch,
+            config: {
+                helpCenter: { id: 1 },
+                supportedLocales: [],
+                categories: [],
+                initialMode: 'edit',
+                onClose: jest.fn(),
+                ...overrides.config,
+            } as ArticleContextValue['config'],
+            hasPendingContentChanges: false,
+            isFormValid: true,
+            hasDraft: overrides.hasDraft ?? true,
+            canEdit: true,
+            playground: {
+                isOpen: false,
+                onTest: jest.fn(),
+                onClose: jest.fn(),
+                sidePanelWidth: '60vw',
+                shouldHideFullscreenButton: false,
             },
-            isAutoSaving: false,
-            article: mockArticle,
-            translationMode: 'existing',
-            currentLocale: 'en-US',
-            pendingSettingsChanges: {},
-            versionStatus: 'latest_draft',
-            activeModal: null,
-            isUpdating: false,
-            templateKey: undefined,
-            ...overrides.state,
-        } as ArticleContextValue['state'],
-        dispatch: mockDispatch,
-        config: {
-            helpCenter: { id: 1 },
-            supportedLocales: [],
-            categories: [],
-            initialMode: 'edit',
-            onClose: jest.fn(),
-            ...overrides.config,
-        } as ArticleContextValue['config'],
-        hasPendingContentChanges: false,
-        isFormValid: true,
-        hasDraft: overrides.hasDraft ?? true,
-        canEdit: true,
-        playground: {
-            isOpen: false,
-            onTest: jest.fn(),
-            onClose: jest.fn(),
-            sidePanelWidth: '60vw',
-            shouldHideFullscreenButton: false,
-        },
-    })
+        }) as ArticleContextValue
 
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockDispatch = jest.fn()
-        mockNotifyError = jest.fn()
-        mockClient = { getArticle: jest.fn() }
 
-        mockUseNotify.mockReturnValue({
-            error: mockNotifyError,
-        })
-        mockUseHelpCenterApi.mockReturnValue({
-            client: mockClient,
-            isReady: true,
-        })
         mockUseArticleContext.mockReturnValue(createMockContext())
     })
 
@@ -148,26 +125,6 @@ describe('useVersionBanner', () => {
         })
 
         it('should return false when is_current is true', () => {
-            mockUseArticleContext.mockReturnValue(
-                createMockContext({
-                    state: {
-                        article: {
-                            ...mockArticle,
-                            translation: {
-                                ...mockTranslation,
-                                is_current: true,
-                            },
-                        },
-                    },
-                }),
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            expect(result.current.isViewingDraft).toBe(false)
-        })
-
-        it('should return false when article has no translation is_current set', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
@@ -309,19 +266,41 @@ describe('useVersionBanner', () => {
     })
 
     describe('switchVersion', () => {
-        const mockArticleResponse = {
-            id: 123,
-            translation: {
-                title: 'Published Title',
-                content: '<p>Published content</p>',
-                locale: 'en-US',
-                is_current: true,
-                draft_version_id: 1,
-                published_version_id: 2,
-            },
-        }
+        it('should call switchToVersion with "current" when viewing draft', async () => {
+            const { result } = renderHook(() => useVersionBanner())
 
-        it('should not do anything when article id is missing', async () => {
+            await act(async () => {
+                await result.current.switchVersion()
+            })
+
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
+        })
+
+        it('should call switchToVersion with "latest_draft" when viewing current', async () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                is_current: true,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useVersionBanner())
+
+            await act(async () => {
+                await result.current.switchVersion()
+            })
+
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('latest_draft')
+        })
+
+        it('should call switchToVersion with "current" when article is undefined', async () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: { article: undefined },
@@ -335,181 +314,7 @@ describe('useVersionBanner', () => {
                 await result.current.switchVersion()
             })
 
-            expect(mockDispatch).not.toHaveBeenCalled()
-            expect(mockGetHelpCenterArticle).not.toHaveBeenCalled()
-        })
-
-        it('should dispatch SET_UPDATING true at start', async () => {
-            mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_UPDATING',
-                payload: true,
-            })
-        })
-
-        it('should dispatch SET_UPDATING false at end', async () => {
-            mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            const lastCall =
-                mockDispatch.mock.calls[mockDispatch.mock.calls.length - 1]
-            expect(lastCall).toEqual([{ type: 'SET_UPDATING', payload: false }])
-        })
-
-        it('should call getHelpCenterArticle with "current" version_status when viewing draft', async () => {
-            mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockGetHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 1, id: 123 },
-                { locale: 'en-US', version_status: 'current' },
-            )
-        })
-
-        it('should call getHelpCenterArticle with "latest_draft" version_status when viewing current', async () => {
-            mockUseArticleContext.mockReturnValue(
-                createMockContext({
-                    state: {
-                        article: {
-                            ...mockArticle,
-                            translation: {
-                                ...mockTranslation,
-                                is_current: true,
-                            },
-                        },
-                    },
-                }),
-            )
-            mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockGetHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 1, id: 123 },
-                { locale: 'en-US', version_status: 'latest_draft' },
-            )
-        })
-
-        it('should dispatch SWITCH_VERSION with article and version status on success when switching to current', async () => {
-            mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SWITCH_VERSION',
-                payload: {
-                    article: mockArticleResponse,
-                    versionStatus: 'current',
-                },
-            })
-        })
-
-        it('should dispatch SWITCH_VERSION with latest_draft version status when switching from current', async () => {
-            mockUseArticleContext.mockReturnValue(
-                createMockContext({
-                    state: {
-                        article: {
-                            ...mockArticle,
-                            translation: {
-                                ...mockTranslation,
-                                is_current: true,
-                            },
-                        },
-                    },
-                }),
-            )
-            mockGetHelpCenterArticle.mockResolvedValue({
-                ...mockArticleResponse,
-                translation: {
-                    ...mockArticleResponse.translation,
-                    is_current: false,
-                },
-            })
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SWITCH_VERSION',
-                payload: {
-                    article: expect.objectContaining({
-                        id: 123,
-                    }),
-                    versionStatus: 'latest_draft',
-                },
-            })
-        })
-
-        it('should not dispatch SWITCH_VERSION when response is null', async () => {
-            mockGetHelpCenterArticle.mockResolvedValue(null)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockDispatch).not.toHaveBeenCalledWith(
-                expect.objectContaining({ type: 'SWITCH_VERSION' }),
-            )
-        })
-
-        it('should show error notification on failure', async () => {
-            mockGetHelpCenterArticle.mockRejectedValue(new Error('API Error'))
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while switching version.',
-            )
-        })
-
-        it('should dispatch SET_UPDATING false even on error', async () => {
-            mockGetHelpCenterArticle.mockRejectedValue(new Error('API Error'))
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            const lastCall =
-                mockDispatch.mock.calls[mockDispatch.mock.calls.length - 1]
-            expect(lastCall).toEqual([{ type: 'SET_UPDATING', payload: false }])
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
         })
     })
 

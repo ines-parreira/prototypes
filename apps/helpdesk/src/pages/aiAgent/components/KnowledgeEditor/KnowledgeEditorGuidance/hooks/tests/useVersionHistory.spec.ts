@@ -1,7 +1,10 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@repo/testing'
 
-import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion as useGetVersion,
+    useInfiniteGetArticleTranslationVersions,
+} from 'models/helpCenter/queries'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { useGuidanceContext } from '../../context'
@@ -17,11 +20,17 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock('models/helpCenter/queries', () => ({
+    useGetArticleTranslationVersion: jest.fn(),
     useInfiniteGetArticleTranslationVersions: jest.fn(),
 }))
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
+}))
+
+const mockSwitchToVersion = jest.fn()
+jest.mock('../useSwitchVersion', () => ({
+    useSwitchVersion: () => ({ switchToVersion: mockSwitchToVersion }),
 }))
 
 const mockUseFlag = useFlag as jest.Mock
@@ -106,6 +115,10 @@ describe('useVersionHistory', () => {
         jest.clearAllMocks()
 
         mockUseFlag.mockReturnValue(true)
+        ;(useGetVersion as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        })
 
         mockUseInfiniteGetVersions.mockReturnValue({
             data: {

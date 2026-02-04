@@ -34,12 +34,12 @@ describe('PublishConfirmationModal', () => {
         render(<PublishConfirmationModal {...defaultProps} />)
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         expect(textField).toBeInTheDocument()
         expect(textField).toHaveAttribute(
             'placeholder',
-            'e.g. Updated pricing information',
+            'e.g. Updated return policy',
         )
     })
 
@@ -82,7 +82,7 @@ describe('PublishConfirmationModal', () => {
         )
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         await user.type(textField, 'Fixed typo in description')
         await user.click(screen.getByRole('button', { name: 'Publish' }))
@@ -112,7 +112,7 @@ describe('PublishConfirmationModal', () => {
         )
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         await user.type(textField, 'Updated content{Enter}')
 
@@ -142,7 +142,7 @@ describe('PublishConfirmationModal', () => {
         )
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         await user.type(textField, 'Test{Enter}')
 
@@ -160,7 +160,7 @@ describe('PublishConfirmationModal', () => {
         )
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         await user.type(textField, 'Some message')
         await user.click(screen.getByRole('button', { name: 'Publish' }))
@@ -173,7 +173,7 @@ describe('PublishConfirmationModal', () => {
         render(<PublishConfirmationModal {...defaultProps} />)
 
         const textField = screen.getByLabelText(
-            /add a short description of your changes/i,
+            /describe your changes for version history/i,
         )
         await user.type(textField, 'Some message')
 

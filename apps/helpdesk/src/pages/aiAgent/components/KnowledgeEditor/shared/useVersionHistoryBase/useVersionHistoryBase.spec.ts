@@ -2,7 +2,10 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
 
-import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion,
+    useInfiniteGetArticleTranslationVersions,
+} from 'models/helpCenter/queries'
 
 import {
     getVersionImpactDateRange,
@@ -23,12 +26,14 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock('models/helpCenter/queries', () => ({
+    useGetArticleTranslationVersion: jest.fn(),
     useInfiniteGetArticleTranslationVersions: jest.fn(),
 }))
 
 jest.mock('@repo/logging')
 
 const mockUseFlag = useFlag as jest.Mock
+const mockUseGetVersion = useGetArticleTranslationVersion as jest.Mock
 const mockUseInfiniteGetVersions =
     useInfiniteGetArticleTranslationVersions as jest.Mock
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
@@ -70,6 +75,7 @@ const defaultParams: VersionHistoryBaseParams = {
     articleId: 123,
     locale: 'en-US',
     currentVersionId: 5,
+    draftVersionId: null,
     historicalVersion: null,
     isUpdating: false,
     isAutoSaving: false,
@@ -81,6 +87,11 @@ describe('useVersionHistoryBase', () => {
         jest.clearAllMocks()
 
         mockUseFlag.mockReturnValue(true)
+
+        mockUseGetVersion.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+        })
 
         mockUseInfiniteGetVersions.mockReturnValue({
             data: {

@@ -50,7 +50,7 @@ describe('ArticlePublishModal', () => {
         render(<ArticlePublishModal />)
 
         expect(
-            screen.getByLabelText(/Add a short description of your changes/i),
+            screen.getByLabelText(/Describe your changes for version history/i),
         ).toBeInTheDocument()
     })
 
@@ -86,7 +86,7 @@ describe('ArticlePublishModal', () => {
         render(<ArticlePublishModal />)
 
         const textField = screen.getByLabelText(
-            /Add a short description of your changes/i,
+            /Describe your changes for version history/i,
         )
         await user.type(textField, 'Updated article content')
 

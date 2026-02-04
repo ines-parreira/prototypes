@@ -1,35 +1,22 @@
 import { act, renderHook } from '@repo/testing'
 
-import { useNotify } from 'hooks/useNotify'
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
-import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import { fromArticleTranslation, useGuidanceContext } from '../../context'
+import { useGuidanceContext } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useVersionBanner } from '../useVersionBanner'
 
-jest.mock('hooks/useNotify', () => ({
-    useNotify: jest.fn(),
-}))
-
-jest.mock('models/helpCenter/resources', () => ({
-    getHelpCenterArticle: jest.fn(),
-}))
-
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useHelpCenterApi: jest.fn(),
-}))
-
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
-    fromArticleTranslation: jest.fn(),
+}))
+
+const mockSwitchToVersion = jest.fn()
+jest.mock('../useSwitchVersion', () => ({
+    useSwitchVersion: () => ({ switchToVersion: mockSwitchToVersion }),
 }))
 
 describe('useVersionBanner', () => {
     const mockDispatch = jest.fn()
-    const mockNotifyError = jest.fn()
-    const mockClient = { getArticle: jest.fn() }
 
     const mockGuidance: GuidanceArticle = {
         id: 123,
@@ -75,13 +62,6 @@ describe('useVersionBanner', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useNotify as jest.Mock).mockReturnValue({
-            error: mockNotifyError,
-        })
-        ;(useHelpCenterApi as jest.Mock).mockReturnValue({
-            client: mockClient,
-            isReady: true,
-        })
         ;(useGuidanceContext as jest.Mock).mockReturnValue({
             state: defaultState,
             dispatch: mockDispatch,
@@ -259,97 +239,17 @@ describe('useVersionBanner', () => {
     })
 
     describe('switchVersion', () => {
-        const mockArticleResponse = {
-            id: 123,
-            translation: {
-                title: 'Published Title',
-                content: 'Published Content',
-                locale: 'en-US',
-                visibility_status: 'PUBLIC',
-                created_datetime: '2024-01-01T00:00:00Z',
-                updated_datetime: '2024-01-01T00:00:00Z',
-                draft_version_id: 1,
-                published_version_id: 2,
-                is_current: true,
-            },
-            template_key: null,
-        }
-
-        const mockTransformedGuidance: GuidanceArticle = {
-            id: 123,
-            title: 'Published Title',
-            content: 'Published Content',
-            locale: 'en-US',
-            visibility: 'PUBLIC',
-            createdDatetime: '2024-01-01T00:00:00Z',
-            lastUpdated: '2024-01-01T00:00:00Z',
-            templateKey: null,
-            isCurrent: true,
-            draftVersionId: 1,
-            publishedVersionId: 2,
-        }
-
-        it('should dispatch SET_UPDATING true at start', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
-
+        it('should call switchToVersion with "current" when viewing draft', async () => {
             const { result } = renderHook(() => useVersionBanner())
 
             await act(async () => {
                 await result.current.switchVersion()
             })
 
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_UPDATING',
-                payload: true,
-            })
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
         })
 
-        it('should dispatch SET_UPDATING false at end', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            const lastCall =
-                mockDispatch.mock.calls[mockDispatch.mock.calls.length - 1]
-            expect(lastCall).toEqual([{ type: 'SET_UPDATING', payload: false }])
-        })
-
-        it('should call getHelpCenterArticle with correct params when viewing draft', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(getHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 1, id: 123 },
-                { locale: 'en-US', version_status: 'current' },
-            )
-        })
-
-        it('should call getHelpCenterArticle with latest_draft when viewing current', async () => {
+        it('should call switchToVersion with "latest_draft" when viewing current', async () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
@@ -359,12 +259,6 @@ describe('useVersionBanner', () => {
                 config: defaultConfig,
                 hasDraft: true,
             })
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
 
             const { result } = renderHook(() => useVersionBanner())
 
@@ -372,122 +266,19 @@ describe('useVersionBanner', () => {
                 await result.current.switchVersion()
             })
 
-            expect(getHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 1, id: 123 },
-                { locale: 'en-US', version_status: 'latest_draft' },
-            )
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('latest_draft')
         })
 
-        it('should dispatch SWITCH_VERSION with transformed guidance on success', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(fromArticleTranslation).toHaveBeenCalledWith(
-                mockArticleResponse,
-            )
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SWITCH_VERSION',
-                payload: mockTransformedGuidance,
-            })
-        })
-
-        it('should not dispatch SWITCH_VERSION when response is null', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(null)
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockDispatch).not.toHaveBeenCalledWith(
-                expect.objectContaining({ type: 'SWITCH_VERSION' }),
-            )
-        })
-
-        it('should show error notification on failure', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockRejectedValue(
-                new Error('API Error'),
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(mockNotifyError).toHaveBeenCalledWith(
-                'An error occurred while switching version.',
-            )
-        })
-
-        it('should dispatch SET_UPDATING false even on error', async () => {
-            ;(getHelpCenterArticle as jest.Mock).mockRejectedValue(
-                new Error('API Error'),
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            const lastCall =
-                mockDispatch.mock.calls[mockDispatch.mock.calls.length - 1]
-            expect(lastCall).toEqual([{ type: 'SET_UPDATING', payload: false }])
-        })
-
-        it('should use default values when guidanceHelpCenter is undefined', async () => {
+        it('should call switchToVersion with "current" when isCurrent is undefined', async () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
-                state: defaultState,
-                dispatch: mockDispatch,
-                config: { ...defaultConfig, guidanceHelpCenter: undefined },
-                hasDraft: true,
-            })
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
-
-            const { result } = renderHook(() => useVersionBanner())
-
-            await act(async () => {
-                await result.current.switchVersion()
-            })
-
-            expect(getHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 0, id: 123 },
-                { locale: 'en-US', version_status: 'current' },
-            )
-        })
-
-        it('should use default values when guidance is undefined', async () => {
-            ;(useGuidanceContext as jest.Mock).mockReturnValue({
-                state: { ...defaultState, guidance: undefined },
+                state: {
+                    ...defaultState,
+                    guidance: { ...mockGuidance, isCurrent: undefined },
+                },
                 dispatch: mockDispatch,
                 config: defaultConfig,
-                hasDraft: false,
+                hasDraft: true,
             })
-            ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
-                mockArticleResponse,
-            )
-            ;(fromArticleTranslation as jest.Mock).mockReturnValue(
-                mockTransformedGuidance,
-            )
 
             const { result } = renderHook(() => useVersionBanner())
 
@@ -495,11 +286,7 @@ describe('useVersionBanner', () => {
                 await result.current.switchVersion()
             })
 
-            expect(getHelpCenterArticle).toHaveBeenCalledWith(
-                mockClient,
-                { help_center_id: 1, id: 0 },
-                { locale: 'en-US', version_status: 'current' },
-            )
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
         })
     })
 

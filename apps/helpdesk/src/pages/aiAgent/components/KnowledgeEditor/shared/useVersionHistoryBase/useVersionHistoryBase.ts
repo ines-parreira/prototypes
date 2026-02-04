@@ -3,7 +3,10 @@ import { useCallback, useMemo } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
-import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion,
+    useInfiniteGetArticleTranslationVersions,
+} from 'models/helpCenter/queries'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import { useVersionHistoryTracking } from '../useVersionHistoryTracking/useVersionHistoryTracking'
@@ -107,10 +110,15 @@ export type VersionHistoryBaseParams = {
     articleId: number
     locale: string
     currentVersionId: number | null
+    draftVersionId: number | null
+    isViewingDraft?: boolean
     historicalVersion: HistoricalVersion
     isUpdating: boolean
     isAutoSaving: boolean
     dispatch: VersionHistoryDispatch
+    switchToVersion?: (
+        targetStatus: 'latest_draft' | 'current',
+    ) => Promise<void>
 }
 
 export type VersionHistoryData = {
@@ -135,10 +143,13 @@ export function useVersionHistoryBase({
     articleId,
     locale,
     currentVersionId,
+    draftVersionId,
+    isViewingDraft,
     historicalVersion,
     isUpdating,
     isAutoSaving,
     dispatch,
+    switchToVersion,
 }: VersionHistoryBaseParams): VersionHistoryData {
     const { onVersionViewed, onBackToCurrent } = useVersionHistoryTracking({
         shopName,
@@ -154,23 +165,54 @@ export function useVersionHistoryBase({
     const isEnabled =
         isVersionHistoryEnabled && !!helpCenterId && !!articleId && !!locale
 
-    const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
-        useInfiniteGetArticleTranslationVersions(
+    const hasDraft =
+        draftVersionId != null &&
+        currentVersionId != null &&
+        draftVersionId !== currentVersionId
+
+    const { data: draftVersion, isLoading: isDraftLoading } =
+        useGetArticleTranslationVersion(
             {
                 help_center_id: helpCenterId,
                 article_id: articleId,
                 locale,
+                version_id: draftVersionId ?? 0,
             },
-            { published: true, per_page: VERSIONS_PER_PAGE },
             {
-                enabled: isEnabled,
+                enabled: isEnabled && hasDraft,
             },
         )
 
-    const versions = useMemo(
-        () => data?.pages.flatMap((page) => page?.data ?? []) ?? [],
-        [data],
+    const {
+        data,
+        isLoading: isPublishedLoading,
+        isFetchingNextPage,
+        hasNextPage,
+        fetchNextPage,
+    } = useInfiniteGetArticleTranslationVersions(
+        {
+            help_center_id: helpCenterId,
+            article_id: articleId,
+            locale,
+        },
+        { published: true, per_page: VERSIONS_PER_PAGE },
+        {
+            enabled: isEnabled,
+        },
     )
+
+    const isLoading = isPublishedLoading || (hasDraft && isDraftLoading)
+
+    const versions = useMemo(() => {
+        const publishedVersions =
+            data?.pages.flatMap((page) => page?.data ?? []) ?? []
+
+        if (hasDraft && draftVersion) {
+            return [draftVersion, ...publishedVersions]
+        }
+
+        return publishedVersions
+    }, [data, hasDraft, draftVersion])
 
     const onLoadMore = useCallback(() => {
         if (hasNextPage && !isFetchingNextPage) {
@@ -180,7 +222,9 @@ export function useVersionHistoryBase({
 
     const isViewingHistoricalVersion = historicalVersion !== null
 
-    const selectedVersionId = historicalVersion?.versionId ?? null
+    const selectedVersionId =
+        historicalVersion?.versionId ??
+        (hasDraft && isViewingDraft && draftVersionId ? draftVersionId : null)
 
     const isDisabled = isUpdating || isAutoSaving
 
@@ -194,11 +238,20 @@ export function useVersionHistoryBase({
                 publishedDatetime: version.published_datetime,
             })
 
-            const isCurrentVersion =
+            const isDraftVersion = version.published_datetime === null
+            const isCurrentPublished =
                 currentVersionId !== null && version.id === currentVersionId
 
-            if (isCurrentVersion) {
+            if (isDraftVersion) {
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
+                if (!isViewingDraft && switchToVersion) {
+                    switchToVersion('latest_draft')
+                }
+            } else if (isCurrentPublished) {
+                dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
+                if (isViewingDraft && switchToVersion) {
+                    switchToVersion('current')
+                }
             } else {
                 const impactDateRange = getVersionImpactDateRange(
                     version.id,
@@ -210,7 +263,15 @@ export function useVersionHistoryBase({
                 })
             }
         },
-        [dispatch, currentVersionId, isDisabled, versions, onVersionViewed],
+        [
+            dispatch,
+            currentVersionId,
+            isDisabled,
+            isViewingDraft,
+            switchToVersion,
+            versions,
+            onVersionViewed,
+        ],
     )
 
     const onGoToLatest = useCallback(() => {

@@ -66,13 +66,13 @@ export function VersionBanner({
 
         const getVersionDescription = () => {
             if (commitMessage && publisherName) {
-                return `Changes by ${publisherName}: ${commitMessage}`
+                return `By ${publisherName}: ${commitMessage}`
             }
             if (commitMessage) {
                 return `Changes in this version: ${commitMessage}`
             }
             if (publisherName) {
-                return `Last published by ${publisherName}`
+                return `By ${publisherName}`
             }
             return null
         }
@@ -101,7 +101,7 @@ export function VersionBanner({
                                     isDisabled={isDisabled}
                                     size="sm"
                                 >
-                                    Back to current
+                                    Back to latest
                                 </Button>
                                 <Button
                                     variant="secondary"

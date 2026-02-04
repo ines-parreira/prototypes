@@ -1,8 +1,7 @@
-import {
-    useVersionHistoryBase,
-    type VersionHistoryData,
-} from '../../shared/useVersionHistoryBase'
+import { useVersionHistoryBase } from '../../shared/useVersionHistoryBase'
+import type { VersionHistoryData } from '../../shared/useVersionHistoryBase'
 import { useArticleContext } from '../context'
+import { useSwitchVersion } from './useSwitchVersion'
 
 export type { ArticleTranslationVersion } from '../../shared/useVersionHistoryBase'
 export type { VersionHistoryData }
@@ -12,6 +11,10 @@ export function useVersionHistory(): VersionHistoryData {
 
     const { helpCenter } = config
 
+    const isViewingDraft = state.article?.translation.is_current === false
+
+    const { switchToVersion } = useSwitchVersion()
+
     return useVersionHistoryBase({
         shopName: config.shopName ?? '',
         resourceType: 'article',
@@ -20,9 +23,12 @@ export function useVersionHistory(): VersionHistoryData {
         locale: state.currentLocale,
         currentVersionId:
             state.article?.translation.published_version_id ?? null,
+        draftVersionId: state.article?.translation.draft_version_id ?? null,
+        isViewingDraft,
         historicalVersion: state.historicalVersion,
         isUpdating: state.isUpdating,
         isAutoSaving: state.isAutoSaving,
         dispatch,
+        switchToVersion,
     })
 }
