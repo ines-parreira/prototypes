@@ -243,11 +243,19 @@ const InfobarCustomerInfo = ({
     }
 
     const channels = customer.get('channels')
-    const hasIgChannel = channels
-        ? !!channels
+    const igChannel = channels
+        ? channels
               .toJS()
-              .find(({ type }: { type: string }) => type === 'instagram')
-        : false
+              .filter(({ type }: { type: string }) => type === 'instagram')
+              .sort(
+                  (
+                      a: { updated_datetime: string },
+                      b: { updated_datetime: string },
+                  ) =>
+                      new Date(b.updated_datetime).getTime() -
+                      new Date(a.updated_datetime).getTime(),
+              )?.[0]
+        : null
     let chatIntegrationData: Map<any, any> | null = null
     if (customerIntegrationsData) {
         chatIntegrationData = customerIntegrationsData.find(
@@ -327,8 +335,11 @@ const InfobarCustomerInfo = ({
                             customerId={customer.get('id', '')}
                             customerName={customer.get('name', '')}
                         >
-                            {hasIgChannel && isInstagramTicket && (
-                                <InstagramSection customer={customer} />
+                            {igChannel && isInstagramTicket && (
+                                <InstagramSection
+                                    customer={customer}
+                                    igChannel={igChannel}
+                                />
                             )}
                             <CustomerNote
                                 customerId={Number(customer.get('id'))}

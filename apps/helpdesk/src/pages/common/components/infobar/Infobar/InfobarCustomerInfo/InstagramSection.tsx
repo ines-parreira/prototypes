@@ -49,15 +49,20 @@ const formatFollowerCount = (count: number): string => {
     return `${Math.floor(count / 1000000)}M`
 }
 
-export const InstagramSection = ({ customer }: { customer: Map<any, any> }) => {
+export const InstagramSection = ({
+    customer,
+    igChannel,
+}: {
+    customer: Map<any, any>
+    igChannel?: { address?: string | null } | null
+}) => {
     const [showDetails, setShowDetails] = useState(false)
     const messages = useAppSelector(getMessages)
     const lastMessage = messages.last()
-    const firstMessage = messages.first()
     const messageIntegrationId = lastMessage?.get('integration_id')
     const allIntegrations = useAppSelector(getIntegrations)
 
-    const customerHandle = firstMessage?.getIn(['sender', 'name'])
+    const customerHandle = igChannel?.address ?? null
 
     const instagramIntegration = allIntegrations.find(
         (integration: Integration) => integration.id === messageIntegrationId,

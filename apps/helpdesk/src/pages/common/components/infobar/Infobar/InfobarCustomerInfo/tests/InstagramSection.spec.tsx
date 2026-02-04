@@ -68,13 +68,23 @@ const mockCustomer = fromJS({
     name: 'test_user',
 })
 
-const renderComponent = (store: Store = mocksStore) => {
+const mockIgChannel = {
+    address: 'test_user',
+}
+
+const renderComponent = (
+    store: Store = mocksStore,
+    igChannel: { address: string } | null | undefined = mockIgChannel,
+) => {
     return render(
         <MemoryRouter>
             <Provider store={store}>
                 <QueryClientProvider client={appQueryClient}>
                     <ThemeProvider>
-                        <InstagramSection customer={mockCustomer} />
+                        <InstagramSection
+                            customer={mockCustomer}
+                            igChannel={igChannel}
+                        />
                     </ThemeProvider>
                 </QueryClientProvider>
             </Provider>
@@ -123,7 +133,61 @@ describe('InstagramSection', () => {
         it('should return null when no messages exist', () => {
             const storeWithoutMessages = createMockStore({ messages: [] })
 
-            const { container } = renderComponent(storeWithoutMessages)
+            const { container } = renderComponent(storeWithoutMessages, null)
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should return null when igChannel is not provided', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <ThemeProvider>
+                                <InstagramSection customer={mockCustomer} />
+                            </ThemeProvider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should return null when igChannel.address is null', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <ThemeProvider>
+                                <InstagramSection
+                                    customer={mockCustomer}
+                                    igChannel={{ address: null }}
+                                />
+                            </ThemeProvider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should return null when igChannel.address is undefined', () => {
+            const { container } = render(
+                <MemoryRouter>
+                    <Provider store={mocksStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <ThemeProvider>
+                                <InstagramSection
+                                    customer={mockCustomer}
+                                    igChannel={{}}
+                                />
+                            </ThemeProvider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
 
             expect(container.firstChild).toBeNull()
         })

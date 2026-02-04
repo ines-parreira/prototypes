@@ -430,7 +430,7 @@ describe('<InfobarCustomerInfo/>', () => {
         const customerWithIg = fromJS({
             id: 1,
             name: 'test_user',
-            channels: [{ type: 'instagram' }],
+            channels: [{ type: 'instagram', address: 'test_user' }],
         })
 
         const sourcesWithIgTicket = fromJS({
@@ -460,7 +460,7 @@ describe('<InfobarCustomerInfo/>', () => {
         const customerWithIg = fromJS({
             id: 1,
             name: 'test_user',
-            channels: [{ type: 'instagram' }],
+            channels: [{ type: 'instagram', address: 'test_user' }],
         })
 
         const sourcesWithIgTicket = fromJS({
@@ -549,6 +549,71 @@ describe('<InfobarCustomerInfo/>', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should render Instagram profile link using latest Instagram channel when customer has multiple Instagram channels', () => {
+        const customerWithMultipleIgChannels = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [
+                {
+                    type: 'instagram',
+                    address: 'first_ig_user',
+                    updated_datetime: new Date('2025-01-01'),
+                },
+                {
+                    type: 'instagram',
+                    address: 'second_ig_user',
+                    updated_datetime: new Date('2026-01-01'),
+                },
+            ],
+        })
+
+        const sourcesWithIgTicket = fromJS({
+            ticket: { channel: 'instagram-comment' },
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithMultipleIgChannels}
+                sources={sourcesWithIgTicket}
+            />,
+        )
+
+        const igLink = screen.getByRole('link', { name: /@second_ig_user/ })
+        expect(igLink).toBeInTheDocument()
+        expect(igLink).toHaveAttribute(
+            'href',
+            'https://www.instagram.com/second_ig_user',
+        )
+        expect(
+            screen.queryByRole('link', { name: /@first_ig_user/ }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render Instagram profile link when Instagram channel has no address', () => {
+        const customerWithIgNoAddress = fromJS({
+            id: 1,
+            name: 'test_user',
+            channels: [{ type: 'instagram' }],
+        })
+
+        const sourcesWithIgTicket = fromJS({
+            ticket: { channel: 'instagram-comment' },
+        })
+
+        renderWithProviders(
+            <InfobarCustomerInfo
+                {...minProps}
+                customer={customerWithIgNoAddress}
+                sources={sourcesWithIgTicket}
+            />,
+        )
+
+        expect(
+            screen.queryByRole('link', { name: /@/ }),
+        ).not.toBeInTheDocument()
+    })
+
     describe('Instagram integration from messages', () => {
         it('should extract integration_id from last message', () => {
             const storeWithMessages = mockStore({
@@ -584,7 +649,7 @@ describe('<InfobarCustomerInfo/>', () => {
             const customerWithIg = fromJS({
                 id: 1,
                 name: 'test_user',
-                channels: [{ type: 'instagram' }],
+                channels: [{ type: 'instagram', address: 'test_user' }],
             })
 
             const sourcesWithIgTicket = fromJS({
@@ -662,7 +727,7 @@ describe('<InfobarCustomerInfo/>', () => {
             const customerWithIg = fromJS({
                 id: 1,
                 name: 'test_user',
-                channels: [{ type: 'instagram' }],
+                channels: [{ type: 'instagram', address: 'test_user' }],
             })
 
             const sourcesWithIgTicket = fromJS({
@@ -708,7 +773,7 @@ describe('<InfobarCustomerInfo/>', () => {
             const customerWithIg = fromJS({
                 id: 1,
                 name: 'test_user',
-                channels: [{ type: 'instagram' }],
+                channels: [{ type: 'instagram', address: 'test_user' }],
             })
 
             const sourcesWithIgTicket = fromJS({
