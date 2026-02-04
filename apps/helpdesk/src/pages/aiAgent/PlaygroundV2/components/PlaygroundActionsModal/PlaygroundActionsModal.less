@@ -1,71 +1,18 @@
 @import (reference) '~css/typography';
 
 :local {
-    .PlaygroundActionsModal {
-        [class*='Modal--modalContent--'] {
-            max-width: 500px;
+    .modalContent {
+        gap: var(--layout-spacing-s);
+
+        .modalContentList {
+            padding-left: 20px;
         }
-        .modalHeader {
-            border: none;
-        }
-        .modalBody {
-            display: flex;
-            flex-direction: column;
-            gap: var(--layout-spacing-s);
-            padding-top: 0;
-            padding-bottom: 0;
+    }
 
-            ul {
-                padding-left: 20px;
-                gap: 14px;
-                display: flex;
-                flex-direction: column;
-                margin-bottom: 0;
-            }
-
-            .modalContent {
-                display: flex;
-                flex-direction: column;
-                gap: var(--layout-spacing-s);
-
-                .modalContentList {
-                    gap: 0;
-                }
-            }
-
-            .modalBodyConfirmation {
-                display: flex;
-                align-items: flex-start;
-                gap: var(--layout-spacing-xs);
-                cursor: pointer;
-
-                .checkboxContainer {
-                    display: flex;
-                    width: 20px;
-                    align-items: flex-start;
-                    justify-content: flex-start;
-
-                    input[type='checkbox'] {
-                        cursor: pointer;
-                    }
-                }
-
-                .modalBodyConfirmationText {
-                    .body-regular();
-                }
-            }
-
-            .body-regular();
-        }
-
-        .modalFooter {
-            display: flex;
-            gap: var(--layout-spacing-xs);
-            flex-direction: row;
-            padding: var(--layout-spacing-s);
-            justify-content: flex-end;
-            background-color: inherit;
-            border: none;
-        }
+    .modalFooter {
+        display: flex;
+        gap: var(--layout-spacing-xs);
+        flex-direction: row;
+        justify-content: flex-end;
     }
 }

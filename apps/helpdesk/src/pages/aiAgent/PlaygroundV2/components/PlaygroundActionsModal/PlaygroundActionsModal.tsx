@@ -1,16 +1,19 @@
-import React from 'react'
+import type React from 'react'
 
 import { useSessionStorage } from '@repo/hooks'
 
 import {
-    LegacyButton as Button,
-    LegacyCheckBoxField as CheckBoxField,
+    Box,
+    Button,
+    CheckBoxField,
+    Heading,
+    Modal,
+    ModalSize,
+    OverlayContent,
+    OverlayFooter,
+    OverlayHeader,
+    Text,
 } from '@gorgias/axiom'
-
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './PlaygroundActionsModal.less'
 
@@ -25,75 +28,60 @@ const PlaygroundActionsModal: React.FC<PlaygroundActionsModalProps> = ({
     onClose,
     onConfirm,
 }) => {
-    const checkboxRef = React.useRef<HTMLInputElement>(null)
     const [isConfirmed, setIsConfirmed] = useSessionStorage(
         'aiAgentPlaygroundActionsModalSelected',
         false,
     )
 
-    const handleConfirmationClick = () => {
-        if (checkboxRef.current) {
-            const newValue = !checkboxRef.current.checked
-            checkboxRef.current.checked = newValue
-            setIsConfirmed(newValue)
-        }
-    }
-
     return (
         <Modal
             isOpen={isOpen}
-            onClose={onClose}
-            size="medium"
-            isClosable={false}
-            className={css.PlaygroundActionsModal}
+            onOpenChange={onClose}
+            size={ModalSize.Sm}
+            aria-label="Enable Actions in test mode"
         >
-            <ModalHeader
-                title="Enable Actions in test mode?"
-                className={css.modalHeader}
-                forceCloseButton
-            ></ModalHeader>
-            <ModalBody className={css.modalBody}>
-                <div className={css.modalContent}>
-                    <span>
-                        When Actions are triggered in test mode, they use live
-                        customer data. This means:
-                    </span>
-                    <ul className={css.modalContentList}>
-                        <li>Customer data may be updated or deleted</li>
-                        <li>Real orders may be modified or cancelled</li>
-                        <li>Changes cannot be undone</li>
-                    </ul>
-                </div>
-                <div
-                    className={css.modalBodyConfirmation}
-                    onClick={handleConfirmationClick}
-                >
-                    <div className={css.checkboxContainer}>
+            <OverlayHeader
+                title={
+                    <Heading size="xl">Enable Actions in test mode?</Heading>
+                }
+            />
+            <OverlayContent>
+                <div>
+                    <Box flexDirection="column" className={css.modalContent}>
+                        <Text>
+                            When Actions are triggered in test mode, they use
+                            live customer data. This means:
+                        </Text>
+                        <ul className={css.modalContentList}>
+                            <li>Customer data may be updated or deleted</li>
+                            <li>Real orders may be modified or cancelled</li>
+                            <li>Changes cannot be undone</li>
+                        </ul>
+                    </Box>
+                    <Box flexDirection="row" alignItems="flex-start">
                         <CheckBoxField
-                            ref={checkboxRef}
                             value={isConfirmed}
-                            id="confirmActions"
-                            onChange={(value) => setIsConfirmed(value)}
+                            onChange={setIsConfirmed}
+                            label="I understand that enabling Actions in test mode may cause irreversible changes to live customer data."
                         />
-                    </div>
-                    <div className={css.modalBodyConfirmationText}>
-                        I understand that enabling Actions in test mode may
-                        cause irreversible changes to live customer data.
-                    </div>
+                    </Box>
                 </div>
-            </ModalBody>
-            <ModalFooter className={css.modalFooter}>
-                <Button intent="secondary" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button
-                    intent="destructive"
-                    isDisabled={!isConfirmed}
-                    onClick={onConfirm}
-                >
-                    Enable Actions
-                </Button>
-            </ModalFooter>
+            </OverlayContent>
+            <OverlayFooter hideCancelButton>
+                <div className={css.modalFooter}>
+                    <Button variant="secondary" onClick={onClose}>
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="primary"
+                        intent="destructive"
+                        isDisabled={!isConfirmed}
+                        onClick={onConfirm}
+                    >
+                        Enable Actions
+                    </Button>
+                </div>
+            </OverlayFooter>
         </Modal>
     )
 }

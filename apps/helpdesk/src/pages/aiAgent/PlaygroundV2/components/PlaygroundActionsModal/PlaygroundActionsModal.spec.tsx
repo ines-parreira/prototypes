@@ -3,9 +3,9 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import PlaygroundActionsModal from './PlaygroundActionsModal'
+import { ThemeProvider } from 'core/theme'
 
-const mockGetItem = jest.fn()
+import PlaygroundActionsModal from './PlaygroundActionsModal'
 
 jest.mock('@repo/hooks', () => ({
     useSessionStorage: jest.fn((key, defaultValue) => {
@@ -16,34 +16,9 @@ jest.mock('@repo/hooks', () => ({
     useKey: jest.fn(),
 }))
 
-jest.mock('pages/common/components/modal/Modal', () => {
-    return function MockModal({ children, isOpen, className }: any) {
-        if (!isOpen) return null
-        return (
-            <div className={className} data-testid="modal">
-                {children}
-            </div>
-        )
-    }
-})
-
-jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return function MockModalHeader({ title }: any) {
-        return <h2>{title}</h2>
-    }
-})
-
-jest.mock('pages/common/components/modal/ModalBody', () => {
-    return function MockModalBody({ children, className }: any) {
-        return <div className={className}>{children}</div>
-    }
-})
-
-jest.mock('pages/common/components/modal/ModalFooter', () => {
-    return function MockModalFooter({ children, className }: any) {
-        return <div className={className}>{children}</div>
-    }
-})
+const renderWithTheme = (component: React.ReactElement) => {
+    return render(<ThemeProvider>{component}</ThemeProvider>)
+}
 
 describe('PlaygroundActionsModal', () => {
     const defaultProps = {
@@ -54,11 +29,10 @@ describe('PlaygroundActionsModal', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockGetItem.mockReturnValue(null)
     })
 
     it('should render modal when open', () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         expect(
             screen.getByText('Enable Actions in test mode?'),
@@ -71,7 +45,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should display warning list items', () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         expect(
             screen.getByText('Customer data may be updated or deleted'),
@@ -83,7 +57,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should display confirmation checkbox with label', () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const checkbox = screen.getByRole('checkbox')
         expect(checkbox).toBeInTheDocument()
@@ -95,7 +69,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should have Enable Actions button disabled initially', () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const enableButton = screen.getByRole('button', {
             name: /Enable Actions/i,
@@ -104,7 +78,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should enable Enable Actions button when checkbox is checked', async () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const checkbox = screen.getByRole('checkbox')
         const enableButton = screen.getByRole('button', {
@@ -121,7 +95,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should call onClose when Cancel button is clicked', async () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const cancelButton = screen.getByRole('button', { name: /Cancel/i })
         await userEvent.click(cancelButton)
@@ -130,7 +104,7 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should call onConfirm when Enable Actions is clicked with checkbox checked', async () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const checkbox = screen.getByRole('checkbox')
         await userEvent.click(checkbox)
@@ -144,32 +118,17 @@ describe('PlaygroundActionsModal', () => {
     })
 
     it('should not render modal when isOpen is false', () => {
-        render(<PlaygroundActionsModal {...defaultProps} isOpen={false} />)
+        renderWithTheme(
+            <PlaygroundActionsModal {...defaultProps} isOpen={false} />,
+        )
 
         expect(
             screen.queryByText('Enable Actions in test mode?'),
         ).not.toBeInTheDocument()
     })
 
-    it('should toggle checkbox when clicking on the confirmation text', async () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
-
-        const confirmationText = screen.getByText(
-            'I understand that enabling Actions in test mode may cause irreversible changes to live customer data.',
-        )
-        const checkbox = screen.getByRole('checkbox')
-
-        expect(checkbox).not.toBeChecked()
-
-        await userEvent.click(confirmationText.parentElement!)
-
-        await waitFor(() => {
-            expect(checkbox).toBeChecked()
-        })
-    })
-
     it('should toggle checkbox state when clicking multiple times', async () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
+        renderWithTheme(<PlaygroundActionsModal {...defaultProps} />)
 
         const checkbox = screen.getByRole('checkbox')
 
@@ -183,13 +142,5 @@ describe('PlaygroundActionsModal', () => {
 
         await userEvent.click(checkbox)
         await waitFor(() => expect(checkbox).toBeChecked())
-    })
-
-    it('should have correct modal properties', () => {
-        render(<PlaygroundActionsModal {...defaultProps} />)
-
-        const modal = screen.getByTestId('modal')
-        expect(modal).toBeInTheDocument()
-        expect(modal).toHaveClass('PlaygroundActionsModal')
     })
 })
