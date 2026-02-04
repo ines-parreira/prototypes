@@ -1,8 +1,12 @@
 import { useCallback, useContext, useMemo } from 'react'
 
+import classNames from 'classnames'
+
 import { StepperItem, StepperItemState, StepperList } from '@gorgias/axiom'
 
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
+
+import css from './StepperProgressHeader.less'
 
 type Props = {
     className?: string
@@ -46,7 +50,7 @@ export const StepperProgressHeader = ({ className, labels }: Props) => {
     }, [labels, getStepState, steps])
 
     return (
-        <div className={className}>
+        <div className={classNames(css.wrapper, className)}>
             <StepperList>{headerItems}</StepperList>
         </div>
     )

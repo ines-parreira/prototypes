@@ -1,0 +1,12 @@
+:local {
+    .wrapper {
+        // Override Axiom StepperLabel layout for mobile number wrapping
+        @media (max-width: 768px) {
+            [class*='stepperlabel'] {
+                flex-direction: column !important;
+                padding: var(--spacing-xxs);
+                gap: var(--spacing-xxxs);
+            }
+        }
+    }
+}
