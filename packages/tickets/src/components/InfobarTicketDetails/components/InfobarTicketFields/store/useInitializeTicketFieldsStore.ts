@@ -11,12 +11,17 @@ export const useInitializeTicketFieldsStore = (ticketId: string) => {
     const initializeFields = useTicketFieldsStore(
         (state) => state.initializeFields,
     )
+    const resetFields = useTicketFieldsStore((state) => state.resetFields)
 
     const {
         data: { data: ticketCustomFieldsValue = [] } = {},
         isLoading,
         isError,
     } = useTicketCustomFieldsValues(Number(ticketId))
+
+    useEffect(() => {
+        resetFields()
+    }, [ticketId, resetFields])
 
     useEffect(() => {
         if (isLoading || isError) {
@@ -42,7 +47,13 @@ export const useInitializeTicketFieldsStore = (ticketId: string) => {
         )
 
         initializeFields(fieldsState)
-    }, [ticketCustomFieldsValue, isLoading, isError, initializeFields])
+    }, [
+        ticketId,
+        ticketCustomFieldsValue,
+        isLoading,
+        isError,
+        initializeFields,
+    ])
 
     return { isLoading, isError }
 }

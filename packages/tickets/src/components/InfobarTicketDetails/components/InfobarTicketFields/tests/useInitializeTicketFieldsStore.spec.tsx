@@ -205,4 +205,97 @@ describe('useInitializeTicketFieldsStore', () => {
         const storeFields = useTicketFieldsStore.getState().fields
         expect(storeFields).toEqual({})
     })
+
+    it('should reinitialize store when ticketId changes', async () => {
+        const mockFieldsTicket1 = [
+            {
+                field: { id: 1, label: 'Priority' },
+                value: 'High',
+            },
+            {
+                field: { id: 2, label: 'Category' },
+                value: 'Bug',
+            },
+        ]
+        const mockFieldsTicket2 = [
+            {
+                field: { id: 1, label: 'Priority' },
+                value: 'Low',
+            },
+            {
+                field: { id: 2, label: 'Category' },
+                value: 'Feature',
+            },
+        ]
+
+        mockUseTicketCustomFieldsValues.mockReturnValueOnce({
+            data: { data: mockFieldsTicket1 },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const { rerender } = renderHook(
+            ({ ticketId }) => useInitializeTicketFieldsStore(ticketId),
+            { initialProps: { ticketId: '123' } },
+        )
+
+        await waitFor(() => {
+            const fields = useTicketFieldsStore.getState().fields
+            expect(fields[1].value).toBe('High')
+            expect(fields[2].value).toBe('Bug')
+        })
+
+        mockUseTicketCustomFieldsValues.mockReturnValueOnce({
+            data: { data: mockFieldsTicket2 },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        rerender({ ticketId: '456' })
+
+        await waitFor(() => {
+            const fields = useTicketFieldsStore.getState().fields
+            expect(fields[1].value).toBe('Low')
+            expect(fields[2].value).toBe('Feature')
+        })
+    })
+
+    it('should reset fields immediately when ticketId changes', async () => {
+        const mockFieldsTicket1 = [
+            {
+                field: { id: 1, label: 'Field1' },
+                value: 'Value1',
+            },
+        ]
+
+        mockUseTicketCustomFieldsValues.mockReturnValue({
+            data: { data: mockFieldsTicket1 },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const { rerender } = renderHook(
+            ({ ticketId }) => useInitializeTicketFieldsStore(ticketId),
+            { initialProps: { ticketId: '123' } },
+        )
+
+        await waitFor(() => {
+            expect(
+                Object.keys(useTicketFieldsStore.getState().fields),
+            ).toHaveLength(1)
+        })
+
+        mockUseTicketCustomFieldsValues.mockReturnValue({
+            data: undefined,
+            isLoading: true,
+            isError: false,
+        } as any)
+
+        rerender({ ticketId: '456' })
+
+        expect(useTicketFieldsStore.getState().fields).toEqual({})
+        expect(useTicketFieldsStore.getState().hasAttemptedToCloseTicket).toBe(
+            false,
+        )
+    })
 })
