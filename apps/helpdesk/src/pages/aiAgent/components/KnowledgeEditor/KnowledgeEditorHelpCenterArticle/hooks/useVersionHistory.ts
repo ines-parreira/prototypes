@@ -13,6 +13,8 @@ export function useVersionHistory(): VersionHistoryData {
     const { helpCenter } = config
 
     return useVersionHistoryBase({
+        shopName: config.shopName ?? '',
+        resourceType: 'article',
         helpCenterId: helpCenter?.id ?? 0,
         articleId: state.article?.id ?? 0,
         locale: state.currentLocale,

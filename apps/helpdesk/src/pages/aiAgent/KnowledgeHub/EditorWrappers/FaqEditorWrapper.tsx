@@ -21,6 +21,7 @@ type FaqEditorWrapperProps = {
     currentArticleId?: number
     faqArticleMode: 'new' | 'existing'
     initialArticleMode: InitialArticleModeValue
+    shopName?: string
     onClose: () => void
     onCreate: (createdArticle?: { id: number }) => void
     onUpdate: () => void
@@ -36,6 +37,7 @@ export const FaqEditorWrapper = ({
     currentArticleId,
     faqArticleMode,
     initialArticleMode,
+    shopName,
     onClose,
     onCreate,
     onUpdate,
@@ -97,6 +99,7 @@ export const FaqEditorWrapper = ({
                     helpCenter={faqHelpCenter}
                     locales={faqLocales}
                     categories={faqCategories}
+                    shopName={shopName}
                     onClickPrevious={onClickPrevious}
                     onClickNext={onClickNext}
                     onClose={onClose}

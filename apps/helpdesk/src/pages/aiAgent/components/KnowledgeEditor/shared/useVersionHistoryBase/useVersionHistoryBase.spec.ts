@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
 
 import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
@@ -25,9 +26,12 @@ jest.mock('models/helpCenter/queries', () => ({
     useInfiniteGetArticleTranslationVersions: jest.fn(),
 }))
 
+jest.mock('@repo/logging')
+
 const mockUseFlag = useFlag as jest.Mock
 const mockUseInfiniteGetVersions =
     useInfiniteGetArticleTranslationVersions as jest.Mock
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockDispatch = jest.fn()
 const mockFetchNextPage = jest.fn()
@@ -60,6 +64,8 @@ const mockVersions: ArticleTranslationVersion[] = [
 ]
 
 const defaultParams: VersionHistoryBaseParams = {
+    shopName: 'test-shop',
+    resourceType: 'guidance',
     helpCenterId: 10,
     articleId: 123,
     locale: 'en-US',
@@ -214,7 +220,11 @@ describe('useVersionHistoryBase', () => {
             const { result: withHistorical } = renderHook(() =>
                 useVersionHistoryBase({
                     ...defaultParams,
-                    historicalVersion: { versionId: 4 },
+                    historicalVersion: {
+                        versionId: 4,
+                        version: 2,
+                        publishedDatetime: '2025-02-01T00:00:00Z',
+                    },
                 }),
             )
             expect(withHistorical.current.isViewingHistoricalVersion).toBe(true)
@@ -229,7 +239,11 @@ describe('useVersionHistoryBase', () => {
             const { result: withHistorical } = renderHook(() =>
                 useVersionHistoryBase({
                     ...defaultParams,
-                    historicalVersion: { versionId: 4 },
+                    historicalVersion: {
+                        versionId: 4,
+                        version: 2,
+                        publishedDatetime: '2025-02-01T00:00:00Z',
+                    },
                 }),
             )
             expect(withHistorical.current.selectedVersionId).toBe(4)
@@ -312,6 +326,79 @@ describe('useVersionHistoryBase', () => {
 
             expect(mockDispatch).not.toHaveBeenCalled()
         })
+
+        it('should track version viewed event when selecting a non-current version', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase(defaultParams),
+            )
+
+            result.current.onSelectVersion(mockVersions[1])
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionViewed,
+                {
+                    shopName: 'test-shop',
+                    resourceType: 'guidance',
+                    resourceId: 123,
+                    helpCenterId: 10,
+                    locale: 'en-US',
+                    versionId: 4,
+                    versionNumber: 2,
+                    publishedDatetime: '2025-02-01T00:00:00Z',
+                },
+            )
+        })
+
+        it('should track version viewed event when selecting the current version', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase(defaultParams),
+            )
+
+            result.current.onSelectVersion(mockVersions[0])
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionViewed,
+                {
+                    shopName: 'test-shop',
+                    resourceType: 'guidance',
+                    resourceId: 123,
+                    helpCenterId: 10,
+                    locale: 'en-US',
+                    versionId: 5,
+                    versionNumber: 3,
+                    publishedDatetime: '2025-03-01T00:00:00Z',
+                },
+            )
+        })
+
+        it('should not track when disabled', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    isUpdating: true,
+                }),
+            )
+
+            result.current.onSelectVersion(mockVersions[1])
+
+            expect(mockLogEvent).not.toHaveBeenCalled()
+        })
+
+        it('should track with article resourceType when configured', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    resourceType: 'article',
+                }),
+            )
+
+            result.current.onSelectVersion(mockVersions[1])
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionViewed,
+                expect.objectContaining({ resourceType: 'article' }),
+            )
+        })
     })
 
     describe('onGoToLatest', () => {
@@ -338,6 +425,88 @@ describe('useVersionHistoryBase', () => {
             result.current.onGoToLatest()
 
             expect(mockDispatch).not.toHaveBeenCalled()
+        })
+
+        it('should track back to current event when viewing a historical version', () => {
+            const historicalVersion = {
+                versionId: 4,
+                version: 2,
+                publishedDatetime: '2025-02-01T00:00:00Z',
+            }
+
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    historicalVersion,
+                }),
+            )
+
+            result.current.onGoToLatest()
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryBackToCurrent,
+                {
+                    shopName: 'test-shop',
+                    resourceType: 'guidance',
+                    resourceId: 123,
+                    helpCenterId: 10,
+                    locale: 'en-US',
+                    versionId: 4,
+                    versionNumber: 2,
+                    publishedDatetime: '2025-02-01T00:00:00Z',
+                },
+            )
+        })
+
+        it('should not track back to current event when no historical version is set', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase(defaultParams),
+            )
+
+            result.current.onGoToLatest()
+
+            expect(mockLogEvent).not.toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryBackToCurrent,
+                expect.anything(),
+            )
+        })
+
+        it('should not track when disabled', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    historicalVersion: {
+                        versionId: 4,
+                        version: 2,
+                        publishedDatetime: '2025-02-01T00:00:00Z',
+                    },
+                    isUpdating: true,
+                }),
+            )
+
+            result.current.onGoToLatest()
+
+            expect(mockLogEvent).not.toHaveBeenCalled()
+        })
+
+        it('should handle historical version with null publishedDatetime', () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    historicalVersion: {
+                        versionId: 4,
+                        version: 2,
+                        publishedDatetime: null,
+                    },
+                }),
+            )
+
+            result.current.onGoToLatest()
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryBackToCurrent,
+                expect.objectContaining({ publishedDatetime: null }),
+            )
         })
     })
 

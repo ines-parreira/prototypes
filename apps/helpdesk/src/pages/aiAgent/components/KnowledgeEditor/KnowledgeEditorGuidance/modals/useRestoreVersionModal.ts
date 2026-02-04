@@ -3,11 +3,20 @@ import { useCallback } from 'react'
 import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
+import { useVersionHistoryTracking } from '../../shared/useVersionHistoryTracking/useVersionHistoryTracking'
 import { fromArticleTranslationResponse, useGuidanceContext } from '../context'
 
 export const useRestoreVersionModal = () => {
     const { state, dispatch, config } = useGuidanceContext()
     const { error: notifyError, success: notifySuccess } = useNotify()
+
+    const { onVersionRestored } = useVersionHistoryTracking({
+        shopName: config.shopName,
+        resourceType: 'guidance',
+        resourceId: state.guidance?.id ?? 0,
+        helpCenterId: config.guidanceHelpCenter?.id ?? 0,
+        locale: config.guidanceHelpCenter?.default_locale ?? 'en-US',
+    })
 
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
         guidanceHelpCenterId: config.guidanceHelpCenter?.id ?? 0,
@@ -51,6 +60,12 @@ export const useRestoreVersionModal = () => {
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
                 dispatch({ type: 'SET_MODE', payload: 'read' })
                 notifySuccess('Version restored as draft.')
+                onVersionRestored({
+                    versionId: state.historicalVersion.versionId,
+                    versionNumber: state.historicalVersion.version,
+                    publishedDatetime:
+                        state.historicalVersion.publishedDatetime,
+                })
                 config.onUpdateFn?.()
             }
         } catch {
@@ -68,6 +83,7 @@ export const useRestoreVersionModal = () => {
         dispatch,
         notifySuccess,
         notifyError,
+        onVersionRestored,
     ])
 
     return {

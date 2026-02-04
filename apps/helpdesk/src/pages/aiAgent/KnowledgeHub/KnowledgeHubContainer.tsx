@@ -709,6 +709,7 @@ export const KnowledgeHubContainer = () => {
                 currentArticleId={faqEditor.currentArticleId}
                 faqArticleMode={faqEditor.faqArticleMode}
                 initialArticleMode={faqEditor.initialArticleMode}
+                shopName={shopName}
                 onClose={handleCloseFaqEditor}
                 onCreate={faqEditor.handleCreate}
                 onUpdate={faqEditor.handleUpdate}

@@ -1,3 +1,4 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
 
 import { useNotify } from 'hooks/useNotify'
@@ -11,6 +12,8 @@ import {
 import type { GuidanceState, HistoricalVersionState } from '../../context/types'
 import { useRestoreVersionModal } from '../useRestoreVersionModal'
 
+jest.mock('@repo/logging')
+
 jest.mock('hooks/useNotify', () => ({
     useNotify: jest.fn(),
 }))
@@ -23,6 +26,8 @@ jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
     fromArticleTranslationResponse: jest.fn(),
 }))
+
+const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('useRestoreVersionModal', () => {
     const mockDispatch = jest.fn()
@@ -554,6 +559,66 @@ describe('useRestoreVersionModal', () => {
             expect(fromArticleTranslationResponse).toHaveBeenCalledWith(
                 expect.anything(),
                 { id: guidanceWithoutTemplate.id, templateKey: null },
+            )
+        })
+
+        it('should track version restored event on successful restore', async () => {
+            mockUpdateGuidanceArticle.mockResolvedValue({
+                title: 'Restored Title',
+                content: 'Restored Content',
+            })
+            ;(fromArticleTranslationResponse as jest.Mock).mockReturnValue(
+                mockGuidance,
+            )
+
+            const { result } = renderHook(() => useRestoreVersionModal())
+
+            await act(async () => {
+                await result.current.onRestore()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionRestored,
+                {
+                    shopName: 'test-shop',
+                    resourceType: 'guidance',
+                    resourceId: mockGuidance.id,
+                    helpCenterId: 1,
+                    locale: 'en-US',
+                    versionId: mockHistoricalVersion.versionId,
+                    versionNumber: mockHistoricalVersion.version,
+                    publishedDatetime: mockHistoricalVersion.publishedDatetime,
+                },
+            )
+        })
+
+        it('should not track version restored event when response is falsy', async () => {
+            mockUpdateGuidanceArticle.mockResolvedValue(null)
+
+            const { result } = renderHook(() => useRestoreVersionModal())
+
+            await act(async () => {
+                await result.current.onRestore()
+            })
+
+            expect(mockLogEvent).not.toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionRestored,
+                expect.anything(),
+            )
+        })
+
+        it('should not track version restored event on failure', async () => {
+            mockUpdateGuidanceArticle.mockRejectedValue(new Error('API Error'))
+
+            const { result } = renderHook(() => useRestoreVersionModal())
+
+            await act(async () => {
+                await result.current.onRestore()
+            })
+
+            expect(mockLogEvent).not.toHaveBeenCalledWith(
+                SegmentEvent.AiAgentVersionHistoryVersionRestored,
+                expect.anything(),
             )
         })
     })

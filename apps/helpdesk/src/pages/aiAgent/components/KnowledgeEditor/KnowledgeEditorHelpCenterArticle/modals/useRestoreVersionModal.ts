@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
+import { useVersionHistoryTracking } from '../../shared/useVersionHistoryTracking/useVersionHistoryTracking'
 import { useArticleContext } from '../context'
 
 export const useRestoreVersionModal = () => {
@@ -10,6 +11,14 @@ export const useRestoreVersionModal = () => {
     const { error: notifyError, success: notifySuccess } = useNotify()
 
     const { helpCenter, onUpdatedFn } = config
+
+    const { onVersionRestored } = useVersionHistoryTracking({
+        shopName: config.shopName ?? '',
+        resourceType: 'article',
+        resourceId: state.article?.id ?? 0,
+        helpCenterId: helpCenter.id,
+        locale: state.currentLocale,
+    })
 
     const updateTranslationMutation = useUpdateArticleTranslation(helpCenter.id)
 
@@ -52,6 +61,12 @@ export const useRestoreVersionModal = () => {
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
                 dispatch({ type: 'SET_MODE', payload: 'read' })
                 notifySuccess('Version restored as draft.')
+                onVersionRestored({
+                    versionId: state.historicalVersion.versionId,
+                    versionNumber: state.historicalVersion.version,
+                    publishedDatetime:
+                        state.historicalVersion.publishedDatetime,
+                })
                 onUpdatedFn?.()
             }
         } catch {
@@ -70,6 +85,7 @@ export const useRestoreVersionModal = () => {
         notifySuccess,
         notifyError,
         onUpdatedFn,
+        onVersionRestored,
     ])
 
     return {

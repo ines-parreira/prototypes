@@ -27,6 +27,7 @@ type Props = {
     helpCenter: HelpCenter
     locales: Locale[]
     categories: Category[]
+    shopName?: string
     onClickPrevious?: () => void
     onClickNext?: () => void
     onClose: () => void
@@ -144,6 +145,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         helpCenter: props.helpCenter,
         supportedLocales: props.locales,
         categories: props.categories,
+        shopName: props.shopName,
         articleId: isExisting ? article.articleId : undefined,
         initialArticle: getArticle.data ?? undefined,
         versionStatus: 'latest_draft',

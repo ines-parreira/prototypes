@@ -168,6 +168,7 @@ export type ArticleContextConfig = {
     helpCenter: HelpCenter
     supportedLocales: Locale[]
     categories: Category[]
+    shopName?: string
 
     // Article data (for existing)
     articleId?: number

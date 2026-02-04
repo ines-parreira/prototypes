@@ -6,6 +6,8 @@ import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/
 import { useInfiniteGetArticleTranslationVersions } from 'models/helpCenter/queries'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
+import { useVersionHistoryTracking } from '../useVersionHistoryTracking/useVersionHistoryTracking'
+
 const VERSIONS_PER_PAGE = 20
 
 export type ArticleTranslationVersion =
@@ -85,6 +87,8 @@ export function getVersionImpactDateRange(
 
 type HistoricalVersion = {
     versionId: number
+    version: number
+    publishedDatetime: string | null
 } | null
 
 type VersionHistoryDispatch = (
@@ -97,6 +101,8 @@ type VersionHistoryDispatch = (
 ) => void
 
 export type VersionHistoryBaseParams = {
+    shopName: string
+    resourceType: 'guidance' | 'article'
     helpCenterId: number
     articleId: number
     locale: string
@@ -123,6 +129,8 @@ export type VersionHistoryData = {
 }
 
 export function useVersionHistoryBase({
+    shopName,
+    resourceType,
     helpCenterId,
     articleId,
     locale,
@@ -132,6 +140,13 @@ export function useVersionHistoryBase({
     isAutoSaving,
     dispatch,
 }: VersionHistoryBaseParams): VersionHistoryData {
+    const { onVersionViewed, onBackToCurrent } = useVersionHistoryTracking({
+        shopName,
+        resourceType,
+        resourceId: articleId,
+        helpCenterId,
+        locale,
+    })
     const isVersionHistoryEnabled = useFlag(
         FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
     )
@@ -173,6 +188,12 @@ export function useVersionHistoryBase({
         (version: ArticleTranslationVersion) => {
             if (isDisabled) return
 
+            onVersionViewed({
+                versionId: version.id,
+                versionNumber: version.version,
+                publishedDatetime: version.published_datetime,
+            })
+
             const isCurrentVersion =
                 currentVersionId !== null && version.id === currentVersionId
 
@@ -189,13 +210,20 @@ export function useVersionHistoryBase({
                 })
             }
         },
-        [dispatch, currentVersionId, isDisabled, versions],
+        [dispatch, currentVersionId, isDisabled, versions, onVersionViewed],
     )
 
     const onGoToLatest = useCallback(() => {
         if (isDisabled) return
+        if (historicalVersion) {
+            onBackToCurrent({
+                versionId: historicalVersion.versionId,
+                versionNumber: historicalVersion.version,
+                publishedDatetime: historicalVersion.publishedDatetime,
+            })
+        }
         dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
-    }, [dispatch, isDisabled])
+    }, [dispatch, isDisabled, historicalVersion, onBackToCurrent])
 
     return {
         versions,
