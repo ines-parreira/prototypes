@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
@@ -63,7 +64,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     onChange?: (value: boolean) => void
     isDisabled?: boolean
     showMultiLanguageInfo?: boolean
-    multiLanguageTooltip?: string
+    multiLanguageTooltip?: string | ReactNode
 }) => {
     const id = useId()
 
@@ -82,13 +83,17 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                 </LegacyTooltip>
             )}
             {showMultiLanguageInfo && multiLanguageTooltip && (
-                <Tooltip delay={0} closeDelay={5000}>
+                <Tooltip>
                     <TooltipTrigger>
                         <span role="button" tabIndex={0}>
                             <Icon name="info" color="ai" />
                         </span>
                     </TooltipTrigger>
-                    <TooltipContent caption={multiLanguageTooltip} />
+                    {typeof multiLanguageTooltip === 'string' ? (
+                        <TooltipContent caption={multiLanguageTooltip} />
+                    ) : (
+                        <TooltipContent>{multiLanguageTooltip}</TooltipContent>
+                    )}
                 </Tooltip>
             )}
         </div>

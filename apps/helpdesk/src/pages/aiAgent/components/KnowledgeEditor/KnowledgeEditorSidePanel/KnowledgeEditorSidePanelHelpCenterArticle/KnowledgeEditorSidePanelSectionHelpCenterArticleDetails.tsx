@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { Tag } from '@gorgias/axiom'
+import { Tag, Text } from '@gorgias/axiom'
 
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
@@ -16,6 +16,7 @@ import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSect
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
 
 import commonCss from '../KnowledgeEditorSidePanelCommonFields.less'
+import css from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails.less'
 
 export type Props = {
     sectionId: string
@@ -52,7 +53,22 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
 
     const getMultiLanguageTooltip = () => {
         const languageName = getCurrentLocaleName()
-        return `You're viewing the default-language version of this article: ${languageName}. AI Agent only uses this default version. You can manage other languages articles in your Help Center.`
+        const helpCenterUrl = helpCenter
+            ? `${HELP_CENTER_BASE_PATH}/${helpCenter.id}/articles`
+            : undefined
+
+        return (
+            <Text size="sm" className={css.tooltipContent}>
+                You&apos;re viewing the default-language version of this
+                article: {languageName}. AI Agent only uses this default
+                version. You can manage other language articles in your{' '}
+                {helpCenterUrl ? (
+                    <Link to={helpCenterUrl}>Help Center.</Link>
+                ) : (
+                    'Help Center.'
+                )}
+            </Text>
+        )
     }
 
     const getAiAgentVisibilityTooltip = () => {
