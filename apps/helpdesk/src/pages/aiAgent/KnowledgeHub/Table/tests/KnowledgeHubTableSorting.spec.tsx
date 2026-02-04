@@ -10,8 +10,11 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import type { SortingState } from '@gorgias/axiom'
+
 import { user } from 'fixtures/users'
 import { useFaqHelpCenter } from 'pages/aiAgent/KnowledgeHub/EmptyState/useFaqHelpCenter'
+import { useKnowledgeHubSortingPreference } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSortingPreference'
 import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
 import {
     KnowledgeType,
@@ -21,6 +24,8 @@ import type { KnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { EMPTY_HELP_CENTER_ID } from 'pages/automate/common/components/HelpCenterSelect'
 
 const mockStore = configureMockStore()
+
+jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSortingPreference')
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -74,6 +79,11 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
 const mockUseFaqHelpCenter = useFaqHelpCenter as jest.MockedFunction<
     typeof useFaqHelpCenter
 >
+
+const mockUseKnowledgeHubSortingPreference =
+    useKnowledgeHubSortingPreference as jest.MockedFunction<
+        typeof useKnowledgeHubSortingPreference
+    >
 
 const defaultState = {
     currentUser: Map(user),
@@ -142,9 +152,26 @@ const rerenderComponent = async (rerender: any, props = {}) => {
 }
 
 describe('KnowledgeHubTable - displayData useMemo Logic', () => {
+    let currentSortState: SortingState
+
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+
+        currentSortState = []
+
+        mockUseKnowledgeHubSortingPreference.mockImplementation(() => ({
+            get sortState() {
+                return currentSortState
+            },
+            setSortState: jest.fn((newStateOrUpdater) => {
+                currentSortState =
+                    typeof newStateOrUpdater === 'function'
+                        ? newStateOrUpdater(currentSortState)
+                        : newStateOrUpdater
+            }),
+        }))
+
         mockUseFaqHelpCenter.mockReturnValue({
             faqHelpCenters: [],
             selectedHelpCenter: {

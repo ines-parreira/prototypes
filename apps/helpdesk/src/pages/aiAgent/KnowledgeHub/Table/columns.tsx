@@ -26,6 +26,17 @@ import { TitleCell } from './TitleCell'
 
 import styles from './KnowledgeHubTable.less'
 
+export const COLUMN_IDS = {
+    TITLE: 'title',
+    LAST_UPDATED_AT: 'lastUpdatedAt',
+    IN_USE_BY_AI: 'inUseByAI',
+    METRICS_TICKETS: 'metrics.tickets',
+    METRICS_HANDOVER_TICKETS: 'metrics.handoverTickets',
+    METRICS_CSAT: 'metrics.csat',
+} as const
+
+export const METRICS_COLUMN_PREFIX = 'metrics.' as const
+
 const getCheckboxContent = (
     originalCell: unknown,
     info: unknown,
@@ -142,12 +153,12 @@ export const getColumns = (
     const baseColumns: ColumnDef<GroupedKnowledgeItem>[] = [
         createSelectableColumnWithTooltip(),
         {
-            id: 'title',
-            accessorKey: 'title',
+            id: COLUMN_IDS.TITLE,
+            accessorKey: COLUMN_IDS.TITLE,
             header: () => (
                 <SortableHeader
                     label="Title"
-                    columnId="title"
+                    columnId={COLUMN_IDS.TITLE}
                     sortState={sortState}
                     onSort={onColumnSort}
                 />
@@ -168,12 +179,12 @@ export const getColumns = (
     const metricColumns: ColumnDef<GroupedKnowledgeItem>[] = metricsDateRange
         ? [
               {
-                  id: 'metrics.tickets',
-                  accessorKey: 'metrics.tickets',
+                  id: COLUMN_IDS.METRICS_TICKETS,
+                  accessorKey: COLUMN_IDS.METRICS_TICKETS,
                   header: () => (
                       <SortableHeader
                           label="Tickets"
-                          columnId="metrics.tickets"
+                          columnId={COLUMN_IDS.METRICS_TICKETS}
                           sortState={sortState}
                           onSort={onColumnSort}
                       />
@@ -236,12 +247,12 @@ export const getColumns = (
                   sortUndefined: -1,
               },
               {
-                  id: 'metrics.handoverTickets',
-                  accessorKey: 'metrics.handoverTickets',
+                  id: COLUMN_IDS.METRICS_HANDOVER_TICKETS,
+                  accessorKey: COLUMN_IDS.METRICS_HANDOVER_TICKETS,
                   header: () => (
                       <SortableHeader
                           label="Handover tickets"
-                          columnId="metrics.handoverTickets"
+                          columnId={COLUMN_IDS.METRICS_HANDOVER_TICKETS}
                           sortState={sortState}
                           onSort={onColumnSort}
                       />
@@ -305,12 +316,12 @@ export const getColumns = (
                   sortUndefined: -1,
               },
               {
-                  id: 'metrics.csat',
-                  accessorKey: 'metrics.csat',
+                  id: COLUMN_IDS.METRICS_CSAT,
+                  accessorKey: COLUMN_IDS.METRICS_CSAT,
                   header: () => (
                       <SortableHeader
                           label="Avg CSAT"
-                          columnId="metrics.csat"
+                          columnId={COLUMN_IDS.METRICS_CSAT}
                           sortState={sortState}
                           onSort={onColumnSort}
                       />

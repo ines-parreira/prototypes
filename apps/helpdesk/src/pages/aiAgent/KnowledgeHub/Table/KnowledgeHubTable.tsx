@@ -27,7 +27,11 @@ import {
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { BulkActions } from 'pages/aiAgent/KnowledgeHub/Table/BulkActions/BulkActions'
-import { getColumns } from 'pages/aiAgent/KnowledgeHub/Table/columns'
+import {
+    COLUMN_IDS,
+    getColumns,
+    METRICS_COLUMN_PREFIX,
+} from 'pages/aiAgent/KnowledgeHub/Table/columns'
 import { InUseByAIFilter } from 'pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter'
 import { ItemCount } from 'pages/aiAgent/KnowledgeHub/Table/ItemCount'
 import { LastUpdatedDateFilter } from 'pages/aiAgent/KnowledgeHub/Table/LastUpdatedDateFilter'
@@ -46,6 +50,7 @@ import type {
     KnowledgeType,
 } from 'pages/aiAgent/KnowledgeHub/types'
 
+import { useKnowledgeHubSortingPreference } from '../hooks/useKnowledgeHubSortingPreference'
 import { KnowledgeType as KnowledgeTypeEnum } from '../types'
 import { applyStableRowOrder, sortData } from './KnowledgeHubTable.utils'
 
@@ -130,24 +135,50 @@ export const KnowledgeHubTable = ({
         },
     )
 
-    // Track user's sort selection for manual sorting
-    const [sortState, setSortState] = useState<SortingState>([])
+    const availableColumnIds = useMemo(() => {
+        const baseColumns = [
+            COLUMN_IDS.TITLE,
+            COLUMN_IDS.LAST_UPDATED_AT,
+            COLUMN_IDS.IN_USE_BY_AI,
+        ]
+        if (isMetricsEnabled) {
+            return [
+                ...baseColumns,
+                COLUMN_IDS.METRICS_TICKETS,
+                COLUMN_IDS.METRICS_HANDOVER_TICKETS,
+                COLUMN_IDS.METRICS_CSAT,
+            ]
+        }
+        return baseColumns
+    }, [isMetricsEnabled])
 
-    // Track sorted row ID order for stable sorting
+    const { sortState, setSortState } =
+        useKnowledgeHubSortingPreference(availableColumnIds)
+
     const sortedRowIdsRef = useRef<string[] | null>(null)
     const cachedSortStateRef = useRef<SortingState | null>(null)
 
-    // Handle column header clicks for custom sorting
-    const handleColumnClick = useCallback((columnId: string) => {
-        setSortState((prev) => {
-            // If clicking same column, toggle direction
-            if (prev.length > 0 && prev[0].id === columnId) {
-                return [{ id: columnId, desc: !prev[0].desc }]
-            }
-            // Otherwise, sort ascending by this column
-            return [{ id: columnId, desc: false }]
-        })
-    }, [])
+    const tableIsLoading = useMemo(() => {
+        const isMetricSort =
+            sortState.length > 0 &&
+            sortState[0].id.startsWith(METRICS_COLUMN_PREFIX)
+
+        return (
+            isLoading || (isMetricsLoading && isMetricsEnabled && isMetricSort)
+        )
+    }, [isLoading, isMetricsLoading, isMetricsEnabled, sortState])
+
+    const handleColumnClick = useCallback(
+        (columnId: string) => {
+            setSortState((prev) => {
+                if (prev.length > 0 && prev[0].id === columnId) {
+                    return [{ id: columnId, desc: !prev[0].desc }]
+                }
+                return [{ id: columnId, desc: false }]
+            })
+        },
+        [setSortState],
+    )
 
     const { guidanceActions: availableActions } =
         useGetGuidancesAvailableActions(shopName, shopType)
@@ -268,7 +299,7 @@ export const KnowledgeHubTable = ({
 
         // No header click → Maintain existing sort order
         // If no cached order exists, do fresh sort
-        if (!sortedRowIdsRef.current) {
+        if (!sortedRowIdsRef.current || sortedRowIdsRef.current.length === 0) {
             const sortedData = sortData(filteredAndGroupedData, sortState)
             sortedRowIdsRef.current = sortedData.map((row) => String(row.id))
             return sortedData
@@ -489,7 +520,16 @@ export const KnowledgeHubTable = ({
             inUseByAIFilter !== null) &&
         displayData.length === 0
 
-    if (!isSearchEmptyPage && displayData.length === 0 && !isLoading) {
+    const clearSearch = useCallback(() => {
+        clearSearchParams()
+        setActiveFilterTypes(new Set())
+    }, [clearSearchParams])
+
+    const handleFilterSelect = useCallback((filterValue: string) => {
+        setActiveFilterTypes((prev) => new Set(prev).add(filterValue))
+    }, [])
+
+    if (!isSearchEmptyPage && displayData.length === 0 && !tableIsLoading) {
         return (
             <div className={css.emptyTable}>
                 <EmptyStateWrapper
@@ -500,15 +540,6 @@ export const KnowledgeHubTable = ({
                 />
             </div>
         )
-    }
-
-    const clearSearch = () => {
-        clearSearchParams()
-        setActiveFilterTypes(new Set())
-    }
-
-    const handleFilterSelect = (filterValue: string) => {
-        setActiveFilterTypes((prev) => new Set(prev).add(filterValue))
     }
 
     return (
@@ -639,7 +670,7 @@ export const KnowledgeHubTable = ({
                 )}
 
                 <TableBodyContent
-                    isLoading={isLoading}
+                    isLoading={tableIsLoading}
                     rows={table.getRowModel().rows}
                     columnCount={table.getAllColumns().length}
                     table={table}
