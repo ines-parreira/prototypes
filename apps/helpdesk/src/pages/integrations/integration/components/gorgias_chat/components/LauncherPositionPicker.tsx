@@ -115,7 +115,7 @@ export function LauncherPositionPicker({
                 <Text variant="bold" size="md">
                     Chat launcher position
                 </Text>
-                <Text size="sm" color="secondary">
+                <Text size="sm" className={css.caption}>
                     Choose where the chat bubble appears on your site.
                 </Text>
             </div>

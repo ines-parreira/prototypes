@@ -39,7 +39,9 @@ export const FeatureToggle: React.FC<Props> = ({
                         <Tag
                             color={tag.color ?? 'purple'}
                             leadingSlot={
-                                tag.icon ? <Icon name={tag.icon} /> : undefined
+                                tag.icon ? (
+                                    <Icon name={tag.icon} size="xs" />
+                                ) : undefined
                             }
                         >
                             {tag.text}

@@ -182,7 +182,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             <Text variant="bold" size="md">
                                 Brand color
                             </Text>
-                            <Text size="sm" color="secondary">
+                            <Text size="sm" className={css.caption}>
                                 Make your chat fit in with your brand color
                             </Text>
                             <ColorPicker
@@ -202,7 +202,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             <Text variant="bold" size="md">
                                 Home page logo
                             </Text>
-                            <Text size="sm" color="secondary">
+                            <Text size="sm" className={css.caption}>
                                 Add a PNG, JPG or GIF horizontal logo with a
                                 transparent background.
                             </Text>
