@@ -127,7 +127,7 @@ describe('PaymentInformationView', () => {
         await act(() => userEvent.hover(screen.getByText('Change Frequency')))
 
         expect(
-            screen.getByText(`To downgrade billing frequency, please `, {
+            screen.getByText(`Because you're on a custom plan, please `, {
                 exact: false,
             }),
         )

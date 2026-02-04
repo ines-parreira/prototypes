@@ -225,10 +225,10 @@ describe('NavigateToChangeBillingFrequency', () => {
             const tooltip = screen.getByRole('tooltip')
             expect(tooltip).toBeInTheDocument()
             expect(tooltip).toHaveTextContent(
-                `To downgrade billing frequency, please`,
+                `Because you're on a custom plan, please contact our team to make changes`,
             )
 
-            const contact = screen.getByText('get in touch')
+            const contact = screen.getByText('contact our team')
             await act(() => userEvent.click(contact))
             expect(contactBillingMock).toHaveBeenCalledWith(
                 TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,

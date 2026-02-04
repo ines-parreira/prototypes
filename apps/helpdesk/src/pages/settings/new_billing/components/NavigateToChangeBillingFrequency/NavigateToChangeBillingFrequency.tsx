@@ -121,7 +121,7 @@ export default function NavigateToChangeBillingFrequency({
     } else {
         toolTipContent = (
             <>
-                To downgrade billing frequency, please{' '}
+                Because you&apos;re on a custom plan, please{' '}
                 <span
                     className={css.link}
                     onClick={() =>
@@ -130,9 +130,9 @@ export default function NavigateToChangeBillingFrequency({
                         )
                     }
                 >
-                    get in touch
+                    contact our team
                 </span>{' '}
-                with our team.
+                to make changes.
             </>
         )
     }
