@@ -165,13 +165,11 @@
         }
 
         .aiAgentLoadingSkeletonContainer {
-            background: linear-gradient(
-                90deg,
-                var(--content-neutral-default) 0%,
-                var(--surface-neutral-tertiary) 50%,
-                var(--content-neutral-default) 100%
-            );
-            color: var(--content-neutral-secondary);
+            background-size: 200% 100% !important;
+            background-clip: text !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            color: var(--content-neutral-secondary) !important;
         }
 
         .messageErrorContainer {

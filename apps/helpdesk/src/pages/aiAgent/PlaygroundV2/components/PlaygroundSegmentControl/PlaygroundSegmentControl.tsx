@@ -1,8 +1,4 @@
-import cn from 'classnames'
-
-import { LegacyButton as Button } from '@gorgias/axiom'
-
-import css from './PlaygroundSegmentControl.less'
+import { ButtonGroup, ButtonGroupItem } from '@gorgias/axiom'
 
 type Segment = {
     value: string
@@ -16,32 +12,6 @@ type Props = {
     segments: Segment[]
 }
 
-const SegmentButton = ({
-    onClick,
-    label,
-    isActive,
-    isDisabled,
-}: {
-    isActive: boolean
-    onClick: () => void
-    label: string
-    isDisabled?: boolean
-}) => {
-    return (
-        <Button
-            onClick={onClick}
-            isDisabled={isDisabled}
-            intent="secondary"
-            className={cn([
-                css.channelButton,
-                isActive ? css.channelButtonActive : '',
-            ])}
-        >
-            {label}
-        </Button>
-    )
-}
-
 export const PlaygroundSegmentControl = ({
     selectedValue,
     onValueChange,
@@ -49,16 +19,16 @@ export const PlaygroundSegmentControl = ({
     segments,
 }: Props) => {
     return (
-        <div className={css.container}>
+        <ButtonGroup
+            selectedKey={selectedValue}
+            onSelectionChange={onValueChange}
+            isDisabled={isDisabled}
+        >
             {segments.map((segment) => (
-                <SegmentButton
-                    key={segment.value}
-                    isActive={selectedValue === segment.value}
-                    label={segment.label}
-                    onClick={() => onValueChange(segment.value)}
-                    isDisabled={isDisabled}
-                />
+                <ButtonGroupItem key={segment.value} id={segment.value}>
+                    {segment.label}
+                </ButtonGroupItem>
             ))}
-        </div>
+        </ButtonGroup>
     )
 }
