@@ -7,6 +7,10 @@ import { useHistory, useParams } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import {
+    type CATEGORIES,
+    CATEGORIES_SORT_ORDER,
+} from 'pages/automate/actionsPlatform/constants'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'
@@ -37,29 +41,37 @@ const ActionsUseCaseTemplatesCards = ({
 
     const getIsActionStepEnabled = useGetIsActionStepEnabled()
 
-    const sortedTemplates = useMemo(
-        () =>
-            _orderBy(
-                templates.filter((template) => {
-                    if (!template.category) {
-                        return false
+    const sortedTemplates = useMemo(() => {
+        const getCategorySortPriority = (template: ActionTemplate) => {
+            const categoryIndex = CATEGORIES_SORT_ORDER.indexOf(
+                template.category as CATEGORIES,
+            )
+            const isUnknownCategory = categoryIndex === -1
+            return isUnknownCategory
+                ? CATEGORIES_SORT_ORDER.length
+                : categoryIndex
+        }
+
+        return _orderBy(
+            templates.filter((template) => {
+                if (!template.category) {
+                    return false
+                }
+
+                return template.steps.some((step) => {
+                    if (step.kind === 'reusable-llm-prompt-call') {
+                        return getIsActionStepEnabled(
+                            step.settings.configuration_internal_id,
+                        )
                     }
 
-                    return template.steps.some((step) => {
-                        if (step.kind === 'reusable-llm-prompt-call') {
-                            return getIsActionStepEnabled(
-                                step.settings.configuration_internal_id,
-                            )
-                        }
-
-                        return false
-                    })
-                }),
-                ['category', 'name'],
-                ['asc', 'asc'],
-            ),
-        [templates, getIsActionStepEnabled],
-    )
+                    return false
+                })
+            }),
+            [getCategorySortPriority, 'name'],
+            ['asc', 'asc'],
+        )
+    }, [templates, getIsActionStepEnabled])
 
     return (
         <div className={css.container}>

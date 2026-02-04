@@ -9,7 +9,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import { CATEGORIES } from '../constants'
+import { CATEGORIES_VALUES as CATEGORIES } from '../constants'
 
 import css from './ActionsPlatformUseCaseTemplateCategory.less'
 
