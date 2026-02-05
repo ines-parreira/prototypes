@@ -5,6 +5,7 @@
 ### "Unable to find an element with the role..."
 
 **Causes:**
+
 1. Element hasn't rendered yet (async)
 2. Wrong selector
 3. Element is conditionally rendered
@@ -53,12 +54,12 @@ screen.getByText((content, element) => {
 
 ### "Warning: An update to Component inside a test was not wrapped in act(...)"
 
-**Cause:** State update happened outside act() boundary. Note: with userEvent v14+, you typically don't need act() for user interactions.
+**Cause:** State update happened outside act() boundary.
 
 **Solutions:**
 
 ```tsx
-// 1. Ensure userEvent is awaited (v14+ handles act internally)
+// 1. Ensure userEvent is awaited
 await user.click(button)
 
 // 2. Wait for async updates
@@ -72,6 +73,13 @@ act(() => {
 })
 ```
 
+If the warning persist then:
+
+```tsx
+// Wrap the userEvent in
+await act(() => user.click(button))
+```
+
 ### "Warning: You seem to have overlapping act() calls"
 
 **Cause:** Nested or overlapping act() calls.
@@ -79,12 +87,7 @@ act(() => {
 **Solution:**
 
 ```tsx
-// ❌ WRONG - Unnecessary act() with userEvent v14+
-await act(async () => {
-    await user.click(button)
-})
-
-// ✅ CORRECT - Just await userEvent (v14+ handles act internally)
+// ✅ CORRECT - Remove act() and just await userEvent
 await user.click(button)
 ```
 
@@ -93,6 +96,7 @@ await user.click(button)
 ### "Timeout - Async callback was not invoked within the 5000 ms timeout"
 
 **Causes:**
+
 1. API call not mocked
 2. Promise never resolves
 3. Wrong condition in waitFor
@@ -104,9 +108,12 @@ await user.click(button)
 server.use(mockHandler.handler) // In beforeEach
 
 // 2. Increase timeout for slow operations
-await waitFor(() => {
-    expect(screen.getByText('Done')).toBeInTheDocument()
-}, { timeout: 10000 })
+await waitFor(
+    () => {
+        expect(screen.getByText('Done')).toBeInTheDocument()
+    },
+    { timeout: 10000 },
+)
 
 // 3. Verify condition will eventually be true
 // Debug current state
@@ -153,13 +160,14 @@ server.use(mockMissingEndpoint.handler)
 server.listen({
     onUnhandledRequest: (req) => {
         console.error('Unhandled:', req.method, req.url)
-    }
+    },
 })
 ```
 
 ### Handler not intercepting requests
 
 **Causes:**
+
 1. Handler not added to server
 2. URL mismatch
 3. Method mismatch
@@ -215,7 +223,7 @@ screen.debug(input) // Verify element type
 render(
     <Provider store={mockStore}>
         <Component />
-    </Provider>
+    </Provider>,
 )
 ```
 
@@ -234,7 +242,7 @@ const queryClient = new QueryClient({
 render(
     <QueryClientProvider client={queryClient}>
         <Component />
-    </QueryClientProvider>
+    </QueryClientProvider>,
 )
 ```
 
@@ -251,7 +259,7 @@ screen.debug(element) // Specific element
 
 ```tsx
 // See all buttons
-screen.getAllByRole('button').forEach(btn => {
+screen.getAllByRole('button').forEach((btn) => {
     console.log(btn.textContent, btn.getAttribute('aria-label'))
 })
 ```

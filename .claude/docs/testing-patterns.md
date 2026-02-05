@@ -7,10 +7,10 @@ Integration testing patterns using React Testing Library and MSW.
 ### Basic Setup
 
 ```typescript
-import { render, screen, act, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { setupServer } from 'msw/node'
 import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 // Setup server
 const server = setupServer()
@@ -59,40 +59,44 @@ const renderComponent = (props = {}) => {
 ## Selectors (Priority Order)
 
 1. **getByRole** - Best for accessibility
-   ```tsx
-   screen.getByRole('button', { name: /submit/i })
-   screen.getByRole('textbox', { name: /email/i })
-   screen.getByRole('heading', { level: 1 })
-   ```
+
+    ```tsx
+    screen.getByRole('button', { name: /submit/i })
+    screen.getByRole('textbox', { name: /email/i })
+    screen.getByRole('heading', { level: 1 })
+    ```
 
 2. **getByText** - For text content
-   ```tsx
-   screen.getByText('Welcome')
-   screen.getByText(/hello world/i)
-   ```
+
+    ```tsx
+    screen.getByText('Welcome')
+    screen.getByText(/hello world/i)
+    ```
 
 3. **getByLabelText** - For form inputs
-   ```tsx
-   screen.getByLabelText('Email address')
-   screen.getByLabelText(/password/i)
-   ```
+
+    ```tsx
+    screen.getByLabelText('Email address')
+    screen.getByLabelText(/password/i)
+    ```
 
 4. **getByPlaceholderText** - For inputs without labels
-   ```tsx
-   screen.getByPlaceholderText('Search...')
-   ```
+
+    ```tsx
+    screen.getByPlaceholderText('Search...')
+    ```
 
 5. **getByTestId** - Last resort only
-   ```tsx
-   // ❌ Avoid
-   screen.getByTestId('submit-button')
-   ```
+    ```tsx
+    // ❌ Avoid
+    screen.getByTestId('submit-button')
+    ```
 
 ## Async Patterns
 
 ### User Interactions
 
-With userEvent v14+, methods are async and handle `act()` internally - just await them:
+Await userEvent methods interactions
 
 ```typescript
 const { user } = renderComponent()
@@ -127,9 +131,12 @@ await waitFor(() => {
 })
 
 // With timeout
-await waitFor(() => {
-    expect(screen.getByText('Data')).toBeInTheDocument()
-}, { timeout: 5000 })
+await waitFor(
+    () => {
+        expect(screen.getByText('Data')).toBeInTheDocument()
+    },
+    { timeout: 5000 },
+)
 ```
 
 ## MSW Handler Patterns
@@ -137,15 +144,15 @@ await waitFor(() => {
 ### Basic Usage
 
 ```typescript
-import { mockGetUserHandler, mockUpdateUserHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetUserHandler,
+    mockUpdateUserHandler,
+} from '@gorgias/helpdesk-mocks'
 
 const mockGetUser = mockGetUserHandler()
 const mockUpdateUser = mockUpdateUserHandler()
 
-const localHandlers = [
-    mockGetUser.handler,
-    mockUpdateUser.handler,
-]
+const localHandlers = [mockGetUser.handler, mockUpdateUser.handler]
 ```
 
 ### Override for Specific Test
@@ -153,7 +160,7 @@ const localHandlers = [
 ```typescript
 it('should handle error', async () => {
     const { handler } = mockGetUserHandler(async () =>
-        HttpResponse.json({ error: 'Not found' }, { status: 404 })
+        HttpResponse.json({ error: 'Not found' }, { status: 404 }),
     )
     server.use(handler)
 
@@ -173,7 +180,7 @@ it('should show premium user', async () => {
         HttpResponse.json({
             ...mockGetUser.data,
             isPremium: true,
-        })
+        }),
     )
     server.use(handler)
 
@@ -210,7 +217,7 @@ it('should show loading state', () => {
 ```typescript
 it('should show error when API fails', async () => {
     const { handler } = mockGetDataHandler(async () =>
-        HttpResponse.json({ error: 'Failed' }, { status: 500 })
+        HttpResponse.json({ error: 'Failed' }, { status: 500 }),
     )
     server.use(handler)
 
@@ -232,13 +239,8 @@ it('should submit form', async () => {
         expect(screen.getByRole('form')).toBeInTheDocument()
     })
 
-    await user.type(
-        screen.getByRole('textbox', { name: /name/i }),
-        'John'
-    )
-    await user.click(
-        screen.getByRole('button', { name: /submit/i })
-    )
+    await user.type(screen.getByRole('textbox', { name: /name/i }), 'John')
+    await user.click(screen.getByRole('button', { name: /submit/i }))
 
     await waitFor(() => {
         expect(screen.getByText(/success/i)).toBeInTheDocument()
@@ -249,6 +251,7 @@ it('should submit form', async () => {
 ## Anti-Patterns
 
 ❌ **Don't use snapshots** - Use explicit assertions
+
 ```typescript
 // Bad
 expect(container).toMatchSnapshot()
@@ -259,6 +262,7 @@ expect(screen.getByRole('button')).toBeDisabled()
 ```
 
 ❌ **Don't use fireEvent** - Use userEvent instead
+
 ```typescript
 // Bad
 fireEvent.click(button)
@@ -268,6 +272,7 @@ await user.click(button)
 ```
 
 ❌ **Don't use data-testid** - Use accessible selectors
+
 ```typescript
 // Bad
 screen.getByTestId('submit-btn')
@@ -277,15 +282,17 @@ screen.getByRole('button', { name: /submit/i })
 ```
 
 ❌ **Don't create manual mocks** - Use SDK mocks
-```typescript
-// Bad
-jest.mock('../api', () => ({ getUser: jest.fn() }))
 
+```typescript
 // Good
 import { mockGetUserHandler } from '@gorgias/helpdesk-mocks'
+
+// Bad
+jest.mock('../api', () => ({ getUser: jest.fn() }))
 ```
 
 ❌ **Don't forget to await userEvent** - Methods are async
+
 ```typescript
 // Bad
 user.click(button) // missing await

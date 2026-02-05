@@ -4,13 +4,13 @@
 
 ### Priority Order Compliance
 
-| Check | Status |
-|-------|--------|
-| Using `getByRole` as primary selector | ⬜ |
-| Using `getByText` for text content | ⬜ |
-| Using `getByLabelText` for form inputs | ⬜ |
-| NOT using `getByTestId` (unless last resort) | ⬜ |
-| No `data-testid` attributes in components | ⬜ |
+| Check                                        | Status |
+| -------------------------------------------- | ------ |
+| Using `getByRole` as primary selector        | ⬜     |
+| Using `getByText` for text content           | ⬜     |
+| Using `getByLabelText` for form inputs       | ⬜     |
+| NOT using `getByTestId` (unless last resort) | ⬜     |
+| No `data-testid` attributes in components    | ⬜     |
 
 ### Selector Examples
 
@@ -30,14 +30,14 @@ screen.getByTestId('email-input')
 
 ### userEvent Usage
 
-| Check | Status |
-|-------|--------|
-| All userEvent calls are awaited | ⬜ |
-| Using userEvent v14+ (no act wrapper needed) | ⬜ |
-| No synchronous userEvent calls | ⬜ |
+| Check                                                                                                     | Status |
+| --------------------------------------------------------------------------------------------------------- | ------ |
+| All userEvent calls are awaited                                                                           | ⬜     |
+| userEvent calls that still trigger "Warning: An update to Component is a test was not wrapped in act(...) | ⬜     |
+| No synchronous userEvent calls                                                                            | ⬜     |
 
 ```tsx
-// ✅ CORRECT - userEvent v14+ handles act internally
+// ✅ CORRECT
 await user.click(button)
 await user.type(input, 'text')
 
@@ -47,18 +47,22 @@ await user.type(input, 'new value')
 
 // ❌ WRONG - Missing await
 user.click(button)
+```
 
-// ❌ WRONG - Unnecessary act wrapper with v14+
+In case of act() warnings
+
+```tsx
+// ✅ CORRECT
 await act(() => user.click(button))
 ```
 
 ### waitFor Usage
 
-| Check | Status |
-|-------|--------|
-| Using waitFor for async content | ⬜ |
-| Not using waitFor when act() suffices | ⬜ |
-| Assertions inside waitFor callback | ⬜ |
+| Check                                 | Status |
+| ------------------------------------- | ------ |
+| Using waitFor for async content       | ⬜     |
+| Not using waitFor when act() suffices | ⬜     |
+| Assertions inside waitFor callback    | ⬜     |
 
 ```tsx
 // ✅ CORRECT - Wait for async content
@@ -75,14 +79,14 @@ expect(screen.getByText('Loaded')).toBeInTheDocument()
 
 ### userEvent vs fireEvent
 
-| Check | Status |
-|-------|--------|
-| Using userEvent for user interactions | ⬜ |
-| userEvent.setup() called in test | ⬜ |
-| NOT using fireEvent for clicks/typing | ⬜ |
+| Check                                 | Status |
+| ------------------------------------- | ------ |
+| Using userEvent for user interactions | ⬜     |
+| userEvent.setup() called in test      | ⬜     |
+| NOT using fireEvent for clicks/typing | ⬜     |
 
 ```tsx
-// ✅ CORRECT - userEvent v14+ handles act internally
+// ✅ CORRECT
 const user = userEvent.setup()
 await user.click(button)
 await user.type(input, 'text')
@@ -96,25 +100,26 @@ fireEvent.change(input, { target: { value: 'text' } })
 
 ### Server Configuration
 
-| Check | Status |
-|-------|--------|
-| Using setupServer() | ⬜ |
-| `onUnhandledRequest: 'error'` in listen() | ⬜ |
-| server.use() in beforeEach | ⬜ |
-| server.resetHandlers() in afterEach | ⬜ |
-| server.close() in afterAll | ⬜ |
+| Check                                     | Status |
+| ----------------------------------------- | ------ |
+| Using setupServer()                       | ⬜     |
+| `onUnhandledRequest: 'error'` in listen() | ⬜     |
+| server.use() in beforeEach                | ⬜     |
+| server.resetHandlers() in afterEach       | ⬜     |
+| server.close() in afterAll                | ⬜     |
 
 ### Mock Handlers
 
-| Check | Status |
-|-------|--------|
-| Using SDK mock handlers (`@gorgias/helpdesk-mocks`) | ⬜ |
-| NOT creating manual jest.mock for API | ⬜ |
-| Handler overrides use server.use() | ⬜ |
+| Check                                               | Status |
+| --------------------------------------------------- | ------ |
+| Using SDK mock handlers (`@gorgias/helpdesk-mocks`) | ⬜     |
+| NOT creating manual jest.mock for API               | ⬜     |
+| Handler overrides use server.use()                  | ⬜     |
 
 ```tsx
 // ✅ CORRECT
 import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
+
 const mockGetTicket = mockGetTicketHandler()
 server.use(mockGetTicket.handler)
 
@@ -128,36 +133,36 @@ jest.mock('@gorgias/helpdesk-client', () => ({
 
 ### Organization
 
-| Check | Status |
-|-------|--------|
-| Handlers defined at top of file | ⬜ |
-| Related tests grouped in describe() | ⬜ |
-| Descriptive test names | ⬜ |
-| One behavior per test | ⬜ |
+| Check                               | Status |
+| ----------------------------------- | ------ |
+| Handlers defined at top of file     | ⬜     |
+| Related tests grouped in describe() | ⬜     |
+| Descriptive test names              | ⬜     |
+| One behavior per test               | ⬜     |
 
 ### Render Helper
 
-| Check | Status |
-|-------|--------|
-| All providers included (Router, Redux, QueryClient, Theme) | ⬜ |
-| Using shared test utilities | ⬜ |
+| Check                                                      | Status |
+| ---------------------------------------------------------- | ------ |
+| All providers included (Router, Redux, QueryClient, Theme) | ⬜     |
+| Using shared test utilities                                | ⬜     |
 
 ## Common Violations
 
 1. **Using getByTestId instead of getByRole**
-   - Fix: Use role-based query with name matcher
+    - Fix: Use role-based query with name matcher
 
 2. **Missing await on userEvent calls**
-   - Fix: Always `await user.click(...)` etc.
+    - Fix: Always `await user.click(...)` etc.
 
 3. **fireEvent instead of userEvent**
-   - Fix: Setup userEvent and use click/type methods
+    - Fix: Setup userEvent and use click/type methods
 
 4. **Manual API mocks**
-   - Fix: Use `@gorgias/helpdesk-mocks` handlers
+    - Fix: Use `@gorgias/helpdesk-mocks` handlers
 
 5. **Missing server lifecycle hooks**
-   - Fix: Add beforeAll/beforeEach/afterEach/afterAll
+    - Fix: Add beforeAll/beforeEach/afterEach/afterAll
 
 ## Related Checklists
 

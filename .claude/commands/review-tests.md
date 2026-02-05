@@ -57,14 +57,14 @@ Check for proper async handling:
 ```typescript
 // BAD - userEvent not awaited
 userEvent.click(button)
-user.click(button)  // Missing await
+user.click(button) // Missing await
 fireEvent.click(button)
 ```
 
 **Suggest instead:**
 
 ```typescript
-// GOOD - userEvent v14+ handles act internally, just await
+// GOOD
 await user.click(button)
 await user.type(input, 'text')
 ```
@@ -106,7 +106,7 @@ fireEvent.change(input, { target: { value: 'text' } })
 **Suggest instead:**
 
 ```typescript
-// GOOD - using userEvent (v14+ handles act internally)
+// GOOD
 await user.click(button)
 await user.type(input, 'text')
 ```

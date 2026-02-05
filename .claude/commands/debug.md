@@ -29,6 +29,7 @@ Categorize the error:
 ### Step 2: Gather Context
 
 For the error, collect:
+
 - Full error message and stack trace
 - Relevant file contents
 - Related imports and dependencies
@@ -40,53 +41,55 @@ For the error, collect:
 
 **Common patterns:**
 
-| Error | Likely Cause | Fix |
-|-------|--------------|-----|
-| `Property 'x' does not exist` | Missing type definition or wrong import | Check types package, verify import path |
-| `Type 'X' is not assignable to 'Y'` | Type mismatch | Check function signatures, add type assertions if safe |
-| `Cannot find module` | Missing dependency or wrong path | Check package.json, verify import path |
-| `Argument of type 'X' is not assignable` | Wrong parameter type | Check SDK types, verify API usage |
+| Error                                    | Likely Cause                            | Fix                                                    |
+| ---------------------------------------- | --------------------------------------- | ------------------------------------------------------ |
+| `Property 'x' does not exist`            | Missing type definition or wrong import | Check types package, verify import path                |
+| `Type 'X' is not assignable to 'Y'`      | Type mismatch                           | Check function signatures, add type assertions if safe |
+| `Cannot find module`                     | Missing dependency or wrong path        | Check package.json, verify import path                 |
+| `Argument of type 'X' is not assignable` | Wrong parameter type                    | Check SDK types, verify API usage                      |
 
 #### Test Failures
 
 **Common patterns:**
 
-| Error | Likely Cause | Fix |
-|-------|--------------|-----|
-| `Unable to find element` | Wrong selector or timing | Use accessible selector, add waitFor |
-| `act() warning` | Missing await or act wrapper | Wrap userEvent in `await act()` |
-| `Network request failed` | Missing MSW handler | Add handler from SDK mocks |
-| `Timeout` | Async operation not completing | Check mock setup, increase timeout |
+| Error                    | Likely Cause                   | Fix                                  |
+| ------------------------ | ------------------------------ | ------------------------------------ |
+| `Unable to find element` | Wrong selector or timing       | Use accessible selector, add waitFor |
+| `act() warning`          | Missing await or act wrapper   | Wrap userEvent in `await act()`      |
+| `Network request failed` | Missing MSW handler            | Add handler from SDK mocks           |
+| `Timeout`                | Async operation not completing | Check mock setup, increase timeout   |
 
 #### Runtime Errors
 
 **Common patterns:**
 
-| Error | Likely Cause | Fix |
-|-------|--------------|-----|
-| `Cannot read property of undefined` | Missing null check | Add optional chaining, check data loading |
-| `Invalid hook call` | Hook outside component or wrong deps | Verify hook usage, check dependency array |
-| `Maximum update depth exceeded` | Infinite re-render loop | Check useEffect dependencies |
-| `Objects are not valid as React child` | Rendering object instead of string | Convert to string or extract property |
+| Error                                  | Likely Cause                         | Fix                                       |
+| -------------------------------------- | ------------------------------------ | ----------------------------------------- |
+| `Cannot read property of undefined`    | Missing null check                   | Add optional chaining, check data loading |
+| `Invalid hook call`                    | Hook outside component or wrong deps | Verify hook usage, check dependency array |
+| `Maximum update depth exceeded`        | Infinite re-render loop              | Check useEffect dependencies              |
+| `Objects are not valid as React child` | Rendering object instead of string   | Convert to string or extract property     |
 
 #### Build Errors
 
 **Common patterns:**
 
-| Error | Likely Cause | Fix |
-|-------|--------------|-----|
-| `Module not found` | Missing dependency | Run `pnpm install`, check package.json |
-| `Unexpected token` | Syntax error or wrong config | Check file syntax, verify tsconfig |
-| `Export not found` | Wrong export/import | Check named vs default export |
+| Error              | Likely Cause                 | Fix                                    |
+| ------------------ | ---------------------------- | -------------------------------------- |
+| `Module not found` | Missing dependency           | Run `pnpm install`, check package.json |
+| `Unexpected token` | Syntax error or wrong config | Check file syntax, verify tsconfig     |
+| `Export not found` | Wrong export/import          | Check named vs default export          |
 
 ### Step 4: Suggest Fix
 
 Provide:
+
 1. **Root cause** - Why the error occurred
 2. **Solution** - Specific code changes to make
 3. **Prevention** - How to avoid this in future
 
 **Format:**
+
 ```
 ## Diagnosis
 
@@ -112,6 +115,7 @@ Provide:
 ### Step 5: Verify Fix
 
 After applying fix:
+
 ```bash
 # For TypeScript errors
 pnpm typecheck <package>
@@ -126,6 +130,7 @@ pnpm lint <package>
 ## Quick Reference: Test Debugging
 
 ### Element Not Found
+
 ```tsx
 // Problem: getByRole finds nothing
 screen.getByRole('button', { name: /save/i })
@@ -137,38 +142,44 @@ await waitFor(() => {
 ```
 
 ### Act Warning
+
 ```tsx
 // Problem: Missing await on userEvent
 user.click(button)
 
-// Solution: Await userEvent (v14+ handles act internally)
+// Solution: Await userEvent
 await user.click(button)
 ```
 
 ### MSW Handler Missing
+
 ```tsx
 // Problem: Network request fails
 // Error: "Request to /api/users was not handled"
-
 // Solution: Add handler
 import { mockGetUsersHandler } from '@gorgias/helpdesk-mocks'
+
 server.use(mockGetUsersHandler().handler)
 ```
 
 ## Quick Reference: TypeScript
 
 ### Missing Property
+
 ```tsx
+// Error: Property 'profilePicture' does not exist
+// Solution: Check correct property name in types
+import { User } from '@gorgias/helpdesk-types'
+
 // Problem: Property doesn't exist
 user.profilePicture // Error: Property 'profilePicture' does not exist
 
-// Solution: Check correct property name in types
-import { User } from '@gorgias/helpdesk-types'
 // Look at User type definition
 user.meta.profile_picture_url // Correct path
 ```
 
 ### Type Assertion
+
 ```tsx
 // Use sparingly when you know more than TypeScript
 const response = data as ExpectedType

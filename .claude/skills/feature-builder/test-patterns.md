@@ -3,16 +3,18 @@
 ## Test File Structure
 
 ```tsx
-import { render, screen, act, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { setupServer } from 'msw/node'
-import { HttpResponse } from 'msw'
-import { MemoryRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import { appQueryClient, mockStore } from 'testing/utils'
+
 import { ThemeProvider } from '@gorgias/axiom'
 import { mockGetTicketHandler } from '@gorgias/helpdesk-mocks'
-import { appQueryClient, mockStore } from 'testing/utils'
+
 import { ComponentName } from './ComponentName'
 
 // 1. Setup handlers at the top
@@ -49,7 +51,7 @@ function renderComponent(props = {}) {
                     </ThemeProvider>
                 </QueryClientProvider>
             </Provider>
-        </MemoryRouter>
+        </MemoryRouter>,
     )
 }
 
@@ -59,7 +61,9 @@ describe('ComponentName', () => {
         renderComponent({ ticketId: 123 })
 
         await waitFor(() => {
-            expect(screen.getByText(mockGetTicket.data.subject)).toBeInTheDocument()
+            expect(
+                screen.getByText(mockGetTicket.data.subject),
+            ).toBeInTheDocument()
         })
     })
 })
@@ -92,7 +96,7 @@ screen.getByPlaceholderText('Search...')
 
 ## User Interactions
 
-With userEvent v14+, methods are async and handle `act()` internally - just await them:
+With userEvent await user interaction methods:
 
 ```tsx
 it('should handle form submission', async () => {
@@ -101,10 +105,12 @@ it('should handle form submission', async () => {
 
     // Wait for component to load
     await waitFor(() => {
-        expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument()
+        expect(
+            screen.getByRole('textbox', { name: /name/i }),
+        ).toBeInTheDocument()
     })
 
-    // Interact (no act() wrapper needed with userEvent v14+)
+    // Interact
     await user.type(screen.getByRole('textbox', { name: /name/i }), 'John')
     await user.click(screen.getByRole('button', { name: /save/i }))
 
@@ -113,6 +119,21 @@ it('should handle form submission', async () => {
         expect(screen.getByText('Saved successfully')).toBeInTheDocument()
     })
 })
+```
+
+If this genenerate act() related warning:
+
+```
+Warning: An update to Component inside a test was not wrapped in act(...)
+```
+
+Then wrap the user event in an act()
+
+```typescript
+// BEFORE
+await user.click(button)
+// AFTER
+await act(() => user.click(button))
 ```
 
 ## Multiple interactions
@@ -128,10 +149,7 @@ await user.click(screen.getByRole('button', { name: /save/i }))
 ```tsx
 it('should handle error state', async () => {
     const { handler } = mockGetTicketHandler(async () =>
-        HttpResponse.json(
-            { error: { msg: 'Not found' } },
-            { status: 404 }
-        )
+        HttpResponse.json({ error: { msg: 'Not found' } }, { status: 404 }),
     )
     server.use(handler)
 
@@ -147,7 +165,7 @@ it('should handle different user role', async () => {
         HttpResponse.json({
             ...mockGetCurrentUser.data,
             role: { name: 'admin' },
-        })
+        }),
     )
     server.use(handler)
 
@@ -191,7 +209,7 @@ it('should show loading state', () => {
 ```tsx
 it('should show empty state when no data', async () => {
     const { handler } = mockListTicketsHandler(async () =>
-        HttpResponse.json({ data: [] })
+        HttpResponse.json({ data: [] }),
     )
     server.use(handler)
 

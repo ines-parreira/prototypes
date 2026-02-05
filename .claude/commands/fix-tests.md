@@ -17,14 +17,15 @@ Analyze and fix failing tests based on common patterns.
 When the user runs this command:
 
 1. **Determine the package** from the file path:
-   - `packages/<name>/...` → package is `@repo/<name>`
-   - `apps/helpdesk/...` or `src/...` → package is `@repo/helpdesk`
+    - `packages/<name>/...` → package is `@repo/<name>`
+    - `apps/helpdesk/...` or `src/...` → package is `@repo/helpdesk`
 
 2. **Run the test** to see the failure:
-   ```bash
-   pnpm test <package> <test-path>
-   # e.g., pnpm test @repo/tickets TicketHeader.spec.tsx
-   ```
+
+    ```bash
+    pnpm test <package> <test-path>
+    # e.g., pnpm test @repo/tickets TicketHeader.spec.tsx
+    ```
 
 3. **Analyze the error** and match to common patterns:
 
@@ -33,23 +34,36 @@ When the user runs this command:
 #### 1. Act Warning - State Update Not Wrapped
 
 **Error:**
+
 ```
 Warning: An update to Component inside a test was not wrapped in act(...)
 ```
 
-**Fix:** Ensure userEvent calls are awaited (v14+ handles act internally):
+**Fix:** Ensure userEvent calls are awaited:
 
 ```typescript
 // BEFORE (broken)
-userEvent.click(button)  // missing await
+user.click(button) // missing await
 
-// AFTER (fixed) - userEvent v14+ handles act internally
+// AFTER (fixed)
 await user.click(button)
+```
+
+If, despite the fix, the warning is still present, then:
+
+**Fix:** Wrap the user event in an act()
+
+```typescript
+// BEFORE
+await user.click(button)
+// AFTER
+await act(() => user.click(button))
 ```
 
 #### 2. Element Not Found - Async Data
 
 **Error:**
+
 ```
 Unable to find an element with the role "button"
 TestingLibraryElementError: Unable to find...
@@ -71,6 +85,7 @@ const button = screen.getByRole('button', { name: /save/i })
 #### 3. Multiple Elements Found
 
 **Error:**
+
 ```
 Found multiple elements with the role "button"
 ```
@@ -91,6 +106,7 @@ within(form).getByRole('button', { name: /submit/i })
 #### 4. Network Request Not Mocked
 
 **Error:**
+
 ```
 Error: [MSW] Detected an unhandled request: GET /api/...
 ```
@@ -111,6 +127,7 @@ const localHandlers = [
 #### 5. Snapshot Mismatch
 
 **Error:**
+
 ```
 Snapshot name: `Component should render correctly 1`
 - Snapshot  - 5
@@ -127,6 +144,7 @@ pnpm test <package> -u
 #### 6. Mock Not Returning Expected Data
 
 **Error:**
+
 ```
 TypeError: Cannot read properties of undefined (reading 'name')
 ```
@@ -152,6 +170,7 @@ const { handler } = mockGetTeamHandler(async () =>
 #### 7. Async Assertion Timing
 
 **Error:**
+
 ```
 expect(received).toBeInTheDocument()
 Expected element: <div>...</div>
@@ -173,6 +192,7 @@ await waitFor(() => {
 #### 8. Query Client Not Reset
 
 **Error:**
+
 ```
 Test data from previous test leaking into current test
 ```
@@ -189,6 +209,7 @@ beforeEach(() => {
 #### 9. Router Context Missing
 
 **Error:**
+
 ```
 useHistory() may only be used within a <Router> component
 ```
@@ -206,6 +227,7 @@ render(
 #### 10. Redux Store Missing
 
 **Error:**
+
 ```
 could not find react-redux context value
 ```
@@ -226,13 +248,14 @@ render(
 4. **Apply the fix** to the test file
 
 5. **Re-run the test** to verify:
-   ```bash
-   pnpm test <package> <test-path>
-   ```
+
+    ```bash
+    pnpm test <package> <test-path>
+    ```
 
 6. **Report result**:
-   - If fixed: Show what was changed
-   - If still failing: Show remaining error and suggest next steps
+    - If fixed: Show what was changed
+    - If still failing: Show remaining error and suggest next steps
 
 ## Example Session
 

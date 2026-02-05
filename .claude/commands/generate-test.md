@@ -129,7 +129,7 @@ describe('ComponentName', () => {
                 expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument()
             })
 
-            // Fill form using accessible selectors (userEvent v14+ handles act internally)
+            // Fill form using accessible selectors
             await user.clear(screen.getByRole('textbox', { name: /name/i }))
             await user.type(screen.getByRole('textbox', { name: /name/i }), 'New Value')
 
@@ -179,14 +179,29 @@ describe('ComponentName', () => {
 
 2. **Accessible selectors** - Use `getByRole`, `getByText`, `getByLabelText` (avoid `getByTestId`)
 
-3. **User interactions** - userEvent v14+ handles act() internally, just await:
+3. **User interactions** -
 
     ```typescript
     await user.click(button)
     await user.type(input, 'text')
     ```
 
-4. **Async data** - Use `waitFor()` for data loading:
+If this genenerate act() related warning:
+
+```
+Warning: An update to Component inside a test was not wrapped in act(...)
+```
+
+Then wrap the user event in an act()
+
+```typescript
+// BEFORE
+await user.click(button)
+// AFTER
+await act(() => user.click(button))
+```
+
+1. **Async data** - Use `waitFor()` for data loading:
 
     ```typescript
     await waitFor(() => {
@@ -194,7 +209,7 @@ describe('ComponentName', () => {
     })
     ```
 
-5. **Mock overrides** - Override handlers per test:
+2. **Mock overrides** - Override handlers per test:
 
     ```typescript
     const { handler } = mockGetXxxHandler(async () =>
@@ -203,7 +218,7 @@ describe('ComponentName', () => {
     server.use(handler)
     ```
 
-6. **Request assertions** - When needed:
+3. **Request assertions** - When needed:
 
     ```typescript
     const waitForRequest = mockUpdateXxx.waitForRequest(server)
@@ -214,7 +229,7 @@ describe('ComponentName', () => {
     })
     ```
 
-7. **Place test file** appropriately:
+4. **Place test file** appropriately:
     - For components: Same directory as component or in `tests/` subdirectory
     - File name: `ComponentName.spec.tsx` or `ComponentName.test.tsx`
 

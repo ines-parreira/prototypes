@@ -571,11 +571,11 @@ const renderComponent = () => {
 
 ### Async testing patterns
 
-- **userEvent v14+ handles act() internally** - no need to wrap userEvent calls in `act()`
+- Await **userEvent methods**
 - **Use `waitFor()`** for async content that appears after API calls or other async operations
 - **Wait for component to load** before making assertions
 - **Test loading states** before testing final states
-- **`act()` is still needed for**: direct state updates like `jest.advanceTimersByTime()`, non-userEvent DOM manipulations, and testing hooks directly with `renderHook`
+- **`act()` is always needed for**: direct state updates like `jest.advanceTimersByTime()`, non-userEvent DOM manipulations, and testing hooks directly with `renderHook`
 
 ```typescript
 // ✅: Good - userEvent v14+ handles act internally

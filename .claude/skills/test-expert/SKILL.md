@@ -50,7 +50,7 @@ Create tests for:
 Follow these patterns:
 
 - Use accessible selectors (see `msw-patterns.md`)
-- Await userEvent methods (v14+ handles act internally)
+- Await userEvent methods
 - Use waitFor for async content
 - One assertion focus per test
 
@@ -118,7 +118,7 @@ afterAll(() => server.close())
 ### Async Patterns
 
 ```tsx
-// Interaction (userEvent v14+ handles act internally)
+// Await interaction
 await user.click(button)
 
 // Wait for content

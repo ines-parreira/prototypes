@@ -17,33 +17,34 @@ Generate MSW (Mock Service Worker) handler setup for test files.
 When the user runs this command:
 
 1. **Analyze the target file** to identify:
-   - SDK query hooks used (e.g., `useGetTeam`, `useListUsers`)
-   - SDK mutation hooks used (e.g., `useUpdateTeam`, `useDeleteTeam`)
-   - Which SDK package they come from:
-     - `@gorgias/helpdesk-queries` -> `@gorgias/helpdesk-mocks`
-     - `@gorgias/knowledge-service-queries` -> `@gorgias/knowledge-service-mocks`
-     - `@gorgias/help-center-queries` -> `@gorgias/help-center-mocks`
-     - `@gorgias/convert-queries` -> `@gorgias/convert-mocks`
-     - `@gorgias/ecommerce-storage-queries` -> `@gorgias/ecommerce-storage-mocks`
+    - SDK query hooks used (e.g., `useGetTeam`, `useListUsers`)
+    - SDK mutation hooks used (e.g., `useUpdateTeam`, `useDeleteTeam`)
+    - Which SDK package they come from:
+        - `@gorgias/helpdesk-queries` -> `@gorgias/helpdesk-mocks`
+        - `@gorgias/knowledge-service-queries` -> `@gorgias/knowledge-service-mocks`
+        - `@gorgias/help-center-queries` -> `@gorgias/help-center-mocks`
+        - `@gorgias/convert-queries` -> `@gorgias/convert-mocks`
+        - `@gorgias/ecommerce-storage-queries` -> `@gorgias/ecommerce-storage-mocks`
 
 2. **Map hooks to mock handlers**:
-   - `useGetXxx` -> `mockGetXxxHandler` from the corresponding mocks package
-   - `useListXxx` -> `mockListXxxHandler`
-   - `useUpdateXxx` -> `mockUpdateXxxHandler`
-   - `useDeleteXxx` -> `mockDeleteXxxHandler`
-   - `useCreateXxx` -> `mockCreateXxxHandler`
+    - `useGetXxx` -> `mockGetXxxHandler` from the corresponding mocks package
+    - `useListXxx` -> `mockListXxxHandler`
+    - `useUpdateXxx` -> `mockUpdateXxxHandler`
+    - `useDeleteXxx` -> `mockDeleteXxxHandler`
+    - `useCreateXxx` -> `mockCreateXxxHandler`
 
 3. **Generate mock setup code**:
 
 ### Basic Setup Template
 
 ```typescript
-import { setupServer } from 'msw/node'
 import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
 import {
     mockGetTeamHandler,
-    mockUpdateTeamHandler,
     mockListUsersHandler,
+    mockUpdateTeamHandler,
 } from '@gorgias/helpdesk-mocks'
 
 // Initialize mock handlers with default responses
@@ -90,7 +91,7 @@ it('should display team with custom name', async () => {
             ...mockGetTeam.data,
             name: 'Custom Team Name',
             description: 'Custom description',
-        })
+        }),
     )
     server.use(handler)
 
@@ -102,8 +103,8 @@ it('should handle API error', async () => {
     const { handler } = mockGetTeamHandler(async () =>
         HttpResponse.json(
             { error: { msg: 'Team not found' } },
-            { status: 404 }
-        )
+            { status: 404 },
+        ),
     )
     server.use(handler)
 
@@ -113,7 +114,7 @@ it('should handle API error', async () => {
 // Override with empty list
 it('should display empty state', async () => {
     const { handler } = mockListUsersHandler(async () =>
-        HttpResponse.json({ data: [] })
+        HttpResponse.json({ data: [] }),
     )
     server.use(handler)
 
@@ -126,7 +127,7 @@ it('should handle admin user', async () => {
         HttpResponse.json({
             ...mockGetCurrentUser.data,
             role: { name: 'admin' },
-        })
+        }),
     )
     server.use(handler)
 
@@ -141,7 +142,7 @@ it('should handle admin user', async () => {
 it('should send correct update payload', async () => {
     const waitForUpdateRequest = mockUpdateTeam.waitForRequest(server)
 
-    // Trigger mutation (userEvent v14+ handles act internally)
+    // Trigger mutation
     await user.click(screen.getByRole('button', { name: /save/i }))
 
     // Assert request payload
@@ -188,8 +189,8 @@ const localHandlers = [
 ```
 
 4. **Output the generated code** with:
-   - Import statements
-   - Handler initialization
-   - Server setup lifecycle
-   - Example overrides relevant to the component
-   - Request assertion patterns if mutations are used
+    - Import statements
+    - Handler initialization
+    - Server setup lifecycle
+    - Example overrides relevant to the component
+    - Request assertion patterns if mutations are used
