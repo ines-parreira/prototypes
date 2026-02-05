@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, cleanup, fireEvent, screen } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import type { History } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -35,6 +35,12 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/voice/useMicrophonePermissions',
 )
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+const useFlagMock = assumeMock(useFlag)
 
 const useMicrophonePermissionsMock = assumeMock(useMicrophonePermissions)
 
@@ -92,11 +98,22 @@ describe('<IncomingPhoneCall />', () => {
             permissionDenied: false,
         })
 
-        mockFlags({})
         cleanup()
     })
 
-    it('should accept call', () => {
+    it('should accept call and open ticket', () => {
+        useFlagMock.mockReturnValue(true)
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        renderComponent({ call })
+
+        fireEvent.click(screen.getByText(/Accept/))
+        expect(call.accept).toHaveBeenCalled()
+        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
+    })
+
+    it('should accept call and open ticket with call-bar-restyling disabled', () => {
+        useFlagMock.mockReturnValue(false)
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
         renderComponent({ call })
