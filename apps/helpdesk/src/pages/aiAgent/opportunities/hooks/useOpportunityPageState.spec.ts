@@ -321,7 +321,8 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 'AI Agent reviews real customer conversations to identify patterns',
             )
-            expect(result.current.media).toBe('test-file-stub')
+            expect(result.current.media).toBeDefined()
+            expect(typeof result.current.media).toBe('object')
             expect(result.current.primaryCta).toBeNull()
         })
     })
@@ -363,7 +364,8 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 'AI Agent finds opportunities to improve its responses',
             )
-            expect(result.current.media).toBe('test-file-stub')
+            expect(result.current.media).toBeDefined()
+            expect(typeof result.current.media).toBe('object')
             expect(result.current.primaryCta).toEqual({
                 label: 'Enable AI Agent',
                 href: '/app/ai-agent/shopify/test-shop/deploy/email',
@@ -439,7 +441,8 @@ describe('useOpportunityPageState', () => {
             expect(result.current.description).toContain(
                 'AI Agent automatically finds opportunities to improve its responses',
             )
-            expect(result.current.media).toBe('test-file-stub')
+            expect(result.current.media).toBeDefined()
+            expect(typeof result.current.media).toBe('object')
             expect(result.current.primaryCta).toEqual({
                 label: 'Complete AI Agent setup',
                 href: '/app/ai-agent/shopify/test-shop/overview',
@@ -576,7 +579,8 @@ describe('useOpportunityPageState', () => {
             )
 
             expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
-            expect(result.current.media).toBe('test-file-stub')
+            expect(result.current.media).toBeDefined()
+            expect(typeof result.current.media).toBe('string')
         })
 
         it('uses dark theme SVG when theme is dark', () => {
@@ -610,7 +614,8 @@ describe('useOpportunityPageState', () => {
             )
 
             expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
-            expect(result.current.media).toBe('test-file-stub')
+            expect(result.current.media).toBeDefined()
+            expect(typeof result.current.media).toBe('string')
         })
 
         it('returns HAS_OPPORTUNITIES when restricted user still has allowed opportunities', () => {

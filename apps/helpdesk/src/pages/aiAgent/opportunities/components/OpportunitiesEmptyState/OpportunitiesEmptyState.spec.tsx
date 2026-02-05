@@ -10,6 +10,17 @@ import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/use
 
 import { OpportunitiesEmptyState } from './OpportunitiesEmptyState'
 
+jest.mock('lottie-react', () => ({
+    __esModule: true,
+    default: jest.fn(({ animationData, ...props }) => (
+        <div
+            data-testid="lottie-animation"
+            data-animation-data={JSON.stringify(animationData)}
+            {...props}
+        />
+    )),
+}))
+
 const mockOpportunityPageState: OpportunityPageState = {
     state: State.ENABLED_NO_OPPORTUNITIES,
     isLoading: false,
@@ -119,12 +130,13 @@ describe('OpportunitiesEmptyState', () => {
         expect(history.location.pathname).toBe(initialPath)
     })
 
-    it('should render media image when media is provided', () => {
+    it('should render media when media is provided', () => {
         renderComponent()
 
-        const image = screen.getByAltText('Opportunities empty state')
-        expect(image).toBeInTheDocument()
-        expect(image).toHaveAttribute('src', 'ai-agent-scan.gif')
+        const media = screen.getByRole('img', {
+            name: 'Opportunities empty state',
+        })
+        expect(media).toBeInTheDocument()
     })
 
     it('should not render media frame when media is not provided', () => {
@@ -138,5 +150,82 @@ describe('OpportunitiesEmptyState', () => {
         expect(
             screen.queryByAltText('Opportunities empty state'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('Lottie animation support', () => {
+        const mockLottieAnimationData = {
+            v: '5.5.7',
+            fr: 30,
+            ip: 0,
+            op: 60,
+            w: 400,
+            h: 400,
+            nm: 'Test Animation',
+            ddd: 0,
+            assets: [],
+            layers: [],
+        }
+
+        it('should render Lottie animation when media is an object', () => {
+            const stateWithLottieMedia: OpportunityPageState = {
+                ...mockOpportunityPageState,
+                media: mockLottieAnimationData,
+            }
+
+            renderComponent(stateWithLottieMedia)
+
+            const lottieElement = screen.getByTestId('lottie-animation')
+            expect(lottieElement).toBeInTheDocument()
+        })
+
+        it('should pass animation data to Lottie component', () => {
+            const stateWithLottieMedia: OpportunityPageState = {
+                ...mockOpportunityPageState,
+                media: mockLottieAnimationData,
+            }
+
+            renderComponent(stateWithLottieMedia)
+
+            const lottieElement = screen.getByTestId('lottie-animation')
+            expect(lottieElement).toHaveAttribute(
+                'data-animation-data',
+                JSON.stringify(mockLottieAnimationData),
+            )
+        })
+
+        it('should render Lottie with correct accessibility attributes', () => {
+            const stateWithLottieMedia: OpportunityPageState = {
+                ...mockOpportunityPageState,
+                media: mockLottieAnimationData,
+            }
+
+            renderComponent(stateWithLottieMedia)
+
+            const lottieElement = screen.getByRole('img', {
+                name: 'Opportunities empty state',
+            })
+            expect(lottieElement).toBeInTheDocument()
+        })
+
+        it('should not render img element when media is an object', () => {
+            const stateWithLottieMedia: OpportunityPageState = {
+                ...mockOpportunityPageState,
+                media: mockLottieAnimationData,
+            }
+
+            const { container } = renderComponent(stateWithLottieMedia)
+
+            const imgElement = container.querySelector('img')
+            expect(imgElement).not.toBeInTheDocument()
+        })
+
+        it('should render img element when media is a string', () => {
+            renderComponent()
+
+            const imgElement = screen.getByRole('img', {
+                name: 'Opportunities empty state',
+            })
+            expect(imgElement).toHaveAttribute('src', 'ai-agent-scan.gif')
+        })
     })
 })

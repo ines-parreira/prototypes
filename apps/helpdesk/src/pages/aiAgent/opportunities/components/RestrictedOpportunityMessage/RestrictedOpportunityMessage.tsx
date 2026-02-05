@@ -1,3 +1,5 @@
+import Lottie from 'lottie-react'
+
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -72,11 +74,25 @@ export const RestrictedOpportunityMessage = ({
         <div className={css.containerContent}>
             {opportunitiesPageState.media && (
                 <div className={css.mediaFrame}>
-                    <img
-                        className={css.media}
-                        src={opportunitiesPageState.media}
-                        alt="Upgrade opportunities"
-                    />
+                    {typeof opportunitiesPageState.media === 'object' ? (
+                        <Lottie
+                            animationData={opportunitiesPageState.media}
+                            loop={true}
+                            autoplay={true}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                            }}
+                            aria-label="Upgrade opportunities"
+                            role="img"
+                        />
+                    ) : (
+                        <img
+                            className={css.media}
+                            src={opportunitiesPageState.media}
+                            alt="Upgrade opportunities"
+                        />
+                    )}
                 </div>
             )}
             <Box flexDirection="column" gap="xs" alignItems="center">

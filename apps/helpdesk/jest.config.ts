@@ -11,6 +11,7 @@ const config: Config = {
         'rehype-raw': '<rootDir>/tests/__mocks__/rehype-raw.ts',
         tabbable: '<rootDir>/tests/__mocks__/tabbable.js',
         '^jspdf$': '<rootDir>/tests/__mocks__/jspdf.ts',
+        'lottie-react': '<rootDir>/tests/__mocks__/lottie-react.tsx',
     },
     setupFiles: ['jest-launchdarkly-mock', 'construct-style-sheets-polyfill'],
     // A list of paths to modules that run some code to configure or set up the testing framework before each test

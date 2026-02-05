@@ -180,6 +180,7 @@
         "localforage-observable": "catalog:browser-storage",
         "localforage-removeitems": "catalog:browser-storage",
         "lodash": "catalog:lodash",
+        "lottie-react": "^2.4.1",
         "lz-string": "1.4.4",
         "md5": "2.2.1",
         "memoize-one": "5.0.0",

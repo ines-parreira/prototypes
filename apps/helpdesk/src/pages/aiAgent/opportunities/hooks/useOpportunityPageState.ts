@@ -2,10 +2,10 @@ import { useMemo } from 'react'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
 
-import aiAgentButtonEnableGif from 'assets/img/ai-agent/ai-agent-button-enable.gif'
-import aiAgentScanGif from 'assets/img/ai-agent/ai-agent-scan.gif'
 import aiAgentUpgradeOpportunitiesDark from 'assets/img/ai-agent/ai-agent-upgrade-opportunities-dark.svg'
 import aiAgentUpgradeOpportunitiesLight from 'assets/img/ai-agent/ai-agent-upgrade-opportunities-light.svg'
+import aiAgentScanLottie from 'assets/img/ai-agent/scan.json'
+import aiAgentButtonEnableLottie from 'assets/img/ai-agent/toggle.json'
 import { useTheme } from 'core/theme'
 import { useGetPostStoreInstallationStepsPure } from 'models/aiAgentPostStoreInstallationSteps/queries'
 import { PostStoreInstallationStepType } from 'models/aiAgentPostStoreInstallationSteps/types'
@@ -35,7 +35,7 @@ export interface OpportunityPageState {
     isLoading: boolean
     title: string
     description: string
-    media: string | null
+    media: string | object | null
     primaryCta: OpportunityPageCta | null
     showEmptyState: boolean
 }
@@ -78,7 +78,7 @@ const getStateConfig = (
         title: 'No opportunities to review right now',
         description:
             'AI Agent reviews real customer conversations to identify patterns and improvement opportunities. Once there’s enough data, we’ll surface actionable insights here.',
-        media: aiAgentScanGif,
+        media: aiAgentScanLottie,
         primaryCta: null,
         showEmptyState: true,
         isLoading: false,
@@ -88,7 +88,7 @@ const getStateConfig = (
         title: 'Let AI Agent show you what to improve',
         description:
             'AI Agent finds opportunities to improve its responses based on your customer conversations. AI Agent needs to be enabled to start learning.',
-        media: aiAgentButtonEnableGif,
+        media: aiAgentButtonEnableLottie,
         primaryCta: {
             label: 'Enable AI Agent',
             href: `/app/ai-agent/${shopType}/${shopName}/deploy/email`,
@@ -101,7 +101,7 @@ const getStateConfig = (
         title: 'Let AI Agent show you what to improve',
         description:
             'AI Agent automatically finds opportunities to improve its responses based on customer conversations. AI Agent needs to be enabled to start learning from conversations.',
-        media: aiAgentButtonEnableGif,
+        media: aiAgentButtonEnableLottie,
         primaryCta: {
             label: 'Complete AI Agent setup',
             href: `/app/ai-agent/${shopType}/${shopName}/overview`,

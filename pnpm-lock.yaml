@@ -786,6 +786,9 @@ importers:
       lodash:
         specifier: catalog:lodash
         version: 4.17.21
+      lottie-react:
+        specifier: ^2.4.1
+        version: 2.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       lz-string:
         specifier: 1.4.4
         version: 1.4.4
@@ -1527,7 +1530,7 @@ importers:
         version: 0.11.4
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.39(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
         version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -4230,9 +4233,6 @@ packages:
   '@gorgias/helpdesk-client@0.10.97':
     resolution: {integrity: sha512-/C8kdrUrofgKnr3X3PveeptEGAg7FtnHrZEagMXGY2GR09o4AwUFGYwtrvomTKAwMXFOzxQW9Vnq7CcxcYD2yQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.97/dd463ef48d09bccc9e1b34423ae83fdd42cba7b6}
 
-  '@gorgias/helpdesk-mocks@0.8.39':
-    resolution: {integrity: sha512-04/KexoStvGCjsuYm73ULckCBPJ5ZbkwN01ykHOpAOak3kp9JvH0bh3PibKjgSkdJ5AYnxGBR69ENI1iDlpVAg==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.8.39/f1f50e04a55c272c867a51f570f97fc6cadb642d}
-
   '@gorgias/helpdesk-mocks@0.8.40':
     resolution: {integrity: sha512-sUABp9f+tWnLps4lj9pXYI/Qn0yu3mjYHl0I3HrvkioHPu6aLhZ9nj7i89BAw6+kdRDPFWG1wsBRYxcMzgpnvQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.8.40/9b7a5da4ce5506d86d77fb79e55bf1b901c418ea}
 
@@ -4282,9 +4282,6 @@ packages:
 
   '@gorgias/sdk-mocks@0.13.5':
     resolution: {integrity: sha512-D5gIfr8LakVo2kf5vfssOIxbGFh3wD5JJREzRb+ejVgNXd8Z10w/jxTTvYu+GI6FujHC3JZJMriCaL2EoB0yeg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.13.5/2e9728d7853c2e4459e014374a490686ec792722}
-
-  '@gorgias/sdk-mocks@0.13.6':
-    resolution: {integrity: sha512-JSzFahqCUDpU4ujRnGsAqh/BgnO8rPBft5wXXztyXaS0h+B6yCu6Uj5JWBieitZwh7K8e7O8okEo33a5sq+3sg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.13.6/a20bcdf1f7720ba8665ace4d9f56e2584485ff55}
 
   '@gorgias/sdk-mocks@0.14.0':
     resolution: {integrity: sha512-IfzkQ9ydCgG36zCZcxDDhsPiwdewzsQ8iE0oEg6sPl+d8PyCG/W7K8QapzEbOmJeGaN6Hag/BwopGBobz6R7uQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.0/20d87b7a4f4e10eaadb988c5a75e93892950c157}
@@ -11079,6 +11076,15 @@ packages:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
 
+  lottie-react@2.4.1:
+    resolution: {integrity: sha512-LQrH7jlkigIIv++wIyrOYFLHSKQpEY4zehPicL9bQsrt1rnoKRYCYgpCUe5maqylNtacy58/sQDZTkwMcTRxZw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  lottie-web@5.13.0:
+    resolution: {integrity: sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==}
+
   loupe@3.1.3:
     resolution: {integrity: sha512-kkIp7XSkP78ZxJEsSxW3712C6teJVoeHHwgo9zJ380de7IYyJ2ISlxojcH2pC5OFLewESmnRi/+XCDIEEVyoug==}
 
@@ -16193,18 +16199,6 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/helpdesk-mocks@0.8.39(@types/node@22.13.13)(typescript@5.3.3)':
-    dependencies:
-      '@gorgias/helpdesk-spec': 0.14.21
-      '@gorgias/helpdesk-types': 0.9.77
-      '@gorgias/sdk-mocks': 0.13.6(@types/node@22.13.13)(typescript@5.3.3)
-      '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
-      msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
-    transitivePeerDependencies:
-      - '@types/node'
-      - typescript
-
   '@gorgias/helpdesk-mocks@0.8.40(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
       '@gorgias/helpdesk-spec': 0.14.21
@@ -16321,17 +16315,6 @@ snapshots:
       - debug
 
   '@gorgias/sdk-mocks@0.13.5(@types/node@22.13.13)(typescript@5.3.3)':
-    dependencies:
-      '@faker-js/faker': 9.8.0
-      '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
-      msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
-      randexp: 0.5.3
-    transitivePeerDependencies:
-      - '@types/node'
-      - typescript
-
-  '@gorgias/sdk-mocks@0.13.6(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.10.4
@@ -24879,6 +24862,14 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  lottie-react@2.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+    dependencies:
+      lottie-web: 5.13.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  lottie-web@5.13.0: {}
 
   loupe@3.1.3: {}
 

@@ -24,6 +24,16 @@ jest.mock('pages/common/components/TrialTryModal/TrialTryModal', () =>
         isOpen ? <div data-testid="trial-modal">Trial Modal</div> : null,
     ),
 )
+jest.mock('lottie-react', () => ({
+    __esModule: true,
+    default: jest.fn(({ animationData, ...props }) => (
+        <div
+            data-testid="lottie-animation"
+            data-animation-data={JSON.stringify(animationData)}
+            {...props}
+        />
+    )),
+}))
 
 const mockUseAppSelector = useAppSelector as jest.MockedFunction<
     typeof useAppSelector
@@ -143,7 +153,7 @@ describe('RestrictedOpportunityMessage', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render the media image when provided', () => {
+    it('should render the media when provided', () => {
         setupMocks()
         render(
             <RestrictedOpportunityMessage
@@ -152,12 +162,11 @@ describe('RestrictedOpportunityMessage', () => {
             />,
         )
 
-        const image = screen.getByRole('img', { name: 'Upgrade opportunities' })
-        expect(image).toBeInTheDocument()
-        expect(image).toHaveAttribute('src', '/path/to/upgrade-image.jpg')
+        const media = screen.getByRole('img', { name: 'Upgrade opportunities' })
+        expect(media).toBeInTheDocument()
     })
 
-    it('should not render media image when not provided', () => {
+    it('should not render media when not provided', () => {
         setupMocks()
         render(
             <RestrictedOpportunityMessage
@@ -521,7 +530,7 @@ describe('RestrictedOpportunityMessage', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render with different media URL', () => {
+        it('should render with different media', () => {
             setupMocks()
 
             render(
@@ -533,10 +542,112 @@ describe('RestrictedOpportunityMessage', () => {
                 />,
             )
 
-            const image = screen.getByRole('img', {
+            const media = screen.getByRole('img', {
                 name: 'Upgrade opportunities',
             })
-            expect(image).toHaveAttribute('src', '/custom/media/path.png')
+            expect(media).toBeInTheDocument()
+        })
+    })
+
+    describe('Lottie animation support', () => {
+        const mockLottieAnimationData = {
+            v: '5.5.7',
+            fr: 30,
+            ip: 0,
+            op: 60,
+            w: 400,
+            h: 400,
+            nm: 'Test Animation',
+            ddd: 0,
+            assets: [],
+            layers: [],
+        }
+
+        it('should render Lottie animation when media is an object', () => {
+            setupMocks()
+
+            render(
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={createMockPageState({
+                        media: mockLottieAnimationData,
+                    })}
+                    shopName="test-shop"
+                />,
+            )
+
+            const lottieElement = screen.getByTestId('lottie-animation')
+            expect(lottieElement).toBeInTheDocument()
+        })
+
+        it('should pass animation data to Lottie component', () => {
+            setupMocks()
+
+            render(
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={createMockPageState({
+                        media: mockLottieAnimationData,
+                    })}
+                    shopName="test-shop"
+                />,
+            )
+
+            const lottieElement = screen.getByTestId('lottie-animation')
+            expect(lottieElement).toHaveAttribute(
+                'data-animation-data',
+                JSON.stringify(mockLottieAnimationData),
+            )
+        })
+
+        it('should render Lottie with correct accessibility attributes', () => {
+            setupMocks()
+
+            render(
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={createMockPageState({
+                        media: mockLottieAnimationData,
+                    })}
+                    shopName="test-shop"
+                />,
+            )
+
+            const lottieElement = screen.getByRole('img', {
+                name: 'Upgrade opportunities',
+            })
+            expect(lottieElement).toBeInTheDocument()
+        })
+
+        it('should not render img element when media is an object', () => {
+            setupMocks()
+
+            const { container } = render(
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={createMockPageState({
+                        media: mockLottieAnimationData,
+                    })}
+                    shopName="test-shop"
+                />,
+            )
+
+            const imgElement = container.querySelector('img')
+            expect(imgElement).not.toBeInTheDocument()
+        })
+
+        it('should render img element when media is a string', () => {
+            setupMocks()
+
+            render(
+                <RestrictedOpportunityMessage
+                    opportunitiesPageState={createMockPageState({
+                        media: '/path/to/image.jpg',
+                    })}
+                    shopName="test-shop"
+                />,
+            )
+
+            const imgElement = screen.getByRole('img', {
+                name: 'Upgrade opportunities',
+            })
+            expect(imgElement).toHaveAttribute('src', '/path/to/image.jpg')
         })
     })
 })

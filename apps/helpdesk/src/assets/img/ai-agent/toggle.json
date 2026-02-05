@@ -1,0 +1,2466 @@
+{
+    "assets": [
+        {
+            "h": 139,
+            "id": "0",
+            "p": "data:image/png;base64,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",
+            "u": "",
+            "w": 136,
+            "e": 1
+        },
+        {
+            "h": 138,
+            "id": "1",
+            "p": "data:image/png;base64,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",
+            "u": "",
+            "w": 135,
+            "e": 1
+        },
+        {
+            "id": "14",
+            "layers": [
+                {
+                    "ind": 13,
+                    "ty": 4,
+                    "parent": 12,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ],
+                                    "v": [
+                                        [14.9, 5.4],
+                                        [16.5, 5.4],
+                                        [16.5, 24],
+                                        [14.9, 24],
+                                        [3.9, 8.4],
+                                        [3.8, 8.4],
+                                        [3.8, 24],
+                                        [2.1, 24],
+                                        [2.1, 5.4],
+                                        [3.7, 5.4],
+                                        [14.7, 21],
+                                        [14.9, 21],
+                                        [14.9, 5.4]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 12,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-2, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "19",
+            "layers": [
+                {
+                    "ind": 18,
+                    "ty": 4,
+                    "parent": 17,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 1.9],
+                                        [0, 0],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [-1.6, 0],
+                                        [0, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, -1.9],
+                                        [0, 0],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [1.6, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 24.2],
+                                        [9.3, 24.2],
+                                        [5.1, 23],
+                                        [2.3, 19.7],
+                                        [1.2, 14.7],
+                                        [1.2, 14.7],
+                                        [2.3, 9.6],
+                                        [5.1, 6.3],
+                                        [9.3, 5.1],
+                                        [9.3, 5.1],
+                                        [13.4, 6.3],
+                                        [16.3, 9.6],
+                                        [17.3, 14.7],
+                                        [17.3, 14.7],
+                                        [16.3, 19.7],
+                                        [13.4, 23],
+                                        [9.3, 24.2]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [-1.6, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, 0],
+                                        [0, -1.9],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [0, 0],
+                                        [1.6, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 0],
+                                        [0, 1.9],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 1.7],
+                                        [0, 0],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [1.2, 0],
+                                        [0, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, -1.7],
+                                        [0, 0],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [-1.2, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 22.6],
+                                        [9.3, 22.6],
+                                        [12.5, 21.7],
+                                        [14.8, 19],
+                                        [15.7, 14.7],
+                                        [15.7, 14.7],
+                                        [14.8, 10.4],
+                                        [12.5, 7.7],
+                                        [9.3, 6.7],
+                                        [9.3, 6.7],
+                                        [6, 7.7],
+                                        [3.7, 10.4],
+                                        [2.9, 14.7],
+                                        [2.9, 14.7],
+                                        [3.7, 19],
+                                        [6, 21.7],
+                                        [9.3, 22.6]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [1.2, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, 0],
+                                        [0, -1.7],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [0, 0],
+                                        [-1.2, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 0],
+                                        [0, 1.7],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 17,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-1, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "32",
+            "layers": [
+                {
+                    "ind": 28,
+                    "ty": 2,
+                    "parent": 27,
+                    "ks": { "s": { "a": 0, "k": [33.09, 32.37] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "refId": "0"
+                },
+                {
+                    "ind": 27,
+                    "ty": 3,
+                    "parent": 26,
+                    "ks": { "s": { "a": 0, "k": [100, 102.22] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                },
+                {
+                    "ind": 26,
+                    "ty": 3,
+                    "parent": 25,
+                    "ks": {
+                        "a": { "a": 0, "k": [22.5, 23] },
+                        "p": { "a": 0, "k": [22.5, 23] },
+                        "r": {
+                            "a": 1,
+                            "k": [
+                                { "t": 0, "s": [0], "h": 1 },
+                                {
+                                    "t": 60.9,
+                                    "s": [0],
+                                    "i": { "x": 1, "y": 1 },
+                                    "o": { "x": 0, "y": 0 }
+                                },
+                                { "t": 136, "s": [360], "h": 1 },
+                                { "t": 239.4, "s": [360], "h": 1 }
+                            ]
+                        }
+                    },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                },
+                {
+                    "ind": 31,
+                    "ty": 2,
+                    "parent": 30,
+                    "ks": { "s": { "a": 0, "k": [33.33, 32.61] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "refId": "1"
+                },
+                {
+                    "ind": 30,
+                    "ty": 3,
+                    "parent": 29,
+                    "ks": { "s": { "a": 0, "k": [100, 102.22] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                },
+                {
+                    "ind": 29,
+                    "ty": 3,
+                    "parent": 25,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                },
+                {
+                    "ind": 25,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [10, 10] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "35",
+            "layers": [
+                {
+                    "ind": 34,
+                    "ty": 0,
+                    "parent": 24,
+                    "ks": {
+                        "a": { "a": 0, "k": [10, 10] },
+                        "o": {
+                            "a": 1,
+                            "k": [
+                                { "t": 0, "s": [0], "h": 1 },
+                                {
+                                    "t": 36.12,
+                                    "s": [0],
+                                    "i": { "x": 1, "y": 1 },
+                                    "o": { "x": 0, "y": 0 }
+                                },
+                                { "t": 66.9, "s": [100], "h": 1 },
+                                { "t": 239.4, "s": [100], "h": 1 }
+                            ]
+                        }
+                    },
+                    "w": 65,
+                    "h": 66,
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "refId": "32"
+                },
+                {
+                    "ind": 24,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [10, 10] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "41",
+            "layers": [
+                {
+                    "ind": 40,
+                    "ty": 4,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [13.5, 13.5] },
+                            "r": { "a": 0, "k": 0 },
+                            "s": { "a": 0, "k": [27, 27] }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0, 0, 0, 0] },
+                            "o": { "a": 0, "k": 0 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 0,
+                    "ty": 4,
+                    "ks": { "s": { "a": 0, "k": [133.33, 133.33] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "gr",
+                            "it": [
+                                {
+                                    "ty": "gr",
+                                    "it": [
+                                        {
+                                            "ty": "sh",
+                                            "ks": {
+                                                "a": 0,
+                                                "k": {
+                                                    "c": true,
+                                                    "i": [
+                                                        [0, 0],
+                                                        [0, 0],
+                                                        [-2.01, -2.01],
+                                                        [0, 0],
+                                                        [2.01, -2.01],
+                                                        [0, 0],
+                                                        [2.01, 2.01],
+                                                        [0, 0],
+                                                        [-2.01, 2.01]
+                                                    ],
+                                                    "o": [
+                                                        [2.01, -2.01],
+                                                        [0, 0],
+                                                        [2.01, 2.01],
+                                                        [0, 0],
+                                                        [-2.01, 2.01],
+                                                        [0, 0],
+                                                        [-2.01, -2.01],
+                                                        [0, 0],
+                                                        [0, 0]
+                                                    ],
+                                                    "v": [
+                                                        [6.51, 6.51],
+                                                        [9.76, 0],
+                                                        [13.02, 6.51],
+                                                        [19.53, 9.76],
+                                                        [13.02, 13.02],
+                                                        [9.76, 19.53],
+                                                        [6.51, 13.02],
+                                                        [0, 9.76],
+                                                        [6.51, 6.51]
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "ty": "fl",
+                                            "c": {
+                                                "a": 0,
+                                                "k": [0.7, 0.69, 0.72, 1]
+                                            },
+                                            "o": { "a": 0, "k": 100 }
+                                        },
+                                        {
+                                            "ty": "tr",
+                                            "o": { "a": 0, "k": 100 }
+                                        }
+                                    ]
+                                },
+                                { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "44",
+            "layers": [
+                {
+                    "ind": 43,
+                    "ty": 0,
+                    "parent": 39,
+                    "ks": {},
+                    "w": 27,
+                    "h": 27,
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "refId": "41"
+                },
+                {
+                    "ind": 39,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [1.809, 1.623] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "52",
+            "layers": [
+                {
+                    "ind": 51,
+                    "ty": 4,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [22.5, 22.5] },
+                            "r": { "a": 0, "k": 0 },
+                            "s": { "a": 0, "k": [45, 45] }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0, 0, 0, 0] },
+                            "o": { "a": 0, "k": 0 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 0,
+                    "ty": 4,
+                    "ks": { "s": { "a": 0, "k": [133.33, 133.33] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "gr",
+                            "it": [
+                                {
+                                    "ty": "gr",
+                                    "it": [
+                                        {
+                                            "ty": "sh",
+                                            "ks": {
+                                                "a": 0,
+                                                "k": {
+                                                    "c": true,
+                                                    "i": [
+                                                        [0, 0],
+                                                        [0, -7.5],
+                                                        [9.25, 0],
+                                                        [0, 7.5],
+                                                        [-9.25, 0]
+                                                    ],
+                                                    "o": [
+                                                        [9.24, 0],
+                                                        [0, 9.24],
+                                                        [-9.24, 0],
+                                                        [0, -9.24],
+                                                        [0, 0]
+                                                    ],
+                                                    "v": [
+                                                        [16.74, 0],
+                                                        [33.48, 16.74],
+                                                        [16.74, 33.48],
+                                                        [0, 16.74],
+                                                        [16.74, 0]
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            "ty": "fl",
+                                            "c": {
+                                                "a": 0,
+                                                "k": [0.88, 0.86, 0.9, 1]
+                                            },
+                                            "o": { "a": 0, "k": 100 }
+                                        },
+                                        {
+                                            "ty": "tr",
+                                            "o": { "a": 0, "k": 100 }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "ty": "gr",
+                                    "it": [
+                                        {
+                                            "ty": "gr",
+                                            "it": [
+                                                {
+                                                    "ty": "gr",
+                                                    "it": [
+                                                        {
+                                                            "ty": "gr",
+                                                            "it": [
+                                                                {
+                                                                    "ty": "sh",
+                                                                    "ks": {
+                                                                        "a": 0,
+                                                                        "k": {
+                                                                            "c": true,
+                                                                            "i": [
+                                                                                [
+                                                                                    0,
+                                                                                    0
+                                                                                ],
+                                                                                [
+                                                                                    -1.49,
+                                                                                    -1.49
+                                                                                ],
+                                                                                [
+                                                                                    -1.87,
+                                                                                    -0.77
+                                                                                ],
+                                                                                [
+                                                                                    1.5,
+                                                                                    -1.49
+                                                                                ],
+                                                                                [
+                                                                                    0.77,
+                                                                                    -1.87
+                                                                                ],
+                                                                                [
+                                                                                    1.5,
+                                                                                    1.49
+                                                                                ],
+                                                                                [
+                                                                                    1.87,
+                                                                                    0.77
+                                                                                ],
+                                                                                [
+                                                                                    -1.49,
+                                                                                    1.49
+                                                                                ],
+                                                                                [
+                                                                                    -0.77,
+                                                                                    1.87
+                                                                                ]
+                                                                            ],
+                                                                            "o": [
+                                                                                [
+                                                                                    0.77,
+                                                                                    1.87
+                                                                                ],
+                                                                                [
+                                                                                    1.5,
+                                                                                    1.49
+                                                                                ],
+                                                                                [
+                                                                                    -1.87,
+                                                                                    0.77
+                                                                                ],
+                                                                                [
+                                                                                    -1.49,
+                                                                                    1.49
+                                                                                ],
+                                                                                [
+                                                                                    -0.77,
+                                                                                    -1.87
+                                                                                ],
+                                                                                [
+                                                                                    -1.49,
+                                                                                    -1.49
+                                                                                ],
+                                                                                [
+                                                                                    1.87,
+                                                                                    -0.77
+                                                                                ],
+                                                                                [
+                                                                                    1.5,
+                                                                                    -1.49
+                                                                                ],
+                                                                                [
+                                                                                    0,
+                                                                                    0
+                                                                                ]
+                                                                            ],
+                                                                            "v": [
+                                                                                [
+                                                                                    22,
+                                                                                    13.22
+                                                                                ],
+                                                                                [
+                                                                                    25.42,
+                                                                                    18.9
+                                                                                ],
+                                                                                [
+                                                                                    31.09,
+                                                                                    22.32
+                                                                                ],
+                                                                                [
+                                                                                    25.42,
+                                                                                    25.73
+                                                                                ],
+                                                                                [
+                                                                                    22,
+                                                                                    31.41
+                                                                                ],
+                                                                                [
+                                                                                    18.58,
+                                                                                    25.73
+                                                                                ],
+                                                                                [
+                                                                                    12.9,
+                                                                                    22.32
+                                                                                ],
+                                                                                [
+                                                                                    18.58,
+                                                                                    18.9
+                                                                                ],
+                                                                                [
+                                                                                    22,
+                                                                                    13.22
+                                                                                ]
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "ty": "st",
+                                                                    "c": {
+                                                                        "a": 0,
+                                                                        "k": [
+                                                                            0.7,
+                                                                            0.69,
+                                                                            0.72,
+                                                                            1
+                                                                        ]
+                                                                    },
+                                                                    "lc": 2,
+                                                                    "lj": 1,
+                                                                    "ml": 4,
+                                                                    "o": {
+                                                                        "a": 0,
+                                                                        "k": 100
+                                                                    },
+                                                                    "w": {
+                                                                        "a": 0,
+                                                                        "k": 2.6
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "ty": "tr",
+                                                                    "o": {
+                                                                        "a": 0,
+                                                                        "k": 100
+                                                                    },
+                                                                    "s": {
+                                                                        "a": 0,
+                                                                        "k": [
+                                                                            75,
+                                                                            75
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "ty": "tr",
+                                                            "o": {
+                                                                "a": 0,
+                                                                "k": 100
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ty": "gr",
+                                                    "it": [
+                                                        {
+                                                            "ty": "sh",
+                                                            "ks": {
+                                                                "a": 0,
+                                                                "k": {
+                                                                    "c": true,
+                                                                    "i": [
+                                                                        [0, 0],
+                                                                        [
+                                                                            -1.12,
+                                                                            -1.12
+                                                                        ],
+                                                                        [
+                                                                            -1.4,
+                                                                            -0.58
+                                                                        ],
+                                                                        [
+                                                                            1.13,
+                                                                            -1.12
+                                                                        ],
+                                                                        [
+                                                                            0.58,
+                                                                            -1.4
+                                                                        ],
+                                                                        [
+                                                                            1.13,
+                                                                            1.12
+                                                                        ],
+                                                                        [
+                                                                            1.4,
+                                                                            0.58
+                                                                        ],
+                                                                        [
+                                                                            -1.12,
+                                                                            1.12
+                                                                        ],
+                                                                        [
+                                                                            -0.58,
+                                                                            1.4
+                                                                        ]
+                                                                    ],
+                                                                    "o": [
+                                                                        [
+                                                                            0.58,
+                                                                            1.4
+                                                                        ],
+                                                                        [
+                                                                            1.13,
+                                                                            1.12
+                                                                        ],
+                                                                        [
+                                                                            -1.4,
+                                                                            0.58
+                                                                        ],
+                                                                        [
+                                                                            -1.12,
+                                                                            1.12
+                                                                        ],
+                                                                        [
+                                                                            -0.58,
+                                                                            -1.4
+                                                                        ],
+                                                                        [
+                                                                            -1.12,
+                                                                            -1.12
+                                                                        ],
+                                                                        [
+                                                                            1.4,
+                                                                            -0.58
+                                                                        ],
+                                                                        [
+                                                                            1.13,
+                                                                            -1.12
+                                                                        ],
+                                                                        [0, 0]
+                                                                    ],
+                                                                    "v": [
+                                                                        [
+                                                                            16.5,
+                                                                            9.91
+                                                                        ],
+                                                                        [
+                                                                            19.06,
+                                                                            14.17
+                                                                        ],
+                                                                        [
+                                                                            23.32,
+                                                                            16.74
+                                                                        ],
+                                                                        [
+                                                                            19.06,
+                                                                            19.3
+                                                                        ],
+                                                                        [
+                                                                            16.5,
+                                                                            23.56
+                                                                        ],
+                                                                        [
+                                                                            13.93,
+                                                                            19.3
+                                                                        ],
+                                                                        [
+                                                                            9.68,
+                                                                            16.74
+                                                                        ],
+                                                                        [
+                                                                            13.93,
+                                                                            14.17
+                                                                        ],
+                                                                        [
+                                                                            16.5,
+                                                                            9.91
+                                                                        ]
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            "ty": "fl",
+                                                            "c": {
+                                                                "a": 0,
+                                                                "k": [
+                                                                    0.7, 0.69,
+                                                                    0.72, 1
+                                                                ]
+                                                            },
+                                                            "o": {
+                                                                "a": 0,
+                                                                "k": 100
+                                                            }
+                                                        },
+                                                        {
+                                                            "ty": "tr",
+                                                            "o": {
+                                                                "a": 0,
+                                                                "k": 100
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "ty": "tr",
+                                                    "o": { "a": 0, "k": 100 }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "ty": "tr",
+                                            "o": { "a": 0, "k": 100 }
+                                        }
+                                    ]
+                                },
+                                { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "60",
+            "layers": [
+                {
+                    "ind": 59,
+                    "ty": 4,
+                    "parent": 58,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ],
+                                    "v": [
+                                        [3.8, 24],
+                                        [2.1, 24],
+                                        [2.1, 5.4],
+                                        [12.8, 5.4],
+                                        [12.8, 6.9],
+                                        [3.8, 6.9],
+                                        [3.8, 14],
+                                        [12, 14],
+                                        [12, 15.6],
+                                        [3.8, 15.6],
+                                        [3.8, 24]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 58,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-2, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "65",
+            "layers": [
+                {
+                    "ind": 64,
+                    "ty": 4,
+                    "parent": 63,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ],
+                                    "v": [
+                                        [3.8, 24],
+                                        [2.1, 24],
+                                        [2.1, 5.4],
+                                        [12.8, 5.4],
+                                        [12.8, 6.9],
+                                        [3.8, 6.9],
+                                        [3.8, 14],
+                                        [12, 14],
+                                        [12, 15.6],
+                                        [3.8, 15.6],
+                                        [3.8, 24]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 63,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-2, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "70",
+            "layers": [
+                {
+                    "ind": 69,
+                    "ty": 4,
+                    "parent": 68,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 1.9],
+                                        [0, 0],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [-1.6, 0],
+                                        [0, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, -1.9],
+                                        [0, 0],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [1.6, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 24.2],
+                                        [9.3, 24.2],
+                                        [5.1, 23],
+                                        [2.3, 19.7],
+                                        [1.2, 14.7],
+                                        [1.2, 14.7],
+                                        [2.3, 9.6],
+                                        [5.1, 6.3],
+                                        [9.3, 5.1],
+                                        [9.3, 5.1],
+                                        [13.4, 6.3],
+                                        [16.3, 9.6],
+                                        [17.3, 14.7],
+                                        [17.3, 14.7],
+                                        [16.3, 19.7],
+                                        [13.4, 23],
+                                        [9.3, 24.2]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [-1.6, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, 0],
+                                        [0, -1.9],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [0, 0],
+                                        [1.6, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 0],
+                                        [0, 1.9],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 1.7],
+                                        [0, 0],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [1.2, 0],
+                                        [0, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, -1.7],
+                                        [0, 0],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [-1.2, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 22.6],
+                                        [9.3, 22.6],
+                                        [12.5, 21.7],
+                                        [14.8, 19],
+                                        [15.7, 14.7],
+                                        [15.7, 14.7],
+                                        [14.8, 10.4],
+                                        [12.5, 7.7],
+                                        [9.3, 6.7],
+                                        [9.3, 6.7],
+                                        [6, 7.7],
+                                        [3.7, 10.4],
+                                        [2.9, 14.7],
+                                        [2.9, 14.7],
+                                        [3.7, 19],
+                                        [6, 21.7],
+                                        [9.3, 22.6]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [1.2, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, 0],
+                                        [0, -1.7],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [0, 0],
+                                        [-1.2, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 0],
+                                        [0, 1.7],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 68,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-1, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "78",
+            "layers": [
+                {
+                    "ind": 77,
+                    "ty": 4,
+                    "parent": 76,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ],
+                                    "v": [
+                                        [3.8, 24],
+                                        [2.1, 24],
+                                        [2.1, 5.4],
+                                        [12.8, 5.4],
+                                        [12.8, 6.9],
+                                        [3.8, 6.9],
+                                        [3.8, 14],
+                                        [12, 14],
+                                        [12, 15.6],
+                                        [3.8, 15.6],
+                                        [3.8, 24]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 76,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-2, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "83",
+            "layers": [
+                {
+                    "ind": 82,
+                    "ty": 4,
+                    "parent": 81,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ],
+                                    "v": [
+                                        [3.8, 24],
+                                        [2.1, 24],
+                                        [2.1, 5.4],
+                                        [12.8, 5.4],
+                                        [12.8, 6.9],
+                                        [3.8, 6.9],
+                                        [3.8, 14],
+                                        [12, 14],
+                                        [12, 15.6],
+                                        [3.8, 15.6],
+                                        [3.8, 24]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 81,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-2, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        },
+        {
+            "id": "88",
+            "layers": [
+                {
+                    "ind": 87,
+                    "ty": 4,
+                    "parent": 86,
+                    "ks": {},
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0,
+                    "shapes": [
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 1.9],
+                                        [0, 0],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [-1.6, 0],
+                                        [0, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, -1.9],
+                                        [0, 0],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [1.6, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 24.2],
+                                        [9.3, 24.2],
+                                        [5.1, 23],
+                                        [2.3, 19.7],
+                                        [1.2, 14.7],
+                                        [1.2, 14.7],
+                                        [2.3, 9.6],
+                                        [5.1, 6.3],
+                                        [9.3, 5.1],
+                                        [9.3, 5.1],
+                                        [13.4, 6.3],
+                                        [16.3, 9.6],
+                                        [17.3, 14.7],
+                                        [17.3, 14.7],
+                                        [16.3, 19.7],
+                                        [13.4, 23],
+                                        [9.3, 24.2]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [-1.6, 0],
+                                        [-1.2, -0.8],
+                                        [-0.7, -1.4],
+                                        [0, 0],
+                                        [0, -1.9],
+                                        [0.7, -1.4],
+                                        [1.2, -0.8],
+                                        [0, 0],
+                                        [1.6, 0],
+                                        [1.2, 0.8],
+                                        [0.7, 1.4],
+                                        [0, 0],
+                                        [0, 1.9],
+                                        [-0.7, 1.4],
+                                        [-1.2, 0.8],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "sh",
+                            "ks": {
+                                "a": 0,
+                                "k": {
+                                    "c": true,
+                                    "i": [
+                                        [0, 0],
+                                        [0, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 1.7],
+                                        [0, 0],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [1.2, 0],
+                                        [0, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, -1.7],
+                                        [0, 0],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [-1.2, 0]
+                                    ],
+                                    "v": [
+                                        [9.3, 22.6],
+                                        [9.3, 22.6],
+                                        [12.5, 21.7],
+                                        [14.8, 19],
+                                        [15.7, 14.7],
+                                        [15.7, 14.7],
+                                        [14.8, 10.4],
+                                        [12.5, 7.7],
+                                        [9.3, 6.7],
+                                        [9.3, 6.7],
+                                        [6, 7.7],
+                                        [3.7, 10.4],
+                                        [2.9, 14.7],
+                                        [2.9, 14.7],
+                                        [3.7, 19],
+                                        [6, 21.7],
+                                        [9.3, 22.6]
+                                    ],
+                                    "o": [
+                                        [0, 0],
+                                        [1.2, 0],
+                                        [1, -0.6],
+                                        [0.6, -1.2],
+                                        [0, 0],
+                                        [0, -1.7],
+                                        [-0.6, -1.2],
+                                        [-1, -0.6],
+                                        [0, 0],
+                                        [-1.2, 0],
+                                        [-1, 0.6],
+                                        [-0.6, 1.2],
+                                        [0, 0],
+                                        [0, 1.7],
+                                        [0.6, 1.2],
+                                        [1, 0.6],
+                                        [0, 0]
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0.133, 0.133, 0.133] },
+                            "o": { "a": 0, "k": 100 }
+                        }
+                    ]
+                },
+                {
+                    "ind": 86,
+                    "ty": 3,
+                    "ks": { "p": { "a": 0, "k": [-1, -5] } },
+                    "ip": 0,
+                    "op": 240.4,
+                    "st": 0
+                }
+            ]
+        }
+    ],
+    "fr": 60,
+    "h": 93,
+    "ip": 0,
+    "layers": [
+        {
+            "ind": 6,
+            "ty": 4,
+            "parent": 5,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "sh",
+                    "ks": {
+                        "a": 0,
+                        "k": {
+                            "c": true,
+                            "i": [
+                                [0, 0],
+                                [0, 0],
+                                [0, 0],
+                                [0, 0],
+                                [0, 0]
+                            ],
+                            "v": [
+                                [0, 0],
+                                [18.7, 40.1],
+                                [37.4, 0],
+                                [18.7, 10.1],
+                                [0, 0]
+                            ],
+                            "o": [
+                                [0, 0],
+                                [0, 0],
+                                [0, 0],
+                                [0, 0],
+                                [0, 0]
+                            ]
+                        }
+                    }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0.102, 0.118, 0.137] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 5,
+            "ty": 3,
+            "parent": 4,
+            "ks": {
+                "a": { "a": 0, "k": [18.708, 20.048] },
+                "p": { "a": 0, "k": [143.708, 57.048] },
+                "r": { "a": 0, "k": 143.22 },
+                "s": {
+                    "a": 1,
+                    "k": [
+                        {
+                            "t": 0,
+                            "s": [100, 100],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 18.9,
+                            "s": [70, 70],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 37.8,
+                            "s": [100, 100],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 105,
+                            "s": [100, 100],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 123.9,
+                            "s": [70, 70],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 142.8,
+                            "s": [100, 100],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        { "t": 239.4, "s": [100, 100], "h": 1 }
+                    ]
+                }
+            },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 16,
+            "ty": 0,
+            "parent": 11,
+            "ks": {
+                "a": { "a": 0, "k": [-2, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [0], "h": 1 },
+                        {
+                            "t": 45.12,
+                            "s": [0],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 75.12, "s": [100], "h": 1 },
+                        {
+                            "t": 142.8,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 155.94, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                },
+                "p": { "a": 0, "k": [18.524, 0] }
+            },
+            "w": 15,
+            "h": 19,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "14"
+        },
+        {
+            "ind": 21,
+            "ty": 0,
+            "parent": 11,
+            "ks": {
+                "a": { "a": 0, "k": [-1, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [0], "h": 1 },
+                        {
+                            "t": 36.12,
+                            "s": [0],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 66.12, "s": [100], "h": 1 },
+                        {
+                            "t": 146.04,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 159.18, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                }
+            },
+            "w": 17,
+            "h": 20,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "19"
+        },
+        {
+            "ind": 11,
+            "ty": 3,
+            "parent": 10,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 10,
+            "ty": 3,
+            "parent": 9,
+            "ks": { "p": { "a": 0, "k": [0, -0.36] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 9,
+            "ty": 3,
+            "parent": 8,
+            "ks": { "p": { "a": 0, "k": [0, 8.5] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 8,
+            "ty": 3,
+            "parent": 7,
+            "ks": { "p": { "a": 0, "k": [16, 6] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 37,
+            "ty": 0,
+            "parent": 23,
+            "ks": {
+                "a": { "a": 0, "k": [10, 10] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [100], "h": 1 },
+                        {
+                            "t": 152.54,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 180.9, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                }
+            },
+            "w": 75,
+            "h": 76,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "35"
+        },
+        {
+            "ind": 23,
+            "ty": 3,
+            "parent": 22,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 46,
+            "ty": 0,
+            "parent": 38,
+            "ks": {
+                "o": { "a": 0, "k": 60 },
+                "p": { "a": 0, "k": [7.122, 7.439] }
+            },
+            "w": 29,
+            "h": 29,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "44"
+        },
+        {
+            "ind": 48,
+            "ty": 4,
+            "parent": 47,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "rc",
+                    "p": { "a": 0, "k": [22.316, 22.316] },
+                    "r": { "a": 0, "k": 371.939 },
+                    "s": { "a": 0, "k": [44.633, 44.633] }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0.882, 0.859, 0.898] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 47,
+            "ty": 3,
+            "parent": 38,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 38,
+            "ty": 3,
+            "parent": 22,
+            "ks": { "p": { "a": 0, "k": [0, 1] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 54,
+            "ty": 0,
+            "parent": 50,
+            "ks": {},
+            "w": 45,
+            "h": 45,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "52"
+        },
+        {
+            "ind": 50,
+            "ty": 3,
+            "parent": 49,
+            "ks": { "s": { "a": 0, "k": [100, 102.22] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 49,
+            "ty": 3,
+            "parent": 22,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 22,
+            "ty": 3,
+            "parent": 7,
+            "ks": {
+                "p": {
+                    "a": 1,
+                    "k": [
+                        {
+                            "t": 0,
+                            "s": [14, 6],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 18.9,
+                            "s": [14, 6],
+                            "i": { "x": [0.2, 1], "y": [1, 1] },
+                            "o": { "x": [0.8, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 66.9,
+                            "s": [104, 6],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 132.9,
+                            "s": [104, 6],
+                            "i": { "x": [0.2, 1], "y": [1, 1] },
+                            "o": { "x": [0.8, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 180.9,
+                            "s": [14, 6],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        { "t": 239.4, "s": [14, 6], "h": 1 }
+                    ]
+                }
+            },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 62,
+            "ty": 0,
+            "parent": 57,
+            "ks": {
+                "a": { "a": 0, "k": [-2, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [0], "h": 1 },
+                        {
+                            "t": 160.62,
+                            "s": [0],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 179.58, "s": [100], "h": 1 },
+                        { "t": 239.4, "s": [100], "h": 1 }
+                    ]
+                },
+                "p": { "a": 0, "k": [32.698, 0] }
+            },
+            "w": 11,
+            "h": 19,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "60"
+        },
+        {
+            "ind": 67,
+            "ty": 0,
+            "parent": 57,
+            "ks": {
+                "a": { "a": 0, "k": [-2, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [0], "h": 1 },
+                        {
+                            "t": 154.92,
+                            "s": [0],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 173.88, "s": [100], "h": 1 },
+                        { "t": 239.4, "s": [100], "h": 1 }
+                    ]
+                },
+                "p": { "a": 0, "k": [18.524, 0] }
+            },
+            "w": 11,
+            "h": 19,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "65"
+        },
+        {
+            "ind": 72,
+            "ty": 0,
+            "parent": 57,
+            "ks": {
+                "a": { "a": 0, "k": [-1, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [0], "h": 1 },
+                        {
+                            "t": 149.22,
+                            "s": [0],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 168.18, "s": [100], "h": 1 },
+                        { "t": 239.4, "s": [100], "h": 1 }
+                    ]
+                }
+            },
+            "w": 17,
+            "h": 20,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "70"
+        },
+        {
+            "ind": 57,
+            "ty": 3,
+            "parent": 56,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 56,
+            "ty": 3,
+            "parent": 55,
+            "ks": { "p": { "a": 0, "k": [2.129, 0.64] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 55,
+            "ty": 3,
+            "parent": 7,
+            "ks": { "p": { "a": 0, "k": [98, 13.5] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 80,
+            "ty": 0,
+            "parent": 75,
+            "ks": {
+                "a": { "a": 0, "k": [-2, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [100], "h": 1 },
+                        {
+                            "t": 27.3,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 51.3, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                },
+                "p": { "a": 0, "k": [32.698, 0] }
+            },
+            "w": 11,
+            "h": 19,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "78"
+        },
+        {
+            "ind": 85,
+            "ty": 0,
+            "parent": 75,
+            "ks": {
+                "a": { "a": 0, "k": [-2, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [100], "h": 1 },
+                        {
+                            "t": 23.1,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 47.1, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                },
+                "p": { "a": 0, "k": [18.524, 0] }
+            },
+            "w": 11,
+            "h": 19,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "83"
+        },
+        {
+            "ind": 90,
+            "ty": 0,
+            "parent": 75,
+            "ks": {
+                "a": { "a": 0, "k": [-1, -5] },
+                "o": {
+                    "a": 1,
+                    "k": [
+                        { "t": 0, "s": [100], "h": 1 },
+                        {
+                            "t": 18.9,
+                            "s": [100],
+                            "i": { "x": 1, "y": 1 },
+                            "o": { "x": 0, "y": 0 }
+                        },
+                        { "t": 42.9, "s": [0], "h": 1 },
+                        { "t": 239.4, "s": [0], "h": 1 }
+                    ]
+                }
+            },
+            "w": 17,
+            "h": 20,
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "refId": "88"
+        },
+        {
+            "ind": 75,
+            "ty": 3,
+            "parent": 74,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 74,
+            "ty": 3,
+            "parent": 73,
+            "ks": { "p": { "a": 0, "k": [2.129, 0.64] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 73,
+            "ty": 3,
+            "parent": 7,
+            "ks": { "p": { "a": 0, "k": [98, 13.5] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 93,
+            "ty": 4,
+            "td": 1,
+            "parent": 91,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "rc",
+                    "p": { "a": 0, "k": [77.5, 29] },
+                    "r": { "a": 0, "k": 54.087 },
+                    "s": { "a": 0, "k": [155, 58] }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0, 0, 0] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 92,
+            "ty": 4,
+            "tt": 1,
+            "parent": 91,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "gr",
+                    "it": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [77.5, 29] },
+                            "r": { "a": 0, "k": 0 },
+                            "s": { "a": 0, "k": [157, 60] }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0, 0, 0, 0] },
+                            "o": { "a": 0, "k": 0 }
+                        },
+                        { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                    ]
+                },
+                {
+                    "ty": "gr",
+                    "it": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [77.5, 29] },
+                            "r": { "a": 0, "k": 54.087 },
+                            "s": { "a": 0, "k": [155, 58] }
+                        },
+                        {
+                            "ty": "st",
+                            "c": { "a": 0, "k": [0.102, 0.118, 0.137] },
+                            "lc": 1,
+                            "lj": 1,
+                            "ml": 10,
+                            "o": { "a": 0, "k": 100 },
+                            "w": { "a": 0, "k": 2 }
+                        },
+                        { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                    ]
+                }
+            ]
+        },
+        {
+            "ind": 94,
+            "ty": 4,
+            "parent": 91,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "rc",
+                    "p": { "a": 0, "k": [77.5, 29] },
+                    "r": { "a": 0, "k": 54.087 },
+                    "s": { "a": 0, "k": [155, 58] }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0.945, 0.925, 1] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 91,
+            "ty": 3,
+            "parent": 7,
+            "ks": { "p": { "a": 0, "k": [4, 0] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 97,
+            "ty": 4,
+            "td": 1,
+            "parent": 95,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "rc",
+                    "p": { "a": 0, "k": [77.5, 29] },
+                    "r": { "a": 0, "k": 54.087 },
+                    "s": { "a": 0, "k": [155, 58] }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0, 0, 0] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 96,
+            "ty": 4,
+            "tt": 1,
+            "parent": 95,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "gr",
+                    "it": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [77.5, 29] },
+                            "r": { "a": 0, "k": 0 },
+                            "s": { "a": 0, "k": [157, 60] }
+                        },
+                        {
+                            "ty": "fl",
+                            "c": { "a": 0, "k": [0, 0, 0, 0] },
+                            "o": { "a": 0, "k": 0 }
+                        },
+                        { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                    ]
+                },
+                {
+                    "ty": "gr",
+                    "it": [
+                        {
+                            "ty": "rc",
+                            "p": { "a": 0, "k": [77.5, 29] },
+                            "r": { "a": 0, "k": 54.087 },
+                            "s": { "a": 0, "k": [155, 58] }
+                        },
+                        {
+                            "ty": "st",
+                            "c": { "a": 0, "k": [0.102, 0.118, 0.137] },
+                            "lc": 1,
+                            "lj": 1,
+                            "ml": 10,
+                            "o": { "a": 0, "k": 100 },
+                            "w": { "a": 0, "k": 2 }
+                        },
+                        { "ty": "tr", "o": { "a": 0, "k": 100 } }
+                    ]
+                }
+            ]
+        },
+        {
+            "ind": 98,
+            "ty": 4,
+            "parent": 95,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0,
+            "shapes": [
+                {
+                    "ty": "rc",
+                    "p": { "a": 0, "k": [77.5, 29] },
+                    "r": { "a": 0, "k": 54.087 },
+                    "s": { "a": 0, "k": [155, 58] }
+                },
+                {
+                    "ty": "fl",
+                    "c": { "a": 0, "k": [0.718, 0.655, 1] },
+                    "o": { "a": 0, "k": 100 }
+                }
+            ]
+        },
+        {
+            "ind": 95,
+            "ty": 3,
+            "parent": 7,
+            "ks": { "p": { "a": 0, "k": [0, 4] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 7,
+            "ty": 3,
+            "parent": 4,
+            "ks": {
+                "a": { "a": 0, "k": [79.5, 31] },
+                "p": { "a": 0, "k": [79.5, 31] },
+                "s": {
+                    "a": 1,
+                    "k": [
+                        {
+                            "t": 0,
+                            "s": [100, 100],
+                            "i": { "x": [0.032, 0.032], "y": [0.944, 0.944] },
+                            "o": { "x": [0.53, 0.53], "y": [0, 0] }
+                        },
+                        {
+                            "t": 14.1,
+                            "s": [90.03, 90.03],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 29.52,
+                            "s": [100, 100],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        {
+                            "t": 113.28,
+                            "s": [100, 100],
+                            "i": { "x": [0.032, 0.032], "y": [0.944, 0.944] },
+                            "o": { "x": [0.53, 0.53], "y": [0, 0] }
+                        },
+                        {
+                            "t": 127.38,
+                            "s": [90.03, 90.03],
+                            "i": { "x": [0, 0], "y": [1, 1] },
+                            "o": { "x": [0.5, 0.5], "y": [0, 0] }
+                        },
+                        {
+                            "t": 142.8,
+                            "s": [100, 100],
+                            "i": { "x": [1, 1], "y": [1, 1] },
+                            "o": { "x": [0, 0], "y": [0, 0] }
+                        },
+                        { "t": 239.4, "s": [100, 100], "h": 1 }
+                    ]
+                }
+            },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 4,
+            "ty": 3,
+            "parent": 3,
+            "ks": { "p": { "a": 0, "k": [2, 5] } },
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        {
+            "ind": 3,
+            "ty": 3,
+            "parent": 2,
+            "ks": {},
+            "ip": 0,
+            "op": 240.4,
+            "st": 0
+        },
+        { "ind": 2, "ty": 3, "ks": {}, "ip": 0, "op": 240.4, "st": 0 }
+    ],
+    "meta": { "g": "https://jitter.video" },
+    "op": 239.4,
+    "v": "5.7.4",
+    "w": 180
+}

@@ -1,3 +1,4 @@
+import Lottie from 'lottie-react'
 import { useHistory } from 'react-router-dom'
 
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
@@ -21,29 +22,41 @@ export const OpportunitiesEmptyState = ({
 
     return (
         <div className={css.containerContent}>
-            <Box flexDirection="column" alignItems="center">
-                {opportunitiesPageState.media && (
-                    <div className={css.mediaFrame}>
+            {opportunitiesPageState.media && (
+                <div className={css.mediaFrame}>
+                    {typeof opportunitiesPageState.media === 'object' ? (
+                        <Lottie
+                            animationData={opportunitiesPageState.media}
+                            loop={true}
+                            autoplay={true}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                            }}
+                            aria-label="Opportunities empty state"
+                            role="img"
+                        />
+                    ) : (
                         <img
                             className={css.media}
                             src={opportunitiesPageState.media}
                             alt="Opportunities empty state"
                         />
-                    </div>
-                )}
-                <Box flexDirection="column" gap="xs" alignItems="center">
-                    <Heading size="lg" className={css.title}>
-                        {opportunitiesPageState.title}
-                    </Heading>
-                    <Text
-                        size="md"
-                        variant="regular"
-                        align="center"
-                        className={css.description}
-                    >
-                        {opportunitiesPageState.description}
-                    </Text>
-                </Box>
+                    )}
+                </div>
+            )}
+            <Box flexDirection="column" gap="xs" alignItems="center">
+                <Heading size="lg" className={css.title}>
+                    {opportunitiesPageState.title}
+                </Heading>
+                <Text
+                    size="md"
+                    variant="regular"
+                    align="center"
+                    className={css.description}
+                >
+                    {opportunitiesPageState.description}
+                </Text>
             </Box>
             {opportunitiesPageState.primaryCta && (
                 <Button variant="primary" onClick={redirectTo}>
