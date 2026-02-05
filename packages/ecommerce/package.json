@@ -15,9 +15,14 @@
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
-    "peerDependencies": {},
+    "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@repo/utils": "workspace:*"
+    },
     "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
