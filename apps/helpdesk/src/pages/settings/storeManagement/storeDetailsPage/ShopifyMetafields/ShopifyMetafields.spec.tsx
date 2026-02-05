@@ -11,9 +11,18 @@ import {
     mockUpdateMetafieldDefinitionHandler,
 } from '@gorgias/helpdesk-mocks'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 import { mockStore } from 'utils/testing'
 
 import ShopifyMetafields from './ShopifyMetafields'
+
+jest.mock('hooks/useAppSelector')
+
+const mockUseAppSelector = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
 
 const INTEGRATION_ID = 123
 
@@ -69,6 +78,16 @@ describe('ShopifyMetafields', () => {
                 queries: { retry: false },
                 mutations: { retry: false },
             },
+        })
+
+        mockUseAppSelector.mockImplementation((selector: any) => {
+            if (selector === getCurrentAccountId) {
+                return 1
+            }
+            if (selector === getCurrentUserId) {
+                return 2
+            }
+            return undefined
         })
 
         const mockUpdateHandler = mockUpdateMetafieldDefinitionHandler()

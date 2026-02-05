@@ -15,6 +15,9 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { MetafieldOwnerType } from '@gorgias/helpdesk-types'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 import { mockStore } from 'utils/testing'
 
 import ImportMetafieldFlow from './ImportMetafieldFlow'
@@ -24,6 +27,11 @@ jest.mock('./hooks/useImportWizard')
 jest.mock('./hooks/useFieldSelection')
 jest.mock('./hooks/useImportMetafields')
 jest.mock('hooks/useNotify')
+jest.mock('hooks/useAppSelector')
+
+const mockUseAppSelector = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
 
 const { useImportWizard } = jest.requireMock('./hooks/useImportWizard')
 const { useFieldSelection } = jest.requireMock('./hooks/useFieldSelection')
@@ -107,6 +115,16 @@ describe('ImportMetafieldFlow', () => {
                 queries: { retry: false },
                 mutations: { retry: false },
             },
+        })
+
+        mockUseAppSelector.mockImplementation((selector: any) => {
+            if (selector === getCurrentAccountId) {
+                return 1
+            }
+            if (selector === getCurrentUserId) {
+                return 2
+            }
+            return undefined
         })
 
         useImportWizard.mockReturnValue(defaultWizardState)

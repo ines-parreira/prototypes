@@ -1,10 +1,15 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
+
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Box } from '@gorgias/axiom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { METAFIELD_CATEGORIES } from '../constants'
 import type { Field } from '../MetafieldsTable/types'
@@ -83,6 +88,16 @@ export default function ImportMetafieldContent({
             }
         }
     }, [allSelectedFields, importMetafields, success, error, onClose])
+
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
+
+    useEffect(() => {
+        logEvent(SegmentEvent.ShopifyMetafieldsOpenImportModal, {
+            accountId,
+            userId,
+        })
+    }, [accountId, userId])
 
     return (
         <>

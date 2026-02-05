@@ -9,11 +9,14 @@ import {
     useFloating,
     useInteractions,
 } from '@floating-ui/react'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { Icon } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { Field } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/types'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import { MetafieldsList } from './MetafieldsList'
@@ -79,7 +82,14 @@ export function ShopifyMetafieldVariablePicker({
         onCloseParentMenu?.()
     }
 
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
+
     const handleOpenSubmenu = (e: React.MouseEvent | React.KeyboardEvent) => {
+        logEvent(SegmentEvent.ShopifyMetafieldsOpenMacroDropdown, {
+            accountId,
+            userId,
+        })
         e.stopPropagation()
         setIsOpen(true)
     }

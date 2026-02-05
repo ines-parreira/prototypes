@@ -6,6 +6,9 @@ import { ThemeProvider } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 import { mockStore } from 'utils/testing'
 
 import { ShopifyMetafieldVariablePicker } from '../ShopifyMetafieldVariablePicker'
@@ -92,7 +95,18 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
 
     describe('when no Shopify integrations exist', () => {
         beforeEach(() => {
-            mockUseAppSelector.mockReturnValue([])
+            mockUseAppSelector.mockImplementation((selector: any) => {
+                if (selector === getCurrentAccountId) {
+                    return 1
+                }
+                if (selector === getCurrentUserId) {
+                    return 2
+                }
+                if (selector === getShopifyIntegrationsSortedByName) {
+                    return []
+                }
+                return []
+            })
         })
 
         it('returns null', () => {
@@ -109,7 +123,18 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
         ]
 
         beforeEach(() => {
-            mockUseAppSelector.mockReturnValue(mockStores)
+            mockUseAppSelector.mockImplementation((selector: any) => {
+                if (selector === getCurrentAccountId) {
+                    return 1
+                }
+                if (selector === getCurrentUserId) {
+                    return 2
+                }
+                if (selector === getShopifyIntegrationsSortedByName) {
+                    return mockStores
+                }
+                return []
+            })
         })
 
         it('renders trigger button with "Shopify metafields" text', () => {
@@ -293,7 +318,18 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
         const singleStore = [createMockStore({ id: 1, name: 'Only Store' })]
 
         beforeEach(() => {
-            mockUseAppSelector.mockReturnValue(singleStore)
+            mockUseAppSelector.mockImplementation((selector: any) => {
+                if (selector === getCurrentAccountId) {
+                    return 1
+                }
+                if (selector === getCurrentUserId) {
+                    return 2
+                }
+                if (selector === getShopifyIntegrationsSortedByName) {
+                    return singleStore
+                }
+                return []
+            })
         })
 
         it('still renders trigger button', () => {

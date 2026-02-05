@@ -1,4 +1,12 @@
+import { useEffect } from 'react'
+
+import { logEvent, SegmentEvent } from '@repo/logging'
+
 import { Text } from '@gorgias/axiom'
+
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { useMetafields } from './hooks/useMetafields'
 import { columns } from './MetafieldsTable/Columns'
@@ -8,6 +16,16 @@ import styles from './ShopifyMetafields.less'
 
 export default function ShopifyMetafields() {
     const { data = [], isLoading } = useMetafields()
+
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
+
+    useEffect(() => {
+        logEvent(SegmentEvent.ShopifyMetafieldsOpenSettingsPage, {
+            accountId,
+            userId,
+        })
+    }, [accountId, userId])
 
     return (
         <div className={styles.metafieldsLandingPageContent}>
