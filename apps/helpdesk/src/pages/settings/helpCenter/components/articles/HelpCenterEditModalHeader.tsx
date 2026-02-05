@@ -430,6 +430,7 @@ export const HelpCenterEditModalHeader = ({
                             onSelect={onLanguageSelect}
                             onActionClick={onArticleLanguageSelectActionClick}
                             className={css.inlineLanguageSelect}
+                            label="Language"
                         />
                     </div>
                 )}

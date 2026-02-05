@@ -598,33 +598,35 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               >
                 Language
               </label>
-              <div
-                class="wrapper inlineLanguageSelect inlineLanguageSelectForm"
-              >
-                <button
-                  class="trigger"
-                  data-testid="dropdown-select-trigger"
+              <div>
+                <div
+                  class="wrapper inlineLanguageSelect inlineLanguageSelectForm"
                 >
-                  <span
-                    class="label"
+                  <button
+                    class="trigger"
+                    data-testid="dropdown-select-trigger"
                   >
-                    <span>
-                      <img
-                        alt="en-US"
-                        class="flag-emoji"
-                        src="test-file-stub"
-                      />
+                    <span
+                      class="label"
+                    >
                       <span>
-                        English - USA
+                        <img
+                          alt="en-US"
+                          class="flag-emoji"
+                          src="test-file-stub"
+                        />
+                        <span>
+                          English - USA
+                        </span>
                       </span>
                     </span>
-                  </span>
-                  <span
-                    class="material-icons"
-                  >
-                    arrow_drop_down
-                  </span>
-                </button>
+                    <span
+                      class="material-icons"
+                    >
+                      arrow_drop_down
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

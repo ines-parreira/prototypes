@@ -21,6 +21,7 @@ export type OptionItem = {
 }
 
 type Props = {
+    label?: string
     selected?: LocaleCode
     list?: OptionItem[]
     onSelect: (localeCode: LocaleCode) => void
@@ -30,6 +31,7 @@ type Props = {
 }
 
 export const ArticleLanguageSelect = ({
+    label,
     selected,
     list = [],
     onSelect,
@@ -98,36 +100,39 @@ export const ArticleLanguageSelect = ({
     }
 
     return (
-        <div ref={$ref} className={classnames(css.wrapper, className)}>
-            <button
-                data-testid="dropdown-select-trigger"
-                className={css.trigger}
-                onClick={onOpen}
-            >
-                <span className={css.label}>{selectedOption?.label}</span>
-                <span className="material-icons">arrow_drop_down</span>
-            </button>
-            {isOpen && (
-                <div
-                    data-testid="dropdown-options"
-                    className={classnames(css.dropdown, 'dropdown-options')}
+        <div>
+            {label && <span className={css.selectLabel}>{label}</span>}
+            <div ref={$ref} className={classnames(css.wrapper, className)}>
+                <button
+                    data-testid="dropdown-select-trigger"
+                    className={css.trigger}
+                    onClick={onOpen}
                 >
-                    <ul>
-                        {list.map((option) => (
-                            <li
-                                key={option.value}
-                                data-testid={`option-${option.value}`}
-                                onClick={() => handleOnSelect(option)}
-                            >
-                                <span className={css.label}>
-                                    {option.label}
-                                </span>
-                                {renderActions(option)}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+                    <span className={css.label}>{selectedOption?.label}</span>
+                    <span className="material-icons">arrow_drop_down</span>
+                </button>
+                {isOpen && (
+                    <div
+                        data-testid="dropdown-options"
+                        className={classnames(css.dropdown, 'dropdown-options')}
+                    >
+                        <ul>
+                            {list.map((option) => (
+                                <li
+                                    key={option.value}
+                                    data-testid={`option-${option.value}`}
+                                    onClick={() => handleOnSelect(option)}
+                                >
+                                    <span className={css.label}>
+                                        {option.label}
+                                    </span>
+                                    {renderActions(option)}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

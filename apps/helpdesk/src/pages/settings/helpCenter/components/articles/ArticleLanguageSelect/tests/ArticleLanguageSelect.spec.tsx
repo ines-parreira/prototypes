@@ -18,6 +18,20 @@ const list: OptionItem[] = [
 ]
 
 describe('<ArticleLanguageSelect>', () => {
+    it('renders the label when provided', () => {
+        const { getByText } = render(
+            <ArticleLanguageSelect
+                label="Language"
+                selected="en-US"
+                list={list}
+                onSelect={() => null}
+                onActionClick={() => null}
+            />,
+        )
+
+        expect(getByText('Language')).toBeInTheDocument()
+    })
+
     it('opens the dropdown options', () => {
         const { getByTestId, getByRole } = render(
             <ArticleLanguageSelect

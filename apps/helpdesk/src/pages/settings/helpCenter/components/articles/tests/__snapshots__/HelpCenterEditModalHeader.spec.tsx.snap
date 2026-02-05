@@ -31,33 +31,35 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </i>
           UNSAVED
         </div>
-        <div
-          class="wrapper"
-        >
-          <button
-            class="trigger"
-            data-testid="dropdown-select-trigger"
+        <div>
+          <div
+            class="wrapper"
           >
-            <span
-              class="label"
+            <button
+              class="trigger"
+              data-testid="dropdown-select-trigger"
             >
-              <span>
-                <img
-                  alt="fr-FR"
-                  class="flag-emoji"
-                  src="test-file-stub"
-                />
+              <span
+                class="label"
+              >
                 <span>
-                  French - France
+                  <img
+                    alt="fr-FR"
+                    class="flag-emoji"
+                    src="test-file-stub"
+                  />
+                  <span>
+                    French - France
+                  </span>
                 </span>
               </span>
-            </span>
-            <span
-              class="material-icons"
-            >
-              arrow_drop_down
-            </span>
-          </button>
+              <span
+                class="material-icons"
+              >
+                arrow_drop_down
+              </span>
+            </button>
+          </div>
         </div>
         <button
           aria-disabled="false"
@@ -275,33 +277,35 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </i>
           UNSAVED
         </div>
-        <div
-          class="wrapper"
-        >
-          <button
-            class="trigger"
-            data-testid="dropdown-select-trigger"
+        <div>
+          <div
+            class="wrapper"
           >
-            <span
-              class="label"
+            <button
+              class="trigger"
+              data-testid="dropdown-select-trigger"
             >
-              <span>
-                <img
-                  alt="fr-FR"
-                  class="flag-emoji"
-                  src="test-file-stub"
-                />
+              <span
+                class="label"
+              >
                 <span>
-                  French - France
+                  <img
+                    alt="fr-FR"
+                    class="flag-emoji"
+                    src="test-file-stub"
+                  />
+                  <span>
+                    French - France
+                  </span>
                 </span>
               </span>
-            </span>
-            <span
-              class="material-icons"
-            >
-              arrow_drop_down
-            </span>
-          </button>
+              <span
+                class="material-icons"
+              >
+                arrow_drop_down
+              </span>
+            </button>
+          </div>
         </div>
         <button
           aria-disabled="false"
@@ -387,33 +391,35 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           </i>
           UNSAVED
         </div>
-        <div
-          class="wrapper"
-        >
-          <button
-            class="trigger"
-            data-testid="dropdown-select-trigger"
+        <div>
+          <div
+            class="wrapper"
           >
-            <span
-              class="label"
+            <button
+              class="trigger"
+              data-testid="dropdown-select-trigger"
             >
-              <span>
-                <img
-                  alt="fr-FR"
-                  class="flag-emoji"
-                  src="test-file-stub"
-                />
+              <span
+                class="label"
+              >
                 <span>
-                  French - France
+                  <img
+                    alt="fr-FR"
+                    class="flag-emoji"
+                    src="test-file-stub"
+                  />
+                  <span>
+                    French - France
+                  </span>
                 </span>
               </span>
-            </span>
-            <span
-              class="material-icons"
-            >
-              arrow_drop_down
-            </span>
-          </button>
+              <span
+                class="material-icons"
+              >
+                arrow_drop_down
+              </span>
+            </button>
+          </div>
         </div>
         <button
           aria-disabled="false"
