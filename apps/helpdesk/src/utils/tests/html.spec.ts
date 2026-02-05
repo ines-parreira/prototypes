@@ -545,7 +545,7 @@ describe('html util', () => {
             const input = '<div>&&&customer.email&&&</div>'
             const normalized = normalizeHtml(input)
             expect(normalized).toBe(
-                '<div>&amp;&amp;&amp;customer.email&amp;&amp;&amp;</div>',
+                '<p>&amp;&amp;&amp;customer.email&amp;&amp;&amp;</p>',
             )
         })
 
@@ -554,8 +554,8 @@ describe('html util', () => {
             const input2 = '<div><br></div>'
             const normalized1 = normalizeHtml(input1)
             const normalized2 = normalizeHtml(input2)
-            expect(normalized1).toBe('<div></div>')
-            expect(normalized2).toBe('<div></div>')
+            expect(normalized1).toBe('<p></p>')
+            expect(normalized2).toBe('<p></p>')
             expect(normalized1).toBe(normalized2)
         })
 
@@ -616,7 +616,38 @@ describe('html util', () => {
             const normalized = normalizeHtml(input)
             expect(typeof normalized).toBe('string')
             expect(normalized).toContain('Test')
-            expect(normalized).toBe('<div><p>Test</p><div></div></div>')
+            expect(normalized).toBe('<p><p>Test</p><p></p></p>')
+        })
+
+        it('should normalize <div> tags to <p> tags for consistent comparison', () => {
+            const input1 = '<p>Hello World</p><p>Second paragraph</p>'
+            const input2 = '<div>Hello World</div><div>Second paragraph</div>'
+            const normalized1 = normalizeHtml(input1)
+            const normalized2 = normalizeHtml(input2)
+            expect(normalized1).toBe(normalized2)
+            expect(normalized1).toBe(
+                '<p>Hello World</p><p>Second paragraph</p>',
+            )
+        })
+
+        it('should remove empty formatting tags that have no content', () => {
+            const input1 = '<div></div>'
+            const input2 = '<div><strong></strong></div>'
+            const input3 = '<div><em></em></div>'
+            const input4 = '<div><strong></strong><em></em><b></b></div>'
+
+            const normalized1 = normalizeHtml(input1)
+            const normalized2 = normalizeHtml(input2)
+            const normalized3 = normalizeHtml(input3)
+            const normalized4 = normalizeHtml(input4)
+
+            expect(normalized1).toBe('<p></p>')
+            expect(normalized2).toBe('<p></p>')
+            expect(normalized3).toBe('<p></p>')
+            expect(normalized4).toBe('<p></p>')
+            expect(normalized1).toBe(normalized2)
+            expect(normalized1).toBe(normalized3)
+            expect(normalized1).toBe(normalized4)
         })
     })
 })

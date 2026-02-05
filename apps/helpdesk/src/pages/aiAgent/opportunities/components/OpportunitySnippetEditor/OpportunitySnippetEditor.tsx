@@ -57,26 +57,29 @@ export const OpportunitySnippetEditor = ({
 
     const handleSourceClick = () => {
         const source = resource.meta?.articleIngestionLog?.source
+        const sourceName = resource.meta?.articleIngestionLog?.source_name
+        const resourceId = resource.identifiers?.resourceId
 
-        if (!source) return
+        if (!source || !sourceName || !resourceId) return
 
-        let sourcePath: string
+        let sourceType: string
 
         switch (source) {
             case 'file':
-                sourcePath = '?filter=document'
+                sourceType = 'document'
                 break
             case 'domain':
-                sourcePath = '?filter=domain'
+                sourceType = 'domain'
                 break
             case 'url':
-                sourcePath = '?filter=url'
+                sourceType = 'url'
                 break
             default:
                 return
         }
 
-        const knowledgeHubUrl = `${routes.knowledgeSources}${sourcePath}`
+        const folderParam = encodeURIComponent(sourceName)
+        const knowledgeHubUrl = `${routes.knowledge}/${sourceType}/${resourceId}?filter=${sourceType}&folder=${folderParam}`
         history.push(knowledgeHubUrl)
     }
 

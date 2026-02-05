@@ -24,6 +24,12 @@ const mockResource: OpportunityResource = {
     content: 'Test snippet content',
     type: ResourceType.EXTERNAL_SNIPPET,
     isVisible: true,
+    identifiers: {
+        resourceId: '31407',
+        resourceSetId: 'set-123',
+        resourceLocale: 'en',
+        resourceVersion: '1.0',
+    },
     meta: {
         articleIngestionLog: {
             source: 'url',
@@ -42,8 +48,7 @@ describe('OpportunitySnippetEditor', () => {
         mockUseHistory.mockReturnValue({ push: mockPush })
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
-                knowledgeSources:
-                    '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                knowledge: '/app/ai-agent/shopify/test-shop/knowledge',
             },
         })
     })
@@ -137,7 +142,7 @@ describe('OpportunitySnippetEditor', () => {
         await user.click(sourceElement)
 
         expect(mockPush).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/knowledge/sources?filter=url',
+            '/app/ai-agent/shopify/test-shop/knowledge/url/31407?filter=url&folder=https%3A%2F%2Furl.com',
         )
     })
 
@@ -146,6 +151,12 @@ describe('OpportunitySnippetEditor', () => {
 
         const fileResource: OpportunityResource = {
             ...mockResource,
+            identifiers: {
+                resourceId: '31237',
+                resourceSetId: 'set-456',
+                resourceLocale: 'en',
+                resourceVersion: '1.0',
+            },
             meta: {
                 articleIngestionLog: {
                     source: 'file',
@@ -165,7 +176,7 @@ describe('OpportunitySnippetEditor', () => {
         await user.click(sourceElement)
 
         expect(mockPush).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/knowledge/sources?filter=document',
+            '/app/ai-agent/shopify/test-shop/knowledge/document/31237?filter=document&folder=document.pdf',
         )
     })
 
@@ -174,6 +185,12 @@ describe('OpportunitySnippetEditor', () => {
 
         const domainResource: OpportunityResource = {
             ...mockResource,
+            identifiers: {
+                resourceId: '31437',
+                resourceSetId: 'set-789',
+                resourceLocale: 'en',
+                resourceVersion: '1.0',
+            },
             meta: {
                 articleIngestionLog: {
                     source: 'domain',
@@ -193,7 +210,7 @@ describe('OpportunitySnippetEditor', () => {
         await user.click(sourceElement)
 
         expect(mockPush).toHaveBeenCalledWith(
-            '/app/ai-agent/shopify/test-shop/knowledge/sources?filter=domain',
+            '/app/ai-agent/shopify/test-shop/knowledge/domain/31437?filter=domain&folder=example.com',
         )
     })
 
@@ -211,5 +228,26 @@ describe('OpportunitySnippetEditor', () => {
         )
 
         expect(screen.queryByText('https://url.com')).not.toBeInTheDocument()
+    })
+
+    it('should not navigate when resourceId is missing', async () => {
+        const user = userEvent.setup()
+
+        const resourceWithoutId: OpportunityResource = {
+            ...mockResource,
+            identifiers: undefined,
+        }
+
+        render(
+            <OpportunitySnippetEditor
+                {...defaultProps}
+                resource={resourceWithoutId}
+            />,
+        )
+
+        const sourceElement = screen.getByText('https://url.com')
+        await user.click(sourceElement)
+
+        expect(mockPush).not.toHaveBeenCalled()
     })
 })

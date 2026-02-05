@@ -148,7 +148,6 @@ export const OpportunityArticleEditor = ({
                         showActionsButton={false}
                         showVariablesButton={false}
                         shopName={shopName}
-                        showDefaultToolbarActions={false}
                     />
                 </div>
             </Box>

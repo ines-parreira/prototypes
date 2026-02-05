@@ -88,7 +88,6 @@ export const OpportunityGuidanceEditor = ({
                     shopName={shopName}
                     availableActions={guidanceActions}
                     showActionsButton
-                    showDefaultToolbarActions={isInGuidanceEditorModeOnly}
                 />
                 <Text variant="regular" size="sm" className={css.caption}>
                     Describe the steps AI Agent should follow in clear, specific

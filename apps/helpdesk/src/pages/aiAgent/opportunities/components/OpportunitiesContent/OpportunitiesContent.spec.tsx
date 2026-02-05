@@ -1235,4 +1235,46 @@ describe('OpportunitiesContent', () => {
             expect(mockDisconnect).toHaveBeenCalled()
         })
     })
+
+    describe('Form validation - isFormValid', () => {
+        it('should disable button when title or content is empty or contains only whitespace', async () => {
+            const user = userEvent.setup()
+
+            renderComponent({
+                selectedOpportunity,
+                opportunities: [selectedOpportunity],
+                opportunitiesPageState: mockOpportunityPageState,
+            })
+
+            const titleInput =
+                await screen.findByDisplayValue('Test opportunity')
+            const contentEditor = await screen.findByTestId('guidance-editor')
+
+            await user.clear(titleInput)
+            let approveButton = screen.getByRole('button', {
+                name: /Publish and enable/i,
+            })
+            expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+
+            await user.type(titleInput, '   ')
+            approveButton = screen.getByRole('button', {
+                name: /Publish and enable/i,
+            })
+            expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+
+            await user.clear(titleInput)
+            await user.type(titleInput, 'Valid Title')
+            await user.clear(contentEditor)
+            approveButton = screen.getByRole('button', {
+                name: /Publish and enable/i,
+            })
+            expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+
+            await user.type(contentEditor, '   ')
+            approveButton = screen.getByRole('button', {
+                name: /Publish and enable/i,
+            })
+            expect(approveButton).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
 })

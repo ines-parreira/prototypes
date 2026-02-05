@@ -162,12 +162,17 @@ export const OpportunitiesContent = ({
         editorFormResources.some((resource, index) => {
             const originalResource = selectedOpportunity.resources[index]
             return (
-                resource.title !== originalResource?.title ||
+                resource.title.trim() !== originalResource?.title.trim() ||
                 normalizeHtml(resource.content) !==
                     normalizeHtml(originalResource?.content || '') ||
                 resource.isVisible !== originalResource?.isVisible
             )
         })
+
+    const isFormValid = editorFormResources.every(
+        (resource) =>
+            resource.title.trim() !== '' && resource.content.trim() !== '',
+    )
 
     const handleSaveChanges = useCallback(async () => {
         if (!selectedOpportunity) return
@@ -259,6 +264,7 @@ export const OpportunitiesContent = ({
                 allowedOpportunityIds={allowedOpportunityIds}
                 onOpenDismissModal={handleOpenDismissModal}
                 isFormDirty={!!isFormDirty}
+                isFormValid={isFormValid}
             />
 
             <OpportunityDetailsContent

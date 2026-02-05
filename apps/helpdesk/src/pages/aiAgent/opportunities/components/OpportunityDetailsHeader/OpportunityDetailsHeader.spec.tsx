@@ -317,6 +317,26 @@ describe('OpportunityDetailsHeader', () => {
 
             expect(handleResolve).not.toHaveBeenCalled()
         })
+
+        it('should be disabled when form is invalid (isFormValid=false) even if form is dirty', () => {
+            const conflictOpportunity: Opportunity = {
+                ...mockOpportunity,
+                type: OpportunityType.RESOLVE_CONFLICT,
+            }
+
+            renderComponent({
+                selectedOpportunity: conflictOpportunity,
+                opportunities: [],
+                isFormDirty: true,
+                isFormValid: false,
+            })
+
+            const resolveButton = screen.getByRole('button', {
+                name: /resolve/i,
+            })
+
+            expect(resolveButton).toBeDisabled()
+        })
     })
 
     describe('Sidebar Button', () => {

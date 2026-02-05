@@ -36,6 +36,7 @@ interface OpportunityDetailsHeaderProps {
     allowedOpportunityIds?: number[]
     onOpenDismissModal: () => void
     isFormDirty?: boolean
+    isFormValid?: boolean
 }
 
 export const OpportunityDetailsHeader = ({
@@ -48,6 +49,7 @@ export const OpportunityDetailsHeader = ({
     allowedOpportunityIds,
     onOpenDismissModal,
     isFormDirty = false,
+    isFormValid = true,
 }: OpportunityDetailsHeaderProps) => {
     const approveButtonRef = useRef<HTMLButtonElement>(null)
 
@@ -152,7 +154,9 @@ export const OpportunityDetailsHeader = ({
                             leadingSlot="check"
                             onClick={handleResolve}
                             isLoading={isProcessing}
-                            isDisabled={!isFormDirty || !isRelevant}
+                            isDisabled={
+                                !isFormDirty || !isFormValid || !isRelevant
+                            }
                         >
                             Resolve
                         </Button>
@@ -169,7 +173,9 @@ export const OpportunityDetailsHeader = ({
                                         onClick={handleApprove}
                                         isLoading={isProcessing}
                                         isDisabled={
-                                            isApproveDisabled || !isRelevant
+                                            isApproveDisabled ||
+                                            !isRelevant ||
+                                            !isFormValid
                                         }
                                     >
                                         Publish and enable
@@ -198,7 +204,11 @@ export const OpportunityDetailsHeader = ({
                                 leadingSlot="check"
                                 onClick={handleApprove}
                                 isLoading={isProcessing}
-                                isDisabled={isApproveDisabled || !isRelevant}
+                                isDisabled={
+                                    isApproveDisabled ||
+                                    !isRelevant ||
+                                    !isFormValid
+                                }
                             >
                                 Publish and enable
                             </Button>

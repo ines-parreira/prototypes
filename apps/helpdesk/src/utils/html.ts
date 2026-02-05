@@ -362,7 +362,10 @@ export function unescapeAmpAndDollarEntities(html: string): string {
  * then applying additional transformations to match Draft.js editor output.
  * This ensures consistent HTML representation by applying:
  * - Character entities: & -> &amp;
- * - Empty divs: <div><br /></div> or <div><br></div> -> <div></div>
+ * - Empty paragraphs: <p><br /></p> or <p><br></p> -> <p></p>
+ * - Paragraph/div normalization: <div> tags are converted to <p> tags
+ * - Text content trimming: leading/trailing whitespace in text nodes is removed
+ * - Empty formatting tags: removes empty <strong>, <em>, <b>, <i>, <u>, <span> tags
  * - Link attributes: removes target="_blank" for consistency
  * - Trailing slashes in URLs: http://example.com/ -> http://example.com
  *
@@ -373,12 +376,51 @@ export function normalizeHtml(html: string): string {
     if (!html) return ''
     const doc = parseHtml(html)
 
-    // Remove <br> tags that are the only child of a div
+    // Normalize <div> and <p> tags by converting all <div> to <p>
     const divs = doc.querySelectorAll('div')
     divs.forEach((div) => {
-        if (div.childNodes.length === 1 && div.firstChild?.nodeName === 'BR') {
-            div.removeChild(div.firstChild)
+        const p = doc.createElement('p')
+        Array.from(div.attributes).forEach((attr) => {
+            p.setAttribute(attr.name, attr.value)
+        })
+        while (div.firstChild) {
+            p.appendChild(div.firstChild)
         }
+        div.parentNode?.replaceChild(p, div)
+    })
+
+    // Trim text content within elements
+    const trimTextNodes = (node: Node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            if (node.textContent) {
+                node.textContent = node.textContent.trim()
+            }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+            Array.from(node.childNodes).forEach(trimTextNodes)
+        }
+    }
+    trimTextNodes(doc.body)
+
+    // Remove <br> tags that are the only child of a p
+    const paragraphs = doc.querySelectorAll('p')
+    paragraphs.forEach((p) => {
+        if (p.childNodes.length === 1 && p.firstChild?.nodeName === 'BR') {
+            p.removeChild(p.firstChild)
+        }
+    })
+
+    // Remove empty formatting tags (strong, em, b, i, u, etc.) that have no content
+    const formattingTags = ['strong', 'em', 'b', 'i', 'u', 'span']
+    formattingTags.forEach((tagName) => {
+        const elements = doc.querySelectorAll(tagName)
+        elements.forEach((element) => {
+            if (
+                element.textContent?.trim() === '' &&
+                element.childNodes.length === 0
+            ) {
+                element.remove()
+            }
+        })
     })
 
     // Normalize link attributes for consistent comparison
