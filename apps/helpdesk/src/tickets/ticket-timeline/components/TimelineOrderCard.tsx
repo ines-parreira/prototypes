@@ -4,7 +4,15 @@ import {
 } from '@repo/tickets'
 import { getMoneySymbol } from '@repo/utils'
 
-import { Box, Color, Tag, Text, TextVariant } from '@gorgias/axiom'
+import {
+    Box,
+    CardContent,
+    CardFooter,
+    Color,
+    Tag,
+    Text,
+    TextVariant,
+} from '@gorgias/axiom'
 import type { Color as ColorType } from '@gorgias/axiom'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
@@ -126,13 +134,19 @@ export function TimelineOrderCard({
 
     return (
         <TimelineCard>
-            <Box flexDirection="column" gap="xs">
-                <TicketHeader
-                    subject={order.name}
-                    time={displayedDate}
-                    iconName="vendor-shopify-colored"
-                />
-                <Box flexDirection="row" alignItems="center" gap="xs">
+            <TicketHeader
+                subject={order.name}
+                time={displayedDate}
+                iconName="vendor-shopify-colored"
+            />
+            <CardContent>
+                <Box
+                    flexDirection="row"
+                    alignItems="center"
+                    gap="xs"
+                    paddingBottom="xxxxs"
+                    paddingTop="xxxxs"
+                >
                     {/* Product Images */}
                     {displayedLineItems.length > 0 && (
                         <Box gap="xxxxs">
@@ -192,11 +206,13 @@ export function TimelineOrderCard({
                         </Text>
                     </Box>
                 </Box>
+            </CardContent>
+            <CardFooter>
                 <Box flexDirection="row" gap="xs">
                     <Tag color={financialColor}>{financialLabel}</Tag>
                     <Tag color={fulfillmentColor}>{fulfillmentLabel}</Tag>
                 </Box>
-            </Box>
+            </CardFooter>
         </TimelineCard>
     )
 }

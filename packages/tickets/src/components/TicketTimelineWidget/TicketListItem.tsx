@@ -1,4 +1,4 @@
-import { Box } from '@gorgias/axiom'
+import { CardContent } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 import type { TicketCompact } from '@gorgias/helpdesk-queries'
 
@@ -27,28 +27,24 @@ export function TicketListItem({
     onSelect,
 }: TicketListItemProps) {
     return (
-        <li>
-            <div style={{ cursor: 'pointer' }}>
-                <TimelineCard className={className} onClick={onSelect}>
-                    <Box display="flex" flexDirection="column" gap="xs">
-                        <TicketHeader
-                            subject={ticket.subject}
-                            time={formatTicketTime(ticket.created_datetime)}
-                            iconName={iconName}
-                        />
-                        <TicketFieldsOverflowList
-                            customFields={customFields}
-                            isLoading={conditionsLoading}
-                        />
-                        <TicketFooter
-                            status={ticket.status}
-                            isSnoozed={!!ticket.snooze_datetime}
-                            assignee={ticket.assignee_user}
-                            messagesCount={ticket.messages_count}
-                        />
-                    </Box>
-                </TimelineCard>
-            </div>
-        </li>
+        <TimelineCard className={className} onClick={onSelect}>
+            <TicketHeader
+                subject={ticket.subject}
+                time={formatTicketTime(ticket.created_datetime)}
+                iconName={iconName}
+            />
+            <CardContent>
+                <TicketFieldsOverflowList
+                    customFields={customFields}
+                    isLoading={conditionsLoading}
+                />
+            </CardContent>
+            <TicketFooter
+                status={ticket.status}
+                isSnoozed={!!ticket.snooze_datetime}
+                assignee={ticket.assignee_user}
+                messagesCount={ticket.messages_count}
+            />
+        </TimelineCard>
     )
 }

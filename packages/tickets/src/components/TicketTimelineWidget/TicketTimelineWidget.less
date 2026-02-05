@@ -24,13 +24,12 @@
     }
 
     .card {
-        border: 1px solid var(--border-neutral-default);
-        border-radius: var(--layout-spacing-xs);
-        background-color: var(--elevation-neutral-default);
+        margin-bottom: var(--spacing-xs);
         cursor: pointer;
+        padding: var(--spacing-sm) var(--spacing-md);
 
-        &:hover {
-            box-shadow: var(--effects-shadow-container);
+        &::after {
+            pointer-events: none;
         }
     }
 

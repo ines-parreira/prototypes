@@ -1,5 +1,5 @@
 import type { Color as ColorType } from '@gorgias/axiom'
-import { Box, Color, Tag, Text } from '@gorgias/axiom'
+import { Box, CardFooter, Color, Tag, Text } from '@gorgias/axiom'
 import type { Ticket } from '@gorgias/helpdesk-types'
 
 import { AssigneeLabel } from './AssigneeLabel'
@@ -37,18 +37,24 @@ export function TicketFooter({
     const { label, color } = getStatusInfo(isSnoozed, status)
 
     return (
-        <Box gap="xs" alignItems="center">
-            <Box flexShrink="0">
-                <Tag color={color}>{label}</Tag>
+        <CardFooter>
+            <Box gap="xs" alignItems="center">
+                <Box flexShrink="0">
+                    <Tag color={color}>{label}</Tag>
+                </Box>
+                <Box minWidth={0} className={css.noWrap}>
+                    <AssigneeLabel owner={assignee?.name} />
+                </Box>
+                <Box flexShrink="0" className={css.noWrap}>
+                    <Text
+                        size="sm"
+                        variant="regular"
+                        className={css.messagesCount}
+                    >
+                        {`${messagesCount} message${messagesCount > 1 ? 's' : ''}`}
+                    </Text>
+                </Box>
             </Box>
-            <Box minWidth={0} className={css.noWrap}>
-                <AssigneeLabel owner={assignee?.name} />
-            </Box>
-            <Box flexShrink="0" className={css.noWrap}>
-                <Text size="sm" variant="regular" className={css.messagesCount}>
-                    {`${messagesCount} message${messagesCount > 1 ? 's' : ''}`}
-                </Text>
-            </Box>
-        </Box>
+        </CardFooter>
     )
 }

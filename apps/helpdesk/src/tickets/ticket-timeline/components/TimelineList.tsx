@@ -117,19 +117,22 @@ export function TimelineList({
                                     String(activeTicketId)
 
                             return (
-                                <TicketListItem
-                                    key={`ticket-${item.ticket.id}`}
-                                    ticket={enriched.ticket}
-                                    iconName={enriched.iconName}
-                                    customFields={enriched.customFields}
-                                    conditionsLoading={
-                                        enriched.conditionsLoading
-                                    }
-                                    className={
-                                        isActive ? css.activeTicket : undefined
-                                    }
-                                    onSelect={() => onSelect(enriched)}
-                                />
+                                <li key={`ticket-${item.ticket.id}`}>
+                                    <TicketListItem
+                                        ticket={enriched.ticket}
+                                        iconName={enriched.iconName}
+                                        customFields={enriched.customFields}
+                                        conditionsLoading={
+                                            enriched.conditionsLoading
+                                        }
+                                        className={
+                                            isActive
+                                                ? css.activeTicket
+                                                : undefined
+                                        }
+                                        onSelect={() => onSelect(enriched)}
+                                    />
+                                </li>
                             )
                         }
                         default: {

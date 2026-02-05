@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Box } from '@gorgias/axiom'
+import { Card } from '@gorgias/axiom'
 
 import css from './TicketTimelineWidget.less'
 
@@ -15,28 +15,15 @@ export function TimelineCard({
     className,
     onClick,
 }: TimelineCardProps) {
-    const content = (
-        <Box
-            display="inline-block"
-            width="100%"
-            marginBottom="xs"
-            paddingTop="sm"
-            paddingBottom="sm"
-            paddingLeft="md"
-            paddingRight="md"
-            className={`${css.card} ${className || ''}`}
-        >
-            {children}
-        </Box>
+    return (
+        <div onClick={onClick}>
+            <Card
+                className={`${css.card} ${className || ''}`}
+                gap="xxxs"
+                withHoverEffect
+            >
+                {children}
+            </Card>
+        </div>
     )
-
-    if (onClick) {
-        return (
-            <div onClick={onClick} style={{ cursor: 'pointer' }}>
-                {content}
-            </div>
-        )
-    }
-
-    return content
 }
