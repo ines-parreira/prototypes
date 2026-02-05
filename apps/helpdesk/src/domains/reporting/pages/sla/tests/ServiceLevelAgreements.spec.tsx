@@ -14,7 +14,7 @@ import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/Fil
 import { AchievedAndBreachedTicketsChart } from 'domains/reporting/pages/sla/components/AchievedAndBreachedTicketsChart'
 import { AchievementRateTrendCard } from 'domains/reporting/pages/sla/components/AchievementRateTrendCard'
 import { BreachedTicketsRateTrendCard } from 'domains/reporting/pages/sla/components/BreachedTicketsRateTrendCard'
-import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
+import { DownloadTicketsSLAsData } from 'domains/reporting/pages/sla/components/DownloadTicketsSLAsData'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
 import { SERVICE_LEVEL_OPTIONAL_FILTERS } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -53,8 +53,8 @@ jest.mock('domains/reporting/pages/sla/components/BreachedTicketsRateTrendCard')
 const BreachedTicketsRateTrendCardMock = assumeMock(
     BreachedTicketsRateTrendCard,
 )
-jest.mock('domains/reporting/pages/sla/components/DownloadSLAsData')
-const DownloadSLAsDataMock = assumeMock(DownloadSLAsData)
+jest.mock('domains/reporting/pages/sla/components/DownloadTicketsSLAsData')
+const DownloadSLAsDataMock = assumeMock(DownloadTicketsSLAsData)
 jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 jest.mock('hooks/aiAgent/useAiAgentAccess')

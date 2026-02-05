@@ -5,16 +5,20 @@ import {
     useSatisfiedOrBreachedVoiceCallsTimeSeries,
 } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedVoiceCallsTimeSeries'
 import {
-    fetchStatsTimeSeries,
-    useStatsTimeSeries,
+    fetchStatsTimeSeriesPerDimension,
+    useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
 import { satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/voiceSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 jest.mock('domains/reporting/hooks/useStatsTimeSeries')
-const useStatsTimeSeriesMock = assumeMock(useStatsTimeSeries)
-const fetchStatsTimeSeriesMock = assumeMock(fetchStatsTimeSeries)
+const useStatsTimeSeriesPerDimensionMock = assumeMock(
+    useStatsTimeSeriesPerDimension,
+)
+const fetchStatsTimeSeriesPerDimensionMock = assumeMock(
+    fetchStatsTimeSeriesPerDimension,
+)
 
 describe('satisfiedOrBreachedVoiceCallsTimeSeries', () => {
     describe('useSatisfiedOrBreachedVoiceCallsTimeSeries', () => {
@@ -38,7 +42,7 @@ describe('satisfiedOrBreachedVoiceCallsTimeSeries', () => {
                 ),
             )
 
-            expect(useStatsTimeSeriesMock).toHaveBeenCalledWith(
+            expect(useStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory({
                     filters,
                     timezone: timeZone,
@@ -67,7 +71,7 @@ describe('satisfiedOrBreachedVoiceCallsTimeSeries', () => {
                 granularity,
             )
 
-            expect(fetchStatsTimeSeriesMock).toHaveBeenCalledWith(
+            expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory({
                     filters,
                     timezone: timeZone,

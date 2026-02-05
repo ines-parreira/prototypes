@@ -21,9 +21,11 @@ import { BreachedVoiceCallsRateTrendCard } from 'domains/reporting/pages/sla/com
 import { VoiceAchievementRateTrendCard } from 'domains/reporting/pages/sla/components/VoiceAchievementRateTrendCard'
 import { VoiceSlaMetricConfig } from 'domains/reporting/pages/sla/voice/VoiceSlaConfig'
 import {
+    ACHIEVED_SLA_LABEL,
     ACHIEVEMENT_RATE_LABEL,
     BREACHED_SLA_LABEL,
     CALLS_WITH_BREACHED_SLAS_LABEL,
+    DATES_WITHIN_PERIOD_LABEL,
 } from 'domains/reporting/services/constants'
 import { VoiceSlaMetric } from 'domains/reporting/state/ui/stats/types'
 import { STATS_ROUTES } from 'routes/constants'
@@ -118,9 +120,15 @@ export const VoiceServiceLevelAgreementsReportConfig: ReportConfig<VoiceServiceL
                     description: ACHIEVED_AND_BREACHED_CALLS_CHART_HINT,
                     csvProducer: [
                         {
-                            type: DataExportFormat.TimeSeries,
+                            type: DataExportFormat.TimeSeriesPerDimension,
                             fetch: fetchSatisfiedOrBreachedVoiceCallsTimeSeries,
                             title: SLA_TREND_FILENAME,
+                            headers: [
+                                DATES_WITHIN_PERIOD_LABEL,
+                                BREACHED_SLA_LABEL,
+                                ACHIEVED_SLA_LABEL,
+                            ],
+                            dimensions: ['breached', 'achieved'],
                         },
                     ],
                     chartType: ChartType.Graph,

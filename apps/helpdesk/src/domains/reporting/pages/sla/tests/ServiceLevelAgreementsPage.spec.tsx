@@ -63,11 +63,18 @@ jest.mock('domains/reporting/hooks/useCleanStatsFilters', () => ({
     useCleanStatsFilters: () => {},
 }))
 
-jest.mock('domains/reporting/pages/sla/components/DownloadSLAsData', () => ({
-    DownloadSLAsData: ({ children }: { children: React.ReactNode }) => (
-        <button>{children}</button>
-    ),
-}))
+jest.mock(
+    'domains/reporting/pages/sla/components/DownloadTicketsSLAsData',
+    () => ({
+        DownloadTicketsSLAsData: () => <button>Download tickets data</button>,
+    }),
+)
+jest.mock(
+    'domains/reporting/pages/sla/components/DownloadVoiceCallsSLAsData',
+    () => ({
+        DownloadVoiceCallsSLAsData: () => <button>Download calls data</button>,
+    }),
+)
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: () => null,

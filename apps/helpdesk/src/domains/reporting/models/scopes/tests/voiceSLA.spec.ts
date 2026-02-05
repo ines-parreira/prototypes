@@ -5,7 +5,10 @@ import {
     voiceCallsSlaAchievementRateQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceSLA'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import {
+    ApiOnlyOperatorEnum,
+    LogicalOperatorEnum,
+} from 'domains/reporting/pages/common/components/Filter/constants'
 import { VoiceSLAStatus } from 'domains/reporting/pages/sla/constants'
 
 describe('voiceSLA scope', () => {
@@ -143,14 +146,17 @@ describe('voiceSLA scope', () => {
                 },
             )
 
-            expect(query.measures).toEqual([
-                'achievedExposures',
-                'breachedExposures',
-            ])
+            expect(query.measures).toEqual(['totalExposures'])
+            expect(query.dimensions).toEqual(['callSlaStatusLabel'])
             expect(query.time_dimensions).toHaveLength(1)
             expect(query.time_dimensions?.[0]).toEqual({
                 dimension: 'queuedDate',
                 granularity: ReportingGranularity.Hour,
+            })
+            expect(query.filters).toContainEqual({
+                member: 'callSlaStatus',
+                operator: ApiOnlyOperatorEnum.SET,
+                values: [],
             })
         })
 
@@ -179,8 +185,8 @@ describe('voiceSLA scope', () => {
 
     describe('VoiceSLAStatus enum', () => {
         it('should have correct values for statuses', () => {
-            expect(VoiceSLAStatus.Breached).toBe('1')
-            expect(VoiceSLAStatus.Satisfied).toBe('0')
+            expect(VoiceSLAStatus.Breached).toBe('breached')
+            expect(VoiceSLAStatus.Satisfied).toBe('achieved')
         })
     })
 })

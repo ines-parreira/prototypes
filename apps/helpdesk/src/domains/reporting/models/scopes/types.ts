@@ -82,6 +82,7 @@ export type DimensionName =
     | 'callRecordingAvailable'
     | 'callRecordingUrl'
     | 'callSlaStatus'
+    | 'callSlaStatusLabel'
     | 'createdDatetime'
     | 'customerId'
     | 'destination'
@@ -137,6 +138,7 @@ export type MeasureName =
     | 'slaAchievementRate'
     | 'breachedExposures'
     | 'achievedExposures'
+    | 'totalExposures'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -185,6 +187,7 @@ export type StringFilterName =
     | 'callDirection'
     | 'displayStatus'
     | 'customFieldId'
+    | 'callSlaStatus'
 
 export type NumberFilterName =
     | 'agentId'

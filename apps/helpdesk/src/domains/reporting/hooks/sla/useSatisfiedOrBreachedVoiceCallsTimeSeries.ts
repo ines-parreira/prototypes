@@ -1,6 +1,6 @@
 import {
-    fetchStatsTimeSeries,
-    useStatsTimeSeries,
+    fetchStatsTimeSeriesPerDimension,
+    useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
 import { satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory } from 'domains/reporting/models/scopes/voiceSLA'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -11,7 +11,7 @@ export const useSatisfiedOrBreachedVoiceCallsTimeSeries = (
     timezone: string,
     granularity: ReportingGranularity,
 ) =>
-    useStatsTimeSeries(
+    useStatsTimeSeriesPerDimension(
         satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory({
             filters,
             timezone,
@@ -24,7 +24,7 @@ export const fetchSatisfiedOrBreachedVoiceCallsTimeSeries = (
     timezone: string,
     granularity: ReportingGranularity,
 ) =>
-    fetchStatsTimeSeries(
+    fetchStatsTimeSeriesPerDimension(
         satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory({
             filters,
             timezone,

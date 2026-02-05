@@ -23,6 +23,7 @@ export const useBreachedSlaVoiceCallsTrend = (
         }),
     )
 }
+
 export const fetchBreachedSlaVoiceCallsTrend = (
     filters: StatsFilters,
     timezone: string,

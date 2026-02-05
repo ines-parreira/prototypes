@@ -19,6 +19,8 @@ import {
 } from 'domains/reporting/pages/sla/components/AchievedAndBreachedVoiceCallsChart'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 
+import { VoiceSLAStatus } from '../../constants'
+
 const mockStore = configureMockStore([thunk])
 
 jest.mock(
@@ -51,42 +53,58 @@ describe('<AchievedAndBreachedVoiceCallsChart />', () => {
         },
     }
 
-    const exampleData: TimeSeriesDataItem[][] = [
-        [
-            {
-                dateTime: '2021-02-03T00:00:00.000Z',
-                value: 654,
-                label: 'achievedExposures',
-            },
-            {
-                dateTime: '2021-02-04T00:00:00.000Z',
-                value: 987,
-                label: 'achievedExposures',
-            },
-            {
-                dateTime: '2021-02-05T00:00:00.000Z',
-                value: 321,
-                label: 'achievedExposures',
-            },
+    const exampleData: Record<string, TimeSeriesDataItem[][]> = {
+        [VoiceSLAStatus.Breached]: [
+            [
+                {
+                    dateTime: '2026-01-28T00:00:00.000',
+                    value: 0,
+                    label: 'totalExposures',
+                },
+                {
+                    dateTime: '2026-01-29T00:00:00.000',
+                    value: 1,
+                    label: 'totalExposures',
+                    rawData: {
+                        callSlaStatusLabel: 'achieved',
+                        'queuedDate.day': '2026-01-29T00:00:00.000',
+                        totalExposures: '1',
+                        queuedDate: '2026-01-29T00:00:00.000',
+                    },
+                },
+                {
+                    dateTime: '2026-01-30T00:00:00.000',
+                    value: 0,
+                    label: 'totalExposures',
+                },
+            ],
         ],
-        [
-            {
-                dateTime: '2021-02-03T00:00:00.000Z',
-                value: 123,
-                label: 'breachedExposures',
-            },
-            {
-                dateTime: '2021-02-04T00:00:00.000Z',
-                value: 456,
-                label: 'breachedExposures',
-            },
-            {
-                dateTime: '2021-02-05T00:00:00.000Z',
-                value: 789,
-                label: 'breachedExposures',
-            },
+        [VoiceSLAStatus.Satisfied]: [
+            [
+                {
+                    dateTime: '2026-01-28T00:00:00.000',
+                    value: 0,
+                    label: 'totalExposures',
+                },
+                {
+                    dateTime: '2026-01-29T00:00:00.000',
+                    value: 0,
+                    label: 'totalExposures',
+                },
+                {
+                    dateTime: '2026-01-30T00:00:00.000',
+                    value: 1,
+                    label: 'totalExposures',
+                    rawData: {
+                        callSlaStatusLabel: 'breached',
+                        'queuedDate.day': '2026-02-02T00:00:00.000',
+                        totalExposures: '1',
+                        queuedDate: '2026-02-02T00:00:00.000',
+                    },
+                },
+            ],
         ],
-    ]
+    }
 
     beforeEach(() => {
         BarChartMock.mockReturnValue(() => null)
@@ -147,7 +165,10 @@ describe('<AchievedAndBreachedVoiceCallsChart />', () => {
         expect(BarChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 data: formatLabeledTimeSeriesData(
-                    exampleData,
+                    [
+                        exampleData[VoiceSLAStatus.Satisfied][0],
+                        exampleData[VoiceSLAStatus.Breached][0],
+                    ],
                     CHART_FIELDS.map((metric) => metric.label),
                     ReportingGranularity.Day,
                 ),

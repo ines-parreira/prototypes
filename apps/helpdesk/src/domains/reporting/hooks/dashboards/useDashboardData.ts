@@ -36,6 +36,7 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
 import { ServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
+import { VoiceServiceLevelAgreementsReportConfig } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'
 import { SupportPerformanceAgentsReportConfig } from 'domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReportConfig'
 import { AutoQAReportConfig } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAReportConfig'
 import { BusiestTimesReportConfig } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
@@ -61,6 +62,7 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...TicketInsightsTagsReportConfig.charts,
     ...AutoQAReportConfig.charts,
     ...VoiceOverviewReportConfig.charts,
+    ...VoiceServiceLevelAgreementsReportConfig.charts,
     ...VoiceAgentsReportConfig.charts,
     ...SatisfactionReportConfig.charts,
     ...AutomateOverviewReportConfig.charts,

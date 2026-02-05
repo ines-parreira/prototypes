@@ -49,6 +49,7 @@ export enum APIOnlyFilterKey {
     IsAnsweredByAgent = 'isAnsweredByAgent',
     AgentId = 'agentId',
     DisplayStatus = 'displayStatus',
+    CallSlaStatus = 'callSlaStatus',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -292,6 +293,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.ProductId]?: WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.AgentId]?: WithExtendedLogicalOperator<number>
     [APIOnlyFilterKey.DisplayStatus]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.CallSlaStatus]?: WithExtendedLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

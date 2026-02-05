@@ -5,7 +5,8 @@ import { Route, Switch, useLocation, useRouteMatch } from 'react-router-dom'
 import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
-import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
+import { DownloadTicketsSLAsData } from 'domains/reporting/pages/sla/components/DownloadTicketsSLAsData'
+import { DownloadVoiceCallsSLAsData } from 'domains/reporting/pages/sla/components/DownloadVoiceCallsSLAsData'
 import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { ServiceLevelAgreements } from 'domains/reporting/pages/sla/ServiceLevelAgreements'
 import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
@@ -41,15 +42,11 @@ export function ServiceLevelAgreementsPage() {
                     <Switch>
                         {isVoiceTabAvailable && (
                             <Route path={tabRoutes[SLATabs.Calls]} exact>
-                                <DownloadSLAsData>
-                                    Download calls data
-                                </DownloadSLAsData>
+                                <DownloadVoiceCallsSLAsData />
                             </Route>
                         )}
                         <Route path={tabRoutes[SLATabs.Tickets]}>
-                            <DownloadSLAsData>
-                                Download tickets data
-                            </DownloadSLAsData>
+                            <DownloadTicketsSLAsData />
                         </Route>
                     </Switch>
                 }

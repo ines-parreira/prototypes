@@ -4,9 +4,18 @@ import {
     defineScope,
 } from 'domains/reporting/models/scopes/scope'
 
+import { ApiOnlyOperatorEnum } from '../../pages/common/components/Filter/constants'
+import { createScopeFilters } from './utils'
+
 const voiceSLAScope = defineScope({
     scope: MetricScope.VoiceServiceLevelAgreement,
-    measures: ['slaAchievementRate', 'breachedExposures', 'achievedExposures'],
+    dimensions: ['callSlaStatusLabel'],
+    measures: [
+        'slaAchievementRate',
+        'breachedExposures',
+        'achievedExposures',
+        'totalExposures',
+    ],
     timeDimensions: ['queuedDate'],
     order: [],
     filters: [
@@ -17,6 +26,7 @@ const voiceSLAScope = defineScope({
         'queueId',
         'storeId',
         'tags',
+        'callSlaStatus',
     ],
 })
 
@@ -53,14 +63,23 @@ export const satisfiedOrBreachedVoiceCallsTimeseries = voiceSLAScope
     .defineMetricName(
         METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_TIME_SERIES,
     )
-    .defineQuery(({ ctx }) => ({
-        measures: ['achievedExposures', 'breachedExposures'] as const,
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['totalExposures'],
+        dimensions: ['callSlaStatusLabel'],
         time_dimensions: [
             {
                 dimension: 'queuedDate',
                 granularity: ctx.granularity,
             },
         ],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'callSlaStatus' as const,
+                operator: ApiOnlyOperatorEnum.SET,
+                values: [] as string[],
+            },
+        ] as any,
     }))
 
 export const satisfiedOrBreachedVoiceCallsTimeseriesQueryV2Factory = (

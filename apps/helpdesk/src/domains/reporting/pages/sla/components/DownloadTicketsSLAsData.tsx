@@ -2,13 +2,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useDownloadSLAsData } from 'domains/reporting/hooks/sla/useDownloadSLAsData'
 import { DownloadSLAsDataButton } from 'domains/reporting/pages/sla/components/DownloadSLAsDataButton'
+import { DOWNLOAD_TICKET_DATA_BUTTON_LABEL } from 'domains/reporting/pages/sla/constants'
 import { saveZippedFiles } from 'utils/file'
 
-type Props = {
-    children: React.ReactNode
-}
-
-export const DownloadSLAsData = ({ children }: Props) => {
+export const DownloadTicketsSLAsData = () => {
     const { files, fileName, isLoading } = useDownloadSLAsData()
 
     return (
@@ -21,7 +18,7 @@ export const DownloadSLAsData = ({ children }: Props) => {
             }}
             disabled={isLoading}
         >
-            {children}
+            {DOWNLOAD_TICKET_DATA_BUTTON_LABEL}
         </DownloadSLAsDataButton>
     )
 }

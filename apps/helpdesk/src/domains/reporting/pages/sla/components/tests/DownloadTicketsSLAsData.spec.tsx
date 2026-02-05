@@ -10,11 +10,9 @@ import {
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import {
-    DEFAULT_TIMEZONE,
-    DOWNLOAD_DATA_BUTTON_LABEL,
-} from 'domains/reporting/pages/constants'
-import { DownloadSLAsData } from 'domains/reporting/pages/sla/components/DownloadSLAsData'
+import { DEFAULT_TIMEZONE } from 'domains/reporting/pages/constants'
+import { DownloadTicketsSLAsData } from 'domains/reporting/pages/sla/components/DownloadTicketsSLAsData'
+import { DOWNLOAD_TICKET_DATA_BUTTON_LABEL } from 'domains/reporting/pages/sla/constants'
 import { saveZippedFiles } from 'utils/file'
 
 jest.mock('@repo/logging')
@@ -35,7 +33,7 @@ const defaultStatsFilters: StatsFilters = {
     },
 }
 
-describe('DownloadSLAsData', () => {
+describe('DownloadTicketsSLAsData', () => {
     const fileName = getCsvFileNameWithDates(
         defaultStatsFilters.period,
         SLA_REPORT_FILENAME,
@@ -58,11 +56,9 @@ describe('DownloadSLAsData', () => {
     })
 
     it('should send event to segment and call saveReport on download data button click', async () => {
-        const { getByText } = render(
-            <DownloadSLAsData>{DOWNLOAD_DATA_BUTTON_LABEL}</DownloadSLAsData>,
-        )
+        const { getByText } = render(<DownloadTicketsSLAsData />)
 
-        const button = getByText(DOWNLOAD_DATA_BUTTON_LABEL)
+        const button = getByText(DOWNLOAD_TICKET_DATA_BUTTON_LABEL)
         await waitFor(() => {
             expect(button).toBeAriaEnabled()
         })

@@ -39,6 +39,12 @@ export const AchievedAndBreachedVoiceCallsChart = ({
         granularity,
     )
 
+    const formattedData = data
+        ? CHART_FIELDS.map((metric) => metric.field).map((metric) =>
+              data[metric] ? data[metric][0] : [],
+          )
+        : []
+
     return isLoading ? (
         <Skeleton />
     ) : (
@@ -52,7 +58,7 @@ export const AchievedAndBreachedVoiceCallsChart = ({
                 data={
                     data !== undefined
                         ? formatLabeledTimeSeriesData(
-                              data,
+                              formattedData,
                               CHART_FIELDS.map((metric) => metric.label),
                               granularity,
                           )

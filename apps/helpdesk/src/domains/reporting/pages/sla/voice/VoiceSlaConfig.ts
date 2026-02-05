@@ -15,8 +15,6 @@ import {
     VoiceSlaMetric,
 } from 'domains/reporting/state/ui/stats/types'
 
-export const SLA_STATUS_COLUMN_LABEL = 'SLA status'
-
 export const VoiceSlaMetricConfig: Record<
     VoiceSlaMetric,
     {
@@ -25,11 +23,11 @@ export const VoiceSlaMetricConfig: Record<
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
-        drillDownMetric: VoiceMetric
+        drillDownMetric?: VoiceMetric
         showMetric: boolean
-        domain: Domain.Voice
-        drillDownQuery: DrillDownQueryFactory
-        drillDownTitle: string
+        domain?: Domain.Voice
+        drillDownQuery?: DrillDownQueryFactory
+        drillDownTitle?: string
     }
 > = {
     [VoiceSlaMetric.VoiceCallsAchievementRate]: {

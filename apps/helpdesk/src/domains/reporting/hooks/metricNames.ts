@@ -286,6 +286,7 @@ export const METRIC_NAMES = {
         'sla-satisfied-or-breached-tickets-time-series',
     SLA_ACHIEVEMENT_RATE_VOICE_CALLS: 'sla-achievement-rate-voice-calls',
     SLA_BREACHED_VOICE_CALLS: 'sla-breached-voice-calls',
+    SLA_ACHIEVED_VOICE_CALLS: 'sla-achieved-voice-calls',
     SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_DRILL_DOWN:
         'sla-satisfied-or-breached-voice-calls-drill-down',
     SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_TIME_SERIES:
