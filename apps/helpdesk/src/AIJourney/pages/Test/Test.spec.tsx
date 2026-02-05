@@ -604,4 +604,69 @@ describe('<Test />', () => {
             screen.queryByAltText('selected-product-image'),
         ).not.toBeInTheDocument()
     })
+
+    describe('Welcome journey', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockImplementation(() => ({
+                journey: null,
+                journeyData: {
+                    id: 'journey-123',
+                    type: 'welcome',
+                    message_instructions: 'Welcome message instructions',
+                    configuration: {
+                        max_follow_up_messages: 1,
+                        offer_discount: false,
+                        include_image: false,
+                        max_discount_percent: 0,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                journeyType: 'welcome',
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [],
+                },
+            }))
+        })
+
+        it('should render returning customer toggle instead of product select', () => {
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.getByText('Preview your welcome messages'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Returning customer')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Select an abandoned product'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should toggle returning customer when clicked', async () => {
+            const user = userEvent.setup()
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const toggle = screen.getByRole('checkbox')
+            expect(toggle).not.toBeChecked()
+
+            await user.click(toggle)
+
+            expect(toggle).toBeChecked()
+        })
+    })
 })

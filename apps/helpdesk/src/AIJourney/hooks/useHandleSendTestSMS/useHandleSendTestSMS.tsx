@@ -17,6 +17,7 @@ type useHandleSendTestSMSProps = {
     testSmsNumber: string | undefined
     currentIntegration?: Integration
     delaySendingSMSms?: number
+    returningCustomer?: boolean
 }
 
 export const useHandleSendTestSMS = ({
@@ -25,6 +26,7 @@ export const useHandleSendTestSMS = ({
     testSmsNumber,
     currentIntegration,
     delaySendingSMSms = 10_000,
+    returningCustomer,
 }: useHandleSendTestSMSProps) => {
     const dispatch = useAppDispatch()
 
@@ -32,19 +34,7 @@ export const useHandleSendTestSMS = ({
 
     const handleTestSms = useCallback(async () => {
         try {
-            if (!selectedProduct) {
-                void dispatch(
-                    notify({
-                        message: 'Please select a product',
-                        status: NotificationStatus.Error,
-                    }),
-                )
-                return
-            } else if (
-                !journeyData?.id ||
-                !testSmsNumber ||
-                !currentIntegration
-            ) {
+            if (!journeyData?.id || !testSmsNumber || !currentIntegration) {
                 void dispatch(
                     notify({
                         message: `Missing information: test number: ${testSmsNumber}, journeyID: ${journeyData?.id}, integrationId: ${currentIntegration?.id}`,
@@ -55,7 +45,6 @@ export const useHandleSendTestSMS = ({
             }
 
             const { shop_domain: shopDomain } = currentIntegration.meta
-            const { handle } = selectedProduct
 
             let phoneNumber: string
             try {
@@ -71,16 +60,23 @@ export const useHandleSendTestSMS = ({
                 return
             }
 
+            const products = selectedProduct
+                ? [
+                      {
+                          title: String(selectedProduct.title),
+                          product_id: String(selectedProduct.id),
+                          variant_id: String(selectedProduct.variants[0].id),
+                          price: Number(selectedProduct.variants[0].price),
+                          url: `https://${shopDomain}/products/${selectedProduct.handle}`,
+                      },
+                  ]
+                : []
+
             await testSms.mutateAsync({
                 phoneNumber,
                 journeyId: journeyData.id,
-                product: {
-                    title: String(selectedProduct.title),
-                    product_id: String(selectedProduct.id),
-                    variant_id: String(selectedProduct.variants[0].id),
-                    price: Number(selectedProduct.variants[0].price),
-                    url: `https://${shopDomain}/products/${handle}`,
-                },
+                products,
+                returningCustomer,
             })
             // Add a delay to allow the SMS to be sent
             await new Promise((resolve) =>
@@ -111,6 +107,7 @@ export const useHandleSendTestSMS = ({
         testSms,
         testSmsNumber,
         selectedProduct,
+        returningCustomer,
     ])
 
     return {

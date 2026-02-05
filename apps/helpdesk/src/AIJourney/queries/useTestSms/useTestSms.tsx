@@ -8,11 +8,16 @@ import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/cli
 const testJourneySms = async (
     journeyId: string,
     phoneNumber: string,
-    product: TestProductApiDTO,
+    products: TestProductApiDTO[],
+    returningCustomer?: boolean,
 ) => {
     return testJourney(
         journeyId,
-        { phone_number: phoneNumber, products: [product] },
+        {
+            phone_number: phoneNumber,
+            products,
+            returning_customer: returningCustomer,
+        },
         {
             baseURL: getGorgiasRevenueAddonApiBaseUrl(),
         },
@@ -24,13 +29,20 @@ export const useTestSms = () => {
         ({
             phoneNumber,
             journeyId,
-            product,
+            products,
+            returningCustomer,
         }: {
             phoneNumber: string
             journeyId: string
-            product: TestProductApiDTO
+            products: TestProductApiDTO[]
+            returningCustomer?: boolean
         }) => {
-            return testJourneySms(journeyId, phoneNumber, product)
+            return testJourneySms(
+                journeyId,
+                phoneNumber,
+                products,
+                returningCustomer,
+            )
         },
     )
 }

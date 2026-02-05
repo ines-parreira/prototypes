@@ -9,6 +9,7 @@ import {
     Button,
     FieldPresentation,
     PlaygroundPreview,
+    Switch,
 } from 'AIJourney/components'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
@@ -39,6 +40,7 @@ export const Test = () => {
     const [error, setError] = useState<string | undefined>()
     const [currentProductImage, setCurrentProductImage] =
         useState<Image | null>()
+    const [returningCustomer, setReturningCustomer] = useState(false)
 
     const [journeyMessageInstructions, setJourneyMessageInstructions] =
         useState<string>(journeyData?.message_instructions || '')
@@ -71,6 +73,7 @@ export const Test = () => {
             selectedProduct,
             totalMessagesToBeGenerated,
             journeyMessageInstructions,
+            returningCustomer,
         })
 
     const { handleUpdate } = useJourneyUpdateHandler({
@@ -209,13 +212,27 @@ export const Test = () => {
                             name={textContent[journeyType].name}
                             description={textContent[journeyType].description}
                         />
-                        {journeyData.type !== JOURNEY_TYPES.CAMPAIGN && (
-                            <ProductSelectField
-                                options={productList}
-                                name={textContent[journeyType].productSelect}
-                                description={undefined}
-                                onChange={handleProductSelectChange}
-                            />
+                        {journeyData.type !== JOURNEY_TYPES.CAMPAIGN &&
+                            journeyData.type !== JOURNEY_TYPES.WELCOME && (
+                                <ProductSelectField
+                                    options={productList}
+                                    name={
+                                        textContent[journeyType].productSelect
+                                    }
+                                    description={undefined}
+                                    onChange={handleProductSelectChange}
+                                />
+                            )}
+                        {journeyData.type === JOURNEY_TYPES.WELCOME && (
+                            <div className={css.customerTypeField}>
+                                <FieldPresentation name="Returning customer" />
+                                <Switch
+                                    isChecked={returningCustomer}
+                                    onChange={() =>
+                                        setReturningCustomer(!returningCustomer)
+                                    }
+                                />
+                            </div>
                         )}
                         <JourneyMessageInstructionsField
                             description="Write guidelines for how the AI should text your shoppers"

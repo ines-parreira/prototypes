@@ -45,11 +45,13 @@ describe('useTestSms', () => {
         await result.current.mutateAsync({
             journeyId: 'journey-123',
             phoneNumber: '+1415111111',
-            product: {
-                product_id: 'product-123',
-                variant_id: 'variant-123',
-                price: 50.0,
-            },
+            products: [
+                {
+                    product_id: 'product-123',
+                    variant_id: 'variant-123',
+                    price: 50.0,
+                },
+            ],
         })
 
         await waitFor(() => {
@@ -68,6 +70,7 @@ describe('useTestSms', () => {
                         price: 50.0,
                     },
                 ],
+                returning_customer: undefined,
             },
             {
                 baseURL: expect.any(String),
@@ -77,7 +80,7 @@ describe('useTestSms', () => {
 
     it('should handle errors when sending test SMS', async () => {
         const mockError = new Error('Failed to send test SMS')
-        mockTestJourney.mockRejectedValue(mockError) //
+        mockTestJourney.mockRejectedValue(mockError)
 
         const { result } = renderHook(() => useTestSms(), {
             wrapper: createWrapper(),
@@ -87,11 +90,13 @@ describe('useTestSms', () => {
             result.current.mutateAsync({
                 journeyId: 'journey-123',
                 phoneNumber: '+1415111111',
-                product: {
-                    product_id: 'product-123',
-                    variant_id: 'variant-123',
-                    price: 50.0,
-                },
+                products: [
+                    {
+                        product_id: 'product-123',
+                        variant_id: 'variant-123',
+                        price: 50.0,
+                    },
+                ],
             }),
         ).rejects.toThrow('Failed to send test SMS')
 
@@ -100,5 +105,37 @@ describe('useTestSms', () => {
         })
 
         expect(mockTestJourney).toHaveBeenCalledTimes(1)
+    })
+
+    it('should send test SMS with returningCustomer parameter', async () => {
+        const mockResponse = { success: true }
+        mockTestJourney.mockResolvedValue(mockResponse)
+
+        const { result } = renderHook(() => useTestSms(), {
+            wrapper: createWrapper(),
+        })
+
+        await result.current.mutateAsync({
+            journeyId: 'journey-123',
+            phoneNumber: '+1415111111',
+            products: [],
+            returningCustomer: true,
+        })
+
+        await waitFor(() => {
+            expect(result.current.isSuccess).toBe(true)
+        })
+
+        expect(mockTestJourney).toHaveBeenCalledWith(
+            'journey-123',
+            {
+                phone_number: '+1415111111',
+                products: [],
+                returning_customer: true,
+            },
+            {
+                baseURL: expect.any(String),
+            },
+        )
     })
 })

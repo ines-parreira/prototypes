@@ -94,33 +94,6 @@ describe('useHandleSendTestSMS', () => {
     })
 
     describe('error handling', () => {
-        it('should notify if no product is selected', async () => {
-            const { result } = renderHook(
-                () =>
-                    useHandleSendTestSMS({
-                        ...hookParameters,
-                        selectedProduct: null,
-                    }),
-                {
-                    wrapper: ({ children }) => (
-                        <Provider store={mockStore}>{children}</Provider>
-                    ),
-                },
-            )
-
-            await act(async () => {
-                await result.current.handleTestSms()
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: 'Please select a product',
-                    status: NotificationStatus.Error,
-                }),
-            )
-            expect(mockTestSms).not.toHaveBeenCalled()
-        })
-
         it('should notify if journey is missing', async () => {
             const { result } = renderHook(
                 () =>
@@ -287,13 +260,16 @@ describe('useHandleSendTestSMS', () => {
             expect(mockTestSms).toHaveBeenCalledWith({
                 phoneNumber: '+15551234567',
                 journeyId: mockJourney.id,
-                product: {
-                    title: String(mockProduct.title),
-                    product_id: String(mockProduct.id),
-                    variant_id: String(mockProduct.variants[0].id),
-                    price: Number(mockProduct.variants[0].price),
-                    url: `https://${mockIntegration.meta.shop_domain}/products/${mockProduct.handle}`,
-                },
+                products: [
+                    {
+                        title: String(mockProduct.title),
+                        product_id: String(mockProduct.id),
+                        variant_id: String(mockProduct.variants[0].id),
+                        price: Number(mockProduct.variants[0].price),
+                        url: `https://${mockIntegration.meta.shop_domain}/products/${mockProduct.handle}`,
+                    },
+                ],
+                returningCustomer: undefined,
             })
 
             expect(mockDispatch).toHaveBeenCalledWith(
@@ -396,6 +372,99 @@ describe('useHandleSendTestSMS', () => {
             )
 
             jest.useRealTimers()
+        })
+
+        it('should send test SMS without product when selectedProduct is null', async () => {
+            mockTestSms.mockResolvedValue(undefined)
+
+            const { result } = renderHook(
+                () =>
+                    useHandleSendTestSMS({
+                        ...hookParameters,
+                        selectedProduct: null,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleTestSms()
+            })
+
+            expect(mockTestSms).toHaveBeenCalledWith({
+                phoneNumber: '+15551234567',
+                journeyId: mockJourney.id,
+                products: [],
+                returningCustomer: undefined,
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: 'SMS sent successfully',
+                    status: NotificationStatus.Success,
+                }),
+            )
+        })
+
+        it('should pass returningCustomer parameter to the mutation', async () => {
+            mockTestSms.mockResolvedValue(undefined)
+
+            const { result } = renderHook(
+                () =>
+                    useHandleSendTestSMS({
+                        ...hookParameters,
+                        selectedProduct: null,
+                        returningCustomer: true,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleTestSms()
+            })
+
+            expect(mockTestSms).toHaveBeenCalledWith({
+                phoneNumber: '+15551234567',
+                journeyId: mockJourney.id,
+                products: [],
+                returningCustomer: true,
+            })
+        })
+
+        it('should pass returningCustomer as false when explicitly set', async () => {
+            mockTestSms.mockResolvedValue(undefined)
+
+            const { result } = renderHook(
+                () =>
+                    useHandleSendTestSMS({
+                        ...hookParameters,
+                        selectedProduct: null,
+                        returningCustomer: false,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleTestSms()
+            })
+
+            expect(mockTestSms).toHaveBeenCalledWith({
+                phoneNumber: '+15551234567',
+                journeyId: mockJourney.id,
+                products: [],
+                returningCustomer: false,
+            })
         })
     })
 })

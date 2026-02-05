@@ -28,6 +28,7 @@ type useGeneratePlaygroundMessageProps = {
     journeyType: string
     selectedProduct: Product | null
     totalMessagesToBeGenerated: number
+    returningCustomer?: boolean
 }
 
 export const useGeneratePlaygroundMessage = ({
@@ -37,6 +38,7 @@ export const useGeneratePlaygroundMessage = ({
     journeyParams,
     selectedProduct,
     totalMessagesToBeGenerated,
+    returningCustomer = false,
 }: useGeneratePlaygroundMessageProps) => {
     const [testSessionId, setTestSessionId] = useState<string | null>(null)
     const [playgroundMessages, setPlaygroundMessages] = useState<
@@ -190,7 +192,7 @@ export const useGeneratePlaygroundMessage = ({
                     fulfillmentStatus: null,
                     createdAt: new Date().toISOString(),
                 },
-                returningCustomer: false,
+                returningCustomer,
             }
 
             while (
@@ -234,6 +236,7 @@ export const useGeneratePlaygroundMessage = ({
         selectedProduct,
         totalMessagesToBeGenerated,
         triggerAIJourney,
+        returningCustomer,
     ])
 
     return {

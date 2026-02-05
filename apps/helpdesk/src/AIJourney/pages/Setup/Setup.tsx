@@ -61,11 +61,7 @@ export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
         Fields.IncludeAudience,
         Fields.ExcludeAudience,
     ],
-    [JOURNEY_TYPES.WELCOME]: [
-        Fields.FollowUps,
-        Fields.SendImage,
-        Fields.WaitTime,
-    ],
+    [JOURNEY_TYPES.WELCOME]: [Fields.FollowUps, Fields.WaitTime],
     [JOURNEY_TYPES.POST_PURCHASE]: [
         Fields.TargetOrderStatus,
         Fields.PostPurchaseWaitTime,

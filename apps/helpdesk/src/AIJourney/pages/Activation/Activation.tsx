@@ -10,6 +10,7 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { Button } from 'AIJourney/components/Button/Button'
 import { FieldPresentation } from 'AIJourney/components/FieldPresentation/FieldPresentation'
+import { Switch } from 'AIJourney/components/Switch/Switch'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useHandleSendTestSMS, useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
@@ -35,6 +36,7 @@ export const Activation = () => {
         TEST_SMS_NUMBER_KEY,
         '',
     )
+    const [returningCustomer, setReturningCustomer] = useState(false)
 
     const {
         journeyData,
@@ -80,6 +82,7 @@ export const Activation = () => {
         selectedProduct,
         testSmsNumber,
         currentIntegration,
+        returningCustomer,
     })
 
     const handleContinue = async () => {
@@ -106,8 +109,15 @@ export const Activation = () => {
         }
     }
 
+    const requiresProduct =
+        journeyType === JOURNEY_TYPES.CART_ABANDONMENT ||
+        journeyType === JOURNEY_TYPES.SESSION_ABANDONMENT ||
+        journeyType === JOURNEY_TYPES.WIN_BACK
+
     const shouldDisableButton =
-        !selectedProduct || isLoadingHandleUpdate || isSuccessHandleUpdate
+        (requiresProduct && !selectedProduct) ||
+        isLoadingHandleUpdate ||
+        isSuccessHandleUpdate
 
     const isLoading = isLoadingJourneyData || isLoadingProductsList
 
@@ -161,6 +171,17 @@ export const Activation = () => {
                     options={productList}
                     onChange={handleProductSelectChange}
                 />
+            )}
+            {journeyData.type === JOURNEY_TYPES.WELCOME && (
+                <div className={css.customerTypeField}>
+                    <FieldPresentation name="Returning customer" />
+                    <Switch
+                        isChecked={returningCustomer}
+                        onChange={() =>
+                            setReturningCustomer(!returningCustomer)
+                        }
+                    />
+                </div>
             )}
             <TestSMSField
                 value={testSmsNumber}

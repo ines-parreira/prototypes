@@ -556,4 +556,76 @@ describe('<Activation />', () => {
             })
         })
     })
+
+    describe('Welcome journey', () => {
+        beforeEach(() => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'journey-123',
+                    type: 'welcome',
+                    message_instructions: 'Welcome message instructions',
+                    configuration: {
+                        max_follow_up_messages: 1,
+                        offer_discount: false,
+                        max_discount_percent: 0,
+                        sms_sender_number: '415-111-111',
+                        sms_sender_integration_id: 1,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'welcome',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+        })
+
+        it('should render returning customer toggle instead of product select', async () => {
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Returning customer'),
+                ).toBeInTheDocument()
+            })
+            expect(
+                screen.queryByText('Select an abandoned product'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should toggle returning customer when clicked', async () => {
+            const user = userEvent.setup()
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Activation />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByRole('checkbox')).toBeInTheDocument()
+            })
+
+            const toggle = screen.getByRole('checkbox')
+            expect(toggle).not.toBeChecked()
+
+            await user.click(toggle)
+
+            expect(toggle).toBeChecked()
+        })
+    })
 })

@@ -33,7 +33,7 @@ catalogs:
   analytics-ui-kit:
     '@gorgias/analytics-ui-kit': '0.1.25'
   rest-api-sdk:
-    '@gorgias/convert-client': '^0.3.23'
+    '@gorgias/convert-client': '^0.3.26'
     '@gorgias/convert-mocks': '^0.2.40'
     '@gorgias/convert-queries': '^0.2.41'
     '@gorgias/convert-types': '^0.4.17'
