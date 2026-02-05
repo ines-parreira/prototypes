@@ -81,6 +81,20 @@ const createAIJourneyPayload: (
             ],
         }
 
+        payload.lastOrder = {
+            id: 1,
+            createdAt: new Date().toISOString(),
+            items: [
+                {
+                    name: selectedProduct.title,
+                    variantId: String(selectedProduct.variants[0]?.id),
+                    productId: String(selectedProduct.id),
+                    quantity: 1,
+                    linePrice: Number(selectedProduct.variants[0]?.price),
+                },
+            ],
+        }
+
         if (shopDomain) {
             payload.page = {
                 url: `https://${shopDomain}/products/${selectedProduct.handle}`,

@@ -247,6 +247,40 @@ describe('AIJourneyContext', () => {
                 discountCodeValue: 15,
                 discountCodeMessageIdx: 2,
                 outboundMessageInstructions: 'Test instructions',
+                inactiveDays: undefined,
+                cooldownPeriod: undefined,
+            })
+        })
+
+        it('should send inactiveDays and cooldownPeriod for win-back flows', () => {
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    type: 'win_back',
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        inactive_days: 30,
+                        cooldown_days: 90,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAIJourneyContext(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(result.current.aiJourneySettings).toEqual({
+                ...AI_JOURNEY_DEFAULT_STATE,
+                journeyId: 'journey-1',
+                totalFollowUp: 2,
+                includeProductImage: false,
+                includeDiscountCode: true,
+                discountCodeValue: 15,
+                discountCodeMessageIdx: 2,
+                outboundMessageInstructions: 'Test instructions',
+                inactiveDays: 30,
+                cooldownPeriod: 90,
             })
         })
 

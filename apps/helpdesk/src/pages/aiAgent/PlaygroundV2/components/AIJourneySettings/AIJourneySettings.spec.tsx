@@ -64,6 +64,16 @@ const mockFlows: JourneyApiDTO[] = [
         state: 'active' as const,
         created_datetime: '2024-01-01T00:00:00Z',
     },
+    {
+        id: 'flow-3',
+        type: JourneyTypeEnum.WinBack,
+        account_id: 123,
+        store_integration_id: 123,
+        store_name: 'test-shop',
+        store_type: 'shopify',
+        state: 'active' as const,
+        created_datetime: '2024-01-01T00:00:00Z',
+    },
 ]
 
 const mockCampaigns: JourneyApiDTO[] = [
@@ -899,6 +909,51 @@ describe('AIJourneySettings', () => {
             ).not.toBeInTheDocument()
             expect(screen.getByText('Audience to include')).toBeInTheDocument()
             expect(screen.getByText('Audience to exclude')).toBeInTheDocument()
+        })
+
+        describe('Win-back flow', () => {
+            it('should render inactive days and cooldown fields', () => {
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        currentJourney: mockFlows[2], // winback flow
+                        flows: mockFlows,
+                        campaigns: mockCampaigns,
+                    }),
+                )
+
+                renderComponent()
+
+                expect(screen.queryByText('Product')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Total number of messages to send'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Include discount code'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Discount code value'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText(
+                        'Include product image in first message',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText(
+                        'In which message should the discount code be sent',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Audience to include'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Audience to exclude'),
+                ).not.toBeInTheDocument()
+                expect(screen.queryByText('Inactive days')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Cooldown period'),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

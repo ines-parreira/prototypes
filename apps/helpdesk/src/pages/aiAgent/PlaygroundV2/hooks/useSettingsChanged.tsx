@@ -83,6 +83,8 @@ export const useSettingsChanged = () => {
                 aiJourneySettings.outboundMessageInstructions,
             includedAudienceListIds: aiJourneySettings.includedAudienceListIds,
             excludedAudienceListIds: aiJourneySettings.excludedAudienceListIds,
+            inactiveDays: aiJourneySettings.inactiveDays,
+            cooldownPeriod: aiJourneySettings.cooldownPeriod,
         }),
         [aiJourneySettings],
     )

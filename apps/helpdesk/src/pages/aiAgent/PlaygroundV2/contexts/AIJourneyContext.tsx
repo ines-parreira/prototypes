@@ -12,6 +12,7 @@ import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
     JourneyDetailApiDTO,
+    WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -39,6 +40,8 @@ export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
     discountCodeMessageIdx: 1,
     excludedAudienceListIds: [],
     outboundMessageInstructions: '',
+    inactiveDays: 30,
+    cooldownPeriod: 30,
 }
 
 const journeySettingsMapper = {
@@ -49,6 +52,8 @@ const journeySettingsMapper = {
     discountCodeMessageIdx: 'discount_code_message_threshold',
     includedAudienceListIds: 'included_audience_list_ids',
     excludedAudienceListIds: 'excluded_audience_list_ids',
+    inactiveDays: 'inactive_days',
+    cooldownPeriod: 'cooldown_days',
 } as const
 
 function buildJourneyConfig(
@@ -61,13 +66,20 @@ function buildJourneyConfig(
         [journeySettingsMapper.discountCodeValue]: state.discountCodeValue,
         [journeySettingsMapper.discountCodeMessageIdx]:
             state.discountCodeMessageIdx,
-    }
+        [journeySettingsMapper.inactiveDays]: state.inactiveDays,
+        [journeySettingsMapper.cooldownPeriod]: state.cooldownPeriod,
+    } as JourneyConfigurationApiDTO
 }
 
 function parseJourneyConfig(
     journeyData: JourneyDetailApiDTO,
 ): Partial<AIJourneySettings> {
     const { configuration: config } = journeyData
+    // treat win-back specific configurations
+    const winbackConfig =
+        journeyData.type === JourneyTypeEnum.WinBack
+            ? (config as WinbackJourneyConfigurationApiDTO)
+            : null
 
     return {
         totalFollowUp: config[journeySettingsMapper.totalFollowUp] ?? undefined,
@@ -83,6 +95,10 @@ function parseJourneyConfig(
         excludedAudienceListIds:
             journeyData[journeySettingsMapper.excludedAudienceListIds] ??
             undefined,
+        inactiveDays:
+            winbackConfig?.[journeySettingsMapper.inactiveDays] ?? undefined,
+        cooldownPeriod:
+            winbackConfig?.[journeySettingsMapper.cooldownPeriod] ?? undefined,
     }
 }
 

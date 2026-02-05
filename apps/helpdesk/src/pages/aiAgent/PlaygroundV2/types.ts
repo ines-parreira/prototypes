@@ -53,6 +53,8 @@ export type AIJourneySettings = {
     discountCodeMessageIdx: number
     excludedAudienceListIds: string[]
     outboundMessageInstructions: string
+    inactiveDays: number
+    cooldownPeriod: number
 }
 
 export type DraftKnowledge = {

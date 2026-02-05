@@ -36,6 +36,8 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
             return 'Cart Abandoned'
         case JourneyTypeEnum.SessionAbandoned:
             return 'Browse Abandoned'
+        case JourneyTypeEnum.WinBack:
+            return 'Win-back'
         default:
             return journeyType
     }
@@ -49,6 +51,13 @@ const FOLLOW_UP_OPTIONS: { id: number; label: string }[] = [1, 2, 3, 4].map(
         label: num.toString(),
     }),
 )
+
+const INACTIVE_AND_COOLDOWN_DAYS_OPTIONS: { id: number; label: string }[] = [
+    30, 60, 90,
+].map((num) => ({
+    id: num,
+    label: `${num} days`,
+}))
 
 export const AIJourneySettings: React.FC = () => {
     const {
@@ -72,9 +81,12 @@ export const AIJourneySettings: React.FC = () => {
         discountCodeMessageIdx,
         discountCodeValue,
         excludedAudienceListIds,
+        inactiveDays,
+        cooldownPeriod,
     } = aiJourneySettings
 
-    const isEditingCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
+    const isCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
+    const isWinBack = currentJourney?.type === JourneyTypeEnum.WinBack
 
     const flowsOptions = flows
         // playground does not cover winback for the moment
@@ -84,6 +96,7 @@ export const AIJourneySettings: React.FC = () => {
                     JourneyTypeEnum.CartAbandoned.toString(),
                     JourneyTypeEnum.Campaign.toString(),
                     JourneyTypeEnum.SessionAbandoned.toString(),
+                    JourneyTypeEnum.WinBack.toString(),
                 ].indexOf(j.type) > -1,
         )
         .map((journey) => ({
@@ -231,7 +244,7 @@ export const AIJourneySettings: React.FC = () => {
                 )}
             </SelectField>
 
-            {!isEditingCampaign && (
+            {!isCampaign && (
                 <Select
                     data-name="select-field"
                     aria-label="Product"
@@ -289,7 +302,7 @@ export const AIJourneySettings: React.FC = () => {
             <span className={css.messageSettingsSeparator}>
                 Message settings
             </span>
-            {!isEditingCampaign && (
+            {!isCampaign && (
                 <div
                     className={classNames([
                         css.inputFieldWrapper,
@@ -311,7 +324,7 @@ export const AIJourneySettings: React.FC = () => {
                 </div>
             )}
             <div className={css.toggleFieldsContainer}>
-                {!isEditingCampaign && (
+                {!isCampaign && (
                     <ToggleField
                         value={includeProductImage}
                         label="Include product image in first message"
@@ -347,7 +360,8 @@ export const AIJourneySettings: React.FC = () => {
                     trailingSlot={<Button icon="percent" variant="tertiary" />}
                 />
             </div>
-            {!isEditingCampaign && (
+
+            {!isCampaign && (
                 <div
                     className={classNames([
                         css.discountCodeMessageIdxField,
@@ -378,7 +392,59 @@ export const AIJourneySettings: React.FC = () => {
                     </SelectField>
                 </div>
             )}
-            {isEditingCampaign && (
+
+            {isWinBack && (
+                <>
+                    <div
+                        className={classNames([
+                            css.discountCodeMessageIdxField,
+                            css.inputFieldWrapper,
+                        ])}
+                    >
+                        <SelectField
+                            value={INACTIVE_AND_COOLDOWN_DAYS_OPTIONS.find(
+                                (option) => option.id === inactiveDays,
+                            )}
+                            onChange={(value: any) => {
+                                setAIJourneySettings({
+                                    inactiveDays: value.id,
+                                })
+                            }}
+                            items={INACTIVE_AND_COOLDOWN_DAYS_OPTIONS}
+                            label="Inactive days"
+                        >
+                            {(option: { id: number; label: string }) => (
+                                <ListItem label={option.label} />
+                            )}
+                        </SelectField>
+                    </div>
+                    <div
+                        className={classNames([
+                            css.discountCodeMessageIdxField,
+                            css.inputFieldWrapper,
+                        ])}
+                    >
+                        <SelectField
+                            value={INACTIVE_AND_COOLDOWN_DAYS_OPTIONS.find(
+                                (option) => option.id === cooldownPeriod,
+                            )}
+                            onChange={(value: any) => {
+                                setAIJourneySettings({
+                                    cooldownPeriod: value.id,
+                                })
+                            }}
+                            items={INACTIVE_AND_COOLDOWN_DAYS_OPTIONS}
+                            label="Cooldown period"
+                        >
+                            {(option: { id: number; label: string }) => (
+                                <ListItem label={option.label} />
+                            )}
+                        </SelectField>
+                    </div>
+                </>
+            )}
+
+            {isCampaign && (
                 <div className={css.audiencesContainer}>
                     <AudienceSelect
                         label="Audience to include"
