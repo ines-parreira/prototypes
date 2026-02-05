@@ -5,8 +5,18 @@
 }
 
 .axiom :local {
+    .field {
+        background: hsla(
+            var(--accessory-orange-1-h),
+            var(--accessory-orange-1-s),
+            var(--accessory-orange-1-l),
+            0.6
+        ) !important;
+        border-radius: var(--spacing-xs);
+    }
+
     .field :global(.rich-textarea-wrapper) {
-        background: var(--surface-warning-default);
+        background: transparent;
         border-radius: var(--spacing-xs);
     }
 }

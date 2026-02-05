@@ -60,14 +60,8 @@
             border: none !important;
             box-shadow: none !important;
             border-radius: 0 !important;
-            background: transparent !important;
-
-            &:hover {
-                background: transparent !important;
-            }
 
             &:focus-within {
-                background: transparent !important;
                 box-shadow: none !important;
             }
         }
@@ -77,6 +71,12 @@
         .richField {
             &.isInternal {
                 position: relative;
+                background: hsla(
+                    var(--accessory-orange-1-h),
+                    var(--accessory-orange-1-s),
+                    var(--accessory-orange-1-l),
+                    0.6
+                ) !important;
 
                 &::after {
                     content: '';
@@ -90,8 +90,8 @@
                     pointer-events: none;
                 }
 
-                &:hover::after {
-                    background: var(--hover-default);
+                &:hover:not(:focus-within)::after {
+                    background: var(--hover-input);
                 }
             }
         }
