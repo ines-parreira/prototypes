@@ -562,16 +562,16 @@ describe('createNotificationsTheme', () => {
             )
 
             expect(buttonStyles.background).toBe(
-                'var(--surface-accent-default)',
+                'var(--surface-button-secondary)',
             )
             expect(buttonStyles.borderColor).toBe(
-                'var(--border-accent-default)',
+                'var(--border-neutral-tertiary)',
             )
-            expect(buttonStyles.color).toBe('var(--static-default-white)')
+            expect(buttonStyles.color).toBe('var(--content-neutral-default)')
             expect(buttonStyles.borderRadius).toBe('var(--spacing-xs)')
         })
 
-        it('should style secondary buttons with Axiom color', () => {
+        it('should style secondary buttons with Axiom neutral color', () => {
             const mockNotification = {
                 id: '1',
                 status: STATUSES.info,
@@ -588,11 +588,11 @@ describe('createNotificationsTheme', () => {
                 { isHovered: false, isActive: false },
             )
 
-            expect(buttonStyles.color).toBe('var(--content-accent-default)')
+            expect(buttonStyles.color).toBe('var(--content-neutral-default)')
             expect(buttonStyles.background).toBe('none')
         })
 
-        it('should style secondary buttons on hover with Axiom color', () => {
+        it('should style secondary buttons on hover with Axiom neutral color', () => {
             const mockNotification = {
                 id: '1',
                 status: STATUSES.info,
@@ -609,7 +609,7 @@ describe('createNotificationsTheme', () => {
                 { isHovered: true, isActive: false },
             )
 
-            expect(buttonStyles.color).toBe('var(--content-additional-blue)')
+            expect(buttonStyles.color).toBe('var(--content-neutral-default)')
         })
 
         it('should configure notification icon styles', () => {

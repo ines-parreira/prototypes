@@ -2,7 +2,7 @@
 
 exports[`SatisfactionSurveyView should render current survey settings form 1`] = `
 <div
-  class="full-width"
+  class="full-width satisfactionSurveyPage"
 >
   <div
     class="page-header pageHeader"

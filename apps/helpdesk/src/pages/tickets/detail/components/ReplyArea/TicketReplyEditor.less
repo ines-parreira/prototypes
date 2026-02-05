@@ -38,7 +38,7 @@
                 var(--accessory-orange-1-s),
                 var(--accessory-orange-1-l),
                 0.6
-            );
+            ) !important;
         }
     }
 }
@@ -55,9 +55,45 @@
         color: var(--content-neutral-default);
     }
 
-    .rich-textarea-wrapper {
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
+    #ticket-reply-editor {
+        .rich-textarea-wrapper {
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+
+            &:hover {
+                background: transparent !important;
+            }
+
+            &:focus-within {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+        }
+    }
+
+    :local {
+        .richField {
+            &.isInternal {
+                position: relative;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: transparent;
+                    transition: background 200ms ease-in-out;
+                    pointer-events: none;
+                }
+
+                &:hover::after {
+                    background: var(--hover-default);
+                }
+            }
+        }
     }
 }

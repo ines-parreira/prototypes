@@ -467,6 +467,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 <TicketRichField
                     className={classnames(css.richField, {
                         [css.isInternal]: !isNewMessagePublic,
+                        'is-internal-note': !isNewMessagePublic,
                     })}
                     header={replyAreaHeader}
                     ref={(richArea) => {

@@ -8,7 +8,7 @@ exports[`<TicketReply /> should render the editor 1`] = `
     class="component"
   >
     <div
-      class="richField isInternal rich-textarea-wrapper"
+      class="richField isInternal is-internal-note rich-textarea-wrapper"
     >
       <div
         class="editor-wrapper"

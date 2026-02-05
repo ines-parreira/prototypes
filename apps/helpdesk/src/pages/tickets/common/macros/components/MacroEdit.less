@@ -53,9 +53,10 @@
 .axiom :local {
     .wrapper {
         :global {
-            .rich-textarea-wrapper {
+            .rich-textarea-wrapper:not(.display-only) {
                 background: transparent;
-                border: 1px solid var(--border-neutral-default) !important;
+                border: 0 !important;
+                border-radius: 0 !important;
             }
 
             .textarea-toolbar {

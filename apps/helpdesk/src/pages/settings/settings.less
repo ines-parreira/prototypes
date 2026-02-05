@@ -159,4 +159,16 @@
     .AIIcon {
         color: var(--content-additional-fuchsia);
     }
+
+    .satisfactionSurveyPage {
+        :global(.textarea-toolbar)
+            ~ :global(.rich-textarea-wrapper):global(:not(.display-only)) {
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
+
+            :global(.editor-wrapper) {
+                margin-top: 0 !important;
+            }
+        }
+    }
 }

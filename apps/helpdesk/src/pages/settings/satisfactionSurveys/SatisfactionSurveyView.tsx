@@ -99,7 +99,7 @@ function SatisfactionSurveyView() {
     )
 
     return (
-        <div className="full-width">
+        <div className={classnames('full-width', css.satisfactionSurveyPage)}>
             <PageHeader title="Satisfaction survey" />
             <div className={css.pageContainer}>
                 <div className={classnames(css.contentWrapper, 'body-regular')}>

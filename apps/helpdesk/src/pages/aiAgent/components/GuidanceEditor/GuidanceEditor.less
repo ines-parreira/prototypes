@@ -57,3 +57,23 @@
         color: var(--content-error-primary);
     }
 }
+
+.axiom :local {
+    :global(.rich-textarea-wrapper):global(:not(.display-only)) {
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-neutral-default) !important;
+        border-radius: var(--spacing-xs) !important;
+        transition: all 0.2s linear !important;
+
+        &:hover {
+            background: var(--hover-input);
+        }
+
+        &:focus-within {
+            background: transparent;
+            box-shadow:
+                var(--effects-inner-shadow),
+                inset 0 0 0 1px var(--border-neutral-secondary) !important;
+        }
+    }
+}

@@ -100,11 +100,11 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
             }
 
             const axiomPrimaryStyles = {
-                background: 'var(--surface-accent-default)',
+                background: 'var(--surface-button-secondary)',
                 border: '1px solid',
-                borderColor: 'var(--border-accent-default)',
+                borderColor: 'var(--border-neutral-tertiary)',
                 borderRadius: 'var(--spacing-xs)',
-                color: 'var(--static-default-white)',
+                color: 'var(--content-neutral-default)',
                 padding: '1px 8px',
             }
 
@@ -113,9 +113,7 @@ export const createNotificationsTheme = (isAxiom: boolean): Theme => {
                 : legacyPrimaryStyles
 
             const buttonColor = isAxiom
-                ? state.isHovered
-                    ? 'var(--content-additional-blue)'
-                    : 'var(--content-accent-default)'
+                ? 'var(--content-neutral-default)'
                 : state.isHovered
                   ? 'var(--main-primary-4)'
                   : 'var(--main-primary)'
