@@ -9,6 +9,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
+import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../../constants'
 import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useAgentPhoneStatus } from '../useAgentPhoneStatus'
 
@@ -138,6 +139,112 @@ describe('useAgentPhoneStatus', () => {
                     },
                 },
             )
+        })
+    })
+
+    describe('agentPhoneStatus mapping', () => {
+        beforeEach(async () => {
+            const actual = await vi.importActual<typeof helpdeskQueries>(
+                '@gorgias/helpdesk-queries',
+            )
+            vi.mocked(helpdeskQueries.useGetUserPhoneStatus).mockImplementation(
+                actual.useGetUserPhoneStatus,
+            )
+        })
+
+        it('maps "on-call" to AVAILABLE_STATUS', async () => {
+            const mockPhoneStatus = mockUserPhoneStatus({
+                user_id: MOCK_USER_ID,
+                phone_status: 'on-call',
+            })
+
+            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
+                async () => HttpResponse.json(mockPhoneStatus),
+            )
+
+            server.use(mockGetUserPhoneStatus.handler)
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.agentPhoneUnavailabilityStatus).toEqual(
+                ON_A_CALL_STATUS,
+            )
+        })
+
+        it('maps "wrapping-up" to CALL_WRAP_UP_STATUS', async () => {
+            const mockPhoneStatus = mockUserPhoneStatus({
+                user_id: MOCK_USER_ID,
+                phone_status: 'wrapping-up',
+            })
+
+            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
+                async () => HttpResponse.json(mockPhoneStatus),
+            )
+
+            server.use(mockGetUserPhoneStatus.handler)
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.agentPhoneUnavailabilityStatus).toEqual(
+                CALL_WRAP_UP_STATUS,
+            )
+        })
+
+        it('returns undefined for unmapped phone statuses', async () => {
+            const mockPhoneStatus = mockUserPhoneStatus({
+                user_id: MOCK_USER_ID,
+                phone_status: 'off-call',
+            })
+
+            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
+                async () => HttpResponse.json(mockPhoneStatus),
+            )
+
+            server.use(mockGetUserPhoneStatus.handler)
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(
+                result.current.agentPhoneUnavailabilityStatus,
+            ).toBeUndefined()
+        })
+
+        it('returns undefined when API returns no data', async () => {
+            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
+                async () => HttpResponse.json(null),
+            )
+
+            server.use(mockGetUserPhoneStatus.handler)
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(
+                result.current.agentPhoneUnavailabilityStatus,
+            ).toBeUndefined()
         })
     })
 })

@@ -1,6 +1,10 @@
+import { useMemo } from 'react'
+
 import { DurationInMs } from '@repo/utils'
 
 import { useGetUserPhoneStatus } from '@gorgias/helpdesk-queries'
+
+import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../constants'
 
 type UseAgentPhoneStatusParams = {
     userId: number
@@ -33,8 +37,25 @@ export function useAgentPhoneStatus({
         },
     })
 
+    const agentPhoneUnavailabilityStatus = useMemo(() => {
+        if (!data) return undefined
+
+        const { phone_status } = data
+
+        switch (phone_status) {
+            case 'on-call':
+                return ON_A_CALL_STATUS
+            case 'wrapping-up':
+                return CALL_WRAP_UP_STATUS
+            // we don't want to show the unavailability status if the agent is off the phone
+            default:
+                return undefined
+        }
+    }, [data])
+
     return {
         data,
+        agentPhoneUnavailabilityStatus,
         isLoading,
         isError,
         error,
