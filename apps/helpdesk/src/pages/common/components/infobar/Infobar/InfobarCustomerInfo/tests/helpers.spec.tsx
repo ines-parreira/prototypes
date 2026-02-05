@@ -328,31 +328,6 @@ describe('useWidgetData()', () => {
         expect(result.current).toEqual(fromJS([]))
     })
 
-    it('should return data fetched via RQ for customer.integrations paths', async () => {
-        const mock = mockGetCustomerHandler()
-        server.use(mock.handler)
-        const { result } = renderHook(
-            () =>
-                useWidgetData({
-                    source: fromJS({
-                        customer: { id: 1, integrations: [] },
-                    }),
-                    path: ['customer', 'integrations'],
-                }),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore()}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
-
-        await waitFor(() => {
-            expect(result.current).toEqual(fromJS(mock.data.integrations))
-        })
-    })
-
     it('should return the source data if the API call for the customer does not return data', async () => {
         const mock = mockGetCustomerHandler(async () =>
             HttpResponse.json({}, { status: 500 }),
@@ -378,62 +353,6 @@ describe('useWidgetData()', () => {
 
         await waitFor(() => {
             expect(result.current).toEqual(fromJS(integrations))
-        })
-    })
-
-    it('should get customer ID from source.customer.id as first priority', async () => {
-        const mock = mockGetCustomerHandler()
-        server.use(mock.handler)
-
-        const { result } = renderHook(
-            () =>
-                useWidgetData({
-                    source: fromJS({
-                        customer: { id: 1, integrations: [] },
-                        ticket: { customer: { id: 999 } },
-                    }),
-                    path: ['customer', 'integrations'],
-                }),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore()}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
-
-        // Should use customer.id (1) not ticket.customer.id (999)
-        // If it fetches data successfully, it means it used the correct customer ID
-        await waitFor(() => {
-            expect(result.current).toEqual(fromJS(mock.data.integrations))
-        })
-    })
-
-    it('should fallback to source.ticket.customer.id when source.customer.id is not available', async () => {
-        const mock = mockGetCustomerHandler()
-        server.use(mock.handler)
-
-        const { result } = renderHook(
-            () =>
-                useWidgetData({
-                    source: fromJS({
-                        ticket: { customer: { id: 1, integrations: [] } },
-                    }),
-                    path: ['customer', 'integrations'],
-                }),
-            {
-                wrapper: ({ children }) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore()}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            },
-        )
-
-        // Should successfully fetch using the customer ID from ticket.customer
-        await waitFor(() => {
-            expect(result.current).toEqual(fromJS(mock.data.integrations))
         })
     })
 

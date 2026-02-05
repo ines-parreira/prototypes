@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { get, memoize, throttle } from 'lodash'
+import { memoize, throttle } from 'lodash'
 
-import { queryKeys, useGetCustomer } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import useAppSelector from 'hooks/useAppSelector'
@@ -87,30 +87,6 @@ export function useWidgetData({
     source,
     path,
 }: UseWidgetDataParams): UseWidgetDataValue {
-    const customerId =
-        source.getIn(['customer', 'id']) ??
-        source.getIn(['ticket', 'customer', 'id']) ??
-        0
-    const { data } = useGetCustomer(
-        customerId,
-        {},
-        {
-            query: {
-                enabled: customerId !== 0,
-                staleTime: CUSTOMER_DATA_STALE_TIME_MS,
-                cacheTime: CUSTOMER_DATA_CACHE_TIME_MS,
-            },
-        },
-    )
-
-    if (
-        path.join('.').endsWith('customer.integrations') &&
-        customerId &&
-        data?.data
-    ) {
-        return fromJS(get(data?.data, 'integrations'))
-    }
-
     return source.getIn(path, fromJS([]))
 }
 
