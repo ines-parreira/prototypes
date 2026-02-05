@@ -102,7 +102,7 @@ export function MergeTicketsModal({
         [ticket.subject, ticket.customer?.id, ticket.assignee_user?.id],
     )
 
-    const table = useMergeTicketsTable({
+    const { table, columnCount } = useMergeTicketsTable({
         tickets: (tickets?.data.data as TicketsSearchListDataItem[]) ?? [],
     })
 
@@ -180,6 +180,7 @@ export function MergeTicketsModal({
                             <MergeTicketsModalSearchTab
                                 isFetching={isFetching}
                                 table={table}
+                                columnCount={columnCount}
                                 subject={ticket.subject}
                                 searchQuery={searchQuery}
                                 setSearchQuery={handleSearchQueryChange}

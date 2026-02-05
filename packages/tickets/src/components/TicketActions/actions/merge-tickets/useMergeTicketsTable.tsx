@@ -1,3 +1,10 @@
+import { useUserDateTimePreferences } from '@repo/user'
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    getDateAndTimeFormat,
+} from '@repo/utils'
+
 import type { CellContext, ColumnDef } from '@gorgias/axiom'
 import {
     Text,
@@ -82,8 +89,19 @@ function ChannelCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
     )
 }
 
-export const mergeTicketsTableColumns: ColumnDef<TicketsSearchListDataItem>[] =
-    [
+type UseMergeTicketsTableParams = {
+    tickets: TicketsSearchListDataItem[]
+}
+
+export function useMergeTicketsTable({ tickets }: UseMergeTicketsTableParams) {
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
+    const datetimeFormat = getDateAndTimeFormat(
+        dateFormat,
+        timeFormat,
+        DateAndTimeFormatting.CompactDate,
+    )
+
+    const columns: ColumnDef<TicketsSearchListDataItem>[] = [
         {
             accessorFn: ({ subject, excerpt }) => ({
                 subject,
@@ -107,23 +125,27 @@ export const mergeTicketsTableColumns: ColumnDef<TicketsSearchListDataItem>[] =
             header: 'Created',
             cell: (info) => (
                 <Text>
-                    {new Date(info.getValue() as string).toLocaleDateString()}
+                    {formatDatetime(
+                        info.getValue() as string,
+                        datetimeFormat,
+                        timezone,
+                    )}
                 </Text>
             ),
         },
     ]
 
-type UseMergeTicketsTableParams = {
-    tickets: TicketsSearchListDataItem[]
-}
-
-export function useMergeTicketsTable({ tickets }: UseMergeTicketsTableParams) {
-    return useTable({
+    const table = useTable({
         data: tickets,
-        columns: mergeTicketsTableColumns,
+        columns,
         selectionConfig: {
             enableRowSelection: true,
             enableMultiRowSelection: false,
         },
     })
+
+    return {
+        table,
+        columnCount: columns.length,
+    }
 }

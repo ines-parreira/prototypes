@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useUserDateTimePreferences } from '@repo/user'
 import {
     DateAndTimeFormatting,
     getDateAndTimeFormat,
@@ -8,7 +9,6 @@ import {
 
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
-import { useUserDateTimePreferences } from '../../../hooks/useUserDateTimePreferences'
 import { useCustomerLocation } from './useCustomerLocation'
 
 export function useCustomerLocalTime(customer?: TicketCustomer) {

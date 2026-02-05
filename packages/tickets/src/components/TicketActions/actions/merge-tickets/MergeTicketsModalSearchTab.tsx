@@ -11,13 +11,13 @@ import {
 import type { TicketsSearchListDataItem } from '@gorgias/helpdesk-types'
 
 import type { useMergeTicketsTable } from './useMergeTicketsTable'
-import { mergeTicketsTableColumns } from './useMergeTicketsTable'
 
 type MergeTicketsModalSearchTabProps = {
     subject: string | null
     searchQuery: string
     setSearchQuery: (searchQuery: string) => void
-    table: ReturnType<typeof useMergeTicketsTable>
+    table: ReturnType<typeof useMergeTicketsTable>['table']
+    columnCount: number
     isFetching: boolean
     onRowClick: (row: TicketsSearchListDataItem) => void
 }
@@ -27,6 +27,7 @@ export function MergeTicketsModalSearchTab({
     searchQuery,
     setSearchQuery,
     table,
+    columnCount,
     isFetching,
     onRowClick,
 }: MergeTicketsModalSearchTabProps) {
@@ -58,7 +59,7 @@ export function MergeTicketsModalSearchTab({
                     skeletonRows={8}
                     table={table}
                     rows={table.getRowModel().rows}
-                    columnCount={mergeTicketsTableColumns.length}
+                    columnCount={columnCount}
                     onRowClick={onRowClick}
                 />
             </TableRoot>

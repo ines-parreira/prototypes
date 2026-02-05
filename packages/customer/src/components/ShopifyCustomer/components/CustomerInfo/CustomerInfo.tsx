@@ -1,4 +1,4 @@
-import { useUserDateTimePreferences } from '@repo/tickets'
+import { useUserDateTimePreferences } from '@repo/user'
 
 import { Box } from '@gorgias/axiom'
 

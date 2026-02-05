@@ -19,34 +19,23 @@ type DatePreferences = {
     time_format?: TimeFormatType
 }
 
-type UserDateTimePreferences = {
+export type UserDateTimePreferences = {
     dateFormat: DateFormatType
     timeFormat: TimeFormatType
+    timezone?: string
 }
 
-type QueryOptions = {
+export type QueryOptions = {
     staleTime?: number
     cacheTime?: number
     enabled?: boolean
 }
 
-/**
- * Hook to get the current user's date and time format preferences
- *
- * @returns Object containing user's date and time format preferences
- * - dateFormat: DateFormatType.en_US (MM/DD) or DateFormatType.en_GB (DD/MM)
- * - timeFormat: TimeFormatType.AmPm (12-hour) or TimeFormatType.TwentyFourHour (24-hour)
- *
- * @example
- * const { dateFormat, timeFormat } = useUserDateTimePreferences()
- * // dateFormat: DateFormatType.en_US
- * // timeFormat: TimeFormatType.AmPm
- */
 export function useUserDateTimePreferences({
     staleTime = DurationInMs.OneDay,
     cacheTime = DurationInMs.OneDay,
     enabled = true,
-}: QueryOptions): UserDateTimePreferences {
+}: QueryOptions = {}): UserDateTimePreferences {
     const { data: currentUser } = useGetCurrentUser<CurrentUser>({
         query: {
             staleTime,
@@ -67,6 +56,7 @@ export function useUserDateTimePreferences({
         return {
             dateFormat: date_format ?? DateFormatType.en_US,
             timeFormat: time_format ?? TimeFormatType.AmPm,
+            timezone: currentUser?.data?.timezone,
         }
     }, [currentUser])
 

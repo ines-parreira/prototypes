@@ -1,0 +1,44 @@
+{
+    "name": "@repo/user",
+    "version": "1.0.0",
+    "description": "User-related hooks and utilities",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "test": "vitest run --configLoader=runner --passWithNoTests",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --passWithNoTests",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@repo/utils": "workspace:*",
+        "react": "catalog:react"
+    },
+    "devDependencies": {
+        "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
+        "@repo/config": "workspace:*",
+        "@repo/utils": "workspace:*",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
+        "@testing-library/dom": "catalog:test",
+        "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
+        "@testing-library/user-event": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/react": "catalog:react",
+        "@vitest/coverage-v8": "catalog:test",
+        "msw": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}
