@@ -220,11 +220,7 @@ export const PersonalityStep: FC<StepProps> = ({
                         <DiscountStrategySection />
                     </Box>
                 </OnboardingContentContainer>
-                <OnboardingPreviewContainer
-                    isLoading={false}
-                    icon={''}
-                    caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
-                >
+                <OnboardingPreviewContainer showCaption>
                     <div className={css.chatWrapper}>
                         <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation

@@ -94,12 +94,16 @@
         justify-content: center;
         margin: var(--layout-spacing-m);
         border-radius: var(--layout-spacing-s);
+        padding-bottom: var(--layout-spacing-xl);
+        gap: var(--layout-spacing-xs);
 
+        .onboardingPreviewCaption {
+            color: var(--content-additional-fuchsia);
+        }
         @media @tablets-up {
             justify-content: space-between;
             padding-top: 24px;
-            padding-bottom: 48px;
-            gap: 8px;
+            padding-bottom: var(--layout-spacing-l);
 
             background: var(
                 --linear-grey-magenta,
@@ -140,7 +144,6 @@
 
     .caption {
         color: var(--neutral-grey-6); // legacy
-
         width: 67%;
         text-align: center;
     }

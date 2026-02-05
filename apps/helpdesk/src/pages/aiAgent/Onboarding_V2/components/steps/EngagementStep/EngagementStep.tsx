@@ -176,11 +176,7 @@ export const EngagementStep = ({
                     </div>
                 </FormProvider>
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer
-                isLoading={false}
-                icon={''}
-                caption="This is a sample conversation with AI Agent. It will evolve as you onboard."
-            >
+            <OnboardingPreviewContainer showCaption>
                 <Box justifyContent="center" width="100%">
                     <ChatIntegrationPreview {...chatPreviewSettings}>
                         <AiAgentChatConversation

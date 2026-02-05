@@ -25,7 +25,6 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { KnowledgePreview } from 'pages/aiAgent/Onboarding_V2/components/KnowledgePreview/KnowledgePreview'
 import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
-import GorgiasIcon from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/icons/GorgiasIcon'
 import { KnowledgeResourceLine } from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeResourceLine'
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/KnowledgeStep/KnowledgeStep.less'
 import type {
@@ -202,10 +201,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 </Box>
                 <KnowledgeResourcesList knowledgeSources={knowledgeSources} />
             </OnboardingContentContainer>
-            <OnboardingPreviewContainer
-                isLoading={false}
-                icon={<GorgiasIcon size="40%" />}
-            >
+            <OnboardingPreviewContainer>
                 <KnowledgePreview shopName={shopName} />
             </OnboardingPreviewContainer>
         </OnboardingBody>

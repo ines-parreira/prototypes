@@ -6,16 +6,9 @@ import { useParams } from 'react-router-dom'
 import { z } from 'zod'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { ToneOfVoiceComponent } from 'pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent'
-import {
-    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
-    ToneOfVoice,
-} from 'pages/aiAgent/constants'
-import type { ConversationMessage } from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
-import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAgentChatConversation/AiAgentChatConversation'
-import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
+import { ToneOfVoice } from 'pages/aiAgent/constants'
+import useCustomToneOfVoicePreview from 'pages/aiAgent/hooks/useCustomToneOfVoicePreview'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
-import { conversationExamples } from 'pages/aiAgent/Onboarding_V2/constants/conversationExamples'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
@@ -23,23 +16,15 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheck
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
-import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
     OnboardingContentContainer,
-    OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
-import {
-    agentChatConversationSettings,
-    chatPreviewSettings,
-} from 'pages/aiAgent/Onboarding_V2/settings'
-import TextArea from 'pages/common/forms/TextArea'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getCurrentDomain } from 'state/currentAccount/selectors'
-import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
-import css from './ToneOfVoiceStep.less'
+import { ToneOfVoiceFormSection } from './components/ToneOfVoiceFormSection'
+import { ToneOfVoicePreviewSection } from './components/ToneOfVoicePreviewSection'
 
 const toneOfVoiceSchema = z
     .object({
@@ -81,10 +66,6 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
     const gorgiasDomain = useAppSelector(getCurrentDomain)
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
-    const storeIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName),
-    ).toJS()
-
     useCheckStoreIntegration({ shouldCheck: !isFirstStep })
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
@@ -106,34 +87,22 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
 
     const {
         watch,
-        setValue,
-        formState: { isDirty, errors },
+        formState: { isDirty },
         handleSubmit,
     } = methods
 
     const toneOfVoice = watch('toneOfVoice')
     const customToneOfVoiceGuidance = watch('customToneOfVoiceGuidance')
 
-    const { previewConversation, isPreviewLoading } =
-        useTransformToneOfVoiceConversations(
-            storeIntegration.id,
-            shopName,
-            'orderReturns',
-        )
-
-    const handleToneOfVoiceChange = (selectedTone: string) => {
-        setValue('toneOfVoice', selectedTone as ToneOfVoice, {
-            shouldValidate: true,
-            shouldDirty: true,
-        })
-    }
-
-    const handleCustomToneOfVoiceChange = (newValue: string) => {
-        setValue('customToneOfVoiceGuidance', newValue, {
-            shouldValidate: true,
-            shouldDirty: true,
-        })
-    }
+    const {
+        latestCustomToneOfVoicePreview,
+        onGenerateCustomToneOfVoicePreview,
+        isLoading: isCustomToneOfVoicePreviewLoading,
+        isError: isCustomToneOfVoicePreviewError,
+    } = useCustomToneOfVoicePreview({
+        customToneOfVoice: customToneOfVoiceGuidance ?? '',
+        shopName,
+    })
 
     const onNextClick = () => {
         if (!data) {
@@ -143,7 +112,6 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
         const hasExistingToneOfVoice = !!data.toneOfVoice
         const isUpdateStatus = 'id' in data
 
-        // Skip mutation if data hasn't changed and tone of voice already exists
         if (!isDirty && hasExistingToneOfVoice && isUpdateStatus) {
             onNextStep()
             return
@@ -183,8 +151,6 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
         }
     }
 
-    const isCustomToneOfVoiceSelected = toneOfVoice === ToneOfVoice.Custom
-
     return (
         <FormProvider {...methods}>
             <OnboardingBody>
@@ -194,77 +160,22 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
-                    <StepHeader
-                        title="Choose a tone that matches your brand"
-                        subtitle="Set the personality of your AI Agent. Pick how your AI Agent speaks so it feels aligned with your brand's voice and values, building trust with your customers."
+                    <ToneOfVoiceFormSection
+                        onGeneratePreview={onGenerateCustomToneOfVoicePreview}
+                        isGeneratingPreview={isCustomToneOfVoicePreviewLoading}
+                        isPreviewError={isCustomToneOfVoicePreviewError}
                     />
-                    <ToneOfVoiceComponent
-                        value={toneOfVoice}
-                        onChange={handleToneOfVoiceChange}
-                    />
-                    {isCustomToneOfVoiceSelected && (
-                        <div className={css.customToneOfVoiceGuidance}>
-                            <TextArea
-                                label="Custom tone of voice"
-                                autoRowHeight
-                                placeholder="Add specific instructions"
-                                maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
-                                value={customToneOfVoiceGuidance}
-                                onChange={handleCustomToneOfVoiceChange}
-                                innerClassName={css.customToneTextArea}
-                                autoFocus
-                                error={
-                                    errors.customToneOfVoiceGuidance?.message
-                                }
-                            />
-                            <div className={css.formInputFooterInfo}>
-                                {`Examples: 'Use a friendly and conversational tone', 'Speak casually, use emojis', 'Be professional and concise'`}
-                            </div>
-                        </div>
-                    )}
                 </OnboardingContentContainer>
-                <ToneOfVoicePreview
-                    previewConversation={previewConversation}
-                    isPreviewLoading={isPreviewLoading}
+                <ToneOfVoicePreviewSection
+                    toneOfVoice={toneOfVoice}
+                    latestCustomToneOfVoicePreview={
+                        latestCustomToneOfVoicePreview
+                    }
+                    isCustomToneOfVoicePreviewLoading={
+                        isCustomToneOfVoicePreviewLoading
+                    }
                 />
             </OnboardingBody>
         </FormProvider>
-    )
-}
-
-interface ToneOfVoicePreviewProps {
-    previewConversation:
-        | {
-              messages: ConversationMessage[]
-          }
-        | undefined
-    isPreviewLoading: boolean
-}
-
-const ToneOfVoicePreview: FC<ToneOfVoicePreviewProps> = ({
-    previewConversation,
-    isPreviewLoading,
-}) => {
-    const messages =
-        previewConversation?.messages ||
-        conversationExamples.orderReturns.messages
-
-    return (
-        <OnboardingPreviewContainer
-            isLoading={isPreviewLoading}
-            icon=""
-            caption=""
-        >
-            <div className={css.chatWrapper}>
-                <ChatIntegrationPreview {...chatPreviewSettings}>
-                    <AiAgentChatConversation
-                        {...agentChatConversationSettings}
-                        messages={messages}
-                        isTyping={isPreviewLoading}
-                        removeLinksFromMessages
-                    />
-                </ChatIntegrationPreview>
-            </div>
-        </OnboardingPreviewContainer>
     )
 }

@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { Box, LegacyProgressBar } from '@gorgias/axiom'
+import { Box, LegacyProgressBar, Text } from '@gorgias/axiom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { OnboardingNavigationButtons } from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingNavigationButtons/OnboardingNavigationButtons'
@@ -36,11 +36,11 @@ export const LoadingPulserIcon: React.FC<{ icon: string | JSX.Element }> = ({
 }
 
 export const OnboardingPreviewContainer: React.FC<{
-    isLoading: boolean
-    icon: string | JSX.Element
-    caption?: string
+    isLoading?: boolean
+    icon?: string | JSX.Element
+    showCaption?: boolean
     children?: ReactNode
-}> = ({ children, isLoading, icon, caption }) => {
+}> = ({ children, isLoading = false, icon = '', showCaption = false }) => {
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
@@ -54,7 +54,14 @@ export const OnboardingPreviewContainer: React.FC<{
                 {!isLoading && (
                     <>
                         <div className={css.ghostContainer}>{children}</div>
-                        <div className={css.caption}>{caption}</div>
+                        {showCaption && (
+                            <Text
+                                className={css.onboardingPreviewCaption}
+                                align="center"
+                            >
+                                This is a sample conversation with AI Agent.
+                            </Text>
+                        )}
                     </>
                 )}
             </div>
