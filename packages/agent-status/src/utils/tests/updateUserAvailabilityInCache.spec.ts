@@ -21,10 +21,8 @@ describe('updateUserAvailabilityInCache', () => {
         )
 
         updateUserAvailabilityInCache(queryClient, {
-            userId,
-            data: {
-                user_status: 'unavailable',
-            },
+            user_id: userId,
+            user_status: 'unavailable',
         })
 
         const updatedData = queryClient.getQueryData(
@@ -56,11 +54,9 @@ describe('updateUserAvailabilityInCache', () => {
         )
 
         updateUserAvailabilityInCache(queryClient, {
-            userId,
-            data: {
-                user_status: 'custom',
-                custom_user_availability_status_id: 'custom-123',
-            },
+            user_id: userId,
+            user_status: 'custom',
+            custom_user_availability_status_id: 'custom-123',
         })
 
         const updatedData = queryClient.getQueryData(
@@ -91,10 +87,8 @@ describe('updateUserAvailabilityInCache', () => {
         )
 
         const result = updateUserAvailabilityInCache(queryClient, {
-            userId,
-            data: {
-                user_status: 'unavailable',
-            },
+            user_id: userId,
+            user_status: 'unavailable',
         })
 
         expect(result.previousData).toEqual({

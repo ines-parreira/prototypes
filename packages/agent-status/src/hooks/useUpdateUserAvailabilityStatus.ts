@@ -18,7 +18,10 @@ export const useUpdateUserAvailabilityStatus = () => {
                 )
                 await client.cancelQueries({ queryKey })
 
-                return updateUserAvailabilityInCache(client, variables)
+                return updateUserAvailabilityInCache(client, {
+                    ...variables.data,
+                    user_id: variables.userId,
+                })
             },
             onError: (_error, variables, context) => {
                 if (context?.previousData) {
