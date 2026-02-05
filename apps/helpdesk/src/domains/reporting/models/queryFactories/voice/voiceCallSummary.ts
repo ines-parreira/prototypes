@@ -19,7 +19,6 @@ export const voiceCallSummaryQueryFactory = (
             VoiceCallSummaryMeasure.VoiceCallSummaryInboundTotal,
             VoiceCallSummaryMeasure.VoiceCallSummaryOutboundTotal,
             VoiceCallSummaryMeasure.VoiceCallSummaryAnsweredTotal,
-            VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate,
             VoiceCallSummaryMeasure.VoiceCallSummaryCancelledTotal,
             VoiceCallSummaryMeasure.VoiceCallSummaryAbandonedTotal,
             VoiceCallSummaryMeasure.VoiceCallSummaryMissedTotal,
