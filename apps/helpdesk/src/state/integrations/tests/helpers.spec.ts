@@ -1,6 +1,8 @@
 import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
 
+import { IconName } from '@gorgias/axiom'
+
 import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
@@ -491,6 +493,40 @@ describe('integrations helpers', () => {
             expect(helpers.getIntegrationDisplayName(unknownType)).toBe(
                 'unknown-integration',
             )
+        })
+    })
+
+    describe('getStoreIconNameFromType', () => {
+        it('should return VendorShopifyColored icon for Shopify integration', () => {
+            expect(
+                helpers.getStoreIconNameFromType(IntegrationType.Shopify),
+            ).toBe(IconName.VendorShopifyColored)
+        })
+
+        it('should return VendorBicommerceColored icon for BigCommerce integration', () => {
+            expect(
+                helpers.getStoreIconNameFromType(IntegrationType.BigCommerce),
+            ).toBe(IconName.VendorBicommerceColored)
+        })
+
+        it('should return VendorMagentoColored icon for Magento2 integration', () => {
+            expect(
+                helpers.getStoreIconNameFromType(IntegrationType.Magento2),
+            ).toBe(IconName.VendorMagentoColored)
+        })
+
+        it('should return ShoppingBag icon for unknown integration types', () => {
+            expect(
+                helpers.getStoreIconNameFromType(IntegrationType.Email),
+            ).toBe(IconName.ShoppingBag)
+            expect(
+                helpers.getStoreIconNameFromType(IntegrationType.Facebook),
+            ).toBe(IconName.ShoppingBag)
+            expect(
+                helpers.getStoreIconNameFromType(
+                    'unknown-type' as IntegrationType,
+                ),
+            ).toBe(IconName.ShoppingBag)
         })
     })
 })

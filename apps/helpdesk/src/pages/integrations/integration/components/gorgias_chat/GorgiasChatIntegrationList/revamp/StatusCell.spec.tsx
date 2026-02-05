@@ -104,9 +104,28 @@ describe('StatusCell', () => {
             expect(screen.getByText('Status unavailable')).toBeInTheDocument()
         })
 
-        it('should render nothing when chat status is undefined', () => {
+        it('should render empty wrapper when chat status is undefined', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: undefined,
+                isChatStatusLoading: false,
+                isChatStatusError: false,
+            })
+
+            const chat = createChatMap()
+            const loading = createLoadingMap()
+
+            render(<StatusCell chat={chat} loading={loading} />)
+
+            expect(screen.queryByText('Online')).not.toBeInTheDocument()
+            expect(screen.queryByText('Offline')).not.toBeInTheDocument()
+            expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+        })
+    })
+
+    describe('status tag rendering', () => {
+        it('should render Online status with green tag', () => {
+            mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
+                chatStatus: GorgiasChatStatusEnum.ONLINE,
                 isChatStatusLoading: false,
                 isChatStatusError: false,
             })
@@ -118,32 +137,13 @@ describe('StatusCell', () => {
                 <StatusCell chat={chat} loading={loading} />,
             )
 
-            expect(
-                container.querySelector('[class*="statusCell"]'),
-            ).toBeInTheDocument()
-            expect(screen.queryByText('Online')).not.toBeInTheDocument()
-            expect(screen.queryByText('Offline')).not.toBeInTheDocument()
-        })
-    })
-
-    describe('status tag rendering', () => {
-        it('should render Online status with success icon', () => {
-            mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
-                chatStatus: GorgiasChatStatusEnum.ONLINE,
-                isChatStatusLoading: false,
-                isChatStatusError: false,
-            })
-
-            const chat = createChatMap()
-            const loading = createLoadingMap()
-
-            render(<StatusCell chat={chat} loading={loading} />)
-
             expect(screen.getByText('Online')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="green"]')
+            expect(tag).toBeInTheDocument()
         })
 
-        it('should render Installed status with success icon', () => {
+        it('should render Installed status with green tag', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.INSTALLED,
                 isChatStatusLoading: false,
@@ -153,13 +153,17 @@ describe('StatusCell', () => {
             const chat = createChatMap()
             const loading = createLoadingMap()
 
-            render(<StatusCell chat={chat} loading={loading} />)
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
 
             expect(screen.getByText('Installed')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="green"]')
+            expect(tag).toBeInTheDocument()
         })
 
-        it('should render Offline status with neutral icon', () => {
+        it('should render Offline status with grey tag', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.OFFLINE,
                 isChatStatusLoading: false,
@@ -169,13 +173,17 @@ describe('StatusCell', () => {
             const chat = createChatMap()
             const loading = createLoadingMap()
 
-            render(<StatusCell chat={chat} loading={loading} />)
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
 
             expect(screen.getByText('Offline')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="grey"]')
+            expect(tag).toBeInTheDocument()
         })
 
-        it('should render Hidden status with warning icon', () => {
+        it('should render Hidden status with grey tag', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.HIDDEN,
                 isChatStatusLoading: false,
@@ -185,13 +193,17 @@ describe('StatusCell', () => {
             const chat = createChatMap()
             const loading = createLoadingMap()
 
-            render(<StatusCell chat={chat} loading={loading} />)
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
 
             expect(screen.getByText('Hidden')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="grey"]')
+            expect(tag).toBeInTheDocument()
         })
 
-        it('should render Hidden status for HIDDEN_OUTSIDE_BUSINESS_HOURS', () => {
+        it('should render Hidden status with grey tag for HIDDEN_OUTSIDE_BUSINESS_HOURS', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS,
                 isChatStatusLoading: false,
@@ -201,26 +213,66 @@ describe('StatusCell', () => {
             const chat = createChatMap()
             const loading = createLoadingMap()
 
-            render(<StatusCell chat={chat} loading={loading} />)
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
 
             expect(screen.getByText('Hidden')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="grey"]')
+            expect(tag).toBeInTheDocument()
         })
 
-        it('should render Not Installed status with error icon', () => {
+        it('should render Not Installed status with red tag', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
                 isChatStatusLoading: false,
                 isChatStatusError: false,
             })
 
-            const chat = createChatMap()
+            const chat = createChatMap({
+                meta: Map({
+                    wizard: Map({
+                        status: GorgiasChatCreationWizardStatus.Draft,
+                    }),
+                }),
+            })
             const loading = createLoadingMap()
 
-            render(<StatusCell chat={chat} loading={loading} />)
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
 
             expect(screen.getByText('Not Installed')).toBeInTheDocument()
-            expect(screen.getByAltText('status icon')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="red"]')
+            expect(tag).toBeInTheDocument()
+        })
+
+        it('should render Not detected status with orange tag for NOT_INSTALLED with Published wizard', () => {
+            mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
+                chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
+                isChatStatusLoading: false,
+                isChatStatusError: false,
+            })
+
+            const chat = createChatMap({
+                meta: Map({
+                    wizard: Map({
+                        status: GorgiasChatCreationWizardStatus.Published,
+                    }),
+                }),
+            })
+            const loading = createLoadingMap()
+
+            const { container } = render(
+                <StatusCell chat={chat} loading={loading} />,
+            )
+
+            expect(screen.getByText('Not detected')).toBeInTheDocument()
+
+            const tag = container.querySelector('[data-color="orange"]')
+            expect(tag).toBeInTheDocument()
         })
     })
 
@@ -281,13 +333,12 @@ describe('StatusCell', () => {
 
             expect(
                 screen.getByText(
-                    /Chat Widget was not seen installed on your website/i,
+                    /We couldn't detect the chat widget on your website in the last 72 hours/i,
                 ),
             ).toBeInTheDocument()
-            expect(screen.getByText(/installation/i)).toBeInTheDocument()
         })
 
-        it('should render link to installation for NOT_INSTALLED with Published wizard', () => {
+        it('should render Not detected status for NOT_INSTALLED with Published wizard', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
                 isChatStatusLoading: false,
@@ -305,59 +356,7 @@ describe('StatusCell', () => {
 
             render(<StatusCell chat={chat} loading={loading} />)
 
-            const link = screen.getByText(/installation/i).closest('a')
-            expect(link).toHaveAttribute(
-                'href',
-                '/app/settings/channels/gorgias_chat/123/installation',
-            )
-        })
-
-        it('should render timer icon for NOT_INSTALLED with Published wizard', () => {
-            mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
-                chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
-                isChatStatusLoading: false,
-                isChatStatusError: false,
-            })
-
-            const chat = createChatMap({
-                meta: Map({
-                    wizard: Map({
-                        status: GorgiasChatCreationWizardStatus.Published,
-                    }),
-                }),
-            })
-            const loading = createLoadingMap()
-
-            const { container } = render(
-                <StatusCell chat={chat} loading={loading} />,
-            )
-
-            const timerIcon = container.querySelector('svg[aria-label="timer"]')
-            expect(timerIcon).toBeInTheDocument()
-        })
-
-        it('should not render timer icon for NOT_INSTALLED with Draft wizard', () => {
-            mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
-                chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
-                isChatStatusLoading: false,
-                isChatStatusError: false,
-            })
-
-            const chat = createChatMap({
-                meta: Map({
-                    wizard: Map({
-                        status: GorgiasChatCreationWizardStatus.Draft,
-                    }),
-                }),
-            })
-            const loading = createLoadingMap()
-
-            const { container } = render(
-                <StatusCell chat={chat} loading={loading} />,
-            )
-
-            const timerIcon = container.querySelector('svg[aria-label="timer"]')
-            expect(timerIcon).not.toBeInTheDocument()
+            expect(screen.getByText('Not detected')).toBeInTheDocument()
         })
 
         it('should not render tooltip for ONLINE status', () => {

@@ -3,13 +3,12 @@ import type React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
-import { IntegrationType } from 'models/integration/constants'
-
 import { AiAgentStatusCell } from './AiAgentStatusCell'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 jest.mock('hooks/useAppSelector')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
+jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
@@ -17,15 +16,35 @@ jest.mock('@gorgias/axiom', () => ({
         children,
         href,
         leadingSlot,
+        onClick,
     }: {
         children: React.ReactNode
-        href: string
-        leadingSlot: string
-    }) => (
-        <a data-testid="button" href={href} data-icon={leadingSlot}>
-            {children}
-        </a>
-    ),
+        href?: string
+        leadingSlot?: string
+        onClick?: (e: React.MouseEvent) => void
+    }) => {
+        if (href) {
+            return (
+                <a
+                    data-testid="button"
+                    href={href}
+                    data-icon={leadingSlot}
+                    onClick={onClick}
+                >
+                    {children}
+                </a>
+            )
+        }
+        return (
+            <button
+                data-testid="button"
+                data-icon={leadingSlot}
+                onClick={onClick}
+            >
+                {children}
+            </button>
+        )
+    },
     Tag: ({
         children,
         color,
@@ -33,11 +52,15 @@ jest.mock('@gorgias/axiom', () => ({
     }: {
         children: React.ReactNode
         color: string
-        leadingSlot?: string
+        leadingSlot?: React.ReactNode
     }) => (
-        <div data-testid="tag" data-color={color} data-icon={leadingSlot}>
+        <div data-testid="tag" data-color={color}>
+            {leadingSlot}
             {children}
         </div>
+    ),
+    Icon: ({ name }: { name: string }) => (
+        <span data-testid="icon" data-icon={name} />
     ),
 }))
 
@@ -48,18 +71,14 @@ const mockUseAppSelector = jest.requireMock('hooks/useAppSelector')
 const mockUseStoreConfiguration = jest.requireMock(
     'pages/aiAgent/hooks/useStoreConfiguration',
 ).useStoreConfiguration as jest.MockedFunction<any>
+const mockUseStoreIntegration = jest.requireMock(
+    'pages/integrations/integration/hooks/useStoreIntegration',
+).useStoreIntegration as jest.MockedFunction<any>
 
 describe('AiAgentStatusCell', () => {
     const mockChat = Map({
         id: 123,
         name: 'Test Chat',
-    })
-
-    const mockStoreIntegration = Map({
-        type: IntegrationType.Shopify,
-        meta: Map({
-            shop_name: 'test-shop',
-        }),
     })
 
     const mockCurrentAccount = Map({
@@ -76,6 +95,15 @@ describe('AiAgentStatusCell', () => {
             storeConfiguration: null,
             isLoading: false,
         })
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: {
+                id: 456,
+                name: 'test-shop',
+                type: 'shopify',
+            },
+            isConnected: true,
+            isConnectedToShopify: true,
+        })
     })
 
     afterEach(() => {
@@ -88,12 +116,7 @@ describe('AiAgentStatusCell', () => {
             isLoading: true,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Loading...')
@@ -106,25 +129,42 @@ describe('AiAgentStatusCell', () => {
             isLoading: true,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Loading...')
         expect(tag).toHaveAttribute('data-color', 'grey')
     })
 
-    it('should render "No Store" when store integration is undefined', () => {
-        render(
-            <AiAgentStatusCell chat={mockChat} storeIntegration={undefined} />,
-        )
+    it('should render "No Store connected" tag when store integration is undefined', () => {
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: undefined,
+            isConnected: false,
+            isConnectedToShopify: false,
+        })
+
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('No Store')
+        expect(tag).toHaveTextContent('No Store connected')
+        expect(tag).toHaveAttribute('data-color', 'grey')
+    })
+
+    it('should render "No Store connected" tag when store is not connected', () => {
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: {
+                id: 456,
+                name: 'test-shop',
+                type: 'shopify',
+            },
+            isConnected: false,
+            isConnectedToShopify: false,
+        })
+
+        render(<AiAgentStatusCell chat={mockChat} />)
+
+        const tag = screen.getByTestId('tag')
+        expect(tag).toHaveTextContent('No Store connected')
         expect(tag).toHaveAttribute('data-color', 'grey')
     })
 
@@ -133,13 +173,17 @@ describe('AiAgentStatusCell', () => {
             hasAccess: false,
             isLoading: false,
         })
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: {
+                id: 456,
+                name: 'test-shop',
+                type: 'shopify',
+            },
+            isConnected: true,
+            isConnectedToShopify: true,
+        })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const button = screen.getByTestId('button')
         expect(button).toHaveTextContent('Try AI agent')
@@ -151,17 +195,16 @@ describe('AiAgentStatusCell', () => {
     })
 
     it('should render "Try AI agent" button when shop name is missing', () => {
-        const storeWithoutShopName = Map({
-            type: IntegrationType.Shopify,
-            meta: Map({}),
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: {
+                id: 456,
+                type: 'shopify',
+            },
+            isConnected: true,
+            isConnectedToShopify: true,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={storeWithoutShopName}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         expect(screen.getByTestId('button')).toHaveTextContent('Try AI agent')
     })
@@ -175,17 +218,14 @@ describe('AiAgentStatusCell', () => {
             isLoading: false,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Enabled')
         expect(tag).toHaveAttribute('data-color', 'green')
-        expect(tag).toHaveAttribute('data-icon', 'check')
+
+        const icon = screen.getByTestId('icon')
+        expect(icon).toHaveAttribute('data-icon', 'check')
     })
 
     it('should render "Disabled" tag when chat is not in monitored integrations', () => {
@@ -197,17 +237,14 @@ describe('AiAgentStatusCell', () => {
             isLoading: false,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Disabled')
         expect(tag).toHaveAttribute('data-color', 'red')
-        expect(tag).toHaveAttribute('data-icon', 'close')
+
+        const icon = screen.getByTestId('icon')
+        expect(icon).toHaveAttribute('data-icon', 'close')
     })
 
     it('should render "Disabled" tag when chat channel is deactivated', () => {
@@ -219,17 +256,14 @@ describe('AiAgentStatusCell', () => {
             isLoading: false,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Disabled')
         expect(tag).toHaveAttribute('data-color', 'red')
-        expect(tag).toHaveAttribute('data-icon', 'close')
+
+        const icon = screen.getByTestId('icon')
+        expect(icon).toHaveAttribute('data-icon', 'close')
     })
 
     it('should render "Disabled" tag when store configuration is null', () => {
@@ -238,16 +272,13 @@ describe('AiAgentStatusCell', () => {
             isLoading: false,
         })
 
-        render(
-            <AiAgentStatusCell
-                chat={mockChat}
-                storeIntegration={mockStoreIntegration}
-            />,
-        )
+        render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
         expect(tag).toHaveTextContent('Disabled')
         expect(tag).toHaveAttribute('data-color', 'red')
-        expect(tag).toHaveAttribute('data-icon', 'close')
+
+        const icon = screen.getByTestId('icon')
+        expect(icon).toHaveAttribute('data-icon', 'close')
     })
 })

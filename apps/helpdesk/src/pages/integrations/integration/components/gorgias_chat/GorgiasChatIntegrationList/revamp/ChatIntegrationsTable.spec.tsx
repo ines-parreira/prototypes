@@ -230,6 +230,7 @@ describe('ChatIntegrationsTable', () => {
             const rowData = calls.rows[0].original
 
             expect(rowData.storeIntegration).toEqual({
+                chat: chats.get(0),
                 storeIntegration: integrations.get(0),
             })
         })
@@ -306,7 +307,6 @@ describe('ChatIntegrationsTable', () => {
 
             expect(rowData.aiAgentStatus).toEqual({
                 chat: chats.get(0),
-                storeIntegration: integrations.get(0),
             })
         })
     })

@@ -8,6 +8,7 @@ import {
     ButtonIntent,
     ButtonSize,
     ButtonVariant,
+    Icon,
     IconName,
     Tag,
     TagColor,
@@ -16,18 +17,16 @@ import {
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 type AiAgentStatusProps = {
     chat: Map<any, any>
-    storeIntegration?: Map<any, any>
 }
 
-export function AiAgentStatusCell({
-    chat,
-    storeIntegration,
-}: AiAgentStatusProps) {
-    const shopName = storeIntegration?.getIn(['meta', 'shop_name']) as string
+export function AiAgentStatusCell({ chat }: AiAgentStatusProps) {
+    const { storeIntegration, isConnected } = useStoreIntegration(chat)
+    const shopName = storeIntegration?.name as string
 
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -45,8 +44,8 @@ export function AiAgentStatusCell({
         [isLoadingStoreConfiguration, isLoadingAiAgentAccess],
     )
     const hasSubscriptionAccess = useMemo(() => {
-        return Boolean(hasAccess && shopName && storeIntegration)
-    }, [shopName, hasAccess, storeIntegration])
+        return Boolean(hasAccess && shopName && isConnected)
+    }, [shopName, hasAccess, isConnected])
 
     const isAiAgentEnabled = useMemo(() => {
         if (!storeConfiguration) {
@@ -64,11 +63,11 @@ export function AiAgentStatusCell({
         return <Tag color={TagColor.Grey}>Loading...</Tag>
     }
 
-    if (!storeIntegration) {
-        return <Tag color={TagColor.Grey}>No Store</Tag>
+    if (!isConnected) {
+        return <Tag color={TagColor.Grey}>No Store connected</Tag>
     }
 
-    if (!hasSubscriptionAccess) {
+    if (!hasSubscriptionAccess && storeIntegration) {
         return (
             <div
                 onClick={(e) => {
@@ -77,7 +76,7 @@ export function AiAgentStatusCell({
             >
                 <Button
                     target="_blank"
-                    href={`/app/ai-agent/${storeIntegration.get('type')}/${shopName}`}
+                    href={`/app/ai-agent/${storeIntegration.type}/${shopName}`}
                     as={ButtonAs.Anchor}
                     size={ButtonSize.Sm}
                     leadingSlot={IconName.AiAgentFeedback}
@@ -93,7 +92,11 @@ export function AiAgentStatusCell({
     return (
         <Tag
             color={isAiAgentEnabled ? TagColor.Green : TagColor.Red}
-            leadingSlot={isAiAgentEnabled ? IconName.Check : IconName.Close}
+            leadingSlot={
+                <Icon
+                    name={isAiAgentEnabled ? IconName.Check : IconName.Close}
+                />
+            }
         >
             {isAiAgentEnabled ? 'Enabled' : 'Disabled'}
         </Tag>

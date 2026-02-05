@@ -3,6 +3,8 @@ import { fromJS } from 'immutable'
 import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
+import { IconName } from '@gorgias/axiom'
+
 import type { IntegrationConfig } from 'config'
 import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { GORGIAS_CHAT_LIVE_CHAT_OFFLINE } from 'config/integrations/gorgias_chat'
@@ -40,6 +42,19 @@ export const getIconFromType = (type: IntegrationType): string => {
     const filePath =
         (config && typeof config === 'object' && config.image) || ''
     return filePath === '' ? '' : assetsUrl(filePath)
+}
+
+export const getStoreIconNameFromType = (type: IntegrationType): IconName => {
+    switch (type) {
+        case IntegrationType.Shopify:
+            return IconName.VendorShopifyColored
+        case IntegrationType.BigCommerce:
+            return IconName.VendorBicommerceColored
+        case IntegrationType.Magento2:
+            return IconName.VendorMagentoColored
+        default:
+            return IconName.ShoppingBag
+    }
 }
 
 export const isIntegrationType = (type: string): type is IntegrationType => {

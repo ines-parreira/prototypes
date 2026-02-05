@@ -34,7 +34,7 @@ describe('ActionsCell', () => {
         jest.clearAllMocks()
     })
 
-    it('should render "Continue Setup" link for draft status', () => {
+    it('should render "Finish setup" link for draft status', () => {
         const chat = Map({
             id: 123,
             meta: Map({
@@ -54,7 +54,7 @@ describe('ActionsCell', () => {
             </MemoryRouter>,
         )
 
-        expect(screen.getByText('Continue Setup')).toBeInTheDocument()
+        expect(screen.getByText('Finish setup')).toBeInTheDocument()
     })
 
     it('should render ForwardIcon for completed status', () => {
@@ -79,7 +79,7 @@ describe('ActionsCell', () => {
         expect(screen.getByTestId('forward-icon')).toBeInTheDocument()
     })
 
-    it('should render "Update Permissions" when feature flag is enabled and scope update needed', () => {
+    it('should render "Update permissions" when feature flag is enabled and scope update needed', () => {
         mockUseFlag.mockReturnValue(true)
 
         const chat = Map({
@@ -105,10 +105,10 @@ describe('ActionsCell', () => {
             </MemoryRouter>,
         )
 
-        expect(screen.getByText('Update Permissions')).toBeInTheDocument()
+        expect(screen.getByText('Update permissions')).toBeInTheDocument()
     })
 
-    it('should not render "Update Permissions" when feature flag is disabled', () => {
+    it('should not render "Update permissions" when feature flag is disabled', () => {
         mockUseFlag.mockReturnValue(false)
 
         const chat = Map({
@@ -134,7 +134,7 @@ describe('ActionsCell', () => {
             </MemoryRouter>,
         )
 
-        expect(screen.queryByText('Update Permissions')).not.toBeInTheDocument()
+        expect(screen.queryByText('Update permissions')).not.toBeInTheDocument()
         expect(screen.getByTestId('forward-icon')).toBeInTheDocument()
     })
 })

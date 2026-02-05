@@ -1,33 +1,63 @@
+import type { MouseEvent } from 'react'
+
+import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 
-import { Text, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import {
+    Button,
+    ButtonIntent,
+    ButtonSize,
+    ButtonVariant,
+    Color,
+    Icon,
+    IconName,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@gorgias/axiom'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import warningIcon from 'assets/img/icons/warning.svg'
-import { getIconFromType } from 'state/integrations/helpers'
+import { Tab } from 'pages/integrations/integration/types'
+import { getStoreIconNameFromType } from 'state/integrations/helpers'
 
 import css from './StoreIntegrationCell.less'
 
 type StoreIntegrationCellProps = {
+    chat: Map<any, any>
     storeIntegration: Map<any, any> | undefined
+}
+
+const Wrapper = ({ children }: { children: JSX.Element }) => {
+    return <div className={css.storeIntegrationCell}>{children}</div>
 }
 
 export function StoreIntegrationCell({
     storeIntegration,
+    chat,
 }: StoreIntegrationCellProps) {
+    const installationLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${chat.get('id')}/${Tab.Installation}`
     const isStoreDisconnected = Boolean(
         storeIntegration?.get('deactivated_datetime'),
     )
 
-    const Wrapper = ({ children }: { children: JSX.Element }) => {
-        return <div className={css.storeIntegrationCell}>{children}</div>
+    const handleConnectButtonClick = (e: MouseEvent) => {
+        e.stopPropagation()
+
+        history.push(installationLink)
     }
 
     if (!storeIntegration) {
         return (
             <Wrapper>
-                <Text size="md" variant="medium">
-                    No store connected
-                </Text>
+                <Button
+                    onClick={handleConnectButtonClick}
+                    variant={ButtonVariant.Secondary}
+                    intent={ButtonIntent.Regular}
+                    size={ButtonSize.Sm}
+                >
+                    Connect store
+                </Button>
             </Wrapper>
         )
     }
@@ -35,19 +65,23 @@ export function StoreIntegrationCell({
     return (
         <Wrapper>
             <>
-                <img
-                    height={16}
-                    width={16}
-                    src={getIconFromType(storeIntegration.get('type'))}
-                    alt="logo"
-                />
+                <Icon
+                    name={getStoreIconNameFromType(
+                        storeIntegration.get('type'),
+                    )}
+                ></Icon>
                 <Text size="md" variant="medium">
                     {storeIntegration.get('name')}
                 </Text>
                 {isStoreDisconnected && (
                     <Tooltip delay={100} placement="top">
                         <TooltipTrigger>
-                            <img src={warningIcon} alt="warning icon" />
+                            <span role="img">
+                                <Icon
+                                    color={Color.Orange}
+                                    name={IconName.TriangleWarning}
+                                ></Icon>
+                            </span>
                         </TooltipTrigger>
                         <TooltipContent>
                             <Text size="md" variant="medium">

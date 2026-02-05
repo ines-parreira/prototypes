@@ -1,10 +1,13 @@
 import { useCallback, useMemo } from 'react'
 
 import type { Map } from 'immutable'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import {
+    Color,
     Icon,
+    IconName,
+    IconSize,
     Tag,
     TagColor,
     Text,
@@ -13,10 +16,6 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
-import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
-import dotNeutral from 'assets/img/icons/dot-neutral.svg'
-import dotSuccess from 'assets/img/icons/dot-success.svg'
-import dotWarning from 'assets/img/icons/dot-warning.svg'
 import { useGorgiasChatIntegrationStatusData } from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 
 import {
@@ -57,7 +56,6 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
 
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${chatIntegrationId}`
     const preferencesLink = `${baseLink}/${Tab.Preferences}`
-    const installationLink = `${baseLink}/${Tab.Installation}`
 
     const chatIsHiddenOutsideBusinessHours = useMemo(
         () =>
@@ -74,62 +72,63 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
 
     const getStatusTag = useCallback(
         (chatStatus: GorgiasChatStatusEnum) => {
-            let tagColor: TagColor = TagColor.Red
-            let dot: string = dotErrorCross
-            let timer: JSX.Element | null = null
+            let tagColor: TagColor
+            let leadingSlotIcon: JSX.Element
 
             switch (chatStatus) {
+                case GorgiasChatStatusEnum.NOT_INSTALLED:
+                    if (chatIsPublishedButNotInstalled) {
+                        tagColor = TagColor.Orange
+                        leadingSlotIcon = <Icon name={IconName.OctagonError} />
+                        break
+                    }
+                    tagColor = TagColor.Red
+                    leadingSlotIcon = <Icon name={IconName.Close} />
+                    break
                 case GorgiasChatStatusEnum.ONLINE:
                 case GorgiasChatStatusEnum.INSTALLED:
                     tagColor = TagColor.Green
-                    dot = dotSuccess
-                    break
-                case GorgiasChatStatusEnum.HIDDEN:
-                    tagColor = TagColor.Orange
-                    dot = dotWarning
+                    leadingSlotIcon = (
+                        <span className={css.iconSuccess}>
+                            <Icon
+                                size={IconSize.Xs}
+                                color={Color.Green}
+                                name={IconName.ShapeCircle}
+                            />
+                        </span>
+                    )
                     break
                 case GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS:
+                case GorgiasChatStatusEnum.HIDDEN:
                 case GorgiasChatStatusEnum.OFFLINE:
                     tagColor = TagColor.Grey
-                    dot = dotNeutral
+                    leadingSlotIcon = (
+                        <span className={css.iconNeutral}>
+                            <Icon
+                                size={IconSize.Xs}
+                                color={Color.Grey}
+                                name={IconName.ShapeCircle}
+                            />
+                        </span>
+                    )
                     break
-            }
-
-            if (
-                chatStatus === GorgiasChatStatusEnum.NOT_INSTALLED &&
-                wizardStatus === GorgiasChatCreationWizardStatus.Published
-            ) {
-                timer = <Icon name="timer" />
             }
 
             return (
-                <Tag
-                    color={tagColor}
-                    leadingSlot={<img alt="status icon" src={dot} />}
-                >
-                    <div className={css.timerStatus}>
-                        {
-                            GorgiasChatIntegrationStatusFeedbackMapping[
-                                chatStatus
-                            ]
-                        }
-                        {timer}
-                    </div>
+                <Tag color={tagColor} leadingSlot={leadingSlotIcon}>
+                    {chatIsPublishedButNotInstalled
+                        ? 'Not detected'
+                        : GorgiasChatIntegrationStatusFeedbackMapping[
+                              chatStatus
+                          ]}
                 </Tag>
             )
         },
-        [wizardStatus],
+        [chatIsPublishedButNotInstalled],
     )
 
     const Wrapper = ({ children }: { children?: JSX.Element }) => {
-        return (
-            <div
-                className={css.statusCell}
-                id={`chat-status-${chatIntegrationId}`}
-            >
-                {children}
-            </div>
-        )
+        return <div id={`chat-status-${chatIntegrationId}`}>{children}</div>
     }
 
     if (isLoadingIntegrations || isChatStatusLoading) {
@@ -181,15 +180,10 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
 
                         {chatIsPublishedButNotInstalled && (
                             <Text size="md" variant="medium">
-                                Chat Widget was not seen installed on your
-                                website in the past 72 hours. Check its{' '}
-                                <Link
-                                    to={installationLink}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    installation
-                                </Link>{' '}
-                                and your website to resolve.
+                                We couldn&apos;t detect the chat widget on your
+                                website in the last 72 hours. Please check that
+                                it&apos;s installed correctly and live on your
+                                site.
                             </Text>
                         )}
                     </TooltipContent>

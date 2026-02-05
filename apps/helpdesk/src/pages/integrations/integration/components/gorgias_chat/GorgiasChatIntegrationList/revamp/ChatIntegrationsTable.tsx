@@ -30,6 +30,7 @@ type Props = {
 }
 
 type StoreIntegrationField = {
+    chat: Map<any, any>
     storeIntegration: Map<any, any>
 }
 
@@ -45,7 +46,6 @@ type ActionsField = {
 
 type AiAgentStatusField = {
     chat: Map<any, any>
-    storeIntegration: Map<any, any>
 }
 
 type ChatIntegrationFields = {
@@ -101,6 +101,7 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
             return {
                 chat,
                 storeIntegration: {
+                    chat,
                     storeIntegration,
                 },
                 status: {
@@ -113,7 +114,6 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
                 },
                 aiAgentStatus: {
                     chat,
-                    storeIntegration,
                 },
             }
         })
@@ -129,12 +129,13 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
                 header: 'Store',
                 enableSorting: false,
                 cell: (data) => {
-                    const { storeIntegration } =
+                    const { storeIntegration, chat } =
                         data.getValue<StoreIntegrationField>()
 
                     return (
                         <StoreIntegrationCell
                             storeIntegration={storeIntegration}
+                            chat={chat}
                         />
                     )
                 },
@@ -153,15 +154,9 @@ export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
                 header: 'AI Agent Status',
                 enableSorting: false,
                 cell: (data) => {
-                    const { chat, storeIntegration } =
-                        data.getValue<AiAgentStatusField>()
+                    const { chat } = data.getValue<AiAgentStatusField>()
 
-                    return (
-                        <AiAgentStatusCell
-                            chat={chat}
-                            storeIntegration={storeIntegration}
-                        />
-                    )
+                    return <AiAgentStatusCell chat={chat} />
                 },
             },
             {

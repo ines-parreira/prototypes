@@ -72,9 +72,11 @@ export function ActionsCell({ chat, storeIntegration }: ActionsCellProps) {
 
         if (wizardStatus === GorgiasChatCreationWizardStatus.Draft) {
             return (
-                <Link to={editLink} onClick={(e) => e.stopPropagation()}>
-                    Continue Setup
-                </Link>
+                <Text size="md" variant="medium" align="right">
+                    <Link to={editLink} onClick={(e) => e.stopPropagation()}>
+                        Finish setup
+                    </Link>
+                </Text>
             )
         }
 
@@ -86,7 +88,7 @@ export function ActionsCell({ chat, storeIntegration }: ActionsCellProps) {
             return (
                 <Text size="md" variant="medium" align="right">
                     <a onClick={retriggerOAuthFlow} href="#">
-                        Update Permissions
+                        Update permissions
                     </a>
                 </Text>
             )
