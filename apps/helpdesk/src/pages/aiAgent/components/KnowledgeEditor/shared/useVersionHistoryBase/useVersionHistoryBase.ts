@@ -283,8 +283,18 @@ export function useVersionHistoryBase({
                 publishedDatetime: historicalVersion.publishedDatetime,
             })
         }
-        dispatch({ type: 'CLEAR_HISTORICAL_VERSION' })
-    }, [dispatch, isDisabled, historicalVersion, onBackToCurrent])
+        if (switchToVersion) {
+            switchToVersion('latest_draft').then(() =>
+                dispatch({ type: 'CLEAR_HISTORICAL_VERSION' }),
+            )
+        }
+    }, [
+        dispatch,
+        isDisabled,
+        historicalVersion,
+        onBackToCurrent,
+        switchToVersion,
+    ])
 
     return {
         versions,

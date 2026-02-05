@@ -28,7 +28,7 @@ jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
 }))
 
-const mockSwitchToVersion = jest.fn()
+const mockSwitchToVersion = jest.fn().mockResolvedValue(undefined)
 jest.mock('../useSwitchVersion', () => ({
     useSwitchVersion: () => ({ switchToVersion: mockSwitchToVersion }),
 }))
@@ -114,6 +114,7 @@ describe('useVersionHistory', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockSwitchToVersion.mockResolvedValue(undefined)
         mockUseFlag.mockReturnValue(true)
         ;(useGetVersion as jest.Mock).mockReturnValue({
             data: undefined,
@@ -405,17 +406,20 @@ describe('useVersionHistory', () => {
     })
 
     describe('onGoToLatest', () => {
-        it('should dispatch CLEAR_HISTORICAL_VERSION', () => {
+        it('should call switchToVersion with latest_draft and dispatch CLEAR_HISTORICAL_VERSION after resolution', async () => {
             const { result } = renderHook(() => useVersionHistory())
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('latest_draft')
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'CLEAR_HISTORICAL_VERSION',
             })
         })
 
-        it('should not dispatch when disabled', () => {
+        it('should not call switchToVersion or dispatch when disabled', async () => {
             mockUseGuidanceContext.mockReturnValue({
                 state: { ...defaultState, isUpdating: true },
                 dispatch: mockDispatch,
@@ -424,8 +428,11 @@ describe('useVersionHistory', () => {
 
             const { result } = renderHook(() => useVersionHistory())
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
+            expect(mockSwitchToVersion).not.toHaveBeenCalled()
             expect(mockDispatch).not.toHaveBeenCalled()
         })
     })

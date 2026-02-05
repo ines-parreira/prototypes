@@ -40,6 +40,7 @@ const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
 
 const mockDispatch = jest.fn()
 const mockFetchNextPage = jest.fn()
+const mockSwitchToVersion = jest.fn()
 
 const mockVersions: ArticleTranslationVersion[] = [
     {
@@ -413,24 +414,45 @@ describe('useVersionHistoryBase', () => {
     })
 
     describe('onGoToLatest', () => {
-        it('should dispatch CLEAR_HISTORICAL_VERSION', () => {
+        beforeEach(() => {
+            mockSwitchToVersion.mockResolvedValue(undefined)
+        })
+
+        it('should call switchToVersion with latest_draft when provided', async () => {
             const { result } = renderHook(() =>
-                useVersionHistoryBase(defaultParams),
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    switchToVersion: mockSwitchToVersion,
+                }),
             )
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('latest_draft')
+        })
+
+        it('should dispatch CLEAR_HISTORICAL_VERSION after switchToVersion resolves', async () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    switchToVersion: mockSwitchToVersion,
+                }),
+            )
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'CLEAR_HISTORICAL_VERSION',
             })
         })
 
-        it('should not dispatch when disabled', () => {
+        it('should not dispatch when switchToVersion is not provided', () => {
             const { result } = renderHook(() =>
-                useVersionHistoryBase({
-                    ...defaultParams,
-                    isUpdating: true,
-                }),
+                useVersionHistoryBase(defaultParams),
             )
 
             result.current.onGoToLatest()
@@ -438,7 +460,41 @@ describe('useVersionHistoryBase', () => {
             expect(mockDispatch).not.toHaveBeenCalled()
         })
 
-        it('should track back to current event when viewing a historical version', () => {
+        it('should not call switchToVersion when disabled', async () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    switchToVersion: mockSwitchToVersion,
+                    isUpdating: true,
+                }),
+            )
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(mockSwitchToVersion).not.toHaveBeenCalled()
+            expect(mockDispatch).not.toHaveBeenCalled()
+        })
+
+        it('should not dispatch when disabled via isAutoSaving', async () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    switchToVersion: mockSwitchToVersion,
+                    isAutoSaving: true,
+                }),
+            )
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(mockSwitchToVersion).not.toHaveBeenCalled()
+            expect(mockDispatch).not.toHaveBeenCalled()
+        })
+
+        it('should track back to current event when viewing a historical version', async () => {
             const historicalVersion = {
                 versionId: 4,
                 version: 2,
@@ -449,10 +505,13 @@ describe('useVersionHistoryBase', () => {
                 useVersionHistoryBase({
                     ...defaultParams,
                     historicalVersion,
+                    switchToVersion: mockSwitchToVersion,
                 }),
             )
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentVersionHistoryBackToCurrent,
@@ -469,12 +528,17 @@ describe('useVersionHistoryBase', () => {
             )
         })
 
-        it('should not track back to current event when no historical version is set', () => {
+        it('should not track back to current event when no historical version is set', async () => {
             const { result } = renderHook(() =>
-                useVersionHistoryBase(defaultParams),
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    switchToVersion: mockSwitchToVersion,
+                }),
             )
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
             expect(mockLogEvent).not.toHaveBeenCalledWith(
                 SegmentEvent.AiAgentVersionHistoryBackToCurrent,
@@ -482,7 +546,7 @@ describe('useVersionHistoryBase', () => {
             )
         })
 
-        it('should not track when disabled', () => {
+        it('should not track when disabled', async () => {
             const { result } = renderHook(() =>
                 useVersionHistoryBase({
                     ...defaultParams,
@@ -491,16 +555,19 @@ describe('useVersionHistoryBase', () => {
                         version: 2,
                         publishedDatetime: '2025-02-01T00:00:00Z',
                     },
+                    switchToVersion: mockSwitchToVersion,
                     isUpdating: true,
                 }),
             )
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
             expect(mockLogEvent).not.toHaveBeenCalled()
         })
 
-        it('should handle historical version with null publishedDatetime', () => {
+        it('should handle historical version with null publishedDatetime', async () => {
             const { result } = renderHook(() =>
                 useVersionHistoryBase({
                     ...defaultParams,
@@ -509,15 +576,47 @@ describe('useVersionHistoryBase', () => {
                         version: 2,
                         publishedDatetime: null,
                     },
+                    switchToVersion: mockSwitchToVersion,
                 }),
             )
 
-            result.current.onGoToLatest()
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
 
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentVersionHistoryBackToCurrent,
                 expect.objectContaining({ publishedDatetime: null }),
             )
+        })
+
+        it('should track back to current before calling switchToVersion', async () => {
+            const callOrder: string[] = []
+            mockLogEvent.mockImplementation(() => {
+                callOrder.push('logEvent')
+            })
+            mockSwitchToVersion.mockImplementation(() => {
+                callOrder.push('switchToVersion')
+                return Promise.resolve()
+            })
+
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    historicalVersion: {
+                        versionId: 4,
+                        version: 2,
+                        publishedDatetime: '2025-02-01T00:00:00Z',
+                    },
+                    switchToVersion: mockSwitchToVersion,
+                }),
+            )
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(callOrder).toEqual(['logEvent', 'switchToVersion'])
         })
     })
 
