@@ -165,7 +165,7 @@ describe('TicketTimelineWidget', () => {
                 totalNumber: 1,
             })
 
-            expect(screen.queryByText('Show All')).not.toBeInTheDocument()
+            expect(screen.queryByText('Show all')).not.toBeInTheDocument()
         })
 
         it('should display tickets list when there are multiple tickets', () => {
@@ -184,7 +184,7 @@ describe('TicketTimelineWidget', () => {
 
             expect(screen.getByText('Ticket 1')).toBeInTheDocument()
             expect(screen.getByText('Ticket 2')).toBeInTheDocument()
-            expect(screen.getByText('Show All')).toBeInTheDocument()
+            expect(screen.getByText('Show all')).toBeInTheDocument()
         })
 
         it('should not display tickets list when loading', () => {
@@ -194,12 +194,12 @@ describe('TicketTimelineWidget', () => {
                 isLoading: true,
             })
 
-            expect(screen.queryByText('Show All')).not.toBeInTheDocument()
+            expect(screen.queryByText('Show all')).not.toBeInTheDocument()
         })
     })
 
     describe('Toggle timeline button', () => {
-        it('should call onToggleTimeline when clicking "Show All"', async () => {
+        it('should call onToggleTimeline when clicking "Show all"', async () => {
             const user = userEvent.setup()
             const onToggleTimeline = vi.fn()
             const tickets = [
@@ -213,7 +213,7 @@ describe('TicketTimelineWidget', () => {
                 onToggleTimeline,
             })
 
-            const button = screen.getByText('Show All')
+            const button = screen.getByText('Show all')
             await act(() => user.click(button))
 
             expect(onToggleTimeline).toHaveBeenCalled()

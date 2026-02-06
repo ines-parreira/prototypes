@@ -367,7 +367,7 @@ describe('TicketTimelineWidgetContainer', () => {
     })
 
     describe('handleToggleTimeline', () => {
-        it('should call onChangeTab and onToggle when "Show All" is clicked and infobar is collapsed', async () => {
+        it('should call onChangeTab and onToggle when "Show all" is clicked and infobar is collapsed', async () => {
             const user = userEvent.setup()
             const mockOnChangeTab = jest.fn()
             const mockOnToggle = jest.fn()
@@ -424,7 +424,7 @@ describe('TicketTimelineWidgetContainer', () => {
 
             render(<TicketTimelineWidgetContainer />)
 
-            const showAllButton = screen.getByText('Show All')
+            const showAllButton = screen.getByText('Show all')
             await act(() => user.click(showAllButton))
 
             expect(mockOnChangeTab).toHaveBeenCalledWith(
@@ -433,7 +433,7 @@ describe('TicketTimelineWidgetContainer', () => {
             expect(mockOnToggle).toHaveBeenCalled()
         })
 
-        it('should only call onChangeTab when "Show All" is clicked and infobar is already expanded', async () => {
+        it('should only call onChangeTab when "Show all" is clicked and infobar is already expanded', async () => {
             const user = userEvent.setup()
             const mockOnChangeTab = jest.fn()
             const mockOnToggle = jest.fn()
@@ -490,7 +490,7 @@ describe('TicketTimelineWidgetContainer', () => {
 
             render(<TicketTimelineWidgetContainer />)
 
-            const showAllButton = screen.getByText('Show All')
+            const showAllButton = screen.getByText('Show all')
             await act(() => user.click(showAllButton))
 
             expect(mockOnChangeTab).toHaveBeenCalledWith(

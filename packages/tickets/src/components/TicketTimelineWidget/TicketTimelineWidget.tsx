@@ -52,7 +52,7 @@ export function TicketTimelineWidget({
                             size="sm"
                             trailingSlot="arrow-chevron-right"
                         >
-                            Show All
+                            Show all
                         </Button>
                     </Box>
                 </Box>
