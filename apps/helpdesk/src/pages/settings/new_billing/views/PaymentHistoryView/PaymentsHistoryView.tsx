@@ -146,9 +146,25 @@ const PaymentsHistoryView = () => {
                 },
             },
             {
-                id: 'amount',
-                accessorKey: 'amount_due',
+                id: 'total',
+                accessorKey: 'total',
                 header: 'Amount',
+                cell: (info) => {
+                    return formatAmount((info.getValue() as number) / 100)
+                },
+            },
+            {
+                id: 'amount_due',
+                accessorKey: 'amount_due',
+                header: 'Amount Due',
+                cell: (info) => {
+                    return formatAmount((info.getValue() as number) / 100)
+                },
+            },
+            {
+                id: 'amount_paid',
+                accessorKey: 'amount_paid',
+                header: 'Amount Paid',
                 cell: (info) => {
                     return formatAmount((info.getValue() as number) / 100)
                 },

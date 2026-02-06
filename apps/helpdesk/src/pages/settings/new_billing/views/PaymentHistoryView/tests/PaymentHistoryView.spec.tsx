@@ -35,7 +35,9 @@ const mockConfirmInvoicePayment = jest.fn()
 const invoiceRequiringSource: Invoice = {
     description: 'Pro for the period from 2023-04-26 to 2023-04-28',
     invoice_pdf: '#',
+    total: 322052,
     amount_due: 322052,
+    amount_paid: 0,
     payment_intent: { status: PaymentIntentStatus.RequiresSource },
     payment_confirmation_url: null,
     attempted: true,
@@ -48,7 +50,9 @@ const invoiceRequiringSource: Invoice = {
 const invoiceRequiringPaymentMethod: Invoice = {
     description: 'Pro for the period from 2023-04-26 to 2023-04-28',
     invoice_pdf: '#',
+    total: 322052,
     amount_due: 322052,
+    amount_paid: 0,
     payment_intent: { status: PaymentIntentStatus.RequiresPaymentMethod },
     payment_confirmation_url: null,
     attempted: true,
@@ -176,7 +180,9 @@ describe('PaymentsHistoryView', () => {
         const invoiceWithPaymentSchedules: Invoice = {
             description: 'Pro for the period from 2023-04-26 to 2023-04-28',
             invoice_pdf: '#',
+            total: 322052,
             amount_due: 322052,
+            amount_paid: 0,
             payment_intent: {
                 status: PaymentIntentStatus.RequiresPaymentMethod,
             },
@@ -297,7 +303,9 @@ describe('PaymentsHistoryView', () => {
         const invoiceRequiringConfirmation: Invoice = {
             description: 'Pro for the period from 2023-04-26 to 2023-04-28',
             invoice_pdf: '#',
+            total: 322052,
             amount_due: 322052,
+            amount_paid: 0,
             payment_intent: {
                 status: PaymentIntentStatus.RequiresConfirmation,
             },

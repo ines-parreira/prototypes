@@ -42,7 +42,9 @@ export enum PaymentIntentStatus {
 }
 
 export type Invoice = {
-    amount_due: number
+    total: number // Integer, amount in cents
+    amount_paid: number // Integer, amount in cents
+    amount_due: number // Integer, amount in cents
     attempted: boolean
     date: number
     description: string | null
