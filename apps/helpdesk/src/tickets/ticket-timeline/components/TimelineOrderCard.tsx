@@ -196,7 +196,7 @@ export function TimelineOrderCard({
                         <Text
                             size="sm"
                             variant="regular"
-                        >{`${order.line_items.length} items`}</Text>
+                        >{`${order.line_items.length} ${order.line_items.length === 1 ? 'item' : 'items'}`}</Text>
                     </Box>
 
                     <Box>
