@@ -188,6 +188,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
                     />
                     <span
                       class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5 ui-inputslot-icon-0bf5"
+                      data-name="input-slot"
                     >
                       <span
                         class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"

@@ -5,35 +5,47 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
   <div
     class="container"
   >
-    <div
-      class="ui-multibutton-group-cec3"
-      data-name="multi-button"
-      data-size="small"
-      data-variant="primary"
-      style="display: flex;"
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432 ui-button-haslefticon-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
+      id="action-button-6"
+      tabindex="0"
+      type="button"
     >
-      <button
-        aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-        id="action-button-6"
-        type="button"
+      <div
+        class="ui-button-surface-a432"
       >
-        <i
-          aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-        >
-          attach_money
-        </i>
         <span
-          class="ui-button-content-cef1"
+          class="ui-button-content-a432"
         >
+          <div
+            class="ui-buttonslot-icon-504b ui-buttonslot-md-504b ui-buttonslot-leading-504b"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons"
+            >
+              attach_money
+            </i>
+          </div>
           <span
-            id="action-button-6-tooltip-target"
-          />
-          Refund
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
+          >
+            <strong>
+              <span
+                id="action-button-6-tooltip-target"
+              />
+              Refund
+            </strong>
+          </span>
         </span>
-      </button>
-    </div>
+      </div>
+    </button>
   </div>
   <div
     class="fieldContainer staticField"
@@ -56,35 +68,47 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
   <div
     class="container"
   >
-    <div
-      class="ui-multibutton-group-cec3"
-      data-name="multi-button"
-      data-size="small"
-      data-variant="primary"
-      style="display: flex;"
+    <button
+      aria-disabled="false"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432 ui-button-haslefticon-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
+      id="action-button-4"
+      tabindex="0"
+      type="button"
     >
-      <button
-        aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-        id="action-button-4"
-        type="button"
+      <div
+        class="ui-button-surface-a432"
       >
-        <i
-          aria-hidden="true"
-          class="material-icons ui-buttonicon-icon-e486 ui-buttonicon-small-e486"
-        >
-          attach_money
-        </i>
         <span
-          class="ui-button-content-cef1"
+          class="ui-button-content-a432"
         >
+          <div
+            class="ui-buttonslot-icon-504b ui-buttonslot-md-504b ui-buttonslot-leading-504b"
+          >
+            <i
+              aria-hidden="true"
+              class="material-icons"
+            >
+              attach_money
+            </i>
+          </div>
           <span
-            id="action-button-4-tooltip-target"
-          />
-          Refund
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
+          >
+            <strong>
+              <span
+                id="action-button-4-tooltip-target"
+              />
+              Refund
+            </strong>
+          </span>
         </span>
-      </button>
-    </div>
+      </div>
+    </button>
   </div>
   <div
     class="fieldContainer staticField"

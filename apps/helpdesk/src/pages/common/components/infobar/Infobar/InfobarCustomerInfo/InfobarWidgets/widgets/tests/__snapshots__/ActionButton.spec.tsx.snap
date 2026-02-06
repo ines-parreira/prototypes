@@ -7,50 +7,82 @@ exports[`ActionButton component should display a single option with a checkbox p
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-4"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-4-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-4-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-4"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-4-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-4-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -114,50 +146,82 @@ exports[`ActionButton component should display a single option with a number par
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-3"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-3-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-3-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-3"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-3-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-3-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -221,50 +285,82 @@ exports[`ActionButton component should display a single option with a select par
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-5"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-5-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-5-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-5"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-5-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-5-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -328,50 +424,82 @@ exports[`ActionButton component should display a single option with a text param
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-2"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-2-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-2-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-2"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-2-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-2-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -435,50 +563,82 @@ exports[`ActionButton component should display a single option with no parameter
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-1"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-1-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-1-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-1"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-1-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-1-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -542,50 +702,82 @@ exports[`ActionButton component should display multiple options with a common pa
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-7"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-7-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-7-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-7"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-7-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-7-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -649,50 +841,82 @@ exports[`ActionButton component should display multiple options with different p
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-8"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-8-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-8-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-8"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-8-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-8-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],
@@ -756,50 +980,82 @@ exports[`ActionButton component should display multiple options without paramete
     <div>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
         id="action-button-6"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
           <span
-            id="action-button-6-tooltip-target"
-          />
-          <div>
-            <i
-              class="material-icons mr-2"
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
             >
-              refresh
-            </i>
-             Little action
-          </div>
-        </span>
+              <strong>
+                <span
+                  id="action-button-6-tooltip-target"
+                />
+                <div>
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    refresh
+                  </i>
+                   Little action
+                </div>
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </body>,
   "container": <div>
     <button
       aria-disabled="false"
-      class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+      class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-secondary-a432"
+      data-name="button"
+      data-rac=""
+      data-react-aria-pressable="true"
       id="action-button-6"
+      tabindex="0"
       type="button"
     >
-      <span
-        class="ui-button-content-cef1"
+      <div
+        class="ui-button-surface-a432"
       >
         <span
-          id="action-button-6-tooltip-target"
-        />
-        <div>
-          <i
-            class="material-icons mr-2"
+          class="ui-button-content-a432"
+        >
+          <span
+            class="typography-bold-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
           >
-            refresh
-          </i>
-           Little action
-        </div>
-      </span>
+            <strong>
+              <span
+                id="action-button-6-tooltip-target"
+              />
+              <div>
+                <i
+                  class="material-icons mr-2"
+                >
+                  refresh
+                </i>
+                 Little action
+              </div>
+            </strong>
+          </span>
+        </span>
+      </div>
     </button>
   </div>,
   "debug": [Function],

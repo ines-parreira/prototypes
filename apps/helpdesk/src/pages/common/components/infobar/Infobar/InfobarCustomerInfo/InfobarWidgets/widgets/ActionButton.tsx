@@ -9,11 +9,8 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonProps as ButtonProps,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import type { ButtonProps } from '@gorgias/axiom'
 
 import type { WithAppNodeProps } from 'appNode'
 import { withAppNode } from 'appNode'
@@ -60,7 +57,7 @@ type Props = {
     integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
     className?: string
-    leadingIcon?: ButtonProps['leadingIcon']
+    leadingIcon?: string
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -349,17 +346,17 @@ export class ActionButtonContainer extends Component<Props, State> {
         const { isLoading } = this.state
         const hasError = !!actionError
         const tooltipTargetID = `${this.id}-tooltip-target`
+
         return (
             <>
                 <Tag
                     id={this.id}
                     type="button"
-                    intent="secondary"
-                    size="small"
+                    variant="secondary"
                     isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
                     className={css.actionButton}
-                    leadingIcon={leadingIcon}
+                    leadingSlot={leadingIcon}
                     {...tagOptions}
                 >
                     <span id={tooltipTargetID} />

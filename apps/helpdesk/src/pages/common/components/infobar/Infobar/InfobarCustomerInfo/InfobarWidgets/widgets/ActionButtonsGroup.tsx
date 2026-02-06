@@ -8,9 +8,6 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import type { ButtonSize } from '@gorgias/axiom'
-import { MultiButton } from '@gorgias/axiom'
-
 import IconButton from 'pages/common/components/button/IconButton'
 import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
@@ -44,70 +41,63 @@ function ActionButtonsGroup({ actions, payload }: Props) {
     const dropdownButtons = actions.slice(NB_ACTIONS_DISPLAYED)
     return (
         <div className={css.container}>
-            <MultiButton size={'small' as ButtonSize}>
-                {buttons.map((action) => {
-                    return (
-                        <ActionButton
-                            key={action.key}
-                            options={action.options}
-                            payload={payload}
-                            popover={action.popover}
-                            title={action.title}
-                            modal={action.modal}
-                            modalData={action.modalData}
-                            setModalOpen={setModalOpen}
-                            leadingIcon={action.leadingIcon}
-                        >
-                            {action.child}
-                        </ActionButton>
-                    )
-                })}
-                {dropdownButtons.length > 0 && (
-                    <Dropdown
-                        isOpen={isActionDropdownOpen}
-                        toggle={toggleDropdown}
+            {buttons.map((action) => {
+                return (
+                    <ActionButton
+                        key={action.key}
+                        options={action.options}
+                        payload={payload}
+                        popover={action.popover}
+                        title={action.title}
+                        modal={action.modal}
+                        modalData={action.modalData}
+                        setModalOpen={setModalOpen}
+                        leadingIcon={action.leadingIcon}
                     >
-                        <DropdownToggle tag="span">
-                            <IconButton size="small" intent="secondary">
-                                more_horiz
-                            </IconButton>
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                            {dropdownButtons.map((action) => {
-                                return (
-                                    <ActionButton
-                                        key={action.key}
-                                        options={action.options}
-                                        payload={payload}
-                                        tag={DropdownItem}
-                                        tagOptions={{
-                                            toggle: false,
-                                            className: css.dropdownItem,
-                                        }}
-                                        popover={action.popover}
-                                        title={action.title}
-                                        modal={action.modal}
-                                        modalData={action.modalData}
-                                        setModalOpen={setModalOpen}
-                                    >
-                                        {action.leadingIcon ? (
-                                            <i
-                                                className={classNames(
-                                                    'material-icons',
-                                                    css.dropdownItemLeadingIcon,
-                                                )}
-                                            >
-                                                {action.leadingIcon}
-                                            </i>
-                                        ) : null}
-                                        {action.child}
-                                    </ActionButton>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </Dropdown>
-                )}
-            </MultiButton>
+                        {action.child}
+                    </ActionButton>
+                )
+            })}
+            {dropdownButtons.length > 0 && (
+                <Dropdown isOpen={isActionDropdownOpen} toggle={toggleDropdown}>
+                    <DropdownToggle tag="span">
+                        <IconButton intent="secondary">more_horiz</IconButton>
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        {dropdownButtons.map((action) => {
+                            return (
+                                <ActionButton
+                                    key={action.key}
+                                    options={action.options}
+                                    payload={payload}
+                                    tag={DropdownItem}
+                                    tagOptions={{
+                                        toggle: false,
+                                        className: css.dropdownItem,
+                                    }}
+                                    popover={action.popover}
+                                    title={action.title}
+                                    modal={action.modal}
+                                    modalData={action.modalData}
+                                    setModalOpen={setModalOpen}
+                                >
+                                    {action.leadingIcon ? (
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.dropdownItemLeadingIcon,
+                                            )}
+                                        >
+                                            {action.leadingIcon}
+                                        </i>
+                                    ) : null}
+                                    {action.child}
+                                </ActionButton>
+                            )
+                        })}
+                    </DropdownMenu>
+                </Dropdown>
+            )}
         </div>
     )
 }

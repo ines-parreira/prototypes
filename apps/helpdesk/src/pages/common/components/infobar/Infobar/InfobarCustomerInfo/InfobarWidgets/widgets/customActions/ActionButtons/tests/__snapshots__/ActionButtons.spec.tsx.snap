@@ -14,25 +14,59 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
     >
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-sm-a432 ui-button-tertiary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:r0:"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
-          I am in snapshots
-        </span>
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-sm ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
+            >
+              <strong>
+                I am in snapshots
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
       <button
         aria-disabled="false"
-        class="ui-button-wrapper-cef1 actionButton ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+        class="ui-button-wrapper-a432 ui-button-sm-a432 ui-button-tertiary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:r2:"
+        tabindex="0"
         type="button"
       >
-        <span
-          class="ui-button-content-cef1"
+        <div
+          class="ui-button-surface-a432"
         >
-          I am in snapshots too
-        </span>
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-sm ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
+            >
+              <strong>
+                I am in snapshots too
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </div>

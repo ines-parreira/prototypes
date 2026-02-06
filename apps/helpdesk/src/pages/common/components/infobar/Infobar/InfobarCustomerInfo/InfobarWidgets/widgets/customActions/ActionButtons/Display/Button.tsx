@@ -10,7 +10,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
-import { LegacyButton as BaseButton } from '@gorgias/axiom'
+import { Button as BaseButton } from '@gorgias/axiom'
 
 import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -114,9 +114,9 @@ export function Button({ label, action, isDropdown = false }: Props) {
         <DropdownItem className={css.dropdownItem} {...props} />
     ) : (
         <BaseButton
-            intent="secondary"
+            variant="tertiary"
             className={css.actionButton}
-            size="small"
+            size="sm"
             {...props}
         />
     )
