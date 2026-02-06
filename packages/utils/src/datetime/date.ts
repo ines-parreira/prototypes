@@ -3,9 +3,6 @@ import moment from 'moment-timezone'
 
 /**
  * Convert a string to a moment object if the string represents a valid datetime, else returns null.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const stringToDatetime = (data: string): Moment | null => {
     let datetime = null
@@ -23,9 +20,6 @@ export const stringToDatetime = (data: string): Moment | null => {
 
 /**
  * Convert a string to a moment object using specific timeZone if the string represents a valid datetime, else returns null.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const stringToDatetimeWithTimeZone = (
     data: string,
@@ -48,9 +42,6 @@ export const stringToDatetimeWithTimeZone = (
  * Return moment()
  *
  * We encapsulate it here so that it's easy to mock during tests.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const getMoment = () => {
     return moment()
@@ -60,9 +51,6 @@ export const getMoment = () => {
  * Return moment.now()
  *
  * We encapsulate it here so that it's easy to mock during tests.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const getMomentNow = () => {
     return moment.now()
@@ -72,9 +60,6 @@ export const getMomentNow = () => {
  * Return moment.utc().toISOString()
  *
  * We encapsulate it here so that it's easy to mock during tests.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const getMomentUtcISOString = () => {
     return moment.utc().toISOString()
@@ -84,20 +69,11 @@ export const getMomentUtcISOString = () => {
  * Return moment.tz.names()
  *
  * We encapsulate it here so that it's easy to mock during tests.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const getMomentTimezoneNames = () => {
     return moment.tz.names()
 }
 
-/**
- * Return the date formatted to the given locale.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
- */
 export const getFormattedDate = (date: string, locale?: string) => {
     if (isNaN(Date.parse(date))) {
         throw new Error('Invalid date')
@@ -105,12 +81,6 @@ export const getFormattedDate = (date: string, locale?: string) => {
     return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
 }
 
-/**
- * Return the date formatted to the given locale.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
- */
 export const DETAILED_FORMATTED_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -118,13 +88,6 @@ export const DETAILED_FORMATTED_DATE_OPTIONS: Intl.DateTimeFormatOptions = {
     hour: 'numeric',
     minute: 'numeric',
 }
-
-/**
- * Return the date formatted to the given locale.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
- */
 export const getDetailedFormattedDate = (date: string, locale?: string) => {
     if (isNaN(Date.parse(date))) {
         throw new Error('Invalid date')
@@ -137,9 +100,6 @@ export const getDetailedFormattedDate = (date: string, locale?: string) => {
 
 /**
  * Return the date subtracted by the given number of days.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
  */
 export const subtractDaysFromDate = (date: string, daysToSubtract: number) => {
     return moment
@@ -149,12 +109,6 @@ export const subtractDaysFromDate = (date: string, daysToSubtract: number) => {
         .toISOString()
 }
 
-/**
- * Return the date formatted to the given locale.
- * @deprecated use the @repo/utils version instead
- * @date 2026-01-15
- * @types date-migration
- */
 export const shortenRelativeDurationLabel = (duration: string | null) => {
     if (duration) {
         if (duration.includes('second')) {
@@ -174,46 +128,10 @@ export const shortenRelativeDurationLabel = (duration: string | null) => {
     return duration
 }
 
-/**
- * Return the date formatted to the given locale.
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US = 'ddd, MMM D'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD = 'ddd, D MMM'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_FORMAT_US = 'MMM D'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_FORMAT_WORLD = 'D MMM'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const MONTH_AND_YEAR_SHORT = 'MMM`YY'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_WITH_YEAR_US = 'MMM D, YYYY'
-/**
- * @deprecated use this constant from @repo/utils instead
- * @date 2026-01-15
- * @type date-migration
- */
 export const SHORT_DATE_WITH_YEAR_WORLD = 'D MMM, YYYY'

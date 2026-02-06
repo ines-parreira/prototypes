@@ -55,6 +55,8 @@ export { FieldRow } from './components/InfobarCustomerFields/components/FieldRow
 export type { FieldRowProps } from './components/InfobarCustomerFields/components/FieldRow'
 export { EditableField } from './components/InfobarCustomerFields/components/EditableField'
 
+export { InfobarTicketCustomerInstagramSection } from './components/InfobarTicketCustomerInstagram/InfobarTicketCustomerInstagramSection'
+
 // Layout components
 export { TicketLayout, TicketLayoutContent } from './layout/TicketLayout'
 export { TicketHeaderContainer } from './components/TicketHeader/layout/TicketHeaderLayout'

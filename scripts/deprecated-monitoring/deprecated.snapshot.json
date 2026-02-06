@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-03T16:44:47.570Z",
-  "total": 4178,
+  "date": "2026-02-04T10:13:19.106Z",
+  "total": 4331,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1734,6 +1734,67 @@
       ]
     },
     {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getMoment",
+      "comment": "*\n * Return moment()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 17,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getMoment",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/voice/components/LiveVoice/utils.ts",
+            "apps/helpdesk/src/jobs/useBulkAction.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/models/voiceCall/utils.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/helpers.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationOutboundVerification.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/StartMigration.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/utils.ts",
+            "apps/helpdesk/src/pages/settings/audit/UserAuditList.tsx",
+            "apps/helpdesk/src/state/queries/reducers.ts",
+            "apps/helpdesk/src/state/views/actions.ts",
+            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "subtractDaysFromDate",
+      "comment": "*\n * Return the date subtracted by the given number of days.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 16,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "subtractDaysFromDate",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/messagesPerTicket.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/oneTouchTickets.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/openTickets.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/tests/messagesPerTicket.spec.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/tests/oneTouchTickets.spec.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/tests/openTickets.spec.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/tests/workloadPerChannel.spec.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/tests/zeroTouchTickets.spec.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/workloadPerChannel.ts",
+            "apps/helpdesk/src/domains/reporting/models/queryFactories/support-performance/zeroTouchTickets.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/utils/tests/date.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "VariableDeclaration",
       "nodeName": "SelectFilter",
       "comment": "*\n * @deprecated\n * @date 2025-06-02\n * @type feature-component\n ",
@@ -1898,6 +1959,32 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "stringToDatetime",
+      "comment": "*\n * Convert a string to a moment object if the string represents a valid datetime, else returns null.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 12,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "stringToDatetime",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/models/voiceCall/utils.ts",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/DateConditionType.tsx",
+            "apps/helpdesk/src/pages/common/components/ast/Widget.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/helpers.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/Filters/Right.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/StartMigration.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/utils.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "formatCurrency",
       "comment": "*\n * @deprecated replaced by formatCurrency in @repo/reporting imports\n * @date 2025-08-29\n * @type reporting-ui-kit\n ",
       "count": 10,
@@ -1993,6 +2080,30 @@
       ]
     },
     {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getFormattedDate",
+      "comment": "*\n * Return the date formatted to the given locale.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 10,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getFormattedDate",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/LastSyncedDate.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InstagramSection.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent/HelpCenterArticleModalBasicViewContent.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/ArticlesTable/components/ArticleRow/ArticleRow.tsx",
+            "apps/helpdesk/src/utils/tests/date.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "VariableDeclaration",
       "nodeName": "ShortcutIcon",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ShortcutKey />` from @gorgias/axiom instead.\n * @date 2025-04-02\n * @type ui-kit-migration\n ",
@@ -2034,6 +2145,29 @@
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyReturnEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyWismoEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/RulesTriggerSelect.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getMomentTimezoneNames",
+      "comment": "*\n * Return moment.tz.names()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 9,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getMomentTimezoneNames",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/flows/nodes/TimeSplitConditionalNode.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/settings/businessHours/BusinessHoursLegacy.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/CustomBusinessHoursGeneralFields.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHoursDrawer.tsx"
           ]
         }
       ]
@@ -2122,6 +2256,28 @@
             "apps/helpdesk/src/pages/common/utils/tests/withProductEnabledPaywall.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationDetail.tsx",
             "apps/helpdesk/src/state/billing/tests/selectors.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getDetailedFormattedDate",
+      "comment": "*\n * Return the date formatted to the given locale.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 8,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getDetailedFormattedDate",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent/HelpCenterArticleModalBasicViewContent.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/ArticlesTable/components/ArticleRow/ArticleRow.tsx",
+            "apps/helpdesk/src/utils/tests/date.spec.ts"
           ]
         }
       ]
@@ -2233,6 +2389,195 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getMomentNow",
+      "comment": "*\n * Return moment.now()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getMomentNow",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/RuleSuggestion.tsx",
+            "apps/helpdesk/src/state/newMessage/actions.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "shortenRelativeDurationLabel",
+      "comment": "*\n * Return the date formatted to the given locale.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "shortenRelativeDurationLabel",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/common/components/RelativeTime.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/utils/tests/date.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US",
+      "comment": "*\n * Return the date formatted to the given locale.\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/tests/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/tests/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_FORMAT_US",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_FORMAT_US",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/tests/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_FORMAT_WORLD",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_FORMAT_WORLD",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/tests/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "MONTH_AND_YEAR_SHORT",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "MONTH_AND_YEAR_SHORT",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/tests/utils.spec.ts",
+            "apps/helpdesk/src/domains/reporting/pages/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_WITH_YEAR_US",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_WITH_YEAR_US",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/tests/ProductHeader.spec.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "SHORT_DATE_WITH_YEAR_WORLD",
+      "comment": "*\n * @deprecated use this constant from @repo/utils instead\n * @date 2026-01-15\n * @type date-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "SHORT_DATE_WITH_YEAR_WORLD",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/tests/ProductHeader.spec.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "Drawer",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SidePanel />` from @gorgias/axiom instead.\n * @date 2026-01-05\n * @type ui-kit-migration\n ",
       "count": 6,
@@ -2327,6 +2672,66 @@
             "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/hooks/tests/useStartSubscription.spec.tsx",
             "apps/helpdesk/src/state/currentAccount/tests/selectors.spec.ts",
             "apps/helpdesk/src/state/currentUser/actions.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "stringToDatetimeWithTimeZone",
+      "comment": "*\n * Convert a string to a moment object using specific timeZone if the string represents a valid datetime, else returns null.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "stringToDatetimeWithTimeZone",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/utils.ts",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "getMomentUtcISOString",
+      "comment": "*\n * Return moment.utc().toISOString()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "getMomentUtcISOString",
+          "files": [
+            "apps/helpdesk/src/config/views.tsx",
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "DETAILED_FORMATTED_DATE_OPTIONS",
+      "comment": "*\n * Return the date formatted to the given locale.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/utils/date.ts",
+      "usages": [
+        {
+          "name": "DETAILED_FORMATTED_DATE_OPTIONS",
+          "files": [
+            "apps/helpdesk/src/models/voiceCall/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/tests/helpers.spec.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
+            "apps/helpdesk/src/utils/tests/date.spec.ts"
           ]
         }
       ]

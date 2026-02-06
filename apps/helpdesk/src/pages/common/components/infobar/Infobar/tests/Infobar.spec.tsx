@@ -161,6 +161,15 @@ const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 jest.mock('@repo/tickets')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetTicket: jest.fn(() => ({
+        data: null,
+        isLoading: false,
+        isError: false,
+    })),
+}))
+
 jest.mock('state/ticket/actions', () => ({
     ...jest.requireActual('state/ticket/actions'),
     setCustomer: jest.fn(() => () => Promise.resolve()),

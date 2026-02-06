@@ -4,16 +4,21 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { InfobarTicketDetails, useHelpdeskV2MS1Flag } from '@repo/tickets'
+import {
+    InfobarTicketCustomerInstagramSection,
+    InfobarTicketDetails,
+    useHelpdeskV2MS1Flag,
+} from '@repo/tickets'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -75,6 +80,13 @@ export const Infobar = ({
     const location = useLocation()
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
+    const { ticketId } = useParams<{ ticketId: string }>()
+    const { data: ticket } = useGetTicket(Number(ticketId), undefined, {
+        query: {
+            enabled: !!ticketId,
+            select: (data) => data?.data,
+        },
+    })
 
     const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
     const [suggestedCustomer, setSuggestedCustomer] = useState<Map<any, any>>(
@@ -90,6 +102,15 @@ export const Infobar = ({
     const hasIntegrationsOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const hasShopifyIntegration = hasIntegrationsOfTypes(
         IntegrationType.Shopify,
+    )
+
+    const isInstagramTicket = ticket?.channel?.startsWith('instagram') ?? false
+    const hasInstagramChannel = useMemo(
+        () =>
+            ticket?.customer?.channels?.some(
+                (channel) => channel.type === 'instagram',
+            ),
+        [ticket],
     )
 
     const isWidgetEditing = useMemo(
@@ -296,6 +317,15 @@ export const Infobar = ({
                         hasShopifyIntegration={hasShopifyIntegration}
                     />
                 )}
+                {hasUIVisionMS1 &&
+                    isInstagramTicket &&
+                    hasInstagramChannel &&
+                    ticket?.customer && (
+                        <InfobarTicketCustomerInstagramSection
+                            customer={ticket.customer}
+                            messages={ticket?.messages ?? []}
+                        />
+                    )}
 
                 {hasUIVisionMS1 &&
                     !isCurrentlyOnCustomerPage(defaultCustomerId) && (
