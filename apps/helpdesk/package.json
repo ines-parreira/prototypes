@@ -102,6 +102,7 @@
         "@repo/agent-status": "workspace:*",
         "@repo/browser-storage": "workspace:*",
         "@repo/customer": "workspace:*",
+        "@repo/ecommerce": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
         "@repo/layout": "workspace:*",

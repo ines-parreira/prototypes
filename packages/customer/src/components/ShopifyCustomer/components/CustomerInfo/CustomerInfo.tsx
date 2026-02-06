@@ -2,12 +2,14 @@ import { useUserDateTimePreferences } from '@repo/user'
 
 import { Box } from '@gorgias/axiom'
 
-import { useIntegrationSelection } from '../../hooks'
+import { useGetOrderProducts, useIntegrationSelection } from '../../hooks'
+import { useGetOrders } from '../../hooks/useGetOrders'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
+import { OrdersList } from './OrdersList'
 import { ShopifyTags } from './ShopifyTags'
 import type { FieldRenderContext } from './types'
 import { useCustomerFieldPreferences } from './useCustomerFieldPreferences'
@@ -44,6 +46,16 @@ export function CustomerInfo({
     const { shopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
         externalId: selectedExternalId,
+    })
+
+    const { orders, isLoadingOrders } = useGetOrders({
+        integrationId: selectedIntegration?.id,
+        shopperIdentityId: shopper?.relationships?.shopper_identity_id,
+    })
+
+    const { productsMap } = useGetOrderProducts({
+        integrationId: selectedIntegration?.id,
+        orders,
     })
 
     const { purchaseSummary } = useGetPurchaseSummary({
@@ -92,6 +104,12 @@ export function CustomerInfo({
                     <CustomerInfoFieldList fields={fields} context={context} />
                 </>
             )}
+
+            <OrdersList
+                orders={orders}
+                isLoadingOrders={isLoadingOrders}
+                productsMap={productsMap}
+            />
         </Box>
     )
 }

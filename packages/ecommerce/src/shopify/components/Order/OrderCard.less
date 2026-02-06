@@ -1,13 +1,20 @@
-@import (reference) '~css/typography';
-
 :local {
+    .orderCard {
+        margin-bottom: var(--spacing-xs);
+        padding: var(--spacing-sm) var(--spacing-md);
+
+        &::after {
+            pointer-events: none;
+        }
+    }
+
     .productImageWrapper {
         position: relative;
         width: 32px;
         height: 32px;
         border-radius: 4px;
         overflow: hidden;
-        background-color: var(--neutral-grey-0);
+        background-color: var(--surface-neutral-primary);
     }
 
     .productImage {
@@ -31,5 +38,18 @@
         color: var(--static-default-white);
         font-size: 12px;
         font-weight: 600;
+    }
+
+    .dateText {
+        color: var(--content-neutral-secondary);
+    }
+
+    .iconWrapper {
+        display: inline-flex;
+        color: var(--content-neutral-secondary);
+    }
+
+    .noWrap {
+        white-space: nowrap;
     }
 }

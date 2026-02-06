@@ -75,4 +75,58 @@ export type ShopperEcommerceData = {
     external_id: string
     schema_version: string
     version: string
+    relationships?: {
+        shopper_identity_id?: string
+    }
+}
+
+export type OrderLineItem = {
+    id: number
+    title: string
+    quantity: number
+    price: string
+    product_id: number | null
+    variant_id: number | null
+    product_exists?: boolean
+}
+
+export type FinancialStatus =
+    | 'pending'
+    | 'authorized'
+    | 'partially_paid'
+    | 'paid'
+    | 'partially_refunded'
+    | 'refunded'
+    | 'voided'
+
+export type FulfillmentStatus = 'fulfilled' | 'partial' | 'restocked'
+
+export type OrderData = {
+    id: number | string
+    order_number: number | string
+    name: string
+    created_at: string
+    updated_at: string
+    currency: string
+    total_price: string
+    financial_status: FinancialStatus
+    fulfillment_status: FulfillmentStatus | null
+    line_items: OrderLineItem[]
+    customer: ShopperData
+}
+
+export type OrderEcommerceData = {
+    id: string
+    account_id: number
+    created_datetime: string
+    updated_datetime: string
+    data: OrderData
+    source_type: 'shopify'
+    integration_id: number
+    external_id: string
+    relationships?: {
+        shopper_identity?: string
+    }
+    schema_version?: string
+    version?: string
 }
