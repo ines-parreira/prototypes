@@ -109,6 +109,7 @@ export function TimelineContent({
                 paddingLeft="md"
                 paddingRight="md"
                 paddingTop="md"
+                paddingBottom="xs"
                 flexDirection="column"
             >
                 <TimelineHeader

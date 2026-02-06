@@ -53,7 +53,6 @@ export function TimelineList({
             <Box
                 alignItems="center"
                 justifyContent="center"
-                paddingTop={'xxxl'}
                 paddingBottom={'xxxl'}
                 paddingLeft={'md'}
                 paddingRight={'md'}
@@ -80,7 +79,6 @@ export function TimelineList({
             paddingLeft="md"
             paddingRight="md"
             paddingBottom="md"
-            paddingTop="xs"
             flexDirection="column"
         >
             <ol className={css.timelineList}>
