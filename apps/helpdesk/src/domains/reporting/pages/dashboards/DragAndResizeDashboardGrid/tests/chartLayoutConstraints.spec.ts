@@ -10,9 +10,9 @@ describe('chartLayoutConstraints', () => {
             const constraints = getChartConstraints(ChartType.Card)
 
             expect(constraints).toEqual({
-                default: { width: 1, height: 3 },
-                min: { width: 1, height: 3 },
-                max: { width: 2, height: 5 },
+                default: { width: 3, height: 6 },
+                min: { width: 3, height: 4 },
+                max: { width: 6, height: 16 },
             })
         })
 
@@ -20,9 +20,9 @@ describe('chartLayoutConstraints', () => {
             const constraints = getChartConstraints(ChartType.Graph)
 
             expect(constraints).toEqual({
-                default: { width: 2, height: 9 },
-                min: { width: 1, height: 6 },
-                max: { width: 4, height: 12 },
+                default: { width: 6, height: 14 },
+                min: { width: 3, height: 12 },
+                max: { width: 12, height: 24 },
             })
         })
 
@@ -30,9 +30,9 @@ describe('chartLayoutConstraints', () => {
             const constraints = getChartConstraints(ChartType.Table)
 
             expect(constraints).toEqual({
-                default: { width: 4, height: 22 },
-                min: { width: 2, height: 12 },
-                max: { width: 4, height: 24 },
+                default: { width: 12, height: 22 },
+                min: { width: 6, height: 14 },
+                max: { width: 12, height: 48 },
             })
         })
     })
@@ -41,7 +41,7 @@ describe('chartLayoutConstraints', () => {
         it('returns the maximum height across all chart types', () => {
             const maxHeight = getMaxChartHeight()
 
-            expect(maxHeight).toBe(24)
+            expect(maxHeight).toBe(48)
         })
     })
 })

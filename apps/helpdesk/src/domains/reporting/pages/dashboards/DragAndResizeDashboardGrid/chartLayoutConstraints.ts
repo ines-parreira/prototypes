@@ -17,19 +17,19 @@ export type ChartLayoutConstraints = {
 
 const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
     [ChartType.Card]: {
-        default: { width: 1, height: 3 },
-        min: { width: 1, height: 3 },
-        max: { width: 2, height: 5 },
+        default: { width: 3, height: 6 },
+        min: { width: 3, height: 4 },
+        max: { width: 6, height: 16 },
     },
     [ChartType.Graph]: {
-        default: { width: 2, height: 9 },
-        min: { width: 1, height: 6 },
-        max: { width: 4, height: 12 },
+        default: { width: 6, height: 14 },
+        min: { width: 3, height: 12 },
+        max: { width: 12, height: 24 },
     },
     [ChartType.Table]: {
-        default: { width: 4, height: 22 },
-        min: { width: 2, height: 12 },
-        max: { width: 4, height: 24 },
+        default: { width: 12, height: 22 },
+        min: { width: 6, height: 14 },
+        max: { width: 12, height: 48 },
     },
 }
 

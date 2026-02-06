@@ -1,8 +1,6 @@
 import { MAX_CHECKED_CHARTS } from 'domains/reporting/pages/dashboards/config'
-import {
-    type ChartLayoutConstraints,
-    getMaxChartHeight,
-} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
+import { getMaxChartHeight } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
+import type { ChartLayoutConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
 
 export type GridPosition = {
     x: number

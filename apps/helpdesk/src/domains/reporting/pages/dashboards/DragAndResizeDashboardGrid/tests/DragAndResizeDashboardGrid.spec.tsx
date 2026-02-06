@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
-import DragAndResizeDashboardGrid from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
+import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
 import type {
     DashboardChartSchema,
     DashboardRowSchema,
@@ -16,6 +16,9 @@ import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 let capturedOnLayoutChange: ((layout: any) => void) | null = null
 let capturedOnDragStop: ((layout: any) => void) | null = null
 let capturedOnResizeStop: ((layout: any) => void) | null = null
+let capturedOnBreakpointChange:
+    | ((breakpoint: string, cols: number) => void)
+    | null = null
 
 jest.mock('react-grid-layout', () => {
     const MockResponsiveGridLayout = ({
@@ -32,10 +35,12 @@ jest.mock('react-grid-layout', () => {
         onLayoutChange,
         onDragStop,
         onResizeStop,
+        onBreakpointChange,
     }: any) => {
         capturedOnLayoutChange = onLayoutChange
         capturedOnDragStop = onDragStop
         capturedOnResizeStop = onResizeStop
+        capturedOnBreakpointChange = onBreakpointChange
 
         const layout = layouts?.lg || []
 
@@ -152,10 +157,10 @@ describe('DragAndResizeDashboardGrid', () => {
         expect(gridLayout).toHaveAttribute('data-is-draggable', 'true')
         expect(gridLayout).toHaveAttribute('data-is-resizable', 'true')
         expect(gridLayout).toHaveAttribute('data-compact-type')
-        expect(gridLayout).toHaveAttribute('data-row-height', '40')
+        expect(gridLayout).toHaveAttribute('data-row-height', '20')
         expect(gridLayout).toHaveAttribute(
             'data-cols',
-            '{"lg":4,"md":4,"sm":3,"xs":2,"xxs":1}',
+            '{"lg":12,"md":8,"sm":6,"xs":4,"xxs":2}',
         )
         expect(gridLayout).toHaveAttribute('data-container-padding', '[25,20]')
         expect(gridLayout).toHaveAttribute(
@@ -402,10 +407,10 @@ describe('DragAndResizeDashboardGrid', () => {
                 config_id: 'saved_chart',
                 metadata: {
                     layout: {
-                        x: 2,
-                        y: 3,
-                        w: 2,
-                        h: 9,
+                        x: 6,
+                        y: 10,
+                        w: 6,
+                        h: 12,
                     },
                 },
             }
@@ -419,10 +424,10 @@ describe('DragAndResizeDashboardGrid', () => {
             ) as HTMLElement
 
             expect(chartElement).toBeInTheDocument()
-            expect(chartElement.getAttribute('data-grid')).toContain('"x":2')
-            expect(chartElement.getAttribute('data-grid')).toContain('"y":3')
-            expect(chartElement.getAttribute('data-grid')).toContain('"w":2')
-            expect(chartElement.getAttribute('data-grid')).toContain('"h":9')
+            expect(chartElement.getAttribute('data-grid')).toContain('"x":6')
+            expect(chartElement.getAttribute('data-grid')).toContain('"y":10')
+            expect(chartElement.getAttribute('data-grid')).toContain('"w":6')
+            expect(chartElement.getAttribute('data-grid')).toContain('"h":12')
         })
 
         it('calculates layout for charts without metadata', () => {
@@ -447,10 +452,10 @@ describe('DragAndResizeDashboardGrid', () => {
                 config_id: 'saved_chart',
                 metadata: {
                     layout: {
-                        x: 1,
-                        y: 1,
-                        w: 2,
-                        h: 9,
+                        x: 3,
+                        y: 2,
+                        w: 6,
+                        h: 20,
                     },
                 },
             }
@@ -467,6 +472,33 @@ describe('DragAndResizeDashboardGrid', () => {
             const chartElements = container.querySelectorAll('[data-grid]')
             expect(chartElements).toHaveLength(2)
         })
+
+        it('clamps saved layout to respect constraints', () => {
+            const chartWithInvalidLayout: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'invalid_chart',
+                metadata: {
+                    layout: {
+                        x: 10,
+                        y: 5,
+                        w: 10,
+                        h: 25,
+                    },
+                },
+            }
+
+            const dashboard = createMockDashboard([chartWithInvalidLayout])
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const gridElement = screen.getByRole('grid')
+            const chartElement = gridElement.querySelector(
+                '[data-grid]',
+            ) as HTMLElement
+
+            expect(chartElement).toBeInTheDocument()
+            expect(chartElement.getAttribute('data-grid')).toContain('"w":6')
+            expect(chartElement.getAttribute('data-grid')).toContain('"h":16')
+        })
     })
 
     describe('handleLayoutChange', () => {
@@ -474,6 +506,7 @@ describe('DragAndResizeDashboardGrid', () => {
             capturedOnLayoutChange = null
             capturedOnDragStop = null
             capturedOnResizeStop = null
+            capturedOnBreakpointChange = null
         })
 
         it('should skip update on initial mount', () => {
@@ -839,6 +872,195 @@ describe('DragAndResizeDashboardGrid', () => {
                 successMessage: 'Dashboard layout saved',
                 errorMessage: 'Failed to save dashboard layout',
             })
+        })
+    })
+
+    describe('Responsive Breakpoint Behavior', () => {
+        beforeEach(() => {
+            capturedOnLayoutChange = null
+            capturedOnDragStop = null
+            capturedOnResizeStop = null
+            capturedOnBreakpointChange = null
+        })
+
+        it('should track breakpoint changes', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const gridLayout = screen.getByRole('grid', {
+                name: /dashboard grid layout/i,
+            })
+            expect(gridLayout).toHaveAttribute('data-is-draggable', 'true')
+            expect(gridLayout).toHaveAttribute('data-is-resizable', 'true')
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('md', 8)
+                }
+            })
+
+            const updatedGridLayout = screen.getByRole('grid', {
+                name: /dashboard grid layout/i,
+            })
+            expect(updatedGridLayout).toHaveAttribute(
+                'data-is-draggable',
+                'false',
+            )
+            expect(updatedGridLayout).toHaveAttribute(
+                'data-is-resizable',
+                'false',
+            )
+        })
+
+        it('should prevent saves on non-lg breakpoint drag', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('md', 8)
+                }
+            })
+
+            if (capturedOnDragStop) {
+                capturedOnDragStop([{ i: 'chart-1', x: 2, y: 1, w: 2, h: 9 }])
+            }
+
+            expect(mockUpdateDashboardHandler).not.toHaveBeenCalled()
+        })
+
+        it('should prevent saves on non-lg breakpoint resize', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('sm', 6)
+                }
+            })
+
+            if (capturedOnResizeStop) {
+                capturedOnResizeStop([
+                    { i: 'chart-1', x: 0, y: 0, w: 3, h: 12 },
+                ])
+            }
+
+            expect(mockUpdateDashboardHandler).not.toHaveBeenCalled()
+        })
+
+        it('should allow saves on lg breakpoint drag', () => {
+            const mockUpdateDashboardHandler = jest.fn()
+            const { useDashboardActions } = jest.requireMock(
+                'domains/reporting/hooks/dashboards/useDashboardActions',
+            )
+            useDashboardActions.mockReturnValue({
+                updateDashboardHandler: mockUpdateDashboardHandler,
+                isUpdateMutationLoading: false,
+                isUpdateMutationError: false,
+            })
+
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            if (capturedOnLayoutChange) {
+                capturedOnLayoutChange([
+                    { i: 'chart-1', x: 0, y: 0, w: 1, h: 3 },
+                ])
+            }
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('lg', 12)
+                }
+            })
+
+            if (capturedOnDragStop) {
+                capturedOnDragStop([{ i: 'chart-1', x: 2, y: 1, w: 2, h: 9 }])
+            }
+
+            expect(mockUpdateDashboardHandler).toHaveBeenCalledWith({
+                dashboard: {
+                    id: 1,
+                    name: 'Test Dashboard',
+                    analytics_filter_id: null,
+                    emoji: null,
+                    children: [
+                        {
+                            type: DashboardChildType.Chart,
+                            config_id: 'chart-1',
+                            metadata: {
+                                layout: {
+                                    x: 2,
+                                    y: 1,
+                                    w: 2,
+                                    h: 9,
+                                },
+                            },
+                        },
+                    ],
+                },
+                successMessage: 'Dashboard layout saved',
+                errorMessage: 'Failed to save dashboard layout',
+            })
+        })
+
+        it('should disable drag and resize on mobile breakpoints', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('xs', 4)
+                }
+            })
+
+            const gridLayout = screen.getByRole('grid', {
+                name: /dashboard grid layout/i,
+            })
+            expect(gridLayout).toHaveAttribute('data-is-draggable', 'false')
+            expect(gridLayout).toHaveAttribute('data-is-resizable', 'false')
         })
     })
 })

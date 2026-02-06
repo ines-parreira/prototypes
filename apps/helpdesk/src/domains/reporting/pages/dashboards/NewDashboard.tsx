@@ -6,7 +6,7 @@ import type { FiltersPanelWrapperProps } from 'domains/reporting/pages/common/fi
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
-import DragAndResizeDashboardGrid from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
+import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
 

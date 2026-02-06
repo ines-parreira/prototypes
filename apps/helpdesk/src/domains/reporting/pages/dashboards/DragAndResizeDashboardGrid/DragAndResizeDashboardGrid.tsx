@@ -1,12 +1,12 @@
 import type React from 'react'
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import {
     ResponsiveGridLayout,
     useContainerWidth,
     verticalCompactor,
 } from 'react-grid-layout'
-import type { Layout } from 'react-grid-layout'
+import type { Breakpoint, Layout } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
 import 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid.less'
@@ -16,6 +16,7 @@ import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
 import { calculateChartPositions } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
+import { clampLayoutToConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/layoutUtils'
 import type {
     ChartLayoutMetadata,
     DashboardChartSchema,
@@ -27,7 +28,7 @@ import {
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
 
-const COLS = 4
+const COLS = 12
 
 const flattenCharts = (children: DashboardChild[]): DashboardChartSchema[] => {
     return children.flatMap((child: DashboardChild) => {
@@ -51,7 +52,7 @@ const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
     ))
 }
 
-const DragAndResizeDashboardGrid = ({
+export const DragAndResizeDashboardGrid = ({
     dashboard,
 }: {
     dashboard: DashboardSchema
@@ -59,6 +60,7 @@ const DragAndResizeDashboardGrid = ({
     const { width, containerRef, mounted } = useContainerWidth()
     const { updateDashboardHandler } = useDashboardActions()
     const isInitialMount = useRef(true)
+    const [currentBreakpoint, setCurrentBreakpoint] = useState<Breakpoint>('lg')
 
     const initialLayout = useMemo(() => {
         const charts = flattenCharts(dashboard.children)
@@ -81,7 +83,10 @@ const DragAndResizeDashboardGrid = ({
 
             const savedLayout = chart.metadata?.layout
             const calculatedPosition = calculatedPositions[index]
-            const position = savedLayout || calculatedPosition
+
+            const position = savedLayout
+                ? clampLayoutToConstraints(savedLayout, constraints, COLS)
+                : calculatedPosition
 
             return {
                 i: chart.config_id,
@@ -162,21 +167,27 @@ const DragAndResizeDashboardGrid = ({
 
     const handleDragStop = useCallback(
         (layout: Layout) => {
+            if (currentBreakpoint !== 'lg') {
+                return
+            }
             saveDashboardLayout(layout)
         },
-        [saveDashboardLayout],
+        [saveDashboardLayout, currentBreakpoint],
     )
 
     const handleResizeStop = useCallback(
         (layout: Layout) => {
+            if (currentBreakpoint !== 'lg') {
+                return
+            }
             saveDashboardLayout(layout)
         },
-        [saveDashboardLayout],
+        [saveDashboardLayout, currentBreakpoint],
     )
 
     const handleBreakpointChange = useCallback(
-        (__breakpoint: string, __cols: number) => {
-            // Breakpoint change handler
+        (breakpoint: string, __cols: number) => {
+            setCurrentBreakpoint(breakpoint)
         },
         [],
     )
@@ -204,14 +215,14 @@ const DragAndResizeDashboardGrid = ({
                 width={width}
                 layouts={{ lg: initialLayout }}
                 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-                cols={{ lg: 4, md: 4, sm: 3, xs: 2, xxs: 1 }}
-                rowHeight={40}
+                cols={{ lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }}
+                rowHeight={20}
                 containerPadding={[25, 20]}
                 dragConfig={{
-                    enabled: true,
+                    enabled: currentBreakpoint === 'lg',
                 }}
                 resizeConfig={{
-                    enabled: true,
+                    enabled: currentBreakpoint === 'lg',
                 }}
                 compactor={verticalCompactor}
                 onLayoutChange={handleLayoutChange}
@@ -224,5 +235,3 @@ const DragAndResizeDashboardGrid = ({
         </div>
     )
 }
-
-export default DragAndResizeDashboardGrid
