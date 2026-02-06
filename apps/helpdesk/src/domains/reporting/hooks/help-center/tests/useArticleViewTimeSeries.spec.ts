@@ -36,7 +36,7 @@ describe('useArticleViewTimeSeries', () => {
             ReportingGranularity.Day,
         )
 
-        expect(mockUseTimeSeries).toHaveBeenCalledWith({
+        const expectedQueryV1 = {
             metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW_TIME_SERIES,
             dimensions: [],
             filters: [
@@ -62,6 +62,36 @@ describe('useArticleViewTimeSeries', () => {
 
             measures: [HelpCenterTrackingEventMeasures.ArticleView],
             timezone: timezone,
-        })
+        }
+        const expectedQueryV2 = {
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: [periodStart],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: [periodEnd],
+                },
+            ],
+            order: [['timestamp', 'asc']],
+            time_dimensions: [
+                {
+                    dimension: 'timestamp',
+                    granularity: 'day',
+                },
+            ],
+            measures: ['articleViewCount'],
+            timezone: timezone,
+            scope: 'help-center',
+            metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW_TIME_SERIES,
+        }
+
+        expect(mockUseTimeSeries).toHaveBeenCalledWith(
+            expectedQueryV1,
+            expectedQueryV2,
+        )
     })
 })

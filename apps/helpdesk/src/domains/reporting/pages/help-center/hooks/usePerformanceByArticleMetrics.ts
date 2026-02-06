@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -10,6 +10,10 @@ import {
     performanceByArticleCountQueryFactory,
     performanceByArticleQueryFactory,
 } from 'domains/reporting/models/queryFactories/help-center/performanceByArticle'
+import {
+    helpCenterPerformancePerArticleCountQueryFactoryV2,
+    helpCenterPerformancePerArticleQueryFactoryV2,
+} from 'domains/reporting/models/scopes/helpCenter'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { HelpCenterTableCell } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { TableCellType } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
@@ -32,14 +36,26 @@ export const usePerformanceByArticleMetrics = ({
     helpCenterDomain: string
     helpCenterId: number
 }) => {
-    const articleViewData = useMetricPerDimension<string>({
-        ...performanceByArticleQueryFactory(statsFilters, timezone),
-        limit: itemPerPage,
-        offset: itemPerPage * (currentPage - 1),
-    })
+    const articleViewData = useMetricPerDimensionV2(
+        {
+            ...performanceByArticleQueryFactory(statsFilters, timezone),
+            limit: itemPerPage,
+            offset: itemPerPage * (currentPage - 1),
+        },
+        helpCenterPerformancePerArticleQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+            limit: itemPerPage,
+            offset: itemPerPage * (currentPage - 1),
+        }),
+    )
     // P2/P3
     const articleCountMetric = useMetric(
         performanceByArticleCountQueryFactory(statsFilters, timezone),
+        helpCenterPerformancePerArticleCountQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
     const total = articleCountMetric.data?.value ?? 0

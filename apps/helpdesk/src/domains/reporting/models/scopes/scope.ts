@@ -49,6 +49,7 @@ export type ScopeMeta = {
     filters: readonly FilterName[]
     order?: readonly string[]
     limit?: number
+    offset?: number
 }
 
 export type ScopeFilters<TScopeMeta extends ScopeMeta> = Array<

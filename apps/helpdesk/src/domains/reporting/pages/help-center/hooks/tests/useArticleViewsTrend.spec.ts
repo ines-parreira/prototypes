@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { HelpCenterTrackingEventMeasures } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -32,7 +32,7 @@ describe('useArticleViewsTrend', () => {
 
         useArticleViewsTrend(statsFilters, timezone)
 
-        expect(mockUseMetricTrend).toHaveBeenCalledWith(
+        const expectedQueriesV1 = [
             {
                 metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW,
                 dimensions: [],
@@ -69,6 +69,48 @@ describe('useArticleViewsTrend', () => {
                 measures: [HelpCenterTrackingEventMeasures.ArticleView],
                 timezone: timezone,
             },
+        ]
+        const expectedQueriesV2 = [
+            {
+                metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW,
+                scope: MetricScope.Helpcenter,
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-11-13T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-11-06T00:00:00.000'],
+                    },
+                ],
+                measures: ['articleViewCount'],
+                timezone: timezone,
+            },
+            {
+                metricName: METRIC_NAMES.HELP_CENTER_ARTICLE_VIEW,
+                scope: MetricScope.Helpcenter,
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-11-19T23:59:59.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-11-12T23:59:59.000'],
+                    },
+                ],
+                measures: ['articleViewCount'],
+                timezone: timezone,
+            },
+        ]
+        expect(mockUseMetricTrend).toHaveBeenCalledWith(
+            ...expectedQueriesV1,
+            ...expectedQueriesV2,
         )
     })
 })

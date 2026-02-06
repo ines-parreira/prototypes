@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -10,6 +10,10 @@ import {
     searchResultQueryCountFactory,
     searchResultTermsQueryFactory,
 } from 'domains/reporting/models/queryFactories/help-center/searchResult'
+import {
+    helpCenterSearchResultCountQueryFactoryV2,
+    helpCenterSearchResultTermsQueryFactoryV2,
+} from 'domains/reporting/models/scopes/helpCenter'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { HelpCenterTableCell } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import { TableCellType } from 'domains/reporting/pages/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
@@ -27,14 +31,26 @@ export const useSearchTermsMetrics = ({
     itemPerPage: number
     onModalOpen: (searchQuery: string, articleClickedCount: number) => void
 }) => {
-    const searchResultTerms = useMetricPerDimension({
-        ...searchResultTermsQueryFactory(statsFilters, timezone),
-        limit: itemPerPage,
-        offset: itemPerPage * (currentPage - 1),
-    })
+    const searchResultTerms = useMetricPerDimensionV2(
+        {
+            ...searchResultTermsQueryFactory(statsFilters, timezone),
+            limit: itemPerPage,
+            offset: itemPerPage * (currentPage - 1),
+        },
+        helpCenterSearchResultTermsQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+            limit: itemPerPage,
+            offset: itemPerPage * (currentPage - 1),
+        }),
+    )
     // P2/P3
     const searchResultCount = useMetric(
         searchResultQueryCountFactory(statsFilters, timezone),
+        helpCenterSearchResultCountQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
     const total = searchResultCount.data?.value ?? 0

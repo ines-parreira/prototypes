@@ -1,8 +1,8 @@
 import { renderHook } from '@repo/testing'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -15,11 +15,11 @@ jest.mock('domains/reporting/hooks/useMetric', () => ({
     useMetric: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
-    useMetricPerDimension: jest.fn(),
+    useMetricPerDimensionV2: jest.fn(),
 }))
 
 const mockUseMetric = jest.mocked(useMetric)
-const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
+const mockUseMetricPerDimension = jest.mocked(useMetricPerDimensionV2)
 
 const statsFilters = {
     period: {
@@ -56,7 +56,7 @@ describe('useSearchTermsMetrics', () => {
             }),
         )
 
-        expect(mockUseMetric).toHaveBeenCalledWith({
+        const expectedQueryV1 = {
             metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_COUNT,
             dimensions: [],
             filters: [
@@ -74,7 +74,34 @@ describe('useSearchTermsMetrics', () => {
             measures: [HelpCenterTrackingEventMeasures.UniqueSearchQueryCount],
             segments: [HelpCenterTrackingEventSegment.SearchRequestedOnly],
             timezone: timezone,
-        })
+        }
+        const expectedQueryV2 = {
+            metricName: METRIC_NAMES.HELP_CENTER_SEARCH_RESULT_COUNT,
+            scope: MetricScope.Helpcenter,
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2020-01-16T03:04:56.789'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2020-01-02T03:04:56.789'],
+                },
+                {
+                    member: 'helpCenterEventType',
+                    operator: 'one-of',
+                    values: ['search.requested'],
+                },
+            ],
+            measures: ['uniqueSearchQueryCount'],
+            timezone: timezone,
+        }
+        expect(mockUseMetric).toHaveBeenCalledWith(
+            expectedQueryV1,
+            expectedQueryV2,
+        )
     })
 
     it('should return total', () => {

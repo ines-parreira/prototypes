@@ -3,7 +3,10 @@ import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
-import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
+import {
+    hasFilter,
+    toLowerCaseString,
+} from 'domains/reporting/models/queryFactories/utils'
 import type {
     ScopeFilters,
     ScopeMeta,
@@ -260,6 +263,9 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'isAnsweredByAgent':
             case 'isDuringBusinessHours':
             case 'displayStatus':
+            case 'helpCenterEventType':
+            case 'isSearchRequestWithClick':
+            case 'searchResultCount':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {
@@ -329,6 +335,38 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
+            case 'helpCenterId': {
+                if (
+                    statFilters.helpCenters &&
+                    hasFilter(statFilters.helpCenters)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'helpCenterId',
+                            statFilters.helpCenters.operator,
+                            statFilters.helpCenters.values,
+                        ),
+                    )
+                }
+                break
+            }
+            case 'localeCodes': {
+                if (
+                    statFilters.localeCodes &&
+                    hasFilter(statFilters.localeCodes)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'localeCodes',
+                            statFilters.localeCodes.operator,
+                            statFilters.localeCodes.values.map(
+                                toLowerCaseString,
+                            ),
+                        ),
+                    )
+                }
+                break
+            }
         }
     })
     return filters as ScopeFilters<TMeta>
@@ -504,6 +542,64 @@ const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
     },
 
     // VoiceCall.callsInFinalStatus has no additional filters in V2
+
+    // HelpCenter segments
+    {
+        segment: 'HelpCenterTrackingEvent.searchRequestWithClicks',
+        filters: [
+            {
+                member: 'HelpCenterTrackingEvent.isSearchRequestWithClick',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
+    {
+        segment: 'HelpCenterTrackingEvent.articleViewOnly',
+        filters: [
+            {
+                member: 'HelpCenterTrackingEvent.eventType',
+                operator: ReportingFilterOperator.Equals,
+                values: ['page.viewed'],
+            },
+        ],
+    },
+    {
+        segment: 'HelpCenterTrackingEvent.searchRequestedOnly',
+        filters: [
+            {
+                member: 'HelpCenterTrackingEvent.eventType',
+                operator: ReportingFilterOperator.Equals,
+                values: ['search.requested'],
+            },
+        ],
+    },
+    {
+        segment: 'HelpCenterTrackingEvent.searchResultClickedOnly',
+        filters: [
+            {
+                member: 'HelpCenterTrackingEvent.eventType',
+                operator: ReportingFilterOperator.Equals,
+                values: ['search-result.clicked'],
+            },
+        ],
+    },
+    {
+        segment: 'HelpCenterTrackingEvent.noSearchResultOnly',
+        //`${CUBE}.event_type='search.requested' AND ${searchResultCount} = 0`,
+        filters: [
+            {
+                member: 'HelpCenterTrackingEvent.eventType',
+                operator: ReportingFilterOperator.Equals,
+                values: ['search.requested'],
+            },
+            {
+                member: 'HelpCenterTrackingEvent.searchResultCount',
+                operator: ReportingFilterOperator.Equals,
+                values: ['0'],
+            },
+        ],
+    },
 ]
 
 function compareArrays<T>(

@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { searchResultRangeQueryFactory } from 'domains/reporting/models/queryFactories/help-center/searchResult'
+import { helpCenterSearchResultRangeQueryFactoryV2 } from 'domains/reporting/models/scopes/helpCenter'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { OneDimensionalDataItem } from 'domains/reporting/pages/types'
 
@@ -21,8 +22,12 @@ export const useSearchResultRange = (
     statsFilters: StatsFilters,
     timezone: string,
 ) => {
-    const searchData = useMetricPerDimension<string>(
+    const searchData = useMetricPerDimensionV2(
         searchResultRangeQueryFactory(statsFilters, timezone),
+        helpCenterSearchResultRangeQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+        }),
     )
 
     return useMemo(

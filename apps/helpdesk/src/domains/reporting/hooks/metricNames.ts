@@ -566,8 +566,8 @@ export enum MetricScope {
     ZeroTouchTickets = 'zero-touch-tickets',
 
     // P3
-    Helpcenter = 'helpcenter',
-    ConvertCampainEvents = 'convert-campaign-events',
+    Helpcenter = 'help-center',
+    ConvertCampaignEvents = 'convert-campaign-events',
     ConvertOrderConversion = 'convert-order-conversion',
     ConvertCampaignOrderEvents = 'convert-campaign-order-events',
     AISalesAgentOrders = 'ai-sales-agent-orders',
@@ -764,7 +764,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.HELP_CENTER_NO_SEARCH_RESULT,
         METRIC_NAMES.HELP_CENTER_UNIQUE_SEARCH_WITH_NO_RESULT,
     ],
-    [MetricScope.ConvertCampainEvents]: [
+    [MetricScope.ConvertCampaignEvents]: [
         METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
         METRIC_NAMES.AI_SALES_AGENT_PRODUCT_CLICKS,
         METRIC_NAMES.AI_SALES_AGENT_UNIQUE_CLICKS,

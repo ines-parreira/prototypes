@@ -41,7 +41,7 @@ export const P2_SCOPES: MetricScope[] = [
 export const P3_SCOPES: MetricScope[] = [
     MetricScope.KnowledgeInsights,
     MetricScope.Helpcenter,
-    MetricScope.ConvertCampainEvents,
+    MetricScope.ConvertCampaignEvents,
     MetricScope.ConvertOrderConversion,
     MetricScope.ConvertCampaignOrderEvents,
     MetricScope.AISalesAgentConversations,

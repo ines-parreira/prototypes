@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -11,10 +11,10 @@ import { useSearchResultRange } from 'domains/reporting/pages/help-center/hooks/
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
-    useMetricPerDimension: jest.fn(),
+    useMetricPerDimensionV2: jest.fn(),
 }))
 
-const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
+const mockUseMetricPerDimension = jest.mocked(useMetricPerDimensionV2)
 
 describe('useSearchResultRange', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -100,7 +100,7 @@ describe('useSearchResultRange', () => {
                     },
                 ],
             },
-        })
+        } as any)
 
         const { result } = renderHook(() =>
             useSearchResultRange(statsFilters, timezone),

@@ -98,6 +98,13 @@ export type DimensionName =
     | 'waitTime'
     | 'filteringAgentId'
     | 'isPossibleSpam'
+    | 'helpCenterId'
+    | 'localeCodes'
+    | 'articleId'
+    | 'articleTitle'
+    | 'articleSlug'
+    | 'searchQuery'
+    | 'searchResultRange'
 
 export type MeasureName =
     | 'ticketCount'
@@ -139,6 +146,13 @@ export type MeasureName =
     | 'breachedExposures'
     | 'achievedExposures'
     | 'totalExposures'
+    | 'articleViewCount'
+    | 'searchRequestedCount'
+    | 'articleCount'
+    | 'searchRequestedQueryCount'
+    | 'searchArticlesClickedCount'
+    | 'uniqueSearchArticlesClickedCount'
+    | 'uniqueSearchQueryCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -188,6 +202,11 @@ export type StringFilterName =
     | 'displayStatus'
     | 'customFieldId'
     | 'callSlaStatus'
+    | 'helpCenterId'
+    | 'localeCodes'
+    | 'isSearchRequestWithClick'
+    | 'helpCenterEventType'
+    | 'searchResultCount'
 
 export type NumberFilterName =
     | 'agentId'

@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -21,7 +21,7 @@ jest.mock('domains/reporting/hooks/useMetric', () => ({
     useMetric: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
-    useMetricPerDimension: jest.fn(),
+    useMetricPerDimensionV2: jest.fn(),
 }))
 jest.mock(
     'domains/reporting/pages/help-center/hooks/useSearchQueryMetrics',
@@ -34,7 +34,7 @@ const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('domains/reporting/pages/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)
 
-const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
+const mockUseMetricPerDimension = jest.mocked(useMetricPerDimensionV2)
 const mockUseMetric = jest.mocked(useMetric)
 
 const mockStore = configureMockStore([thunk])

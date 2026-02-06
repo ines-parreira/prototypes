@@ -50,6 +50,10 @@ export enum APIOnlyFilterKey {
     AgentId = 'agentId',
     DisplayStatus = 'displayStatus',
     CallSlaStatus = 'callSlaStatus',
+    HelpCenterId = 'helpCenterId',
+    HelpCenterEventType = 'helpCenterEventType',
+    IsSearchRequestedWithClick = 'isSearchRequestWithClick',
+    SearchResultCount = 'searchResultCount',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -294,6 +298,10 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.AgentId]?: WithExtendedLogicalOperator<number>
     [APIOnlyFilterKey.DisplayStatus]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CallSlaStatus]?: WithExtendedLogicalOperator<string>
+    [APIOnlyFilterKey.HelpCenterId]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.HelpCenterEventType]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.IsSearchRequestedWithClick]?: WithLogicalOperator<boolean>
+    [APIOnlyFilterKey.SearchResultCount]?: WithLogicalOperator<number>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator
