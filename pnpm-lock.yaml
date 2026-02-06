@@ -206,20 +206,20 @@ catalogs:
       specifier: ^0.2.25
       version: 0.2.25
     '@gorgias/helpdesk-client':
-      specifier: ^0.10.97
-      version: 0.10.97
+      specifier: ^0.10.99
+      version: 0.10.99
     '@gorgias/helpdesk-mocks':
-      specifier: ^0.8.40
-      version: 0.8.40
+      specifier: ^0.8.42
+      version: 0.8.42
     '@gorgias/helpdesk-queries':
-      specifier: ^0.9.114
-      version: 0.9.114
+      specifier: ^0.9.116
+      version: 0.9.116
     '@gorgias/helpdesk-types':
-      specifier: ^0.9.77
-      version: 0.9.77
+      specifier: ^0.9.79
+      version: 0.9.79
     '@gorgias/helpdesk-validators':
-      specifier: ^0.7.156
-      version: 0.7.156
+      specifier: ^0.7.158
+      version: 0.7.158
     '@gorgias/knowledge-service-client':
       specifier: ^0.3.36
       version: 0.3.36
@@ -503,16 +503,16 @@ importers:
         version: 0.2.25
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
-        version: 0.10.97
+        version: 0.10.99
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.7.156
+        version: 0.7.158
       '@gorgias/knowledge-service-client':
         specifier: catalog:rest-api-sdk
         version: 0.3.36
@@ -1008,7 +1008,7 @@ importers:
         version: 0.2.28(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/knowledge-service-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.55(@types/node@22.13.13)(typescript@5.3.3)
@@ -1536,13 +1536,13 @@ importers:
         version: 0.11.4
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -1729,7 +1729,7 @@ importers:
     dependencies:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.7.156
+        version: 0.7.158
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -1745,16 +1745,16 @@ importers:
         version: 0.2.10(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
-        version: 0.10.97
+        version: 0.10.99
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2006,7 +2006,7 @@ importers:
         version: 0.171.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.7.156
+        version: 0.7.158
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2091,7 +2091,7 @@ importers:
     devDependencies:
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
-        version: 0.10.97
+        version: 0.10.99
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2222,10 +2222,10 @@ importers:
     devDependencies:
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2566,7 +2566,7 @@ importers:
     dependencies:
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
-        version: 0.7.156
+        version: 0.7.158
       '@internationalized/date':
         specifier: 3.10.0
         version: 3.10.0
@@ -2588,16 +2588,16 @@ importers:
         version: 0.13.4
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
-        version: 0.10.97
+        version: 0.10.99
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2732,13 +2732,13 @@ importers:
     devDependencies:
       '@gorgias/helpdesk-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.8.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.8.42(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/helpdesk-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -2802,7 +2802,7 @@ importers:
     devDependencies:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
-        version: 0.9.77
+        version: 0.9.79
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
@@ -4314,23 +4314,23 @@ packages:
   '@gorgias/help-center-validators@0.2.25':
     resolution: {integrity: sha512-nRdO5C6+syb2nV6YGg+4Mx2557BcKSLGVSUvVPlL0h9hrUMrrCyQkXaToEoUzph0WoP4LhfqrqrFWPlFw1CIGw==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-validators/0.2.25/77b962e225bb888e067e243773ab42f016bd85d8}
 
-  '@gorgias/helpdesk-client@0.10.97':
-    resolution: {integrity: sha512-/C8kdrUrofgKnr3X3PveeptEGAg7FtnHrZEagMXGY2GR09o4AwUFGYwtrvomTKAwMXFOzxQW9Vnq7CcxcYD2yQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.97/dd463ef48d09bccc9e1b34423ae83fdd42cba7b6}
+  '@gorgias/helpdesk-client@0.10.99':
+    resolution: {integrity: sha512-pKW0MLIFoyx7txP/bY3rWqp6QO7Xi2qC08xRos7vCxzTqRDI3BNw+ba46J2U3laCCK0PKhj6lG6EQp6MDZFLdA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.99/4097969a090ef270a14b83ed7e834e5302d24f22}
 
-  '@gorgias/helpdesk-mocks@0.8.40':
-    resolution: {integrity: sha512-sUABp9f+tWnLps4lj9pXYI/Qn0yu3mjYHl0I3HrvkioHPu6aLhZ9nj7i89BAw6+kdRDPFWG1wsBRYxcMzgpnvQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.8.40/9b7a5da4ce5506d86d77fb79e55bf1b901c418ea}
+  '@gorgias/helpdesk-mocks@0.8.42':
+    resolution: {integrity: sha512-ZmSsEI7oHR4gFChTLLlTsZQYviAsUhKDidNJPhkqJOkYEJTg3H7gZTov7xLhRnU+f+O7o4sDKglk9Ga4aSuUMw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-mocks/0.8.42/311fb3661fa26bc489de3ecbe264af269569aff2}
 
-  '@gorgias/helpdesk-queries@0.9.114':
-    resolution: {integrity: sha512-MOLdPCKzBG1OyGdWozbXrp+DuelZsZxRrOmx9LLBXYHTLla+WEVhJR7NwUEy2pFWbwr73hfj551EW37NPZPo5g==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.9.114/2a5c59bc38ad07aae5ffdf1442c3aa0a220196a4}
+  '@gorgias/helpdesk-queries@0.9.116':
+    resolution: {integrity: sha512-dXtgxSL8m/TEpCx7zRRlt/85skIMc71BX3EchRq3zyGsbm4NrPXLFPJL+eMb2Y2BZjcqkZlpQno6TgTCYD9Dow==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.9.116/f81ce9243369e28ad666b9fd9b94e25cf7bba638}
 
-  '@gorgias/helpdesk-spec@0.14.21':
-    resolution: {integrity: sha512-4+2mXNllCEIV9eonhqGaT29auMXC/ktLzNP17M9Fwpry9uvA8Lp6njr9Tq+J1J7tjleRDsbGoGRLonUacVwWOw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.14.21/9bc0986fc983c893680ed28d6f86304ed589dac4}
+  '@gorgias/helpdesk-spec@0.14.23':
+    resolution: {integrity: sha512-4Ip5OGis7C9KIX7sGnoksqU27eExq7YxjNNykUzvKUlmu4AhbhB0ETAtGci6QdPDswMTksEkV88nKOm1Je5Wtg==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.14.23/7db34217fb38ae4f2e4066a5c0130cbf3c1ce686}
 
-  '@gorgias/helpdesk-types@0.9.77':
-    resolution: {integrity: sha512-voboPgBuI6CxC40D9QSCfyRQPZCxuX8h5QzoutLXqh8NBdZ4NErjOgiPKiKIOM5UAHWl4BVUnDIN29aeNe2+sw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.9.77/ef64e79172eac66e5ffb22d02714b3861fb20bb5}
+  '@gorgias/helpdesk-types@0.9.79':
+    resolution: {integrity: sha512-sLWbCOsl+bPHjrlxSHWon9qlhTFxMkwE0jznGNJa4dtSDcbX1BKjiUia1gLldl0KV8eYZbGCr+uJvq1aQ/f8sA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.9.79/a044e73ca7f467c3683db9504dde3b233bf83a06}
 
-  '@gorgias/helpdesk-validators@0.7.156':
-    resolution: {integrity: sha512-/15YcdZrR+DlDTQnQMDo1hgdePnZBUXe3acyfnNEcHvC/pQcTmY2sb3evgk8QnFmzUv2yqWH58WB45UV1I9YEw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-validators/0.7.156/8f8901d42b5eb29446578bdaaa611c1d532b2807}
+  '@gorgias/helpdesk-validators@0.7.158':
+    resolution: {integrity: sha512-WqPqMTyvuLL55TOqEJNetcSHuMwAdQgql6S7GEp34omYWLzWtnzyZLoNwahqFfDJvg/9eeu8vsTv0/Dndw2/lQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-validators/0.7.158/96bc546e698aab30398a09db5bd82472f343bf91}
 
   '@gorgias/knowledge-service-client@0.3.36':
     resolution: {integrity: sha512-nyWPMeDSoSr7PjplauZatjoOp5iQT9ubDogVtk0kZC1r6ST6fnWI1WULelo3eX8ntFd03s09og/X+MMGrmLYLQ==, tarball: https://npm.pkg.github.com/download/@gorgias/knowledge-service-client/0.3.36/2c3d3cb9ece7069c6b220c562cf781abded46053}
@@ -16292,18 +16292,18 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/helpdesk-client@0.10.97':
+  '@gorgias/helpdesk-client@0.10.99':
     dependencies:
-      '@gorgias/helpdesk-types': 0.9.77
+      '@gorgias/helpdesk-types': 0.9.79
       '@gorgias/sdk-client': 0.9.12
       axios: 1.12.2
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/helpdesk-mocks@0.8.40(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/helpdesk-mocks@0.8.42(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/helpdesk-spec': 0.14.21
-      '@gorgias/helpdesk-types': 0.9.77
+      '@gorgias/helpdesk-spec': 0.14.23
+      '@gorgias/helpdesk-types': 0.9.79
       '@gorgias/sdk-mocks': 0.14.0(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/sdk-spec-utils': 0.10.4
       lodash-es: 4.17.21
@@ -16312,10 +16312,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/helpdesk-queries@0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/helpdesk-queries@0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/helpdesk-client': 0.10.97
-      '@gorgias/helpdesk-types': 0.9.77
+      '@gorgias/helpdesk-client': 0.10.99
+      '@gorgias/helpdesk-types': 0.9.79
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -16323,15 +16323,15 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/helpdesk-spec@0.14.21': {}
+  '@gorgias/helpdesk-spec@0.14.23': {}
 
-  '@gorgias/helpdesk-types@0.9.77': {}
+  '@gorgias/helpdesk-types@0.9.79': {}
 
-  '@gorgias/helpdesk-validators@0.7.156':
+  '@gorgias/helpdesk-validators@0.7.158':
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.17.1)
-      '@gorgias/helpdesk-spec': 0.14.21
-      '@gorgias/helpdesk-types': 0.9.77
+      '@gorgias/helpdesk-spec': 0.14.23
+      '@gorgias/helpdesk-types': 0.9.79
       '@gorgias/sdk-spec-utils': 0.10.4
       '@gorgias/sdk-validators': 0.9.6
       ajv: 8.17.1
@@ -16389,8 +16389,8 @@ snapshots:
   '@gorgias/realtime-ably@0.2.20(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/events': 0.13.4
-      '@gorgias/helpdesk-client': 0.10.97
-      '@gorgias/helpdesk-queries': 0.9.114(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/helpdesk-client': 0.10.99
+      '@gorgias/helpdesk-queries': 0.9.116(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       ably: 2.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       lodash-es: 4.17.21

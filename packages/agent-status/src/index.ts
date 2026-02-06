@@ -22,6 +22,7 @@ export {
     useCustomUserUnavailabilityModal,
     useSelectableAgentAvailabilityStatuses,
     useUpdateUserAvailabilityStatus,
+    useListUserAvailabilities,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'
