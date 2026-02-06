@@ -78,6 +78,10 @@ jest.mock(
     },
 )
 
+jest.mock('../revamp/GorgiasChatIntegrationAppearance', () => () => {
+    return <div data-testid="revamp-appearance" />
+})
+
 const mockClient = mockQueryClient()
 
 const minProps = {
@@ -135,7 +139,65 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             </Router>,
         )
 
-        expect(screen.queryByText(/REVAMP VERSION/)).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('revamp-appearance'),
+        ).not.toBeInTheDocument()
         expect(screen.getByText('Chat title')).toBeInTheDocument()
+    })
+
+    it('should render the legacy component when flag is enabled but user has no AI Agent access', () => {
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatSettingsRevamp) {
+                return true
+            }
+            return defaultValue
+        })
+
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
+        render(
+            <Router history={history}>
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearance {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </Router>,
+        )
+
+        expect(
+            screen.queryByTestId('revamp-appearance'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('Chat title')).toBeInTheDocument()
+    })
+
+    it('should render the revamp component when flag is enabled and user has AI Agent access', () => {
+        mockUseFlag.mockImplementation((key, defaultValue) => {
+            if (key === FeatureFlagKey.ChatSettingsRevamp) {
+                return true
+            }
+            return defaultValue
+        })
+
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+
+        render(
+            <Router history={history}>
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearance {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </Router>,
+        )
+
+        expect(screen.getByTestId('revamp-appearance')).toBeInTheDocument()
+        expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 })
