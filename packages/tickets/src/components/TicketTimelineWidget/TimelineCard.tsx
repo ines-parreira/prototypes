@@ -20,7 +20,7 @@ export function TimelineCard({
             <Card
                 className={`${css.card} ${className || ''}`}
                 gap="xxxs"
-                withHoverEffect
+                withHoverEffect={!!onClick}
             >
                 {children}
             </Card>
