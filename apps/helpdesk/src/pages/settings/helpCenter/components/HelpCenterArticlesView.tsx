@@ -506,15 +506,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         const oldTranslations = selectedArticleTranslations ?? []
 
         setSelectedArticleTranslations([
-            ...oldTranslations
-                .filter(
-                    (translation) =>
-                        translation.locale !== article.translation.locale,
-                )
-                .map((translation) => ({
-                    ...translation,
-                    visibility_status: article.translation.visibility_status,
-                })),
+            ...oldTranslations.filter(
+                (translation) =>
+                    translation.locale !== article.translation.locale,
+            ),
             article.translation,
         ])
 
