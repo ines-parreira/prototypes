@@ -250,8 +250,15 @@ export const METRIC_NAMES = {
 
     // Knowledge Statistics
     KNOWLEDGE_TICKETS: 'knowledge-tickets',
+    KNOWLEDGE_TICKETS_RESOURCE_TICKET_COUNT:
+        'knowledge-tickets-resource-ticket-count',
+    KNOWLEDGE_TICKETS_TICKET_COUNT: 'knowledge-tickets-ticket-count',
+    KNOWLEDGE_TICKETS_DRILL_DOWN: 'knowledge-tickets-drill-down',
     KNOWLEDGE_HANDOVER_TICKETS: 'knowledge-handover-tickets',
+    KNOWLEDGE_HANDOVER_TICKETS_DRILL_DOWN:
+        'knowledge-handover-tickets-drill-down',
     KNOWLEDGE_CSAT: 'knowledge-csat',
+    KNOWLEDGE_CSAT_DRILL_DOWN: 'knowledge-csat-drill-down',
     KNOWLEDGE_INTENTS: 'knowledge-intents',
 
     // Satisfaction
@@ -633,8 +640,13 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.KnowledgeInsights]: [
         METRIC_NAMES.KNOWLEDGE_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_TICKETS_RESOURCE_TICKET_COUNT,
+        METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
+        METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN,
         METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS_DRILL_DOWN,
         METRIC_NAMES.KNOWLEDGE_CSAT,
+        METRIC_NAMES.KNOWLEDGE_CSAT_DRILL_DOWN,
         METRIC_NAMES.KNOWLEDGE_INTENTS,
     ],
     [MetricScope.VoiceServiceLevelAgreement]: [

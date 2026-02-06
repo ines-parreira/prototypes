@@ -23,6 +23,7 @@ import {
     knowledgeHandoverTicketsCountQueryV2Factory,
     knowledgeIntentsQueryV2Factory,
     knowledgeTicketsCountQueryV2Factory,
+    knowledgeTicketsResourceCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/knowledgeInsights'
 import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import {
@@ -279,7 +280,7 @@ export const knowledgeTicketsDrillDownQueryFactory = (
     resourceSourceSetId: number,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     return createV1DrillDownQuery(
-        METRIC_NAMES.KNOWLEDGE_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN,
         resourceSourceId,
         resourceSourceSetId,
         filters,
@@ -298,7 +299,7 @@ export const knowledgeHandoverTicketsDrillDownQueryFactory = (
     resourceSourceSetId: number,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     return createV1DrillDownQuery(
-        METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS_DRILL_DOWN,
         resourceSourceId,
         resourceSourceSetId,
         filters,
@@ -317,7 +318,7 @@ export const knowledgeCSATDrillDownQueryFactory = (
     resourceSourceSetId: number,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     const baseQuery = createV1DrillDownQuery(
-        METRIC_NAMES.KNOWLEDGE_CSAT,
+        METRIC_NAMES.KNOWLEDGE_CSAT_DRILL_DOWN,
         resourceSourceId,
         resourceSourceSetId,
         filters,
@@ -351,7 +352,7 @@ export const knowledgeRecentTicketsQueryFactory = (
     resourceSourceSetId: number,
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
     const baseQuery = createV1DrillDownQuery(
-        METRIC_NAMES.KNOWLEDGE_TICKETS,
+        METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN,
         resourceSourceId,
         resourceSourceSetId,
         filters,
@@ -543,6 +544,9 @@ export const useResourceMetrics = ({
     const handoverFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                outcomeCustomFieldId,
+            ]),
             [FilterKey.CustomFields]: [
                 {
                     customFieldId: outcomeCustomFieldId,
@@ -613,14 +617,14 @@ export const useResourceMetrics = ({
     // Fetch tickets count
     const ticketsMetric = useMetric(
         createV1Query(
-            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            METRIC_NAMES.KNOWLEDGE_TICKETS_RESOURCE_TICKET_COUNT,
             resourceSourceId,
             resourceSourceSetId,
             filters,
             timezone,
             TicketInsightsTaskMeasure.TicketCount,
         ),
-        knowledgeTicketsCountQueryV2Factory({
+        knowledgeTicketsResourceCountQueryV2Factory({
             timezone,
             filters,
             limit: KNOWLEDGE_QUERY_LIMIT,
@@ -880,6 +884,9 @@ export const useAllResourcesMetrics = ({
     const handoverFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
+                outcomeCustomFieldId,
+            ]),
             [FilterKey.CustomFields]: [
                 {
                     customFieldId: outcomeCustomFieldId,
@@ -896,9 +903,10 @@ export const useAllResourcesMetrics = ({
     const intentFilters: ApiStatsFilters = useMemo(() => {
         return {
             ...filters,
-            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator([
-                intentCustomFieldId,
-            ]),
+            [APIOnlyFilterKey.CustomFieldId]: withLogicalOperator(
+                [intentCustomFieldId],
+                LogicalOperatorEnum.NOT_ONE_OF,
+            ),
             [FilterKey.CustomFields]: [
                 {
                     customFieldId: intentCustomFieldId,
@@ -916,7 +924,7 @@ export const useAllResourcesMetrics = ({
 
     const ticketsMetric = useMetricPerDimensionV2(
         createV1Query(
-            METRIC_NAMES.KNOWLEDGE_TICKETS,
+            METRIC_NAMES.KNOWLEDGE_TICKETS_TICKET_COUNT,
             null,
             null,
             filters,

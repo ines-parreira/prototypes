@@ -1894,7 +1894,7 @@ describe('knowledgeCSATDrillDownQueryFactory', () => {
         expect(query.measures).toEqual([
             TicketInsightsTaskMeasure.AvgSurveyScore,
         ])
-        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_CSAT)
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_CSAT_DRILL_DOWN)
     })
 
     it('should include ticketId dimension for drilldown', () => {
@@ -3034,7 +3034,7 @@ describe('knowledgeTicketsDrillDownQueryFactory', () => {
             resourceSourceSetId,
         )
 
-        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS)
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN)
         expect(query.limit).toBe(100)
         expect(query.dimensions).toContain(TicketDimension.TicketId)
     })
@@ -3082,7 +3082,9 @@ describe('knowledgeHandoverTicketsDrillDownQueryFactory', () => {
             resourceSourceSetId,
         )
 
-        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS)
+        expect(query.metricName).toBe(
+            METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS_DRILL_DOWN,
+        )
         expect(query.limit).toBe(100)
         expect(query.dimensions).toContain(TicketDimension.TicketId)
     })
@@ -3165,7 +3167,7 @@ describe('knowledgeRecentTicketsQueryFactory', () => {
             resourceSourceSetId,
         )
 
-        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS)
+        expect(query.metricName).toBe(METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN)
     })
 
     it('should include resource filters', () => {
