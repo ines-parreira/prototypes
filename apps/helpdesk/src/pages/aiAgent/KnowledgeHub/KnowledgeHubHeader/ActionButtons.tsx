@@ -62,6 +62,16 @@ export const HeaderActions = ({
         case KnowledgeType.Domain:
             return (
                 <>
+                    {!isPlaygroundOpen && (
+                        <Button
+                            onClick={onTest}
+                            isDisabled={isTestButtonDisabled}
+                            aria-label="Test knowledge"
+                            variant="secondary"
+                        >
+                            Test
+                        </Button>
+                    )}
                     {syncTooltipMessage ? (
                         <Tooltip placement="top">
                             <TooltipTrigger>
@@ -91,6 +101,16 @@ export const HeaderActions = ({
         case KnowledgeType.URL:
             return (
                 <>
+                    {!isPlaygroundOpen && (
+                        <Button
+                            onClick={onTest}
+                            isDisabled={isTestButtonDisabled}
+                            aria-label="Test knowledge"
+                            variant="secondary"
+                        >
+                            Test
+                        </Button>
+                    )}
                     {syncTooltipMessage ? (
                         <Tooltip placement="top">
                             <TooltipTrigger>
@@ -127,14 +147,26 @@ export const HeaderActions = ({
             )
         case KnowledgeType.Document:
             return (
-                <Button
-                    onClick={onDelete}
-                    isDisabled={isDeleteButtonDisabled}
-                    aria-label="Delete document"
-                    variant="secondary"
-                    intent="destructive"
-                    icon="trash-empty"
-                />
+                <>
+                    {!isPlaygroundOpen && (
+                        <Button
+                            onClick={onTest}
+                            isDisabled={isTestButtonDisabled}
+                            aria-label="Test knowledge"
+                            variant="secondary"
+                        >
+                            Test
+                        </Button>
+                    )}
+                    <Button
+                        onClick={onDelete}
+                        isDisabled={isDeleteButtonDisabled}
+                        aria-label="Delete document"
+                        variant="secondary"
+                        intent="destructive"
+                        icon="trash-empty"
+                    />
+                </>
             )
     }
 

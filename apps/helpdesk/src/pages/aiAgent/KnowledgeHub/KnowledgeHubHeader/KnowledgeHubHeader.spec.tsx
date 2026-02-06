@@ -229,12 +229,12 @@ describe('KnowledgeHubHeader', () => {
             expect(syncButton).toBeInTheDocument()
         })
 
-        it('does not render Test or Create content buttons', () => {
+        it('render Test button  but do not render Create content buttons', () => {
             renderComponent({ data: storeWebsiteData })
 
             expect(
                 screen.queryByRole('button', { name: /test knowledge/i }),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /create content/i }),
             ).not.toBeInTheDocument()
@@ -416,7 +416,7 @@ describe('KnowledgeHubHeader', () => {
             expect(deleteButton).toBeDisabled()
         })
 
-        it('does not render Sync or Test buttons', () => {
+        it('does not render Sync button, but renders Test buttons', () => {
             renderComponent({ data: documentsData })
 
             expect(
@@ -424,7 +424,7 @@ describe('KnowledgeHubHeader', () => {
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /test/i }),
-            ).not.toBeInTheDocument()
+            ).toBeInTheDocument()
         })
     })
 })
