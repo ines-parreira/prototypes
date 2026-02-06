@@ -39,30 +39,36 @@ export const OnboardingPreviewContainer: React.FC<{
     isLoading?: boolean
     icon?: string | JSX.Element
     showCaption?: boolean
+    caption?: string | ReactNode
     children?: ReactNode
-}> = ({ children, isLoading = false, icon = '', showCaption = false }) => {
+}> = ({
+    children,
+    isLoading,
+    icon,
+    showCaption,
+    caption = 'This is a sample conversation with AI Agent.',
+}) => {
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
-                {isLoading && (
+                {isLoading && icon ? (
                     <div
                         className={classNames(css.ghostContainer, css.loading)}
                     >
                         <LoadingPulserIcon icon={icon} />
                     </div>
+                ) : (
+                    <div className={css.ghostContainer}>{children}</div>
                 )}
-                {!isLoading && (
-                    <>
-                        <div className={css.ghostContainer}>{children}</div>
-                        {showCaption && (
-                            <Text
-                                className={css.onboardingPreviewCaption}
-                                align="center"
-                            >
-                                This is a sample conversation with AI Agent.
-                            </Text>
-                        )}
-                    </>
+                {showCaption && (
+                    <Box marginLeft="xxxl" marginRight="xxxl">
+                        <Text
+                            className={css.onboardingPreviewCaption}
+                            align="center"
+                        >
+                            {caption}
+                        </Text>
+                    </Box>
                 )}
             </div>
         </div>
@@ -77,6 +83,7 @@ export const OnboardingContentContainer: React.FC<{
     onBackClick: () => void
     isLoading?: boolean
     containerClassName?: string
+    onCloseClick?: () => void
 }> = ({
     children,
     totalSteps,
@@ -85,6 +92,7 @@ export const OnboardingContentContainer: React.FC<{
     onBackClick,
     isLoading,
     containerClassName,
+    onCloseClick,
 }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
@@ -104,6 +112,15 @@ export const OnboardingContentContainer: React.FC<{
             type: 'back',
         })
         onBackClick()
+    }
+
+    const onCloseAction = () => {
+        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
+            Step: step,
+            shopName,
+            type: 'close',
+        })
+        onCloseClick?.()
     }
 
     return (
@@ -127,6 +144,7 @@ export const OnboardingContentContainer: React.FC<{
                     onBackClick={onBackAction}
                     onNextClick={onNextAction}
                     isLoading={isLoading ?? false}
+                    onCloseClick={onCloseClick ? onCloseAction : undefined}
                 />
             </div>
         </div>

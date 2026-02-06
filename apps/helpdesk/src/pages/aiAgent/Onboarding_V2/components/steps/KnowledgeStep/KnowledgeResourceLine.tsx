@@ -1,8 +1,6 @@
-import { Box, Icon, Text } from '@gorgias/axiom'
+import { Box, Icon, Tag, Text } from '@gorgias/axiom'
 
 import { KnowledgeSourceType } from '../types'
-
-import css from './KnowledgeResourceLine.less'
 
 type Props = {
     name: string
@@ -39,23 +37,19 @@ export const KnowledgeResourceLine: React.FC<Props> = ({
                 <Text variant="bold">{name}</Text>
             </Box>
             {isReady ? (
-                <Box className={css.badgeSynced} padding="xs">
-                    <Icon name="check" size="sm" />
-                    <Text variant="bold" size="sm">
-                        Ready
-                    </Text>
-                </Box>
+                <Tag
+                    color="green"
+                    leadingSlot={<Icon name="check" size="sm" />}
+                >
+                    Ready
+                </Tag>
             ) : (
-                <Box className={css.badgeSyncing} padding="xs" gap="xs">
-                    <Icon
-                        name="arrows-reload-alt-1"
-                        data-testid="loading-spinner"
-                        color="var(--content-neutral-tertiary)"
-                    />
-                    <Text variant="bold" size="sm">
-                        Syncing
-                    </Text>
-                </Box>
+                <Tag
+                    color="grey"
+                    leadingSlot={<Icon name="arrows-reload-alt-1" size="sm" />}
+                >
+                    Syncing
+                </Tag>
             )}
         </Box>
     )

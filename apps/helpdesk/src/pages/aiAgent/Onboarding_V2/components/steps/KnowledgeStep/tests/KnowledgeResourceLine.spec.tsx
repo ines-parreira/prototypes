@@ -54,7 +54,7 @@ describe('KnowledgeResourceLine', () => {
         ).toBeInTheDocument()
     })
 
-    it('shows loading spinner when not ready', () => {
+    it('shows syncing status when not ready', () => {
         render(
             <KnowledgeResourceLine
                 name="Resource Name"
@@ -63,7 +63,9 @@ describe('KnowledgeResourceLine', () => {
             />,
         )
 
-        expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()
         expect(screen.getByText('Syncing')).toBeInTheDocument()
+        expect(
+            screen.getByRole('img', { name: 'arrows-reload-alt-1' }),
+        ).toBeInTheDocument()
     })
 })

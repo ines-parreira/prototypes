@@ -73,4 +73,16 @@ export const FinalStep: Story = {
     },
 }
 
+/** Close button shown when onCloseClick is provided */
+export const WithCloseButton: Story = {
+    args: {
+        ...defaultProps,
+        // eslint-disable-next-line no-console
+        onCloseClick: () => console.log('Close clicked'),
+    },
+    parameters: {
+        ...templateParameters,
+    },
+}
+
 export default storyConfig

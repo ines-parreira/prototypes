@@ -80,18 +80,10 @@ let useTopProductsImplementation = ({
     }
 }
 
-// Workaround for Storybook
 export const useTopProducts = (args: {
     filters: StatsFilters
     timezone: string
     currency?: string
 }) => useTopProductsImplementation(args)
-
-// Allow overwriting the hook for testing or Storybook
-export const setUseTopProducts = (
-    mockImplementation: typeof useTopProductsImplementation,
-) => {
-    useTopProductsImplementation = mockImplementation
-}
 
 export default useTopProducts

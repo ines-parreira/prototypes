@@ -8,25 +8,32 @@ type Props = {
     onBackClick: () => void
     onNextClick: () => void
     isLoading: boolean
+    onCloseClick?: () => void
 }
 
 export const OnboardingNavigationButtons = (props: Props) => {
-    const { step, totalSteps, onBackClick, onNextClick, isLoading } = props
+    const {
+        step,
+        totalSteps,
+        onBackClick,
+        onNextClick,
+        isLoading,
+        onCloseClick,
+    } = props
     const nextBtnText = step === totalSteps ? 'Finish setup' : 'Next'
 
     return (
         <div className={css.navigationButtonsContainer}>
-            {step !== 1 && (
-                <Button
-                    variant="tertiary"
-                    size="md"
-                    onClick={onBackClick}
-                    style={{
-                        color: 'var(--surface-inverted-default)',
-                    }}
-                >
-                    Back
+            {onCloseClick ? (
+                <Button variant="secondary" size="md" onClick={onCloseClick}>
+                    Close
                 </Button>
+            ) : (
+                step !== 1 && (
+                    <Button variant="secondary" size="md" onClick={onBackClick}>
+                        Back
+                    </Button>
+                )
             )}
             <div className={css.nextButton}>
                 <Button
@@ -34,9 +41,6 @@ export const OnboardingNavigationButtons = (props: Props) => {
                     size="md"
                     onClick={onNextClick}
                     isLoading={isLoading}
-                    style={{
-                        backgroundColor: 'var(--surface-inverted-default)',
-                    }}
                 >
                     {nextBtnText}
                 </Button>

@@ -55,4 +55,32 @@ describe('OnboardingNavigationButtons', () => {
 
         expect(defaultProps.onNextClick).toHaveBeenCalledTimes(1)
     })
+
+    it('shows close button when onCloseClick is provided', () => {
+        const onCloseClick = jest.fn()
+        render(
+            <OnboardingNavigationButtons
+                {...defaultProps}
+                step={2}
+                onCloseClick={onCloseClick}
+            />,
+        )
+
+        expect(screen.getByText('Close')).toBeInTheDocument()
+        expect(screen.queryByText('Back')).not.toBeInTheDocument()
+    })
+
+    it('calls onCloseClick when close button is clicked', async () => {
+        const onCloseClick = jest.fn()
+        render(
+            <OnboardingNavigationButtons
+                {...defaultProps}
+                onCloseClick={onCloseClick}
+            />,
+        )
+
+        await act(() => userEvent.click(screen.getByText('Close')))
+
+        expect(onCloseClick).toHaveBeenCalledTimes(1)
+    })
 })

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
-import { Button } from '@gorgias/axiom'
+import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
 import {
     Card,
@@ -10,9 +10,7 @@ import {
     CardHeader,
 } from 'pages/aiAgent/Onboarding_V2/components/Card'
 
-import css from './IntegrationCard.less'
-
-type Props = {
+type IntegrationCardProps = {
     buttonLabel?: string
     description?: string
     icon?: ReactNode
@@ -22,7 +20,7 @@ type Props = {
     children?: ReactNode
 }
 
-const IntegrationCard: React.FC<Props> = ({
+export const IntegrationCard = ({
     buttonLabel,
     description,
     icon,
@@ -30,29 +28,31 @@ const IntegrationCard: React.FC<Props> = ({
     status,
     title,
     children,
-}: Props) => {
+}: IntegrationCardProps) => {
     return (
         <Card>
             <CardHeader>
-                <div className={css.wrapper}>
+                <Box justifyContent="space-between">
                     {icon}
-                    {status && <div className={css.status}>{status}</div>}
-                </div>
+                    {status && <Text>{status}</Text>}
+                </Box>
             </CardHeader>
 
             <CardContent>
-                <div className={css.text}>
-                    <div className={css.title}>{title}</div>
-                    <div className={css.description}>{description}</div>
+                <Box justifyContent="center" flexDirection="column">
+                    <Heading size="md">{title}</Heading>
+                    <Box>
+                        <Text>{description}</Text>
+                    </Box>
                     <div>{children}</div>
-                </div>
+                </Box>
             </CardContent>
 
             {buttonLabel && onClick && (
                 <CardFooter>
                     <Button
                         variant="primary"
-                        className={css.fullWidth}
+                        trailingSlot="external-link"
                         onClick={onClick}
                     >
                         {buttonLabel}
@@ -62,5 +62,3 @@ const IntegrationCard: React.FC<Props> = ({
         </Card>
     )
 }
-
-export default IntegrationCard

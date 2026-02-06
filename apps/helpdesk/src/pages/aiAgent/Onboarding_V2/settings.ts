@@ -11,7 +11,7 @@ import {
 
 import avatarImage from './components/AiAgentChatConversation/assets/avatar.png'
 
-export const chatUserConfiguration: User = {
+const chatUserConfiguration: User = {
     lastname: 'Plugaru',
     settings: [
         {

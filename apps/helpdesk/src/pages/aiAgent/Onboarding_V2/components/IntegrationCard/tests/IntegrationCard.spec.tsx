@@ -1,16 +1,15 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
-import StatusBadge, { StatusEnum } from '../../StatusBadge'
-import IntegrationCard from '../IntegrationCard'
+import { Tag } from '@gorgias/axiom'
+
+import { IntegrationCard } from '../IntegrationCard'
 
 describe('IntegrationCard', () => {
     it('renders', () => {
         render(
             <IntegrationCard
                 icon={<>icon</>}
-                status={<StatusBadge status={StatusEnum.Connected} />}
+                status={<Tag color="green">Connected</Tag>}
                 buttonLabel="Connect Gmail"
                 description="Log into your Gmail or Google Workspace account to allow Gorgias access to emails."
                 title="Connect Gmail account"

@@ -17,7 +17,6 @@ import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreCon
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
-import { useGenerateToneOfVoice } from 'pages/aiAgent/Onboarding_V2/hooks/useGenerateToneOfVoice'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
@@ -51,9 +50,6 @@ const useUpdateOnboardingMock = assumeMock(useUpdateOnboarding)
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding')
 const useCreateOnboardingMock = assumeMock(useCreateOnboarding)
-
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGenerateToneOfVoice')
-const useGenerateToneOfVoiceMock = assumeMock(useGenerateToneOfVoice)
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan')
 const useAiAgentScopesForAutomationPlanMock = assumeMock(
@@ -120,13 +116,6 @@ describe('ShopifyIntegrationStep', () => {
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
             data: undefined,
-        })
-
-        useGenerateToneOfVoiceMock.mockReturnValue({
-            isLoading: false,
-            generateToneOfVoice: jest
-                .fn()
-                .mockResolvedValue('Here is the tone of voice'),
         })
 
         useUpdateOnboardingMock.mockReturnValue({
