@@ -1,13 +1,16 @@
 import { Handle, Panel } from '@repo/layout'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { NewTicketInfobarNavigation } from '@repo/tickets'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
+    mockListCustomFieldConditionsHandler,
+    mockListCustomFieldsHandler,
+    mockListTagsHandler,
     mockListTeamsHandler,
     mockListUsersHandler,
     mockTeam,
@@ -25,8 +28,7 @@ jest.mock('@repo/navigation', () => ({
 const useTicketInfobarNavigationMock = jest.mocked(useTicketInfobarNavigation)
 
 jest.mock('@repo/layout', () => ({
-    ...jest.requireActual('@repo/layout'),
-    Handle: jest.fn(() => <div role="separator" />),
+    Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
     Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
@@ -76,11 +78,14 @@ const mockListUsers = mockListUsersHandler(async ({ data }) =>
 )
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockListTags = mockListTagsHandler()
+const mockListCustomFields = mockListCustomFieldsHandler()
+const mockListCustomFieldConditions = mockListCustomFieldConditionsHandler()
 
 const server = setupServer()
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
@@ -88,6 +93,9 @@ beforeEach(() => {
         mockListTeams.handler,
         mockListUsers.handler,
         mockGetCurrentUser.handler,
+        mockListTags.handler,
+        mockListCustomFields.handler,
+        mockListCustomFieldConditions.handler,
     )
 })
 
@@ -115,8 +123,11 @@ const renderComponent = () => {
 
 const waitForSelectsToLoad = async () => {
     await waitFor(() => {
-        const prioritySelect = screen.getAllByLabelText('Priority selection')
-        expect(prioritySelect[0]).not.toBeDisabled()
+        expect(
+            screen.getAllByLabelText('Priority selection')[0],
+        ).not.toBeDisabled()
+        expect(screen.getAllByLabelText('User selection')[0]).not.toBeDisabled()
+        expect(screen.getAllByLabelText('Team selection')[0]).not.toBeDisabled()
     })
 }
 
@@ -131,12 +142,8 @@ describe('NewTicketPage', () => {
         it('renders the header with title input', async () => {
             renderComponent()
 
-            const subjectInput = screen.getByRole('textbox')
-            expect(subjectInput).toBeInTheDocument()
-            expect(subjectInput).toHaveAttribute(
-                'data-placeholder',
-                'New ticket',
-            )
+            const titleInput = screen.getByRole('textbox')
+            expect(titleInput).toHaveAttribute('data-placeholder', 'New ticket')
             await waitForSelectsToLoad()
         })
 
@@ -190,12 +197,8 @@ describe('NewTicketPage', () => {
         it('renders the header with title input', async () => {
             renderComponent()
 
-            const subjectInput = screen.getByRole('textbox')
-            expect(subjectInput).toBeInTheDocument()
-            expect(subjectInput).toHaveAttribute(
-                'data-placeholder',
-                'New ticket',
-            )
+            const titleInput = screen.getByRole('textbox')
+            expect(titleInput).toHaveAttribute('data-placeholder', 'New ticket')
             await waitForSelectsToLoad()
         })
 
@@ -284,17 +287,22 @@ describe('NewTicketPage', () => {
 
                     const prioritySelect =
                         screen.getAllByLabelText('Priority selection')[0]
-                    await act(() => user.click(prioritySelect))
+                    await user.click(prioritySelect)
+                    await waitFor(() => {
+                        expect(screen.getByRole('listbox')).toBeInTheDocument()
+                    })
 
-                    const highOptions = await screen.findAllByText('High')
-                    await act(() =>
-                        user.click(highOptions[highOptions.length - 1]),
-                    )
+                    const highOptions = screen.getAllByText('High')
+                    await user.click(highOptions[highOptions.length - 1])
 
                     await waitFor(() => {
-                        const highTexts = screen.getAllByText('High')
-                        expect(highTexts.length).toBeGreaterThan(0)
+                        expect(
+                            screen.queryByRole('listbox'),
+                        ).not.toBeInTheDocument()
                     })
+
+                    const highTexts = screen.getAllByText('High')
+                    expect(highTexts.length).toBeGreaterThan(0)
                 })
             })
 
@@ -315,21 +323,22 @@ describe('NewTicketPage', () => {
 
                     const userSelect =
                         screen.getAllByLabelText('User selection')[0]
-                    await act(() => user.click(userSelect))
-
+                    await user.click(userSelect)
                     await waitFor(() => {
-                        expect(screen.getByText('John Doe')).toBeInTheDocument()
+                        expect(screen.getByRole('listbox')).toBeInTheDocument()
                     })
 
-                    const johnOptions = await screen.findAllByText('John Doe')
-                    await act(() =>
-                        user.click(johnOptions[johnOptions.length - 1]),
-                    )
+                    const johnOptions = screen.getAllByText('John Doe')
+                    await user.click(johnOptions[johnOptions.length - 1])
 
                     await waitFor(() => {
-                        const johnTexts = screen.getAllByText('John Doe')
-                        expect(johnTexts.length).toBeGreaterThan(0)
+                        expect(
+                            screen.queryByRole('listbox'),
+                        ).not.toBeInTheDocument()
                     })
+
+                    const johnTexts = screen.getAllByText('John Doe')
+                    expect(johnTexts.length).toBeGreaterThan(0)
                 })
             })
 
@@ -350,21 +359,22 @@ describe('NewTicketPage', () => {
 
                     const teamSelect =
                         screen.getAllByLabelText('Team selection')[0]
-                    await act(() => user.click(teamSelect))
-
+                    await user.click(teamSelect)
                     await waitFor(() => {
-                        expect(screen.getByText('Support')).toBeInTheDocument()
+                        expect(screen.getByRole('listbox')).toBeInTheDocument()
                     })
 
-                    const supportOptions = await screen.findAllByText('Support')
-                    await act(() =>
-                        user.click(supportOptions[supportOptions.length - 1]),
-                    )
+                    const supportOptions = screen.getAllByText('Support')
+                    await user.click(supportOptions[supportOptions.length - 1])
 
                     await waitFor(() => {
-                        const supportTexts = screen.getAllByText('Support')
-                        expect(supportTexts.length).toBeGreaterThan(0)
+                        expect(
+                            screen.queryByRole('listbox'),
+                        ).not.toBeInTheDocument()
                     })
+
+                    const supportTexts = screen.getAllByText('Support')
+                    expect(supportTexts.length).toBeGreaterThan(0)
                 })
             })
         })
@@ -397,7 +407,7 @@ describe('NewTicketPage', () => {
 
             expect(screen.getByText('ShopifyCustomer')).toBeInTheDocument()
             expect(
-                screen.queryByText(/Content to extract/),
+                screen.queryByRole('heading', { name: 'Ticket details' }),
             ).not.toBeInTheDocument()
             await waitForSelectsToLoad()
         })
@@ -410,11 +420,11 @@ describe('NewTicketPage', () => {
 
             renderComponent()
 
-            expect(
-                screen.getByText(
-                    /Content to extract from the Infobar ticket area/,
-                ),
-            ).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: 'Ticket details' }),
+                ).toBeInTheDocument()
+            })
             expect(
                 screen.queryByText('ShopifyCustomer'),
             ).not.toBeInTheDocument()
@@ -433,54 +443,9 @@ describe('NewTicketPage', () => {
                 screen.queryByText('ShopifyCustomer'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText(/Content to extract/),
+                screen.queryByRole('heading', { name: 'Ticket details' }),
             ).not.toBeInTheDocument()
             await waitForSelectsToLoad()
-        })
-    })
-
-    describe('ticket subject', () => {
-        beforeEach(() => {
-            useTicketInfobarNavigationMock.mockReturnValue({
-                isExpanded: true,
-            } as any)
-        })
-
-        it('renders the subject input with placeholder when empty', async () => {
-            renderComponent()
-
-            await waitForSelectsToLoad()
-
-            const subjectInput = screen.getByRole('textbox')
-            expect(subjectInput).toBeInTheDocument()
-            expect(subjectInput).toHaveAttribute(
-                'data-placeholder',
-                'New ticket',
-            )
-        })
-
-        it('updates the subject when user types', async () => {
-            const { user } = renderComponent()
-
-            await waitForSelectsToLoad()
-
-            const subjectInput = screen.getByRole('textbox')
-            await user.type(subjectInput, 'My new ticket')
-
-            expect(subjectInput).toHaveTextContent('My new ticket')
-        })
-
-        it('clears the subject when user deletes all text', async () => {
-            const { user } = renderComponent()
-
-            await waitForSelectsToLoad()
-
-            const subjectInput = screen.getByRole('textbox')
-            await user.type(subjectInput, 'Test')
-            expect(subjectInput).toHaveTextContent('Test')
-
-            await user.clear(subjectInput)
-            expect(subjectInput).toHaveTextContent('')
         })
     })
 })

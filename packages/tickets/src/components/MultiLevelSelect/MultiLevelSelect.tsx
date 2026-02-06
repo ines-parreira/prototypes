@@ -132,7 +132,7 @@ export function MultiLevelSelect(props: Props) {
                         }
                         variant="secondary"
                         size="sm"
-                        value={label ?? undefined}
+                        value={label ?? ''}
                         placeholder={placeholder}
                         isInvalid={isInvalid}
                     />

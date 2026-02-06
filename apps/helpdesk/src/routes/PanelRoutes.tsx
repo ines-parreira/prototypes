@@ -14,7 +14,7 @@ import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/
 import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketsPage } from 'tickets/pages'
-import { NewTicketPage } from 'tickets/pages/NewTicketPage'
+import { NewTicketPage } from 'tickets/pages/NewTicketPage/NewTicketPage'
 import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketsListPanel } from 'tickets/tickets-list'

@@ -21,6 +21,9 @@ export const useInitializeTicketFieldsStore = (ticketId: string) => {
 
     useEffect(() => {
         resetFields()
+        return () => {
+            resetFields()
+        }
     }, [ticketId, resetFields])
 
     useEffect(() => {

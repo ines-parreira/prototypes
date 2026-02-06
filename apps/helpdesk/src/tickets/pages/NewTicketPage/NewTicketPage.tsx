@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { ShopifyCustomer } from '@repo/customer'
 import { Handle, Panel } from '@repo/layout'
-import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import { useTicketInfobarNavigation } from '@repo/navigation'
 import {
     NewTicketInfobarNavigation,
     PrioritySelect,
@@ -17,19 +16,16 @@ import {
     UserAssigneeSelect,
 } from '@repo/tickets'
 
-import { Box } from '@gorgias/axiom'
 import type {
     Team,
     TicketPriority,
+    TicketTag,
     TicketTeam,
     TicketUser,
     User,
 } from '@gorgias/helpdesk-queries'
 
-import {
-    InfobarLayoutContainer,
-    InfobarLayoutContent,
-} from 'pages/tickets/detail/layout/InfobarLayout'
+import { NewTicketPageInfobar } from 'tickets/pages/NewTicketPage/components/NewTicketPageInfobar'
 
 const panelConfig = {
     defaultSize: 340,
@@ -60,6 +56,7 @@ type NewTicketState = {
     priority: TicketPriority | undefined
     assigneeUser: TicketUser | null
     assigneeTeam: TicketTeam | null
+    tags: TicketTag[]
 }
 
 export function NewTicketPage() {
@@ -69,7 +66,9 @@ export function NewTicketPage() {
         priority: undefined,
         assigneeUser: null,
         assigneeTeam: null,
+        tags: [],
     })
+    // const fields = useTicketFieldsStore((state) => state.fields)
 
     const handlePriorityChange = (priority: TicketPriority) => {
         setTicketState((prev) => ({ ...prev, priority }))
@@ -89,13 +88,21 @@ export function NewTicketPage() {
         }))
     }
 
+    const handleTagsChange = useCallback((tags: TicketTag[]) => {
+        setTicketState((prev) => ({ ...prev, tags }))
+    }, [])
+
+    // const handleSubmit = useCallback(() => {
+    //     /**
+    //      * Merge ticket fields & ticket state
+    //      */
+    // }, [])
+
     const name = `infobar-${isExpanded ? 'expanded' : 'collapsed'}`
     const config = useMemo(
         () => (isExpanded ? panelConfig : collapsedPanelConfig),
         [isExpanded],
     )
-
-    const { activeTab } = useTicketInfobarNavigation()
 
     return (
         <TicketLayout>
@@ -132,25 +139,10 @@ export function NewTicketPage() {
                 </Panel>
                 <Handle />
                 <Panel key={name} name={name} config={config}>
-                    <InfobarLayoutContainer>
-                        <InfobarLayoutContent>
-                            {activeTab === TicketInfobarTab.Shopify && (
-                                <Box flex={1} flexDirection="column">
-                                    <ShopifyCustomer />
-                                </Box>
-                            )}
-                            {activeTab === TicketInfobarTab.Customer && (
-                                <Box
-                                    flex={1}
-                                    flexDirection="column"
-                                    minWidth="340px"
-                                >
-                                    Content to extract from the Infobar ticket
-                                    area (Tags, Ticket fields)
-                                </Box>
-                            )}
-                        </InfobarLayoutContent>
-                    </InfobarLayoutContainer>
+                    <NewTicketPageInfobar
+                        tags={ticketState.tags}
+                        onTagsChange={handleTagsChange}
+                    />
                 </Panel>
                 <Panel
                     name="infobar-navigation"

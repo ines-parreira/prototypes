@@ -2,15 +2,13 @@ import type { ReactNode } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { Box } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
 import { InfobarTicketCustomerDetails } from '../InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'
+import { InfobarTicketDetailsContainer } from './components/InfobarTicketDetailsContainer'
 import { TicketInfobarTicketDetailsTags } from './components/InfobarTicketTags'
 import { InfobarTicketDetailsHeader } from './components/InforbarTicketDetailsHeader'
 import { TicketInfobarTicketFields } from './components/TicketInfobarTicketFields'
-
-import css from './InfobarTicketDetails.less'
 
 type InfobarTicketDetailsProps = {
     ticketSummaryIcon: ReactNode
@@ -33,19 +31,13 @@ export function InfobarTicketDetails({
 
     return (
         <>
-            <Box
-                className={css.container}
-                flexDirection="column"
-                gap="xs"
-                padding="md"
-                paddingBottom="sm"
-            >
+            <InfobarTicketDetailsContainer>
                 <InfobarTicketDetailsHeader
                     ticketSummaryIcon={ticketSummaryIcon}
                 />
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />
                 <TicketInfobarTicketFields ticketId={ticketId} />
-            </Box>
+            </InfobarTicketDetailsContainer>
             <InfobarTicketCustomerDetails
                 onEditCustomer={onEditCustomer}
                 onSyncToShopify={onSyncToShopify}

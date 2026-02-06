@@ -1,4 +1,15 @@
 export { InfobarTicketDetails } from './components/InfobarTicketDetails/InfobarTicketDetails'
+export { InfobarTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/InfobarTicketFields'
+export { InfobarTicketDetailsContainer } from './components/InfobarTicketDetails/components/InfobarTicketDetailsContainer'
+export { useTicketFieldsStore } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
+export { useTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFields'
+export type { TicketFieldsState } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
+export {
+    getNumberOrUndefined,
+    isNumberInput,
+    isTextInput,
+} from './components/InfobarCustomerFields/utils'
+export type { FieldEventHandlerParams } from './components/InfobarTicketDetails/components/InfobarTicketFields/utils/constants'
 export { TagsMultiSelect } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
 export type { TagsMultiSelectProps } from './components/InfobarTicketDetails/components/InfobarTicketTags/TagsMultiSelect'
 export { InfobarTicketCustomerDetails } from './components/InfobarTicketCustomerDetails/InfobarTicketCustomerDetails'

@@ -1,0 +1,1 @@
+export { NewTicketPageInfobar } from './NewTicketPageInfobar'
