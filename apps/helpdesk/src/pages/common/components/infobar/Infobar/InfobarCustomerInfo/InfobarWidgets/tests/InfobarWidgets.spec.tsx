@@ -32,6 +32,11 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const queryClient = mockQueryClient()
 
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
+}))
+
 jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
 mockedPlaceholder.mockImplementation(() => <div>Placeholder</div>)
