@@ -14,6 +14,12 @@ import {
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketInfobarTicketDetailsTags } from '../components/InfobarTicketTags'
 
+const waitForQueriesSettled = async () => {
+    await waitFor(() => {
+        expect(testAppQueryClient.isFetching()).toBe(0)
+    })
+}
+
 const ticketId = '123'
 
 const ticketTag1 = mockTicketTag({
@@ -218,6 +224,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 },
                 { timeout: 3000 },
             )
+
+            await waitForQueriesSettled()
         })
     })
 
@@ -265,6 +273,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                     ]),
                 )
             })
+
+            await waitForQueriesSettled()
         })
 
         it('should add multiple tags when selected', async () => {
@@ -315,6 +325,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 const marketingTags = screen.getAllByText('Marketing')
                 expect(marketingTags.length).toBeGreaterThan(0)
             })
+
+            await waitForQueriesSettled()
         })
 
         it('should maintain tag sort order when adding new tags', async () => {
@@ -348,6 +360,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 const sortedIds = [...ids].sort((a, b) => a - b)
                 expect(ids).toEqual(sortedIds)
             })
+
+            await waitForQueriesSettled()
         })
     })
 
@@ -389,6 +403,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(body.tags).toHaveLength(1)
                 expect(body.tags[0].id).toBe(2)
             })
+
+            await waitForQueriesSettled()
         })
 
         it('should remove multiple tags sequentially', async () => {
@@ -476,6 +492,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 const allCloseButtons = getCloseButtons()
                 expect(allCloseButtons).toHaveLength(0)
             })
+
+            await waitForQueriesSettled()
         }, 10000)
 
         it('should preserve non-visible saved tags when removing visible tags', async () => {
@@ -534,6 +552,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 )
                 expect(body.tags).toHaveLength(2)
             })
+
+            await waitForQueriesSettled()
         })
     })
 
@@ -557,6 +577,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
             await user.type(searchInput, 'Test')
 
             expect(searchInput).toHaveValue('Test')
+
+            await waitForQueriesSettled()
         })
 
         it('should show search input when dropdown is open', async () => {
@@ -578,6 +600,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
             await user.type(searchInput, 'Doc')
 
             expect(searchInput).toHaveValue('Doc')
+
+            await waitForQueriesSettled()
         })
     })
 
@@ -612,6 +636,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                     screen.getAllByText('Documentation')
                 expect(documentationOptions.length).toBeGreaterThan(0)
             })
+
+            await waitForQueriesSettled()
         })
 
         it('should not load more when no next cursor exists', async () => {
@@ -762,6 +788,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
             await waitFor(() => {
                 expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
             })
+
+            await waitForQueriesSettled()
         })
     })
 

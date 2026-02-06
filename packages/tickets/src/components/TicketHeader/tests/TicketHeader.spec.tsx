@@ -1,5 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -177,10 +177,10 @@ describe('TicketHeader', () => {
                 const waitForUpdateTicketRequest =
                     mockUpdateTicket.waitForRequest(server)
 
-                await user.click(subject)
-                await user.clear(subject)
-                await user.type(subject, 'Test ticket updated')
-                await user.tab()
+                await act(() => user.click(subject))
+                await act(() => user.clear(subject))
+                await act(() => user.type(subject, 'Test ticket updated'))
+                await act(() => user.tab())
 
                 await waitForUpdateTicketRequest(async (request) => {
                     const body = await request.json()
@@ -210,10 +210,10 @@ describe('TicketHeader', () => {
 
                 const subject = screen.getByRole('textbox')
 
-                await user.click(subject)
-                await user.clear(subject)
-                await user.type(subject, 'Test ticket updated')
-                await user.tab()
+                await act(() => user.click(subject))
+                await act(() => user.clear(subject))
+                await act(() => user.type(subject, 'Test ticket updated'))
+                await act(() => user.tab())
 
                 await waitFor(() => {
                     expect(dispatchNotification).toHaveBeenCalledWith(
@@ -235,7 +235,7 @@ describe('TicketHeader', () => {
                 const editIcon = screen.getByRole('textbox').nextElementSibling
                 expect(editIcon).toBeInTheDocument()
 
-                await user.click(editIcon!)
+                await act(() => user.click(editIcon!))
 
                 const subject = screen.getByRole('textbox')
                 expect(subject).toHaveFocus()

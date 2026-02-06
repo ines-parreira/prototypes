@@ -32,7 +32,7 @@ describe('CopyButton', () => {
 
         const copyIcon = screen.getByLabelText('copy')
 
-        await user.click(copyIcon)
+        await act(() => user.click(copyIcon))
 
         expect(mockCopyToClipboard).toHaveBeenCalledWith('test@example.com')
     })
@@ -44,7 +44,7 @@ describe('CopyButton', () => {
 
         const copyIcon = screen.getByLabelText('copy')
 
-        await user.click(copyIcon)
+        await act(() => user.click(copyIcon))
 
         expect(
             await screen.findByText('Copied to clipboard'),
@@ -58,13 +58,13 @@ describe('CopyButton', () => {
 
         const copyIcon = screen.getByLabelText('copy')
 
-        await user.click(copyIcon)
+        await act(() => user.click(copyIcon))
 
         expect(
             await screen.findByText('Copied to clipboard'),
         ).toBeInTheDocument()
 
-        await user.unhover(copyIcon)
+        await act(() => user.unhover(copyIcon))
 
         await waitFor(() => {
             expect(

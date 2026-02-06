@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -261,7 +261,7 @@ describe('InfobarBaseCustomerFields', () => {
 
             const emailText = screen.getByText('test@example.com')
 
-            await user.click(emailText)
+            await act(() => user.click(emailText))
 
             await waitFor(() => {
                 expect(screen.getByText('Send email')).toBeInTheDocument()
@@ -276,7 +276,7 @@ describe('InfobarBaseCustomerFields', () => {
             const sendEmailItems = screen.getAllByText('Send email')
             const sendEmailButton = sendEmailItems[sendEmailItems.length - 1]
 
-            await user.click(sendEmailButton)
+            await act(() => user.click(sendEmailButton))
 
             await waitFor(() => {
                 expect(
@@ -333,7 +333,7 @@ describe('InfobarBaseCustomerFields', () => {
             await openDraftSubmenu(user)
 
             const resumeButton = await screen.findByText('Resume draft')
-            await user.click(resumeButton)
+            await act(() => user.click(resumeButton))
 
             expect(onResumeDraft).toHaveBeenCalledTimes(1)
         })
@@ -360,7 +360,7 @@ describe('InfobarBaseCustomerFields', () => {
             const discardButton = await screen.findByText(
                 'Discard and create new ticket',
             )
-            await user.click(discardButton)
+            await act(() => user.click(discardButton))
 
             expect(onDiscardDraft).toHaveBeenCalledTimes(1)
             expect(onDiscardDraft).toHaveBeenCalledWith(
@@ -410,7 +410,7 @@ describe('InfobarBaseCustomerFields', () => {
             const sendEmailMenuItem = await screen.findByRole('menuitem', {
                 name: /send email/i,
             })
-            await user.click(sendEmailMenuItem)
+            await act(() => user.click(sendEmailMenuItem))
 
             expect(mockPush).toHaveBeenCalledTimes(1)
             expect(mockPush).toHaveBeenCalledWith(

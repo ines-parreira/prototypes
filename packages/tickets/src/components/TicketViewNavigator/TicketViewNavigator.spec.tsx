@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import { useLocation } from 'react-router'
 
 import { render } from '../../tests/render.utils'
@@ -67,8 +67,10 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /arrow-chevron-left/i }),
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
+                ),
             )
 
             expect(
@@ -89,10 +91,12 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await user.click(
-                screen.getByRole('button', {
-                    name: /arrow-chevron-right/i,
-                }),
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', {
+                        name: /arrow-chevron-right/i,
+                    }),
+                ),
             )
 
             expect(
@@ -121,7 +125,7 @@ describe('TicketViewNavigator', () => {
             })
             expect(prevButton).toBeDisabled()
 
-            await user.click(prevButton)
+            await act(() => user.click(prevButton))
             expect(
                 screen.getByRole('status', { name: /current location/i }),
             ).toHaveTextContent('/app/views/1/101')
@@ -148,7 +152,7 @@ describe('TicketViewNavigator', () => {
             })
             expect(nextButton).toBeDisabled()
 
-            await user.click(nextButton)
+            await act(() => user.click(nextButton))
             expect(
                 screen.getByRole('status', { name: /current location/i }),
             ).toHaveTextContent('/app/views/1/101')
@@ -174,8 +178,10 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /arrow-chevron-left/i }),
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
+                ),
             )
 
             expect(legacyGoToPrevTicket).toHaveBeenCalledTimes(1)
@@ -202,10 +208,12 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await user.click(
-                screen.getByRole('button', {
-                    name: /arrow-chevron-right/i,
-                }),
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', {
+                        name: /arrow-chevron-right/i,
+                    }),
+                ),
             )
 
             expect(legacyGoToNextTicket).toHaveBeenCalledTimes(1)
@@ -229,8 +237,10 @@ describe('TicketViewNavigator', () => {
                 },
             )
 
-            await user.click(
-                screen.getByRole('button', { name: /arrow-chevron-left/i }),
+            await act(() =>
+                user.click(
+                    screen.getByRole('button', { name: /arrow-chevron-left/i }),
+                ),
             )
 
             expect(

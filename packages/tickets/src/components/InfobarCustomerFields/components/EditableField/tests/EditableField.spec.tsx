@@ -62,18 +62,18 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        await act(async () => {
-            await user.type(input, 'New')
-        })
+        await act(() => user.type(input, 'New'))
 
-        expect(onValueChange).toHaveBeenCalled()
-        expect(onValueChange.mock.calls.length).toBeGreaterThan(0)
+        await waitFor(() => {
+            expect(onValueChange).toHaveBeenCalled()
+            expect(onValueChange.mock.calls.length).toBeGreaterThan(0)
+        })
     })
 
     it('should not call onValueChange when empty value is submitted and current value is also empty', async () => {
         const onValueChange = vi.fn()
 
-        const { getByPlaceholderText } = render(
+        const { user, getByPlaceholderText } = render(
             <EditableField
                 value=""
                 onValueChange={onValueChange}
@@ -83,7 +83,8 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        act(() => input.blur())
+        await act(() => user.click(input))
+        await act(() => user.tab())
 
         expect(onValueChange).not.toHaveBeenCalled()
     })
@@ -104,12 +105,12 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        await act(async () => {
-            await user.type(input, '  New value  ')
-            input.blur()
-        })
+        await act(() => user.type(input, '  New value  '))
+        await act(() => user.tab())
 
-        expect(input).toHaveValue('New value')
+        await waitFor(() => {
+            expect(input).toHaveValue('New value')
+        })
     })
 
     it('should show validation error when validator returns error message on blur', async () => {
@@ -126,15 +127,11 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        await act(async () => {
-            await user.type(input, 'invalid-email')
-        })
+        await act(() => user.type(input, 'invalid-email'))
 
         expect(input).toHaveAttribute('aria-invalid', 'false')
 
-        await act(async () => {
-            input.blur()
-        })
+        await act(() => user.tab())
 
         await waitFor(() => {
             expect(input).toHaveAttribute('aria-invalid', 'true')
@@ -155,23 +152,19 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        await act(async () => {
-            await user.type(input, 'invalid')
-        })
-
-        await act(async () => {
-            input.blur()
-        })
+        await act(() => user.type(input, 'invalid'))
+        await act(() => user.tab())
 
         await waitFor(() => {
             expect(input).toHaveAttribute('aria-invalid', 'true')
         })
 
-        await act(async () => {
-            await user.type(input, '@')
-        })
+        await act(() => user.click(input))
+        await act(() => user.type(input, '@'))
 
-        expect(input).toHaveAttribute('aria-invalid', 'false')
+        await waitFor(() => {
+            expect(input).toHaveAttribute('aria-invalid', 'false')
+        })
     })
 
     it('should call onValueChange during typing and pass validation on blur', async () => {
@@ -191,13 +184,13 @@ describe('EditableField', () => {
 
         const input = getByPlaceholderText('+ Add')
 
-        await act(async () => {
-            await user.type(input, 'new@example.com')
-            input.blur()
-        })
+        await act(() => user.type(input, 'new@example.com'))
+        await act(() => user.tab())
 
-        expect(mockValidator).toHaveBeenLastCalledWith('new@example.com')
-        expect(input).toHaveAttribute('aria-invalid', 'false')
+        await waitFor(() => {
+            expect(mockValidator).toHaveBeenLastCalledWith('new@example.com')
+            expect(input).toHaveAttribute('aria-invalid', 'false')
+        })
     })
 
     it('should update input value when prop value changes', () => {
@@ -244,16 +237,16 @@ describe('EditableField', () => {
 
             const input = getByPlaceholderText('+ Add')
 
-            await act(async () => {
-                await user.type(input, 'test@example.com')
-            })
+            await act(() => user.type(input, 'test@example.com'))
 
             expect(input).toHaveFocus()
 
-            await user.keyboard('{Enter}')
+            await act(() => user.keyboard('{Enter}'))
 
-            expect(input).not.toHaveFocus()
-            expect(onBlur).toHaveBeenCalledWith('test@example.com')
+            await waitFor(() => {
+                expect(input).not.toHaveFocus()
+                expect(onBlur).toHaveBeenCalledWith('test@example.com')
+            })
         })
 
         it('should not blur text field on Enter when value is invalid', async () => {
@@ -276,19 +269,17 @@ describe('EditableField', () => {
 
             const input = getByPlaceholderText('+ Add')
 
-            await act(async () => {
-                await user.type(input, 'invalid-email')
-            })
+            await act(() => user.type(input, 'invalid-email'))
 
             expect(input).toHaveFocus()
 
-            await user.keyboard('{Enter}')
+            await act(() => user.keyboard('{Enter}'))
 
-            expect(input).toHaveFocus()
             await waitFor(() => {
+                expect(input).toHaveFocus()
                 expect(input).toHaveAttribute('aria-invalid', 'true')
+                expect(onBlur).not.toHaveBeenCalled()
             })
-            expect(onBlur).not.toHaveBeenCalled()
         })
 
         describe('Textarea on non-macOS platforms', () => {
@@ -315,15 +306,15 @@ describe('EditableField', () => {
 
                 const textarea = getByPlaceholderText('+ Add note')
 
-                await act(async () => {
-                    await user.type(textarea, '  Note text  ')
-                })
+                await act(() => user.type(textarea, '  Note text  '))
 
                 expect(textarea).toHaveFocus()
 
-                await user.keyboard('{Control>}{Enter}{/Control}')
+                await act(() => user.keyboard('{Control>}{Enter}{/Control}'))
 
-                expect(textarea).not.toHaveFocus()
+                await waitFor(() => {
+                    expect(textarea).not.toHaveFocus()
+                })
             })
 
             it('should not blur textarea on Meta+Enter', async () => {
@@ -333,15 +324,15 @@ describe('EditableField', () => {
 
                 const textarea = getByPlaceholderText('+ Add note')
 
-                await act(async () => {
-                    await user.type(textarea, 'Note text')
+                await act(() => user.type(textarea, 'Note text'))
+
+                expect(textarea).toHaveFocus()
+
+                await act(() => user.keyboard('{Meta>}{Enter}{/Meta}'))
+
+                await waitFor(() => {
+                    expect(textarea).toHaveFocus()
                 })
-
-                expect(textarea).toHaveFocus()
-
-                await user.keyboard('{Meta>}{Enter}{/Meta}')
-
-                expect(textarea).toHaveFocus()
             })
         })
 
@@ -373,16 +364,16 @@ describe('EditableField', () => {
 
                 const textarea = getByPlaceholderText('+ Add note')
 
-                await act(async () => {
-                    await user.type(textarea, '  Note text  ')
-                })
+                await act(() => user.type(textarea, '  Note text  '))
 
                 expect(textarea).toHaveFocus()
 
-                await user.keyboard('{Meta>}{Enter}{/Meta}')
+                await act(() => user.keyboard('{Meta>}{Enter}{/Meta}'))
 
-                expect(textarea).not.toHaveFocus()
-                expect(textarea).toHaveValue('Note text')
+                await waitFor(() => {
+                    expect(textarea).not.toHaveFocus()
+                    expect(textarea).toHaveValue('Note text')
+                })
             })
 
             it('should not blur textarea on Ctrl+Enter', async () => {
@@ -392,15 +383,15 @@ describe('EditableField', () => {
 
                 const textarea = getByPlaceholderText('+ Add note')
 
-                await act(async () => {
-                    await user.type(textarea, 'Note text')
+                await act(() => user.type(textarea, 'Note text'))
+
+                expect(textarea).toHaveFocus()
+
+                await act(() => user.keyboard('{Control>}{Enter}{/Control}'))
+
+                await waitFor(() => {
+                    expect(textarea).toHaveFocus()
                 })
-
-                expect(textarea).toHaveFocus()
-
-                await user.keyboard('{Control>}{Enter}{/Control}')
-
-                expect(textarea).toHaveFocus()
             })
         })
     })

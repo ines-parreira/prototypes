@@ -107,9 +107,7 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
 
         await waitFor(() => {
             const randomTeamTexts = screen.getAllByText('Random Team')
@@ -133,16 +131,12 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
 
         const supportOption = screen.getByRole('option', {
             name: 'Support',
         })
-        await act(async () => {
-            await user.click(supportOption)
-        })
+        await act(() => user.click(supportOption))
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -164,17 +158,13 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
 
         const noTeamOption = screen
             .getAllByRole('option')
             .find((option) => option.textContent?.includes('No team'))
 
-        await act(async () => {
-            await user.click(noTeamOption!)
-        })
+        await act(() => user.click(noTeamOption!))
 
         await waitForUpdateTicketRequest(async (request) => {
             const body = await request.clone().json()
@@ -190,27 +180,19 @@ describe('TeamAssignee', () => {
         )
 
         const select = await waitUntilLoaded()
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
 
         const searchInput = await screen.findByRole('searchbox')
-        await act(async () => {
-            await user.type(searchInput, 'test search')
-        })
+        await act(() => user.type(searchInput, 'test search'))
 
         expect(searchInput).toHaveValue('test search')
 
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await act(async () => {
-            await user.click(select)
-        })
+        await act(() => user.click(select))
         const searchInputAfterReopen = await screen.findByRole('searchbox')
 
         expect(searchInputAfterReopen).toHaveValue('')

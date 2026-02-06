@@ -1,3 +1,4 @@
+import { act } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
 import {
@@ -72,7 +73,9 @@ describe('useBaseCustomerFields', () => {
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.handleNoteBlur('New note')
+        act(() => {
+            result.current.handleNoteBlur('New note')
+        })
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -106,7 +109,9 @@ describe('useBaseCustomerFields', () => {
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.createChannel('phone', '+1234567890')
+        act(() => {
+            result.current.createChannel('phone', '+1234567890')
+        })
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -151,7 +156,9 @@ describe('useBaseCustomerFields', () => {
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.updateChannel(1, 'new@example.com')
+        act(() => {
+            result.current.updateChannel(1, 'new@example.com')
+        })
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()
@@ -196,7 +203,9 @@ describe('useBaseCustomerFields', () => {
 
         const waitForRequest = mockUpdateCustomer.waitForRequest(server)
 
-        result.current.deleteChannel(2)
+        act(() => {
+            result.current.deleteChannel(2)
+        })
 
         await waitForRequest(async (request) => {
             const body = await request.clone().json()

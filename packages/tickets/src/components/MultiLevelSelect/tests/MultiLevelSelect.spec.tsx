@@ -1,5 +1,4 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import { render } from '../../../tests/render.utils'
@@ -41,7 +40,7 @@ describe('MultiLevelSelect', () => {
     })
 
     it('should filter options when searching', async () => {
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -51,10 +50,10 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const searchInput = screen.getByRole('searchbox')
-        await act(() => userEvent.type(searchInput, 'open'))
+        await act(() => user.type(searchInput, 'open'))
 
         await waitFor(() => {
             const options = screen.getAllByRole('option')
@@ -64,7 +63,7 @@ describe('MultiLevelSelect', () => {
     })
 
     it('should show results with captions when searching', async () => {
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -74,10 +73,10 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const searchInput = screen.getByRole('searchbox')
-        await act(() => userEvent.type(searchInput, 'high'))
+        await act(() => user.type(searchInput, 'high'))
 
         await waitFor(() => {
             const listbox = screen.getByRole('listbox')
@@ -88,7 +87,7 @@ describe('MultiLevelSelect', () => {
 
     it('should call onSelect when selecting a leaf option', async () => {
         const onSelect = vi.fn()
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -98,19 +97,19 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const listbox = await screen.findByRole('listbox')
-        await act(() => userEvent.click(within(listbox).getByText('Status')))
+        await act(() => user.click(within(listbox).getByText('Status')))
 
         const openOptions = await screen.findAllByText('Open')
-        await act(() => userEvent.click(openOptions[1]))
+        await act(() => user.click(openOptions[1]))
 
         expect(onSelect).toHaveBeenCalledWith('Status::Open')
     })
 
     it('should navigate up a level when clicking the back button', async () => {
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -120,23 +119,23 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const listbox = await screen.findByRole('listbox')
-        await act(() => userEvent.click(within(listbox).getByText('Status')))
+        await act(() => user.click(within(listbox).getByText('Status')))
 
         await screen.findAllByText('Open')
 
         const backButton = screen.getByRole('button', { name: /Status/i })
         expect(backButton).toBeInTheDocument()
 
-        await act(() => userEvent.click(backButton))
+        await act(() => user.click(backButton))
 
         await screen.findAllByText('Priority')
     })
 
     it('should show clear button when value is selected', async () => {
-        const { rerender } = render(
+        const { user, rerender } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -146,17 +145,17 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         expect(
             screen.queryByRole('button', { name: 'Clear selection' }),
         ).not.toBeInTheDocument()
 
         const listbox = await screen.findByRole('listbox')
-        await act(() => userEvent.click(within(listbox).getByText('Status')))
+        await act(() => user.click(within(listbox).getByText('Status')))
 
         const openOption = await screen.findAllByText('Open')
-        await act(() => userEvent.click(openOption[1]))
+        await act(() => user.click(openOption[1]))
 
         rerender(
             <MultiLevelSelect
@@ -168,7 +167,7 @@ describe('MultiLevelSelect', () => {
             />,
         )
 
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         expect(
             await screen.findByRole('button', { name: 'Clear selection' }),
@@ -177,7 +176,7 @@ describe('MultiLevelSelect', () => {
 
     it('should call onSelect with undefined when clicking clear button', async () => {
         const onSelect = vi.fn()
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -188,18 +187,18 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const clearButton = await screen.findByRole('button', {
             name: 'Clear selection',
         })
-        await act(() => userEvent.click(clearButton))
+        await act(() => user.click(clearButton))
 
         expect(onSelect).toHaveBeenCalledWith(undefined)
     })
 
     it('should clear search when closing dropdown', async () => {
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -209,25 +208,25 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         const searchInput = screen.getByRole('searchbox')
-        await act(() => userEvent.type(searchInput, 'open'))
+        await act(() => user.type(searchInput, 'open'))
 
         await waitFor(() => {
             const options = screen.getAllByRole('option')
             expect(options).toHaveLength(1)
         })
 
-        await act(() => userEvent.click(document.body))
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(document.body))
+        await act(() => user.click(trigger))
 
         const newSearchInput = await screen.findByRole('searchbox')
         expect(newSearchInput).toHaveValue('')
     })
 
     it('should reset to selected value path when opening dropdown', async () => {
-        render(
+        const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
@@ -238,19 +237,19 @@ describe('MultiLevelSelect', () => {
         )
 
         const trigger = screen.getByLabelText('Select field')
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         await screen.findAllByText('Open')
         await screen.findAllByText('Closed')
 
         const backButton = screen.getByRole('button', { name: /Status/i })
-        await act(() => userEvent.click(backButton))
+        await act(() => user.click(backButton))
 
         await screen.findAllByText('Priority')
 
-        await act(() => userEvent.click(document.body))
+        await act(() => user.click(document.body))
 
-        await act(() => userEvent.click(trigger))
+        await act(() => user.click(trigger))
 
         await screen.findAllByText('Open')
         await screen.findAllByText('Closed')

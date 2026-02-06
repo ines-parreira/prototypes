@@ -272,10 +272,12 @@ beforeEach(() => {
     queryClient.clear()
     mockUseFlag.mockReturnValue(true)
     mockSetTicketMessageTranslationDisplay.mockClear()
-    // Reset zustand store
-    useTicketMessageTranslationDisplay.setState({
-        ticketMessagesTranslationDisplayMap: {},
-        allMessageDisplayState: DisplayedContent.Translated,
+    // Reset zustand store - wrapped in act to prevent warnings
+    act(() => {
+        useTicketMessageTranslationDisplay.setState({
+            ticketMessagesTranslationDisplayMap: {},
+            allMessageDisplayState: DisplayedContent.Translated,
+        })
     })
     server.use(...defaultHandlers)
 })
@@ -294,7 +296,7 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe('useLiveTicketTranslationsUpdates', () => {
     describe('hook structure and basic functionality', () => {
-        it('should return the correct structure', () => {
+        it('should return the correct structure', async () => {
             const { result } = renderHook(
                 () =>
                     useLiveTicketTranslationsUpdates({
@@ -305,12 +307,14 @@ describe('useLiveTicketTranslationsUpdates', () => {
                 { wrapper },
             )
 
-            expect(result.current).toEqual({
-                handleTicketMessageTranslationEvents: expect.any(Function),
-                generateTicketMessagesTranslations: expect.any(Function),
-                shouldGenerateTicketTranslations: expect.any(Boolean),
-                shouldGenerateTicketSubjectTranslation: expect.any(Boolean),
-                generateTicketSubjectTranslation: expect.any(Function),
+            await waitFor(() => {
+                expect(result.current).toEqual({
+                    handleTicketMessageTranslationEvents: expect.any(Function),
+                    generateTicketMessagesTranslations: expect.any(Function),
+                    shouldGenerateTicketTranslations: expect.any(Boolean),
+                    shouldGenerateTicketSubjectTranslation: expect.any(Boolean),
+                    generateTicketSubjectTranslation: expect.any(Function),
+                })
             })
         })
     })
@@ -319,7 +323,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
         it('should generate translations automatically when ticket message translations loaded', async () => {
             server.use(mockGetCurrentUserFrench.handler)
 
-            renderHook(
+            const { result } = renderHook(
                 () =>
                     useLiveTicketTranslationsUpdates({
                         ticketId: 123,
@@ -328,6 +332,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for the hook to stabilize before checking request
+            await waitFor(() => {
+                expect(result.current.shouldGenerateTicketTranslations).toBe(
+                    false,
+                )
+            })
 
             // Wait for message translation requests to be made
             const waitForFirstRequest =
@@ -432,9 +443,11 @@ describe('useLiveTicketTranslationsUpdates', () => {
                 result.current.generateTicketMessagesTranslations()
             })
 
-            expect(
-                mockSetTicketMessageTranslationDisplay,
-            ).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(
+                    mockSetTicketMessageTranslationDisplay,
+                ).not.toHaveBeenCalled()
+            })
         })
 
         it('should not generate translations when they already exist', async () => {
@@ -572,7 +585,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
     })
 
     describe('event handling', () => {
-        it('should handle ticket translation completed event', () => {
+        it('should handle ticket translation completed event', async () => {
             server.use(
                 mockGetCurrentUserEnglish.handler,
                 mockListTranslationsEmpty.handler,
@@ -587,6 +600,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'event-1',
@@ -610,7 +630,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
         })
 
-        it('should handle ticket translation failed event', () => {
+        it('should handle ticket translation failed event', async () => {
             server.use(
                 mockGetCurrentUserEnglish.handler,
                 mockListTranslationsEmpty.handler,
@@ -625,6 +645,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'event-2',
@@ -643,7 +670,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
         })
 
-        it('should handle ticket message translation completed event', () => {
+        it('should handle ticket message translation completed event', async () => {
             server.use(
                 mockGetCurrentUserEnglish.handler,
                 mockListTranslationsEmpty.handler,
@@ -658,6 +685,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'event-3',
@@ -678,7 +712,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
         })
 
-        it('should handle ticket message translation failed event', () => {
+        it('should handle ticket message translation failed event', async () => {
             server.use(
                 mockGetCurrentUserEnglish.handler,
                 mockListTranslationsEmpty.handler,
@@ -693,6 +727,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'event-4',
@@ -713,7 +754,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
         })
 
-        it('should not process events when feature flag is disabled', () => {
+        it('should not process events when feature flag is disabled', async () => {
             mockUseFlag.mockReturnValue(false)
 
             server.use(
@@ -730,6 +771,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'event-5',
@@ -748,7 +796,7 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
         })
 
-        it('should deduplicate events with same ID', () => {
+        it('should deduplicate events with same ID', async () => {
             server.use(
                 mockGetCurrentUserEnglish.handler,
                 mockListTranslationsEmpty.handler,
@@ -763,6 +811,13 @@ describe('useLiveTicketTranslationsUpdates', () => {
                     }),
                 { wrapper },
             )
+
+            // Wait for hook to stabilize after initial render
+            await waitFor(() => {
+                expect(
+                    result.current.handleTicketMessageTranslationEvents,
+                ).toBeDefined()
+            })
 
             const event = {
                 id: 'duplicate-event',
@@ -989,7 +1044,11 @@ describe('useLiveTicketTranslationsUpdates', () => {
             })
 
             // The shouldGenerateTicketTranslations should remain false
-            expect(result.current.shouldGenerateTicketTranslations).toBe(false)
+            await waitFor(() => {
+                expect(result.current.shouldGenerateTicketTranslations).toBe(
+                    false,
+                )
+            })
         })
 
         it('should chunk messages and process them in batches', async () => {
