@@ -59,7 +59,8 @@ export const KnowledgeEditorGuidanceProvider = ({
     } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
 
     const hasPendingChanges = useMemo(() => {
-        if (state.guidanceMode === 'read') return false
+        if (state.guidanceMode === 'read' || state.guidanceMode === 'diff')
+            return false
         return (
             !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
             state.content !== state.savedSnapshot.content

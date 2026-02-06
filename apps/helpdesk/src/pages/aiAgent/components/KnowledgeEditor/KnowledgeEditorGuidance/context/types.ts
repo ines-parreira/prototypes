@@ -6,7 +6,7 @@ import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/typ
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
-export type GuidanceModeType = 'create' | 'edit' | 'read'
+export type GuidanceModeType = 'create' | 'edit' | 'read' | 'diff'
 
 export type ModalType =
     | 'unsaved'

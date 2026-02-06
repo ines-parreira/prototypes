@@ -97,6 +97,43 @@ describe('guidanceReducer', () => {
 
             expect(result.hasAutoSavedInSession).toBe(true)
         })
+
+        it('should update guidanceMode to diff', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_MODE',
+                payload: 'diff',
+            })
+
+            expect(result.guidanceMode).toBe('diff')
+        })
+
+        it('should reset hasAutoSavedInSession to false when switching to diff mode', () => {
+            const stateWithAutoSaved = {
+                ...initialState,
+                guidanceMode: 'edit' as const,
+                hasAutoSavedInSession: true,
+            }
+            const result = guidanceReducer(stateWithAutoSaved, {
+                type: 'SET_MODE',
+                payload: 'diff',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(false)
+        })
+
+        it('should preserve hasAutoSavedInSession when switching to create mode', () => {
+            const stateWithAutoSaved = {
+                ...initialState,
+                guidanceMode: 'edit' as const,
+                hasAutoSavedInSession: true,
+            }
+            const result = guidanceReducer(stateWithAutoSaved, {
+                type: 'SET_MODE',
+                payload: 'create',
+            })
+
+            expect(result.hasAutoSavedInSession).toBe(true)
+        })
     })
 
     describe('SET_FULLSCREEN', () => {
@@ -1102,6 +1139,19 @@ describe('guidanceReducer', () => {
             expect(result.historicalVersion).toBeNull()
             expect(result.title).toBe(mockGuidance.title)
             expect(result.content).toBe(mockGuidance.content)
+        })
+
+        it('should reset guidanceMode to read when in diff mode', () => {
+            const stateInDiffMode: GuidanceState = {
+                ...stateWithHistoricalVersion,
+                guidanceMode: 'diff',
+            }
+
+            const result = guidanceReducer(stateInDiffMode, {
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+
+            expect(result.guidanceMode).toBe('read')
         })
     })
 

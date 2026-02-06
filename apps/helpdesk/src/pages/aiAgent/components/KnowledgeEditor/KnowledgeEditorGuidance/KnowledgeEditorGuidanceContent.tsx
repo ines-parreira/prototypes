@@ -8,6 +8,7 @@ import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorT
 import { GuidanceToolbarControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useGuidanceContext } from './context'
 import { useGuidanceAutoSave } from './context/useGuidanceAutoSave'
+import { KnowledgeEditorGuidanceDiffView } from './diff/KnowledgeEditorGuidanceDiffView'
 import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceVersionBanner } from './KnowledgeEditorGuidanceVersionBanner'
 import { KnowledgeEditorGuidanceDeleteModal } from './modals/KnowledgeEditorGuidanceDeleteModal'
@@ -58,10 +59,16 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         <div className={css.knowledgeEditorContainer}>
             <KnowledgeEditorTopBar
                 onClickPrevious={
-                    state.guidanceMode !== 'edit' ? onClickPrevious : undefined
+                    state.guidanceMode !== 'edit' &&
+                    state.guidanceMode !== 'diff'
+                        ? onClickPrevious
+                        : undefined
                 }
                 onClickNext={
-                    state.guidanceMode !== 'edit' ? onClickNext : undefined
+                    state.guidanceMode !== 'edit' &&
+                    state.guidanceMode !== 'diff'
+                        ? onClickNext
+                        : undefined
                 }
                 title="Guidance"
                 isFullscreen={state.isFullscreen}
@@ -102,6 +109,18 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                                 availableVariables={guidanceVariables}
                             />
                         )}
+
+                        {state.guidanceMode === 'diff' &&
+                            state.historicalVersion && (
+                                <KnowledgeEditorGuidanceDiffView
+                                    oldTitle={state.title}
+                                    oldContent={state.content}
+                                    newTitle={state.guidance?.title ?? ''}
+                                    newContent={state.guidance?.content ?? ''}
+                                    availableVariables={guidanceVariables}
+                                    availableActions={guidanceActions}
+                                />
+                            )}
 
                         {(state.guidanceMode === 'edit' ||
                             state.guidanceMode === 'create') && (

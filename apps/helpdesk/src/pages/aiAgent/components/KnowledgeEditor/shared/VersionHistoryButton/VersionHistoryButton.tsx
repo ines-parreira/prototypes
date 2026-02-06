@@ -188,6 +188,8 @@ export function VersionHistoryButton<V extends VersionItem>({
 
     return (
         <Select<VersionOption<V>>
+            // we need to remount the list whenever we change our currentVersionId because we are statically rendering the items
+            // on component mount
             key={currentlySelectedVersionId}
             trigger={trigger}
             items={items}

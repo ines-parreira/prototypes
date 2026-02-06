@@ -11,7 +11,7 @@ export function guidanceReducer(
                 ...state,
                 guidanceMode: action.payload,
                 hasAutoSavedInSession:
-                    action.payload === 'read'
+                    action.payload === 'read' || action.payload === 'diff'
                         ? false
                         : state.hasAutoSavedInSession,
             }
@@ -170,6 +170,7 @@ export function guidanceReducer(
                 historicalVersion: null,
                 title: originalTitle,
                 content: originalContent,
+                guidanceMode: 'read',
             }
         }
 

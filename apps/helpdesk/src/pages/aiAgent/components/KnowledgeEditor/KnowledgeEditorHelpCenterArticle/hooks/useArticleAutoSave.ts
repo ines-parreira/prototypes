@@ -236,7 +236,8 @@ export const useArticleAutoSave = () => {
 
     const onChangeField = useCallback(
         (field: 'title' | 'content', value: string) => {
-            if (state.articleMode === 'read') return
+            if (state.articleMode === 'read' || state.articleMode === 'diff')
+                return
 
             let newTitle = field === 'title' ? value : state.title
             const newContent = field === 'content' ? value : state.content

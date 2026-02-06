@@ -1,0 +1,174 @@
+import { useCallback, useMemo, useRef, useState } from 'react'
+
+import classNames from 'classnames'
+import type { ContentBlock, ContentState as ContentStateType } from 'draft-js'
+import { EditorState } from 'draft-js'
+import Editor from 'draft-js-plugins-editor'
+
+import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
+import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
+import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
+import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
+import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
+import type {
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
+} from 'pages/common/draftjs/plugins/types'
+
+import type { DiffStatus } from './diffUtils'
+import { addDiffEntities } from './diffUtils'
+
+import 'draft-js/dist/Draft.css'
+
+import css from './DiffReadOnlyEditor.less'
+
+// Inline styles applied by Draft.js customStyleMap for diff-highlighted plain text.
+// Guidance tokens (variables/actions) use a different path — they're rendered as
+// decorated tag components with border styling via CSS (see DiffReadOnlyEditor.less).
+const DIFF_STYLE_MAP: Record<string, React.CSSProperties> = {
+    DIFF_ADDED: {
+        backgroundColor: 'var(--surface-success-primary)',
+        color: 'var(--content-success-primary)',
+    },
+    DIFF_REMOVED: {
+        backgroundColor: 'var(--surface-error-secondary)',
+        color: 'var(--content-error-primary)',
+        textDecoration: 'line-through',
+    },
+}
+
+// Decorator components wrap guidance tokens in a span with diff styling.
+// The diffStatus is attached as entity data by addDiffEntities in diffUtils.ts.
+function DiffActionDecorator(props: DecoratorComponentProps) {
+    const { contentState, entityKey, children } = props
+    const data = contentState.getEntity(entityKey).getData() as {
+        value: string
+        diffStatus: DiffStatus
+    }
+
+    return (
+        <span
+            className={classNames({
+                [css.tagDiffAdded]: data.diffStatus === 'added',
+                [css.tagDiffRemoved]: data.diffStatus === 'removed',
+            })}
+        >
+            <GuidanceActionTag value={data.value}>{children}</GuidanceActionTag>
+        </span>
+    )
+}
+
+function DiffVariableDecorator(props: DecoratorComponentProps) {
+    const { contentState, entityKey, children } = props
+    const data = contentState.getEntity(entityKey).getData() as {
+        value: string
+        diffStatus: DiffStatus
+    }
+
+    return (
+        <span
+            className={classNames({
+                [css.tagDiffAdded]: data.diffStatus === 'added',
+                [css.tagDiffRemoved]: data.diffStatus === 'removed',
+            })}
+        >
+            <GuidanceVariableTag value={data.value}>
+                {children}
+            </GuidanceVariableTag>
+        </span>
+    )
+}
+
+function createDiffPlugins() {
+    return [
+        {
+            decorators: [
+                {
+                    strategy: (
+                        contentBlock: ContentBlock,
+                        callback: DecoratorStrategyCallback,
+                        contentState: ContentStateType,
+                    ) => {
+                        contentBlock.findEntityRanges((character) => {
+                            const entityKey = character.getEntity()
+                            return (
+                                entityKey !== null &&
+                                contentState.getEntity(entityKey).getType() ===
+                                    'guidance_action'
+                            )
+                        }, callback)
+                    },
+                    component: DiffActionDecorator,
+                },
+            ],
+        },
+        {
+            decorators: [
+                {
+                    strategy: (
+                        contentBlock: ContentBlock,
+                        callback: DecoratorStrategyCallback,
+                        contentState: ContentStateType,
+                    ) => {
+                        contentBlock.findEntityRanges((character) => {
+                            const entityKey = character.getEntity()
+                            return (
+                                entityKey !== null &&
+                                contentState.getEntity(entityKey).getType() ===
+                                    'guidance_variable'
+                            )
+                        }, callback)
+                    },
+                    component: DiffVariableDecorator,
+                },
+            ],
+        },
+    ]
+}
+
+type Props = {
+    contentState: ContentStateType
+    availableVariables?: GuidanceVariableGroup[]
+    availableActions?: GuidanceAction[]
+}
+
+export function DiffReadOnlyEditor({
+    contentState,
+    availableVariables,
+    availableActions,
+}: Props) {
+    const editorRef = useRef<Editor | null>(null)
+
+    const plugins = useMemo(() => createDiffPlugins(), [])
+
+    // addDiffEntities scans for guidance token patterns in the merged ContentState
+    // and attaches entity metadata so the decorator plugins above can render them
+    // as styled tag components instead of raw text
+    const [editorState, setEditorState] = useState(() => {
+        const enrichedContentState = addDiffEntities(contentState)
+        return EditorState.createWithContent(enrichedContentState)
+    })
+
+    const onChange = useCallback((newState: EditorState) => {
+        setEditorState(newState)
+    }, [])
+
+    return (
+        <ToolbarProvider
+            guidanceVariables={availableVariables}
+            guidanceActions={availableActions}
+        >
+            <Editor
+                ref={(el: Editor | null) => {
+                    editorRef.current = el
+                }}
+                editorState={editorState}
+                // theory says that this isn't needed for view only, BUT it doesn't render the custom elements otherwise
+                onChange={onChange}
+                plugins={plugins}
+                customStyleMap={DIFF_STYLE_MAP}
+                readOnly
+            />
+        </ToolbarProvider>
+    )
+}

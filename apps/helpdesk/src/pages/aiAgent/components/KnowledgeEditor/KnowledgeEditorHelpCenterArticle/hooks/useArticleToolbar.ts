@@ -6,6 +6,7 @@ import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 
 import { useArticleContext } from '../context'
+import type { ArticleModeType } from '../context/types'
 
 export type ArticleToolbarState =
     | { type: 'create' }
@@ -166,7 +167,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
 }
 
 const getToolbarState = (
-    articleMode: 'create' | 'edit' | 'read',
+    articleMode: ArticleModeType,
     isCurrent: boolean | undefined,
     hasDraft: boolean,
     isViewingHistoricalVersion: boolean,

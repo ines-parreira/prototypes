@@ -14,6 +14,7 @@ export type GuidanceMode =
     | { mode: 'read' }
     | { mode: 'edit' }
     | { mode: 'create' }
+    | { mode: 'diff' }
 
 const MoreActionsMenu = ({
     allDisabled,

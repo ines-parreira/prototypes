@@ -9,6 +9,7 @@ import {
     fromArticleTranslationResponse,
     useGuidanceContext,
 } from '../KnowledgeEditorGuidance/context'
+import type { GuidanceModeType } from '../KnowledgeEditorGuidance/context/types'
 
 export type GuidanceToolbarState =
     | { type: 'published-with-draft' }
@@ -177,7 +178,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 }
 
 const getToolbarState = (
-    guidanceMode: 'create' | 'edit' | 'read',
+    guidanceMode: GuidanceModeType,
     isCurrent: boolean | undefined,
     hasDraft: boolean,
     isViewingHistoricalVersion: boolean,

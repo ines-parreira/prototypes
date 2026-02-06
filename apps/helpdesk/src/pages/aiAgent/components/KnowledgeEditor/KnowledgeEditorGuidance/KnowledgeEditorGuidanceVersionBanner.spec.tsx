@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -19,6 +20,12 @@ const mockDispatch = jest.fn()
 const mockUseVersionBanner = jest.fn<VersionBannerState, []>()
 const mockUseVersionHistory = jest.fn<VersionHistoryData, []>()
 const mockUseGuidanceContext = jest.fn()
+const mockUseFlag = jest.fn()
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
+    useFlag: (key: string) => mockUseFlag(key),
+}))
 
 jest.mock('./hooks/useVersionBanner', () => ({
     useVersionBanner: () => mockUseVersionBanner(),
@@ -68,6 +75,7 @@ const mockGetDateAndTimeFormatter = jest.mocked(getDateAndTimeFormatter)
 describe('KnowledgeEditorGuidanceVersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
         mockUseVersionBanner.mockReturnValue(defaultMockState)
         mockUseVersionHistory.mockReturnValue({
             versions: [],
@@ -304,6 +312,194 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     name: /Restore this version/i,
                 }),
             ).toBeDisabled()
+        })
+
+        describe('diff toggle', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === FeatureFlagKey.AddDiffingForVersionHistory,
+                )
+            })
+
+            it('renders "Compare" button when not in diff mode', () => {
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'read',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders "View content" button when in diff mode', () => {
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'diff',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByRole('button', { name: /View content/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('dispatches SET_MODE with "diff" when "Compare" is clicked', async () => {
+                const user = userEvent.setup()
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'read',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                await user.click(
+                    screen.getByRole('button', { name: /Compare/i }),
+                )
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_MODE',
+                    payload: 'diff',
+                })
+            })
+
+            it('dispatches SET_MODE with "read" when "View content" is clicked', async () => {
+                const user = userEvent.setup()
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'diff',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                await user.click(
+                    screen.getByRole('button', { name: /View content/i }),
+                )
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_MODE',
+                    payload: 'read',
+                })
+            })
+
+            it('disables the diff toggle button when isDisabled is true', () => {
+                mockUseVersionBanner.mockReturnValue({
+                    ...defaultMockState,
+                    isDisabled: true,
+                })
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'read',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeDisabled()
+            })
+
+            it('does not render diff toggle button when feature flag is disabled', () => {
+                mockUseFlag.mockReturnValue(false)
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'read',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.queryByRole('button', { name: /Compare/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /View content/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('when not viewing historical version', () => {
+        it('does not render the diff toggle button', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                state: {
+                    guidanceMode: 'read',
+                    historicalVersion: null,
+                },
+                dispatch: mockDispatch,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /Compare/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /View content/i }),
+            ).not.toBeInTheDocument()
         })
     })
 

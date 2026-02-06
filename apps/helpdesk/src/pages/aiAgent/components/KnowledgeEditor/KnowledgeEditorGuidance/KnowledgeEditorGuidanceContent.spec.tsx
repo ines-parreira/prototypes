@@ -8,10 +8,8 @@ import { getGuidanceArticleFixture } from 'pages/aiAgent/fixtures/guidanceArticl
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
-import {
-    type GuidanceContextConfig,
-    KnowledgeEditorGuidanceProvider,
-} from './context'
+import { KnowledgeEditorGuidanceProvider } from './context'
+import type { GuidanceContextConfig } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 
 // Mock feature flags
@@ -82,6 +80,12 @@ jest.mock('./edit/KnowledgeEditorGuidanceEditView', () => ({
 jest.mock('./read', () => ({
     KnowledgeEditorGuidanceReadView: () => (
         <div data-testid="read-view">Read View</div>
+    ),
+}))
+
+jest.mock('./diff/KnowledgeEditorGuidanceDiffView', () => ({
+    KnowledgeEditorGuidanceDiffView: () => (
+        <div data-testid="diff-view">Diff View</div>
     ),
 }))
 
@@ -264,6 +268,63 @@ describe('KnowledgeEditorGuidanceContent', () => {
 
             expect(screen.getByTestId('edit-view')).toBeInTheDocument()
             expect(screen.queryByTestId('read-view')).not.toBeInTheDocument()
+        })
+
+        it('should not render diff view in read mode', () => {
+            const closeHandlerRef = { current: null }
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidanceProvider config={baseConfig}>
+                        <KnowledgeEditorGuidanceContent
+                            closeHandlerRef={closeHandlerRef}
+                        />
+                    </KnowledgeEditorGuidanceProvider>
+                </Wrapper>,
+            )
+
+            expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()
+        })
+
+        it('should not render diff view in edit mode', () => {
+            const editConfig: GuidanceContextConfig = {
+                ...baseConfig,
+                initialMode: 'edit',
+            }
+            const closeHandlerRef = { current: null }
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidanceProvider config={editConfig}>
+                        <KnowledgeEditorGuidanceContent
+                            closeHandlerRef={closeHandlerRef}
+                        />
+                    </KnowledgeEditorGuidanceProvider>
+                </Wrapper>,
+            )
+
+            expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()
+        })
+
+        it('should not render diff view in create mode', () => {
+            const createConfig: GuidanceContextConfig = {
+                ...baseConfig,
+                guidanceArticle: undefined,
+                initialMode: 'create',
+            }
+            const closeHandlerRef = { current: null }
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidanceProvider config={createConfig}>
+                        <KnowledgeEditorGuidanceContent
+                            closeHandlerRef={closeHandlerRef}
+                        />
+                    </KnowledgeEditorGuidanceProvider>
+                </Wrapper>,
+            )
+
+            expect(screen.queryByTestId('diff-view')).not.toBeInTheDocument()
         })
     })
 })

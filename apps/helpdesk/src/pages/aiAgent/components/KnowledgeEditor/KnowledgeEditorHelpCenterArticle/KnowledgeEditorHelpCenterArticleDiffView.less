@@ -1,0 +1,226 @@
+@import '~froala-editor/css/froala_style.min.css';
+
+:local {
+    .container {
+        width: 100%;
+        display: flex;
+        padding: var(--spacing-xxl) var(--spacing-xxl) var(--spacing-md)
+            var(--spacing-xxl);
+        flex-direction: column;
+        gap: var(--layout-spacing-m);
+
+        @media (min-width: 841px) {
+            max-width: 696px;
+        }
+
+        @media (max-width: 840px) {
+            max-width: 548px;
+            padding-left: var(--spacing-lg);
+            padding-right: var(--spacing-lg);
+        }
+    }
+
+    .contentWrapper {
+        width: 100%;
+
+        p {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            color: var(--content-neutral-default);
+        }
+
+        p,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        ul,
+        ol,
+        blockquote,
+        table,
+        pre,
+        figure {
+            margin-block-start: 0;
+            margin-inline-start: 0;
+            margin-inline-end: 0;
+            margin-block-end: 24px;
+        }
+
+        strong,
+        b {
+            font-weight: 600;
+        }
+
+        em,
+        i {
+            font-style: italic;
+        }
+
+        a {
+            text-decoration: none;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.8;
+            }
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 40px;
+            line-height: 48px;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 32px;
+            line-height: 40px;
+        }
+
+        h3 {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 32px;
+        }
+
+        h4 {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 24px;
+        }
+
+        h5 {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 24px;
+        }
+
+        h6 {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        ul,
+        ol {
+            padding-inline-start: 32px;
+
+            li {
+                margin-block-end: 8px;
+            }
+        }
+
+        ul {
+            list-style-type: disc;
+        }
+
+        ol ol {
+            list-style-type: lower-alpha;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        figure {
+            max-width: 100%;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        figcaption {
+            font-size: 14px;
+            line-height: 20px;
+            margin-block-end: 8px;
+            margin-block-start: 8px;
+        }
+
+        blockquote {
+            border-left: 2px solid;
+            padding-left: 20px;
+
+            p {
+                line-height: 32px;
+            }
+        }
+
+        pre {
+            border-radius: 4px;
+            padding: 16px;
+            overflow: auto;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        code {
+            font-family: 'Source Code Pro', monospace;
+            border-radius: 3px;
+            padding: 2px 6px;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: auto;
+            width: 100%;
+
+            th {
+                text-align: start;
+            }
+        }
+
+        th,
+        td {
+            font-size: 14px;
+            line-height: 20px;
+            padding: 10px 4px;
+            vertical-align: bottom;
+        }
+
+        iframe {
+            width: 100%;
+        }
+
+        :global {
+            ins {
+                background-color: var(--surface-success-primary);
+                color: var(--content-success-primary);
+                text-decoration: none;
+                padding: 1px 2px;
+                border-radius: 2px;
+            }
+
+            del {
+                background-color: var(--surface-error-secondary);
+                color: var(--content-error-primary);
+                text-decoration: line-through;
+                padding: 1px 2px;
+                border-radius: 2px;
+            }
+        }
+    }
+
+    .titleAdded {
+        background-color: var(--surface-success-primary);
+        color: var(--content-success-primary);
+    }
+
+    .titleRemoved {
+        background-color: var(--surface-error-secondary);
+        color: var(--content-error-primary);
+        text-decoration: line-through;
+    }
+}

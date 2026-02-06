@@ -1,7 +1,15 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { VersionBanner } from './VersionBanner'
+
+const mockUseFlag = jest.fn()
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
+    useFlag: (key: string) => mockUseFlag(key),
+}))
 
 jest.mock('@repo/utils', () => ({
     DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
@@ -36,6 +44,8 @@ type DefaultProps = {
     onGoToLatest: jest.Mock
     historicalVersion: HistoricalVersion
     onOpenRestoreModal: jest.Mock
+    isDiffMode?: boolean
+    onToggleDiff?: jest.Mock
     className?: string
 }
 
@@ -58,6 +68,7 @@ function renderComponent(overrides?: Partial<typeof defaultProps>) {
 describe('VersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
         mockUseGetUser.mockReturnValue({ data: undefined })
     })
 
@@ -366,6 +377,116 @@ describe('VersionBanner', () => {
             })
 
             expect(container.firstChild).toHaveClass('custom-class')
+        })
+
+        describe('diff toggle button', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === FeatureFlagKey.AddDiffingForVersionHistory,
+                )
+            })
+
+            it('renders "Compare" button when onToggleDiff is provided and not in diff mode', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff: jest.fn(),
+                    isDiffMode: false,
+                })
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders "View content" button when in diff mode', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff: jest.fn(),
+                    isDiffMode: true,
+                })
+
+                expect(
+                    screen.getByRole('button', { name: /View content/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('does not render diff toggle button when onToggleDiff is not provided', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                })
+
+                expect(
+                    screen.queryByRole('button', { name: /Compare/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /View content/i }),
+                ).not.toBeInTheDocument()
+            })
+
+            it('calls onToggleDiff when "Compare" button is clicked', async () => {
+                const onToggleDiff = jest.fn()
+                const user = userEvent.setup()
+
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff,
+                    isDiffMode: false,
+                })
+
+                await user.click(
+                    screen.getByRole('button', { name: /Compare/i }),
+                )
+
+                expect(onToggleDiff).toHaveBeenCalledTimes(1)
+            })
+
+            it('calls onToggleDiff when "View content" button is clicked', async () => {
+                const onToggleDiff = jest.fn()
+                const user = userEvent.setup()
+
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff,
+                    isDiffMode: true,
+                })
+
+                await user.click(
+                    screen.getByRole('button', { name: /View content/i }),
+                )
+
+                expect(onToggleDiff).toHaveBeenCalledTimes(1)
+            })
+
+            it('disables diff toggle button when isDisabled is true', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff: jest.fn(),
+                    isDiffMode: false,
+                    isDisabled: true,
+                })
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeDisabled()
+            })
+
+            it('does not render diff toggle button when feature flag is disabled', () => {
+                mockUseFlag.mockReturnValue(false)
+
+                renderComponent({
+                    ...historicalVersionProps,
+                    onToggleDiff: jest.fn(),
+                    isDiffMode: false,
+                })
+
+                expect(
+                    screen.queryByRole('button', { name: /Compare/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /View content/i }),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 

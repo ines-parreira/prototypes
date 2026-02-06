@@ -17,6 +17,15 @@ export function KnowledgeEditorGuidanceVersionBanner() {
     const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
     const { state, dispatch } = useGuidanceContext()
 
+    const isDiffMode = state.guidanceMode === 'diff'
+
+    const onToggleDiff = () => {
+        dispatch({
+            type: 'SET_MODE',
+            payload: isDiffMode ? 'read' : 'diff',
+        })
+    }
+
     return (
         <VersionBanner
             isViewingDraft={isViewingDraft}
@@ -30,6 +39,8 @@ export function KnowledgeEditorGuidanceVersionBanner() {
             onOpenRestoreModal={() =>
                 dispatch({ type: 'SET_MODAL', payload: 'restore' })
             }
+            isDiffMode={isDiffMode}
+            onToggleDiff={isViewingHistoricalVersion ? onToggleDiff : undefined}
             className={css.guidanceBanner}
         />
     )

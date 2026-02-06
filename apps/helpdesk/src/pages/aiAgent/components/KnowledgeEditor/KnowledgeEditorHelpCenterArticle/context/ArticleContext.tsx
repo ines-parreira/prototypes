@@ -63,7 +63,8 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
     } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
 
     const hasPendingContentChanges = useMemo(() => {
-        if (state.articleMode === 'read') return false
+        if (state.articleMode === 'read' || state.articleMode === 'diff')
+            return false
         return (
             !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
             state.content !== state.savedSnapshot.content

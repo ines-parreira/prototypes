@@ -6,6 +6,7 @@ import { ArticleToolbarControls } from './ArticleToolbarControls'
 import { ArticleVersionBanner } from './ArticleVersionBanner'
 import { useArticleContext } from './context'
 import { useArticleAutoSave } from './hooks'
+import { KnowledgeEditorHelpCenterArticleDiffView } from './KnowledgeEditorHelpCenterArticleDiffView'
 import { KnowledgeEditorHelpCenterArticleEditView } from './KnowledgeEditorHelpCenterArticleEditView'
 import { KnowledgeEditorHelpCenterArticleReadView } from './KnowledgeEditorHelpCenterArticleReadView'
 import {
@@ -51,18 +52,22 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
         <div className={css.container}>
             <KnowledgeEditorTopBar
                 onClickPrevious={
-                    state.articleMode !== 'edit' ? onClickPrevious : undefined
+                    state.articleMode !== 'edit' && state.articleMode !== 'diff'
+                        ? onClickPrevious
+                        : undefined
                 }
                 onClickNext={
-                    state.articleMode !== 'edit' ? onClickNext : undefined
+                    state.articleMode !== 'edit' && state.articleMode !== 'diff'
+                        ? onClickNext
+                        : undefined
                 }
                 title={
-                    state.articleMode === 'read'
+                    state.articleMode === 'read' || state.articleMode === 'diff'
                         ? 'Help Center article'
                         : state.title
                 }
                 onChangeTitle={
-                    state.articleMode === 'read'
+                    state.articleMode === 'read' || state.articleMode === 'diff'
                         ? undefined
                         : (title) => onChangeField('title', title)
                 }
@@ -95,12 +100,29 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                 <div className={css.editorContainer}>
                     <ArticleVersionBanner />
 
-                    {state.articleMode === 'read' ? (
+                    {state.articleMode === 'read' && (
                         <KnowledgeEditorHelpCenterArticleReadView
                             content={state.content}
                             title={state.title}
                         />
-                    ) : (
+                    )}
+
+                    {state.articleMode === 'diff' &&
+                        state.historicalVersion && (
+                            <KnowledgeEditorHelpCenterArticleDiffView
+                                oldTitle={state.title}
+                                oldContent={state.content}
+                                newTitle={
+                                    state.article?.translation.title ?? ''
+                                }
+                                newContent={
+                                    state.article?.translation.content ?? ''
+                                }
+                            />
+                        )}
+
+                    {(state.articleMode === 'edit' ||
+                        state.articleMode === 'create') && (
                         <KnowledgeEditorHelpCenterArticleEditView
                             locale={state.currentLocale}
                             articleId={state.article?.id}

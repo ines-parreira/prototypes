@@ -176,7 +176,8 @@ export const useGuidanceAutoSave = () => {
 
     const onChangeField = useCallback(
         (field: 'title' | 'content', value: string) => {
-            if (state.guidanceMode === 'read') return
+            if (state.guidanceMode === 'read' || state.guidanceMode === 'diff')
+                return
 
             let newTitle = field === 'title' ? value : state.title
             const newContent = field === 'content' ? value : state.content

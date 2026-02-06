@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -6,6 +7,13 @@ import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
 import { useVersionHistory } from './hooks/useVersionHistory'
 
+const mockUseFlag = jest.fn()
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
+    useFlag: (key: string) => mockUseFlag(key),
+}))
+
 jest.mock('@repo/utils', () => ({
     DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
     formatDatetime: jest.fn(() => 'Jan 1, 2024 12:00 PM'),
@@ -13,7 +21,7 @@ jest.mock('@repo/utils', () => ({
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn(() => 'UTC'),
+    default: jest.fn((fn: () => unknown) => fn()),
 }))
 
 jest.mock('state/currentUser/selectors', () => ({
@@ -61,6 +69,7 @@ describe('ArticleVersionBanner', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
         mockSwitchVersion = jest.fn()
         mockUseVersionBanner.mockReturnValue(createMockVersionBanner())
         mockUseVersionHistory.mockReturnValue({
@@ -246,6 +255,227 @@ describe('ArticleVersionBanner', () => {
             await user.click(screen.getByText('draft version'))
 
             expect(mockSwitchVersion).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('viewing historical version', () => {
+        const mockDispatch = jest.fn()
+        const mockOnGoToLatest = jest.fn()
+
+        const historicalVersion = {
+            versionId: 42,
+            version: 3,
+            title: 'Old title',
+            content: 'Old content',
+            publishedDatetime: '2025-03-15T14:30:00Z',
+            commitMessage: 'Fixed article content',
+        }
+
+        beforeEach(() => {
+            mockUseVersionHistory.mockReturnValue({
+                isViewingHistoricalVersion: true,
+                onGoToLatest: mockOnGoToLatest,
+            })
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    articleMode: 'read',
+                    historicalVersion,
+                },
+                dispatch: mockDispatch,
+            })
+        })
+
+        it('should render historical version banner', () => {
+            render(<ArticleVersionBanner />)
+
+            expect(
+                screen.getByText(/You are viewing a previous version/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should render commit message when provided', () => {
+            render(<ArticleVersionBanner />)
+
+            expect(
+                screen.getByText(/Fixed article content/i),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render commit message when not provided', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    articleMode: 'read',
+                    historicalVersion: {
+                        ...historicalVersion,
+                        commitMessage: undefined,
+                    },
+                },
+                dispatch: mockDispatch,
+            })
+
+            render(<ArticleVersionBanner />)
+
+            expect(
+                screen.queryByText(/Changes in this version/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call onGoToLatest when "Back to latest" is clicked', async () => {
+            const user = userEvent.setup()
+            render(<ArticleVersionBanner />)
+
+            await user.click(
+                screen.getByRole('button', { name: /Back to latest/i }),
+            )
+
+            expect(mockOnGoToLatest).toHaveBeenCalledTimes(1)
+        })
+
+        it('should dispatch SET_MODAL restore when "Restore this version" is clicked', async () => {
+            const user = userEvent.setup()
+            render(<ArticleVersionBanner />)
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /Restore this version/i,
+                }),
+            )
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'restore',
+            })
+        })
+
+        it('should disable buttons when isDisabled is true', () => {
+            mockUseVersionBanner.mockReturnValue(
+                createMockVersionBanner({ isDisabled: true }),
+            )
+
+            render(<ArticleVersionBanner />)
+
+            expect(
+                screen.getByRole('button', { name: /Back to latest/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', {
+                    name: /Restore this version/i,
+                }),
+            ).toBeDisabled()
+        })
+
+        describe('diff toggle', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === FeatureFlagKey.AddDiffingForVersionHistory,
+                )
+            })
+
+            it('should render "Compare" button when not in diff mode', () => {
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('should render "View content" button when in diff mode', () => {
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'diff',
+                        historicalVersion,
+                    },
+                    dispatch: mockDispatch,
+                })
+
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.getByRole('button', { name: /View content/i }),
+                ).toBeInTheDocument()
+            })
+
+            it('should dispatch SET_MODE with "diff" when "Compare" is clicked', async () => {
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(
+                    screen.getByRole('button', { name: /Compare/i }),
+                )
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_MODE',
+                    payload: 'diff',
+                })
+            })
+
+            it('should dispatch SET_MODE with "read" when "View content" is clicked', async () => {
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'diff',
+                        historicalVersion,
+                    },
+                    dispatch: mockDispatch,
+                })
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(
+                    screen.getByRole('button', { name: /View content/i }),
+                )
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_MODE',
+                    payload: 'read',
+                })
+            })
+
+            it('should disable the diff toggle button when isDisabled is true', () => {
+                mockUseVersionBanner.mockReturnValue(
+                    createMockVersionBanner({ isDisabled: true }),
+                )
+
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.getByRole('button', { name: /Compare/i }),
+                ).toBeDisabled()
+            })
+
+            it('should not render diff toggle button when feature flag is disabled', () => {
+                mockUseFlag.mockReturnValue(false)
+
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.queryByRole('button', { name: /Compare/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /View content/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('when not viewing historical version', () => {
+        it('should not render the diff toggle button', () => {
+            mockUseArticleContext.mockReturnValue({
+                state: {
+                    articleMode: 'read',
+                    historicalVersion: null,
+                },
+                dispatch: jest.fn(),
+            })
+
+            render(<ArticleVersionBanner />)
+
+            expect(
+                screen.queryByRole('button', { name: /Compare/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /View content/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

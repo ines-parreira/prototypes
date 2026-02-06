@@ -11,7 +11,7 @@ export function articleReducer(
                 ...state,
                 articleMode: action.payload,
                 hasAutoSavedInSession:
-                    action.payload === 'read'
+                    action.payload === 'read' || action.payload === 'diff'
                         ? false
                         : state.hasAutoSavedInSession,
             }
@@ -194,6 +194,7 @@ export function articleReducer(
                 historicalVersion: null,
                 title: originalTitle,
                 content: originalContent,
+                articleMode: 'read',
             }
         }
 

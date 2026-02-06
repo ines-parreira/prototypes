@@ -20,6 +20,7 @@ jest.mock('./ArticleToolbarControls')
 jest.mock('./ArticleVersionBanner')
 jest.mock('./KnowledgeEditorHelpCenterArticleEditView')
 jest.mock('./KnowledgeEditorHelpCenterArticleReadView')
+jest.mock('./KnowledgeEditorHelpCenterArticleDiffView')
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => null),
 }))
@@ -267,6 +268,19 @@ jest.mock('./KnowledgeEditorHelpCenterArticleEditView', () => ({
     ),
 }))
 
+jest.mock('./KnowledgeEditorHelpCenterArticleDiffView', () => ({
+    KnowledgeEditorHelpCenterArticleDiffView: jest.fn(
+        ({ oldTitle, oldContent, newTitle, newContent }) => (
+            <div data-mock="DiffView">
+                <span data-testid="diff-view-old-title">{oldTitle}</span>
+                <span data-testid="diff-view-old-content">{oldContent}</span>
+                <span data-testid="diff-view-new-title">{newTitle}</span>
+                <span data-testid="diff-view-new-content">{newContent}</span>
+            </div>
+        ),
+    ),
+}))
+
 jest.mock(
     '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/KnowledgeEditorSidePanelHelpCenterArticle',
     () => ({
@@ -501,6 +515,179 @@ describe('ArticleEditorContent', () => {
             expect(
                 screen.queryByRole('textbox', { name: /title input/i }),
             ).not.toBeInTheDocument()
+        })
+
+        it('should render diff view when articleMode is diff and historicalVersion exists', () => {
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Historical Title',
+                        content: '<p>Historical content</p>',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                        commitMessage: 'Fixed content',
+                        impactDateRange: {
+                            start_datetime: '2025-03-01T00:00:00Z',
+                            end_datetime: '2025-03-15T14:30:00Z',
+                        },
+                    },
+                    title: 'Historical Title',
+                    content: '<p>Historical content</p>',
+                },
+            })
+
+            expect(
+                screen.getByText(
+                    (_, element) =>
+                        element?.getAttribute('data-mock') === 'DiffView',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    (_, element) =>
+                        element?.getAttribute('data-mock') === 'ReadView',
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    (_, element) =>
+                        element?.getAttribute('data-mock') === 'EditView',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render diff view when articleMode is diff but no historicalVersion', () => {
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    historicalVersion: null,
+                },
+            })
+
+            expect(
+                screen.queryByText(
+                    (_, element) =>
+                        element?.getAttribute('data-mock') === 'DiffView',
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide navigation buttons in diff mode', () => {
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Old title',
+                        content: 'Old content',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                        impactDateRange: {
+                            start_datetime: '2025-03-01T00:00:00Z',
+                            end_datetime: '2025-03-15T14:30:00Z',
+                        },
+                    },
+                },
+            })
+
+            expect(
+                screen.queryByRole('button', { name: /previous/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /next/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show "Help Center article" as title in diff mode', () => {
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    title: 'Some Title',
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Old title',
+                        content: 'Old content',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                        impactDateRange: {
+                            start_datetime: '2025-03-01T00:00:00Z',
+                            end_datetime: '2025-03-15T14:30:00Z',
+                        },
+                    },
+                },
+            })
+
+            expect(screen.getByTestId('topbar-title')).toHaveTextContent(
+                'Help Center article',
+            )
+        })
+
+        it('should not make title editable in diff mode', () => {
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Old title',
+                        content: 'Old content',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                        impactDateRange: {
+                            start_datetime: '2025-03-01T00:00:00Z',
+                            end_datetime: '2025-03-15T14:30:00Z',
+                        },
+                    },
+                },
+            })
+
+            expect(
+                screen.queryByRole('textbox', { name: /title input/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should pass correct old/new props to diff view', () => {
+            const article = createMockArticle({
+                translation: {
+                    ...createMockArticle().translation,
+                    title: 'Current Title',
+                    content: '<p>Current content</p>',
+                },
+            })
+
+            renderComponent({
+                state: {
+                    articleMode: 'diff',
+                    title: 'Historical Title',
+                    content: '<p>Historical content</p>',
+                    article,
+                    historicalVersion: {
+                        versionId: 42,
+                        version: 3,
+                        title: 'Historical Title',
+                        content: '<p>Historical content</p>',
+                        publishedDatetime: '2025-03-15T14:30:00Z',
+                        impactDateRange: {
+                            start_datetime: '2025-03-01T00:00:00Z',
+                            end_datetime: '2025-03-15T14:30:00Z',
+                        },
+                    },
+                },
+            })
+
+            expect(screen.getByTestId('diff-view-old-title')).toHaveTextContent(
+                'Historical Title',
+            )
+            expect(
+                screen.getByTestId('diff-view-old-content'),
+            ).toHaveTextContent('<p>Historical content</p>')
+            expect(screen.getByTestId('diff-view-new-title')).toHaveTextContent(
+                'Current Title',
+            )
+            expect(
+                screen.getByTestId('diff-view-new-content'),
+            ).toHaveTextContent('<p>Current content</p>')
         })
     })
 

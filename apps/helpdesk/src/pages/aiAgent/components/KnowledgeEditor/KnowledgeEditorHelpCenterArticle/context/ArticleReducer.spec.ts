@@ -151,6 +151,45 @@ describe('articleReducer', () => {
 
                 expect(result.hasAutoSavedInSession).toBe(true)
             })
+
+            it('should update articleMode to diff', () => {
+                const state = createInitialState({ articleMode: 'read' })
+
+                const result = articleReducer(state, {
+                    type: 'SET_MODE',
+                    payload: 'diff',
+                })
+
+                expect(result.articleMode).toBe('diff')
+            })
+
+            it('should reset hasAutoSavedInSession to false when switching to diff mode', () => {
+                const state = createInitialState({
+                    articleMode: 'edit',
+                    hasAutoSavedInSession: true,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'SET_MODE',
+                    payload: 'diff',
+                })
+
+                expect(result.hasAutoSavedInSession).toBe(false)
+            })
+
+            it('should preserve hasAutoSavedInSession when switching to create mode', () => {
+                const state = createInitialState({
+                    articleMode: 'edit',
+                    hasAutoSavedInSession: true,
+                })
+
+                const result = articleReducer(state, {
+                    type: 'SET_MODE',
+                    payload: 'create',
+                })
+
+                expect(result.hasAutoSavedInSession).toBe(true)
+            })
         })
 
         describe('SET_FULLSCREEN', () => {
@@ -1203,6 +1242,31 @@ describe('articleReducer', () => {
                 })
 
                 expect(result.historicalVersion).toBeNull()
+            })
+
+            it('should reset articleMode to read when in diff mode', () => {
+                const state = createInitialState({
+                    articleMode: 'diff',
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 3,
+                        title: 'Version Title',
+                        content: '<p>Version content</p>',
+                        publishedDatetime: null,
+                        publisherUserId: undefined,
+                        commitMessage: undefined,
+                        impactDateRange: {
+                            end_datetime: '',
+                            start_datetime: '',
+                        },
+                    },
+                })
+
+                const result = articleReducer(state, {
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+
+                expect(result.articleMode).toBe('read')
             })
         })
     })

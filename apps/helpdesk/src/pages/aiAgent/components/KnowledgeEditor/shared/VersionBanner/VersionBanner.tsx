@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { Banner, Box, Button } from '@gorgias/axiom'
@@ -27,6 +28,8 @@ type VersionBannerProps = {
     onGoToLatest: () => void
     historicalVersion: HistoricalVersion
     onOpenRestoreModal: () => void
+    isDiffMode?: boolean
+    onToggleDiff?: () => void
     className?: string
 }
 
@@ -40,8 +43,11 @@ export function VersionBanner({
     onGoToLatest,
     historicalVersion,
     onOpenRestoreModal,
+    isDiffMode,
+    onToggleDiff,
     className,
 }: VersionBannerProps) {
+    const isDiffingEnabled = useFlag(FeatureFlagKey.AddDiffingForVersionHistory)
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
 
@@ -93,24 +99,44 @@ export function VersionBanner({
                             {versionDescription && (
                                 <div>{versionDescription}</div>
                             )}
-                            <Box flexDirection="row" gap="sm" marginTop="xs">
-                                <Button
-                                    variant="primary"
-                                    leadingSlot="arrow-left"
-                                    onClick={onGoToLatest}
-                                    isDisabled={isDisabled}
-                                    size="sm"
-                                >
-                                    Back to latest
-                                </Button>
-                                <Button
-                                    variant="secondary"
-                                    onClick={onOpenRestoreModal}
-                                    isDisabled={isDisabled}
-                                    size="sm"
-                                >
-                                    Restore this version
-                                </Button>
+                            <Box
+                                flexDirection="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                marginTop="xs"
+                                width="100%"
+                            >
+                                <Box flexDirection="row" gap="sm">
+                                    <Button
+                                        variant="primary"
+                                        leadingSlot="arrow-left"
+                                        onClick={onGoToLatest}
+                                        isDisabled={isDisabled}
+                                        size="sm"
+                                    >
+                                        Back to latest
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={onOpenRestoreModal}
+                                        isDisabled={isDisabled}
+                                        size="sm"
+                                    >
+                                        Restore this version
+                                    </Button>
+                                </Box>
+                                {isDiffingEnabled && onToggleDiff && (
+                                    <Button
+                                        variant="tertiary"
+                                        onClick={onToggleDiff}
+                                        isDisabled={isDisabled}
+                                        size="sm"
+                                    >
+                                        {isDiffMode
+                                            ? 'View content'
+                                            : 'Compare'}
+                                    </Button>
+                                )}
                             </Box>
                         </>
                     }

@@ -38,6 +38,7 @@ export enum FeatureFlagKey {
     AiAgentShowImageDescriptionInProductCatalog = 'ai-agent-show-image-description-in-product-catalog',
     AiAgentProductAdditionalInfo = 'linear.allow-adding-custom-product-information-in-product-catalog',
     AddVersionHistoryForArticlesAndGuidances = 'linear.add-version-history-for-articles-and-guidances',
+    AddDiffingForVersionHistory = 'linear.add-version-history-for-articles-and-guidances.diff',
     /** @deprecated Use AiAgentSmsChannel instead */
     AiAgentSms = 'ai-agent-for-sms',
     AIAgentStatsPage = 'ai-agent-stats-page',

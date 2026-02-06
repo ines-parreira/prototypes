@@ -15,6 +15,15 @@ export function ArticleVersionBanner() {
     const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
     const { state, dispatch } = useArticleContext()
 
+    const isDiffMode = state.articleMode === 'diff'
+
+    const onToggleDiff = () => {
+        dispatch({
+            type: 'SET_MODE',
+            payload: isDiffMode ? 'read' : 'diff',
+        })
+    }
+
     return (
         <VersionBanner
             isViewingDraft={isViewingDraft}
@@ -28,6 +37,8 @@ export function ArticleVersionBanner() {
             onOpenRestoreModal={() =>
                 dispatch({ type: 'SET_MODAL', payload: 'restore' })
             }
+            isDiffMode={isDiffMode}
+            onToggleDiff={isViewingHistoricalVersion ? onToggleDiff : undefined}
         />
     )
 }

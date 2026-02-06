@@ -12,7 +12,7 @@ import type {
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
-export type ArticleModeType = 'create' | 'edit' | 'read'
+export type ArticleModeType = 'create' | 'edit' | 'read' | 'diff'
 
 export const InitialArticleMode = {
     READ: 'read',
