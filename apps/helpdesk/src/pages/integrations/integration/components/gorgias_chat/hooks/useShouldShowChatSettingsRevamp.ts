@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
@@ -20,15 +18,10 @@ const useShouldShowChatSettingsRevamp = (
 
     const { hasAccess } = useAiAgentAccess(shopName)
 
-    const shouldShowPreviewForRevamp = useMemo(() => {
-        if (isRevampEnabled) {
-            return !hasAccess
-        }
+    const shouldShowRevamp = isRevampEnabled && hasAccess
+    const shouldShowPreviewForRevamp = !shouldShowRevamp
 
-        return true
-    }, [hasAccess, isRevampEnabled])
-
-    return { shouldShowPreviewForRevamp }
+    return { shouldShowRevamp, shouldShowPreviewForRevamp }
 }
 
 export default useShouldShowChatSettingsRevamp

@@ -232,7 +232,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
                     'default',
-                ).mockReturnValue({ shouldShowPreviewForRevamp: true })
+                ).mockReturnValue({
+                    shouldShowRevamp: false,
+                    shouldShowPreviewForRevamp: true,
+                })
 
                 const integrationWithShop = quickRepliesIntegration.setIn(
                     ['meta', 'shop_integration_id'],
@@ -269,7 +272,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with the correct Shopify store integration', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+                    .mockReturnValue({
+                        shouldShowRevamp: false,
+                        shouldShowPreviewForRevamp: true,
+                    })
 
                 const shopifyIntegration = {
                     id: 123,
@@ -310,7 +316,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with the correct BigCommerce store integration', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+                    .mockReturnValue({
+                        shouldShowRevamp: false,
+                        shouldShowPreviewForRevamp: true,
+                    })
 
                 const bigCommerceIntegration = {
                     id: 234,
@@ -353,7 +362,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with the correct Magento2 store integration', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: true })
+                    .mockReturnValue({
+                        shouldShowRevamp: false,
+                        shouldShowPreviewForRevamp: true,
+                    })
 
                 const magentoIntegration = {
                     id: 345,
@@ -397,7 +409,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
                     'default',
-                ).mockReturnValue({ shouldShowPreviewForRevamp: false })
+                ).mockReturnValue({
+                    shouldShowRevamp: true,
+                    shouldShowPreviewForRevamp: false,
+                })
 
                 const integrationWithoutShop = quickRepliesIntegration
 
@@ -416,7 +431,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 jest.spyOn(
                     useRevampShouldShowChatPreviewModule,
                     'default',
-                ).mockReturnValue({ shouldShowPreviewForRevamp: false })
+                ).mockReturnValue({
+                    shouldShowRevamp: true,
+                    shouldShowPreviewForRevamp: false,
+                })
 
                 const integrationWithInvalidShopId =
                     quickRepliesIntegration.setIn(
@@ -438,7 +456,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with undefined when no shop_integration_id exists', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+                    .mockReturnValue({
+                        shouldShowRevamp: true,
+                        shouldShowPreviewForRevamp: false,
+                    })
 
                 const integrationWithoutShop = quickRepliesIntegration
 
@@ -458,7 +479,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with undefined when shop_integration_id is not found', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+                    .mockReturnValue({
+                        shouldShowRevamp: true,
+                        shouldShowPreviewForRevamp: false,
+                    })
 
                 const integrationWithInvalidShopId =
                     quickRepliesIntegration.setIn(
@@ -482,7 +506,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             it('should call useRevampShouldShowChatPreview with undefined when integration type is not supported', () => {
                 const useRevampSpy = jest
                     .spyOn(useRevampShouldShowChatPreviewModule, 'default')
-                    .mockReturnValue({ shouldShowPreviewForRevamp: false })
+                    .mockReturnValue({
+                        shouldShowRevamp: true,
+                        shouldShowPreviewForRevamp: false,
+                    })
 
                 const integrationWithUnsupportedType =
                     quickRepliesIntegration.setIn(

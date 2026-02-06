@@ -1,14 +1,17 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
 import GorgiasChatCreationWizardSwitcher from '../index'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseShouldShowChatSettingsRevamp = jest.fn()
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp',
+    () => ({
+        __esModule: true,
+        default: () => mockUseShouldShowChatSettingsRevamp(),
+    }),
+)
 
 jest.mock('../GorgiasChatCreationWizard', () => ({
     __esModule: true,
@@ -31,26 +34,26 @@ describe('GorgiasChatCreationWizardSwitcher', () => {
         jest.clearAllMocks()
     })
 
-    it('renders Legacy wizard when feature flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
+    it('renders Legacy wizard when shouldShowRevamp is false', async () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: true,
+        })
 
         render(<GorgiasChatCreationWizardSwitcher {...defaultProps} />)
 
-        expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.ChatSettingsRevamp,
-        )
         expect(await screen.findByTestId('legacy-wizard')).toBeInTheDocument()
         expect(screen.queryByTestId('revamp-wizard')).not.toBeInTheDocument()
     })
 
-    it('renders Revamp wizard when feature flag is enabled', async () => {
-        mockUseFlag.mockReturnValue(true)
+    it('renders Revamp wizard when shouldShowRevamp is true', async () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: true,
+            shouldShowPreviewForRevamp: false,
+        })
 
         render(<GorgiasChatCreationWizardSwitcher {...defaultProps} />)
 
-        expect(mockUseFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.ChatSettingsRevamp,
-        )
         expect(await screen.findByTestId('revamp-wizard')).toBeInTheDocument()
         expect(screen.queryByTestId('legacy-wizard')).not.toBeInTheDocument()
     })

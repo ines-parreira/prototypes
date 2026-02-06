@@ -1,5 +1,6 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { Map } from 'immutable'
+
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
 
 import GorgiasChatCreationWizardLegacy from './GorgiasChatCreationWizard'
 import GorgiasChatCreationWizardRevamp from './revamp/GorgiasChatCreationWizard'
@@ -15,9 +16,9 @@ export default function GorgiasChatCreationWizardSwitcher({
     loading,
     isUpdate,
 }: Props) {
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
+    const { shouldShowRevamp } = useShouldShowChatSettingsRevamp(undefined)
 
-    const Component = isRevampEnabled
+    const Component = shouldShowRevamp
         ? GorgiasChatCreationWizardRevamp
         : GorgiasChatCreationWizardLegacy
 
