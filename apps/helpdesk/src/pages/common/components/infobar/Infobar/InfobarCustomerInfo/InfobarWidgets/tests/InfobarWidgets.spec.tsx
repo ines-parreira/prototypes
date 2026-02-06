@@ -4,6 +4,7 @@ import { render } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -311,18 +312,20 @@ describe('InfobarWidgets component', () => {
 
     it('should display integrations with data and 3rd party / standalone widget in non-editing mode', () => {
         render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <EditionContext.Provider value={{ isEditing: false }}>
-                        <InfobarWidgets
-                            widgets={baseWidgets}
-                            context={WidgetEnvironment.Ticket}
-                            source={baseSource}
-                            displayTabs
-                        />
-                    </EditionContext.Provider>
-                </QueryClientProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <EditionContext.Provider value={{ isEditing: false }}>
+                            <InfobarWidgets
+                                widgets={baseWidgets}
+                                context={WidgetEnvironment.Ticket}
+                                source={baseSource}
+                                displayTabs
+                            />
+                        </EditionContext.Provider>
+                    </QueryClientProvider>
+                </Provider>
+            </MemoryRouter>,
         )
 
         expect(mockedWidget.mock.calls.length).toEqual(5)
@@ -405,18 +408,20 @@ describe('InfobarWidgets component', () => {
         ]) as List<Map<string, unknown>>
 
         render(
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <EditionContext.Provider value={{ isEditing: false }}>
-                        <InfobarWidgets
-                            widgets={standaloneWidgets}
-                            context={WidgetEnvironment.Ticket}
-                            source={baseSource}
-                            displayTabs
-                        />
-                    </EditionContext.Provider>
-                </QueryClientProvider>
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={store}>
+                    <QueryClientProvider client={queryClient}>
+                        <EditionContext.Provider value={{ isEditing: false }}>
+                            <InfobarWidgets
+                                widgets={standaloneWidgets}
+                                context={WidgetEnvironment.Ticket}
+                                source={baseSource}
+                                displayTabs
+                            />
+                        </EditionContext.Provider>
+                    </QueryClientProvider>
+                </Provider>
+            </MemoryRouter>,
         )
 
         expect(mockedWidget.mock.calls.length).toEqual(1)
