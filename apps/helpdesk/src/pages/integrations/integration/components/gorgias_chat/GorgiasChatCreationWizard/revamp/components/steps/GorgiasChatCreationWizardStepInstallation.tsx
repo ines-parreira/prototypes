@@ -6,14 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import {
-    Button,
-    ButtonVariant,
-    Card,
-    Heading,
-    Radio,
-    RadioGroup,
-} from '@gorgias/axiom'
+import { Card, Heading, Radio, RadioGroup } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -35,6 +28,7 @@ import useThemeAppExtensionInstallation, {
 } from '../../../../hooks/useThemeAppExtensionInstallation'
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
@@ -196,38 +190,30 @@ export const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 preview={null}
                 footer={
-                    <div className={css.wizardButtons}>
-                        <div className={css.wizardNavigationButtons}>
-                            <Button
-                                variant={ButtonVariant.Secondary}
-                                onClick={goToPreviousStep}
-                                isDisabled={isSubmitting}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                onClick={() => onSave(true)}
-                                isLoading={isSubmitting}
-                                variant={ButtonVariant.Primary}
-                            >
-                                Install{' '}
-                                {isOneClickInstallation ? '' : 'Manually'}
-                            </Button>
-                        </div>
-                        <Button
-                            variant={ButtonVariant.Tertiary}
-                            onClick={() =>
+                    <GorgiasChatCreationWizardFooter
+                        backButton={{
+                            label: 'Back',
+                            onClick: goToPreviousStep,
+                            isDisabled: isSubmitting,
+                        }}
+                        primaryButton={{
+                            label: isOneClickInstallation
+                                ? 'Install'
+                                : 'Install Manually',
+                            onClick: () => onSave(true),
+                            isLoading: isSubmitting,
+                        }}
+                        exitButton={{
+                            label: 'Save & Install Later',
+                            onClick: () =>
                                 onSave(false, true)?.then(() => {
                                     history.push(
                                         '/app/settings/channels/gorgias_chat',
                                     )
-                                })
-                            }
-                            isDisabled={isSubmitting}
-                        >
-                            {'Save & Install Later'}
-                        </Button>
-                    </div>
+                                }),
+                            isDisabled: isSubmitting,
+                        }}
+                    />
                 }
             >
                 <Card p="lg">

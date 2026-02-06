@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, ButtonVariant, Card } from '@gorgias/axiom'
+import { Card } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,9 +31,8 @@ import { NotificationStatus } from 'state/notifications/types'
 import { FeatureToggle } from '../../../../components/FeatureToggle'
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../SaveChangesPrompt'
-
-import css from './GorgiasChatCreationWizardStepAutomate.less'
 
 type SubmitForm = {
     type: IntegrationType.GorgiasChat
@@ -250,36 +249,28 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 preview={null}
                 footer={
-                    <div className={css.wizardButtons}>
-                        <div className={css.wizardNavigationButtons}>
-                            <Button
-                                variant={ButtonVariant.Secondary}
-                                onClick={goToPreviousStep}
-                                isDisabled={isFormSubmitting}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                onClick={() => onSave(true)}
-                                isLoading={isFormSubmitting}
-                            >
-                                Continue
-                            </Button>
-                        </div>
-                        <Button
-                            variant={ButtonVariant.Tertiary}
-                            onClick={() =>
+                    <GorgiasChatCreationWizardFooter
+                        backButton={{
+                            label: 'Back',
+                            onClick: goToPreviousStep,
+                            isDisabled: isFormSubmitting,
+                        }}
+                        primaryButton={{
+                            label: 'Continue',
+                            onClick: () => onSave(true),
+                            isLoading: isFormSubmitting,
+                        }}
+                        exitButton={{
+                            label: 'Save and Exit',
+                            onClick: () =>
                                 onSave(false, true).then(() => {
                                     history.push(
                                         '/app/settings/channels/gorgias_chat',
                                     )
-                                })
-                            }
-                            isDisabled={isFormSubmitting}
-                        >
-                            Save and Exit
-                        </Button>
-                    </div>
+                                }),
+                            isDisabled: isFormSubmitting,
+                        }}
+                    />
                 }
             >
                 {(!storeIntegration ||

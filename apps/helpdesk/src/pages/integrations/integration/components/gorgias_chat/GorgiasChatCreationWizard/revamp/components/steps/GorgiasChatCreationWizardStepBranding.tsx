@@ -6,7 +6,7 @@ import { history } from '@repo/routing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, ButtonVariant, Card, Heading, Text } from '@gorgias/axiom'
+import { Card, Heading, Text } from '@gorgias/axiom'
 
 import {
     GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
@@ -26,6 +26,7 @@ import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepBranding.less'
@@ -137,36 +138,28 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 preview={null}
                 footer={
-                    <div className={css.wizardButtons}>
-                        <div className={css.wizardNavigationButtons}>
-                            <Button
-                                variant={ButtonVariant.Secondary}
-                                onClick={goToPreviousStep}
-                                isDisabled={isSubmitting}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                onClick={() => onSave(true)}
-                                isLoading={isSubmitting}
-                            >
-                                Continue
-                            </Button>
-                        </div>
-                        <Button
-                            onClick={() =>
+                    <GorgiasChatCreationWizardFooter
+                        backButton={{
+                            label: 'Back',
+                            onClick: goToPreviousStep,
+                            isDisabled: isSubmitting,
+                        }}
+                        primaryButton={{
+                            label: 'Continue',
+                            onClick: () => onSave(true),
+                            isLoading: isSubmitting,
+                        }}
+                        exitButton={{
+                            label: 'Save and Exit',
+                            onClick: () =>
                                 onSave(false, true).then(() => {
                                     history.push(
                                         '/app/settings/channels/gorgias_chat',
                                     )
-                                })
-                            }
-                            isDisabled={isSubmitting}
-                            variant={ButtonVariant.Tertiary}
-                        >
-                            Save and Exit
-                        </Button>
-                    </div>
+                                }),
+                            isDisabled: isSubmitting,
+                        }}
+                    />
                 }
             >
                 <Card p="lg">

@@ -10,7 +10,6 @@ import type { Map } from 'immutable'
 
 import {
     Button,
-    ButtonVariant,
     Card,
     Heading,
     Radio,
@@ -68,6 +67,7 @@ import {
 import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
+import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../SaveChangesPrompt'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
@@ -472,45 +472,39 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             <GorgiasChatCreationWizardStep
                 preview={null}
                 footer={
-                    <div className={css.wizardButtons}>
-                        <div className={css.wizardNavigationButtons}>
-                            {!isUpdate && (
-                                <Button
-                                    variant={ButtonVariant.Secondary}
-                                    isDisabled={isSubmitting}
-                                    onClick={() =>
-                                        history.push(
-                                            '/app/settings/channels/gorgias_chat',
-                                        )
-                                    }
-                                >
-                                    Cancel
-                                </Button>
-                            )}
-                            <Button
-                                onClick={() => onSave(true, false, true)}
-                                isLoading={isSubmitting}
-                                variant={ButtonVariant.Primary}
-                            >
-                                Continue
-                            </Button>
-                        </div>
-                        {isUpdate && (
-                            <Button
-                                variant={ButtonVariant.Tertiary}
-                                onClick={() =>
-                                    onSave()?.then(() => {
-                                        history.push(
-                                            '/app/settings/channels/gorgias_chat',
-                                        )
-                                    })
-                                }
-                                isDisabled={isSubmitting}
-                            >
-                                Save and Exit
-                            </Button>
-                        )}
-                    </div>
+                    <GorgiasChatCreationWizardFooter
+                        cancelButton={
+                            !isUpdate
+                                ? {
+                                      label: 'Cancel',
+                                      onClick: () =>
+                                          history.push(
+                                              '/app/settings/channels/gorgias_chat',
+                                          ),
+                                      isDisabled: isSubmitting,
+                                  }
+                                : undefined
+                        }
+                        primaryButton={{
+                            label: 'Continue',
+                            onClick: () => onSave(true, false, true),
+                            isLoading: isSubmitting,
+                        }}
+                        exitButton={
+                            isUpdate
+                                ? {
+                                      label: 'Save and Exit',
+                                      onClick: () =>
+                                          onSave()?.then(() => {
+                                              history.push(
+                                                  '/app/settings/channels/gorgias_chat',
+                                              )
+                                          }),
+                                      isDisabled: isSubmitting,
+                                  }
+                                : undefined
+                        }
+                    />
                 }
             >
                 <Card p="lg">
