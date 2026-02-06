@@ -18,8 +18,8 @@ export const OnboardingSteppedSlider = (props: Props) => {
         <SteppedSlider
             steps={steps}
             stepKey={stepKey}
-            color="var(--content-neutral-default)"
-            backgroundColor="var(--static-secondary)"
+            color="var(--surface-accent-primary)"
+            backgroundColor="var(--surface-neutral-secondary)"
             onChange={onChange}
         />
     )
