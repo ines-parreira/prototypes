@@ -255,6 +255,28 @@ jest.mock(
         ),
     }),
 )
+jest.mock('pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner', () => ({
+    SyncStoreDomainBanner: ({
+        syncStatus,
+        shopName,
+        type,
+        failedUrls,
+        successfulUrls,
+    }: any) => (
+        <div data-testid={`sync-banner-${type}`}>
+            <span data-testid="sync-status">{syncStatus}</span>
+            <span data-testid="shop-name">{shopName}</span>
+            {failedUrls && failedUrls.length > 0 && (
+                <span data-testid="failed-urls">{failedUrls.join(',')}</span>
+            )}
+            {successfulUrls && successfulUrls.length > 0 && (
+                <span data-testid="successful-urls">
+                    {successfulUrls.join(',')}
+                </span>
+            )}
+        </div>
+    ),
+}))
 jest.mock(
     'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader',
     () => ({
@@ -378,11 +400,14 @@ describe('KnowledgeHubContainer', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        delete (window as any).location
-        window.location = {
-            href: 'http://localhost/app',
-            pathname: '/app',
-        } as Location
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'http://localhost/app',
+                pathname: '/app',
+            },
+            writable: true,
+            configurable: true,
+        })
 
         mockUseParams.mockReturnValue({
             shopType: 'shopify',
@@ -543,6 +568,16 @@ describe('KnowledgeHubContainer', () => {
             nextSyncDate: null,
         })
 
+        mockUseUrlSyncStatus.mockReturnValue({
+            syncStatus: null,
+            syncingUrls: [],
+            urlIngestionLogs: [],
+            totalCount: 0,
+            completedCount: 0,
+            successCount: 0,
+            pendingCount: 0,
+        })
+
         mockGetLast28DaysDateRange.mockReturnValue({
             start_datetime: new Date(
                 Date.now() - 28 * 24 * 60 * 60 * 1000,
@@ -552,7 +587,11 @@ describe('KnowledgeHubContainer', () => {
     })
 
     afterEach(() => {
-        window.location = originalLocation
+        Object.defineProperty(window, 'location', {
+            value: originalLocation,
+            writable: true,
+            configurable: true,
+        })
     })
 
     const renderComponent = () => {
@@ -2981,6 +3020,230 @@ describe('KnowledgeHubContainer', () => {
                 csat: null,
                 resourceSourceSetId: 1,
             })
+        })
+    })
+
+    describe('failedUrls and successfulUrls logic', () => {
+        it('should return empty array when urlIngestionLogs is undefined', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: undefined,
+                totalCount: 0,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.queryByTestId('failed-urls')
+            const successfulUrls = screen.queryByTestId('successful-urls')
+
+            expect(failedUrls).not.toBeInTheDocument()
+            expect(successfulUrls).not.toBeInTheDocument()
+        })
+
+        it('should filter and map failed URLs correctly', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        url: 'https://example.com/failed1',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/successful',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/failed2',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                ],
+                totalCount: 3,
+                completedCount: 3,
+                successCount: 1,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.getByTestId('failed-urls')
+            expect(failedUrls).toHaveTextContent(
+                'https://example.com/failed1,https://example.com/failed2',
+            )
+        })
+
+        it('should filter and map successful URLs correctly', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        url: 'https://example.com/failed',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/successful1',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/successful2',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                ],
+                totalCount: 3,
+                completedCount: 3,
+                successCount: 2,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const successfulUrls = screen.getByTestId('successful-urls')
+            expect(successfulUrls).toHaveTextContent(
+                'https://example.com/successful1,https://example.com/successful2',
+            )
+        })
+
+        it('should filter out logs with null or undefined URLs', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        url: null,
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/failed',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: undefined,
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/successful',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                ],
+                totalCount: 4,
+                completedCount: 4,
+                successCount: 2,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.getByTestId('failed-urls')
+            const successfulUrls = screen.getByTestId('successful-urls')
+
+            expect(failedUrls).toHaveTextContent('https://example.com/failed')
+            expect(successfulUrls).toHaveTextContent(
+                'https://example.com/successful',
+            )
+        })
+
+        it('should handle logs with only pending status', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'PENDING',
+                syncingUrls: ['https://example.com/pending'],
+                urlIngestionLogs: [
+                    {
+                        url: 'https://example.com/pending',
+                        status: 'PENDING',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 1,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.queryByTestId('failed-urls')
+            const successfulUrls = screen.queryByTestId('successful-urls')
+
+            expect(failedUrls).not.toBeInTheDocument()
+            expect(successfulUrls).not.toBeInTheDocument()
+        })
+
+        it('should handle empty urlIngestionLogs array', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: [],
+                totalCount: 0,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.queryByTestId('failed-urls')
+            const successfulUrls = screen.queryByTestId('successful-urls')
+
+            expect(failedUrls).not.toBeInTheDocument()
+            expect(successfulUrls).not.toBeInTheDocument()
+        })
+
+        it('should handle logs with empty string URLs', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        url: '',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/failed',
+                        status: 'FAILED',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: '',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                    {
+                        url: 'https://example.com/successful',
+                        status: 'SUCCESSFUL',
+                        latest_sync: '2025-01-01T00:00:00Z',
+                    },
+                ],
+                totalCount: 4,
+                completedCount: 4,
+                successCount: 2,
+                pendingCount: 0,
+            })
+
+            renderComponent()
+
+            const failedUrls = screen.getByTestId('failed-urls')
+            const successfulUrls = screen.getByTestId('successful-urls')
+
+            expect(failedUrls).toHaveTextContent('https://example.com/failed')
+            expect(successfulUrls).toHaveTextContent(
+                'https://example.com/successful',
+            )
         })
     })
 })

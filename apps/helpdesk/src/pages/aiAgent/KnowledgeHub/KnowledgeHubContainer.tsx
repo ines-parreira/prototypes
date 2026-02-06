@@ -11,6 +11,7 @@ import {
 } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppSelector from 'hooks/useAppSelector'
+import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import {
     getNextSyncDate,
     isSyncLessThan24Hours,
@@ -584,6 +585,22 @@ export const KnowledgeHubContainer = () => {
         faqEditor.openEditorForCreate()
     }, [faqEditor])
 
+    const failedUrls = useMemo(() => {
+        if (!urlIngestionLogs) return []
+        return urlIngestionLogs
+            .filter((log) => log.status === IngestionLogStatus.Failed)
+            .map((log) => log.url)
+            .filter((url): url is string => !!url)
+    }, [urlIngestionLogs])
+
+    const successfulUrls = useMemo(() => {
+        if (!urlIngestionLogs) return []
+        return urlIngestionLogs
+            .filter((log) => log.status === IngestionLogStatus.Successful)
+            .map((log) => log.url)
+            .filter((url): url is string => !!url)
+    }, [urlIngestionLogs])
+
     return (
         <div className={css.container}>
             <KnowledgeHubHeader
@@ -611,6 +628,8 @@ export const KnowledgeHubContainer = () => {
                         type="url"
                         completedCount={urlPendingCount}
                         totalCount={urlTotalCount}
+                        failedUrls={failedUrls}
+                        successfulUrls={successfulUrls}
                     />
                     <SyncStoreDomainBanner
                         syncStatus={fileIngestionStatus}

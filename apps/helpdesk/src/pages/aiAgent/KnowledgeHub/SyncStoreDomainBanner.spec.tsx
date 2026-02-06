@@ -347,6 +347,86 @@ describe('SyncStoreDomainBanner', () => {
                 'Review generated content for accuracy',
             )
         })
+
+        it('shows URL in success message for single URL', () => {
+            const successUrl = 'https://example.com/page'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Successful}
+                    shopName="test-shop"
+                    type="url"
+                    successfulUrls={[successUrl]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toContain(
+                'Your URL has been synced successfully and is in use by AI Agent.',
+            )
+            expect(banner?.textContent).toContain('URL:')
+
+            const link = container.querySelector(`a[href="${successUrl}"]`)
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+            expect(link?.textContent).toBe(successUrl)
+        })
+
+        it('does not show URL when successfulUrls is empty', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Successful}
+                    shopName="test-shop"
+                    type="url"
+                    successfulUrls={[]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toContain(
+                'Your URL has been synced successfully and is in use by AI Agent.',
+            )
+            expect(banner?.textContent).not.toContain('URL:')
+        })
+
+        it('does not show URL when successfulUrls is undefined', () => {
+            render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Successful}
+                    shopName="test-shop"
+                    type="url"
+                />,
+            )
+
+            const bannerText = screen.getByText(
+                /Your URL has been synced successfully and is in use by AI Agent./,
+            )
+            expect(bannerText).toBeInTheDocument()
+            expect(bannerText.textContent).not.toContain('URL:')
+        })
+
+        it('does not show URL for multiple URLs', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Successful}
+                    shopName="test-shop"
+                    type="url"
+                    totalCount={3}
+                    successfulUrls={[
+                        'https://example.com/page1',
+                        'https://example.com/page2',
+                        'https://example.com/page3',
+                    ]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toContain(
+                'URLs have been synced successfully and are in use by AI Agent',
+            )
+            expect(banner?.textContent).not.toContain('URL:')
+            expect(banner?.textContent).not.toContain('page1')
+        })
     })
 
     describe('successful status - file type', () => {
@@ -457,6 +537,173 @@ describe('SyncStoreDomainBanner', () => {
             await act(() => userEvent.click(closeButton))
 
             expect(mockDismissBanner).toHaveBeenCalled()
+        })
+
+        it('shows single failed URL for URL type', () => {
+            const failedUrl = 'https://example.com/page'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[failedUrl]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toMatch(/We couldn.t sync/)
+            expect(banner?.textContent).toContain('URL:')
+
+            const link = container.querySelector(`a[href="${failedUrl}"]`)
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+            expect(link?.textContent).toBe(failedUrl)
+        })
+
+        it('shows complete error message text for single failed URL', () => {
+            const failedUrl = 'https://example.com/failed-page'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[failedUrl]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toContain(
+                "We couldn't sync your URL. Please try again or contact support if the issue persists.",
+            )
+        })
+
+        it('renders URL label and line break for single failed URL', () => {
+            const failedUrl = 'https://example.com/test'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[failedUrl]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            const brElement = banner?.querySelector('br')
+            expect(brElement).toBeInTheDocument()
+
+            expect(banner?.textContent).toContain('URL:')
+        })
+
+        it('renders clickable failed URL with correct attributes', () => {
+            const failedUrl = 'https://example.com/specific-path'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[failedUrl]}
+                />,
+            )
+
+            const link = container.querySelector('a')
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('href', failedUrl)
+            expect(link).toHaveAttribute('target', '_blank')
+            expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+            expect(link?.textContent).toBe(failedUrl)
+        })
+
+        it('renders failed URL banner structure correctly', () => {
+            const failedUrl = 'https://example.com/page'
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[failedUrl]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+
+            const textBeforeBreak = banner?.innerHTML.split('<br>')[0]
+            expect(textBeforeBreak).toContain(
+                'Please try again or contact support if the issue persists.',
+            )
+
+            const textAfterBreak = banner?.innerHTML.split('<br>')[1]
+            expect(textAfterBreak).toContain('URL:')
+            expect(textAfterBreak).toContain(failedUrl)
+        })
+
+        it('does not show URLs when multiple URLs fail', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[
+                        'https://example.com/page1',
+                        'https://example.com/page2',
+                    ]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toMatch(/We couldn.t sync/)
+            expect(banner?.textContent).toContain('URLs')
+            expect(banner?.textContent).not.toContain('URL:')
+            expect(banner?.textContent).not.toContain('page1')
+            expect(banner?.textContent).not.toContain('page2')
+        })
+
+        it('does not show URL for non-URL types', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="domain"
+                    failedUrls={['https://example.com/page']}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toMatch(/We couldn.t sync/)
+            expect(banner?.textContent).not.toContain('URL:')
+            expect(banner?.textContent).not.toContain(
+                'https://example.com/page',
+            )
+        })
+
+        it('does not show URL when failedUrls is empty', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                    failedUrls={[]}
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toMatch(/We couldn.t sync/)
+            expect(banner?.textContent).not.toContain('URL:')
+        })
+
+        it('does not show URL when failedUrls is undefined', () => {
+            const { container } = render(
+                <SyncStoreDomainBanner
+                    syncStatus={IngestionLogStatus.Failed}
+                    shopName="test-shop"
+                    type="url"
+                />,
+            )
+
+            const banner = container.querySelector('[data-name="banner"]')
+            expect(banner?.textContent).toMatch(/We couldn.t sync/)
+            expect(banner?.textContent).not.toContain('URL:')
         })
     })
 

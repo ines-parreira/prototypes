@@ -182,14 +182,15 @@ export const SyncUrlModal = ({
             // Close modal - banner will show sync status
             closeModal()
         } catch (err) {
-            const errorMessage =
+            const baseErrorMessage =
                 err instanceof Error
                     ? err.message
                     : 'Failed to sync URL. Please try again.'
-            setError(errorMessage)
+            const errorMessageWithUrl = `${baseErrorMessage}\nURL: ${url}`
+            setError(baseErrorMessage)
             dispatch(
                 notify({
-                    message: errorMessage,
+                    message: errorMessageWithUrl,
                     status: NotificationStatus.Error,
                     showDismissButton: true,
                 }),

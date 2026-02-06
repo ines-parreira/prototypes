@@ -18,6 +18,8 @@ type Props = {
     type?: 'domain' | 'url' | 'file'
     completedCount?: number
     totalCount?: number
+    failedUrls?: string[]
+    successfulUrls?: string[]
 }
 
 export const SyncStoreDomainBanner = ({
@@ -26,6 +28,8 @@ export const SyncStoreDomainBanner = ({
     type,
     completedCount,
     totalCount,
+    failedUrls,
+    successfulUrls,
 }: Props) => {
     const [optimisticCount, setOptimisticCount] = useState<number | null>(null)
 
@@ -104,9 +108,53 @@ export const SyncStoreDomainBanner = ({
             const isMultiFile =
                 type === 'file' && optimisticCount && optimisticCount > 1
             const isMultipleUrls = isMultiUrl || isMultiFile
-            const successMessage = isMultipleUrls
-                ? `Your ${contentType}s have been synced successfully and are in use by AI Agent. Review generated content for accuracy.`
-                : `Your ${contentType} has been synced successfully and is in use by AI Agent.${type === 'domain' ? ' Review generated content for accuracy.' : ''}`
+
+            if (isMultipleUrls) {
+                return (
+                    <LegacyBanner
+                        variant="inline"
+                        icon
+                        type="success"
+                        fillStyle="fill"
+                        onClose={dismissBanner}
+                        className={css.banner}
+                    >
+                        Your {contentType}s have been synced successfully and
+                        are in use by AI Agent. Review generated content for
+                        accuracy.
+                    </LegacyBanner>
+                )
+            }
+
+            const baseMessage = `Your ${contentType} has been synced successfully and is in use by AI Agent.${type === 'domain' ? ' Review generated content for accuracy.' : ''}`
+
+            if (
+                type === 'url' &&
+                successfulUrls &&
+                successfulUrls.length === 1
+            ) {
+                return (
+                    <LegacyBanner
+                        variant="inline"
+                        icon
+                        type="success"
+                        fillStyle="fill"
+                        onClose={dismissBanner}
+                        className={css.banner}
+                    >
+                        {baseMessage}
+                        <br />
+                        URL:{' '}
+                        <a
+                            href={successfulUrls[0]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {successfulUrls[0]}
+                        </a>
+                    </LegacyBanner>
+                )
+            }
 
             return (
                 <LegacyBanner
@@ -117,12 +165,53 @@ export const SyncStoreDomainBanner = ({
                     onClose={dismissBanner}
                     className={css.banner}
                 >
-                    {successMessage}
+                    {baseMessage}
                 </LegacyBanner>
             )
         }
 
-        case IngestionLogStatus.Failed:
+        case IngestionLogStatus.Failed: {
+            if (type === 'url' && failedUrls && failedUrls.length === 1) {
+                return (
+                    <LegacyBanner
+                        variant="inline"
+                        icon
+                        type="error"
+                        fillStyle="fill"
+                        onClose={dismissBanner}
+                        className={css.banner}
+                    >
+                        We couldn&apos;t sync your URL. Please try again or
+                        contact support if the issue persists.
+                        <br />
+                        URL:{' '}
+                        <a
+                            href={failedUrls[0]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {failedUrls[0]}
+                        </a>
+                    </LegacyBanner>
+                )
+            }
+
+            if (type === 'url' && failedUrls && failedUrls.length > 1) {
+                return (
+                    <LegacyBanner
+                        variant="inline"
+                        icon
+                        type="error"
+                        fillStyle="fill"
+                        onClose={dismissBanner}
+                        className={css.banner}
+                    >
+                        We couldn&apos;t sync your URLs. Please try again or
+                        contact support if the issue persists.
+                    </LegacyBanner>
+                )
+            }
+
             return (
                 <LegacyBanner
                     variant="inline"
@@ -132,10 +221,11 @@ export const SyncStoreDomainBanner = ({
                     onClose={dismissBanner}
                     className={css.banner}
                 >
-                    We couldn’t sync your {contentType}. Please try again or
-                    contact support if the issue persists.
+                    We couldn&apos;t sync your {contentType}. Please try again
+                    or contact support if the issue persists.
                 </LegacyBanner>
             )
+        }
 
         default:
             return null
