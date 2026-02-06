@@ -88,6 +88,8 @@ jest.mock('../../hooks/useOpportunityPageState', () => ({
         ENABLED_NO_OPPORTUNITIES: 'ENABLED_NO_OPPORTUNITIES',
         DISABLED_NEEDS_ENABLE: 'DISABLED_NEEDS_ENABLE',
         DISABLED_NEEDS_SETUP: 'DISABLED_NEEDS_SETUP',
+        RESTRICTED_NO_OPPORTUNITIES: 'RESTRICTED_NO_OPPORTUNITIES',
+        OPPORTUNITY_NOT_FOUND: 'OPPORTUNITY_NOT_FOUND',
     },
 }))
 
@@ -283,13 +285,16 @@ describe('OpportunitiesLayout', () => {
             isLoading: false,
         }))
         mockUseOpportunityPageState.mockReturnValue({
-            state: State.HAS_OPPORTUNITIES,
-            isLoading: false,
-            title: 'Opportunities',
-            description: '',
-            media: null,
-            primaryCta: null,
-            showEmptyState: false,
+            currentState: {
+                state: State.HAS_OPPORTUNITIES,
+                isLoading: false,
+                title: 'Opportunities',
+                description: '',
+                media: null,
+                primaryCta: null,
+                showEmptyState: false,
+            },
+            stateConfig: {} as any,
         })
     })
 
@@ -319,13 +324,16 @@ describe('OpportunitiesLayout', () => {
 
     it('should show loading state when any data is loading', () => {
         mockUseOpportunityPageState.mockReturnValue({
-            state: State.LOADING,
-            isLoading: true,
-            title: '',
-            description: '',
-            media: null,
-            primaryCta: null,
-            showEmptyState: false,
+            currentState: {
+                state: State.LOADING,
+                isLoading: true,
+                title: '',
+                description: '',
+                media: null,
+                primaryCta: null,
+                showEmptyState: false,
+            },
+            stateConfig: {} as any,
         })
 
         renderComponent()
@@ -343,13 +351,16 @@ describe('OpportunitiesLayout', () => {
 
     it('should show loading when AI articles are loading', () => {
         mockUseOpportunityPageState.mockReturnValue({
-            state: State.LOADING,
-            isLoading: true,
-            title: '',
-            description: '',
-            media: null,
-            primaryCta: null,
-            showEmptyState: false,
+            currentState: {
+                state: State.LOADING,
+                isLoading: true,
+                title: '',
+                description: '',
+                media: null,
+                primaryCta: null,
+                showEmptyState: false,
+            },
+            stateConfig: {} as any,
         })
 
         renderComponent()

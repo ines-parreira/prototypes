@@ -111,10 +111,10 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.LOADING)
-            expect(result.current.isLoading).toBe(true)
-            expect(result.current.media).toBeNull()
-            expect(result.current.showEmptyState).toBe(false)
+            expect(result.current.currentState.state).toBe(State.LOADING)
+            expect(result.current.currentState.isLoading).toBe(true)
+            expect(result.current.currentState.media).toBeNull()
+            expect(result.current.currentState.showEmptyState).toBe(false)
         })
 
         it('returns LOADING state when opportunities are loading', () => {
@@ -138,8 +138,8 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.LOADING)
-            expect(result.current.isLoading).toBe(true)
+            expect(result.current.currentState.state).toBe(State.LOADING)
+            expect(result.current.currentState.isLoading).toBe(true)
         })
 
         it('returns LOADING state when post store steps are loading', () => {
@@ -163,8 +163,8 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.LOADING)
-            expect(result.current.isLoading).toBe(true)
+            expect(result.current.currentState.state).toBe(State.LOADING)
+            expect(result.current.currentState.isLoading).toBe(true)
         })
 
         it('returns LOADING state when all are loading', () => {
@@ -188,12 +188,12 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.LOADING)
-            expect(result.current.isLoading).toBe(true)
-            expect(result.current.title).toBe('')
-            expect(result.current.description).toBe('')
-            expect(result.current.media).toBeNull()
-            expect(result.current.primaryCta).toBeNull()
+            expect(result.current.currentState.state).toBe(State.LOADING)
+            expect(result.current.currentState.isLoading).toBe(true)
+            expect(result.current.currentState.title).toBe('')
+            expect(result.current.currentState.description).toBe('')
+            expect(result.current.currentState.media).toBeNull()
+            expect(result.current.currentState.primaryCta).toBeNull()
         })
     })
 
@@ -219,13 +219,15 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.showEmptyState).toBe(false)
-            expect(result.current.title).toBe('')
-            expect(result.current.description).toBe('')
-            expect(result.current.media).toBeNull()
-            expect(result.current.primaryCta).toBeNull()
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.isLoading).toBe(false)
+            expect(result.current.currentState.showEmptyState).toBe(false)
+            expect(result.current.currentState.title).toBe('')
+            expect(result.current.currentState.description).toBe('')
+            expect(result.current.currentState.media).toBeNull()
+            expect(result.current.currentState.primaryCta).toBeNull()
         })
 
         it('returns HAS_OPPORTUNITIES even when AI Agent is disabled', () => {
@@ -256,7 +258,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
         })
 
         it('returns HAS_OPPORTUNITIES even when setup is not complete', () => {
@@ -282,7 +286,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
         })
     })
 
@@ -312,18 +318,20 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.showEmptyState).toBe(true)
-            expect(result.current.title).toBe(
+            expect(result.current.currentState.state).toBe(
+                State.ENABLED_NO_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.isLoading).toBe(false)
+            expect(result.current.currentState.showEmptyState).toBe(true)
+            expect(result.current.currentState.title).toBe(
                 'No opportunities to review right now',
             )
-            expect(result.current.description).toContain(
+            expect(result.current.currentState.description).toContain(
                 'AI Agent reviews real customer conversations to identify patterns',
             )
-            expect(result.current.media).toBeDefined()
-            expect(typeof result.current.media).toBe('object')
-            expect(result.current.primaryCta).toBeNull()
+            expect(result.current.currentState.media).toBeDefined()
+            expect(typeof result.current.currentState.media).toBe('object')
+            expect(result.current.currentState.primaryCta).toBeNull()
         })
     })
 
@@ -355,18 +363,20 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.DISABLED_NEEDS_ENABLE)
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.showEmptyState).toBe(true)
-            expect(result.current.title).toBe(
+            expect(result.current.currentState.state).toBe(
+                State.DISABLED_NEEDS_ENABLE,
+            )
+            expect(result.current.currentState.isLoading).toBe(false)
+            expect(result.current.currentState.showEmptyState).toBe(true)
+            expect(result.current.currentState.title).toBe(
                 'Let AI Agent show you what to improve',
             )
-            expect(result.current.description).toContain(
+            expect(result.current.currentState.description).toContain(
                 'AI Agent finds opportunities to improve its responses',
             )
-            expect(result.current.media).toBeDefined()
-            expect(typeof result.current.media).toBe('object')
-            expect(result.current.primaryCta).toEqual({
+            expect(result.current.currentState.media).toBeDefined()
+            expect(typeof result.current.currentState.media).toBe('object')
+            expect(result.current.currentState.primaryCta).toEqual({
                 label: 'Enable AI Agent',
                 href: '/app/ai-agent/shopify/test-shop/deploy/email',
             })
@@ -399,8 +409,10 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.primaryCta?.label).toBe('Enable AI Agent')
-            expect(result.current.primaryCta?.href).toBe(
+            expect(result.current.currentState.primaryCta?.label).toBe(
+                'Enable AI Agent',
+            )
+            expect(result.current.currentState.primaryCta?.href).toBe(
                 '/app/ai-agent/shopify/test-shop/deploy/email',
             )
         })
@@ -432,18 +444,20 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.DISABLED_NEEDS_SETUP)
-            expect(result.current.isLoading).toBe(false)
-            expect(result.current.showEmptyState).toBe(true)
-            expect(result.current.title).toBe(
+            expect(result.current.currentState.state).toBe(
+                State.DISABLED_NEEDS_SETUP,
+            )
+            expect(result.current.currentState.isLoading).toBe(false)
+            expect(result.current.currentState.showEmptyState).toBe(true)
+            expect(result.current.currentState.title).toBe(
                 'Let AI Agent show you what to improve',
             )
-            expect(result.current.description).toContain(
+            expect(result.current.currentState.description).toContain(
                 'AI Agent automatically finds opportunities to improve its responses',
             )
-            expect(result.current.media).toBeDefined()
-            expect(typeof result.current.media).toBe('object')
-            expect(result.current.primaryCta).toEqual({
+            expect(result.current.currentState.media).toBeDefined()
+            expect(typeof result.current.currentState.media).toBe('object')
+            expect(result.current.currentState.primaryCta).toEqual({
                 label: 'Complete AI Agent setup',
                 href: '/app/ai-agent/shopify/test-shop/overview',
             })
@@ -474,7 +488,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.DISABLED_NEEDS_SETUP)
+            expect(result.current.currentState.state).toBe(
+                State.DISABLED_NEEDS_SETUP,
+            )
         })
 
         it('provides correct CTA for completing setup', () => {
@@ -502,10 +518,10 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.primaryCta?.label).toBe(
+            expect(result.current.currentState.primaryCta?.label).toBe(
                 'Complete AI Agent setup',
             )
-            expect(result.current.primaryCta?.href).toBe(
+            expect(result.current.currentState.primaryCta?.href).toBe(
                 '/app/ai-agent/shopify/test-shop/overview',
             )
         })
@@ -536,16 +552,20 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
-            expect(result.current.showEmptyState).toBe(false)
-            expect(result.current.title).toBe(
+            expect(result.current.currentState.state).toBe(
+                State.RESTRICTED_NO_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.showEmptyState).toBe(false)
+            expect(result.current.currentState.title).toBe(
                 'Upgrade to unlock more AI Agent opportunities',
             )
-            expect(result.current.description).toContain(
+            expect(result.current.currentState.description).toContain(
                 "You've reviewed 3 opportunities",
             )
-            expect(result.current.primaryCta?.label).toBe('Try for 14 days')
-            expect(result.current.media).toBeDefined()
+            expect(result.current.currentState.primaryCta?.label).toBe(
+                'Try for 14 days',
+            )
+            expect(result.current.currentState.media).toBeDefined()
         })
 
         it('uses light theme SVG when theme is light', () => {
@@ -578,9 +598,11 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
-            expect(result.current.media).toBeDefined()
-            expect(typeof result.current.media).toBe('string')
+            expect(result.current.currentState.state).toBe(
+                State.RESTRICTED_NO_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.media).toBeDefined()
+            expect(typeof result.current.currentState.media).toBe('string')
         })
 
         it('uses dark theme SVG when theme is dark', () => {
@@ -613,9 +635,11 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.RESTRICTED_NO_OPPORTUNITIES)
-            expect(result.current.media).toBeDefined()
-            expect(typeof result.current.media).toBe('string')
+            expect(result.current.currentState.state).toBe(
+                State.RESTRICTED_NO_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.media).toBeDefined()
+            expect(typeof result.current.currentState.media).toBe('string')
         })
 
         it('returns HAS_OPPORTUNITIES when restricted user still has allowed opportunities', () => {
@@ -642,8 +666,10 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
-            expect(result.current.showEmptyState).toBe(false)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
+            expect(result.current.currentState.showEmptyState).toBe(false)
         })
     })
 
@@ -672,7 +698,9 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.ENABLED_NO_OPPORTUNITIES,
+            )
         })
 
         it('returns HAS_OPPORTUNITIES when totalCount equals threshold', () => {
@@ -699,7 +727,9 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
         })
 
         it('does not wait for more opportunities when allowedOpportunityIds is undefined (premium user)', () => {
@@ -723,7 +753,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
         })
 
         it('prioritizes waiting for opportunities over RESTRICTED_NO_OPPORTUNITIES', () => {
@@ -750,7 +782,9 @@ describe('useOpportunityPageState', () => {
                 }),
             )
 
-            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.ENABLED_NO_OPPORTUNITIES,
+            )
         })
     })
 
@@ -778,7 +812,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.DISABLED_NEEDS_SETUP)
+            expect(result.current.currentState.state).toBe(
+                State.DISABLED_NEEDS_SETUP,
+            )
         })
 
         it('handles undefined count by falling back to 0', () => {
@@ -804,7 +840,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.ENABLED_NO_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.ENABLED_NO_OPPORTUNITIES,
+            )
         })
 
         it('prioritizes opportunities existence over all other conditions', () => {
@@ -832,7 +870,9 @@ describe('useOpportunityPageState', () => {
                 useOpportunityPageState(defaultParams),
             )
 
-            expect(result.current.state).toBe(State.HAS_OPPORTUNITIES)
+            expect(result.current.currentState.state).toBe(
+                State.HAS_OPPORTUNITIES,
+            )
         })
     })
 })

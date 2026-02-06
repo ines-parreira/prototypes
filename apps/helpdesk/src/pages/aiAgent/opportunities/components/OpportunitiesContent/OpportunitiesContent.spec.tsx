@@ -187,6 +187,9 @@ describe('OpportunitiesContent', () => {
         isLoadingOpportunityDetails: false,
         totalCount: 10,
         opportunitiesPageState: mockEmptyPageState,
+        stateConfig: {
+            [State.OPPORTUNITY_NOT_FOUND]: mockEmptyPageState,
+        } as any,
     }
 
     const queryClient = new QueryClient({
@@ -1197,6 +1200,40 @@ describe('OpportunitiesContent', () => {
                     /AI Agent is learning from your conversations/,
                 ),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Opportunity not found state', () => {
+        it('should render OpportunitiesEmptyState with OPPORTUNITY_NOT_FOUND state when no opportunity is selected and showEmptyState is false', () => {
+            const mockOpportunityNotFoundState: OpportunityPageState = {
+                state: State.OPPORTUNITY_NOT_FOUND,
+                isLoading: false,
+                title: 'Opportunity not found',
+                description:
+                    'The opportunity you are looking for does not exist.',
+                media: null,
+                primaryCta: null,
+                showEmptyState: false,
+            }
+
+            renderComponent({
+                selectedOpportunity: null,
+                opportunitiesPageState: mockOpportunityPageState,
+                stateConfig: {
+                    [State.OPPORTUNITY_NOT_FOUND]: mockOpportunityNotFoundState,
+                } as any,
+            })
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Opportunity not found',
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'The opportunity you are looking for does not exist.',
+                ),
+            ).toBeInTheDocument()
         })
     })
 

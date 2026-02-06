@@ -111,16 +111,20 @@ jest.mock('../hooks/useOpportunityPageState', () => ({
         DISABLED_NEEDS_ENABLE: 'DISABLED_NEEDS_ENABLE',
         DISABLED_NEEDS_SETUP: 'DISABLED_NEEDS_SETUP',
         RESTRICTED_NO_OPPORTUNITIES: 'RESTRICTED_NO_OPPORTUNITIES',
+        OPPORTUNITY_NOT_FOUND: 'OPPORTUNITY_NOT_FOUND',
     },
     useOpportunityPageState: jest.fn(() => ({
-        state: 'ENABLED_NO_OPPORTUNITIES',
-        isLoading: false,
-        title: 'AI Agent is learning from your conversations',
-        description:
-            "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
-        media: '/assets/images/ai-agent/opportunities/learning.svg',
-        primaryCta: null,
-        showEmptyState: true,
+        currentState: {
+            state: 'ENABLED_NO_OPPORTUNITIES',
+            isLoading: false,
+            title: 'AI Agent is learning from your conversations',
+            description:
+                "As AI Agent handles more conversations, we'll surface opportunities to improve its accuracy and coverage. Check back soon!",
+            media: '/assets/images/ai-agent/opportunities/learning.svg',
+            primaryCta: null,
+            showEmptyState: true,
+        },
+        stateConfig: {},
     })),
 }))
 

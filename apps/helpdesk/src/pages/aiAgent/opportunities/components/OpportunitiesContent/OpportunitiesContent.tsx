@@ -35,6 +35,7 @@ interface OpportunitiesContentProps {
     totalCount: number
     opportunitiesPageState: OpportunityPageState
     allowedOpportunityIds?: number[]
+    stateConfig: Record<State, OpportunityPageState>
 }
 
 export const OpportunitiesContent = ({
@@ -46,6 +47,7 @@ export const OpportunitiesContent = ({
     totalCount,
     opportunitiesPageState,
     allowedOpportunityIds,
+    stateConfig,
 }: OpportunitiesContentProps) => {
     const [isDismissModalOpen, setIsDismissModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -241,12 +243,25 @@ export const OpportunitiesContent = ({
         )
     }
 
-    if (opportunitiesPageState.showEmptyState || !selectedOpportunity) {
+    if (opportunitiesPageState.showEmptyState) {
         return (
             <div className={css.containerContent}>
                 <div className={css.header}></div>
                 <OpportunitiesEmptyState
                     opportunitiesPageState={opportunitiesPageState}
+                />
+            </div>
+        )
+    }
+
+    if (!selectedOpportunity) {
+        return (
+            <div className={css.containerContent}>
+                <div className={css.header}></div>
+                <OpportunitiesEmptyState
+                    opportunitiesPageState={
+                        stateConfig[State.OPPORTUNITY_NOT_FOUND]
+                    }
                 />
             </div>
         )

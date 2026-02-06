@@ -121,16 +121,17 @@ export const OpportunitiesLayout = () => {
         shopName: shopName ?? '',
     })
 
-    const opportunityPageState = useOpportunityPageState({
-        helpCenterId: storeConfiguration?.helpCenterId ?? 0,
-        locale,
-        shopName: shopName ?? '',
-        accountId,
-        shopType: shopType ?? '',
-        allowedOpportunityIds: useKnowledgeService
-            ? allowedOpportunityIds
-            : undefined,
-    })
+    const { currentState: opportunityPageState, stateConfig } =
+        useOpportunityPageState({
+            helpCenterId: storeConfiguration?.helpCenterId ?? 0,
+            locale,
+            shopName: shopName ?? '',
+            accountId,
+            shopType: shopType ?? '',
+            allowedOpportunityIds: useKnowledgeService
+                ? allowedOpportunityIds
+                : undefined,
+        })
 
     const {
         onOpportunityPageVisited,
@@ -289,6 +290,7 @@ export const OpportunitiesLayout = () => {
                                 ? allowedOpportunityIds
                                 : undefined
                         }
+                        stateConfig={stateConfig}
                     />
                 </div>
             </div>

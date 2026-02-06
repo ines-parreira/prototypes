@@ -23,6 +23,7 @@ export enum State {
     DISABLED_NEEDS_ENABLE = 'DISABLED_NEEDS_ENABLE',
     DISABLED_NEEDS_SETUP = 'DISABLED_NEEDS_SETUP',
     RESTRICTED_NO_OPPORTUNITIES = 'RESTRICTED_NO_OPPORTUNITIES',
+    OPPORTUNITY_NOT_FOUND = 'OPPORTUNITY_NOT_FOUND',
 }
 
 export interface OpportunityPageCta {
@@ -123,6 +124,16 @@ const getStateConfig = (
         showEmptyState: false,
         isLoading: false,
     },
+    [State.OPPORTUNITY_NOT_FOUND]: {
+        state: State.OPPORTUNITY_NOT_FOUND,
+        title: 'Opportunity not found',
+        description:
+            'This opportunity may have been deleted or is no longer available. Please select another opportunity from the list.',
+        media: null,
+        primaryCta: null,
+        showEmptyState: true,
+        isLoading: false,
+    },
 })
 
 export function useOpportunityPageState({
@@ -132,7 +143,10 @@ export function useOpportunityPageState({
     accountId,
     shopType,
     allowedOpportunityIds,
-}: UseOpportunityPageStateParams): OpportunityPageState {
+}: UseOpportunityPageStateParams): {
+    currentState: OpportunityPageState
+    stateConfig: Record<State, OpportunityPageState>
+} {
     const theme = useTheme()
     const { storeConfiguration, isLoading: isLoadingStoreConfig } =
         useAiAgentStoreConfigurationContext()
@@ -220,5 +234,5 @@ export function useOpportunityPageState({
     const isDarkTheme = theme.resolvedName === THEME_NAME.Dark
     const stateConfig = getStateConfig(shopType, shopName, isDarkTheme)
 
-    return stateConfig[state]
+    return { currentState: stateConfig[state], stateConfig }
 }
