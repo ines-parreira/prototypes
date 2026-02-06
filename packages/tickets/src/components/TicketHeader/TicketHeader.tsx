@@ -15,7 +15,7 @@ import {
     TicketHeaderLeft,
     TicketHeaderRight,
 } from './layout/TicketHeaderLayout'
-import { TicketTitle } from './TicketTitle/TicketTitle'
+import { CurrentTicketTitle } from './TicketTitle'
 
 import css from './TicketHeader.less'
 
@@ -43,7 +43,7 @@ export function TicketHeader({ ticketId }: Props) {
         <TicketHeaderContainer>
             <TicketHeaderLeft>
                 <DTPTicketHeaderToggle />
-                <TicketTitle ticket={ticket} />
+                <CurrentTicketTitle ticket={ticket} />
             </TicketHeaderLeft>
             <TicketHeaderRight>
                 {spam && <SpamTicket />}

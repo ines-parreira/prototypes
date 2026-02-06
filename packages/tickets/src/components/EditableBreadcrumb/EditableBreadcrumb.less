@@ -45,6 +45,12 @@
         overflow: hidden;
         color: var(--content-neutral-default);
         outline: none !important;
+
+        &:empty::before {
+            content: attr(data-placeholder);
+            color: var(--content-neutral-tertiary);
+            pointer-events: none;
+        }
     }
 
     .editPencil {

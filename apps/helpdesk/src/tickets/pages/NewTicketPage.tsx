@@ -12,6 +12,8 @@ import {
     TicketHeaderRight,
     TicketLayout,
     TicketLayoutContent,
+    TicketTitle,
+    TicketTitleSubject,
     UserAssigneeSelect,
 } from '@repo/tickets'
 
@@ -54,6 +56,7 @@ const infobarNavigationPanelConfig = {
 }
 
 type NewTicketState = {
+    subject: string
     priority: TicketPriority | undefined
     assigneeUser: TicketUser | null
     assigneeTeam: TicketTeam | null
@@ -62,6 +65,7 @@ type NewTicketState = {
 export function NewTicketPage() {
     const { isExpanded } = useTicketInfobarNavigation()
     const [ticketState, setTicketState] = useState<NewTicketState>({
+        subject: '',
         priority: undefined,
         assigneeUser: null,
         assigneeTeam: null,
@@ -96,7 +100,17 @@ export function NewTicketPage() {
     return (
         <TicketLayout>
             <TicketHeaderContainer>
-                <TicketHeaderLeft>New ticket</TicketHeaderLeft>
+                <TicketHeaderLeft>
+                    <TicketTitle>
+                        <TicketTitleSubject
+                            placeholder="New ticket"
+                            value={ticketState.subject}
+                            onChange={(subject) =>
+                                setTicketState({ ...ticketState, subject })
+                            }
+                        />
+                    </TicketTitle>
+                </TicketHeaderLeft>
                 <TicketHeaderRight>
                     <PrioritySelect
                         value={ticketState.priority}

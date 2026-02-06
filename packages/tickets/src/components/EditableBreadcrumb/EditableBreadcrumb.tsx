@@ -8,10 +8,11 @@ import css from './EditableBreadcrumb.less'
 
 type Props = {
     value: string | null
+    placeholder?: string
     onChange?: (value: string) => void
 }
 
-export function EditableBreadcrumb({ value, onChange }: Props) {
+export function EditableBreadcrumb({ value, placeholder, onChange }: Props) {
     const {
         subjectRef,
         handleMouseDown,
@@ -29,6 +30,7 @@ export function EditableBreadcrumb({ value, onChange }: Props) {
                 contentEditable
                 className={cn(css.content, 'typography-medium-md')}
                 ref={subjectRef}
+                data-placeholder={placeholder}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 onPaste={handlePaste}
@@ -37,7 +39,7 @@ export function EditableBreadcrumb({ value, onChange }: Props) {
                 suppressContentEditableWarning={true}
                 role="textbox"
             >
-                {value || ''}
+                {value}
             </span>
             <span className={css.editPencil} onClick={handleEditClick}>
                 <Icon name="edit-pencil" size="sm" />

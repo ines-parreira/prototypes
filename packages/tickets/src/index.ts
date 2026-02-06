@@ -60,3 +60,8 @@ export { TicketLayout, TicketLayoutContent } from './layout/TicketLayout'
 export { TicketHeaderContainer } from './components/TicketHeader/layout/TicketHeaderLayout'
 export { TicketHeaderLeft } from './components/TicketHeader/layout/TicketHeaderLayout'
 export { TicketHeaderRight } from './components/TicketHeader/layout/TicketHeaderLayout'
+export {
+    TicketTitle,
+    TicketTitleCustomer,
+    TicketTitleSubject,
+} from './components/TicketHeader/TicketTitle'

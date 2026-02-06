@@ -1,46 +1,51 @@
 import { Link } from 'react-router-dom'
 
 import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
-import type { Ticket } from '@gorgias/helpdesk-types'
 
-import { getCustomerName } from '../../../helpers/getCustomerName'
 import { EditableBreadcrumb } from '../../EditableBreadcrumb'
-import { useTicketSubject } from './useTicketSubject'
-import { useUpdateSubject } from './useUpdateSubject'
 
 type TicketTitleProps = {
-    ticket: Ticket
+    children: React.ReactNode
 }
 
-export function TicketTitle({ ticket }: TicketTitleProps) {
-    const { subject, updateTicketTranslatedSubject } = useTicketSubject(ticket)
-    const { updateSubject } = useUpdateSubject(ticket.id)
+export function TicketTitle({ children }: TicketTitleProps) {
+    return <Breadcrumbs>{children}</Breadcrumbs>
+}
 
-    /**
-     * We keep them as separate function since in the legacy implementation
-     * we still need the updateTicketTranslatedSubject to exist aside the
-     * redux based BE + ticket update
-     */
-    const handleSubjectChange = (value: string) => {
-        // BE + Ticket Update
-        updateSubject(ticket.id, value)
-        // Local cache updates for the DTP
-        updateTicketTranslatedSubject(ticket.id, value)
-    }
+type TicketTitleCustomerProps = {
+    customerName: string
+    customerUrl: string
+}
 
+export function TicketTitleCustomer({
+    customerName,
+    customerUrl,
+}: TicketTitleCustomerProps) {
     return (
-        <Breadcrumbs>
-            <Breadcrumb>
-                <Link to={`/app/customer/${ticket.customer.id}`}>
-                    {getCustomerName(ticket.customer)}
-                </Link>
-            </Breadcrumb>
-            <Breadcrumb asSlot>
-                <EditableBreadcrumb
-                    value={subject}
-                    onChange={handleSubjectChange}
-                />
-            </Breadcrumb>
-        </Breadcrumbs>
+        <Breadcrumb>
+            <Link to={customerUrl}>{customerName}</Link>
+        </Breadcrumb>
+    )
+}
+
+type TicketTitleSubjectProps = {
+    value: string | null
+    placeholder?: string
+    onChange?: (value: string) => void
+}
+
+export function TicketTitleSubject({
+    value,
+    placeholder,
+    onChange,
+}: TicketTitleSubjectProps) {
+    return (
+        <Breadcrumb asSlot>
+            <EditableBreadcrumb
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+            />
+        </Breadcrumb>
     )
 }

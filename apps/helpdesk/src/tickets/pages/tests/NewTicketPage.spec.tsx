@@ -25,7 +25,8 @@ jest.mock('@repo/navigation', () => ({
 const useTicketInfobarNavigationMock = jest.mocked(useTicketInfobarNavigation)
 
 jest.mock('@repo/layout', () => ({
-    Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
+    ...jest.requireActual('@repo/layout'),
+    Handle: jest.fn(() => <div role="separator" />),
     Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
@@ -127,10 +128,15 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders the header with title', async () => {
+        it('renders the header with title input', async () => {
             renderComponent()
 
-            expect(screen.getByText('New ticket')).toBeInTheDocument()
+            const subjectInput = screen.getByRole('textbox')
+            expect(subjectInput).toBeInTheDocument()
+            expect(subjectInput).toHaveAttribute(
+                'data-placeholder',
+                'New ticket',
+            )
             await waitForSelectsToLoad()
         })
 
@@ -181,10 +187,15 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders the header with title', async () => {
+        it('renders the header with title input', async () => {
             renderComponent()
 
-            expect(screen.getByText('New ticket')).toBeInTheDocument()
+            const subjectInput = screen.getByRole('textbox')
+            expect(subjectInput).toBeInTheDocument()
+            expect(subjectInput).toHaveAttribute(
+                'data-placeholder',
+                'New ticket',
+            )
             await waitForSelectsToLoad()
         })
 
@@ -425,6 +436,51 @@ describe('NewTicketPage', () => {
                 screen.queryByText(/Content to extract/),
             ).not.toBeInTheDocument()
             await waitForSelectsToLoad()
+        })
+    })
+
+    describe('ticket subject', () => {
+        beforeEach(() => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: true,
+            } as any)
+        })
+
+        it('renders the subject input with placeholder when empty', async () => {
+            renderComponent()
+
+            await waitForSelectsToLoad()
+
+            const subjectInput = screen.getByRole('textbox')
+            expect(subjectInput).toBeInTheDocument()
+            expect(subjectInput).toHaveAttribute(
+                'data-placeholder',
+                'New ticket',
+            )
+        })
+
+        it('updates the subject when user types', async () => {
+            const { user } = renderComponent()
+
+            await waitForSelectsToLoad()
+
+            const subjectInput = screen.getByRole('textbox')
+            await user.type(subjectInput, 'My new ticket')
+
+            expect(subjectInput).toHaveTextContent('My new ticket')
+        })
+
+        it('clears the subject when user deletes all text', async () => {
+            const { user } = renderComponent()
+
+            await waitForSelectsToLoad()
+
+            const subjectInput = screen.getByRole('textbox')
+            await user.type(subjectInput, 'Test')
+            expect(subjectInput).toHaveTextContent('Test')
+
+            await user.clear(subjectInput)
+            expect(subjectInput).toHaveTextContent('')
         })
     })
 })
