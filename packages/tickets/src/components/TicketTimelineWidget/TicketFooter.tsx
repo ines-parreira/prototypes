@@ -20,10 +20,10 @@ function getStatusInfo(
     color: Extract<ColorType, 'grey' | 'blue' | 'purple'>
 } {
     if (isSnoozed) {
-        return { label: 'Snoozed', color: Color.Grey }
+        return { label: 'Snoozed', color: Color.Blue }
     }
     if (ticketStatus === 'closed') {
-        return { label: 'Closed', color: Color.Blue }
+        return { label: 'Closed', color: Color.Grey }
     }
     return { label: 'Open', color: Color.Purple }
 }
