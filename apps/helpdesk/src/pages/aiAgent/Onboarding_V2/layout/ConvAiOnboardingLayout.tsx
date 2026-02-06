@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useParams } from 'react-router-dom'
 
-import { Box, LegacyProgressBar, Text } from '@gorgias/axiom'
+import { Box, ProgressBar, Text } from '@gorgias/axiom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { OnboardingNavigationButtons } from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingNavigationButtons/OnboardingNavigationButtons'
@@ -118,11 +118,7 @@ export const OnboardingContentContainer: React.FC<{
             </div>
             <div className={css.onboardingContentBody}>
                 <Box marginTop="xl" className={css.progressBarWrapper}>
-                    <LegacyProgressBar
-                        value={currentStep}
-                        maxValue={totalSteps}
-                        labelType="none"
-                    />
+                    <ProgressBar value={currentStep} maxValue={totalSteps} />
                 </Box>
                 <div>{children}</div>
                 <OnboardingNavigationButtons
