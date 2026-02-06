@@ -1,0 +1,27 @@
+:local {
+    .container {
+        overflow: hidden;
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .content {
+        background: var(--elevation-neutral-default);
+        padding: var(--layout-spacing-s) 0;
+        gap: var(--layout-spacing-m);
+        overflow: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+
+        &::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--scrollbar-track);
+        }
+    }
+}

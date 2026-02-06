@@ -1,5 +1,6 @@
 import { Handle, Panel } from '@repo/layout'
-import { useTicketInfobarNavigation } from '@repo/navigation'
+import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import { NewTicketInfobarNavigation } from '@repo/tickets'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -14,7 +15,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-import { InfobarNavigationPanel } from 'tickets/navigation'
 
 import { NewTicketPage } from '../NewTicketPage'
 
@@ -25,31 +25,26 @@ jest.mock('@repo/navigation', () => ({
 const useTicketInfobarNavigationMock = jest.mocked(useTicketInfobarNavigation)
 
 jest.mock('@repo/layout', () => ({
-    ...jest.requireActual('@repo/layout'),
     Handle: jest.fn(() => <div role="separator">Panel Handle</div>),
     Panel: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
-jest.mock('pages/tickets/detail/TicketInfobarContainer', () => ({
-    __esModule: true,
-    default: jest.fn(() => (
-        <div role="complementary" aria-label="Ticket Information">
-            TicketInfobarContainer
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    NewTicketInfobarNavigation: jest.fn(() => (
+        <div role="navigation" aria-label="Infobar Navigation">
+            NewTicketInfobarNavigation
         </div>
     )),
 }))
 
-jest.mock('tickets/navigation', () => ({
-    InfobarNavigationPanel: jest.fn(() => (
-        <div role="navigation" aria-label="Infobar Navigation">
-            InfobarNavigationPanel
-        </div>
-    )),
+jest.mock('@repo/customer', () => ({
+    ShopifyCustomer: jest.fn(() => <div>ShopifyCustomer</div>),
 }))
 
 const mockedPanel = jest.mocked(Panel)
 const mockedHandle = jest.mocked(Handle)
-const mockedInfobarNavigationPanel = jest.mocked(InfobarNavigationPanel)
+const mockedNewTicketInfobarNavigation = jest.mocked(NewTicketInfobarNavigation)
 
 const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
 const team2 = mockTeam({ id: 2, name: 'Sales', decoration: { emoji: '💰' } })
@@ -146,18 +141,7 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
-        it('renders the infobar container with expanded panel config', async () => {
-            renderComponent()
-
-            expect(
-                screen.getByRole('complementary', {
-                    name: 'Ticket Information',
-                }),
-            ).toBeInTheDocument()
-            await waitForSelectsToLoad()
-        })
-
-        it('renders the infobar navigation panel', async () => {
+        it('renders the infobar navigation', async () => {
             renderComponent()
 
             expect(
@@ -211,17 +195,6 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
-        it('renders the infobar container', async () => {
-            renderComponent()
-
-            expect(
-                screen.getByRole('complementary', {
-                    name: 'Ticket Information',
-                }),
-            ).toBeInTheDocument()
-            await waitForSelectsToLoad()
-        })
-
         it('renders Panel with collapsed config', async () => {
             renderComponent()
 
@@ -269,114 +242,189 @@ describe('NewTicketPage', () => {
             await waitForSelectsToLoad()
         })
 
-        it('renders InfobarNavigationPanel', async () => {
+        it('renders NewTicketInfobarNavigation', async () => {
             renderComponent()
 
-            expect(mockedInfobarNavigationPanel).toHaveBeenCalled()
+            expect(mockedNewTicketInfobarNavigation).toHaveBeenCalled()
+            await waitForSelectsToLoad()
+        })
+
+        describe('header select components', () => {
+            beforeEach(() => {
+                useTicketInfobarNavigationMock.mockReturnValue({
+                    isExpanded: true,
+                } as any)
+            })
+
+            describe('PrioritySelect', () => {
+                it('renders with default "Normal" placeholder', async () => {
+                    renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const normalTexts = screen.getAllByText('Normal')
+                    expect(normalTexts.length).toBeGreaterThan(0)
+                })
+
+                it('allows selecting a different priority', async () => {
+                    const { user } = renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const prioritySelect =
+                        screen.getAllByLabelText('Priority selection')[0]
+                    await act(() => user.click(prioritySelect))
+
+                    const highOptions = await screen.findAllByText('High')
+                    await act(() =>
+                        user.click(highOptions[highOptions.length - 1]),
+                    )
+
+                    await waitFor(() => {
+                        const highTexts = screen.getAllByText('High')
+                        expect(highTexts.length).toBeGreaterThan(0)
+                    })
+                })
+            })
+
+            describe('UserAssigneeSelect', () => {
+                it('renders with "Unassigned" placeholder', async () => {
+                    renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const unassignedTexts = screen.getAllByText('Unassigned')
+                    expect(unassignedTexts.length).toBeGreaterThan(0)
+                })
+
+                it('allows selecting a user', async () => {
+                    const { user } = renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const userSelect =
+                        screen.getAllByLabelText('User selection')[0]
+                    await act(() => user.click(userSelect))
+
+                    await waitFor(() => {
+                        expect(screen.getByText('John Doe')).toBeInTheDocument()
+                    })
+
+                    const johnOptions = await screen.findAllByText('John Doe')
+                    await act(() =>
+                        user.click(johnOptions[johnOptions.length - 1]),
+                    )
+
+                    await waitFor(() => {
+                        const johnTexts = screen.getAllByText('John Doe')
+                        expect(johnTexts.length).toBeGreaterThan(0)
+                    })
+                })
+            })
+
+            describe('TeamAssigneeSelect', () => {
+                it('renders with "No team" placeholder', async () => {
+                    renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const noTeamTexts = screen.getAllByText('No team')
+                    expect(noTeamTexts.length).toBeGreaterThan(0)
+                })
+
+                it('allows selecting a team', async () => {
+                    const { user } = renderComponent()
+
+                    await waitForSelectsToLoad()
+
+                    const teamSelect =
+                        screen.getAllByLabelText('Team selection')[0]
+                    await act(() => user.click(teamSelect))
+
+                    await waitFor(() => {
+                        expect(screen.getByText('Support')).toBeInTheDocument()
+                    })
+
+                    const supportOptions = await screen.findAllByText('Support')
+                    await act(() =>
+                        user.click(supportOptions[supportOptions.length - 1]),
+                    )
+
+                    await waitFor(() => {
+                        const supportTexts = screen.getAllByText('Support')
+                        expect(supportTexts.length).toBeGreaterThan(0)
+                    })
+                })
+            })
+        })
+
+        it('renders infobar navigation panel with correct config', async () => {
+            renderComponent()
+
+            const infobarNavigationPanelCalls = mockedPanel.mock.calls.filter(
+                (call) => call[0].name === 'infobar-navigation',
+            )
+
+            expect(infobarNavigationPanelCalls).toHaveLength(1)
+            expect(infobarNavigationPanelCalls[0][0].config).toEqual({
+                defaultSize: 49,
+                minSize: 49,
+                maxSize: 49,
+            })
             await waitForSelectsToLoad()
         })
     })
 
-    describe('header select components', () => {
-        beforeEach(() => {
+    describe('infobar content based on activeTab', () => {
+        it('renders Shopify content when activeTab is Shopify', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,
+                activeTab: TicketInfobarTab.Shopify,
             } as any)
+
+            renderComponent()
+
+            expect(screen.getByText('ShopifyCustomer')).toBeInTheDocument()
+            expect(
+                screen.queryByText(/Content to extract/),
+            ).not.toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        describe('PrioritySelect', () => {
-            it('renders with default "Normal" placeholder', async () => {
-                renderComponent()
+        it('renders Customer content when activeTab is Customer', async () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: true,
+                activeTab: TicketInfobarTab.Customer,
+            } as any)
 
-                await waitForSelectsToLoad()
+            renderComponent()
 
-                const normalTexts = screen.getAllByText('Normal')
-                expect(normalTexts.length).toBeGreaterThan(0)
-            })
-
-            it('allows selecting a different priority', async () => {
-                const { user } = renderComponent()
-
-                await waitForSelectsToLoad()
-
-                const prioritySelect =
-                    screen.getAllByLabelText('Priority selection')[0]
-                await act(() => user.click(prioritySelect))
-
-                const highOptions = await screen.findAllByText('High')
-                await act(() => user.click(highOptions[highOptions.length - 1]))
-
-                await waitFor(() => {
-                    const highTexts = screen.getAllByText('High')
-                    expect(highTexts.length).toBeGreaterThan(0)
-                })
-            })
+            expect(
+                screen.getByText(
+                    /Content to extract from the Infobar ticket area/,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('ShopifyCustomer'),
+            ).not.toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
 
-        describe('UserAssigneeSelect', () => {
-            it('renders with "Unassigned" placeholder', async () => {
-                renderComponent()
+        it('renders no infobar content when activeTab is Timeline', async () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: true,
+                activeTab: TicketInfobarTab.Timeline,
+            } as any)
 
-                await waitForSelectsToLoad()
+            renderComponent()
 
-                const unassignedTexts = screen.getAllByText('Unassigned')
-                expect(unassignedTexts.length).toBeGreaterThan(0)
-            })
-
-            it('allows selecting a user', async () => {
-                const { user } = renderComponent()
-
-                await waitForSelectsToLoad()
-
-                const userSelect = screen.getAllByLabelText('User selection')[0]
-                await act(() => user.click(userSelect))
-
-                await waitFor(() => {
-                    expect(screen.getByText('John Doe')).toBeInTheDocument()
-                })
-
-                const johnOptions = await screen.findAllByText('John Doe')
-                await act(() => user.click(johnOptions[johnOptions.length - 1]))
-
-                await waitFor(() => {
-                    const johnTexts = screen.getAllByText('John Doe')
-                    expect(johnTexts.length).toBeGreaterThan(0)
-                })
-            })
-        })
-
-        describe('TeamAssigneeSelect', () => {
-            it('renders with "No team" placeholder', async () => {
-                renderComponent()
-
-                await waitForSelectsToLoad()
-
-                const noTeamTexts = screen.getAllByText('No team')
-                expect(noTeamTexts.length).toBeGreaterThan(0)
-            })
-
-            it('allows selecting a team', async () => {
-                const { user } = renderComponent()
-
-                await waitForSelectsToLoad()
-
-                const teamSelect = screen.getAllByLabelText('Team selection')[0]
-                await act(() => user.click(teamSelect))
-
-                await waitFor(() => {
-                    expect(screen.getByText('Support')).toBeInTheDocument()
-                })
-
-                const supportOptions = await screen.findAllByText('Support')
-                await act(() =>
-                    user.click(supportOptions[supportOptions.length - 1]),
-                )
-
-                await waitFor(() => {
-                    const supportTexts = screen.getAllByText('Support')
-                    expect(supportTexts.length).toBeGreaterThan(0)
-                })
-            })
+            expect(
+                screen.queryByText('ShopifyCustomer'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/Content to extract/),
+            ).not.toBeInTheDocument()
+            await waitForSelectsToLoad()
         })
     })
 })

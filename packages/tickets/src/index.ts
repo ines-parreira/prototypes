@@ -8,7 +8,9 @@ export { TeamAssigneeSelect } from './components/TicketAssignee'
 export { UserAssigneeSelect } from './components/TicketAssignee'
 export { PrioritySelect } from './components/TicketPriority'
 export { TicketHeader } from './components/TicketHeader/TicketHeader'
-export { TicketInfobarNavigation } from './components/TicketInfobarNavigation'
+export { TicketInfobarNavigation } from './components/InfobarNavigation/TicketInfobarNavigation'
+export { NewTicketInfobarNavigation } from './components/InfobarNavigation/NewTicketInfobarNavigation'
+
 export type {
     EnrichedTicket,
     TicketCustomField,
