@@ -1,24 +1,21 @@
+import type { AvatarStatusIndicatorColor } from '@gorgias/axiom'
 import { Avatar, AvatarStatusIndicator, Box, Text } from '@gorgias/axiom'
-import type { UserAvailabilityStatus } from '@gorgias/helpdesk-queries'
-
-import { useAvailabilityStatusColor } from '../../hooks'
 
 export type UserInfoHeaderProps = {
     userName: string
     avatarUrl?: string
     statusText?: string
-    status: UserAvailabilityStatus
-    isOffline: boolean
+    isOffline?: boolean
+    indicatorColor?: AvatarStatusIndicatorColor
 }
 
 export function UserInfoHeader({
     userName,
     avatarUrl,
     statusText,
-    status,
     isOffline,
+    indicatorColor,
 }: UserInfoHeaderProps) {
-    const color = useAvailabilityStatusColor(status)
     return (
         <Box
             flexDirection="row"
@@ -34,11 +31,13 @@ export function UserInfoHeader({
                     name={userName}
                     url={avatarUrl}
                     statusSlot={
-                        <AvatarStatusIndicator
-                            size="xl"
-                            color={color}
-                            variant={isOffline ? 'secondary' : 'primary'}
-                        />
+                        indicatorColor && (
+                            <AvatarStatusIndicator
+                                size="xl"
+                                color={indicatorColor}
+                                variant={isOffline ? 'secondary' : 'primary'}
+                            />
+                        )
                     }
                     size="lg"
                 />

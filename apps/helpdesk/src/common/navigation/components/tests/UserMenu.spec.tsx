@@ -98,10 +98,16 @@ jest.mock('@repo/agent-status', () => ({
         status: undefined,
         isLoading: false,
     })),
+    useAgentPhoneStatus: jest.fn(() => ({
+        agentPhoneUnavailabilityStatus: undefined,
+        isLoading: false,
+    })),
 }))
 
-const { useUserAvailabilityStatus } = jest.requireMock('@repo/agent-status')
+const { useUserAvailabilityStatus, useAgentPhoneStatus } =
+    jest.requireMock('@repo/agent-status')
 const useUserAvailabilityStatusMock = useUserAvailabilityStatus as jest.Mock
+const useAgentPhoneStatusMock = useAgentPhoneStatus as jest.Mock
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -139,6 +145,10 @@ describe('UserMenu', () => {
                 },
             }),
         )
+        useAgentPhoneStatusMock.mockReturnValue({
+            agentPhoneUnavailabilityStatus: undefined,
+            isLoading: false,
+        })
     })
 
     it('should render the main screen', () => {
@@ -448,6 +458,97 @@ describe('UserMenu', () => {
             screen.queryByRole('button', {
                 name: /change status/i,
             }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should disable status button when agent is on a call', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
+        useAgentPhoneStatusMock.mockReturnValue({
+            agentPhoneUnavailabilityStatus: {
+                id: 'on-a-call',
+                name: 'On a call',
+            },
+            isLoading: false,
+        })
+
+        render(<UserMenu onClose={onClose} />, { wrapper })
+
+        // The button still uses the regular status name in aria-label, but is disabled
+        const statusButton = screen.getByRole('button', {
+            name: /change status.*current status: available/i,
+        })
+        expect(statusButton).toBeDisabled()
+        expect(
+            screen.getByText(ignoreHTML('Status:On a call')),
+        ).toBeInTheDocument()
+    })
+
+    it('should hide chevron icon when status button is disabled due to phone status', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: undefined,
+            isLoading: false,
+        })
+        useAgentPhoneStatusMock.mockReturnValue({
+            agentPhoneUnavailabilityStatus: {
+                id: 'call-wrap-up',
+                name: 'Call wrap-up',
+            },
+            isLoading: false,
+        })
+
+        render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
+
+        const statusButton = screen.getByRole('button', {
+            name: /change status.*current status: none/i,
+        })
+        expect(statusButton).toBeDisabled()
+        expect(
+            screen.getByText(ignoreHTML('Status:Call wrap-up')),
+        ).toBeInTheDocument()
+
+        // Verify chevron icon is not rendered within the status button
+        const buttonContent = statusButton.querySelector('.material-icons')
+        expect(buttonContent?.textContent).not.toBe('chevron_right')
+    })
+
+    it('should display phone unavailability status text over regular status', () => {
+        const useFlag = require('@repo/feature-flags').useFlag
+        useFlag.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: {
+                id: 'available',
+                name: 'Available',
+            },
+            isLoading: false,
+        })
+        useAgentPhoneStatusMock.mockReturnValue({
+            agentPhoneUnavailabilityStatus: {
+                id: 'on-a-call',
+                name: 'On a call',
+            },
+            isLoading: false,
+        })
+
+        render(<UserMenu onClose={onClose} />, { wrapper })
+
+        // Should show phone status instead of regular availability status
+        expect(
+            screen.getByText(ignoreHTML('Status:On a call')),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByText(ignoreHTML('Status:Available')),
         ).not.toBeInTheDocument()
     })
 

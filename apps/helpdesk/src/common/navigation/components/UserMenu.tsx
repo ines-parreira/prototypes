@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import {
+    useAgentPhoneStatus,
     UserInfoHeaderContainer,
     useUserAvailabilityStatus,
 } from '@repo/agent-status'
@@ -69,6 +70,21 @@ export default function UserMenu({ onClose }: Props) {
         userId: currentUserId,
     })
 
+    const { agentPhoneUnavailabilityStatus } = useAgentPhoneStatus({
+        userId: currentUserId,
+    })
+
+    const statusText = useMemo(() => {
+        if (agentPhoneUnavailabilityStatus) {
+            return agentPhoneUnavailabilityStatus.name
+        }
+        return status?.name || 'None'
+    }, [agentPhoneUnavailabilityStatus, status])
+
+    const canChangeStatus = useMemo(() => {
+        return isAgentUnavailabilityEnabled && !agentPhoneUnavailabilityStatus
+    }, [isAgentUnavailabilityEnabled, agentPhoneUnavailabilityStatus])
+
     const selectedTheme = THEME_CONFIGS.find(({ name }) => name === theme.name)!
 
     return (
@@ -76,7 +92,11 @@ export default function UserMenu({ onClose }: Props) {
             <Screen name={ActiveScreen.Main}>
                 {isAgentUnavailabilityEnabled && (
                     <>
-                        <UserInfoHeaderContainer />
+                        <UserInfoHeaderContainer
+                            agentPhoneUnavailabilityStatus={
+                                agentPhoneUnavailabilityStatus
+                            }
+                        />
                     </>
                 )}
                 {!isAgentUnavailabilityEnabled ? (
@@ -85,6 +105,7 @@ export default function UserMenu({ onClose }: Props) {
                     <>
                         <hr className={css.separator} />
                         <button
+                            disabled={!canChangeStatus}
                             onClick={() => {
                                 setActiveScreen(ActiveScreen.Status)
                             }}
@@ -99,21 +120,21 @@ export default function UserMenu({ onClose }: Props) {
                             <DropdownItemLabel
                                 className={css.submenu}
                                 suffix={
-                                    <i
-                                        className={cn(
-                                            'material-icons',
-                                            css['sub-menu-chevron'],
-                                        )}
-                                        aria-hidden="true"
-                                    >
-                                        chevron_right
-                                    </i>
+                                    canChangeStatus && (
+                                        <i
+                                            className={cn(
+                                                'material-icons',
+                                                css['sub-menu-chevron'],
+                                            )}
+                                            aria-hidden="true"
+                                        >
+                                            chevron_right
+                                        </i>
+                                    )
                                 }
                             >
                                 <span className={css.label}>Status:</span>
-                                <span className={css.value}>
-                                    {status?.name || 'None'}
-                                </span>
+                                <span className={css.value}>{statusText}</span>
                             </DropdownItemLabel>
                         </button>
                     </>

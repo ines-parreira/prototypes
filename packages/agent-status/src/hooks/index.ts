@@ -1,4 +1,3 @@
-export { useAvailabilityStatusColor } from './useAvailabilityStatusColor'
 export { useAvailabilityStatusText } from './useAvailabilityStatusText'
 export { useAgentStatus } from './useAgentStatus'
 export { useAgentStatuses } from './useAgentStatuses'
@@ -20,3 +19,4 @@ export type {
 export { useCustomUserUnavailabilityModal } from './useCustomUserUnavailabilityModal'
 export { useAgentPhoneStatus } from './useAgentPhoneStatus'
 export { useListUserAvailabilities } from './useListUserAvailabilities'
+export { useAvailabilityStatusColor } from './useAvailabilityStatusColor'

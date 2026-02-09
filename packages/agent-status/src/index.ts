@@ -23,6 +23,7 @@ export {
     useSelectableAgentAvailabilityStatuses,
     useUpdateUserAvailabilityStatus,
     useListUserAvailabilities,
+    useAvailabilityStatusColor,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'

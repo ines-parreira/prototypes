@@ -6,10 +6,19 @@ import {
     useGetUserAvailability,
 } from '@gorgias/helpdesk-queries'
 
-import { useAgentStatus, useAvailabilityStatusText } from '../../hooks'
+import {
+    useAgentStatus,
+    useAvailabilityStatusColor,
+    useAvailabilityStatusText,
+} from '../../hooks'
+import type { AgentStatusWithSystem } from '../../types'
 import { UserInfoHeader } from './UserInfoHeader'
 
-export function UserInfoHeaderContainer() {
+export function UserInfoHeaderContainer({
+    agentPhoneUnavailabilityStatus,
+}: {
+    agentPhoneUnavailabilityStatus?: AgentStatusWithSystem
+}) {
     const { data: currentUser, isLoading } = useGetCurrentUser()
     const { data } = useGetUserAvailability(currentUser?.data.id!, {
         query: {
@@ -24,6 +33,11 @@ export function UserInfoHeaderContainer() {
     const customStatus = useAgentStatus(customStatusId)
 
     const statusText = useAvailabilityStatusText(userAvailability, customStatus)
+
+    const indicatorColor = useAvailabilityStatusColor(
+        userAvailability?.user_status,
+        agentPhoneUnavailabilityStatus?.id,
+    )
 
     if (isLoading || !currentUser) {
         return null
@@ -41,9 +55,13 @@ export function UserInfoHeaderContainer() {
         <UserInfoHeader
             userName={userName || email || ''}
             avatarUrl={avatarUrl ?? undefined}
-            statusText={statusText}
-            status={userAvailability?.user_status}
+            statusText={
+                agentPhoneUnavailabilityStatus
+                    ? agentPhoneUnavailabilityStatus.name
+                    : statusText
+            }
             isOffline={false}
+            indicatorColor={indicatorColor}
         />
     )
 }

@@ -3,19 +3,25 @@ import { useMemo } from 'react'
 import type { AvatarStatusIndicatorColor } from '@gorgias/axiom'
 import type { UserAvailabilityStatus } from '@gorgias/helpdesk-queries'
 
+import type { AgentStatusWithSystem } from '../types'
+
 export function useAvailabilityStatusColor(
-    status: UserAvailabilityStatus,
-): AvatarStatusIndicatorColor {
+    status?: UserAvailabilityStatus,
+    phoneStatus?: AgentStatusWithSystem['id'],
+): AvatarStatusIndicatorColor | undefined {
     return useMemo(() => {
-        switch (status) {
-            case 'available':
-                return 'green'
-            case 'unavailable':
-                return 'red'
-            case 'custom':
-                return 'orange'
-            default:
-                return 'green'
+        if (phoneStatus) {
+            return 'red'
         }
-    }, [status])
+
+        if (!status) {
+            return undefined
+        }
+
+        if (status === 'available') {
+            return 'green'
+        }
+
+        return 'orange'
+    }, [status, phoneStatus])
 }
