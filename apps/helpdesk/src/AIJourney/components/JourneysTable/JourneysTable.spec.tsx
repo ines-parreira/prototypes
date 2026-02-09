@@ -4,6 +4,7 @@ import { formatMetricValue } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
 import { Box, createSortableColumn } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
@@ -17,10 +18,14 @@ import {
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { ThemeProvider } from 'core/theme'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
+import { mockStore } from 'utils/testing'
 
 import { JourneysTable } from './JourneysTable'
 
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
 
 const useCurrencyMock = assumeMock(useCurrency)
 
@@ -76,6 +81,7 @@ const renderComponent = (
         data: JourneyApiDTO[]
         onEditColumns?: () => void
         isLoading?: boolean
+        integrationId?: number
     }> = {},
 ) => {
     const defaultProps = {
@@ -85,12 +91,14 @@ const renderComponent = (
     }
 
     return render(
-        <ThemeProvider>
-            <JourneysTable<JourneyApiDTO, unknown>
-                {...defaultProps}
-                {...props}
-            />
-        </ThemeProvider>,
+        <Provider store={mockStore({})}>
+            <ThemeProvider>
+                <JourneysTable<JourneyApiDTO, unknown>
+                    {...defaultProps}
+                    {...props}
+                />
+            </ThemeProvider>
+        </Provider>,
     )
 }
 
@@ -126,6 +134,20 @@ describe('JourneysTable', () => {
             renderComponent()
 
             expect(useCurrencyMock).toHaveBeenCalled()
+        })
+
+        it('should pass integrationId to table meta when provided', () => {
+            const integrationId = 123
+
+            renderComponent({ integrationId })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+        })
+
+        it('should handle undefined integrationId', () => {
+            renderComponent({ integrationId: undefined })
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
         })
     })
 

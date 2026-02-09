@@ -8,6 +8,11 @@ import { JourneyName } from 'AIJourney/components/JourneysTable/JourneyName/Jour
 import { JourneyStateBadge } from 'AIJourney/components/JourneysTable/JourneyStateBadge/JourneyStateBadge'
 import { RowAdditionalOptions } from 'AIJourney/components/JourneysTable/RowAdditionalOptions/RowAdditionalOptions'
 import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
+import {
+    AIJourneyMetric,
+    AIJourneyMetricsConfig,
+} from 'AIJourney/types/AIJourneyTypes'
+import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 
 import type { TableRow } from '../../../pages/Flows/Flows'
 
@@ -138,11 +143,29 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
         'Response rate',
         (info) => {
             const value = info.getValue()
+            const meta = info.table.options.meta as {
+                currency: string
+                integrationId?: number
+            }
+            const journeyId = info.row.original.id
+            const drilldown = {
+                title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate]
+                    .title,
+                metricName: AIJourneyMetric.ResponseRate,
+                integrationId: meta.integrationId?.toString() || '',
+                journeyIds: journeyId ? [journeyId] : [],
+            }
+
             return (
                 <MetricCell value={value}>
-                    {typeof value === 'number'
-                        ? formatMetricValue(value, 'percent-precision-1')
-                        : (value as string)}
+                    <DrillDownModalTrigger
+                        enabled={!!value}
+                        metricData={drilldown}
+                    >
+                        {typeof value === 'number'
+                            ? formatMetricValue(value, 'percent-precision-1')
+                            : (value as string)}
+                    </DrillDownModalTrigger>
                 </MetricCell>
             )
         },

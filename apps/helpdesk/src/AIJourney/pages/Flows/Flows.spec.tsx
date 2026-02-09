@@ -15,7 +15,9 @@ import { appQueryClient } from 'api/queryClient'
 import { ThemeProvider } from 'core/theme'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { initialState as drillDownInitialState } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { shopifyIntegration } from 'fixtures/integrations'
+import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import { Flows } from './Flows'
@@ -74,9 +76,17 @@ const mockJourneyContextDefaults = {
 }
 
 const renderComponent = () => {
+    const initialState: Partial<RootState> = {
+        ui: {
+            stats: {
+                drillDown: drillDownInitialState,
+            },
+        } as RootState['ui'],
+    }
+
     return render(
         <MemoryRouter>
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(initialState)}>
                 <QueryClientProvider client={appQueryClient}>
                     <ThemeProvider>
                         <Flows />

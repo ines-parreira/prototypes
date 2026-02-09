@@ -10,6 +10,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useCurrency } from 'pages/aiAgent/Overview/hooks/useCurrency'
 
 import styles from './JourneysTable.less'
@@ -19,6 +20,7 @@ type journeysTableProps<TData, TValue> = {
     data: TData[]
     onEditColumns?: () => void
     isLoading?: boolean
+    integrationId?: number
 }
 
 export const JourneysTable = <TData, TValue>({
@@ -26,6 +28,7 @@ export const JourneysTable = <TData, TValue>({
     data,
     onEditColumns,
     isLoading = false,
+    integrationId,
 }: journeysTableProps<TData, TValue>) => {
     const { currency } = useCurrency()
 
@@ -49,6 +52,7 @@ export const JourneysTable = <TData, TValue>({
         additionalOptions: {
             meta: {
                 currency: currency,
+                integrationId: integrationId,
             },
         },
     })
@@ -107,6 +111,7 @@ export const JourneysTable = <TData, TValue>({
                     bottomRow={tableToolbarBottonRowElements}
                 />
             </div>
+            <DrillDownModal />
         </>
     )
 }

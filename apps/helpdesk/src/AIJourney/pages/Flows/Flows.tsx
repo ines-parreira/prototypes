@@ -198,6 +198,7 @@ export const Flows = () => {
                     data={tableRows || []}
                     onEditColumns={() => setIsMetricsEditModalOpen(true)}
                     isLoading={isLoadingJourneys}
+                    integrationId={integrationId}
                 />
             </Box>
             <ConfigureMetricsModal
