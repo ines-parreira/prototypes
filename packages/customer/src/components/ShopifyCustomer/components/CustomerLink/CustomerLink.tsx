@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { Button, ButtonSize, Skeleton } from '@gorgias/axiom'
+import { Box, Button, ButtonSize, Skeleton } from '@gorgias/axiom'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import type { ShopperEcommerceData } from '../../types'
@@ -35,16 +35,18 @@ export function CustomerLink({
     }
 
     return (
-        <Button
-            as="a"
-            href={shopifyCustomerUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            trailingSlot="external-link"
-            variant="tertiary"
-            size={ButtonSize.Sm}
-        >
-            {displayName || 'View in Shopify'}
-        </Button>
+        <Box>
+            <Button
+                as="a"
+                href={shopifyCustomerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                trailingSlot="external-link"
+                variant="tertiary"
+                size={ButtonSize.Sm}
+            >
+                {displayName || 'View in Shopify'}
+            </Button>
+        </Box>
     )
 }

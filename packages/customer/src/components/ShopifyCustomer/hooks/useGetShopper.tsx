@@ -23,6 +23,7 @@ export function useGetShopper({ integrationId, externalId }: Params) {
             {
                 query: {
                     enabled: isEnabled,
+                    refetchOnWindowFocus: false,
                 },
             },
         )
