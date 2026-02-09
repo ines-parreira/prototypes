@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Lottie from 'lottie-react'
 import { useHistory } from 'react-router-dom'
 
@@ -21,7 +22,11 @@ export const OpportunitiesEmptyState = ({
     }
 
     return (
-        <div className={css.containerContent}>
+        <div
+            className={classNames(css.containerContent, {
+                [css.noMedia]: !opportunitiesPageState.media,
+            })}
+        >
             {opportunitiesPageState.media && (
                 <div className={css.mediaFrame}>
                     {typeof opportunitiesPageState.media === 'object' ? (
