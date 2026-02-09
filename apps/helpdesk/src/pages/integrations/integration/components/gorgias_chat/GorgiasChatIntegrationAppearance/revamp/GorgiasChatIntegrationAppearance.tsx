@@ -737,15 +737,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     </div>
 
                                     <div className={css.fieldSection}>
-                                        <div className={css.fieldSectionLabel}>
-                                            <Text variant="bold" size="md">
-                                                Brand color
-                                            </Text>
-                                            <Text size="sm" color="secondary">
-                                                Select your brand color to
-                                                personalize the chat experience.
-                                            </Text>
-                                        </div>
+                                        <Text variant="bold" size="md">
+                                            Brand color
+                                        </Text>
+                                        <Text size="sm" className={css.caption}>
+                                            Select your brand color to
+                                            personalize the chat experience.
+                                        </Text>
                                         <ColorPicker
                                             className={css.brandColorPicker}
                                             value={mainColor}
@@ -762,17 +760,15 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     </div>
 
                                     <div className={css.fieldSection}>
-                                        <div className={css.fieldSectionLabel}>
-                                            <Text variant="bold" size="md">
-                                                Home page logo
-                                            </Text>
-                                            <Text size="sm" color="secondary">
-                                                Upload a horizontal logo (PNG,
-                                                JPG, or GIF) with a transparent
-                                                background. This logo will
-                                                appear in your chat home screen.
-                                            </Text>
-                                        </div>
+                                        <Text variant="bold" size="md">
+                                            Home page logo
+                                        </Text>
+                                        <Text size="sm" className={css.caption}>
+                                            Upload a horizontal logo (PNG, JPG,
+                                            or GIF) with a transparent
+                                            background. This logo will appear in
+                                            your chat home screen.
+                                        </Text>
                                         <LogoUpload
                                             url={headerPictureUrl}
                                             onChange={onHeaderLogoUrlChange}
@@ -915,15 +911,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     </div>
 
                                     <div className={css.fieldSection}>
-                                        <div className={css.fieldSectionLabel}>
-                                            <Text variant="bold" size="md">
-                                                Avatar logo
-                                            </Text>
-                                            <Text size="sm" color="secondary">
-                                                Upload a logo to use as your
-                                                team&apos;s or bot avatar.
-                                            </Text>
-                                        </div>
+                                        <Text variant="bold" size="md">
+                                            Avatar logo
+                                        </Text>
+                                        <Text size="sm" className={css.caption}>
+                                            Upload a logo to use as your
+                                            team&apos;s or bot avatar.
+                                        </Text>
                                         <ImageField
                                             isDiscardable={true}
                                             onChange={onCompanyLogoUrlChange}
