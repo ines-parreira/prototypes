@@ -100,7 +100,10 @@ export default function Editor({
                             onChangeQuery={onChangeQuery}
                         />
                     )}
-                    <TicketSubmitButtons setTicketStatus={setTicketStatus} />
+                    <TicketSubmitButtons
+                        setTicketStatus={setTicketStatus}
+                        submit={submit}
+                    />
                 </ReplyForm>
             </form>
         </div>
