@@ -77,7 +77,8 @@ const LiveVoiceMetricCardFull = ({
     const defaultFormatValue = formatMetricValue(
         value,
         metricValueFormat,
-        NOT_AVAILABLE_PLACEHOLDER,
+        undefined,
+        true,
     )
 
     const {
