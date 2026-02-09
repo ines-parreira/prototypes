@@ -1,8 +1,7 @@
-import { useState } from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getMomentUtcISOString } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -57,7 +56,6 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 }) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const [isLoading, setIsLoading] = useState(false)
 
     const isAiAgentExpandingTrialExperienceForAllEnabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceForAll,
@@ -73,7 +71,10 @@ export const KnowledgeStep: React.FC<StepProps> = ({
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
 
-    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
     const queryClient = useQueryClient()
 
     const { routes } = useAiAgentNavigation({ shopName })
@@ -106,52 +107,44 @@ export const KnowledgeStep: React.FC<StepProps> = ({
 
     const onNextClick = async () => {
         if (data && 'id' in data) {
-            setIsLoading(true)
-            try {
-                doUpdateOnboardingMutation(
-                    {
+            doUpdateOnboardingMutation(
+                {
+                    id: data.id,
+                    data: {
+                        ...data,
                         id: data.id,
-                        data: {
-                            ...data,
-                            id: data.id,
-                            completedDatetime: new Date().toISOString(),
-                            faqHelpCenterId: helpCenters[0]?.id ?? null,
-                        },
+                        completedDatetime: getMomentUtcISOString(),
+                        faqHelpCenterId: helpCenters[0]?.id ?? null,
                     },
-                    {
-                        onSuccess: async () => {
-                            void queryClient.invalidateQueries({
-                                queryKey: storeConfigurationKeys.all(),
-                            })
+                },
+                {
+                    onSuccess: async () => {
+                        void queryClient.invalidateQueries({
+                            queryKey: storeConfigurationKeys.all(),
+                        })
 
-                            if (
-                                trialAccess.trialType ===
-                                    TrialType.ShoppingAssistant &&
-                                shoppingAssistantTrialOptin
-                            ) {
-                                await startShoppingAssistantTrial([shopName])
-                                removeShoppingAssistantTrialOptin()
-                            }
+                        if (
+                            trialAccess.trialType ===
+                                TrialType.ShoppingAssistant &&
+                            shoppingAssistantTrialOptin
+                        ) {
+                            await startShoppingAssistantTrial([shopName])
+                            removeShoppingAssistantTrialOptin()
+                        }
 
-                            logEvent(
-                                SegmentEvent.AiAgentNewOnboardingWizardFinished,
-                                {
-                                    shopName,
-                                },
-                            )
-                            history.push({
-                                pathname: nextPath,
-                                search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
-                            })
-                        },
-                        onError: () => {
-                            setIsLoading(false)
-                        },
+                        logEvent(
+                            SegmentEvent.AiAgentNewOnboardingWizardFinished,
+                            {
+                                shopName,
+                            },
+                        )
+                        history.push({
+                            pathname: nextPath,
+                            search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,
+                        })
                     },
-                )
-            } catch {
-                setIsLoading(false)
-            }
+                },
+            )
         }
     }
 
@@ -168,7 +161,7 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                 totalSteps={totalSteps}
                 onNextClick={onNextClick}
                 onBackClick={onBackClick}
-                isLoading={isLoading}
+                isLoading={isUpdatingOnboarding}
             >
                 <StepHeader
                     title="AI Agent is syncing your knowledge sources"

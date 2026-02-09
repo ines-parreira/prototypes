@@ -46,7 +46,10 @@ export const EngagementStep = ({
     const { shopName } = useParams<{ shopName: string }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { data } = useGetOnboardingData(shopName)
-    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
 
     const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] =
         useState(false)
@@ -145,6 +148,7 @@ export const EngagementStep = ({
             <OnboardingContentContainer
                 currentStep={currentStep}
                 totalSteps={totalSteps}
+                isLoading={isUpdatingOnboarding}
                 onNextClick={handleSubmit(() => onNextClick())}
                 onBackClick={onBackClick}
                 containerClassName={css.contentContainer}

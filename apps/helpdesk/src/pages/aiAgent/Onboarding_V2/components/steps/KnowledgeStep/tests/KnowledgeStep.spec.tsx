@@ -556,15 +556,10 @@ describe('KnowledgeStep', () => {
             })
         })
 
-        it('should reset loading state when mutation fails', async () => {
-            let onErrorCallback: (() => void) | undefined
-
+        it('should use mutation hook loading state', async () => {
             mockUseUpdateOnboarding.mockReturnValue({
-                mutate: (_data: any, { onError }: any) => {
-                    onErrorCallback = onError
-                    onError()
-                },
-                isLoading: false,
+                mutate: jest.fn(),
+                isLoading: true,
             })
 
             renderWithProvider()
@@ -572,13 +567,8 @@ describe('KnowledgeStep', () => {
 
             const nextButton = screen.getByRole('button', { name: /finish/i })
 
-            act(() => {
-                userEvent.click(nextButton)
-            })
-
-            await waitFor(() => {
-                expect(onErrorCallback).toBeDefined()
-            })
+            // When mutation is loading, button should be disabled
+            expect(nextButton).toBeDisabled()
         })
 
         it('should keep loading state until navigation completes on success', async () => {

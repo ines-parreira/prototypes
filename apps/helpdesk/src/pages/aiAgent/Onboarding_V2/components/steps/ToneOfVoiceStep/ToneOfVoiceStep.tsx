@@ -60,8 +60,14 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
     const isFirstStep = currentStep === 1
 
     const { data } = useGetOnboardingData(shopName)
-    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
-    const { mutate: doCreateOnboardingMutation } = useCreateOnboarding()
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
+    const {
+        mutate: doCreateOnboardingMutation,
+        isLoading: isCreatingOnboarding,
+    } = useCreateOnboarding()
 
     const gorgiasDomain = useAppSelector(getCurrentDomain)
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
@@ -103,6 +109,8 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
         customToneOfVoice: customToneOfVoiceGuidance ?? '',
         shopName,
     })
+
+    const isLoading = isUpdatingOnboarding || isCreatingOnboarding
 
     const onNextClick = () => {
         if (!data) {
@@ -157,6 +165,7 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
                 <OnboardingContentContainer
                     currentStep={currentStep}
                     totalSteps={totalSteps}
+                    isLoading={isLoading}
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >

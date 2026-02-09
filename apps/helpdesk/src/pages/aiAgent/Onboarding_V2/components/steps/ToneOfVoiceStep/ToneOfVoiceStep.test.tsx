@@ -1,8 +1,7 @@
 import type { ComponentProps } from 'react'
-import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { InternalAxiosRequestConfig } from 'axios'
 import { createMemoryHistory } from 'history'
@@ -139,6 +138,10 @@ beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
+beforeEach(() => {
+    testQueryClient.clear()
+})
+
 afterEach(() => {
     server.resetHandlers()
 })
@@ -179,15 +182,23 @@ const defaultProps: StepProps = {
     goToStep,
 }
 
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
+
+const waitForQueriesSettled = async () => {
+    await waitFor(() => {
+        expect(testQueryClient.isFetching()).toBe(0)
+    })
+}
+
 const renderComponent = (
     props: ComponentProps<typeof ToneOfVoiceStep> = defaultProps,
 ) => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
+    const queryClient = testQueryClient
 
     return renderWithRouter(
         <QueryClientProvider client={queryClient}>
@@ -284,7 +295,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const backButton = screen.getByRole('button', { name: /back/i })
-            await user.click(backButton)
+            await act(async () => {
+                await user.click(backButton)
+            })
+            await waitForQueriesSettled()
 
             expect(goToStep).toHaveBeenCalledWith(
                 WizardStepEnum.SHOPIFY_INTEGRATION,
@@ -305,7 +319,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(goToStep).toHaveBeenCalledWith(
@@ -330,7 +347,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await user.click(professionalOption)
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
 
             expect(screen.getByText('Professional')).toBeInTheDocument()
         })
@@ -349,7 +369,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await user.click(customOption)
+            await act(async () => {
+                await user.click(customOption)
+            })
+            await waitForQueriesSettled()
 
             expect(
                 await screen.findByLabelText(/custom tone of voice/i),
@@ -370,7 +393,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await user.click(customOption)
+            await act(async () => {
+                await user.click(customOption)
+            })
+            await waitForQueriesSettled()
 
             expect(
                 await screen.findByPlaceholderText(
@@ -404,10 +430,16 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await user.click(professionalOption)
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(capturedRequestBody).toMatchObject({
@@ -442,15 +474,24 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await user.click(customOption)
+            await act(async () => {
+                await user.click(customOption)
+            })
+            await waitForQueriesSettled()
 
             const textarea =
                 await screen.findByLabelText(/custom tone of voice/i)
-            await user.clear(textarea)
-            await user.type(textarea, 'Be concise and friendly')
+            await act(async () => {
+                await user.clear(textarea)
+                await user.type(textarea, 'Be concise and friendly')
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(capturedRequestBody).toMatchObject({
@@ -491,10 +532,16 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await user.click(professionalOption)
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(capturedRequestBody).toMatchObject({
@@ -533,7 +580,10 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(wasCreateCalled).toBe(true)
@@ -565,10 +615,16 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await user.click(professionalOption)
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(goToStep).not.toHaveBeenCalled()
@@ -595,10 +651,16 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await user.click(professionalOption)
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(() => {
                 expect(goToStep).not.toHaveBeenCalled()
@@ -625,6 +687,110 @@ describe('ToneOfVoiceStep', () => {
         })
     })
 
+    describe('Loading State Management', () => {
+        it('should disable next button while mutation is in progress', async () => {
+            const user = userEvent.setup()
+
+            let resolveUpdate: (value: unknown) => void
+            const updatePromise = new Promise((resolve) => {
+                resolveUpdate = resolve
+            })
+
+            server.use(
+                http.get(`${baseURL}/onboardings`, () => {
+                    return HttpResponse.json([mockOnboardingDataComplete])
+                }),
+                http.put(`${baseURL}/onboardings/:id`, async () => {
+                    await updatePromise
+                    return HttpResponse.json(mockOnboardingDataComplete)
+                }),
+            )
+
+            renderComponent()
+
+            await screen.findByText('Friendly')
+            await waitForQueriesSettled()
+
+            const professionalOption = screen.getByText('Professional')
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
+
+            await waitFor(() => {
+                expect(nextButton).toBeDisabled()
+            })
+
+            resolveUpdate!(null)
+
+            await waitFor(() => {
+                expect(goToStep).toHaveBeenCalled()
+            })
+        })
+
+        it('should disable next button while create mutation is in progress', async () => {
+            const user = userEvent.setup()
+
+            let resolveCreate: (value: unknown) => void
+            const createPromise = new Promise((resolve) => {
+                resolveCreate = resolve
+            })
+
+            server.use(
+                http.get(`${baseURL}/onboardings`, () => {
+                    return HttpResponse.json([mockOnboardingDataWithoutId])
+                }),
+                http.post(`${baseURL}/onboardings`, async () => {
+                    await createPromise
+                    return HttpResponse.json({
+                        ...mockOnboardingDataWithoutId,
+                        id: 'new-id',
+                    })
+                }),
+            )
+
+            renderComponent()
+
+            await screen.findByText('Friendly')
+
+            const professionalOption = screen.getByText('Professional')
+            await act(async () => {
+                await user.click(professionalOption)
+            })
+            await waitForQueriesSettled()
+
+            // Wait for the form state to update after clicking
+            await waitFor(() => {
+                const professionalCheckbox = screen.getByRole('checkbox', {
+                    name: /Professional/i,
+                })
+                expect(professionalCheckbox).toBeChecked()
+            })
+
+            const nextButton = screen.getByRole('button', { name: /next/i })
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
+
+            await waitFor(() => {
+                expect(nextButton).toBeDisabled()
+            })
+
+            resolveCreate!(null)
+
+            await waitFor(() => {
+                expect(goToStep).toHaveBeenCalled()
+            })
+        })
+    })
+
     describe('Form Validation', () => {
         it('should require custom tone guidance when Custom is selected', async () => {
             const user = userEvent.setup()
@@ -640,14 +806,23 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await user.click(customOption)
+            await act(async () => {
+                await user.click(customOption)
+            })
+            await waitForQueriesSettled()
 
             const textarea =
                 await screen.findByLabelText(/custom tone of voice/i)
-            await user.clear(textarea)
+            await act(async () => {
+                await user.clear(textarea)
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             expect(
                 await screen.findByText(
@@ -679,15 +854,24 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await user.click(customOption)
+            await act(async () => {
+                await user.click(customOption)
+            })
+            await waitForQueriesSettled()
 
             const textarea =
                 await screen.findByLabelText(/custom tone of voice/i)
-            await user.clear(textarea)
-            await user.type(textarea, 'Professional')
+            await act(async () => {
+                await user.clear(textarea)
+                await user.type(textarea, 'Professional')
+            })
+            await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await user.click(nextButton)
+            await act(async () => {
+                await user.click(nextButton)
+            })
+            await waitForQueriesSettled()
 
             await waitFor(
                 () => {

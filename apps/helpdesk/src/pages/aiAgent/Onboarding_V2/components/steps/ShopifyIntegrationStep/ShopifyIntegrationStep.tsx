@@ -137,6 +137,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
                 <OnboardingContentContainer
                     currentStep={currentStep}
                     totalSteps={totalSteps}
+                    isLoading={isLoading}
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                     onCloseClick={onCloseNavigation}

@@ -91,7 +91,10 @@ export const PersonalityStep: FC<StepProps> = ({
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
     const { data } = useGetOnboardingData(shopName)
-    const { mutate: doUpdateOnboardingMutation } = useUpdateOnboarding()
+    const {
+        mutate: doUpdateOnboardingMutation,
+        isLoading: isUpdatingOnboarding,
+    } = useUpdateOnboarding()
 
     const storeIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName),
@@ -208,6 +211,7 @@ export const PersonalityStep: FC<StepProps> = ({
                 <OnboardingContentContainer
                     currentStep={currentStep}
                     totalSteps={totalSteps}
+                    isLoading={isUpdatingOnboarding}
                     onNextClick={handleSubmit(onNextClick)}
                     onBackClick={onBackClick}
                 >
