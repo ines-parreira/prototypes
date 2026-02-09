@@ -585,11 +585,12 @@ describe('UsageAndPlansView', () => {
             screen.queryByRole('button', { name: /Update/i }),
         ).not.toBeInTheDocument()
 
+        // When there is no active subscription, billing frequency should not be displayed
         expect(
             screen.queryByText(`Billed ${getCadenceName(Cadence.Month)}`, {
                 exact: false,
             }),
-        ).toBeInTheDocument()
+        ).not.toBeInTheDocument()
     })
 
     it('should not be possible to update plan frequency when the user is on a the highest cadence plan', () => {
@@ -1314,6 +1315,241 @@ describe('UsageAndPlansView', () => {
             expect(
                 screen.queryByTestId('billing-scheduled-downgrades'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Payment plan label display', () => {
+        it('should display "Billed Monthly" for standard monthly plan', () => {
+            const monthlyPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                cadence: Cadence.Month,
+                invoice_cadence: 'month',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [monthlyPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: monthlyPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(screen.getByText('Billed Monthly')).toBeInTheDocument()
+        })
+
+        it('should display "Billed Quarterly" for standard quarterly plan', () => {
+            const quarterlyPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'pro-quarter-plan',
+                cadence: Cadence.Quarter,
+                invoice_cadence: 'quarter',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [quarterlyPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: quarterlyPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(screen.getByText('Billed Quarterly')).toBeInTheDocument()
+        })
+
+        it('should display "Billed Yearly" for standard yearly plan', () => {
+            const yearlyPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'pro-year-plan',
+                cadence: Cadence.Year,
+                invoice_cadence: 'year',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [yearlyPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: yearlyPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(screen.getByText('Billed Yearly')).toBeInTheDocument()
+        })
+
+        it('should display "Annual plan (billed quarterly)" for custom yearly plan billed quarterly', () => {
+            const customPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'custom-year-quarter-plan',
+                cadence: Cadence.Year,
+                invoice_cadence: 'quarter',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [customPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(
+                screen.getByText('Annual plan (billed quarterly)'),
+            ).toBeInTheDocument()
+        })
+
+        it('should display "Annual plan (billed monthly)" for custom yearly plan billed monthly', () => {
+            const customPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'custom-year-month-plan',
+                cadence: Cadence.Year,
+                invoice_cadence: 'month',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [customPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(
+                screen.getByText('Annual plan (billed monthly)'),
+            ).toBeInTheDocument()
         })
     })
 })

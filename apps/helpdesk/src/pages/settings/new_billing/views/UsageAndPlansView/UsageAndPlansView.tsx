@@ -10,8 +10,8 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { AlertBannerTypes } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { Cadence, ProductType } from 'models/billing/types'
-import { getCadenceName, getProductInfo } from 'models/billing/utils'
+import { ProductType } from 'models/billing/types'
+import { generatePaymentPlanLabel, getProductInfo } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
@@ -19,7 +19,6 @@ import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/compone
 import {
     getCurrentAutomatePlan,
     getCurrentConvertPlan,
-    getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
     getCurrentSmsPlan,
     getCurrentVoicePlan,
@@ -71,13 +70,13 @@ const UsageAndPlansView = ({
     const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
-    const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
+
     const { pathname } = useLocation()
 
     const isSubscribedToHelpdeskStarter =
@@ -243,20 +242,23 @@ const UsageAndPlansView = ({
                         <>{`You don't have any active subscriptions.`}</>
                     )}
                 </div>
-                <div className={css.generalInfoItem}>
-                    <span>
-                        Billed <>{getCadenceName(cadence ?? Cadence.Month)}</>
-                    </span>
-                    <NavigateToChangeBillingFrequency
-                        buttonText="Update"
-                        tooltipPlacement="top"
-                        contactBilling={contactBilling}
-                        trackingEvent={
-                            SegmentEvent.BillingUsageAndPlansChangeFrequencyClicked
-                        }
-                        cancellationsByPlanId={cancellationsByPlanId}
-                    />
-                </div>
+                {hasSubscription ? (
+                    <div className={css.generalInfoItem}>
+                        <span>
+                            {generatePaymentPlanLabel(currentHelpdeskPlan)}
+                        </span>
+
+                        <NavigateToChangeBillingFrequency
+                            buttonText="Update"
+                            tooltipPlacement="top"
+                            contactBilling={contactBilling}
+                            trackingEvent={
+                                SegmentEvent.BillingUsageAndPlansChangeFrequencyClicked
+                            }
+                            cancellationsByPlanId={cancellationsByPlanId}
+                        />
+                    </div>
+                ) : null}
             </div>
             {isCurrentSubscriptionCanceled ? null : (
                 <BillingScheduledDowngrades />

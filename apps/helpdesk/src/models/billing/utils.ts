@@ -330,3 +330,59 @@ export function getProductInfo<T extends ProductType>(
 
     return PRODUCT_INFO[product]
 }
+
+/**
+ * Generates a payment plan label string for display purposes.
+ *
+ * @description
+ * Creates a human-readable label describing the billing frequency of a helpdesk plan.
+ * For custom plans (where cadence differs from invoice cadence), displays "Annual plan (billed {frequency})".
+ * For standard plans, displays "Billed {frequency}".
+ *
+ * @param currentHelpdeskPlan - The helpdesk plan to generate a label for. If undefined, defaults to Monthly cadence.
+ * @returns A formatted string like "Billed Monthly" or "Annual plan (billed monthly)"
+ *
+ * @example
+ * // Standard monthly plan
+ * generatePaymentPlanLabel(monthlyPlan) // "Billed Monthly"
+ *
+ * @example
+ * // Custom annual plan billed quarterly
+ * generatePaymentPlanLabel(customPlan) // "Annual plan (billed quarterly)"
+ */
+export function generatePaymentPlanLabel(
+    currentHelpdeskPlan: HelpdeskPlan | undefined,
+): string {
+    if (isYearlyContractPlan(currentHelpdeskPlan)) {
+        return `Annual plan (billed ${getCadenceName(
+            (currentHelpdeskPlan?.invoice_cadence as Cadence) ?? Cadence.Month,
+        ).toLowerCase()})`
+    }
+
+    return `Billed ${getCadenceName(currentHelpdeskPlan?.cadence ?? Cadence.Month)}`
+}
+
+/**
+ * Determines if a helpdesk plan is a custom plan.
+ *
+ * @description
+ * A custom plan is identified when the plan's cadence (subscription term length)
+ * differs from its invoice cadence (billing frequency). For example, an annual
+ * plan that bills quarterly would be considered a custom plan.
+ *
+ * @param currentHelpdeskPlan - The helpdesk plan to check. If undefined, returns false.
+ * @returns `true` if the plan's cadence differs from its invoice cadence, `false` otherwise
+ *
+ * @example
+ * // Annual plan billed quarterly
+ * isYearlyContractPlan({ cadence: Cadence.Year, invoice_cadence: Cadence.Quarter }) // true
+ *
+ * @example
+ * // Standard monthly plan
+ * isYearlyContractPlan({ cadence: Cadence.Month, invoice_cadence: Cadence.Month }) // false
+ */
+export function isYearlyContractPlan(
+    currentHelpdeskPlan: HelpdeskPlan | undefined,
+) {
+    return currentHelpdeskPlan?.cadence !== currentHelpdeskPlan?.invoice_cadence
+}
