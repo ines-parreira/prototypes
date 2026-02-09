@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { Button } from 'AIJourney/components'
-import { JOURNEY_TYPES } from 'AIJourney/constants'
+import { JOURNEY_TYPES, POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
 import {
     useAiJourneyPhoneList,
     useJourneyCreateHandler,
@@ -295,6 +295,14 @@ export const Setup = ({ journeyType }: SetupProps) => {
             return true
         }
 
+        if (
+            journeyType === JOURNEY_TYPES.POST_PURCHASE &&
+            postPurchaseWaitMinutes
+        ) {
+            if (!postPurchaseWaitMinutes) return true
+            return postPurchaseWaitMinutes > POST_PURCHASE_MAX_WAIT_TIME
+        }
+
         // Journey-specific validations
         if (journeyType === JOURNEY_TYPES.CAMPAIGN) {
             // For campaigns: require title and includeAudience
@@ -326,7 +334,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
         campaignTitleValue,
         includedAudienceListIds,
         numberOfMessageValue,
+        postPurchaseWaitMinutes,
     ])
+
     const showMessageWithDiscountCode =
         isDiscountEnabled && numberOfMessageValue > 1
 
@@ -552,12 +562,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 <Button
                     label="Continue"
                     onClick={handleContinue}
-                    isDisabled={
-                        isLoadingHandleUpdate ||
-                        isSuccessHandleUpdate ||
-                        isLoadingHandleCreate ||
-                        isSuccessHandleCreate
-                    }
+                    isDisabled={shouldDisableButton}
                 />
             </div>
         </motion.div>

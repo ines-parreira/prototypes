@@ -259,6 +259,7 @@ const DEFAULT_AI_JOURNEY_CONTEXT = {
     saveAIJourneySettings: jest.fn(),
     isLoadingJourneyData: false,
     isSavingJourneyData: false,
+    hasInvalidFields: false,
 }
 
 const mockResetAIJourneySettings = jest.fn()
@@ -682,6 +683,101 @@ describe('PlaygroundSettings', () => {
                 name: /apply changes/i,
             })
             expect(applyButton).not.toBeDisabled()
+        })
+
+        it('should have apply button disabled when hasInvalidFields is true', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: false,
+                hasOutboundChanged: true,
+                resetInitialState: jest.fn(),
+            })
+            mockAIJourneyContext({
+                hasInvalidFields: true,
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
+            expect(applyButton).toBeDisabled()
+        })
+
+        it('should have apply button disabled when hasInvalidFields is true even if settings changed', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: false,
+                hasOutboundChanged: true,
+                resetInitialState: jest.fn(),
+            })
+            mockAIJourneyContext({
+                hasInvalidFields: true,
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
+            expect(applyButton).toBeDisabled()
+        })
+
+        it('should have apply button enabled when hasInvalidFields is false and settings changed', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: true,
+                hasInboundChanged: false,
+                hasOutboundChanged: true,
+                resetInitialState: jest.fn(),
+            })
+            mockAIJourneyContext({
+                hasInvalidFields: false,
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
+            expect(applyButton).not.toBeDisabled()
+        })
+
+        it('should have apply button disabled when both no changes and hasInvalidFields is false', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: false,
+                hasInboundChanged: false,
+                hasOutboundChanged: false,
+                resetInitialState: jest.fn(),
+            })
+            mockAIJourneyContext({
+                hasInvalidFields: false,
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
+            expect(applyButton).toBeDisabled()
+        })
+
+        it('should have apply button disabled when no changes even if hasInvalidFields is false', () => {
+            mockUseSettingsChanged.mockReturnValue({
+                hasChanged: false,
+                hasInboundChanged: false,
+                hasOutboundChanged: false,
+                resetInitialState: jest.fn(),
+            })
+            mockAIJourneyContext({
+                hasInvalidFields: false,
+            })
+
+            renderComponent()
+
+            const applyButton = screen.getByRole('button', {
+                name: /apply changes/i,
+            })
+            expect(applyButton).toBeDisabled()
         })
     })
 

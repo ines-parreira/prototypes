@@ -85,6 +85,9 @@ export const useSettingsChanged = () => {
             excludedAudienceListIds: aiJourneySettings.excludedAudienceListIds,
             inactiveDays: aiJourneySettings.inactiveDays,
             cooldownPeriod: aiJourneySettings.cooldownPeriod,
+            targetOrderStatus: aiJourneySettings.targetOrderStatus,
+            postPurchaseWaitInMinutes:
+                aiJourneySettings.postPurchaseWaitInMinutes,
         }),
         [aiJourneySettings],
     )

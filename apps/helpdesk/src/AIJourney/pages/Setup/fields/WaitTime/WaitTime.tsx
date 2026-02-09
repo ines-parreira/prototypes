@@ -1,13 +1,11 @@
 import { useCallback, useState } from 'react'
 
 import classNames from 'classnames'
-import moment from 'moment'
 
 import { FieldPresentation, MinutesInput } from 'AIJourney/components'
+import { POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
 
 import css from './WaitTime.less'
-
-const MAX_WAIT_TIME = moment.duration(7, 'days').asMinutes()
 
 type WaitTimeFieldProps = {
     value?: number
@@ -59,15 +57,15 @@ export const WaitTimeField = ({
             <FieldPresentation name={title} description={description} />
             <MinutesInput
                 value={value}
-                max={MAX_WAIT_TIME}
+                max={POST_PURCHASE_MAX_WAIT_TIME}
                 onChange={handleChange}
                 isDisabled={isDisabled}
                 onValidationChange={handleValidationChange}
             />
             {shouldShowError && (
                 <div className={css.errorMessage}>
-                    Please enter wait time between 0 and {MAX_WAIT_TIME} minutes
-                    (7 days)
+                    Please enter wait time between 0 and{' '}
+                    {POST_PURCHASE_MAX_WAIT_TIME} minutes (7 days)
                 </div>
             )}
         </div>

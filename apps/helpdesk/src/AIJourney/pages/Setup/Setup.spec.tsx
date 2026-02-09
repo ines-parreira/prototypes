@@ -1504,6 +1504,472 @@ describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
     })
 })
 
+describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
+    const mockHandleUpdate = jest.fn()
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+
+        mockUseJourneyUpdateHandler.mockImplementation(() => ({
+            handleUpdate: mockHandleUpdate,
+            isLoading: false,
+            isSuccess: false,
+        }))
+
+        const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
+        const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
+
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: undefined,
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseAppSelector.mockImplementation((selector) => {
+            if (selector.name === 'getCurrentAccountState') {
+                return fromJS(account)
+            }
+            return {
+                '1': mockPhoneNumbers['1'],
+                '2': {
+                    ...mockPhoneNumbers['2'],
+                    name: 'Regular Phone 2',
+                },
+            }
+        })
+
+        mockUseSmsIntegrations.mockReturnValue({
+            data: [
+                { sms_integration_id: 1, store_integration_id: 1 },
+                { sms_integration_id: 2, store_integration_id: 2 },
+            ],
+            isLoading: false,
+            error: null,
+        })
+
+        mockUseCreateNewJourney.mockImplementation(() => ({
+            mutateAsync: mockCreateJourneyMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseUpdateJourney.mockImplementation(() => ({
+            mutateAsync: mockUpdateMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        mockUseAudienceLists.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+        mockUseAudienceSegments.mockReturnValue({
+            data: { data: [] },
+            isLoading: false,
+        })
+    })
+
+    const mockStore = configureMockStore([thunk])({
+        currentAccount: fromJS(account),
+    })
+
+    it('should render post-purchase specific fields', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 1440,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Trigger event')).toBeInTheDocument()
+        expect(screen.getByText('Wait time after trigger')).toBeInTheDocument()
+    })
+
+    it('should display existing post_purchase_wait_minutes when editing', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                id: 'post-purchase-journey-123',
+                type: 'post-purchase',
+                state: 'active',
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 2880,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const waitTimeInput = screen.getByDisplayValue('2880')
+        expect(waitTimeInput).toBeInTheDocument()
+    })
+
+    it('should default post_purchase_wait_minutes to 1440 when set to undefined', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    sms_sender_integration_id: 1,
+                    post_purchase_wait_minutes: undefined,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const waitTimeInput = screen.getByDisplayValue('1440')
+        expect(waitTimeInput).toBeInTheDocument()
+    })
+
+    it('should disable continue button when post_purchase_wait_minutes exceeds maximum (7 days)', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 10081,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeDisabled()
+    })
+
+    it('should enable continue button when post_purchase_wait_minutes is at maximum (7 days)', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 10080,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeEnabled()
+    })
+
+    it('should enable continue button when post_purchase_wait_minutes is valid', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 1440,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeEnabled()
+    })
+
+    it('should call handleCreate with post_purchase_wait_minutes when creating post-purchase journey', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        const mockMutateAsync = jest
+            .fn()
+            .mockResolvedValue({ id: 'post-purchase-journey-123' })
+        mockUseCreateNewJourney.mockImplementation(() => ({
+            mutateAsync: mockMutateAsync,
+            isError: false,
+            isLoading: false,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(screen.getByText('Select'))
+        })
+        await act(async () => {
+            await user.click(screen.getByText('+1 555-123-4567'))
+        })
+
+        const waitTimeInput = screen.getByRole('spinbutton')
+        expect(waitTimeInput).toBeInTheDocument()
+
+        await act(async () => {
+            await user.type(waitTimeInput, '2880')
+        })
+
+        await act(async () => {
+            await user.click(screen.getAllByRole('button', { name: '4' })[0])
+        })
+
+        const button = screen.getByTestId('ai-journey-button')
+        await act(async () => {
+            await user.click(button)
+        })
+
+        await waitFor(() => {
+            expect(mockMutateAsync).toHaveBeenCalledTimes(1)
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith({
+            params: {
+                store_integration_id: 1,
+                store_name: 'shopify-store',
+                type: 'post_purchase',
+                campaign: undefined,
+                excluded_audience_list_ids: undefined,
+                included_audience_list_ids: undefined,
+            },
+            journeyConfigs: expect.objectContaining({
+                max_follow_up_messages: 3,
+                offer_discount: false,
+                max_discount_percent: undefined,
+                sms_sender_integration_id: 1,
+                sms_sender_number: '+15551234567',
+                discount_code_message_threshold: undefined,
+                include_image: false,
+                inactive_days: undefined,
+                cooldown_days: undefined,
+                wait_time_minutes: 0,
+                post_purchase_wait_minutes: 2880,
+                target_order_status: undefined,
+            }),
+        })
+    })
+
+    it('should call handleUpdate with post_purchase_wait_minutes when updating post-purchase journey', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                id: 'post-purchase-journey-123',
+                type: 'post-purchase',
+                state: 'active',
+                message_instructions: null,
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_placed',
+                    post_purchase_wait_minutes: 1440,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const button = screen.getByTestId('ai-journey-button')
+        await act(async () => {
+            await userEvent.click(button)
+        })
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalledTimes(1)
+        })
+
+        expect(mockHandleUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+                postPurchaseWaitMinutes: 1440,
+                targetOrderStatus: 'order_placed',
+            }),
+        )
+    })
+
+    it('should display trigger event field with correct value for post-purchase journey', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    target_order_status: 'order_fulfilled',
+                    post_purchase_wait_minutes: 1440,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('Trigger event')).toBeInTheDocument()
+        const orderFulfilledElements = screen.getAllByText('Order Fulfilled')
+        expect(orderFulfilledElements.length).toBeGreaterThan(0)
+    })
+})
+
 describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
     const mockHandleUpdate = jest.fn()
 

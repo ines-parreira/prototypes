@@ -193,6 +193,7 @@ const SettingsFooter = () => {
         saveAIJourneySettings,
         isSavingJourneyData,
         resetAIJourneySettings,
+        hasInvalidFields,
     } = useAIJourneyContext()
     const { emit } = useEvents()
 
@@ -215,7 +216,7 @@ const SettingsFooter = () => {
     return (
         <div className={css.settingsFooter}>
             <Button
-                isDisabled={!hasChanged}
+                isDisabled={!hasChanged || hasInvalidFields}
                 onClick={handleApply}
                 isLoading={isSavingJourneyData}
             >

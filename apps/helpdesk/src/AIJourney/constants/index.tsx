@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 export const STEPS_NAMES = {
@@ -62,3 +64,7 @@ export const UpdatableJourneyCampaignState = {
     Canceled: 'canceled',
     Paused: 'paused',
 }
+
+export const POST_PURCHASE_MAX_WAIT_TIME = moment
+    .duration(7, 'days')
+    .asMinutes()

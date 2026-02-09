@@ -12,10 +12,12 @@ import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
     JourneyDetailApiDTO,
+    PostPurchaseJourneyConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import {
     useJourneyData,
@@ -42,6 +44,8 @@ export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
     outboundMessageInstructions: '',
     inactiveDays: 30,
     cooldownPeriod: 30,
+    targetOrderStatus: 'order_placed',
+    postPurchaseWaitInMinutes: 1,
 }
 
 const journeySettingsMapper = {
@@ -54,6 +58,8 @@ const journeySettingsMapper = {
     excludedAudienceListIds: 'excluded_audience_list_ids',
     inactiveDays: 'inactive_days',
     cooldownPeriod: 'cooldown_days',
+    targetOrderStatus: 'target_order_status',
+    postPurchaseWaitInMinutes: 'post_purchase_wait_minutes',
 } as const
 
 function buildJourneyConfig(
@@ -68,6 +74,9 @@ function buildJourneyConfig(
             state.discountCodeMessageIdx,
         [journeySettingsMapper.inactiveDays]: state.inactiveDays,
         [journeySettingsMapper.cooldownPeriod]: state.cooldownPeriod,
+        [journeySettingsMapper.targetOrderStatus]: state.targetOrderStatus,
+        [journeySettingsMapper.postPurchaseWaitInMinutes]:
+            state.postPurchaseWaitInMinutes,
     } as JourneyConfigurationApiDTO
 }
 
@@ -79,6 +88,12 @@ function parseJourneyConfig(
     const winbackConfig =
         journeyData.type === JourneyTypeEnum.WinBack
             ? (config as WinbackJourneyConfigurationApiDTO)
+            : null
+
+    // treat post purchase specific configurations
+    const postPurchaseConfig =
+        journeyData.type === JourneyTypeEnum.PostPurchase
+            ? (config as PostPurchaseJourneyConfigurationApiDTO)
             : null
 
     return {
@@ -99,6 +114,13 @@ function parseJourneyConfig(
             winbackConfig?.[journeySettingsMapper.inactiveDays] ?? undefined,
         cooldownPeriod:
             winbackConfig?.[journeySettingsMapper.cooldownPeriod] ?? undefined,
+        targetOrderStatus:
+            postPurchaseConfig?.[journeySettingsMapper.targetOrderStatus] ??
+            undefined,
+        postPurchaseWaitInMinutes:
+            postPurchaseConfig?.[
+                journeySettingsMapper.postPurchaseWaitInMinutes
+            ] ?? undefined,
     }
 }
 
@@ -122,6 +144,7 @@ type AIJourneyContextValue = {
     journeyConfiguration: JourneyConfigurationApiDTO | undefined
     productList: Product[]
     isLoadingProducts: boolean
+    hasInvalidFields: boolean
 }
 
 const AIJourneyContext = createContext<AIJourneyContextValue | undefined>(
@@ -188,18 +211,21 @@ const WrappedAIJourneyProvider = ({
             !localSettings.journeyId &&
             !areJourneysLoading
         ) {
-            setLocalSettings((prev) => ({
-                ...prev,
-                journeyId: flows.filter(
-                    // playground does not cover all flows for the moment
-                    (f) =>
-                        [
-                            JourneyTypeEnum.CartAbandoned.toString(),
-                            JourneyTypeEnum.Campaign.toString(),
-                            JourneyTypeEnum.SessionAbandoned.toString(),
-                        ].indexOf(f.type) > -1,
-                )[0].id,
-            }))
+            const filteredFlows = flows.filter(
+                (f) =>
+                    [
+                        JourneyTypeEnum.CartAbandoned.toString(),
+                        JourneyTypeEnum.Campaign.toString(),
+                        JourneyTypeEnum.SessionAbandoned.toString(),
+                        JourneyTypeEnum.PostPurchase.toString(),
+                    ].indexOf(f.type) > -1,
+            )
+            if (filteredFlows.length > 0) {
+                setLocalSettings((prev) => ({
+                    ...prev,
+                    journeyId: filteredFlows[0].id,
+                }))
+            }
         } else if (
             campaigns &&
             campaigns.length > 0 &&
@@ -317,6 +343,20 @@ const WrappedAIJourneyProvider = ({
         resetFollowUpMessagesSent,
     )
 
+    const hasInvalidFields = useMemo(() => {
+        const isPostPurchase =
+            currentJourney?.type === JourneyTypeEnum.PostPurchase
+        if (!isPostPurchase) {
+            return false
+        }
+
+        return (
+            aiJourneySettings.postPurchaseWaitInMinutes !== undefined &&
+            aiJourneySettings.postPurchaseWaitInMinutes >
+                POST_PURCHASE_MAX_WAIT_TIME
+        )
+    }, [currentJourney?.type, aiJourneySettings.postPurchaseWaitInMinutes])
+
     const contextValue = useMemo(
         () => ({
             shopifyIntegration,
@@ -338,6 +378,7 @@ const WrappedAIJourneyProvider = ({
             journeyConfiguration,
             productList,
             isLoadingProducts,
+            hasInvalidFields,
         }),
         [
             shopifyIntegration,
@@ -357,6 +398,7 @@ const WrappedAIJourneyProvider = ({
             journeyConfiguration,
             productList,
             isLoadingProducts,
+            hasInvalidFields,
         ],
     )
 

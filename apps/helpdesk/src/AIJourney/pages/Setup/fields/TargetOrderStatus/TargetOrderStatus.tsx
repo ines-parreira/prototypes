@@ -1,18 +1,11 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { Dropdown, FieldPresentation } from 'AIJourney/components'
-
-type OrderStatus = 'order_placed' | 'order_fulfilled'
-
-type TargetOrderStatusFieldProps = {
-    value?: OrderStatus | null
-    onChange?: (value: OrderStatus) => void
-}
-
-type OrderStatusOption = {
-    value: OrderStatus
-    label: string
-}
+import type {
+    OrderStatus,
+    OrderStatusOption,
+    TargetOrderStatusFieldProps,
+} from 'AIJourney/types/AIJourneyTypes'
 
 const ORDER_STATUS_OPTIONS: OrderStatusOption[] = [
     { value: 'order_placed', label: 'Order Placed' },

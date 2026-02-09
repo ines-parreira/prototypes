@@ -1,3 +1,4 @@
+import type { OrderStatus } from 'AIJourney/types/AIJourneyTypes'
 import type { Product } from 'constants/integrations/types/shopify'
 
 export type PlaygroundTemplateMessage = {
@@ -55,6 +56,8 @@ export type AIJourneySettings = {
     outboundMessageInstructions: string
     inactiveDays: number
     cooldownPeriod: number
+    targetOrderStatus?: OrderStatus
+    postPurchaseWaitInMinutes?: number
 }
 
 export type DraftKnowledge = {

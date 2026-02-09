@@ -64,3 +64,15 @@ export type MetricProps = {
     isLoading: boolean
     drilldown?: DrillDownMetric
 }
+
+export type OrderStatus = 'order_placed' | 'order_fulfilled'
+
+export type TargetOrderStatusFieldProps = {
+    value?: OrderStatus | null
+    onChange?: (value: OrderStatus) => void
+}
+
+export type OrderStatusOption = {
+    value: OrderStatus
+    label: string
+}

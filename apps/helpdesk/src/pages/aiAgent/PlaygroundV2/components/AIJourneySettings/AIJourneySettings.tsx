@@ -9,6 +9,7 @@ import {
     ListItem,
     ListSection,
     LegacyLoadingSpinner as LoadingSpinner,
+    NumberField,
     Select,
     SelectField,
     SelectTrigger,
@@ -17,7 +18,12 @@ import {
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
 import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
+import type {
+    OrderStatus,
+    OrderStatusOption,
+} from 'AIJourney/types/AIJourneyTypes'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import TextArea from 'pages/common/forms/TextArea'
 
@@ -38,6 +44,8 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
             return 'Browse Abandoned'
         case JourneyTypeEnum.WinBack:
             return 'Win-back'
+        case JourneyTypeEnum.PostPurchase:
+            return 'Post Purchase'
         default:
             return journeyType
     }
@@ -58,6 +66,11 @@ const INACTIVE_AND_COOLDOWN_DAYS_OPTIONS: { id: number; label: string }[] = [
     id: num,
     label: `${num} days`,
 }))
+
+const ORDER_STATUS_OPTIONS: OrderStatusOption[] = [
+    { value: 'order_placed', label: 'Order Placed' },
+    { value: 'order_fulfilled', label: 'Order Fulfilled' },
+]
 
 export const AIJourneySettings: React.FC = () => {
     const {
@@ -83,13 +96,15 @@ export const AIJourneySettings: React.FC = () => {
         excludedAudienceListIds,
         inactiveDays,
         cooldownPeriod,
+        targetOrderStatus,
+        postPurchaseWaitInMinutes,
     } = aiJourneySettings
 
     const isCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
     const isWinBack = currentJourney?.type === JourneyTypeEnum.WinBack
+    const isPostPurchase = currentJourney?.type === JourneyTypeEnum.PostPurchase
 
     const flowsOptions = flows
-        // playground does not cover winback for the moment
         .filter(
             (j) =>
                 [
@@ -97,6 +112,7 @@ export const AIJourneySettings: React.FC = () => {
                     JourneyTypeEnum.Campaign.toString(),
                     JourneyTypeEnum.SessionAbandoned.toString(),
                     JourneyTypeEnum.WinBack.toString(),
+                    JourneyTypeEnum.PostPurchase.toString(),
                 ].indexOf(j.type) > -1,
         )
         .map((journey) => ({
@@ -173,6 +189,12 @@ export const AIJourneySettings: React.FC = () => {
                 numericValue > MAX_DISCOUNT_VALUE
                     ? MAX_DISCOUNT_VALUE
                     : numericValue,
+        })
+    }
+
+    const handlePostPurchaseWaitTimeField = (value: number) => {
+        setAIJourneySettings({
+            postPurchaseWaitInMinutes: value,
         })
     }
 
@@ -397,7 +419,7 @@ export const AIJourneySettings: React.FC = () => {
                 <>
                     <div
                         className={classNames([
-                            css.discountCodeMessageIdxField,
+                            css.inactiveDaysField,
                             css.inputFieldWrapper,
                         ])}
                     >
@@ -420,7 +442,7 @@ export const AIJourneySettings: React.FC = () => {
                     </div>
                     <div
                         className={classNames([
-                            css.discountCodeMessageIdxField,
+                            css.cooldownPeriodField,
                             css.inputFieldWrapper,
                         ])}
                     >
@@ -440,6 +462,67 @@ export const AIJourneySettings: React.FC = () => {
                                 <ListItem label={option.label} />
                             )}
                         </SelectField>
+                    </div>
+                </>
+            )}
+
+            {isPostPurchase && (
+                <>
+                    <div
+                        className={classNames([
+                            css.triggerEventField,
+                            css.inputFieldWrapper,
+                        ])}
+                    >
+                        <SelectField
+                            value={ORDER_STATUS_OPTIONS.map((opt) => ({
+                                id: opt.value,
+                                label: opt.label,
+                            })).find(
+                                (option) => option.id === targetOrderStatus,
+                            )}
+                            onChange={(value: {
+                                id: string
+                                label: string
+                            }) => {
+                                setAIJourneySettings({
+                                    targetOrderStatus: value.id as OrderStatus,
+                                })
+                            }}
+                            items={ORDER_STATUS_OPTIONS.map((opt) => ({
+                                id: opt.value,
+                                label: opt.label,
+                            }))}
+                            label="Trigger event"
+                        >
+                            {(option: { id: string; label: string }) => (
+                                <ListItem label={option.label} />
+                            )}
+                        </SelectField>
+                    </div>
+                    <div
+                        className={classNames([
+                            css.postPurchaseWaitField,
+                            css.inputFieldWrapper,
+                        ])}
+                    >
+                        <NumberField
+                            label="Wait time after trigger (in minutes)"
+                            isInvalid={
+                                postPurchaseWaitInMinutes !== undefined &&
+                                postPurchaseWaitInMinutes >
+                                    POST_PURCHASE_MAX_WAIT_TIME
+                            }
+                            value={postPurchaseWaitInMinutes ?? 1}
+                            onChange={handlePostPurchaseWaitTimeField}
+                            error={
+                                postPurchaseWaitInMinutes !== undefined &&
+                                postPurchaseWaitInMinutes >
+                                    POST_PURCHASE_MAX_WAIT_TIME
+                                    ? `Please enter wait time between 0 and ${POST_PURCHASE_MAX_WAIT_TIME} minutes (7 days)`
+                                    : undefined
+                            }
+                        />
                     </div>
                 </>
             )}

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import {
     useJourneyData,
     useJourneys,
@@ -249,6 +251,8 @@ describe('AIJourneyContext', () => {
                 outboundMessageInstructions: 'Test instructions',
                 inactiveDays: undefined,
                 cooldownPeriod: undefined,
+                postPurchaseWaitInMinutes: undefined,
+                targetOrderStatus: undefined,
             })
         })
 
@@ -281,6 +285,42 @@ describe('AIJourneyContext', () => {
                 outboundMessageInstructions: 'Test instructions',
                 inactiveDays: 30,
                 cooldownPeriod: 90,
+                postPurchaseWaitInMinutes: undefined,
+                targetOrderStatus: undefined,
+            })
+        })
+
+        it('should send trigger event and wait time for post-purchase flow', () => {
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    type: JourneyTypeEnum.PostPurchase,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        target_order_status: 'order_placed',
+                        post_purchase_wait_minutes: 10,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAIJourneyContext(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(result.current.aiJourneySettings).toEqual({
+                ...AI_JOURNEY_DEFAULT_STATE,
+                journeyId: 'journey-1',
+                totalFollowUp: 2,
+                includeProductImage: false,
+                includeDiscountCode: true,
+                discountCodeValue: 15,
+                discountCodeMessageIdx: 2,
+                outboundMessageInstructions: 'Test instructions',
+                inactiveDays: undefined,
+                cooldownPeriod: undefined,
+                targetOrderStatus: 'order_placed',
+                postPurchaseWaitInMinutes: 10,
             })
         })
 
@@ -838,6 +878,257 @@ describe('AIJourneyContext', () => {
                 })
 
                 expect(result.current.followUpMessagesSent).toBe(0)
+            })
+        })
+
+        describe('hasInvalidFields', () => {
+            it('should return false when journey is not post-purchase', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.CartAbandoned,
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return false when post-purchase wait time is undefined', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: undefined,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return false when post-purchase wait time is within valid range', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: 5000,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return false when post-purchase wait time equals MAX_WAIT_TIME', () => {
+                const MAX_WAIT_TIME = 10080
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: MAX_WAIT_TIME,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return true when post-purchase wait time exceeds MAX_WAIT_TIME', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: 10081,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should update hasInvalidFields when postPurchaseWaitInMinutes is changed', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: 100,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        postPurchaseWaitInMinutes: 20000,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should become valid when invalid field is corrected', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            post_purchase_wait_minutes: 15000,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        postPurchaseWaitInMinutes: 5000,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return false when journey type changes from post-purchase to other type', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                    {
+                        id: 'journey-2',
+                        type: JourneyTypeEnum.CartAbandoned,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockImplementation((journeyId) => {
+                    if (journeyId === 'journey-1') {
+                        return {
+                            data: {
+                                ...mockJourneyData,
+                                type: JourneyTypeEnum.PostPurchase,
+                                configuration: {
+                                    ...mockJourneyData.configuration,
+                                    post_purchase_wait_minutes: 15000,
+                                },
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return {
+                        data: {
+                            ...mockJourneyData,
+                            type: JourneyTypeEnum.CartAbandoned,
+                        },
+                        isLoading: false,
+                    }
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        journeyId: 'journey-2',
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
             })
         })
     })
