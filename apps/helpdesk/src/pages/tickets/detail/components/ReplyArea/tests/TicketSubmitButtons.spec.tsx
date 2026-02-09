@@ -1,8 +1,11 @@
 import type { ComponentProps } from 'react'
 
+import { useFlag } from '@repo/feature-flags'
+import { logEvent } from '@repo/logging'
 import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { Map as ImmutableMap } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,6 +13,7 @@ import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { TicketStatus } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
 import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -20,9 +24,26 @@ import TicketSubmitButtons from '../TicketSubmitButtons'
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 jest.mock('providers/OutboundTranslationProvider')
+jest.mock('@repo/logging')
+
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+}))
+const mockUseFlag = useFlag as jest.Mock
+
+const mockValidateTicketFields = jest.fn()
+const mockCloseTicket = jest.fn()
+
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    useTicketFieldsValidation: () => ({
+        validateTicketFields: mockValidateTicketFields,
+        isValidating: false,
+    }),
+    useCloseTicket: () => ({
+        closeTicket: mockCloseTicket,
+    }),
 }))
 
 jest.mock(
@@ -107,23 +128,42 @@ const legacyBridgeProps = {
 }
 
 describe('<TicketSubmitButtons />', () => {
+    const mockSubmit = jest.fn()
+
     beforeEach(() => {
+        jest.clearAllMocks()
         mockUseOutboundTranslationContext.mockReturnValue(mockContext)
+        mockUseFlag.mockReturnValue(false)
+        mockValidateTicketFields.mockReturnValue({
+            hasErrors: false,
+            invalidFieldIds: [],
+        })
         testQueryClient.clear()
     })
 
-    const renderComponent = (store: any) => {
-        return render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <TicketsLegacyBridgeProvider {...legacyBridgeProps}>
-                        <QueryClientProvider client={testQueryClient}>
-                            <TicketSubmitButtons setTicketStatus={jest.fn()} />
-                        </QueryClientProvider>
-                    </TicketsLegacyBridgeProvider>
-                </Provider>
-            </MemoryRouter>,
-        )
+    const renderComponent = (
+        store: any,
+        props?: {
+            submit?: jest.Mock
+        },
+    ) => {
+        const user = userEvent.setup()
+        return {
+            user,
+            ...render(
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <TicketsLegacyBridgeProvider {...legacyBridgeProps}>
+                            <QueryClientProvider client={testQueryClient}>
+                                <TicketSubmitButtons
+                                    submit={props?.submit ?? mockSubmit}
+                                />
+                            </QueryClientProvider>
+                        </TicketsLegacyBridgeProvider>
+                    </Provider>
+                </MemoryRouter>,
+            ),
+        }
     }
 
     const state = {
@@ -275,5 +315,122 @@ describe('<TicketSubmitButtons />', () => {
 
         expect(buttons[0]).toBeDisabled()
         expect(buttons[1]).toBeDisabled()
+    })
+
+    describe('handleSendAndCloseTicket', () => {
+        const existingTicketState = {
+            ...state,
+            ticket: fromJS({
+                id: 123,
+                subject: 'Test ticket',
+            }),
+        }
+
+        describe('when hasUIVisionMS1 flag is disabled (legacy behavior)', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(false)
+            })
+
+            it('should call submit with Closed status when clicking Send & Close', async () => {
+                const { user, getByRole } = renderComponent(
+                    mockStore(existingTicketState),
+                )
+
+                const sendAndCloseButton = getByRole('button', {
+                    name: /Send & Close/,
+                })
+                await user.click(sendAndCloseButton)
+
+                expect(mockSubmit).toHaveBeenCalledWith({
+                    status: TicketStatus.Closed,
+                })
+                expect(logEvent).toHaveBeenCalled()
+            })
+
+            it('should not call closeTicket in legacy mode', async () => {
+                const { user, getByRole } = renderComponent(
+                    mockStore(existingTicketState),
+                )
+
+                const sendAndCloseButton = getByRole('button', {
+                    name: /Send & Close/,
+                })
+                await user.click(sendAndCloseButton)
+
+                expect(mockCloseTicket).not.toHaveBeenCalled()
+            })
+        })
+
+        describe('when hasUIVisionMS1 flag is enabled', () => {
+            beforeEach(() => {
+                mockUseFlag.mockReturnValue(true)
+            })
+
+            it('should return early if ticket has no id', async () => {
+                const noIdTicketState = {
+                    ...state,
+                    ticket: fromJS({
+                        subject: 'Test ticket',
+                    }),
+                }
+
+                const { user, getByRole } = renderComponent(
+                    mockStore(noIdTicketState),
+                )
+
+                const sendAndCloseButton = getByRole('button', {
+                    name: /Send & Close/,
+                })
+                await user.click(sendAndCloseButton)
+
+                expect(mockValidateTicketFields).toHaveBeenCalled()
+                expect(mockSubmit).not.toHaveBeenCalled()
+                expect(mockCloseTicket).not.toHaveBeenCalled()
+            })
+
+            it('should return early if ticket field validation fails', async () => {
+                mockValidateTicketFields.mockReturnValue({
+                    hasErrors: true,
+                    invalidFieldIds: [1, 2],
+                })
+
+                const { user, getByRole } = renderComponent(
+                    mockStore(existingTicketState),
+                )
+
+                const sendAndCloseButton = getByRole('button', {
+                    name: /Send & Close/,
+                })
+                await user.click(sendAndCloseButton)
+
+                expect(mockValidateTicketFields).toHaveBeenCalled()
+                expect(mockSubmit).not.toHaveBeenCalled()
+                expect(mockCloseTicket).not.toHaveBeenCalled()
+                expect(logEvent).not.toHaveBeenCalled()
+            })
+
+            it('should call submit and closeTicket when validation passes', async () => {
+                mockValidateTicketFields.mockReturnValue({
+                    hasErrors: false,
+                    invalidFieldIds: [],
+                })
+
+                const { user, getByRole } = renderComponent(
+                    mockStore(existingTicketState),
+                )
+
+                const sendAndCloseButton = getByRole('button', {
+                    name: /Send & Close/,
+                })
+                await user.click(sendAndCloseButton)
+
+                expect(mockValidateTicketFields).toHaveBeenCalled()
+                expect(logEvent).toHaveBeenCalled()
+                expect(mockSubmit).toHaveBeenCalledWith({
+                    status: TicketStatus.Closed,
+                })
+                expect(mockCloseTicket).toHaveBeenCalled()
+            })
+        })
     })
 })

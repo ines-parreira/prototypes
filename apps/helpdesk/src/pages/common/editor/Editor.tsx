@@ -47,7 +47,7 @@ export default function Editor({
     const { hasAccess } = useAiAgentAccess()
     const { showWhatsAppTemplateEditor } = useWhatsAppEditor()
 
-    const { formRef, onSubmit, setTicketStatus } = useForm(submit)
+    const { formRef, onSubmit } = useForm(submit)
     const {
         hasShown,
         filters,
@@ -100,7 +100,7 @@ export default function Editor({
                             onChangeQuery={onChangeQuery}
                         />
                     )}
-                    <TicketSubmitButtons setTicketStatus={setTicketStatus} />
+                    <TicketSubmitButtons submit={submit} />
                 </ReplyForm>
             </form>
         </div>

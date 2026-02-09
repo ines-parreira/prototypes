@@ -6,6 +6,9 @@ exports[`TicketDetailContainer component should render container for new ticket 
     data-testid="TicketView-submit"
   />
   <div
+    data-testid="TicketView-submit-send"
+  />
+  <div
     data-testid="TicketView-change-status"
   />
 </div>

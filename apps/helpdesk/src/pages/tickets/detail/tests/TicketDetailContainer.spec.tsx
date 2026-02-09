@@ -87,6 +87,12 @@ jest.mock('../components/TicketView', () => {
                 }}
             />
             <div
+                data-testid="TicketView-submit-send"
+                onClick={() => {
+                    submit({ status: TicketStatus.Open })
+                }}
+            />
+            <div
                 data-testid="TicketView-change-status"
                 onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -210,9 +216,15 @@ const mockUseKnowledgeSourceSideBar =
     require('pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
         .useKnowledgeSourceSideBar as jest.Mock
 
+const mockValidateTicketFields = jest.fn()
+
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
     useLiveTicketTranslationsUpdates: jest.fn(),
+    useTicketFieldsValidation: () => ({
+        validateTicketFields: mockValidateTicketFields,
+        isValidating: false,
+    }),
 }))
 
 const mockUseLiveTicketTranslationsUpdates =
@@ -344,6 +356,10 @@ describe('TicketDetailContainer component', () => {
         })
         mockJoinTicket.mockClear()
         mockUseFlag.mockReturnValue(false)
+        mockValidateTicketFields.mockReturnValue({
+            hasErrors: false,
+            invalidFieldIds: [],
+        })
     })
 
     it('should render container for new ticket', () => {
@@ -1593,6 +1609,197 @@ describe('TicketDetailContainer component', () => {
             expect(spiedMergeFieldsStateWithMacroValues).toHaveBeenCalledTimes(
                 2,
             )
+        })
+
+        it('should not trigger ticket field validation when sending a message without closing on existing ticket', async () => {
+            mockUseFlag.mockReturnValue(true)
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    data: [
+                        ticketDropdownFieldDefinition,
+                        { ...ticketInputFieldDefinition, required: true },
+                    ],
+                },
+            })
+
+            const { getByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket,
+                                newMessage: newMessageState,
+                                canSendMessage: true,
+                                fieldsState: {},
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            userEvent.click(getByTestId('TicketView-submit-send'))
+
+            await waitFor(() =>
+                expect(pendingMessageManager.sendMessage).toHaveBeenCalled(),
+            )
+
+            expect(triggerTicketFieldsErrors).not.toHaveBeenCalled()
+        })
+
+        it('should trigger ticket field validation when closing an existing ticket with hasUIVisionMS1 flag', async () => {
+            mockUseFlag.mockReturnValue(true)
+            useCustomFieldDefinitionsMock.mockReturnValue({
+                isLoading: false,
+                data: {
+                    data: [
+                        ticketDropdownFieldDefinition,
+                        { ...ticketInputFieldDefinition, required: true },
+                    ],
+                },
+            })
+
+            const { getByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket,
+                                newMessage: newMessageState,
+                                canSendMessage: true,
+                                fieldsState: {},
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            userEvent.click(getByTestId('TicketView-submit'))
+
+            await waitFor(() => {
+                expect(triggerTicketFieldsErrors).toHaveBeenCalledWith([
+                    ticketInputFieldDefinition.id,
+                ])
+            })
+
+            expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
+        })
+
+        it('should not submit via keyboard shortcut when ticket field validation fails on existing ticket', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockValidateTicketFields.mockReturnValue({
+                hasErrors: true,
+                invalidFieldIds: [ticketInputFieldDefinition.id],
+            })
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket,
+                                newMessage: newMessageState,
+                                canSendMessage: true,
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            makeExecuteKeyboardAction(shortcutManagerMock)(
+                'SUBMIT_CLOSE_TICKET',
+            )
+
+            await flushPromises()
+
+            expect(mockValidateTicketFields).toHaveBeenCalled()
+            expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
+            expect(minProps.submitTicket).not.toHaveBeenCalled()
+        })
+
+        it('should allow keyboard shortcut submit when ticket field validation passes on existing ticket', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockValidateTicketFields.mockReturnValue({
+                hasErrors: false,
+                invalidFieldIds: [],
+            })
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: existingTicket,
+                                newMessage: newMessageState,
+                                canSendMessage: true,
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            makeExecuteKeyboardAction(shortcutManagerMock)(
+                'SUBMIT_CLOSE_TICKET',
+            )
+
+            await waitFor(() => {
+                expect(mockValidateTicketFields).toHaveBeenCalled()
+                expect(pendingMessageManager.sendMessage).toHaveBeenCalled()
+            })
+        })
+
+        it('should skip ticket field validation on new ticket even with hasUIVisionMS1 flag', async () => {
+            mockUseFlag.mockReturnValue(true)
+            mockValidateTicketFields.mockReturnValue({
+                hasErrors: true,
+                invalidFieldIds: [ticketInputFieldDefinition.id],
+            })
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...{
+                                ...minProps,
+                                ticket: newTicket,
+                                canSendMessage: true,
+                            }}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/new',
+                },
+            )
+
+            makeExecuteKeyboardAction(shortcutManagerMock)(
+                'SUBMIT_CLOSE_TICKET',
+            )
+
+            await waitFor(() => {
+                expect(minProps.submitTicket).toHaveBeenCalled()
+            })
         })
     })
 
