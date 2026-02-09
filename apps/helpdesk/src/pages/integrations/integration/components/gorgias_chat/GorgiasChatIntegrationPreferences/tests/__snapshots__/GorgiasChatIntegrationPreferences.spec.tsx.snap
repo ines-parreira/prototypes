@@ -152,7 +152,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                   </p>
                   <fieldset
                     class="mb-3 radioFieldSet"
-                    name="radio-field-82"
+                    name="radio-field-61"
                   >
                     <div
                       class="option"
@@ -165,7 +165,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                           checked=""
                           class="input"
                           id="auto-based-on-agent-availability"
-                          name="radio-field-82"
+                          name="radio-field-61"
                           type="radio"
                         />
                         Live when agents are available
@@ -186,7 +186,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="always-live-during-business-hours"
-                          name="radio-field-82"
+                          name="radio-field-61"
                           type="radio"
                         />
                         Always live during business hours
@@ -207,7 +207,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="offline"
-                          name="radio-field-82"
+                          name="radio-field-61"
                           type="radio"
                         />
                         Offline
@@ -444,7 +444,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                 </div>
                 <fieldset
                   class=""
-                  name="radio-field-83"
+                  name="radio-field-62"
                 >
                   <div
                     class="option"
@@ -457,7 +457,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         checked=""
                         class="input"
                         id="optional"
-                        name="radio-field-83"
+                        name="radio-field-62"
                         type="radio"
                       />
                       Optional
@@ -473,7 +473,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                       <input
                         class="input"
                         id="always-required"
-                        name="radio-field-83"
+                        name="radio-field-62"
                         type="radio"
                       />
                       Required
@@ -538,7 +538,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                 >
                   <fieldset
                     class="mb-2 radioFieldSet"
-                    name="radio-field-84"
+                    name="radio-field-63"
                   >
                     <div
                       class="option"
@@ -551,7 +551,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                           checked=""
                           class="input"
                           id="reply-dynamic"
-                          name="radio-field-84"
+                          name="radio-field-63"
                           type="radio"
                         />
                         <div>
@@ -584,7 +584,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="reply-in-minutes"
-                          name="radio-field-84"
+                          name="radio-field-63"
                           type="radio"
                         />
                         In a few minutes
@@ -600,7 +600,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="reply-in-hours"
-                          name="radio-field-84"
+                          name="radio-field-63"
                           type="radio"
                         />
                         In a few hours
@@ -799,7 +799,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                   </p>
                   <fieldset
                     class="mb-3 radioFieldSet"
-                    name="radio-field-78"
+                    name="radio-field-58"
                   >
                     <div
                       class="option"
@@ -812,7 +812,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                           checked=""
                           class="input"
                           id="auto-based-on-agent-availability"
-                          name="radio-field-78"
+                          name="radio-field-58"
                           type="radio"
                         />
                         Live when agents are available
@@ -833,7 +833,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="always-live-during-business-hours"
-                          name="radio-field-78"
+                          name="radio-field-58"
                           type="radio"
                         />
                         Always live during business hours
@@ -854,7 +854,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="offline"
-                          name="radio-field-78"
+                          name="radio-field-58"
                           type="radio"
                         />
                         Offline
@@ -1091,7 +1091,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                 </div>
                 <fieldset
                   class=""
-                  name="radio-field-79"
+                  name="radio-field-59"
                 >
                   <div
                     class="option"
@@ -1104,7 +1104,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         checked=""
                         class="input"
                         id="optional"
-                        name="radio-field-79"
+                        name="radio-field-59"
                         type="radio"
                       />
                       Optional
@@ -1120,7 +1120,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                       <input
                         class="input"
                         id="always-required"
-                        name="radio-field-79"
+                        name="radio-field-59"
                         type="radio"
                       />
                       Required
@@ -1185,7 +1185,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                 >
                   <fieldset
                     class="mb-2 radioFieldSet"
-                    name="radio-field-80"
+                    name="radio-field-60"
                   >
                     <div
                       class="option"
@@ -1198,7 +1198,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                           checked=""
                           class="input"
                           id="reply-dynamic"
-                          name="radio-field-80"
+                          name="radio-field-60"
                           type="radio"
                         />
                         <div>
@@ -1231,7 +1231,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="reply-in-minutes"
-                          name="radio-field-80"
+                          name="radio-field-60"
                           type="radio"
                         />
                         In a few minutes
@@ -1247,7 +1247,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() conditional chat preview 
                         <input
                           class="input"
                           id="reply-in-hours"
-                          name="radio-field-80"
+                          name="radio-field-60"
                           type="radio"
                         />
                         In a few hours
@@ -1793,7 +1793,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 </p>
                 <fieldset
                   class="mb-3 radioFieldSet"
-                  name="radio-field-70"
+                  name="radio-field-52"
                 >
                   <div
                     class="option"
@@ -1806,7 +1806,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                         checked=""
                         class="input"
                         id="auto-based-on-agent-availability"
-                        name="radio-field-70"
+                        name="radio-field-52"
                         type="radio"
                       />
                       Live when agents are available
@@ -1827,7 +1827,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="always-live-during-business-hours"
-                        name="radio-field-70"
+                        name="radio-field-52"
                         type="radio"
                       />
                       Always live during business hours
@@ -1848,7 +1848,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="offline"
-                        name="radio-field-70"
+                        name="radio-field-52"
                         type="radio"
                       />
                       Offline
@@ -2085,7 +2085,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               </div>
               <fieldset
                 class=""
-                name="radio-field-71"
+                name="radio-field-53"
               >
                 <div
                   class="option"
@@ -2098,7 +2098,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       checked=""
                       class="input"
                       id="optional"
-                      name="radio-field-71"
+                      name="radio-field-53"
                       type="radio"
                     />
                     Optional
@@ -2114,7 +2114,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     <input
                       class="input"
                       id="always-required"
-                      name="radio-field-71"
+                      name="radio-field-53"
                       type="radio"
                     />
                     Required
@@ -2179,7 +2179,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               >
                 <fieldset
                   class="mb-2 radioFieldSet"
-                  name="radio-field-72"
+                  name="radio-field-54"
                 >
                   <div
                     class="option"
@@ -2192,7 +2192,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                         checked=""
                         class="input"
                         id="reply-dynamic"
-                        name="radio-field-72"
+                        name="radio-field-54"
                         type="radio"
                       />
                       <div>
@@ -2225,7 +2225,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="reply-in-minutes"
-                        name="radio-field-72"
+                        name="radio-field-54"
                         type="radio"
                       />
                       In a few minutes
@@ -2241,7 +2241,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                       <input
                         class="input"
                         id="reply-in-hours"
-                        name="radio-field-72"
+                        name="radio-field-54"
                         type="radio"
                       />
                       In a few hours

@@ -19,10 +19,15 @@ import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
 import {
     Button,
+    Heading,
+    HeadingSize,
+    Text,
+    TextSize,
     LegacyToggleField as ToggleField,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
+import partyPopperIcon from 'assets/img/icons/party-popper.png'
 import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import type { LanguageChat } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
@@ -39,6 +44,9 @@ import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/t
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import NavigatedSuccessModalRevamped, {
+    NavigatedSuccessModalNameRevamped,
+} from 'pages/common/components/SuccessModal/revamp/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -139,6 +147,7 @@ type Props = {
     selfServiceConfiguration: SelfServiceConfiguration | null
     selfServiceConfigurationEnabled: boolean
     shouldShowPreviewForRevamp: boolean
+    shouldShowRevamp: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -968,16 +977,36 @@ export class GorgiasChatIntegrationPreferencesComponent extends Component<
 
         return (
             <>
-                <NavigatedSuccessModal
-                    name={NavigatedSuccessModalName.GorgiasChatAutoInstallation}
-                    icon={SuccessModalIcon.PartyPopper}
-                    buttonLabel="See Chat Settings"
-                >
-                    <div className="heading-page-semibold mb-2">All set!</div>
-                    <div className="heading-subsection-regular">
-                        Your chat is now available on your website.
-                    </div>
-                </NavigatedSuccessModal>
+                {this.props.shouldShowRevamp ? (
+                    <NavigatedSuccessModalRevamped
+                        name={
+                            NavigatedSuccessModalNameRevamped.GorgiasChatAutoInstallation
+                        }
+                        icon={partyPopperIcon}
+                        buttonLabel="See Chat Settings"
+                    >
+                        <Heading size={HeadingSize.Xxl}>All set!</Heading>
+                        <Text size={TextSize.Md}>
+                            Your chat is now available on your website.
+                        </Text>
+                    </NavigatedSuccessModalRevamped>
+                ) : (
+                    <NavigatedSuccessModal
+                        name={
+                            NavigatedSuccessModalName.GorgiasChatAutoInstallation
+                        }
+                        icon={SuccessModalIcon.PartyPopper}
+                        buttonLabel="See Chat Settings"
+                    >
+                        <div className="heading-page-semibold mb-2">
+                            All set!
+                        </div>
+                        <div className="heading-subsection-regular">
+                            Your chat is now available on your website.
+                        </div>
+                    </NavigatedSuccessModal>
+                )}
+
                 <div className="full-width">
                     <PageHeader
                         title={
@@ -1669,15 +1698,17 @@ type WrapperProps = {
 const GorgiasChatIntegrationPreferencesWrapper = (props: WrapperProps) => {
     const { integration } = props
     const { storeIntegration } = useStoreIntegration(integration)
-    const { shouldShowPreviewForRevamp } = useShouldShowChatSettingsRevamp(
-        storeIntegration,
-        props.integration.get('id'),
-    )
+    const { shouldShowPreviewForRevamp, shouldShowRevamp } =
+        useShouldShowChatSettingsRevamp(
+            storeIntegration,
+            props.integration.get('id'),
+        )
 
     return (
         <ConnectedComponent
             {...props}
             shouldShowPreviewForRevamp={shouldShowPreviewForRevamp}
+            shouldShowRevamp={shouldShowRevamp}
         />
     )
 }

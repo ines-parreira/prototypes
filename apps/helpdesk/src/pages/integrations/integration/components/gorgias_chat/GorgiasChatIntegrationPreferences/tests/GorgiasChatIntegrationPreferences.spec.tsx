@@ -107,6 +107,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         selfServiceConfiguration: null,
         selfServiceConfigurationEnabled: false,
         shouldShowPreviewForRevamp: true,
+        shouldShowRevamp: true,
     }
 
     describe('componentDidMount()', () => {
@@ -319,6 +320,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 selfServiceConfiguration={null}
                                 selfServiceConfigurationEnabled={false}
                                 shouldShowPreviewForRevamp={true}
+                                shouldShowRevamp={true}
                             />
                         </Provider>
                     </MemoryRouter>,
@@ -413,6 +415,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 selfServiceConfiguration={null}
                                 selfServiceConfigurationEnabled={false}
                                 shouldShowPreviewForRevamp={true}
+                                shouldShowRevamp={true}
                             />
                         </Provider>
                     </MemoryRouter>,
@@ -921,6 +924,7 @@ describe('<GorgiasChatIntegrationPreferencesWrapper />', () => {
         })
         mockUseRevampShouldShowChatPreview.mockReturnValue({
             shouldShowPreviewForRevamp: true,
+            shouldShowRevamp: true,
         })
     })
 
@@ -968,6 +972,7 @@ describe('<GorgiasChatIntegrationPreferencesWrapper />', () => {
             })
             mockUseRevampShouldShowChatPreview.mockReturnValue({
                 shouldShowPreviewForRevamp: hookReturnValue,
+                shouldShowRevamp: hookReturnValue,
             })
 
             const { unmount } = render(
