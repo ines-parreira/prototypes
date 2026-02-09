@@ -17,7 +17,7 @@ export function HelpdeskV2BetaToggle() {
             )}
             onClick={onToggle}
         >
-            <span>Helpdesk 2.0 Beta</span>
+            <span>New UI</span>
             <ToggleField value={hasUIVisionBeta} />
         </button>
     )

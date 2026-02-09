@@ -66,18 +66,10 @@ const useHelpdeskV2BaselineFlagMock = useHelpdeskV2BaselineFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
 jest.mock('../AxiomMigrationToggle', () => ({
-    AxiomMigrationToggle: () => (
-        <div>
-            <span>New UI</span>
-        </div>
-    ),
+    AxiomMigrationToggle: () => <div>AxiomMigrationToggle</div>,
 }))
 jest.mock('../HelpdeskV2BetaToggle', () => ({
-    HelpdeskV2BetaToggle: () => (
-        <div>
-            <span>Helpdesk 2.0 Beta</span>
-        </div>
-    ),
+    HelpdeskV2BetaToggle: () => <div>HelpdeskV2BetaToggle</div>,
 }))
 jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock(
@@ -157,7 +149,9 @@ describe('UserMenu', () => {
         })
 
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
-        expect(screen.queryByText('New UI')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('AxiomMigrationToggle'),
+        ).not.toBeInTheDocument()
         expect(
             screen.queryByText(ignoreHTML('Status:None')),
         ).not.toBeInTheDocument()
@@ -171,10 +165,24 @@ describe('UserMenu', () => {
         expect(screen.getByText('Log out')).toBeInTheDocument()
     })
 
-    it('should render the New UI menu item when axiom migration flag is enabled', () => {
+    it('should render the AxiomMigrationToggle when axiom migration flag is enabled and baseline flag is disabled', () => {
         useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
         render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(screen.getByText('New UI')).toBeInTheDocument()
+        expect(screen.getByText('AxiomMigrationToggle')).toBeInTheDocument()
+    })
+
+    it('should not render the AxiomMigrationToggle when axiom migration flag is enabled but baseline flag is also enabled', () => {
+        useAxiomMigrationMock.mockReturnValue({ hasFlag: true })
+        useHelpdeskV2BaselineFlagMock.mockReturnValue({
+            hasUIVisionBetaBaselineFlag: true,
+            hasUIVisionBeta: true,
+            onToggle: jest.fn(),
+        })
+        render(<UserMenu onClose={onClose} />, { wrapper })
+        expect(
+            screen.queryByText('AxiomMigrationToggle'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('HelpdeskV2BetaToggle')).toBeInTheDocument()
     })
 
     it('should not render the agent status components when CustomAgentUnavailableStatuses feature flag is disabled', () => {
@@ -626,23 +634,25 @@ describe('UserMenu', () => {
         ).toBeInTheDocument()
         expect(screen.getByText('Your profile')).toBeInTheDocument()
     })
-    it('should render the Helpdesk 2.0 Beta toggle when baseline flag is enabled', () => {
+    it('should render the HelpdeskV2BetaToggle when baseline flag is enabled', () => {
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: true,
             hasUIVisionBeta: true,
             onToggle: jest.fn(),
         })
         render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(screen.getByText('Helpdesk 2.0 Beta')).toBeInTheDocument()
+        expect(screen.getByText('HelpdeskV2BetaToggle')).toBeInTheDocument()
     })
 
-    it('should not render the Helpdesk 2.0 Beta toggle when baseline flag is disabled', () => {
+    it('should not render the HelpdeskV2BetaToggle when baseline flag is disabled', () => {
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: false,
             hasUIVisionBeta: false,
             onToggle: jest.fn(),
         })
         render(<UserMenu onClose={onClose} />, { wrapper })
-        expect(screen.queryByText('Helpdesk 2.0 Beta')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('HelpdeskV2BetaToggle'),
+        ).not.toBeInTheDocument()
     })
 })

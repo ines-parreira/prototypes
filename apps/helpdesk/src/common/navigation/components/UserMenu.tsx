@@ -139,7 +139,7 @@ export default function UserMenu({ onClose }: Props) {
                         </button>
                     </>
                 )}
-                {hasAxiomMigration && (
+                {hasAxiomMigration && !hasUIVisionBetaBaselineFlag && (
                     <>
                         <hr className={css.separator} />
                         <AxiomMigrationToggle />
