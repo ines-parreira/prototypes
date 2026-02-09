@@ -147,7 +147,45 @@ describe('useTicketFieldsValidation', () => {
         expect(fields[1]?.hasError).toBe(true)
     })
 
-    it('should set hasAttemptedToCloseTicket flag when validation fails', () => {
+    it('should increment validationFailureCount when validation fails', () => {
+        const fieldDefinitions: CustomField[] = [
+            {
+                id: 1,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+        ]
+
+        vi.spyOn(
+            useCustomFieldDefinitionsModule,
+            'useCustomFieldDefinitions',
+        ).mockReturnValue({
+            data: {
+                data: fieldDefinitions,
+            },
+            isLoading: false,
+        } as any)
+
+        vi.spyOn(
+            useCustomFieldsConditionsEvaluationResultsModule,
+            'useCustomFieldsConditionsEvaluationResults',
+        ).mockReturnValue({
+            evaluationResults: {},
+            conditionsLoading: false,
+        })
+
+        useTicketFieldsStore.getState().updateFieldValue(1, '')
+
+        const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
+
+        expect(useTicketFieldsStore.getState().validationFailureCount).toBe(0)
+
+        result.current.validateTicketFields()
+
+        expect(useTicketFieldsStore.getState().validationFailureCount).toBe(1)
+    })
+
+    it('should increment validationFailureCount on each failed validation attempt', () => {
         const fieldDefinitions: CustomField[] = [
             {
                 id: 1,
@@ -179,13 +217,13 @@ describe('useTicketFieldsValidation', () => {
         const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
 
         result.current.validateTicketFields()
+        result.current.validateTicketFields()
+        result.current.validateTicketFields()
 
-        const hasAttemptedToCloseTicket =
-            useTicketFieldsStore.getState().hasAttemptedToCloseTicket
-        expect(hasAttemptedToCloseTicket).toBe(true)
+        expect(useTicketFieldsStore.getState().validationFailureCount).toBe(3)
     })
 
-    it('should clear hasAttemptedToCloseTicket flag when validation passes', () => {
+    it('should not modify validationFailureCount when validation passes', () => {
         const fieldDefinitions: CustomField[] = [
             {
                 id: 1,
@@ -213,15 +251,12 @@ describe('useTicketFieldsValidation', () => {
         })
 
         useTicketFieldsStore.getState().updateFieldValue(1, 'filled')
-        useTicketFieldsStore.getState().setHasAttemptedToCloseTicket(true)
 
         const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
 
         result.current.validateTicketFields()
 
-        const hasAttemptedToCloseTicket =
-            useTicketFieldsStore.getState().hasAttemptedToCloseTicket
-        expect(hasAttemptedToCloseTicket).toBe(false)
+        expect(useTicketFieldsStore.getState().validationFailureCount).toBe(0)
     })
 
     it('should handle conditional required fields', () => {

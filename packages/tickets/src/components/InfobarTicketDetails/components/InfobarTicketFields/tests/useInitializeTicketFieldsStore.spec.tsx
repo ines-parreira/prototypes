@@ -294,8 +294,6 @@ describe('useInitializeTicketFieldsStore', () => {
         rerender({ ticketId: '456' })
 
         expect(useTicketFieldsStore.getState().fields).toEqual({})
-        expect(useTicketFieldsStore.getState().hasAttemptedToCloseTicket).toBe(
-            false,
-        )
+        expect(useTicketFieldsStore.getState().validationFailureCount).toBe(0)
     })
 })

@@ -14,8 +14,8 @@ export function useTicketFieldsValidation(ticketId: number) {
     const updateFieldError = useTicketFieldsStore(
         (state) => state.updateFieldError,
     )
-    const setHasAttemptedToCloseTicket = useTicketFieldsStore(
-        (state) => state.setHasAttemptedToCloseTicket,
+    const incrementValidationFailureCount = useTicketFieldsStore(
+        (state) => state.incrementValidationFailureCount,
     )
 
     const { data: fieldDefinitions, isLoading: isLoadingDefinitions } =
@@ -51,12 +51,11 @@ export function useTicketFieldsValidation(ticketId: number) {
                 updateFieldError(fieldId, true)
             })
 
-            setHasAttemptedToCloseTicket(true)
+            incrementValidationFailureCount()
 
             return { hasErrors: true, invalidFieldIds }
         }
 
-        setHasAttemptedToCloseTicket(false)
         return { hasErrors: false, invalidFieldIds: [] }
     }, [
         ticketId,
@@ -66,7 +65,7 @@ export function useTicketFieldsValidation(ticketId: number) {
         isLoadingDefinitions,
         conditionsLoading,
         updateFieldError,
-        setHasAttemptedToCloseTicket,
+        incrementValidationFailureCount,
     ])
 
     return {

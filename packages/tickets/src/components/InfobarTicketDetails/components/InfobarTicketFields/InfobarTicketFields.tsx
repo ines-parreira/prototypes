@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import {
     Box,
     OverflowList,
@@ -8,8 +6,11 @@ import {
     Skeleton,
 } from '@gorgias/axiom'
 
-import { useDefaultExpandedLineCount } from './hooks/useDefaultExpandedLineCount'
 import { useTicketFields } from './hooks/useTicketFields'
+import {
+    DEFAULT_VISIBLE_FIELD_COUNT,
+    useTicketFieldsDisplay,
+} from './hooks/useTicketFieldsDisplay'
 import { InfobarTicketField } from './InfobarTicketField'
 import type { TicketFieldsState } from './store/useTicketFieldsStore'
 import type { FieldEventHandlerParams } from './utils/constants'
@@ -27,9 +28,8 @@ export function InfobarTicketFields({
     onFieldChange,
     onFieldBlur,
 }: InfobarTicketFieldsProps) {
-    const [isExpanded, setIsExpanded] = useState(false)
+    const { isExpanded, setIsExpanded } = useTicketFieldsDisplay()
     const { ticketFields, isLoading } = useTicketFields()
-    const defaultLineCount = useDefaultExpandedLineCount(fields)
 
     if (isLoading) {
         return <Skeleton count={3} />
@@ -42,10 +42,10 @@ export function InfobarTicketFields({
     return (
         <OverflowList
             className={css.overflowList}
-            nonExpandedLineCount={defaultLineCount}
+            nonExpandedLineCount={DEFAULT_VISIBLE_FIELD_COUNT}
             isExpanded={isExpanded}
             onExpandedChange={setIsExpanded}
-            key={`ticket-fields-overflow-list-${defaultLineCount}-${isExpanded}`}
+            key={`ticket-fields-overflow-list-${isExpanded}`}
             gap={1}
         >
             {ticketFields.map((ticketField) => (

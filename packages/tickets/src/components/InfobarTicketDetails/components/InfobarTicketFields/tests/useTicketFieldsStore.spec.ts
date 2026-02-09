@@ -208,26 +208,31 @@ describe('useTicketFieldsStore', () => {
         })
     })
 
-    describe('setHasAttemptedToCloseTicket', () => {
-        it('should set hasAttemptedToCloseTicket to true', () => {
+    describe('incrementValidationFailureCount', () => {
+        it('should increment validationFailureCount by 1', () => {
             const store = useTicketFieldsStore.getState()
 
-            store.setHasAttemptedToCloseTicket(true)
+            expect(useTicketFieldsStore.getState().validationFailureCount).toBe(
+                0,
+            )
 
-            expect(
-                useTicketFieldsStore.getState().hasAttemptedToCloseTicket,
-            ).toBe(true)
+            store.incrementValidationFailureCount()
+
+            expect(useTicketFieldsStore.getState().validationFailureCount).toBe(
+                1,
+            )
         })
 
-        it('should set hasAttemptedToCloseTicket to false', () => {
+        it('should increment validationFailureCount on repeated calls', () => {
             const store = useTicketFieldsStore.getState()
 
-            store.setHasAttemptedToCloseTicket(true)
-            store.setHasAttemptedToCloseTicket(false)
+            store.incrementValidationFailureCount()
+            store.incrementValidationFailureCount()
+            store.incrementValidationFailureCount()
 
-            expect(
-                useTicketFieldsStore.getState().hasAttemptedToCloseTicket,
-            ).toBe(false)
+            expect(useTicketFieldsStore.getState().validationFailureCount).toBe(
+                3,
+            )
         })
     })
 
@@ -281,7 +286,7 @@ describe('useTicketFieldsStore', () => {
     })
 
     describe('resetFields', () => {
-        it('should clear all fields and reset hasAttemptedToCloseTicket flag', () => {
+        it('should clear all fields and reset validationFailureCount', () => {
             const store = useTicketFieldsStore.getState()
 
             store.updateFieldValue(1, 'value 1')
@@ -298,16 +303,17 @@ describe('useTicketFieldsStore', () => {
                     predicted: 'AI value',
                 },
             })
-            store.setHasAttemptedToCloseTicket(true)
+            store.incrementValidationFailureCount()
+            store.incrementValidationFailureCount()
 
             // Reset everything
             store.resetFields()
 
             // Verify all state is cleared
             expect(useTicketFieldsStore.getState().fields).toEqual({})
-            expect(
-                useTicketFieldsStore.getState().hasAttemptedToCloseTicket,
-            ).toBe(false)
+            expect(useTicketFieldsStore.getState().validationFailureCount).toBe(
+                0,
+            )
         })
     })
 })

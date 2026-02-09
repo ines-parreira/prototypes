@@ -24,7 +24,11 @@ export type TicketFieldsState = {
 
 type TicketFieldsStore = {
     fields: TicketFieldsState
-    hasAttemptedToCloseTicket: boolean
+    /**
+     * This validation count is used to trigger the expansion of the ticket fields overflow list
+     * when there are validation errors.
+     */
+    validationFailureCount: number
     updateFieldState: (fieldState: CustomFieldState) => void
     updateFieldValue: (id: number, value: CustomFieldValue | undefined) => void
     updateFieldError: (id: number, hasError: boolean) => void
@@ -32,14 +36,14 @@ type TicketFieldsStore = {
         id: number,
         prediction: CustomFieldPrediction,
     ) => void
-    setHasAttemptedToCloseTicket: (value: boolean) => void
+    incrementValidationFailureCount: () => void
     initializeFields: (fields: TicketFieldsState) => void
     resetFields: () => void
 }
 
 export const useTicketFieldsStore = create<TicketFieldsStore>((set, get) => ({
     fields: {},
-    hasAttemptedToCloseTicket: false,
+    validationFailureCount: 0,
     updateFieldState: (fieldState) =>
         set((state) => ({
             fields: {
@@ -81,8 +85,10 @@ export const useTicketFieldsStore = create<TicketFieldsStore>((set, get) => ({
                 },
             },
         })),
-    setHasAttemptedToCloseTicket: (value) =>
-        set({ hasAttemptedToCloseTicket: value }),
+    incrementValidationFailureCount: () =>
+        set((state) => ({
+            validationFailureCount: state.validationFailureCount + 1,
+        })),
     initializeFields: (newFields) => {
         const currentFields = get().fields
         if (isEmpty(currentFields) && isEmpty(newFields)) {
@@ -115,5 +121,5 @@ export const useTicketFieldsStore = create<TicketFieldsStore>((set, get) => ({
 
         return set({ fields: mergedFields })
     },
-    resetFields: () => set({ fields: {}, hasAttemptedToCloseTicket: false }),
+    resetFields: () => set({ fields: {}, validationFailureCount: 0 }),
 }))
