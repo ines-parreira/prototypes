@@ -257,31 +257,6 @@ const BillingProcessView = ({
             : 'Update Subscription'
 
     const renderSummary = () => {
-        if (isEnterpriseHelpdeskPlanSelected) {
-            return (
-                <Card title="Enterprise Plan">
-                    <div className={css.enterprisePlanText}>
-                        To subscribe to our Enterprise plan, please get in touch
-                        with our team.
-                    </div>
-                    <div className={css.enterprisePlanFooter}>
-                        <Button
-                            intent="primary"
-                            onClick={() => {
-                                logEvent(
-                                    SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
-                                )
-                                setDefaultMessage(messageForEnterprise)
-                                setIsModalOpen(true)
-                            }}
-                        >
-                            Contact Us
-                        </Button>
-                    </div>
-                </Card>
-            )
-        }
-
         if (
             currentSubscriptionScheduledToCancelAt &&
             currentSubscriptionProducts
@@ -310,6 +285,31 @@ const BillingProcessView = ({
                             contactBilling(TicketPurpose.CONTACT_US)
                         }
                     />
+                </Card>
+            )
+        }
+
+        if (isEnterpriseHelpdeskPlanSelected) {
+            return (
+                <Card title="Enterprise Plan">
+                    <div className={css.enterprisePlanText}>
+                        To subscribe to our Enterprise plan, please get in touch
+                        with our team.
+                    </div>
+                    <div className={css.enterprisePlanFooter}>
+                        <Button
+                            intent="primary"
+                            onClick={() => {
+                                logEvent(
+                                    SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
+                                )
+                                setDefaultMessage(messageForEnterprise)
+                                setIsModalOpen(true)
+                            }}
+                        >
+                            Contact Us
+                        </Button>
+                    </div>
                 </Card>
             )
         }

@@ -12,6 +12,7 @@ import {
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
+    customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
     SMS_PRODUCT_ID,
@@ -1148,5 +1149,82 @@ describe('BillingProcessView', () => {
             pendingChangesModalCalls[pendingChangesModalCalls.length - 1]?.[0]
 
         expect(pendingChangesModalProps?.onSave).toBeUndefined()
+    })
+
+    it('should render scheduled cancellation summary when enterprise plan subscription is scheduled to cancel', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        const scheduledToCancelAt = '2021-01-01T00:00:00Z'
+
+        const customHelpdeskProduct = {
+            type: ProductType.Helpdesk,
+            prices: [customHelpdeskPlan],
+        }
+
+        const alteredStore = {
+            ...storeInitialState,
+            billing: fromJS({
+                invoices: [],
+                products: [customHelpdeskProduct, ...products.slice(1)],
+                currentProductsUsage: {
+                    helpdesk: {
+                        data: {
+                            extra_tickets_cost_in_cents: 0,
+                            num_extra_tickets: 0,
+                            num_tickets: 0,
+                        },
+                        meta: {
+                            subscription_start_datetime: '2021-01-01T00:00:00Z',
+                            subscription_end_datetime: '2021-02-01T00:00:00Z',
+                        },
+                    },
+                    automation: null,
+                    voice: null,
+                    sms: null,
+                },
+            }),
+            currentAccount: fromJS({
+                ...storeInitialState.currentAccount,
+                current_subscription: fromJS({
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: customHelpdeskPlan.plan_id,
+                    },
+                    scheduled_to_cancel_at: scheduledToCancelAt,
+                }),
+            }),
+        } as Partial<RootState>
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            alteredStore,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('scheduled-cancellation-summary'),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /Contact Us/i }),
+        ).not.toBeInTheDocument()
+
+        expect(ScheduledCancellationSummaryMock).toHaveBeenCalledWith(
+            {
+                scheduledToCancelAt: scheduledToCancelAt,
+                onContactUs: expect.any(Function),
+                cancelledProducts: ['Helpdesk'],
+            },
+            {},
+        )
     })
 })
