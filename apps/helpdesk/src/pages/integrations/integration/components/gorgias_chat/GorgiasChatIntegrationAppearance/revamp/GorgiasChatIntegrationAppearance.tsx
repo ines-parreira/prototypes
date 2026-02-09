@@ -1,8 +1,3 @@
-/**
- * ============================================================================
- * REVAMPED APPEARANCE TAB - ACTIVE DEVELOPMENT
- * ============================================================================
- */
 /* istanbul ignore file */
 import type { SyntheticEvent } from 'react'
 import { useEffect, useMemo, useState } from 'react'
@@ -17,10 +12,13 @@ import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import {
     Button,
+    ButtonIntent,
+    ButtonVariant,
     Card,
     Elevation,
     Heading,
@@ -62,12 +60,11 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import PageHeader from 'pages/common/components/PageHeader'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/components/ColorPicker'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/components/LauncherPositionPicker'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/components/LogoUpload'
-import ChatSettingsPageHeader from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
-import type { ChatSettingsBreadcrumbItem } from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatSettingsPageHeader'
 import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/components/StorePicker'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
@@ -594,31 +591,23 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         }))
     }
 
-    const chatIntegrationsLink = `/app/settings/channels/${IntegrationType.GorgiasChat}`
-
-    const breadcrumbItems = useMemo<ChatSettingsBreadcrumbItem[]>(
-        () => [
-            {
-                link: chatIntegrationsLink,
-                label: 'All chats',
-                id: '1',
-            },
-            {
-                label: integration.get('name'),
-                id: '2',
-            },
-        ],
-        [integration, chatIntegrationsLink],
-    )
-
     return (
         <div className="full-width">
-            <ChatSettingsPageHeader
-                breadcrumbItems={breadcrumbItems}
-                title="Settings"
-                onSave={handleSubmit}
-                isSaveDisabled={!isUpdate && !canSubmit}
-                isSaveLoading={isSubmitting}
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                            >
+                                Chat
+                            </Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem>
+                            {isUpdate ? integration.get('name') : 'New Chat'}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
             />
 
             {isUpdate && (
@@ -631,7 +620,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             <form onSubmit={handleSubmit} className={css.pageContainer}>
                 <div className={css.form}>
                     {!isUpdate && (
-                        <div className={css.formSection}>
+                        <div>
                             <h2 className={css.title}>
                                 Select a platform type
                             </h2>
@@ -943,17 +932,18 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             />
                         </div>
                     )}
-                    {!isUpdate && (
-                        <div>
+                    <div className={css.submitButton}>
+                        <Button
+                            type="submit"
+                            isDisabled={!isUpdate && !canSubmit}
+                            isLoading={isSubmitting}
+                        >
+                            {isUpdate ? 'Save changes' : 'Add new chat'}
+                        </Button>
+                        {!isUpdate && (
                             <Button
-                                type="submit"
-                                isDisabled={!canSubmit}
-                                isLoading={isSubmitting}
-                            >
-                                Add new chat
-                            </Button>
-                            <Button
-                                variant="secondary"
+                                intent={ButtonIntent.Regular}
+                                variant={ButtonVariant.Secondary}
                                 onClick={() => {
                                     history.push(
                                         '/app/settings/channels/gorgias_chat',
@@ -963,8 +953,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             >
                                 Cancel
                             </Button>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </form>
         </div>

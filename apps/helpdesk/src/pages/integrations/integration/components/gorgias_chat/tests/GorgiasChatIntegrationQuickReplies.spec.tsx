@@ -76,6 +76,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             entities: entitiesInitialState,
             integrations: fromJS(integrationsState),
             billing: fromJS(billingState),
+            currentAccount: fromJS({
+                domain: 'test-domain',
+            }),
         } as unknown as RootState)
         chatPreviewSpy = jest.spyOn(ChatIntegrationPreviewModule, 'default')
     })
@@ -235,6 +238,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 ).mockReturnValue({
                     shouldShowRevamp: false,
                     shouldShowPreviewForRevamp: true,
+                    shouldShowRevampWhenAiAgentEnabled: false,
                 })
 
                 const integrationWithShop = quickRepliesIntegration.setIn(
@@ -256,6 +260,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         ],
                     }),
                     billing: fromJS(billingState),
+                    currentAccount: fromJS({
+                        domain: 'test-domain',
+                    }),
                 } as unknown as RootState)
 
                 renderWithRouter(
@@ -275,6 +282,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const shopifyIntegration = {
@@ -298,6 +306,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         ],
                     }),
                     billing: fromJS(billingState),
+                    currentAccount: fromJS({
+                        domain: 'test-domain',
+                    }),
                 } as unknown as RootState)
 
                 renderWithRouter(
@@ -308,7 +319,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     </Provider>,
                 )
 
-                expect(useRevampSpy).toHaveBeenCalledWith(shopifyIntegration)
+                expect(useRevampSpy).toHaveBeenCalledWith(shopifyIntegration, 1)
 
                 useRevampSpy.mockRestore()
             })
@@ -319,6 +330,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const bigCommerceIntegration = {
@@ -342,6 +354,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         ],
                     }),
                     billing: fromJS(billingState),
+                    currentAccount: fromJS({
+                        domain: 'test-domain',
+                    }),
                 } as unknown as RootState)
 
                 renderWithRouter(
@@ -354,6 +369,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
                 expect(useRevampSpy).toHaveBeenCalledWith(
                     bigCommerceIntegration,
+                    1,
                 )
 
                 useRevampSpy.mockRestore()
@@ -365,6 +381,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const magentoIntegration = {
@@ -388,6 +405,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         ],
                     }),
                     billing: fromJS(billingState),
+                    currentAccount: fromJS({
+                        domain: 'test-domain',
+                    }),
                 } as unknown as RootState)
 
                 renderWithRouter(
@@ -398,7 +418,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     </Provider>,
                 )
 
-                expect(useRevampSpy).toHaveBeenCalledWith(magentoIntegration)
+                expect(useRevampSpy).toHaveBeenCalledWith(magentoIntegration, 1)
 
                 useRevampSpy.mockRestore()
             })
@@ -412,6 +432,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 ).mockReturnValue({
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
+                    shouldShowRevampWhenAiAgentEnabled: false,
                 })
 
                 const integrationWithoutShop = quickRepliesIntegration
@@ -434,6 +455,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 ).mockReturnValue({
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
+                    shouldShowRevampWhenAiAgentEnabled: false,
                 })
 
                 const integrationWithInvalidShopId =
@@ -459,6 +481,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const integrationWithoutShop = quickRepliesIntegration
@@ -471,7 +494,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     </Provider>,
                 )
 
-                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined, 1)
 
                 useRevampSpy.mockRestore()
             })
@@ -482,6 +505,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const integrationWithInvalidShopId =
@@ -498,7 +522,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     </Provider>,
                 )
 
-                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined, 1)
 
                 useRevampSpy.mockRestore()
             })
@@ -509,6 +533,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     .mockReturnValue({
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
+                        shouldShowRevampWhenAiAgentEnabled: false,
                     })
 
                 const integrationWithUnsupportedType =
@@ -531,6 +556,9 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         ],
                     }),
                     billing: fromJS(billingState),
+                    currentAccount: fromJS({
+                        domain: 'test-domain',
+                    }),
                 } as unknown as RootState)
 
                 renderWithRouter(
@@ -541,7 +569,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     </Provider>,
                 )
 
-                expect(useRevampSpy).toHaveBeenCalledWith(undefined)
+                expect(useRevampSpy).toHaveBeenCalledWith(undefined, 1)
 
                 useRevampSpy.mockRestore()
             })

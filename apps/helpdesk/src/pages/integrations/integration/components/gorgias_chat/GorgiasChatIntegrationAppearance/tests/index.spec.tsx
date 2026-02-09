@@ -11,6 +11,7 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { entitiesInitialState } from 'fixtures/entities'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -35,6 +36,9 @@ const defaultState = {
             },
         ],
     }),
+    currentAccount: fromJS({
+        domain: 'test-domain',
+    }),
 } as unknown as RootState
 
 jest.mock('@repo/feature-flags')
@@ -47,6 +51,9 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 }))
 
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+const mockUseShouldShowChatSettingsRevamp = jest.mocked(
+    useShouldShowChatSettingsRevamp,
+)
 
 jest.mock('pages/common/forms/FileField', () => {
     type MockedProps = {
@@ -81,6 +88,14 @@ jest.mock(
 jest.mock('../revamp/GorgiasChatIntegrationAppearance', () => () => {
     return <div data-testid="revamp-appearance" />
 })
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp',
+    () => ({
+        __esModule: true,
+        default: jest.fn(),
+    }),
+)
 
 const mockClient = mockQueryClient()
 
@@ -129,6 +144,12 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             return defaultValue
         })
 
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+        })
+
         render(
             <Router history={history}>
                 <QueryClientProvider client={mockClient}>
@@ -158,6 +179,12 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             isLoading: false,
         })
 
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+        })
+
         render(
             <Router history={history}>
                 <QueryClientProvider client={mockClient}>
@@ -185,6 +212,12 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
+        })
+
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: true,
+            shouldShowPreviewForRevamp: true,
+            shouldShowRevampWhenAiAgentEnabled: true,
         })
 
         render(

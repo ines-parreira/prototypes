@@ -51,6 +51,7 @@ export const GorgiasAutomateChatIntegration = ({ integration }: Props) => {
                 tab={Tab.Automate}
             />
             <ConnectedChannelsChatView
+                integration={integration}
                 channelId={channelId}
                 shopType={storeIntegration?.type}
                 shopName={

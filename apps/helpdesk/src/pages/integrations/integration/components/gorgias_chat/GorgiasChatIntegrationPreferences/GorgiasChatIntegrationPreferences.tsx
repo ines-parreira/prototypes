@@ -1669,8 +1669,10 @@ type WrapperProps = {
 const GorgiasChatIntegrationPreferencesWrapper = (props: WrapperProps) => {
     const { integration } = props
     const { storeIntegration } = useStoreIntegration(integration)
-    const { shouldShowPreviewForRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration)
+    const { shouldShowPreviewForRevamp } = useShouldShowChatSettingsRevamp(
+        storeIntegration,
+        props.integration.get('id'),
+    )
 
     return (
         <ConnectedComponent

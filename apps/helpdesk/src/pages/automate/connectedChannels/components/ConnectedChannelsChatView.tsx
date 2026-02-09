@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
+import type { Map } from 'immutable'
 import { noop, startCase } from 'lodash'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 
@@ -36,6 +37,7 @@ interface Props {
     shopName?: string
     shopType?: string
     hideDropdown?: boolean
+    integration?: Map<any, any>
 }
 
 export const ConnectedChannelsChatView = ({
@@ -43,6 +45,7 @@ export const ConnectedChannelsChatView = ({
     shopName: extShopName,
     shopType: extShopType,
     hideDropdown,
+    integration,
 }: Props) => {
     const { shopType: shopTypeParam, shopName: shopNameParam } = useParams<{
         shopType: string
@@ -196,8 +199,10 @@ export const ConnectedChannelsChatView = ({
         ],
     )
 
-    const { shouldShowPreviewForRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration)
+    const { shouldShowPreviewForRevamp } = useShouldShowChatSettingsRevamp(
+        storeIntegration,
+        integration?.get('id'),
+    )
 
     const orderManagementExternalLink = useMemo(() => {
         if (!isAutomateSettings)

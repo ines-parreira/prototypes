@@ -1,14 +1,19 @@
+import { useMemo } from 'react'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useAppSelector from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 /**
  * This hook should be used for the purpose of the chat settings revamp and removed afterwards
  */
 const useShouldShowChatSettingsRevamp = (
-    storeIntegration: StoreIntegration | undefined,
+    storeIntegration?: StoreIntegration,
+    chatId?: number,
 ) => {
     const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
 
@@ -16,12 +21,34 @@ const useShouldShowChatSettingsRevamp = (
         ? getShopNameFromStoreIntegration(storeIntegration)
         : undefined
 
-    const { hasAccess } = useAiAgentAccess(shopName)
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
-    const shouldShowRevamp = isRevampEnabled && hasAccess
-    const shouldShowPreviewForRevamp = !shouldShowRevamp
+    const { storeConfiguration } = useStoreConfiguration({
+        shopName: shopName ?? '',
+        accountDomain: currentAccount.get('domain'),
+    })
 
-    return { shouldShowRevamp, shouldShowPreviewForRevamp }
+    const isAiAgentEnabled = useMemo(() => {
+        if (!storeConfiguration || !shopName || !chatId) {
+            return false
+        }
+
+        return (
+            storeConfiguration.monitoredChatIntegrations.includes(chatId) &&
+            !storeConfiguration.chatChannelDeactivatedDatetime
+        )
+    }, [chatId, storeConfiguration, shopName])
+
+    const shouldShowRevamp = isRevampEnabled
+    const shouldShowRevampWhenAiAgentEnabled =
+        shouldShowRevamp && isAiAgentEnabled
+    const shouldShowPreviewForRevamp = !shouldShowRevampWhenAiAgentEnabled
+
+    return {
+        shouldShowRevamp,
+        shouldShowPreviewForRevamp,
+        shouldShowRevampWhenAiAgentEnabled,
+    }
 }
 
 export default useShouldShowChatSettingsRevamp

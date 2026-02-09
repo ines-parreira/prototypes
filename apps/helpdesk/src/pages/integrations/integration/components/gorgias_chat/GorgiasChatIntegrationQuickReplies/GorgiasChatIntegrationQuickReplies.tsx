@@ -395,8 +395,10 @@ function GorgiasChatIntegrationQuickRepliesWithHook(props: {
         )
     })
 
-    const { shouldShowPreviewForRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration)
+    const { shouldShowPreviewForRevamp } = useShouldShowChatSettingsRevamp(
+        storeIntegration,
+        props.integration.get('id'),
+    )
 
     return (
         <ConnectedComponent

@@ -1,9 +1,10 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import type { StoreIntegration } from 'models/integration/types'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 
 import useShouldShowChatSettingsRevamp from '../useShouldShowChatSettingsRevamp'
 
@@ -12,14 +13,19 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
-    useAiAgentAccess: jest.fn(),
-}))
+jest.mock('hooks/useAppSelector')
+
+jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 
 const useFlagMock = useFlag as jest.Mock
-const useAiAgentAccessMock = useAiAgentAccess as jest.Mock
+const useAppSelectorMock = useAppSelector as jest.MockedFunction<
+    typeof useAppSelector
+>
+const useStoreConfigurationMock = useStoreConfiguration as jest.MockedFunction<
+    typeof useStoreConfiguration
+>
 
-describe('useRevampShouldShowChatPreview', () => {
+describe('useShouldShowChatSettingsRevamp', () => {
     const mockShopifyIntegration: StoreIntegration = {
         id: 1,
         type: IntegrationType.Shopify,
@@ -49,9 +55,17 @@ describe('useRevampShouldShowChatPreview', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         useFlagMock.mockReturnValue(false)
-        useAiAgentAccessMock.mockReturnValue({
-            hasAccess: false,
+        useAppSelectorMock.mockReturnValue({
+            get: (key: string) => {
+                if (key === 'domain') return 'test-account.gorgias.com'
+                return null
+            },
+        })
+        useStoreConfigurationMock.mockReturnValue({
             isLoading: false,
+            storeConfiguration: undefined,
+            error: undefined,
+            isFetched: true,
         })
     })
 
@@ -60,109 +74,192 @@ describe('useRevampShouldShowChatPreview', () => {
             useFlagMock.mockReturnValue(true)
         })
 
-        it('returns false when user has AI agent access with Shopify integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: true,
+        it('returns false for shouldShowPreviewForRevamp when AI agent is enabled with Shopify integration', () => {
+            const chatId = 123
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [chatId],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockShopifyIntegration),
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration, chatId),
             )
 
+            expect(result.current.shouldShowRevamp).toBe(true)
+            expect(result.current.shouldShowRevampWhenAiAgentEnabled).toBe(true)
             expect(result.current.shouldShowPreviewForRevamp).toBe(false)
             expect(useFlag).toHaveBeenCalledWith(
                 FeatureFlagKey.ChatSettingsRevamp,
             )
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith('test-shop')
         })
 
-        it('returns true when user does not have AI agent access with Shopify integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
+        it('returns true for shouldShowPreviewForRevamp when AI agent is not enabled with Shopify integration', () => {
+            const chatId = 123
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockShopifyIntegration),
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration, chatId),
             )
 
+            expect(result.current.shouldShowRevamp).toBe(true)
+            expect(result.current.shouldShowRevampWhenAiAgentEnabled).toBe(
+                false,
+            )
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith('test-shop')
         })
 
-        it('returns false when user has AI agent access with BigCommerce integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: true,
+        it('returns false for shouldShowPreviewForRevamp when AI agent is enabled with BigCommerce integration', () => {
+            const chatId = 456
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-store-hash',
+                    monitoredChatIntegrations: [chatId],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockBigCommerceIntegration),
+                useShouldShowChatSettingsRevamp(
+                    mockBigCommerceIntegration,
+                    chatId,
+                ),
             )
 
             expect(result.current.shouldShowPreviewForRevamp).toBe(false)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith('test-store-hash')
         })
 
-        it('returns true when user does not have AI agent access with BigCommerce integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
+        it('returns true for shouldShowPreviewForRevamp when AI agent is not enabled with BigCommerce integration', () => {
+            const chatId = 456
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-store-hash',
+                    monitoredChatIntegrations: [],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockBigCommerceIntegration),
+                useShouldShowChatSettingsRevamp(
+                    mockBigCommerceIntegration,
+                    chatId,
+                ),
             )
 
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith('test-store-hash')
         })
 
-        it('returns false when user has AI agent access with Magento2 integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: true,
+        it('returns false for shouldShowPreviewForRevamp when AI agent is enabled with Magento2 integration', () => {
+            const chatId = 789
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'https://test-store.com',
+                    monitoredChatIntegrations: [chatId],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockMagento2Integration),
+                useShouldShowChatSettingsRevamp(
+                    mockMagento2Integration,
+                    chatId,
+                ),
             )
 
             expect(result.current.shouldShowPreviewForRevamp).toBe(false)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith(
-                'https://test-store.com',
-            )
         })
 
-        it('returns true when user does not have AI agent access with Magento2 integration', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
+        it('returns true for shouldShowPreviewForRevamp when AI agent is not enabled with Magento2 integration', () => {
+            const chatId = 789
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'https://test-store.com',
+                    monitoredChatIntegrations: [],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockMagento2Integration),
+                useShouldShowChatSettingsRevamp(
+                    mockMagento2Integration,
+                    chatId,
+                ),
             )
 
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith(
-                'https://test-store.com',
-            )
         })
 
-        it('returns true when store integration is undefined', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
+        it('returns true for shouldShowPreviewForRevamp when chat is deactivated', () => {
+            const chatId = 123
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [chatId],
+                    chatChannelDeactivatedDatetime: '2024-01-01T00:00:00Z',
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration, chatId),
+            )
+
+            expect(result.current.shouldShowPreviewForRevamp).toBe(true)
+        })
+
+        it('returns true for shouldShowPreviewForRevamp when store integration is undefined', () => {
             const { result } = renderHook(() =>
                 useShouldShowChatSettingsRevamp(undefined),
             )
 
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
-            expect(useAiAgentAccessMock).toHaveBeenCalledWith(undefined)
+        })
+
+        it('returns true for shouldShowPreviewForRevamp when chatId is undefined', () => {
+            useStoreConfigurationMock.mockReturnValue({
+                isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [123],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
+            })
+
+            const { result } = renderHook(() =>
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration),
+            )
+
+            expect(result.current.shouldShowPreviewForRevamp).toBe(true)
         })
     })
 
@@ -171,42 +268,57 @@ describe('useRevampShouldShowChatPreview', () => {
             useFlagMock.mockReturnValue(false)
         })
 
-        it('returns true when user has AI agent access', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: true,
+        it('returns true for shouldShowPreviewForRevamp when AI agent is enabled', () => {
+            const chatId = 123
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [chatId],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockShopifyIntegration),
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration, chatId),
             )
 
+            expect(result.current.shouldShowRevamp).toBe(false)
+            expect(result.current.shouldShowRevampWhenAiAgentEnabled).toBe(
+                false,
+            )
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
         })
 
-        it('returns true when user does not have AI agent access', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
+        it('returns true for shouldShowPreviewForRevamp when AI agent is not enabled', () => {
+            const chatId = 123
+            useStoreConfigurationMock.mockReturnValue({
                 isLoading: false,
+                storeConfiguration: {
+                    storeName: 'test-shop',
+                    monitoredChatIntegrations: [],
+                    chatChannelDeactivatedDatetime: null,
+                } as any,
+                error: undefined,
+                isFetched: true,
             })
 
             const { result } = renderHook(() =>
-                useShouldShowChatSettingsRevamp(mockShopifyIntegration),
+                useShouldShowChatSettingsRevamp(mockShopifyIntegration, chatId),
             )
 
+            expect(result.current.shouldShowRevamp).toBe(false)
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
         })
 
-        it('returns true when store integration is undefined', () => {
-            useAiAgentAccessMock.mockReturnValue({
-                hasAccess: false,
-                isLoading: false,
-            })
-
+        it('returns true for shouldShowPreviewForRevamp when store integration is undefined', () => {
             const { result } = renderHook(() =>
                 useShouldShowChatSettingsRevamp(undefined),
             )
 
+            expect(result.current.shouldShowRevamp).toBe(false)
             expect(result.current.shouldShowPreviewForRevamp).toBe(true)
         })
     })

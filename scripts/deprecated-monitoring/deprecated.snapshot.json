@@ -1,12 +1,12 @@
 {
-  "date": "2026-02-04T10:13:19.106Z",
-  "total": 4331,
+  "date": "2026-02-06T20:45:50.988Z",
+  "total": 4327,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-01-05\n * @type ui-kit-migration\n ",
-      "count": 134,
+      "count": 133,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/Modal.tsx",
       "usages": [
         {
@@ -36,7 +36,6 @@
             "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/GuidanceTemplatesModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/PostGoLiveModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/trial/components/TrialManageModal/TrialManageModal.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/ActionsPlatformCreateStepView.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation.tsx",
@@ -3790,11 +3789,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1455,
+      "count": 1450,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 581,
+          "count": 577,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -3896,8 +3895,6 @@
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/SetupTaskBodies.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActions/PlaygroundActionsItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundSegmentControl/PlaygroundSegmentControl.tsx",
             "apps/helpdesk/src/pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner.tsx",
             "apps/helpdesk/src/pages/aiAgent/trial/components/TrialManageModal/TrialManageModal.tsx",
@@ -3977,7 +3974,6 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerInfoWrapper.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerTimelineWidget.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddCustomProductPopover.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/ModifiersPopover.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/order-table/PriceComponent.tsx",
@@ -3989,7 +3985,6 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/components/RefundOrderFooter.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/RefundOrderModal.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/Button.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Button.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Editor.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Form.tsx",
@@ -5370,13 +5365,6 @@
           ]
         },
         {
-          "name": "LegacyProgressBar",
-          "count": 1,
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout.tsx"
-          ]
-        },
-        {
           "name": "LegacyTabNavigation",
           "count": 1,
           "files": [
@@ -5401,7 +5389,7 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 1009,
+      "count": 1011,
       "usages": [
         {
           "name": "Container",
@@ -5487,7 +5475,7 @@
         },
         {
           "name": "Breadcrumb",
-          "count": 70,
+          "count": 71,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5519,6 +5507,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",
@@ -5563,7 +5552,7 @@
         },
         {
           "name": "BreadcrumbItem",
-          "count": 70,
+          "count": 71,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5595,6 +5584,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",

@@ -58,7 +58,6 @@ import type {
     GorgiasChatIntegration,
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
-    StoreIntegration,
 } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
@@ -85,7 +84,6 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
 import { Tab } from 'pages/integrations/integration/types'
 import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
 import type {
@@ -746,121 +744,102 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const { selfServiceConfiguration, selfServiceConfigurationEnabled } =
         useSelfServiceConfiguration(integration)
 
-    const storeIntegration: StoreIntegration | undefined = storeIntegrations
-        .find(
-            (storeIntegration) =>
-                storeIntegration?.get('id') === storeIntegrationId,
-        )
-        ?.toJS()
-
-    const { shouldShowPreviewForRevamp } =
-        useShouldShowChatSettingsRevamp(storeIntegration)
-
     const chatPreview = (
-        <>
-            {shouldShowPreviewForRevamp && (
-                <div className={css.container}>
-                    <ToggleButton.Wrapper
-                        type={ToggleButton.Type.Label}
-                        value={isOnline}
-                        onChange={(isOnline: boolean) =>
-                            setState((prevState) => ({
-                                ...prevState,
-                                isOnline,
-                            }))
-                        }
-                        className={css.toggleButtonWrapper}
-                    >
-                        <ToggleButton.Option value={true}>
-                            During Business Hours
-                        </ToggleButton.Option>
-                        <ToggleButton.Option value={false}>
-                            Outside Business Hours
-                        </ToggleButton.Option>
-                    </ToggleButton.Wrapper>
-                    <ChatIntegrationPreview
-                        name={name}
-                        introductionText={introductionText}
-                        offlineIntroductionText={offlineIntroductionText}
-                        mainColor={mainColor}
-                        mainFontFamily={
-                            mainFontFamily ??
-                            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
-                        }
-                        isOnline={isOnline}
-                        language={language}
-                        languages={languages}
-                        position={position}
-                        editedPositionAxis={editedPositionAxis}
-                        autoResponderEnabled={autoResponderEnabled}
-                        autoResponderReply={autoResponderReply}
-                        launcher={state.launcher}
-                        isOpen={isChatOpenInPreview}
-                        renderFooter={
-                            isOnline && preview === PREVIEW_CONVERSATION
-                        }
-                        isWidgetConversation={preview === PREVIEW_CONVERSATION}
-                        backgroundColorStyle={backgroundColorStyle}
-                        headerPictureUrl={
-                            isOnline
-                                ? headerPictureUrl || headerPictureUrlOffline
-                                : headerPictureUrlOffline || headerPictureUrl
-                        }
-                        avatar={avatar}
-                        displayBotLabel={displayBotLabel}
-                        useMainColorOutsideBusinessHours={
-                            useMainColorOutsideBusinessHours
-                        }
-                    >
-                        <ChatIntegrationPreviewContent
-                            style={
-                                preview === PREVIEW_HOME_PAGE
-                                    ? { padding: '0 20px' }
-                                    : {}
+        <div className={css.container}>
+            <ToggleButton.Wrapper
+                type={ToggleButton.Type.Label}
+                value={isOnline}
+                onChange={(isOnline: boolean) =>
+                    setState((prevState) => ({
+                        ...prevState,
+                        isOnline,
+                    }))
+                }
+                className={css.toggleButtonWrapper}
+            >
+                <ToggleButton.Option value={true}>
+                    During Business Hours
+                </ToggleButton.Option>
+                <ToggleButton.Option value={false}>
+                    Outside Business Hours
+                </ToggleButton.Option>
+            </ToggleButton.Wrapper>
+            <ChatIntegrationPreview
+                name={name}
+                introductionText={introductionText}
+                offlineIntroductionText={offlineIntroductionText}
+                mainColor={mainColor}
+                mainFontFamily={
+                    mainFontFamily ?? GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                }
+                isOnline={isOnline}
+                language={language}
+                languages={languages}
+                position={position}
+                editedPositionAxis={editedPositionAxis}
+                autoResponderEnabled={autoResponderEnabled}
+                autoResponderReply={autoResponderReply}
+                launcher={state.launcher}
+                isOpen={isChatOpenInPreview}
+                renderFooter={isOnline && preview === PREVIEW_CONVERSATION}
+                isWidgetConversation={preview === PREVIEW_CONVERSATION}
+                backgroundColorStyle={backgroundColorStyle}
+                headerPictureUrl={
+                    isOnline
+                        ? headerPictureUrl || headerPictureUrlOffline
+                        : headerPictureUrlOffline || headerPictureUrl
+                }
+                avatar={avatar}
+                displayBotLabel={displayBotLabel}
+                useMainColorOutsideBusinessHours={
+                    useMainColorOutsideBusinessHours
+                }
+            >
+                <ChatIntegrationPreviewContent
+                    style={
+                        preview === PREVIEW_HOME_PAGE
+                            ? { padding: '0 20px' }
+                            : {}
+                    }
+                >
+                    {preview === PREVIEW_HOME_PAGE ? (
+                        <ChatHomePreview
+                            avatar={avatar}
+                            title={name}
+                            renderConversation
+                            selfServiceConfiguration={selfServiceConfiguration}
+                            language={language}
+                            variant={
+                                selfServiceConfigurationEnabled
+                                    ? 'collapsed'
+                                    : 'expanded'
                             }
-                        >
-                            {preview === PREVIEW_HOME_PAGE ? (
-                                <ChatHomePreview
-                                    avatar={avatar}
-                                    title={name}
-                                    renderConversation
-                                    selfServiceConfiguration={
-                                        selfServiceConfiguration
-                                    }
-                                    language={language}
-                                    variant={
-                                        selfServiceConfigurationEnabled
-                                            ? 'collapsed'
-                                            : 'expanded'
-                                    }
-                                />
-                            ) : isOnline ? (
-                                <AutoResponderMessages
-                                    currentUser={currentUser}
-                                    conversationColor={conversationColor}
-                                    chatTitle={name}
-                                    avatar={state.avatar}
-                                    language={language}
-                                    autoResponderReply={
-                                        GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
-                                    }
-                                    isEmailCaptureEnabled={emailCaptureEnabled}
-                                />
-                            ) : (
-                                <>
-                                    <ConversationTimestamp />
-                                    <OfflineMessages
-                                        mainColor={mainColor}
-                                        chatTitle={name}
-                                        language={language}
-                                    />
-                                </>
-                            )}
-                        </ChatIntegrationPreviewContent>
-                    </ChatIntegrationPreview>
-                </div>
-            )}
-        </>
+                        />
+                    ) : isOnline ? (
+                        <AutoResponderMessages
+                            currentUser={currentUser}
+                            conversationColor={conversationColor}
+                            chatTitle={name}
+                            avatar={state.avatar}
+                            language={language}
+                            autoResponderReply={
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
+                            }
+                            isEmailCaptureEnabled={emailCaptureEnabled}
+                        />
+                    ) : (
+                        <>
+                            <ConversationTimestamp />
+                            <OfflineMessages
+                                mainColor={mainColor}
+                                chatTitle={name}
+                                language={language}
+                            />
+                        </>
+                    )}
+                </ChatIntegrationPreviewContent>
+            </ChatIntegrationPreview>
+        </div>
     )
 
     const launcherLabel =

@@ -16,7 +16,7 @@ export default function GorgiasChatCreationWizardSwitcher({
     loading,
     isUpdate,
 }: Props) {
-    const { shouldShowRevamp } = useShouldShowChatSettingsRevamp(undefined)
+    const { shouldShowRevamp } = useShouldShowChatSettingsRevamp()
 
     const Component = shouldShowRevamp
         ? GorgiasChatCreationWizardRevamp
