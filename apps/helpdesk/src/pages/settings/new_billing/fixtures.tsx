@@ -12,7 +12,6 @@ import {
     CONVERT_PRODUCT_ID,
     convertPlan1,
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPlan,
     products,
     proMonthlyHelpdeskPlan,
     SMS_PRODUCT_ID,
@@ -35,7 +34,7 @@ export const storeWithTrialingSubscription = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
             },
             status: SubscriptionStatus.TRIALING,
         },
@@ -63,7 +62,7 @@ export const storeWithActiveSubscriptionWithAutomation = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 [AUTOMATION_PRODUCT_ID]: automate02MonthlyMeteredPlan.plan_id,
             },
         },
@@ -77,7 +76,7 @@ export const storeWithActiveSubscriptionWithConvert = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
             },
         },
@@ -110,7 +109,7 @@ export const storeWithActiveSubscriptionWithPhone = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
                 [SMS_PRODUCT_ID]: smsPlan1.plan_id,
                 [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
@@ -130,7 +129,7 @@ export const storeWithNewlyActiveSubscriptionWithPhone = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.plan_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
                 [CONVERT_PRODUCT_ID]: convertPlan1.plan_id,
                 [SMS_PRODUCT_ID]: smsPlan1.plan_id,
                 [VOICE_PRODUCT_ID]: voicePlan1.plan_id,

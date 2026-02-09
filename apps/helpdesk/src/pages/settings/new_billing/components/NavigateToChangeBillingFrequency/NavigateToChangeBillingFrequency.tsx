@@ -50,14 +50,14 @@ export default function NavigateToChangeBillingFrequency({
     const isAAOLegacy =
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
 
-    const cadence = currentHelpdeskPlan?.cadence ?? Cadence.Month
+    const cadence = currentHelpdeskPlan?.cadence ?? Cadence.Year
+    const invoice_cadence = currentHelpdeskPlan?.invoice_cadence ?? Cadence.Year
     const isCadenceUpgradable =
         Object.values(Cadence).find((other) =>
             isOtherCadenceUpgrade(cadence, other),
         ) !== undefined
 
     let toolTipContent
-
     if (isCadenceUpgradable) {
         if (isSubscribedToHelpdeskStarter) {
             toolTipContent =
@@ -65,19 +65,6 @@ export default function NavigateToChangeBillingFrequency({
         } else if (isAAOLegacy) {
             toolTipContent =
                 'To change billing frequency, update AI Agent to a non-legacy plan'
-        } else if (isCurrentSubscriptionCanceled) {
-            toolTipContent = (
-                <>
-                    Your subscription is cancelled. To reactivate, please{' '}
-                    <span
-                        className={css.link}
-                        onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
-                    >
-                        get in touch
-                    </span>{' '}
-                    with our team.
-                </>
-            )
         } else if (isScheduledToCancel) {
             toolTipContent = (
                 <>
@@ -118,7 +105,20 @@ export default function NavigateToChangeBillingFrequency({
                 </Link>
             )
         }
-    } else {
+    } else if (isCurrentSubscriptionCanceled) {
+        toolTipContent = (
+            <>
+                Your subscription is cancelled. To reactivate, please{' '}
+                <span
+                    className={css.link}
+                    onClick={() => contactBilling(TicketPurpose.CONTACT_US)}
+                >
+                    get in touch
+                </span>{' '}
+                with our team.
+            </>
+        )
+    } else if (cadence !== invoice_cadence) {
         toolTipContent = (
             <>
                 Because you&apos;re on a custom plan, please{' '}
@@ -133,6 +133,23 @@ export default function NavigateToChangeBillingFrequency({
                     contact our team
                 </span>{' '}
                 to make changes.
+            </>
+        )
+    } else {
+        toolTipContent = (
+            <>
+                To downgrade billing frequency, please{' '}
+                <span
+                    className={css.link}
+                    onClick={() =>
+                        contactBilling(
+                            TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
+                        )
+                    }
+                >
+                    get in touch
+                </span>{' '}
+                with our team.
             </>
         )
     }

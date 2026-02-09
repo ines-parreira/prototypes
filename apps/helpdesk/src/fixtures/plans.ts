@@ -704,6 +704,42 @@ export const starterYearlyHelpdeskPlan: HelpdeskPlan = {
     tier: HelpdeskPlanTier.STARTER,
 }
 
+export const basicYearlyInvoicedMonthlyHelpdeskPlan: HelpdeskPlan = {
+    custom: true,
+    amount: 5000,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Month,
+    currency: 'usd',
+    extra_ticket_cost: 0.4,
+    features: basicHelpdeskPlanFeatures,
+    num_quota_tickets: 3600,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'basic-yearly-invoiced-monthly-usd',
+    name: 'Basic',
+    product: ProductType.Helpdesk,
+    public: false,
+    tier: HelpdeskPlanTier.BASIC,
+}
+
+export const basicYearlyInvoicedQuarterlyHelpdeskPlan: HelpdeskPlan = {
+    custom: true,
+    amount: 15000,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Quarter,
+    currency: 'usd',
+    extra_ticket_cost: 0.4,
+    features: basicHelpdeskPlanFeatures,
+    num_quota_tickets: 3600,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'basic-yearly-invoiced-quarterly-usd',
+    name: 'Basic',
+    product: ProductType.Helpdesk,
+    public: false,
+    tier: HelpdeskPlanTier.BASIC,
+}
+
 export const voicePlan0: SMSOrVoicePlan = {
     custom: false,
     public: true,

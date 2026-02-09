@@ -11,6 +11,8 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
+    basicYearlyInvoicedQuarterlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     helpdeskProduct,
     legacyAutomatePlan,
@@ -127,7 +129,7 @@ describe('PaymentInformationView', () => {
         await act(() => userEvent.hover(screen.getByText('Change Frequency')))
 
         expect(
-            screen.getByText(`Because you're on a custom plan, please `, {
+            screen.getByText('To downgrade billing frequency, please', {
                 exact: false,
             }),
         )
@@ -285,4 +287,55 @@ describe('PaymentInformationView', () => {
             '/app/settings/billing/payment/frequency',
         )
     })
+
+    it.each([
+        ['monthly invoice', basicYearlyInvoicedMonthlyHelpdeskPlan],
+        ['quarterly invoice', basicYearlyInvoicedQuarterlyHelpdeskPlan],
+    ])(
+        'should show custom plan message when cadence is year and invoice_cadence is %s',
+        async (label, customPlan) => {
+            const helpdeskProductIndex = billingState.products.findIndex(
+                (product) => product.type === HELPDESK_PRODUCT_ID,
+            )
+            const updatedProducts = [...billingState.products]
+            updatedProducts[helpdeskProductIndex] = {
+                ...updatedProducts[helpdeskProductIndex],
+                prices: [
+                    ...updatedProducts[helpdeskProductIndex].prices,
+                    customPlan,
+                ],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <PaymentInformationView {...defaultProps} />
+                </MemoryRouter>,
+                {
+                    billing: fromJS({
+                        ...billingState,
+                        products: updatedProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
+            )
+
+            await act(() =>
+                userEvent.hover(screen.getByText('Change Frequency')),
+            )
+
+            expect(
+                screen.getByText(`Because you're on a custom plan, please`, {
+                    exact: false,
+                }),
+            )
+        },
+    )
 })

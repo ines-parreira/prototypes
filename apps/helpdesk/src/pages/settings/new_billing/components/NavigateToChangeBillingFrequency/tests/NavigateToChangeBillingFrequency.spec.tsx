@@ -10,6 +10,8 @@ import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
+    basicYearlyInvoicedQuarterlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     legacyAutomatePlan,
     starterHelpdeskPlan,
@@ -225,10 +227,10 @@ describe('NavigateToChangeBillingFrequency', () => {
             const tooltip = screen.getByRole('tooltip')
             expect(tooltip).toBeInTheDocument()
             expect(tooltip).toHaveTextContent(
-                `Because you're on a custom plan, please contact our team to make changes`,
+                'To downgrade billing frequency, please get in touch with our team.',
             )
 
-            const contact = screen.getByText('contact our team')
+            const contact = screen.getByText('get in touch')
             await act(() => userEvent.click(contact))
             expect(contactBillingMock).toHaveBeenCalledWith(
                 TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
@@ -287,6 +289,106 @@ describe('NavigateToChangeBillingFrequency', () => {
         expect(link).toHaveAttribute(
             'href',
             '/app/settings/billing/payment/frequency',
+        )
+    })
+
+    it.each([
+        ['monthly invoice', basicYearlyInvoicedMonthlyHelpdeskPlan],
+        ['quarterly invoice', basicYearlyInvoicedQuarterlyHelpdeskPlan],
+    ])(
+        'should show custom plan tooltip when cadence is year and invoice_cadence is %s',
+        async (label, customPlan) => {
+            const helpdeskProductIndex = billingState.products.findIndex(
+                (product) => product.type === HELPDESK_PRODUCT_ID,
+            )
+            const updatedProducts = [...billingState.products]
+            updatedProducts[helpdeskProductIndex] = {
+                ...updatedProducts[helpdeskProductIndex],
+                prices: [
+                    ...updatedProducts[helpdeskProductIndex].prices,
+                    customPlan,
+                ],
+            }
+
+            renderWithStoreAndQueryClientProvider(
+                <MemoryRouter>
+                    <NavigateToChangeBillingFrequency {...props} />
+                </MemoryRouter>,
+                {
+                    ...store,
+                    billing: fromJS({
+                        ...billingState,
+                        products: updatedProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                ...account.current_subscription.products,
+                                [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
+            )
+
+            const button = screen.getByText('Change Frequency')
+            expect(button).toBeInTheDocument()
+            expect(button).toHaveClass(css.disabledText)
+            await act(() => userEvent.hover(button))
+
+            const tooltip = screen.getByRole('tooltip')
+            expect(tooltip).toBeInTheDocument()
+            expect(tooltip).toHaveTextContent(
+                `Because you're on a custom plan, please contact our team to make changes`,
+            )
+
+            const contact = screen.getByText('contact our team')
+            await act(() => userEvent.click(contact))
+            expect(contactBillingMock).toHaveBeenCalledWith(
+                TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
+            )
+        },
+    )
+
+    it('should show downgrade tooltip when currentHelpdeskPlan is undefined', async () => {
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
+            {
+                ...store,
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [AUTOMATION_PRODUCT_ID]:
+                                account.current_subscription.products[
+                                    AUTOMATION_PRODUCT_ID
+                                ],
+                        },
+                    },
+                }),
+            },
+        )
+
+        const button = screen.getByText('Change Frequency')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveClass(css.disabledText)
+        await act(() => userEvent.hover(button))
+
+        const tooltip = screen.getByRole('tooltip')
+        expect(tooltip).toBeInTheDocument()
+        expect(tooltip).toHaveTextContent(
+            'To downgrade billing frequency, please get in touch with our team.',
+        )
+
+        const contact = screen.getByText('get in touch')
+        await act(() => userEvent.click(contact))
+        expect(contactBillingMock).toHaveBeenCalledWith(
+            TicketPurpose.BILLING_FREQUENCY_DOWNGRADE,
         )
     })
 
