@@ -34,10 +34,6 @@ export const OpportunitiesEmptyState = ({
                             animationData={opportunitiesPageState.media}
                             loop={true}
                             autoplay={true}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                            }}
                             aria-label="Opportunities empty state"
                             role="img"
                         />

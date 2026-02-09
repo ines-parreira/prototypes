@@ -79,10 +79,6 @@ export const RestrictedOpportunityMessage = ({
                             animationData={opportunitiesPageState.media}
                             loop={true}
                             autoplay={true}
-                            style={{
-                                width: '100%',
-                                height: '100%',
-                            }}
                             aria-label="Upgrade opportunities"
                             role="img"
                         />
