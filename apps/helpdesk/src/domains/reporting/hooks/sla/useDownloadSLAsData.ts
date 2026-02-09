@@ -4,10 +4,7 @@ import { useTimeSeriesPerDimensionReportData } from 'domains/reporting/hooks/com
 import { useTrendReportData } from 'domains/reporting/hooks/common/useTrendReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'domains/reporting/hooks/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {
-    fetchBreachedSlaTicketsTrend,
-    fetchSatisfiedSlaTicketsTrend,
-} from 'domains/reporting/hooks/sla/useSLAsTicketsTrends'
+import { fetchBreachedSlaTicketsTrend } from 'domains/reporting/hooks/sla/useSLAsTicketsTrends'
 import { fetchTicketSlaAchievementRateTrend } from 'domains/reporting/hooks/sla/useTicketSlaAchievementRate'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
@@ -24,7 +21,6 @@ import { createTrendReport } from 'domains/reporting/services/supportPerformance
 import { SlaMetric } from 'domains/reporting/state/ui/stats/types'
 
 export const SLA_OVERVIEW_FILENAME = 'overview'
-export const SLA_TICKETS_IN_POLICY_FILENAME = 'tickets-in-policy'
 export const SLA_TREND_FILENAME = 'trend'
 export const SLA_REPORT_FILENAME = 'sla-report'
 
@@ -37,20 +33,6 @@ const slaOverviewSource = [
     {
         fetchTrend: fetchBreachedSlaTicketsTrend,
         title: TICKETS_WITH_BREACHED_SLAS_LABEL,
-        metricFormat:
-            SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
-    },
-]
-const slaTicketsInPolicySource = [
-    {
-        fetchTrend: fetchBreachedSlaTicketsTrend,
-        title: BREACHED_SLA_LABEL,
-        metricFormat:
-            SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
-    },
-    {
-        fetchTrend: fetchSatisfiedSlaTicketsTrend,
-        title: ACHIEVED_SLA_LABEL,
         metricFormat:
             SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
     },
@@ -77,25 +59,11 @@ export const useDownloadSLAsData = () => {
         slaOverviewSource,
     )
 
-    const slaTicketsInPolicy = useTrendReportData(
-        cleanStatsFilters,
-        userTimezone,
-        slaTicketsInPolicySource,
-    )
-
     const slaOverviewReport = createTrendReport(
         slaTrends.data,
         getCsvFileNameWithDates(
             cleanStatsFilters.period,
             SLA_OVERVIEW_FILENAME,
-        ),
-    )
-
-    const slaTicketsInPolicyReport = createTrendReport(
-        slaTicketsInPolicy.data,
-        getCsvFileNameWithDates(
-            cleanStatsFilters.period,
-            SLA_TICKETS_IN_POLICY_FILENAME,
         ),
     )
 
@@ -115,15 +83,13 @@ export const useDownloadSLAsData = () => {
     const isLoading = useMemo(() => {
         return Object.values([
             slaTrends,
-            slaTicketsInPolicy,
             achievedOrBreachedSLAsTicketsTimeSeries,
         ]).some((metric) => metric.isFetching)
-    }, [achievedOrBreachedSLAsTicketsTimeSeries, slaTicketsInPolicy, slaTrends])
+    }, [achievedOrBreachedSLAsTicketsTimeSeries, slaTrends])
 
     const files = {
         ...timeSeriesTrend.files,
         ...slaOverviewReport.files,
-        ...slaTicketsInPolicyReport.files,
     }
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
