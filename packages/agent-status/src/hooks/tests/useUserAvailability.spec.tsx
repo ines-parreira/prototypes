@@ -1,169 +1,274 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    vi,
+} from 'vitest'
 
-import * as helpdeskQueries from '@gorgias/helpdesk-queries'
+import {
+    mockGetUserAvailabilityHandler,
+    mockUserAvailabilityDetail,
+} from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { renderHook } from '../../tests/render.utils'
+import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUserAvailability } from '../useUserAvailability'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueries>(
-        '@gorgias/helpdesk-queries',
-    )
-    return {
-        ...actual,
-        useGetUserAvailability: vi.fn(),
-    }
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
 })
 
 beforeEach(() => {
-    vi.clearAllMocks()
+    testAppQueryClient.clear()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useUserAvailability', () => {
     const userId = 123
 
     describe('availability mapping', () => {
-        it('should return availability when user is available', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: {
-                    data: {
-                        user_status: 'available',
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return availability when user is available', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'available',
+                        }),
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
-            expect(result.current.availability).toEqual({
-                user_status: 'available',
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
             })
+
+            expect(result.current.availability?.user_status).toBe('available')
             expect(result.current.activeStatusId).toBe('available')
         })
 
-        it('should return availability when user is unavailable', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: {
-                    data: {
-                        user_status: 'unavailable',
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return availability when user is unavailable', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'unavailable',
+                        }),
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
-            expect(result.current.availability).toEqual({
-                user_status: 'unavailable',
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
             })
+
+            expect(result.current.availability?.user_status).toBe('unavailable')
             expect(result.current.activeStatusId).toBe('unavailable')
         })
 
-        it('should return availability and activeStatusId when user has custom status', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: {
-                    data: {
-                        user_status: 'custom',
-                        custom_user_availability_status_id: 'custom-123',
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return availability and activeStatusId when user has custom status', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'custom',
+                            custom_user_availability_status_id: 'custom-123',
+                        }),
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
-            expect(result.current.availability).toEqual({
-                user_status: 'custom',
-                custom_user_availability_status_id: 'custom-123',
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
             })
+
+            expect(result.current.availability?.user_status).toBe('custom')
+            expect(
+                result.current.availability?.custom_user_availability_status_id,
+            ).toBe('custom-123')
             expect(result.current.activeStatusId).toBe('custom-123')
         })
 
-        it('should return undefined activeStatusId when availability is custom but no id is present', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: {
-                    data: {
-                        user_status: 'custom',
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return undefined activeStatusId when availability is custom but no id is present', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'custom',
+                            custom_user_availability_status_id: undefined,
+                        }),
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
-            expect(result.current.availability).toEqual({
-                user_status: 'custom',
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
             })
+
+            expect(result.current.availability?.user_status).toBe('custom')
+            expect(
+                result.current.availability?.custom_user_availability_status_id,
+            ).toBeUndefined()
             expect(result.current.activeStatusId).toBeUndefined()
         })
     })
 
     describe('loading state', () => {
         it('should return isLoading: true when data is loading', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: undefined,
-                isLoading: true,
-                isError: false,
-            } as any)
-
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
             expect(result.current.isLoading).toBe(true)
+            expect(result.current.isFetching).toBe(true)
             expect(result.current.availability).toBeUndefined()
             expect(result.current.activeStatusId).toBeUndefined()
         })
     })
 
     describe('error state', () => {
-        it('should return isError: true when API call fails', () => {
-            const mockError = new Error('API error')
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: true,
-                error: mockError,
-            } as any)
+        it('should return isError: true when API call fails', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        {
+                            error: { msg: 'Failed to fetch user availability' },
+                        } as any,
+                        { status: 500 },
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
             const { result } = renderHook(() => useUserAvailability({ userId }))
 
-            expect(result.current.isError).toBe(true)
-            expect(result.current.error).toBe(mockError)
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+            })
+
+            expect(result.current.error).toBeDefined()
             expect(result.current.availability).toBeUndefined()
             expect(result.current.activeStatusId).toBeUndefined()
         })
     })
 
-    describe('undefined state', () => {
-        it('should return undefined availability and activeStatusId when no data', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: false,
-            } as any)
-
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+    describe('query configuration', () => {
+        it('should disable query when userId is 0', () => {
+            const { result } = renderHook(() =>
+                useUserAvailability({ userId: 0 }),
+            )
 
             expect(result.current.availability).toBeUndefined()
-            expect(result.current.activeStatusId).toBeUndefined()
+        })
+    })
+
+    describe('cacheOnly mode', () => {
+        it('should disable query when cacheOnly is true', () => {
+            const { result } = renderHook(() =>
+                useUserAvailability({ userId, cacheOnly: true }),
+            )
+
+            expect(result.current.availability).toBeUndefined()
         })
 
-        it('should return undefined availability when data.data is undefined', () => {
-            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
-                data: {
-                    data: undefined,
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return cached data when cacheOnly is true', async () => {
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () =>
+                    HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'available',
+                        }),
+                    ),
+            )
+            server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            // First render without cacheOnly to populate the cache
+            const { unmount } = renderHook(() =>
+                useUserAvailability({ userId }),
+            )
+
+            await waitFor(() => {
+                const data = testAppQueryClient.getQueryData(
+                    queryKeys.userAvailability.getUserAvailability(userId),
+                )
+                expect(data).toBeDefined()
+            })
+
+            unmount()
+
+            // Second render with cacheOnly should use cached data
+            const { result } = renderHook(() =>
+                useUserAvailability({ userId, cacheOnly: true }),
+            )
+
+            expect(result.current.availability?.user_status).toBe('available')
+            expect(result.current.activeStatusId).toBe('available')
+        })
+
+        it('should re-render when cache is manually updated', async () => {
+            // Track if handler is called to verify no network request is made
+            const handlerSpy = vi.fn()
+            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
+                async () => {
+                    handlerSpy()
+                    return HttpResponse.json(
+                        mockUserAvailabilityDetail({
+                            user_status: 'available',
+                        }),
+                    )
+                },
+            )
+            server.use(mockGetUserAvailability.handler)
+
+            // Start with cacheOnly mode (no initial data)
+            const { result } = renderHook(() =>
+                useUserAvailability({ userId, cacheOnly: true }),
+            )
 
             expect(result.current.availability).toBeUndefined()
-            expect(result.current.activeStatusId).toBeUndefined()
+
+            // Manually update the cache (like updateUserAvailabilityInCache does)
+            const updatedAvailability = mockUserAvailabilityDetail({
+                user_id: userId,
+                user_status: 'unavailable',
+            })
+
+            testAppQueryClient.setQueryData(
+                queryKeys.userAvailability.getUserAvailability(userId),
+                { data: updatedAvailability },
+            )
+
+            // Hook should re-render with the new cached data
+            await waitFor(() => {
+                expect(result.current.availability?.user_status).toBe(
+                    'unavailable',
+                )
+            })
+
+            expect(result.current.activeStatusId).toBe('unavailable')
+
+            // Verify no network request was made
+            expect(handlerSpy).not.toHaveBeenCalled()
         })
     })
 })

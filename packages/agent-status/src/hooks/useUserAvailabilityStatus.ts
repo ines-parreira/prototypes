@@ -7,6 +7,11 @@ import { useUserAvailability } from './useUserAvailability'
 
 type UseUserAvailabilityStatusParams = {
     userId: number
+    /**
+     * When true, only reads from cache and never makes a network request.
+     * Useful when using with useBatchAvailability which pre-populates the cache.
+     */
+    cacheOnly?: boolean
 }
 
 /**
@@ -21,10 +26,13 @@ type UseUserAvailabilityStatusParams = {
  */
 export const useUserAvailabilityStatus = ({
     userId,
+    cacheOnly = false,
 }: UseUserAvailabilityStatusParams) => {
-    const { availability } = useUserAvailability({
-        userId,
-    })
+    const { availability, isLoading, isFetching, isError, error } =
+        useUserAvailability({
+            userId,
+            cacheOnly,
+        })
 
     const { allStatuses } = useSelectableAgentAvailabilityStatuses()
 
@@ -36,5 +44,9 @@ export const useUserAvailabilityStatus = ({
     return {
         status,
         availability,
+        isLoading,
+        isFetching,
+        isError,
+        error,
     }
 }

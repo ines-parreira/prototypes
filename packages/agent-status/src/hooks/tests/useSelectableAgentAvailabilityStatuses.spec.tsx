@@ -1,66 +1,83 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+} from 'vitest'
 
-import * as helpdeskQueries from '@gorgias/helpdesk-queries'
+import {
+    mockCustomUserAvailabilityStatus,
+    mockListCustomUserAvailabilityStatusesHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     AVAILABLE_STATUS,
     PREDEFINED_SELECTABLE_STATUSES,
     UNAVAILABLE_STATUS,
 } from '../../constants'
-import { renderHook } from '../../tests/render.utils'
+import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useSelectableAgentAvailabilityStatuses } from '../useSelectableAgentAvailabilityStatuses'
 
-vi.mock('@gorgias/helpdesk-queries', async () => {
-    const actual = await vi.importActual<typeof helpdeskQueries>(
-        '@gorgias/helpdesk-queries',
-    )
-    return {
-        ...actual,
-        useListCustomUserAvailabilityStatuses: vi.fn(),
-    }
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
-    vi.clearAllMocks()
+    testAppQueryClient.clear()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
 })
 
 describe('useSelectableAgentAvailabilityStatuses', () => {
     describe('data merging', () => {
-        it('should merge selectable system statuses with custom statuses', () => {
+        it('should merge selectable system statuses with custom statuses', async () => {
             const customStatuses = [
-                {
+                mockCustomUserAvailabilityStatus({
                     id: '1',
                     name: 'Lunch break',
                     duration_unit: 'minutes',
                     duration_value: 30,
-                    created_datetime: '2024-01-01T00:00:00Z',
-                    updated_datetime: '2024-01-01T00:00:00Z',
-                },
-                {
+                }),
+                mockCustomUserAvailabilityStatus({
                     id: '2',
                     name: 'Meeting',
                     duration_unit: 'hours',
                     duration_value: 1,
-                    created_datetime: '2024-01-02T00:00:00Z',
-                    updated_datetime: '2024-01-02T00:00:00Z',
-                },
+                }),
             ]
 
-            vi.mocked(
-                helpdeskQueries.useListCustomUserAvailabilityStatuses,
-            ).mockReturnValue({
-                data: {
-                    data: {
-                        data: customStatuses,
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+            const mockListStatuses =
+                mockListCustomUserAvailabilityStatusesHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: customStatuses,
+                        }),
+                )
+
+            server.use(mockListStatuses.handler)
 
             const { result } = renderHook(() =>
                 useSelectableAgentAvailabilityStatuses(),
             )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
 
             const allStatuses = result.current.allStatuses
             expect(allStatuses).toHaveLength(
@@ -80,22 +97,25 @@ describe('useSelectableAgentAvailabilityStatuses', () => {
     })
 
     describe('empty state', () => {
-        it('should return only selectable system statuses when no custom statuses exist', () => {
-            vi.mocked(
-                helpdeskQueries.useListCustomUserAvailabilityStatuses,
-            ).mockReturnValue({
-                data: {
-                    data: {
-                        data: [],
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+        it('should return only selectable system statuses when no custom statuses exist', async () => {
+            const mockListStatuses =
+                mockListCustomUserAvailabilityStatusesHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [],
+                        }),
+                )
+
+            server.use(mockListStatuses.handler)
 
             const { result } = renderHook(() =>
                 useSelectableAgentAvailabilityStatuses(),
             )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
 
             expect(result.current.allStatuses).toHaveLength(
                 PREDEFINED_SELECTABLE_STATUSES.length,
@@ -111,13 +131,10 @@ describe('useSelectableAgentAvailabilityStatuses', () => {
 
     describe('loading state', () => {
         it('should return isLoading: true when data is loading', () => {
-            vi.mocked(
-                helpdeskQueries.useListCustomUserAvailabilityStatuses,
-            ).mockReturnValue({
-                data: undefined,
-                isLoading: true,
-                isError: false,
-            } as any)
+            const mockListStatuses =
+                mockListCustomUserAvailabilityStatusesHandler()
+
+            server.use(mockListStatuses.handler)
 
             const { result } = renderHook(() =>
                 useSelectableAgentAvailabilityStatuses(),
@@ -128,20 +145,24 @@ describe('useSelectableAgentAvailabilityStatuses', () => {
     })
 
     describe('error state', () => {
-        it('should handle API errors gracefully', () => {
-            vi.mocked(
-                helpdeskQueries.useListCustomUserAvailabilityStatuses,
-            ).mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isError: true,
-            } as any)
+        it('should handle API errors gracefully', async () => {
+            const mockListStatuses =
+                mockListCustomUserAvailabilityStatusesHandler(async () =>
+                    HttpResponse.json(
+                        { error: { msg: 'Failed to fetch' } } as any,
+                        { status: 500 },
+                    ),
+                )
+
+            server.use(mockListStatuses.handler)
 
             const { result } = renderHook(() =>
                 useSelectableAgentAvailabilityStatuses(),
             )
 
-            expect(result.current.isError).toBe(true)
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
+            })
 
             // Should still return selectable system statuses
             expect(result.current.allStatuses).toHaveLength(
@@ -157,31 +178,32 @@ describe('useSelectableAgentAvailabilityStatuses', () => {
     })
 
     describe('data structure', () => {
-        it('should preserve all fields from custom statuses', () => {
-            const customStatus = {
+        it('should preserve all fields from custom statuses', async () => {
+            const customStatus = mockCustomUserAvailabilityStatus({
                 id: '1',
                 name: 'Lunch break',
-                description: 'Taking a lunch break',
                 duration_unit: 'minutes',
                 duration_value: 30,
-                created_datetime: '2024-01-01T00:00:00Z',
-                updated_datetime: '2024-01-02T00:00:00Z',
-            }
-            vi.mocked(
-                helpdeskQueries.useListCustomUserAvailabilityStatuses,
-            ).mockReturnValue({
-                data: {
-                    data: {
-                        data: [customStatus],
-                    },
-                },
-                isLoading: false,
-                isError: false,
-            } as any)
+            })
+
+            const mockListStatuses =
+                mockListCustomUserAvailabilityStatusesHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [customStatus],
+                        }),
+                )
+
+            server.use(mockListStatuses.handler)
 
             const { result } = renderHook(() =>
                 useSelectableAgentAvailabilityStatuses(),
             )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
 
             const customStatusFinal = result.current.allStatuses.find(
                 (s) => s.name === 'Lunch break',

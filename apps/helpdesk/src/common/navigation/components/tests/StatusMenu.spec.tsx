@@ -235,7 +235,7 @@ describe('StatusMenu', () => {
                     isLoading: true,
                     isError: false,
                     error: null,
-                })
+                } as ReturnType<typeof useUserAvailability>)
             },
         },
     ])('should show loading state when $scenario', ({ setupMocks }) => {

@@ -1,16 +1,28 @@
 import { useMemo } from 'react'
 
+import { DurationInMs } from '@repo/utils'
+
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import { useGetUserAvailability } from '@gorgias/helpdesk-queries'
 
 type UseUserAvailabilityParams = {
     userId: number
+    staleTime?: number
+    cacheTime?: number
+    cacheOnly?: boolean
 }
 
-export const useUserAvailability = ({ userId }: UseUserAvailabilityParams) => {
-    const { data, isLoading, isError, error } = useGetUserAvailability(userId, {
+export const useUserAvailability = ({
+    userId,
+    staleTime = DurationInMs.OneMinute,
+    cacheTime = DurationInMs.FiveMinutes,
+    cacheOnly = false,
+}: UseUserAvailabilityParams) => {
+    const { data, ...rest } = useGetUserAvailability(userId, {
         query: {
-            enabled: !!userId,
+            enabled: !!userId && !cacheOnly,
+            staleTime: cacheOnly ? Infinity : staleTime,
+            cacheTime,
         },
     })
 
@@ -29,10 +41,8 @@ export const useUserAvailability = ({ userId }: UseUserAvailabilityParams) => {
     }, [availability])
 
     return {
+        ...rest,
         availability,
         activeStatusId,
-        isLoading,
-        isError,
-        error,
     }
 }
