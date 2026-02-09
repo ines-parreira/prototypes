@@ -1,7 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+
+import { AgentAvatar } from '@repo/agent-status'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Avatar from 'pages/common/components/Avatar/Avatar'
+import LegacyAvatar from 'pages/common/components/Avatar/Avatar'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import {
     getCurrentUser,
@@ -15,6 +18,10 @@ import css from './UserItem.less'
 export default function UserItem() {
     const currentUser = useAppSelector(getCurrentUser)
     const isAvailable = useAppSelector(getIsAvailable)
+
+    const isAgentStatusEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
 
     const buttonRef = useRef<HTMLButtonElement | null>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -31,18 +38,30 @@ export default function UserItem() {
                 type="button"
                 onClick={handleToggle}
             >
-                <Avatar
-                    badgeClassName={css.badge}
-                    badgeColor={
-                        isAvailable
-                            ? 'var(--static-success)'
-                            : 'var(--static-warning)'
-                    }
-                    name={currentUser.get('name') || currentUser.get('email')}
-                    url={currentUser.getIn(['meta', 'profile_picture_url'])}
-                    shape="round"
-                    size={24}
-                />
+                {isAgentStatusEnabled ? (
+                    <AgentAvatar
+                        userId={currentUser.get('id')}
+                        name={
+                            currentUser.get('name') || currentUser.get('email')
+                        }
+                        url={currentUser.getIn(['meta', 'profile_picture_url'])}
+                    />
+                ) : (
+                    <LegacyAvatar
+                        badgeClassName={css.badge}
+                        badgeColor={
+                            isAvailable
+                                ? 'var(--static-success)'
+                                : 'var(--static-warning)'
+                        }
+                        name={
+                            currentUser.get('name') || currentUser.get('email')
+                        }
+                        url={currentUser.getIn(['meta', 'profile_picture_url'])}
+                        shape="round"
+                        size={24}
+                    />
+                )}
             </button>
 
             <Dropdown

@@ -54,3 +54,4 @@ export {
 export { NotificationStatus } from './utils/LegacyBridge/context'
 
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
+export { AgentAvatar } from './components'
