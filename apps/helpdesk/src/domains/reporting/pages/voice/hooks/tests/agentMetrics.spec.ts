@@ -48,6 +48,7 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
     useTransferredInboundCallsMetric,
+    withIgnoreNoAgentFilter,
 } from 'domains/reporting/pages/voice/hooks/agentMetrics'
 import {
     formatReportingQueryDate,
@@ -484,6 +485,104 @@ describe('metricsPerDimension', () => {
                     },
                     true,
                 ),
+            )
+        })
+    })
+
+    describe('withIgnoreNoAgentFilter', () => {
+        const baseQuery = {
+            measures: [VoiceCallMeasure.VoiceCallCount],
+            dimensions: [],
+            filters: [
+                {
+                    member: VoiceCallMember.PeriodStart,
+                    operator: 'afterDate',
+                    values: ['2024-01-01T00:00:00.000'],
+                },
+                {
+                    member: VoiceCallMember.PeriodEnd,
+                    operator: 'beforeDate',
+                    values: ['2024-01-31T23:59:59.999'],
+                },
+            ],
+            segments: [],
+            timezone: 'UTC',
+        } as any
+
+        it('should add filter when member does not exist in query', () => {
+            const result = withIgnoreNoAgentFilter(
+                baseQuery,
+                ignoreCallsWithNoAgentsFilter,
+            )
+
+            expect(result.filters).toHaveLength(3)
+            expect(result.filters).toContainEqual(ignoreCallsWithNoAgentsFilter)
+        })
+
+        it('should not add filter when member already exists in query', () => {
+            const queryWithAgentFilter = {
+                ...baseQuery,
+                filters: [
+                    ...baseQuery.filters,
+                    {
+                        member: VoiceCallMember.AgentId,
+                        operator: 'equals',
+                        values: ['123'],
+                    },
+                ],
+            }
+
+            const result = withIgnoreNoAgentFilter(
+                queryWithAgentFilter,
+                ignoreCallsWithNoAgentsFilter,
+            )
+
+            expect(result.filters).toHaveLength(3)
+            expect(result.filters).toEqual(queryWithAgentFilter.filters)
+        })
+
+        it('should preserve existing filters when adding new filter', () => {
+            const result = withIgnoreNoAgentFilter(
+                baseQuery,
+                ignoreCallsWithNoAgentsFilter,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: VoiceCallMember.PeriodStart,
+                operator: 'afterDate',
+                values: ['2024-01-01T00:00:00.000'],
+            })
+            expect(result.filters).toContainEqual({
+                member: VoiceCallMember.PeriodEnd,
+                operator: 'beforeDate',
+                values: ['2024-01-31T23:59:59.999'],
+            })
+            expect(result.filters).toContainEqual(ignoreCallsWithNoAgentsFilter)
+        })
+
+        it('should return unchanged query when filter member already exists', () => {
+            const queryWithAgentFilter = {
+                ...baseQuery,
+                filters: [...baseQuery.filters, ignoreCallsWithNoAgentsFilter],
+            }
+
+            const result = withIgnoreNoAgentFilter(
+                queryWithAgentFilter,
+                ignoreCallsWithNoAgentsFilter,
+            )
+
+            expect(result).toEqual(queryWithAgentFilter)
+        })
+
+        it('should work with different filter members', () => {
+            const result = withIgnoreNoAgentFilter(
+                baseQuery,
+                ignoreDeclinedWithNoAgentsFilter,
+            )
+
+            expect(result.filters).toHaveLength(3)
+            expect(result.filters).toContainEqual(
+                ignoreDeclinedWithNoAgentsFilter,
             )
         })
     })

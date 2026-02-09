@@ -1,6 +1,7 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { Metric } from 'domains/reporting/hooks/metrics'
 import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import {
     VoiceCallMember,
     VoiceCallSegment,
@@ -23,9 +24,11 @@ import {
     voiceCallsCountQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportingFilter } from 'domains/reporting/models/types'
+import type {
+    ReportingFilter,
+    ReportingQuery,
+} from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
-import { withFilter } from 'domains/reporting/utils/reporting'
 
 export const ignoreCallsWithNoAgentsFilter: ReportingFilter = {
     member: VoiceCallMember.AgentId,
@@ -51,13 +54,24 @@ export const ignoreDeclinedWithNoAgentsFilter: ReportingFilter = {
     values: [],
 }
 
+export const withIgnoreNoAgentFilter = (
+    query: ReportingQuery<Cubes>,
+    ignoreFilter: ReportingFilter,
+): ReportingQuery<Cubes> => {
+    // Add ignore filter on member if there's not one already set on the query
+    if (!query.filters.find((f) => f.member === ignoreFilter.member)) {
+        return { ...query, filters: [...query.filters, ignoreFilter] }
+    }
+    return query
+}
+
 // P2/P3
 export const useTotalCallsMetric = (
     statsFilters: StatsFilters,
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoAgentsFilter,
         ),
@@ -76,7 +90,7 @@ export const fetchTotalCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoAgentsFilter,
         ),
@@ -96,7 +110,7 @@ export const useAnsweredCallsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -123,7 +137,7 @@ export const fetchAnsweredCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -149,7 +163,7 @@ export const useMissedCallsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -176,7 +190,7 @@ export const fetchMissedCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -202,7 +216,7 @@ export const useOutboundCallsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -229,7 +243,7 @@ export const fetchOutboundCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -255,7 +269,7 @@ export const useDeclinedCallsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             declinedVoiceCallsCountQueryFactory(statsFilters, timezone),
             ignoreDeclinedWithNoAgentsFilter,
         ),
@@ -270,7 +284,7 @@ export const fetchDeclinedCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             declinedVoiceCallsCountQueryFactory(statsFilters, timezone),
             ignoreDeclinedWithNoAgentsFilter,
         ),
@@ -286,7 +300,7 @@ export const useAverageTalkTimeMetric = (
     includeLiveData: boolean = false,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallAverageTalkTimeQueryFactory(
                 statsFilters,
                 timezone,
@@ -308,7 +322,7 @@ export const fetchAverageTalkTimeMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             voiceCallAverageTalkTimeQueryFactory(statsFilters, timezone),
             ignoreCallsWithNoFilteringAgentFilter,
         ),
@@ -326,7 +340,7 @@ export const useTransferredInboundCallsMetric = (
     timezone: string,
 ): Metric =>
     useMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             transferredInboundVoiceCallsCountQueryFactory(
                 statsFilters,
                 timezone,
@@ -344,7 +358,7 @@ export const fetchTransferredInboundCallsMetric = (
     timezone: string,
 ): Promise<Metric> =>
     fetchMetric(
-        withFilter(
+        withIgnoreNoAgentFilter(
             transferredInboundVoiceCallsCountQueryFactory(
                 statsFilters,
                 timezone,
