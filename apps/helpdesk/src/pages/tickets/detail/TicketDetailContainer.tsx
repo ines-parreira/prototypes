@@ -375,6 +375,10 @@ export const TicketDetailContainer = ({
         action,
         resetMessage = true,
     }: SubmitArgs) => {
+        const { hasErrors } = validateTicketFields()
+        if (hasUIVisionMS1 && hasErrors && ticketIdParam !== 'new') {
+            return
+        }
         if (
             status === TicketStatus.Closed &&
             checkTicketFieldErrors({ includeMacro: true })
@@ -456,15 +460,6 @@ export const TicketDetailContainer = ({
                     if (e.preventDefault) {
                         e.preventDefault()
                         e.stopImmediatePropagation()
-                    }
-
-                    const { hasErrors } = validateTicketFields()
-                    if (
-                        hasUIVisionMS1 &&
-                        hasErrors &&
-                        ticketIdParam !== 'new'
-                    ) {
-                        return
                     }
 
                     if (!isTranslationPending) {
