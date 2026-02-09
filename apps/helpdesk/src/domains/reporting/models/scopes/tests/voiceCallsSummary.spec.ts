@@ -37,6 +37,7 @@ describe('voiceCallsSummaryScope', () => {
                     'callbackRequestedVoiceCallsCount',
                     'averageTalkTimeInSeconds',
                     'averageWaitTimeInSeconds',
+                    'slaAchievementRate',
                 ],
                 timezone: 'utc',
                 filters: [

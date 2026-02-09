@@ -1,9 +1,9 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import type { VoiceCallSummaryCube } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import {
     VoiceCallSummaryFiltersMembers,
     VoiceCallSummaryMeasure,
 } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
+import type { VoiceCallSummaryCube } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
 import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
@@ -26,6 +26,7 @@ export const voiceCallSummaryQueryFactory = (
             VoiceCallSummaryMeasure.VoiceCallSummaryCallbackRequestedTotal,
             VoiceCallSummaryMeasure.VoiceCallSummaryAverageTalkTime,
             VoiceCallSummaryMeasure.VoiceCallSummaryAverageWaitTime,
+            VoiceCallSummaryMeasure.VoiceCallSummarySlaAchievementRate,
         ],
         dimensions: [],
         timezone,

@@ -48,6 +48,7 @@ export const voiceCallsSummaryMetrics = voiceCallsSummaryScope
             'callbackRequestedVoiceCallsCount',
             'averageTalkTimeInSeconds',
             'averageWaitTimeInSeconds',
+            'slaAchievementRate',
         ] as const,
     }))
 
