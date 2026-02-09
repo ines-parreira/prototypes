@@ -164,7 +164,6 @@ export enum FeatureFlagKey {
     OfficeHours = 'office-hours',
     OnlyShowReasoningWhileImpersonating = 'linear.project_surface-ai-reasoning-in-ticket.only-show-reasoning-while-impersonating',
     OpportunitiesMilestone2 = 'linear.project_proactively-surface-opportunities.enable-milestone-2-features',
-    OpportunitiesKnowledgeConflicts = 'linear.project_proactively-surface-opportunities.enable-knowledge-conflicts',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
