@@ -7,7 +7,7 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
-import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { AccuracyTrendCard } from 'domains/reporting/pages/support-performance/auto-qa/AccuracyTrendCard'
 import {
     AUTO_QA_TITLE_TOOLTIP,
@@ -184,7 +184,7 @@ export const AutoQAReportConfig: ReportConfig<AutoQAChart> = {
         },
         [AutoQAChart.AgentsTable]: {
             chartComponent: AutoQaAgentsTableChart,
-            label: AGENT_PERFORMANCE_SECTION_TITLE,
+            label: SECTION_TITLES.AGENT_PERFORMANCE,
             description: AUTO_QA_TITLE_TOOLTIP,
             csvProducer: [
                 {

@@ -12,10 +12,8 @@ import {
     AgentsShoutOutsConfig,
     TopPerformersChart,
 } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
-import {
-    AGENT_PERFORMANCE_SECTION_TITLE,
-    AgentsTableChart,
-} from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { AgentsTableChart } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { TopClosedTicketsPerformers } from 'domains/reporting/pages/support-performance/agents/TopClosedTicketsPerformers'
 import { TopCsatPerformers } from 'domains/reporting/pages/support-performance/agents/TopCsatPerformers'
 import { TopFirstResponseTimePerformers } from 'domains/reporting/pages/support-performance/agents/TopFirstResponseTimePerformers'
@@ -46,12 +44,12 @@ export enum AgentsChart {
 
 export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
     id: ReportsIDs.SupportPerformanceAgentsReportConfig,
-    reportName: AGENT_PERFORMANCE_SECTION_TITLE,
+    reportName: SECTION_TITLES.AGENT_PERFORMANCE,
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
     charts: {
         [AgentsChart.Table]: {
             chartComponent: AgentsTableChart,
-            label: AGENT_PERFORMANCE_SECTION_TITLE,
+            label: SECTION_TITLES.AGENT_PERFORMANCE,
             csvProducer: [
                 {
                     type: DataExportFormat.Table,

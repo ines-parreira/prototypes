@@ -4,7 +4,7 @@ import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/cons
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { ChangeInTicketVolumeChart } from 'domains/reporting/pages/voice-of-customer/charts/ChangeInTicketVolumeChart/ChangeInTicketVolumeChart'
 import { ProductInsightsTableChart } from 'domains/reporting/pages/voice-of-customer/charts/ProductInsightsTableChart/ProductInsightsTableChart'
 import { TopAIIntentsOverTimeChart } from 'domains/reporting/pages/voice-of-customer/charts/TopAIIntentsOverTimeChart/TopAIIntentsOverTimeChart'
@@ -40,7 +40,7 @@ export const PRODUCT_INSIGHTS_OPTIONAL_FILTERS = [
 export const ProductInsightsPlaceholderReportConfig: ReportConfig<ProductInsightsChart> =
     {
         id: ReportsIDs.ProductInsightsReportConfig,
-        reportName: AGENT_PERFORMANCE_SECTION_TITLE,
+        reportName: SECTION_TITLES.AGENT_PERFORMANCE,
         reportPath: VOICE_OF_CUSTOMER_ROUTES.PRODUCT_INSIGHTS,
         charts: {
             [ProductInsightsChart.TotalTicketSentimentOverTimeChart]: {

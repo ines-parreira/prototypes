@@ -1,6 +1,6 @@
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { AutoQAAgentsCardExtra } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsCardExtra'
 import { AutoQAAgentsTable } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTable'
 
@@ -15,7 +15,7 @@ export const AutoQaAgentsTableChart = ({
         <ChartCard
             chartId={chartId}
             dashboard={dashboard}
-            title={AGENT_PERFORMANCE_SECTION_TITLE}
+            title={SECTION_TITLES.AGENT_PERFORMANCE}
             hint={{ title: AUTO_QA_TITLE_TOOLTIP }}
             titleExtra={<AutoQAAgentsCardExtra />}
             noPadding

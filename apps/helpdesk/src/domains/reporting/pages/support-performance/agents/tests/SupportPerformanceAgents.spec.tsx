@@ -16,8 +16,8 @@ import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/Fil
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
-import { AGENT_PERFORMANCE_SECTION_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
 import { TableColumnsOrder } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
+import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { DownloadAgentsPerformanceDataButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import SupportPerformanceAgentsReport, {
     AGENTS_PAGE_TITLE,
@@ -157,7 +157,7 @@ describe('SupportPerformanceAgents', () => {
 
         expect(screen.getByText(AGENTS_PAGE_TITLE)).toBeInTheDocument()
         expect(
-            screen.getByText(AGENT_PERFORMANCE_SECTION_TITLE),
+            screen.getByText(SECTION_TITLES.AGENT_PERFORMANCE),
         ).toBeInTheDocument()
     })
 
