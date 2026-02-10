@@ -210,6 +210,7 @@ export const DragAndResizeDashboardGrid = ({
         <div
             ref={containerRef as React.Ref<HTMLDivElement>}
             style={{ width: '100%' }}
+            data-drag-enabled={currentBreakpoint === 'lg'}
         >
             <ResponsiveGridLayout
                 width={width}

@@ -5,6 +5,19 @@
     transition: all 200ms ease;
 }
 
+[data-drag-enabled='true'] {
+    .react-grid-item {
+        transition: border 150ms ease-in-out;
+
+        &:hover,
+        &.react-dragging,
+        &.react-resizing {
+            border: 2px solid var(--border-accent-default);
+            border-radius: var(--spacing-sm);
+        }
+    }
+}
+
 .react-grid-item {
     overflow: hidden;
     box-sizing: border-box;

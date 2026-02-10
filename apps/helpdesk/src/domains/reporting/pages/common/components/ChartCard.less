@@ -64,4 +64,12 @@
             padding: 0;
         }
     }
+
+    [data-drag-enabled='true'] {
+        :global(.react-grid-item:hover) .card,
+        :global(.react-grid-item.react-dragging) .card,
+        :global(.react-grid-item.react-resizing) .card {
+            border: none;
+        }
+    }
 }
