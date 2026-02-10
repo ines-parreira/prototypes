@@ -11,13 +11,13 @@ import {
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
-    OverflowListShowMore,
     Tag,
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { useListTagsSearch } from './hooks/useListTagsSearch'
 import { sortByAscendingIdOrder } from './hooks/useUpdateTicketTags'
+import { TagsMultiSelectShowMore } from './TagsMultiSelectShowMore'
 
 import css from './TagsMultiSelect.less'
 
@@ -182,14 +182,7 @@ export function TagsMultiSelect({
                         </Tag>
                     </OverflowListItem>
                 ))}
-                <OverflowListShowMore>
-                    {({ hiddenCount }) => (
-                        <div className={css.overflowButtonContent}>
-                            <span>+{hiddenCount}</span>
-                            <Icon name="arrow-chevron-down" />
-                        </div>
-                    )}
-                </OverflowListShowMore>
+                <TagsMultiSelectShowMore value={value} />
                 <OverflowListShowLess>
                     <div className={css.overflowButtonContent}>
                         <span>Show less</span>
