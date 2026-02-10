@@ -5,6 +5,7 @@ import {
     liveDashBoardVoiceCallListQueryFactory,
     liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallListQueryFactory,
+    voiceCallListWithSlaStatusQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -18,6 +19,7 @@ jest.mock('domains/reporting/models/queryFactories/voice/voiceCall', () => ({
     liveDashboardConnectedCallsListQueryFactory: jest.fn(),
     liveDashBoardVoiceCallListQueryFactory: jest.fn(),
     voiceCallListQueryFactory: jest.fn(),
+    voiceCallListWithSlaStatusQueryFactory: jest.fn(),
 }))
 
 const mockStatsFilters: StatsFilters = {
@@ -162,7 +164,7 @@ describe('VoiceMetricsConfig - drillDownQuery', () => {
 
         config.drillDownQuery(mockStatsFilters, timezone)
 
-        expect(voiceCallListQueryFactory).toHaveBeenCalledWith(
+        expect(voiceCallListWithSlaStatusQueryFactory).toHaveBeenCalledWith(
             mockStatsFilters,
             timezone,
             VoiceCallSegment.inboundCalls,

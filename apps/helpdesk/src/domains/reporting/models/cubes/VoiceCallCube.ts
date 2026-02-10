@@ -53,6 +53,7 @@ export enum VoiceCallMember {
     WaitTime = 'VoiceCall.waitTimeSeconds',
     DisplayStatus = 'VoiceCall.displayStatus',
     QueueId = 'VoiceCall.queueId',
+    SlaStatus = 'VoiceCall.callSlaStatus',
 }
 
 export enum VoiceCallSegment {

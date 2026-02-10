@@ -21,6 +21,7 @@ import {
     voiceCallCountPerFilteringAgentQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
+    voiceCallListWithSlaStatusQueryFactory,
     voiceCallSlaAchievementRateQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
@@ -464,6 +465,139 @@ describe('voice queries factories', () => {
             ])
         },
     )
+
+    describe('voiceCallListWithSlaStatusQueryFactory', () => {
+        it.each([
+            {
+                segment: undefined,
+                statusFilters: undefined,
+                limit: 10,
+                offset: 0,
+                includeLiveData: false,
+                expectedSegments: [VoiceCallSegment.callsInFinalStatus],
+            },
+            {
+                segment: VoiceCallSegment.inboundCalls,
+                statusFilters: [VoiceCallDisplayStatus.Answered],
+                limit: 20,
+                offset: 10,
+                includeLiveData: false,
+                expectedSegments: [
+                    VoiceCallSegment.inboundCalls,
+                    VoiceCallSegment.callsInFinalStatus,
+                ],
+            },
+            {
+                segment: VoiceCallSegment.outboundCalls,
+                statusFilters: undefined,
+                limit: 50,
+                offset: 0,
+                includeLiveData: true,
+                expectedSegments: [VoiceCallSegment.outboundCalls],
+            },
+        ])(
+            'should create a query with SLA status filter',
+            ({
+                segment,
+                statusFilters,
+                limit,
+                offset,
+                includeLiveData,
+                expectedSegments,
+            }) => {
+                const query = voiceCallListWithSlaStatusQueryFactory(
+                    statsFilters,
+                    timezone,
+                    segment,
+                    limit,
+                    offset,
+                    undefined,
+                    undefined,
+                    statusFilters,
+                    includeLiveData,
+                )
+
+                const expectedFilters = [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                ]
+
+                if (statusFilters) {
+                    expectedFilters.push({
+                        member: VoiceCallMember.DisplayStatus,
+                        operator: ReportingFilterOperator.Equals,
+                        values: statusFilters,
+                    })
+                }
+
+                expectedFilters.push({
+                    member: VoiceCallMember.SlaStatus,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                })
+
+                expect(query).toEqual({
+                    metricName: METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST,
+                    measures: [VoiceCallMeasure.VoiceCallCount],
+                    dimensions: voiceCallListDimensions,
+                    filters: expectedFilters,
+                    timezone,
+                    segments: expectedSegments,
+                    offset,
+                    limit,
+                    order: [
+                        [VoiceCallDimension.CreatedAt, OrderDirection.Desc],
+                    ],
+                })
+            },
+        )
+
+        it('should create query with custom order and sorting', () => {
+            const query = voiceCallListWithSlaStatusQueryFactory(
+                statsFilters,
+                timezone,
+                undefined,
+                undefined,
+                undefined,
+                VoiceCallDimension.WaitTime,
+                OrderDirection.Asc,
+            )
+
+            expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST,
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                dimensions: voiceCallListDimensions,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallMember.SlaStatus,
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
+                    },
+                ],
+                timezone,
+                segments: [VoiceCallSegment.callsInFinalStatus],
+                order: [[VoiceCallDimension.WaitTime, OrderDirection.Asc]],
+            })
+        })
+    })
 
     it.each([
         voiceCallCountQueryFactory,

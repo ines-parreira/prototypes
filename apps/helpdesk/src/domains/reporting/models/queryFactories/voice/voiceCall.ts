@@ -280,6 +280,35 @@ export const voiceCallListQueryFactory = (
     metricName: METRIC_NAMES.VOICE_CALL_LIST,
 })
 
+export const voiceCallListWithSlaStatusQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    segment?: VoiceCallSegment,
+    limit?: number,
+    offset?: number,
+    order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
+    sorting: OrderDirection = OrderDirection.Desc,
+    statusFilter?: VoiceCallDisplayStatus[],
+    includeLiveData: boolean = false,
+): ReportingQuery<VoiceCallCube> => ({
+    measures: [VoiceCallMeasure.VoiceCallCount],
+    dimensions: voiceCallListDimensions,
+    timezone,
+    segments: withStatisticsDefaultSegment(segment, includeLiveData),
+    filters: [
+        ...withStatusFilter(filters, statusFilter),
+        {
+            member: VoiceCallMember.SlaStatus,
+            operator: ReportingFilterOperator.Set,
+            values: [],
+        },
+    ],
+    order: [[order, sorting]],
+    limit: limit,
+    offset: offset,
+    metricName: METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST,
+})
+
 export const liveDashBoardVoiceCallListQueryFactory = (
     filters: StatsFilters,
     segment?: VoiceCallSegment,

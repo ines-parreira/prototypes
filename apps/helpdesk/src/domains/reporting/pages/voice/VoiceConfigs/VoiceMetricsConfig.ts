@@ -8,6 +8,7 @@ import {
     liveDashBoardVoiceCallListQueryFactory,
     liveDashboardWaitingTimeCallsListQueryFactory,
     voiceCallListQueryFactory,
+    voiceCallListWithSlaStatusQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -147,7 +148,7 @@ export const VoiceMetricsConfig: Record<
         useTrend: useVoiceCallSlaAchievementRateTrend,
         drillDownMetric: VoiceMetric.VoiceCallsAchievementRate,
         drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
-            voiceCallListQueryFactory(
+            voiceCallListWithSlaStatusQueryFactory(
                 statsFilters,
                 timezone,
                 VoiceCallSegment.inboundCalls,

@@ -485,6 +485,7 @@ export const METRIC_NAMES = {
     VOICE_CALL_COUNT_PER_FILTERING_AGENT:
         'voice-call-count-per-filtering-agent',
     VOICE_CALL_LIST: 'voice-call-list',
+    VOICE_CALL_WITH_SLA_STATUS_LIST: 'voice-call-with-sla-status-list',
 
     // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',
