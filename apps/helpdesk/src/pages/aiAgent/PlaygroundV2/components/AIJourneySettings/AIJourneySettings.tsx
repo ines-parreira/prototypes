@@ -514,6 +514,7 @@ export const AIJourneySettings: React.FC = () => {
                                 postPurchaseWaitInMinutes >
                                     POST_PURCHASE_MAX_WAIT_TIME
                             }
+                            minValue={0}
                             value={postPurchaseWaitInMinutes ?? 1}
                             onChange={handlePostPurchaseWaitTimeField}
                             error={
@@ -541,6 +542,7 @@ export const AIJourneySettings: React.FC = () => {
                             waitTimeMinutes !== undefined &&
                             waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
                         }
+                        minValue={0}
                         value={waitTimeMinutes}
                         onChange={handleWelcomeWaitTimeField}
                         error={
