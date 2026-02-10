@@ -127,9 +127,6 @@ jest.mock(
 jest.mock('pages/aiAgent/AiAgentMainViewContainer', () => () => (
     <div>AiAgentMainViewContainer</div>
 ))
-jest.mock('pages/aiAgent/AiAgentKnowledgeContainer', () => ({
-    AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
-}))
 
 jest.mock('pages/aiAgent/KnowledgeHub/KnowledgeHubContainer', () => ({
     KnowledgeHubContainer: () => <div>KnowledgeHubContainer</div>,
@@ -743,47 +740,12 @@ describe('<Routes/>', () => {
             )
 
             expect(
-                screen.getByText('AiAgentKnowledgeContainer'),
+                screen.getByText('KnowledgeHubContainer'),
             ).toBeInTheDocument()
         })
 
-        it('should render AiAgentKnowledgeContainer when KnowledgeHubEnabled flag is disabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.KnowledgeHubEnabled) {
-                    return false
-                }
-                return false
-            })
-
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/knowledge',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(
-                screen.getByText('AiAgentKnowledgeContainer'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('KnowledgeHubContainer'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render KnowledgeHubContainer when KnowledgeHubEnabled flag is enabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.KnowledgeHubEnabled) {
-                    return true
-                }
-                return false
-            })
+        it('should render KnowledgeHubContainer', () => {
+            mockUseFlag.mockImplementation(() => false)
 
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -802,49 +764,10 @@ describe('<Routes/>', () => {
             expect(
                 screen.getByText('KnowledgeHubContainer'),
             ).toBeInTheDocument()
-            expect(
-                screen.queryByText('AiAgentKnowledgeContainer'),
-            ).not.toBeInTheDocument()
         })
 
-        it('should render AiAgentKnowledgeContainer for /knowledge/sources when KnowledgeHubEnabled flag is disabled', () => {
+        it('should render KnowledgeHubContainer for /knowledge/sources', () => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.KnowledgeHubEnabled) {
-                    return false
-                }
-                if (key === FeatureFlagKey.AiAgentScrapeStoreDomain) {
-                    return true
-                }
-                return false
-            })
-
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <MemoryRouter
-                        initialEntries={[
-                            '/app/ai-agent/shopify/test-shop/knowledge/sources',
-                        ]}
-                    >
-                        <SplitTicketViewProvider>
-                            <Routes />
-                        </SplitTicketViewProvider>
-                    </MemoryRouter>
-                </Provider>,
-            )
-
-            expect(
-                screen.getByText('AiAgentKnowledgeContainer'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('KnowledgeHubContainer'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render KnowledgeHubContainer for /knowledge/sources when KnowledgeHubEnabled flag is enabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.KnowledgeHubEnabled) {
-                    return true
-                }
                 if (key === FeatureFlagKey.AiAgentScrapeStoreDomain) {
                     return true
                 }
@@ -868,9 +791,6 @@ describe('<Routes/>', () => {
             expect(
                 screen.getByText('KnowledgeHubContainer'),
             ).toBeInTheDocument()
-            expect(
-                screen.queryByText('AiAgentKnowledgeContainer'),
-            ).not.toBeInTheDocument()
         })
 
         it.each([

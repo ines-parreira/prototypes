@@ -43,7 +43,6 @@ import { AiAgentGuidanceLibraryContainer } from 'pages/aiAgent/AiAgentGuidanceLi
 import { AiAgentGuidanceNewContainer } from 'pages/aiAgent/AiAgentGuidanceNewContainer'
 import { AiAgentGuidanceTemplateNewContainer } from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import { AiAgentGuidanceTemplatesContainer } from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
-import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import { AiAgentOnboardingRouter } from 'pages/aiAgent/AiAgentOnboardingRouter'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
@@ -359,11 +358,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         false,
     )
 
-    const isKnowledgeHubEnabled = useFlag(
-        FeatureFlagKey.KnowledgeHubEnabled,
-        false,
-    )
-
     const { routes } = useAiAgentNavigation({ shopName })
 
     if (shopType !== 'shopify') {
@@ -401,10 +395,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     }
 
     const isGorgiasUser = window.USER_IMPERSONATED || window.DEVELOPMENT
-
-    const knowledgeComponent = isKnowledgeHubEnabled
-        ? KnowledgeHubContainer
-        : AiAgentKnowledgeContainer
 
     return (
         <Switch>
@@ -552,20 +542,13 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     >
                         <Switch>
                             <Route
-                                path={
-                                    isKnowledgeHubEnabled
-                                        ? [
-                                              `${path}/knowledge/:type/:id`,
-                                              `${path}/knowledge/sources`,
-                                              `${path}/knowledge`,
-                                          ]
-                                        : [
-                                              `${path}/knowledge/sources`,
-                                              `${path}/knowledge`,
-                                          ]
-                                }
+                                path={[
+                                    `${path}/knowledge/:type/:id`,
+                                    `${path}/knowledge/sources`,
+                                    `${path}/knowledge`,
+                                ]}
                                 exact
-                                component={knowledgeComponent}
+                                component={KnowledgeHubContainer}
                             />
                         </Switch>
                         <Switch>
@@ -759,13 +742,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                                 path={`${path}/knowledge/guidance/templates`}
                                 component={AiAgentGuidanceTemplatesContainer}
                             />
-
-                            {!isKnowledgeHubEnabled && (
-                                <Route
-                                    path={`${path}/knowledge/guidance/:articleId`}
-                                    component={AiAgentGuidanceDetailContainer}
-                                />
-                            )}
                         </Switch>
                     </AiAgentErrorBoundary>
 

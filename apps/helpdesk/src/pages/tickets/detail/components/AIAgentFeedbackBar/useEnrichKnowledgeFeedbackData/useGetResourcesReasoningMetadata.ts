@@ -1,5 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import type { FindAiReasoningAiReasoningResult } from '@gorgias/knowledge-service-types'
 
 import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
@@ -145,11 +143,6 @@ export const useGetResourcesReasoningMetadata = ({
     const shopName = storeConfiguration?.shopName ?? ''
     const shopType = storeConfiguration?.shopType ?? ''
 
-    const isKnowledgeHubEnabled = useFlag(
-        FeatureFlagKey.KnowledgeHubEnabled,
-        false,
-    )
-
     const { integrationId } = useShopifyIntegrationAndScope(shopName)
 
     // Separate draft and non-draft resources
@@ -233,7 +226,6 @@ export const useGetResourcesReasoningMetadata = ({
                     },
                     shopName,
                     draftResourceData,
-                    isKnowledgeHubEnabled,
                 )
                 // If we found draft metadata and it's not deleted, use it
                 if (
@@ -253,7 +245,6 @@ export const useGetResourcesReasoningMetadata = ({
                 },
                 shopName,
                 publishedResourceData,
-                isKnowledgeHubEnabled,
             )
         }),
     }

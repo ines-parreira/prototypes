@@ -1096,13 +1096,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: 'Content 1',
-                url: 'http://test.gorgias.docker:4000/',
+                url: '/knowledge/faq/1',
                 helpCenterId: 100,
             })
         })
@@ -1116,7 +1115,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1136,13 +1134,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'External Snippet',
                 content: 'External Snippet',
-                url: '/articles/detail/300/3',
+                url: '/knowledge/url/3',
             })
         })
 
@@ -1155,13 +1152,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'Store Website Question',
                 content: 'Store Website Question',
-                url: '/questions/content/6',
+                url: '/knowledge/domain/6',
             })
         })
 
@@ -1174,13 +1170,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'File Snippet',
                 content: 'File Snippet',
-                url: '/file/300/4',
+                url: '/knowledge/document/4',
             })
         })
 
@@ -1193,7 +1188,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1208,7 +1202,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1227,7 +1220,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1246,7 +1238,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1265,7 +1256,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1284,7 +1274,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1299,7 +1288,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1314,7 +1302,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 null,
-                false,
             )
 
             expect(result).toBe(null)
@@ -1329,7 +1316,6 @@ describe('utils', () => {
                 },
                 '',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1348,7 +1334,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1368,7 +1353,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutQuestions,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1383,7 +1367,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1403,7 +1386,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutSourceItems,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1423,13 +1405,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutHelpCenter,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: 'Content 1',
-                url: undefined,
+                url: '/knowledge/faq/1',
                 helpCenterId: 100,
             })
         })
@@ -1448,13 +1429,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithMismatchedHelpCenter,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: 'Content 1',
-                url: undefined,
+                url: '/knowledge/faq/1',
                 helpCenterId: 100,
             })
         })
@@ -1473,7 +1453,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutGuidance,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1493,7 +1472,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutSourceItems,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1513,7 +1491,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutQuestions,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1533,7 +1510,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutFiles,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1553,7 +1529,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutActions,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1573,7 +1548,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutProducts,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1593,7 +1567,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithoutProducts,
-                false,
             )
 
             expect(result).toEqual(getEmptyMetadata())
@@ -1620,7 +1593,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithGuidanceNoTitle,
-                false,
             )
 
             expect(result).toEqual({
@@ -1645,7 +1617,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithActionNoName,
-                false,
             )
 
             expect(result).toEqual({
@@ -1675,13 +1646,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithArticleNoTitle,
-                false,
             )
 
             expect(result).toEqual({
                 title: '',
                 content: 'Content 1',
-                url: 'http://test.gorgias.docker:4000/',
+                url: '/knowledge/faq/1',
                 helpCenterId: 100,
             })
         })
@@ -1706,13 +1676,12 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithArticleNoContent,
-                false,
             )
 
             expect(result).toEqual({
                 title: 'Article 1',
                 content: '',
-                url: 'http://test.gorgias.docker:4000/',
+                url: '/knowledge/faq/1',
                 helpCenterId: 100,
             })
         })
@@ -1738,7 +1707,6 @@ describe('utils', () => {
                 },
                 'test-store',
                 resourceDataWithGuidanceNoContent,
-                false,
             )
 
             expect(result).toEqual({
@@ -1758,7 +1726,6 @@ describe('utils', () => {
                 },
                 '',
                 mockResourceData,
-                false,
             )
 
             expect(result).toEqual({
@@ -1789,7 +1756,7 @@ describe('utils', () => {
                     expected: {
                         title: 'External Snippet',
                         content: 'External Snippet',
-                        url: '',
+                        url: undefined,
                     },
                 },
                 {
@@ -1798,7 +1765,7 @@ describe('utils', () => {
                     expected: {
                         title: 'Store Website Question',
                         content: 'Store Website Question',
-                        url: '',
+                        url: undefined,
                     },
                 },
                 {
@@ -1807,7 +1774,7 @@ describe('utils', () => {
                     expected: {
                         title: 'File Snippet',
                         content: 'File Snippet',
-                        url: '',
+                        url: undefined,
                     },
                 },
                 {
@@ -1839,7 +1806,6 @@ describe('utils', () => {
                     },
                     shopName,
                     mockResourceData,
-                    false,
                 )
 
                 expect(result).toEqual(expected)
