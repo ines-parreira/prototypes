@@ -77,11 +77,14 @@ export function CustomCustomerFieldInput({
                 ? field.definition.input_settings.choices || []
                 : []
 
+        const isSearchable = choices.length > 5
+
         return (
             <div className={className}>
                 <MultiLevelSelect
                     id={id}
                     choices={choices}
+                    isSearchable={isSearchable}
                     selectedValue={value as TreeValue}
                     onSelect={onChange}
                     placeholder="+ Add"

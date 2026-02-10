@@ -39,12 +39,29 @@ describe('MultiLevelSelect', () => {
         expect(screen.getAllByText('Open')[0]).toBeInTheDocument()
     })
 
+    it('should hide search input when isSearchable is false', async () => {
+        const { user } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await act(() => user.click(trigger))
+
+        expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+    })
+
     it('should filter options when searching', async () => {
         const { user } = render(
             <MultiLevelSelect
                 choices={choices}
                 placeholder="Select option"
                 ariaLabel="Select field"
+                isSearchable
                 onSelect={vi.fn()}
             />,
         )
@@ -68,6 +85,7 @@ describe('MultiLevelSelect', () => {
                 choices={choices}
                 placeholder="Select option"
                 ariaLabel="Select field"
+                isSearchable
                 onSelect={vi.fn()}
             />,
         )
@@ -203,6 +221,7 @@ describe('MultiLevelSelect', () => {
                 choices={choices}
                 placeholder="Select option"
                 ariaLabel="Select field"
+                isSearchable
                 onSelect={vi.fn()}
             />,
         )

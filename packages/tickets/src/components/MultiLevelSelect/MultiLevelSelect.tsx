@@ -24,6 +24,7 @@ type Props = {
     isDisabled?: boolean
     isLoading?: boolean
     isInvalid?: boolean
+    isSearchable?: boolean
     ariaLabel?: string
     selectedValue?: TreeValue
     onSelect: (value: TreeValue | undefined) => void
@@ -39,6 +40,7 @@ export function MultiLevelSelect(props: Props) {
         isDisabled,
         isLoading,
         isInvalid,
+        isSearchable,
         ariaLabel,
     } = props
 
@@ -120,6 +122,7 @@ export function MultiLevelSelect(props: Props) {
             return (
                 <SelectTrigger>
                     <TextField
+                        id={id}
                         aria-label={
                             ariaLabel
                                 ? `${ariaLabel} selected value`
@@ -139,7 +142,7 @@ export function MultiLevelSelect(props: Props) {
                 </SelectTrigger>
             )
         },
-        [selectedValue, placeholder, ariaLabel, isInvalid],
+        [selectedValue, placeholder, ariaLabel, isInvalid, id],
     )
 
     return (
@@ -149,7 +152,7 @@ export function MultiLevelSelect(props: Props) {
             placeholder={placeholder}
             isDisabled={isDisabled}
             isLoading={isLoading}
-            isSearchable
+            isSearchable={isSearchable}
             searchValue={searchValue}
             onSearchChange={handleSearchChange}
             aria-label={ariaLabel}
