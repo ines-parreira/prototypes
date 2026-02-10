@@ -12,7 +12,7 @@
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
         "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "vitest run --configLoader=runner --coverage",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
