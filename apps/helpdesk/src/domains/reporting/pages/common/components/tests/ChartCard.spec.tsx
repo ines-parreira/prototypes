@@ -65,4 +65,19 @@ describe('<ChartCard />', () => {
             container.querySelector(`[data-candu-id="${canduId}-title"]`),
         ).toBeInTheDocument()
     })
+
+    it('should render headerSlot when provided', () => {
+        const title = 'Metric title'
+        const headerContent = <button>Toggle View</button>
+
+        render(
+            <ChartCard title={title} headerSlot={headerContent}>
+                Metric
+            </ChartCard>,
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'Toggle View' }),
+        ).toBeInTheDocument()
+    })
 })

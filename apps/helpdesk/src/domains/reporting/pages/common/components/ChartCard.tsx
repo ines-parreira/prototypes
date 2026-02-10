@@ -17,6 +17,7 @@ type Props = {
     hint?: TooltipData
     title: ReactNode
     titleExtra?: ReactNode
+    headerSlot?: ReactNode
     noPadding?: boolean
     canduId?: string
 } & DashboardChartProps
@@ -27,6 +28,7 @@ export default function ChartCard({
     hint,
     title,
     titleExtra,
+    headerSlot,
     noPadding = false,
     chartId,
     dashboard,
@@ -38,6 +40,7 @@ export default function ChartCard({
                 [css.noPadding]: noPadding,
             })}
         >
+            {headerSlot && <div>{headerSlot}</div>}
             <div
                 className={css.titleWrapper}
                 {...(canduId ? { 'data-candu-id': `${canduId}-title` } : {})}
