@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
@@ -203,9 +202,6 @@ export const KnowledgeHubContainer = () => {
     const isUpdatingFolderRef = useRef(false)
 
     // Fetch all resources metrics
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
     const timezone = useAppSelector(getTimezone)
     const storeIntegration = useStoreIntegrationByShopName(shopName)
     const shopIntegrationId = storeIntegration?.id
@@ -215,7 +211,7 @@ export const KnowledgeHubContainer = () => {
     const allResourcesMetrics = useAllResourcesMetrics({
         shopIntegrationId: shopIntegrationId || 0,
         timezone: timezone ?? 'UTC',
-        enabled: isPerformanceStatsEnabled && !!shopIntegrationId,
+        enabled: !!shopIntegrationId,
         loadIntents: false,
         dateRange: metricsDateRange,
     })
@@ -241,14 +237,11 @@ export const KnowledgeHubContainer = () => {
 
     // Enrich table data with metrics
     const enrichedTableData = useMemo(() => {
-        if (!isPerformanceStatsEnabled) {
-            return tableData
-        }
         return tableData.map((item) => ({
             ...item,
             metrics: metricsMap.get(item.id),
         }))
-    }, [tableData, metricsMap, isPerformanceStatsEnabled])
+    }, [tableData, metricsMap])
 
     useEffect(() => {
         const prevType = prevTypeRef.current
@@ -648,7 +641,7 @@ export const KnowledgeHubContainer = () => {
                 <KnowledgeHubTable
                     data={enrichedTableData}
                     metricsDateRange={metricsDateRange}
-                    isMetricsEnabled={isPerformanceStatsEnabled}
+                    isMetricsEnabled={true}
                     isMetricsLoading={isMetricsLoading}
                     isLoading={isInitialLoading || isUrlFolderSyncing}
                     onRowClick={onClick}
@@ -744,7 +737,7 @@ export const KnowledgeHubContainer = () => {
                 snippetType={snippetEditor.currentSnippetType}
                 handleVisibilityUpdate={snippetEditor.handleVisibilityUpdate}
             />
-            {isPerformanceStatsEnabled && <DrillDownModal isLegacy={false} />}
+            <DrillDownModal isLegacy={false} />
         </div>
     )
 }

@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
@@ -64,9 +62,6 @@ export const KnowledgeEditorSnippetLoader = ({
     shouldHideFullscreenButton,
 }: Props) => {
     const { error: notifyError } = useNotify()
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
     const timezone = useAppSelector(getTimezone)
     const { mutateAsync: updateTranslationMutation } =
         useUpdateArticleTranslation(helpCenterId)
@@ -102,7 +97,7 @@ export const KnowledgeEditorSnippetLoader = ({
         resourceSourceSetId: helpCenterId,
         shopIntegrationId,
         timezone: timezone ?? 'UTC',
-        enabled: isPerformanceStatsEnabled,
+        enabled: true,
         dateRange,
     })
 
@@ -312,20 +307,14 @@ export const KnowledgeEditorSnippetLoader = ({
             isPlaygroundOpen={isPlaygroundOpen}
             snippet={snippet}
             shouldHideFullscreenButton={shouldHideFullscreenButton}
-            impact={
-                isPerformanceStatsEnabled
-                    ? {
-                          tickets: resourceImpact.data?.tickets,
-                          handoverTickets: resourceImpact.data?.handoverTickets,
-                          csat: resourceImpact.data?.csat,
-                          intents: resourceImpact.data?.intents,
-                          isLoading: resourceImpact.isLoading,
-                      }
-                    : undefined
-            }
-            recentTickets={
-                isPerformanceStatsEnabled ? recentTickets : undefined
-            }
+            impact={{
+                tickets: resourceImpact.data?.tickets,
+                handoverTickets: resourceImpact.data?.handoverTickets,
+                csat: resourceImpact.data?.csat,
+                intents: resourceImpact.data?.intents,
+                isLoading: resourceImpact.isLoading,
+            }}
+            recentTickets={recentTickets}
         />
     )
 }

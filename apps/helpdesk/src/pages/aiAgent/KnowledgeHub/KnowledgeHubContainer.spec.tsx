@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -367,7 +366,6 @@ const mockTransformKnowledgeHubArticlesToKnowledgeItems =
 const mockUseAllResourcesMetrics = useAllResourcesMetrics as jest.Mock
 const mockUseStoreIntegrationByShopName =
     useStoreIntegrationByShopName as jest.Mock
-const mockUseFlag = useFlag as jest.Mock
 const mockUseUrlSyncStatus = useUrlSyncStatus as jest.Mock
 const mockUseGetLastWebsiteSync = useGetLastWebsiteSync as jest.Mock
 const mockGetLast28DaysDateRange =
@@ -547,8 +545,6 @@ describe('KnowledgeHubContainer', () => {
             handleClickPrevious: jest.fn(),
             handleClickNext: jest.fn(),
         })
-
-        mockUseFlag.mockReturnValue(false)
 
         mockUseStoreIntegrationByShopName.mockReturnValue({
             id: 1,
@@ -2794,71 +2790,40 @@ describe('KnowledgeHubContainer', () => {
     })
 
     describe('resource metrics fetching', () => {
-        describe('when PerformanceStatsOnIndividualKnowledge flag is disabled', () => {
-            beforeEach(() => {
-                mockUseFlag.mockReturnValue(false)
-            })
+        it('should fetch metrics data with correct parameters', () => {
+            renderComponent()
 
-            it('should not fetch metrics data', () => {
-                renderComponent()
-
-                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                    shopIntegrationId: 1,
-                    timezone: 'America/New_York',
-                    enabled: false,
-                    loadIntents: false,
-                    dateRange: expect.objectContaining({
-                        start_datetime: expect.any(String),
-                        end_datetime: expect.any(String),
-                    }),
-                })
+            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                shopIntegrationId: 1,
+                timezone: 'America/New_York',
+                enabled: true,
+                loadIntents: false,
+                dateRange: expect.objectContaining({
+                    start_datetime: expect.any(String),
+                    end_datetime: expect.any(String),
+                }),
             })
         })
 
-        describe('when PerformanceStatsOnIndividualKnowledge flag is enabled', () => {
-            beforeEach(() => {
-                mockUseFlag.mockReturnValue(true)
-            })
+        it('should not fetch metrics when shopIntegrationId is not available', () => {
+            mockUseStoreIntegrationByShopName.mockReturnValue(undefined)
 
-            it('should fetch metrics data with correct parameters', () => {
-                renderComponent()
+            renderComponent()
 
-                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                    shopIntegrationId: 1,
-                    timezone: 'America/New_York',
-                    enabled: true,
-                    loadIntents: false,
-                    dateRange: expect.objectContaining({
-                        start_datetime: expect.any(String),
-                        end_datetime: expect.any(String),
-                    }),
-                })
-            })
-
-            it('should not fetch metrics when shopIntegrationId is not available', () => {
-                mockUseStoreIntegrationByShopName.mockReturnValue(undefined)
-
-                renderComponent()
-
-                expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                    shopIntegrationId: 0,
-                    timezone: 'America/New_York',
-                    enabled: false,
-                    loadIntents: false,
-                    dateRange: expect.objectContaining({
-                        start_datetime: expect.any(String),
-                        end_datetime: expect.any(String),
-                    }),
-                })
+            expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
+                shopIntegrationId: 0,
+                timezone: 'America/New_York',
+                enabled: false,
+                loadIntents: false,
+                dateRange: expect.objectContaining({
+                    start_datetime: expect.any(String),
+                    end_datetime: expect.any(String),
+                }),
             })
         })
     })
 
     describe('metrics data enrichment logic', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
         it('should correctly map metrics by resourceSourceId', () => {
             const tableData = [
                 {

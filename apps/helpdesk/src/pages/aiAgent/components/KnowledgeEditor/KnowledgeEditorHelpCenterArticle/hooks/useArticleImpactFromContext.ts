@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
@@ -21,12 +19,7 @@ export type ArticleImpactData = {
     subtitle: string
 }
 
-export const useArticleImpactFromContext = ():
-    | ArticleImpactData
-    | undefined => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
+export const useArticleImpactFromContext = (): ArticleImpactData => {
     const timezone = useAppSelector(getTimezone)
     const { state, config } = useArticleContext()
     const { helpCenter } = config
@@ -44,7 +37,7 @@ export const useArticleImpactFromContext = ():
         resourceSourceSetId: helpCenter.id,
         shopIntegrationId: helpCenter.shop_integration_id ?? 0,
         timezone: timezone ?? 'UTC',
-        enabled: isPerformanceStatsEnabled && !!state.article,
+        enabled: !!state.article,
         dateRange,
     })
 
@@ -53,17 +46,14 @@ export const useArticleImpactFromContext = ():
     )
 
     return useMemo(
-        () =>
-            isPerformanceStatsEnabled
-                ? {
-                      tickets: resourceImpact.data?.tickets,
-                      handoverTickets: resourceImpact.data?.handoverTickets,
-                      csat: resourceImpact.data?.csat,
-                      intents: resourceImpact.data?.intents,
-                      isLoading: resourceImpact.isLoading,
-                      subtitle,
-                  }
-                : undefined,
-        [isPerformanceStatsEnabled, resourceImpact, subtitle],
+        () => ({
+            tickets: resourceImpact.data?.tickets,
+            handoverTickets: resourceImpact.data?.handoverTickets,
+            csat: resourceImpact.data?.csat,
+            intents: resourceImpact.data?.intents,
+            isLoading: resourceImpact.isLoading,
+            subtitle,
+        }),
+        [resourceImpact, subtitle],
     )
 }

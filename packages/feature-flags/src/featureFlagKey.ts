@@ -219,7 +219,6 @@ export enum FeatureFlagKey {
     EnableShopifyMetafieldsIngestionUIinMacros = 'linear.project_shopify-metafields_enable_ingestion-ui-macros',
     TriggerOnSearchKillSwitch = 'linear.task_AIORC-6090.kill-switch-for-trigger-on-search',
     KnowledgeHubEnabled = 'liner.project_allow-merchants-to-view-all-knowledge-from-a-single-place',
-    PerformanceStatsOnIndividualKnowledge = 'linear.project_add-performance-stats-to-knowledge.show-stats',
     ReportingP1MetricMigration = 'linear.project_new-stats-api.p1-metric-migration',
     ReportingP2MetricMigration = 'linear.project_new-stats-api.p2-metric-migration',
     ReportingP3MetricMigration = 'linear.project_new-stats-api.p3-metric-migration',

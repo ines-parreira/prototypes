@@ -1,7 +1,5 @@
 import type { JSX } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
@@ -21,13 +19,10 @@ export const KnowledgeEditorSidePanelURLSnippet = ({
     impact,
     recentTickets,
 }: Props): JSX.Element => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
-
     const initialExpandedSections: string[] = [
         'details',
-        ...(isPerformanceStatsEnabled ? ['impact', 'related-tickets'] : []),
+        'impact',
+        'related-tickets',
     ]
 
     return (
@@ -39,19 +34,15 @@ export const KnowledgeEditorSidePanelURLSnippet = ({
                 sectionId="details"
             />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionImpact
-                    {...impact}
-                    sectionId="impact"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionImpact
+                {...impact}
+                sectionId="impact"
+            />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRecentTickets
-                    {...recentTickets}
-                    sectionId="related-tickets"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionRecentTickets
+                {...recentTickets}
+                sectionId="related-tickets"
+            />
         </KnowledgeEditorSidePanel>
     )
 }

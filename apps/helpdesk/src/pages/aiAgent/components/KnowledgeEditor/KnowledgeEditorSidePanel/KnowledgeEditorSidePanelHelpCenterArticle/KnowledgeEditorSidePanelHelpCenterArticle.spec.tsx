@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
 import {
@@ -8,14 +7,6 @@ import {
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanelHelpCenterArticle } from './KnowledgeEditorSidePanelHelpCenterArticle'
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        PerformanceStatsOnIndividualKnowledge:
-            'PerformanceStatsOnIndividualKnowledge',
-    },
-    useFlag: jest.fn(),
-}))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks',
@@ -90,7 +81,6 @@ jest.mock('./KnowledgeEditorSidePanelSectionHelpCenterArticleSettings', () => ({
     }) => <div data-testid={`section-${sectionId}`}>Settings Section</div>,
 }))
 
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 const mockUseArticleImpactFromContext =
     useArticleImpactFromContext as jest.MockedFunction<
         typeof useArticleImpactFromContext
@@ -107,107 +97,78 @@ const mockUseArticleRecentTicketsFromContext =
 describe('KnowledgeEditorSidePanelHelpCenterArticle', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseArticleImpactFromContext.mockReturnValue(undefined)
-        mockUseArticleEngagementFromContext.mockReturnValue(undefined)
+        mockUseArticleImpactFromContext.mockReturnValue({
+            tickets: undefined,
+            handoverTickets: undefined,
+            csat: undefined,
+            intents: undefined,
+            isLoading: false,
+            subtitle: 'Last 28 days',
+        })
+        mockUseArticleEngagementFromContext.mockReturnValue({
+            views: undefined,
+            rating: undefined,
+            reactions: undefined,
+            isLoading: false,
+            subtitle: 'Last 28 days',
+        })
         mockUseArticleRecentTicketsFromContext.mockReturnValue(undefined)
     })
 
-    describe('when feature flag is enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+    it('renders all performance sections', () => {
+        mockUseArticleImpactFromContext.mockReturnValue({
+            tickets: { value: 10 },
+            handoverTickets: { value: 2 },
+            csat: { value: 0.8 },
+            intents: ['intent1', 'intent2'],
+            isLoading: false,
+            subtitle: 'Last 28 days',
+        })
+        mockUseArticleEngagementFromContext.mockReturnValue({
+            views: 100,
+            rating: 0.9,
+            reactions: { up: 90, down: 10 },
+            isLoading: false,
+            subtitle: 'Last 28 days',
+        })
+        mockUseArticleRecentTicketsFromContext.mockReturnValue({
+            ticketCount: 10,
+            latest3Tickets: [],
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            dateRange: {
+                start_datetime: '2024-01-01',
+                end_datetime: '2024-01-28',
+            },
+            outcomeCustomFieldId: 789,
+            intentCustomFieldId: 101112,
+            isLoading: false,
         })
 
-        it('renders all performance sections', () => {
-            mockUseArticleImpactFromContext.mockReturnValue({
-                tickets: { value: 10 },
-                handoverTickets: { value: 2 },
-                csat: { value: 0.8 },
-                intents: ['intent1', 'intent2'],
-                isLoading: false,
-                subtitle: 'Last 28 days',
-            })
-            mockUseArticleEngagementFromContext.mockReturnValue({
-                views: 100,
-                rating: 0.9,
-                reactions: { up: 90, down: 10 },
-                isLoading: false,
-                subtitle: 'Last 28 days',
-            })
-            mockUseArticleRecentTicketsFromContext.mockReturnValue({
-                ticketCount: 10,
-                latest3Tickets: [],
-                resourceSourceId: 123,
-                resourceSourceSetId: 456,
-                dateRange: {
-                    start_datetime: '2024-01-01',
-                    end_datetime: '2024-01-28',
-                },
-                outcomeCustomFieldId: 789,
-                intentCustomFieldId: 101112,
-                isLoading: false,
-            })
+        render(<KnowledgeEditorSidePanelHelpCenterArticle />)
 
-            render(<KnowledgeEditorSidePanelHelpCenterArticle />)
-
-            expect(screen.getByTestId('section-details')).toBeInTheDocument()
-            expect(screen.getByTestId('section-impact')).toBeInTheDocument()
-            expect(
-                screen.getByTestId('section-recentTickets'),
-            ).toBeInTheDocument()
-            expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
-            expect(screen.getByTestId('section-settings')).toBeInTheDocument()
-        })
-
-        it('sets all performance sections as initially expanded', () => {
-            render(<KnowledgeEditorSidePanelHelpCenterArticle />)
-
-            expect(
-                screen.getByTestId('initial-expanded-sections'),
-            ).toHaveTextContent(
-                'details,impact,engagement,recentTickets,settings',
-            )
-        })
-
-        it('renders performance sections even when hooks return undefined', () => {
-            render(<KnowledgeEditorSidePanelHelpCenterArticle />)
-
-            expect(screen.getByTestId('section-details')).toBeInTheDocument()
-            expect(screen.getByTestId('section-impact')).toBeInTheDocument()
-            expect(
-                screen.getByTestId('section-recentTickets'),
-            ).toBeInTheDocument()
-            expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
-            expect(screen.getByTestId('section-settings')).toBeInTheDocument()
-        })
+        expect(screen.getByTestId('section-details')).toBeInTheDocument()
+        expect(screen.getByTestId('section-impact')).toBeInTheDocument()
+        expect(screen.getByTestId('section-recentTickets')).toBeInTheDocument()
+        expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
+        expect(screen.getByTestId('section-settings')).toBeInTheDocument()
     })
 
-    describe('when feature flag is disabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(false)
-        })
+    it('sets all performance sections as initially expanded', () => {
+        render(<KnowledgeEditorSidePanelHelpCenterArticle />)
 
-        it('does not render performance sections', () => {
-            render(<KnowledgeEditorSidePanelHelpCenterArticle />)
+        expect(
+            screen.getByTestId('initial-expanded-sections'),
+        ).toHaveTextContent('details,impact,engagement,recentTickets,settings')
+    })
 
-            expect(screen.getByTestId('section-details')).toBeInTheDocument()
-            expect(
-                screen.queryByTestId('section-impact'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByTestId('section-recentTickets'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByTestId('section-engagement'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByTestId('section-settings')).toBeInTheDocument()
-        })
+    it('renders performance sections even when hooks return undefined', () => {
+        render(<KnowledgeEditorSidePanelHelpCenterArticle />)
 
-        it('does not include performance sections in initialExpandedSections', () => {
-            render(<KnowledgeEditorSidePanelHelpCenterArticle />)
-
-            expect(
-                screen.getByTestId('initial-expanded-sections'),
-            ).toHaveTextContent('details,settings')
-        })
+        expect(screen.getByTestId('section-details')).toBeInTheDocument()
+        expect(screen.getByTestId('section-impact')).toBeInTheDocument()
+        expect(screen.getByTestId('section-recentTickets')).toBeInTheDocument()
+        expect(screen.getByTestId('section-engagement')).toBeInTheDocument()
+        expect(screen.getByTestId('section-settings')).toBeInTheDocument()
     })
 })

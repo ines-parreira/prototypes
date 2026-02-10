@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
 import {
@@ -11,14 +10,6 @@ import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/Know
 import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types'
 
 import { useArticleRecentTicketsFromContext } from './useArticleRecentTicketsFromContext'
-
-jest.mock('@repo/feature-flags', () => ({
-    useFlag: jest.fn(),
-    FeatureFlagKey: {
-        PerformanceStatsOnIndividualKnowledge:
-            'linear.project_add-performance-stats-to-knowledge.show-stats',
-    },
-}))
 
 jest.mock(
     'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
@@ -38,7 +29,6 @@ jest.mock(
     }),
 )
 
-const mockUseFlag = useFlag as jest.Mock
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 const mockUseRecentTicketsWithDrilldown =
     useRecentTicketsWithDrilldown as jest.Mock
@@ -113,211 +103,161 @@ describe('useArticleRecentTicketsFromContext', () => {
         mockUseRecentTicketsWithDrilldown.mockReturnValue(mockRecentTicketsData)
     })
 
-    describe('when feature flag is disabled', () => {
-        it('should still call useResourceMetrics but with enabled=false', () => {
-            mockUseFlag.mockReturnValue(false)
+    it('should return related tickets data', () => {
+        const { result } = renderHook(() =>
+            useArticleRecentTicketsFromContext(),
+        )
 
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
-                resourceSourceId: 123,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 0,
-                timezone: 'America/New_York',
-                enabled: false,
-                dateRange: mockDateRange,
-            })
-        })
-
-        it('should still call useRecentTicketsWithDrilldown but with enabled=false', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
-                resourceSourceId: 123,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 0,
-                timezone: 'America/New_York',
-                enabled: false,
-                ticketCount: 42,
-                ticketCountIsLoading: false,
-                dateRange: mockDateRange,
-            })
+        expect(result.current).toEqual({
+            ...mockRecentTicketsData,
+            subtitle: 'Last 28 days',
         })
     })
 
-    describe('when feature flag is enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+    it('should call getLast28DaysDateRange to calculate date range', () => {
+        renderHook(() => useArticleRecentTicketsFromContext())
+
+        expect(mockGetLast28DaysDateRange).toHaveBeenCalled()
+    })
+
+    it('should call useResourceMetrics with enabled=true when article exists', () => {
+        renderHook(() => useArticleRecentTicketsFromContext())
+
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: 123,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 0,
+            timezone: 'America/New_York',
+            enabled: true,
+            dateRange: mockDateRange,
+        })
+    })
+
+    it('should call useRecentTicketsWithDrilldown with enabled=true when article exists', () => {
+        renderHook(() => useArticleRecentTicketsFromContext())
+
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
+            resourceSourceId: 123,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 0,
+            timezone: 'America/New_York',
+            enabled: true,
+            ticketCount: 42,
+            ticketCountIsLoading: false,
+            dateRange: mockDateRange,
+        })
+    })
+
+    it('should pass ticket count from resourceImpact to useRecentTicketsWithDrilldown', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: { tickets: { value: 99 } },
+            isLoading: false,
         })
 
-        it('should return related tickets data', () => {
-            const { result } = renderHook(() =>
-                useArticleRecentTicketsFromContext(),
-            )
+        renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(result.current).toEqual({
-                ...mockRecentTicketsData,
-                subtitle: 'Last 28 days',
-            })
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ticketCount: 99,
+            }),
+        )
+    })
+
+    it('should use 0 as ticket count when resourceImpact has no tickets data', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: {},
+            isLoading: false,
         })
 
-        it('should call useFlag with correct feature flag key', () => {
-            renderHook(() => useArticleRecentTicketsFromContext())
+        renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseFlag).toHaveBeenCalledWith(
-                FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-            )
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ticketCount: 0,
+            }),
+        )
+    })
+
+    it('should use 0 as ticket count when resourceImpact data is undefined', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: undefined,
+            isLoading: false,
         })
 
-        it('should call getLast28DaysDateRange to calculate date range', () => {
-            renderHook(() => useArticleRecentTicketsFromContext())
+        renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockGetLast28DaysDateRange).toHaveBeenCalled()
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ticketCount: 0,
+            }),
+        )
+    })
+
+    it('should call hooks with enabled=false when article is undefined', () => {
+        mockUseArticleContext.mockReturnValue({
+            ...defaultContextValue,
+            state: {
+                ...defaultContextValue.state,
+                article: undefined,
+            },
         })
 
-        it('should call useResourceMetrics with enabled=true when article exists', () => {
-            renderHook(() => useArticleRecentTicketsFromContext())
+        renderHook(() => useArticleRecentTicketsFromContext())
 
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: 0,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 0,
+            timezone: 'America/New_York',
+            enabled: false,
+            dateRange: mockDateRange,
+        })
+
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
+            resourceSourceId: 0,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 0,
+            timezone: 'America/New_York',
+            enabled: false,
+            ticketCount: 42,
+            ticketCountIsLoading: false,
+            dateRange: mockDateRange,
+        })
+    })
+
+    it('should use UTC as default timezone when selector returns undefined', () => {
+        mockUseAppSelector.mockReturnValue(undefined)
+
+        renderHook(() => useArticleRecentTicketsFromContext())
+
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+            expect.objectContaining({
                 resourceSourceId: 123,
                 resourceSourceSetId: 1,
                 shopIntegrationId: 0,
-                timezone: 'America/New_York',
+                timezone: 'UTC',
                 enabled: true,
                 dateRange: mockDateRange,
-            })
-        })
+            }),
+        )
 
-        it('should call useRecentTicketsWithDrilldown with enabled=true when article exists', () => {
-            renderHook(() => useArticleRecentTicketsFromContext())
+        expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
+            expect.objectContaining({
+                timezone: 'UTC',
+            }),
+        )
+    })
 
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
-                resourceSourceId: 123,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 0,
-                timezone: 'America/New_York',
-                enabled: true,
-                ticketCount: 42,
-                ticketCountIsLoading: false,
-                dateRange: mockDateRange,
-            })
-        })
+    it('should pass the same dateRange to both hooks', () => {
+        renderHook(() => useArticleRecentTicketsFromContext())
 
-        it('should pass ticket count from resourceImpact to useRecentTicketsWithDrilldown', () => {
-            mockUseResourceMetrics.mockReturnValue({
-                data: { tickets: { value: 99 } },
-                isLoading: false,
-            })
+        const resourceMetricsCall = mockUseResourceMetrics.mock.calls[0][0]
+        const recentTicketsCall =
+            mockUseRecentTicketsWithDrilldown.mock.calls[0][0]
 
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketCount: 99,
-                }),
-            )
-        })
-
-        it('should use 0 as ticket count when resourceImpact has no tickets data', () => {
-            mockUseResourceMetrics.mockReturnValue({
-                data: {},
-                isLoading: false,
-            })
-
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketCount: 0,
-                }),
-            )
-        })
-
-        it('should use 0 as ticket count when resourceImpact data is undefined', () => {
-            mockUseResourceMetrics.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-            })
-
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    ticketCount: 0,
-                }),
-            )
-        })
-
-        it('should call hooks with enabled=false when article is undefined', () => {
-            mockUseArticleContext.mockReturnValue({
-                ...defaultContextValue,
-                state: {
-                    ...defaultContextValue.state,
-                    article: undefined,
-                },
-            })
-
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
-                resourceSourceId: 0,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 0,
-                timezone: 'America/New_York',
-                enabled: false,
-                dateRange: mockDateRange,
-            })
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith({
-                resourceSourceId: 0,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 0,
-                timezone: 'America/New_York',
-                enabled: false,
-                ticketCount: 42,
-                ticketCountIsLoading: false,
-                dateRange: mockDateRange,
-            })
-        })
-
-        it('should use UTC as default timezone when selector returns undefined', () => {
-            mockUseAppSelector.mockReturnValue(undefined)
-
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    resourceSourceId: 123,
-                    resourceSourceSetId: 1,
-                    shopIntegrationId: 0,
-                    timezone: 'UTC',
-                    enabled: true,
-                    dateRange: mockDateRange,
-                }),
-            )
-
-            expect(mockUseRecentTicketsWithDrilldown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    timezone: 'UTC',
-                }),
-            )
-        })
-
-        it('should pass the same dateRange to both hooks', () => {
-            renderHook(() => useArticleRecentTicketsFromContext())
-
-            const resourceMetricsCall = mockUseResourceMetrics.mock.calls[0][0]
-            const recentTicketsCall =
-                mockUseRecentTicketsWithDrilldown.mock.calls[0][0]
-
-            expect(resourceMetricsCall.dateRange).toBe(mockDateRange)
-            expect(recentTicketsCall.dateRange).toBe(mockDateRange)
-            expect(resourceMetricsCall.dateRange).toBe(
-                recentTicketsCall.dateRange,
-            )
-        })
+        expect(resourceMetricsCall.dateRange).toBe(mockDateRange)
+        expect(recentTicketsCall.dateRange).toBe(mockDateRange)
+        expect(resourceMetricsCall.dateRange).toBe(recentTicketsCall.dateRange)
     })
 
     describe('when impactDateRange is provided', () => {
@@ -338,7 +278,6 @@ describe('useArticleRecentTicketsFromContext', () => {
         }
 
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
             mockUseArticleContext.mockReturnValue(contextWithImpactDateRange)
         })
 
@@ -380,8 +319,6 @@ describe('useArticleRecentTicketsFromContext', () => {
 
     describe('memoization', () => {
         it('should memoize dateRange across renders', () => {
-            mockUseFlag.mockReturnValue(true)
-
             const { rerender } = renderHook(() =>
                 useArticleRecentTicketsFromContext(),
             )

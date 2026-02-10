@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     getLast28DaysDateRange,
     useRecentTicketsWithDrilldown,
@@ -34,7 +32,7 @@ type Params = {
  * @param shopIntegrationId - The ID of the shop
  * @param enabled - Whether to fetch data (default: true)
  * @param dateRange - Optional custom date range (defaults to last 28 days)
- * @returns Recent tickets data or undefined if feature flag is disabled
+ * @returns Recent tickets data
  */
 export const useKnowledgeRecentTickets = ({
     resourceSourceId,
@@ -43,9 +41,6 @@ export const useKnowledgeRecentTickets = ({
     enabled = true,
     dateRange: customDateRange,
 }: Params): KnowledgeRecentTicketsData | undefined => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
     const timezone = useAppSelector(getTimezone)
 
     // Use custom date range if provided, otherwise calculate last 28 days
@@ -54,29 +49,25 @@ export const useKnowledgeRecentTickets = ({
         [customDateRange],
     )
 
-    const isEnabled = isPerformanceStatsEnabled && enabled
-
     // Get resource metrics to fetch ticket count
     const resourceImpact = useResourceMetrics({
         resourceSourceId,
         resourceSourceSetId,
         shopIntegrationId,
         timezone: timezone ?? 'UTC',
-        enabled: isEnabled,
+        enabled,
         dateRange,
     })
 
     // Fetch recent tickets with drilldown data
-    const recentTickets = useRecentTicketsWithDrilldown({
+    return useRecentTicketsWithDrilldown({
         resourceSourceId,
         resourceSourceSetId,
         shopIntegrationId,
         timezone: timezone ?? 'UTC',
-        enabled: isEnabled,
+        enabled,
         ticketCount: resourceImpact.data?.tickets?.value ?? 0,
         ticketCountIsLoading: resourceImpact.isLoading,
         dateRange,
     })
-
-    return recentTickets
 }

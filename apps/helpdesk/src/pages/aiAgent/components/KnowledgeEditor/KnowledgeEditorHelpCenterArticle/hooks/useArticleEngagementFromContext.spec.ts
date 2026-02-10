@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
@@ -18,14 +17,6 @@ import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/Know
 import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context/types'
 
 import { useArticleEngagementFromContext } from './useArticleEngagementFromContext'
-
-jest.mock('@repo/feature-flags', () => ({
-    useFlag: jest.fn(),
-    FeatureFlagKey: {
-        PerformanceStatsOnIndividualKnowledge:
-            'PerformanceStatsOnIndividualKnowledge',
-    },
-}))
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
@@ -51,7 +42,6 @@ jest.mock(
     }),
 )
 
-const mockUseFlag = useFlag as jest.Mock
 const mockUseMetricPerDimension = useMetricPerDimension as jest.Mock
 const mockUseGetHelpCenterStatistics = useGetHelpCenterStatistics as jest.Mock
 const mockPerformanceByArticleQueryFactory =
@@ -137,7 +127,6 @@ describe('useArticleEngagementFromContext', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(true)
         mockUseAppSelector.mockReturnValue('America/New_York')
         mockUseArticleContext.mockReturnValue(defaultContextValue)
         mockPerformanceByArticleQueryFactory.mockReturnValue(mockQuery)
@@ -149,7 +138,7 @@ describe('useArticleEngagementFromContext', () => {
     })
 
     describe('when article is not available', () => {
-        it('should return undefined when article is not available', () => {
+        it('should return engagement data with undefined metrics when article is not available', () => {
             mockUseArticleContext.mockReturnValue({
                 ...defaultContextValue,
                 state: {
@@ -157,15 +146,29 @@ describe('useArticleEngagementFromContext', () => {
                     article: undefined,
                 },
             })
+            mockUseGetHelpCenterStatistics.mockReturnValue({
+                data: [],
+                isFetching: false,
+            })
+            mockUseMetricPerDimension.mockReturnValue({
+                data: null,
+                isFetching: false,
+            })
 
             const { result } = renderHook(() =>
                 useArticleEngagementFromContext(),
             )
 
-            expect(result.current).toBeUndefined()
+            expect(result.current).toEqual({
+                views: undefined,
+                rating: undefined,
+                reactions: undefined,
+                isLoading: false,
+                subtitle: 'Last 28 days',
+            })
         })
 
-        it('should return undefined when article id is missing', () => {
+        it('should return engagement data with undefined metrics when article id is missing', () => {
             mockUseArticleContext.mockReturnValue({
                 ...defaultContextValue,
                 state: {
@@ -178,40 +181,23 @@ describe('useArticleEngagementFromContext', () => {
                     },
                 },
             })
-
-            const { result } = renderHook(() =>
-                useArticleEngagementFromContext(),
-            )
-
-            expect(result.current).toBeUndefined()
-        })
-    })
-
-    describe('feature flag', () => {
-        it('should return undefined when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { result } = renderHook(() =>
-                useArticleEngagementFromContext(),
-            )
-
-            expect(result.current).toBeUndefined()
-        })
-
-        it('should return engagement data when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseGetHelpCenterStatistics.mockReturnValue({
+                data: [],
+                isFetching: false,
+            })
+            mockUseMetricPerDimension.mockReturnValue({
+                data: null,
+                isFetching: false,
+            })
 
             const { result } = renderHook(() =>
                 useArticleEngagementFromContext(),
             )
 
             expect(result.current).toEqual({
-                views: 1234,
-                rating: 0.8,
-                reactions: {
-                    up: 80,
-                    down: 20,
-                },
+                views: undefined,
+                rating: undefined,
+                reactions: undefined,
                 isLoading: false,
                 subtitle: 'Last 28 days',
             })

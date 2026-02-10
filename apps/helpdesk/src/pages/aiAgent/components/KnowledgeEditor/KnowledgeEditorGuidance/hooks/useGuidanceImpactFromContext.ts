@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
@@ -22,12 +20,7 @@ export type GuidanceImpactData = {
     subtitle: string
 }
 
-export const useGuidanceImpactFromContext = ():
-    | GuidanceImpactData
-    | undefined => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
+export const useGuidanceImpactFromContext = (): GuidanceImpactData => {
     const timezone = useAppSelector(getTimezone)
     const { guidanceArticle, config, state } = useGuidanceContext()
     const { guidanceHelpCenter } = config
@@ -45,7 +38,7 @@ export const useGuidanceImpactFromContext = ():
         resourceSourceSetId: guidanceHelpCenter.id,
         shopIntegrationId: guidanceHelpCenter.shop_integration_id ?? 0,
         timezone: timezone ?? 'UTC',
-        enabled: isPerformanceStatsEnabled && !!guidanceArticle,
+        enabled: !!guidanceArticle,
         dateRange,
     })
 
@@ -54,17 +47,14 @@ export const useGuidanceImpactFromContext = ():
     )
 
     return useMemo(
-        () =>
-            isPerformanceStatsEnabled
-                ? {
-                      tickets: resourceImpact.data?.tickets,
-                      handoverTickets: resourceImpact.data?.handoverTickets,
-                      csat: resourceImpact.data?.csat,
-                      intents: resourceImpact.data?.intents,
-                      isLoading: resourceImpact.isLoading,
-                      subtitle,
-                  }
-                : undefined,
-        [isPerformanceStatsEnabled, resourceImpact, subtitle],
+        () => ({
+            tickets: resourceImpact.data?.tickets,
+            handoverTickets: resourceImpact.data?.handoverTickets,
+            csat: resourceImpact.data?.csat,
+            intents: resourceImpact.data?.intents,
+            isLoading: resourceImpact.isLoading,
+            subtitle,
+        }),
+        [resourceImpact, subtitle],
     )
 }

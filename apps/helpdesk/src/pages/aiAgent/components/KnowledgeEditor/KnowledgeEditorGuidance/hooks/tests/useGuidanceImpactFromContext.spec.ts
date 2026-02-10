@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
 import {
@@ -12,11 +11,6 @@ import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { useGuidanceContext } from '../../context'
 import { useGuidanceImpactFromContext } from '../useGuidanceImpactFromContext'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
 
 jest.mock(
     'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
@@ -32,7 +26,6 @@ jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
 }))
 
-const mockUseFlag = useFlag as jest.Mock
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -90,155 +83,112 @@ describe('useGuidanceImpactFromContext', () => {
         })
     })
 
-    describe('when feature flag is disabled', () => {
-        it('should return undefined', () => {
-            mockUseFlag.mockReturnValue(false)
+    it('should return guidance impact data', () => {
+        const { result } = renderHook(() => useGuidanceImpactFromContext())
 
-            const { result } = renderHook(() => useGuidanceImpactFromContext())
-
-            expect(result.current).toBeUndefined()
-        })
-
-        it('should still call useResourceMetrics but with enabled=false', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            renderHook(() => useGuidanceImpactFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
-                resourceSourceId: 123,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 456,
-                timezone: 'America/New_York',
-                enabled: false,
-                dateRange: mockDateRange,
-            })
+        expect(result.current).toEqual({
+            tickets: mockMetricsData.tickets,
+            handoverTickets: mockMetricsData.handoverTickets,
+            csat: mockMetricsData.csat,
+            intents: mockMetricsData.intents,
+            isLoading: false,
+            subtitle: 'Last 28 days',
         })
     })
 
-    describe('when feature flag is enabled', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+    it('should call useResourceMetrics with enabled=true when guidanceArticle exists', () => {
+        renderHook(() => useGuidanceImpactFromContext())
+
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: 123,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 456,
+            timezone: 'America/New_York',
+            enabled: true,
+            dateRange: mockDateRange,
+        })
+    })
+
+    it('should call useResourceMetrics with enabled=false when guidanceArticle is undefined', () => {
+        mockUseGuidanceContext.mockReturnValue({
+            ...defaultContextValue,
+            guidanceArticle: undefined,
         })
 
-        it('should return guidance impact data', () => {
-            const { result } = renderHook(() => useGuidanceImpactFromContext())
+        renderHook(() => useGuidanceImpactFromContext())
 
-            expect(result.current).toEqual({
-                tickets: mockMetricsData.tickets,
-                handoverTickets: mockMetricsData.handoverTickets,
-                csat: mockMetricsData.csat,
-                intents: mockMetricsData.intents,
-                isLoading: false,
-                subtitle: 'Last 28 days',
-            })
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith({
+            resourceSourceId: 0,
+            resourceSourceSetId: 1,
+            shopIntegrationId: 456,
+            timezone: 'America/New_York',
+            enabled: false,
+            dateRange: mockDateRange,
+        })
+    })
+
+    it('should use UTC as default timezone when selector returns undefined', () => {
+        mockUseAppSelector.mockReturnValue(undefined)
+
+        renderHook(() => useGuidanceImpactFromContext())
+
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+            expect.objectContaining({
+                timezone: 'UTC',
+            }),
+        )
+    })
+
+    it('should use 0 for shop_integration_id when not available', () => {
+        mockUseGuidanceContext.mockReturnValue({
+            ...defaultContextValue,
+            config: {
+                guidanceHelpCenter: {
+                    id: 1,
+                    shop_integration_id: null,
+                },
+            } as GuidanceContextValue['config'],
         })
 
-        it('should call useFlag with correct feature flag key', () => {
-            renderHook(() => useGuidanceImpactFromContext())
+        renderHook(() => useGuidanceImpactFromContext())
 
-            expect(mockUseFlag).toHaveBeenCalledWith(
-                FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-            )
+        expect(mockUseResourceMetrics).toHaveBeenCalledWith(
+            expect.objectContaining({
+                shopIntegrationId: 0,
+            }),
+        )
+    })
+
+    it('should return isLoading=true when metrics are loading', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: undefined,
+            isLoading: true,
         })
 
-        it('should call useResourceMetrics with enabled=true when guidanceArticle exists', () => {
-            renderHook(() => useGuidanceImpactFromContext())
+        const { result } = renderHook(() => useGuidanceImpactFromContext())
 
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
-                resourceSourceId: 123,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 456,
-                timezone: 'America/New_York',
-                enabled: true,
-                dateRange: mockDateRange,
-            })
+        expect(result.current?.isLoading).toBe(true)
+    })
+
+    it('should return undefined for metrics when data is not available', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: undefined,
+            isLoading: false,
         })
 
-        it('should call useResourceMetrics with enabled=false when guidanceArticle is undefined', () => {
-            mockUseGuidanceContext.mockReturnValue({
-                ...defaultContextValue,
-                guidanceArticle: undefined,
-            })
+        const { result } = renderHook(() => useGuidanceImpactFromContext())
 
-            renderHook(() => useGuidanceImpactFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith({
-                resourceSourceId: 0,
-                resourceSourceSetId: 1,
-                shopIntegrationId: 456,
-                timezone: 'America/New_York',
-                enabled: false,
-                dateRange: mockDateRange,
-            })
-        })
-
-        it('should use UTC as default timezone when selector returns undefined', () => {
-            mockUseAppSelector.mockReturnValue(undefined)
-
-            renderHook(() => useGuidanceImpactFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    timezone: 'UTC',
-                }),
-            )
-        })
-
-        it('should use 0 for shop_integration_id when not available', () => {
-            mockUseGuidanceContext.mockReturnValue({
-                ...defaultContextValue,
-                config: {
-                    guidanceHelpCenter: {
-                        id: 1,
-                        shop_integration_id: null,
-                    },
-                } as GuidanceContextValue['config'],
-            })
-
-            renderHook(() => useGuidanceImpactFromContext())
-
-            expect(mockUseResourceMetrics).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    shopIntegrationId: 0,
-                }),
-            )
-        })
-
-        it('should return isLoading=true when metrics are loading', () => {
-            mockUseResourceMetrics.mockReturnValue({
-                data: undefined,
-                isLoading: true,
-            })
-
-            const { result } = renderHook(() => useGuidanceImpactFromContext())
-
-            expect(result.current?.isLoading).toBe(true)
-        })
-
-        it('should return undefined for metrics when data is not available', () => {
-            mockUseResourceMetrics.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-            })
-
-            const { result } = renderHook(() => useGuidanceImpactFromContext())
-
-            expect(result.current).toEqual({
-                tickets: undefined,
-                handoverTickets: undefined,
-                csat: undefined,
-                intents: undefined,
-                isLoading: false,
-                subtitle: 'Last 28 days',
-            })
+        expect(result.current).toEqual({
+            tickets: undefined,
+            handoverTickets: undefined,
+            csat: undefined,
+            intents: undefined,
+            isLoading: false,
+            subtitle: 'Last 28 days',
         })
     })
 
     describe('historical version date range', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
         it('should use historicalVersion impactDateRange when viewing historical version', () => {
             const historicalDateRange = {
                 start_datetime: '2024-06-01T00:00:00Z',
@@ -282,8 +232,6 @@ describe('useGuidanceImpactFromContext', () => {
 
     describe('memoization', () => {
         it('should return same reference when dependencies do not change', () => {
-            mockUseFlag.mockReturnValue(true)
-
             const { result, rerender } = renderHook(() =>
                 useGuidanceImpactFromContext(),
             )
@@ -296,8 +244,6 @@ describe('useGuidanceImpactFromContext', () => {
         })
 
         it('should return new reference when resourceImpact changes', () => {
-            mockUseFlag.mockReturnValue(true)
-
             const { result, rerender } = renderHook(() =>
                 useGuidanceImpactFromContext(),
             )

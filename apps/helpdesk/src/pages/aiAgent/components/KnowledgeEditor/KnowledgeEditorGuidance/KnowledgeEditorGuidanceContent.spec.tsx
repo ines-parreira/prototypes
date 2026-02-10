@@ -12,17 +12,6 @@ import { KnowledgeEditorGuidanceProvider } from './context'
 import type { GuidanceContextConfig } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 
-// Mock feature flags
-const mockUseFlag = jest.fn()
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    FeatureFlagKey: {
-        PerformanceStatsOnIndividualKnowledge:
-            'performance_stats_on_individual_knowledge',
-    },
-    useFlag: (key: string) => mockUseFlag(key),
-}))
-
 // Mock useGetGuidancesAvailableActions
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
@@ -184,7 +173,6 @@ describe('KnowledgeEditorGuidanceContent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
-        mockUseFlag.mockReturnValue(false)
     })
 
     describe('side panel rendering', () => {

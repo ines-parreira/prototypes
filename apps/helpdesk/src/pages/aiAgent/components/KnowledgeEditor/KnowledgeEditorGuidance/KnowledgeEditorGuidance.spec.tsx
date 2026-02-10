@@ -1272,7 +1272,7 @@ describe('KnowledgeEditorGuidance', () => {
                 resourceSourceSetId: 1,
                 shopIntegrationId: 0,
                 timezone: 'America/New_York',
-                enabled: false,
+                enabled: true,
                 dateRange: {
                     start_datetime: '2025-01-01T00:00:00.000Z',
                     end_datetime: '2025-01-28T00:00:00.000Z',
@@ -1281,9 +1281,6 @@ describe('KnowledgeEditorGuidance', () => {
         })
 
         it('displays impact section with loading state when data is not available', async () => {
-            const useFlag = require('@repo/feature-flags').useFlag
-            useFlag.mockReturnValue(true)
-
             mockedFetchResourceMetrics.mockReturnValue({
                 isLoading: true,
                 isError: false,

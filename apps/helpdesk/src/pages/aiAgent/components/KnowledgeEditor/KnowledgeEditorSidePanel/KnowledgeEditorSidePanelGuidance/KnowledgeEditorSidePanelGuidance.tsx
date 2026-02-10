@@ -1,5 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     useGuidanceImpactFromContext,
     useGuidanceRecentTicketsFromContext,
@@ -11,15 +9,13 @@ import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditor
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 
 export const KnowledgeEditorSidePanelGuidance = () => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
     const impact = useGuidanceImpactFromContext()
     const recentTickets = useGuidanceRecentTicketsFromContext()
 
     const initialExpandedSections: string[] = [
         'details',
-        ...(isPerformanceStatsEnabled ? ['impact', 'related-tickets'] : []),
+        'impact',
+        'related-tickets',
     ]
 
     return (
@@ -28,19 +24,15 @@ export const KnowledgeEditorSidePanelGuidance = () => {
         >
             <KnowledgeEditorSidePanelSectionGuidanceDetails sectionId="details" />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionImpact
-                    {...impact}
-                    sectionId="impact"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionImpact
+                {...impact}
+                sectionId="impact"
+            />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRecentTickets
-                    {...recentTickets}
-                    sectionId="related-tickets"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionRecentTickets
+                {...recentTickets}
+                sectionId="related-tickets"
+            />
         </KnowledgeEditorSidePanel>
     )
 }

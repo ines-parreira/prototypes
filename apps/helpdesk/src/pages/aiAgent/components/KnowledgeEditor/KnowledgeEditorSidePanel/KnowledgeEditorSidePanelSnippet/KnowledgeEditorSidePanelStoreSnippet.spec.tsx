@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
@@ -6,22 +5,7 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 
 import { KnowledgeEditorSidePanelStoreSnippet } from './KnowledgeEditorSidePanelStoreSnippet'
 
-jest.mock('@repo/feature-flags')
-
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
-
 describe('KnowledgeEditorSidePanelStoreSnippet', () => {
-    beforeEach(() => {
-        mockUseFlag.mockImplementation((flagKey) => {
-            if (
-                flagKey === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-            ) {
-                return true
-            }
-            return false
-        })
-    })
-
     afterEach(() => {
         jest.clearAllMocks()
     })

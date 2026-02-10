@@ -1,14 +1,9 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import type { GuidanceImpactData } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-
-jest.mock('@repo/feature-flags')
-
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
 
 const mockToggleVisibility = jest.fn()
 
@@ -77,22 +72,11 @@ jest.mock(
 )
 
 describe('KnowledgeEditorSidePanelGuidance', () => {
-    beforeEach(() => {
-        mockUseFlag.mockImplementation((flagKey) => {
-            if (
-                flagKey === FeatureFlagKey.PerformanceStatsOnIndividualKnowledge
-            ) {
-                return true
-            }
-            return false
-        })
-    })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
 
-    it('renders all sections when performance stats flag is enabled', () => {
+    it('renders all sections', () => {
         renderWithStoreAndQueryClientAndRouter(
             <KnowledgeEditorSidePanelGuidance />,
         )
@@ -100,17 +84,5 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Impact')).toBeInTheDocument()
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
-    })
-
-    it('renders only details section when performance stats flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        renderWithStoreAndQueryClientAndRouter(
-            <KnowledgeEditorSidePanelGuidance />,
-        )
-
-        expect(screen.getByText('Details')).toBeInTheDocument()
-        expect(screen.queryByText('Impact')).not.toBeInTheDocument()
-        expect(screen.queryByText('Recent tickets')).not.toBeInTheDocument()
     })
 })

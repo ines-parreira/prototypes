@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
@@ -27,21 +25,13 @@ export type ArticleEngagementData = {
     subtitle: string
 }
 
-export const useArticleEngagementFromContext = ():
-    | ArticleEngagementData
-    | undefined => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
+export const useArticleEngagementFromContext = (): ArticleEngagementData => {
     const timezone = useAppSelector(getTimezone)
     const { state, config } = useArticleContext()
     const { helpCenter } = config
 
     const helpCenterId = helpCenter.id
     const articleId = state.article?.id
-
-    const shouldFetchData = isPerformanceStatsEnabled && !!articleId
-
     const impactDateRange = state.historicalVersion?.impactDateRange
 
     const dateRange = useMemo(() => {
@@ -70,7 +60,7 @@ export const useArticleEngagementFromContext = ():
                 ids: articleId ? [articleId] : [],
             },
             {
-                enabled: shouldFetchData,
+                enabled: !!articleId,
             },
         )
 
@@ -128,7 +118,7 @@ export const useArticleEngagementFromContext = ():
     const articleViewData = useMetricPerDimension<string>(
         query,
         undefined,
-        shouldFetchData,
+        !!articleId,
     )
 
     const views = useMemo(() => {
@@ -161,10 +151,6 @@ export const useArticleEngagementFromContext = ():
     }, [articleStatistics?.rating])
 
     const subtitle = formatDateRangeSubtitle(impactDateRange)
-
-    if (!shouldFetchData) {
-        return undefined
-    }
 
     return {
         views,

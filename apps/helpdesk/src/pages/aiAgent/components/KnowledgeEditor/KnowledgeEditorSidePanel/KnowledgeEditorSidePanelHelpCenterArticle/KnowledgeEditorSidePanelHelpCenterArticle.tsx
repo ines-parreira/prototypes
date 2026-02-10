@@ -1,5 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     useArticleEngagementFromContext,
     useArticleImpactFromContext,
@@ -14,18 +12,15 @@ import { KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement } from './Kn
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
 export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
-    const isPerformanceStatsEnabled = useFlag(
-        FeatureFlagKey.PerformanceStatsOnIndividualKnowledge,
-    )
     const impact = useArticleImpactFromContext()
     const engagement = useArticleEngagementFromContext()
     const recentTickets = useArticleRecentTicketsFromContext()
 
     const initialExpandedSections: string[] = [
         'details',
-        ...(isPerformanceStatsEnabled
-            ? ['impact', 'engagement', 'recentTickets']
-            : []),
+        'impact',
+        'engagement',
+        'recentTickets',
         'settings',
     ]
 
@@ -35,26 +30,20 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
         >
             <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionImpact
-                    {...impact}
-                    sectionId="impact"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionImpact
+                {...impact}
+                sectionId="impact"
+            />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionRecentTickets
-                    {...recentTickets}
-                    sectionId="recentTickets"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionRecentTickets
+                {...recentTickets}
+                sectionId="recentTickets"
+            />
 
-            {isPerformanceStatsEnabled && (
-                <KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement
-                    {...engagement}
-                    sectionId="engagement"
-                />
-            )}
+            <KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement
+                {...engagement}
+                sectionId="engagement"
+            />
 
             <KnowledgeEditorSidePanelSectionHelpCenterArticleSettings sectionId="settings" />
         </KnowledgeEditorSidePanel>
