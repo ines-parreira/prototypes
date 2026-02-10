@@ -242,6 +242,10 @@ export function MemberExpression({
                 case IdentifierCategoryKey.ShopifyCustomer:
                 case IdentifierCategoryKey.ShopifyLastOrder:
                     return hasIntegrationType(IntegrationType.Shopify)
+                case IdentifierCategoryKey.ShopifyCustomerMetafields:
+                case IdentifierCategoryKey.ShopifyLastOrderMetafields:
+                case IdentifierCategoryKey.ShopifyLastDraftOrderMetafields:
+                    return false
                 case IdentifierCategoryKey.Magento2Customer:
                 case IdentifierCategoryKey.Magento2LastOrder:
                     return hasIntegrationType(IntegrationType.Magento2)

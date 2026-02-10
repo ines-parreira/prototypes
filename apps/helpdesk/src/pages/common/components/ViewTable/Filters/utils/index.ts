@@ -2,6 +2,7 @@ import getCustomFieldIdFromObjectPath from './getCustomFieldIdFromObjectPath'
 import getCustomFieldOperators from './getCustomFieldOperators'
 import getDefaultCustomFieldOperator from './getDefaultCustomFieldOperator'
 import getFieldSchemaDefinitionKey from './getFieldSchemaDefinitionKey'
+import getMetafieldOperators from './getMetafieldOperators'
 import getMultiSelectLabel from './getMultiSelectLabel'
 import {
     getQaScoreDimensionFromObjectPath,
@@ -15,6 +16,7 @@ export {
     getCustomFieldOperators,
     getCustomFieldIdFromObjectPath,
     getDefaultCustomFieldOperator,
+    getMetafieldOperators,
     resolveObjectPath,
     resolvePunctuators,
     getMultiSelectLabel,

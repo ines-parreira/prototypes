@@ -1,5 +1,7 @@
 import type { Expression } from 'estree'
 
+import type { SupportedCategories } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/types'
+
 import type { ObjectExpressionPropertyKey } from '../../state/rules/types'
 import type { RuleObject } from './types'
 import { IdentifierCategoryKey } from './types'
@@ -45,7 +47,22 @@ export function generateExpression([
 
 export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
     const jointPath = path.slice(0, path.length - 1).join('.')
-    if (jointPath.includes('shopify.last_order')) {
+    if (
+        jointPath.includes('shopify.customer.metafields') ||
+        /integrations\.\d+\.customer\.metafields/.test(jointPath)
+    ) {
+        return IdentifierCategoryKey.ShopifyCustomerMetafields
+    } else if (
+        jointPath.includes('shopify.last_order.metafields') ||
+        /integrations\.\d+\.orders\.0\.metafields/.test(jointPath)
+    ) {
+        return IdentifierCategoryKey.ShopifyLastOrderMetafields
+    } else if (
+        jointPath.includes('shopify.last_draft_order.metafields') ||
+        /integrations\.\d+\.draft_orders\.0\.metafields/.test(jointPath)
+    ) {
+        return IdentifierCategoryKey.ShopifyLastDraftOrderMetafields
+    } else if (jointPath.includes('shopify.last_order')) {
         return IdentifierCategoryKey.ShopifyLastOrder
     } else if (jointPath.includes('shopify.customer')) {
         return IdentifierCategoryKey.ShopifyCustomer
@@ -69,4 +86,19 @@ export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
         return IdentifierCategoryKey.SelfServiceFlow
     }
     return path[0] as IdentifierCategoryKey
+}
+
+export function getMetafieldTreePath(
+    category: SupportedCategories,
+    integrationId: number,
+): string {
+    const basePath = `ticket.customer.integrations[${integrationId}]`
+    switch (category) {
+        case 'Customer':
+            return `${basePath}.customer.metafields`
+        case 'Order':
+            return `${basePath}.orders[0].metafields`
+        case 'DraftOrder':
+            return `${basePath}.draft_orders[0].metafields`
+    }
 }

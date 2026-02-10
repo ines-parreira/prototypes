@@ -33,6 +33,18 @@ export const IDENTIFIER_CATEGORIES: {
         value: IdentifierCategoryKey.ShopifyCustomer,
     },
     {
+        label: IdentifierCategoryValue.ShopifyCustomerMetafields,
+        value: IdentifierCategoryKey.ShopifyCustomerMetafields,
+    },
+    {
+        label: IdentifierCategoryValue.ShopifyLastOrderMetafields,
+        value: IdentifierCategoryKey.ShopifyLastOrderMetafields,
+    },
+    {
+        label: IdentifierCategoryValue.ShopifyLastDraftOrderMetafields,
+        value: IdentifierCategoryKey.ShopifyLastDraftOrderMetafields,
+    },
+    {
         label: IdentifierCategoryValue.BigCommerceLastOrder,
         value: IdentifierCategoryKey.BigCommerceLastOrder,
     },
@@ -381,6 +393,9 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.customer.integrations.shopify.customer.total_spent',
         },
     ],
+    [IdentifierCategoryKey.ShopifyCustomerMetafields]: [],
+    [IdentifierCategoryKey.ShopifyLastOrderMetafields]: [],
+    [IdentifierCategoryKey.ShopifyLastDraftOrderMetafields]: [],
     [IdentifierCategoryKey.BigCommerceLastOrder]: [
         {
             label: 'Created date',
