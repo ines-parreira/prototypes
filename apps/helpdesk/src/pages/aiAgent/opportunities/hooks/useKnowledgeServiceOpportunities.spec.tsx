@@ -305,4 +305,198 @@ describe('useKnowledgeServiceOpportunities', () => {
 
         expect(result.current.opportunities).toEqual([])
     })
+
+    describe('Limit Parameter', () => {
+        it('should use default limit (20) when no limit is provided', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true), {
+                wrapper,
+            })
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({
+                    limit: 20, // OPPORTUNITIES_PAGE_SIZE default
+                    cursor: undefined,
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('should use custom limit when provided', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            const customLimit = 5
+
+            renderHook(
+                () => useKnowledgeServiceOpportunities(123, true, customLimit),
+                { wrapper },
+            )
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({
+                    limit: customLimit,
+                    cursor: undefined,
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('should include limit in queryKey', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            const customLimit = 3
+
+            renderHook(
+                () => useKnowledgeServiceOpportunities(123, true, customLimit),
+                { wrapper },
+            )
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.any(Object),
+                expect.objectContaining({
+                    query: expect.objectContaining({
+                        queryKey: expect.arrayContaining([customLimit]),
+                    }),
+                }),
+            )
+        })
+
+        it('should include default limit in queryKey when no limit provided', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true), {
+                wrapper,
+            })
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.any(Object),
+                expect.objectContaining({
+                    query: expect.objectContaining({
+                        queryKey: expect.arrayContaining([20]), // OPPORTUNITIES_PAGE_SIZE
+                    }),
+                }),
+            )
+        })
+
+        it('should refetch when limit changes', async () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            const { rerender } = renderHook(
+                ({ limit }) =>
+                    useKnowledgeServiceOpportunities(123, true, limit),
+                {
+                    wrapper,
+                    initialProps: { limit: 5 },
+                },
+            )
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({ limit: 5 }),
+                expect.any(Object),
+            )
+
+            mockUseFindOpportunities.mockClear()
+
+            // Change limit
+            rerender({ limit: 10 })
+
+            await waitFor(() => {
+                expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                    123,
+                    expect.objectContaining({ limit: 10 }),
+                    expect.any(Object),
+                )
+            })
+        })
+
+        it('should handle limit of 0 by using default', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            renderHook(() => useKnowledgeServiceOpportunities(123, true, 0), {
+                wrapper,
+            })
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({
+                    limit: 20, // Should default to OPPORTUNITIES_PAGE_SIZE when 0
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('should handle large limit values', () => {
+            const mockUseFindOpportunities =
+                useFindOpportunitiesByShopOpportunity as jest.Mock
+            mockUseFindOpportunities.mockReturnValue({
+                data: { data: mockPaginatedResponse },
+                isLoading: false,
+                refetch: jest.fn(),
+                isError: false,
+            })
+
+            const largeLimit = 100
+
+            renderHook(
+                () => useKnowledgeServiceOpportunities(123, true, largeLimit),
+                { wrapper },
+            )
+
+            expect(mockUseFindOpportunities).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({
+                    limit: largeLimit,
+                }),
+                expect.any(Object),
+            )
+        })
+    })
 })

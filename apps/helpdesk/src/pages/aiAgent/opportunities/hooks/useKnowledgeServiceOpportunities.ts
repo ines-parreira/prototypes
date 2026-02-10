@@ -22,6 +22,7 @@ interface PaginatedPage {
 export const useKnowledgeServiceOpportunities = (
     shopIntegrationId: number,
     enabled: boolean,
+    limit?: number,
 ) => {
     const [pages, setPages] = useState<PaginatedPage[]>([])
     const [currentCursor, setCurrentCursor] = useState<string | undefined>(
@@ -33,7 +34,7 @@ export const useKnowledgeServiceOpportunities = (
         useFindOpportunitiesByShopOpportunity(
             shopIntegrationId,
             {
-                limit: OPPORTUNITIES_PAGE_SIZE,
+                limit: !!limit ? limit : OPPORTUNITIES_PAGE_SIZE,
                 cursor: currentCursor,
             },
             {
@@ -44,6 +45,7 @@ export const useKnowledgeServiceOpportunities = (
                         ),
                         'paginated',
                         currentCursor || 'initial',
+                        limit || OPPORTUNITIES_PAGE_SIZE,
                     ],
                     enabled: enabled && shopIntegrationId !== undefined,
                     refetchOnWindowFocus: false,

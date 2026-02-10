@@ -18,6 +18,7 @@ import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSect
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
+import { TopOpportunitiesSection } from 'pages/aiAgent/TopOpportunities/TopOpportunitiesSection'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -58,6 +59,11 @@ export const AiAgentOverview = () => {
 
     const isShopifyStorefrontPermissionsEnabled = useFlag(
         FeatureFlagKey.ShopifyStorefrontPermissions,
+    )
+
+    const isTopOpportunitiesEnabled = useFlag(
+        FeatureFlagKey.IncreaseVisibilityOfOpportunity,
+        false,
     )
 
     const {
@@ -223,6 +229,10 @@ export const AiAgentOverview = () => {
                     showEarlyAccessModal={showEarlyAccessModal}
                     shopName={shopName}
                 />
+            )}
+
+            {isTopOpportunitiesEnabled && (
+                <TopOpportunitiesSection shopName={shopName} />
             )}
 
             <AiAgentTaskSection
