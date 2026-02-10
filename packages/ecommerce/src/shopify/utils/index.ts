@@ -1,5 +1,7 @@
+export { extractFeaturedImage } from './extractFeaturedImage'
 export { formatOrderDate } from './formatOrderDate'
 export { getFinancialStatusInfo } from './getFinancialStatusInfo'
 export { getFulfillmentStatusInfo } from './getFulfillmentStatusInfo'
 export { getLineItemImageSrc } from './getLineItemImageSrc'
+export { getProductImageList } from './getProductImageList'
 export { getSizedImageUrl } from './getSizedImageUrl'

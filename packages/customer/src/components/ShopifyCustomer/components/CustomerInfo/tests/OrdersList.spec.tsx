@@ -69,6 +69,36 @@ const mockSecondOrderData: OrderEcommerceData = {
     },
 }
 
+const mockDraftOrderData: OrderEcommerceData = {
+    ...mockOrderData,
+    id: 'draft-order-1',
+    external_id: 'ext-draft-order-1',
+    data: {
+        ...mockOrderData.data,
+        id: 99001,
+        order_number: 2001,
+        name: '#D2001',
+        created_at: '2024-01-17T10:00:00Z',
+        financial_status: 'pending',
+        fulfillment_status: null,
+    },
+}
+
+const mockSecondDraftOrderData: OrderEcommerceData = {
+    ...mockOrderData,
+    id: 'draft-order-2',
+    external_id: 'ext-draft-order-2',
+    data: {
+        ...mockOrderData.data,
+        id: 99002,
+        order_number: 2002,
+        name: '#D2002',
+        created_at: '2024-01-18T10:00:00Z',
+        financial_status: 'pending',
+        fulfillment_status: null,
+    },
+}
+
 const mockProductsMap = new Map<number, OrderProduct>([
     [
         100,
@@ -98,18 +128,36 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={true}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('renders nothing when orders array is empty', () => {
+    it('renders nothing when isLoadingDraftOrders is true', () => {
+        const { container } = render(
+            <OrdersList
+                orders={[mockOrderData]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={true}
+            />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('renders nothing when both orders and draft orders arrays are empty', () => {
         const { container } = render(
             <OrdersList
                 orders={[]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -122,6 +170,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData, mockSecondOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -135,6 +185,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData, mockSecondOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -148,6 +200,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -160,6 +214,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -173,6 +229,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -186,6 +244,8 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
                 productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
@@ -200,9 +260,74 @@ describe('OrdersList', () => {
                 orders={[mockOrderData]}
                 isLoadingOrders={false}
                 productsMap={undefined}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
             />,
         )
 
         expect(screen.getByText('#1001')).toBeInTheDocument()
+    })
+
+    it('renders DraftOrdersHeader with correct count', () => {
+        render(
+            <OrdersList
+                orders={[]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[mockDraftOrderData, mockSecondDraftOrderData]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('Draft orders')).toBeInTheDocument()
+        expect(screen.getByText('2')).toBeInTheDocument()
+    })
+
+    it('renders draft order cards', () => {
+        render(
+            <OrdersList
+                orders={[]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[mockDraftOrderData, mockSecondDraftOrderData]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('#D2001')).toBeInTheDocument()
+        expect(screen.getByText('#D2002')).toBeInTheDocument()
+    })
+
+    it('shows only orders when no draft orders exist', () => {
+        render(
+            <OrdersList
+                orders={[mockOrderData]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('Orders')).toBeInTheDocument()
+        expect(screen.queryByText('Draft orders')).not.toBeInTheDocument()
+        expect(screen.getByText('#1001')).toBeInTheDocument()
+    })
+
+    it('shows both orders and draft orders when both exist', () => {
+        render(
+            <OrdersList
+                orders={[mockOrderData]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[mockDraftOrderData]}
+                isLoadingDraftOrders={false}
+            />,
+        )
+
+        expect(screen.getByText('Orders')).toBeInTheDocument()
+        expect(screen.getByText('Draft orders')).toBeInTheDocument()
+        expect(screen.getByText('#1001')).toBeInTheDocument()
+        expect(screen.getByText('#D2001')).toBeInTheDocument()
     })
 })

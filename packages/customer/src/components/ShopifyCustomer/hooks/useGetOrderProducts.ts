@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import type { OrderProduct } from '@repo/ecommerce'
+import type { OrderProduct, ShopifyProductData } from '@repo/ecommerce'
+import { extractFeaturedImage, getProductImageList } from '@repo/ecommerce'
 
 import {
     ObjectType,
@@ -23,7 +24,7 @@ export function useGetOrderProducts({ integrationId, orders }: Params) {
 
         orders.forEach((order) => {
             order.data.line_items.forEach((lineItem) => {
-                if (lineItem.product_id && lineItem.product_exists) {
+                if (lineItem.product_id && lineItem.product_exists !== false) {
                     ids.add(String(lineItem.product_id))
                 }
             })
@@ -61,37 +62,13 @@ export function useGetOrderProducts({ integrationId, orders }: Params) {
                 const id = Number(product.external_id)
 
                 if (!isNaN(id)) {
-                    const data = product.data as {
-                        title: string
-                        image?: {
-                            id?: number
-                            src: string
-                            alt: string | null
-                            variant_ids: number[]
-                        } | null
-                        images?: Array<{
-                            id?: number
-                            src: string
-                            alt: string | null
-                            variant_ids: number[]
-                        }>
-                    }
+                    const data = product.data as ShopifyProductData
 
                     map.set(id, {
                         id,
                         title: data.title,
-                        image: data.image
-                            ? {
-                                  alt: data.image.alt,
-                                  src: data.image.src,
-                                  variant_ids: data.image.variant_ids || [],
-                              }
-                            : null,
-                        images: (data.images || []).map((img) => ({
-                            alt: img.alt,
-                            src: img.src,
-                            variant_ids: img.variant_ids || [],
-                        })),
+                        image: extractFeaturedImage(data),
+                        images: getProductImageList(data),
                     })
                 }
             })

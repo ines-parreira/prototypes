@@ -3,6 +3,7 @@ import { useUserDateTimePreferences } from '@repo/user'
 import { Box } from '@gorgias/axiom'
 
 import { useGetOrderProducts, useIntegrationSelection } from '../../hooks'
+import { useGetDraftOrders } from '../../hooks/useGetDraftOrders'
 import { useGetOrders } from '../../hooks/useGetOrders'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
@@ -53,9 +54,15 @@ export function CustomerInfo({
         shopperIdentityId: shopper?.relationships?.shopper_identity_id,
     })
 
+    const { orders: draftOrders, isLoadingOrders: isLoadingDraftOrders } =
+        useGetDraftOrders({
+            integrationId: selectedIntegration?.id,
+            shopperIdentityId: shopper?.relationships?.shopper_identity_id,
+        })
+
     const { productsMap } = useGetOrderProducts({
         integrationId: selectedIntegration?.id,
-        orders,
+        orders: [...(orders ?? []), ...(draftOrders ?? [])],
     })
 
     const { purchaseSummary } = useGetPurchaseSummary({
@@ -79,37 +86,43 @@ export function CustomerInfo({
     const { fields } = useCustomerFieldPreferences()
 
     return (
-        <Box flexDirection="column" gap="sm" padding="sm">
-            <StorePicker
-                integrations={filteredIntegrations}
-                selectedIntegrationId={selectedIntegration?.id}
-                onChange={handleStoreChange}
-                isLoading={isLoadingIntegrations || isLoadingTicket}
-            />
+        <>
+            <Box flexDirection="column" gap="sm" padding="md">
+                <StorePicker
+                    integrations={filteredIntegrations}
+                    selectedIntegrationId={selectedIntegration?.id}
+                    onChange={handleStoreChange}
+                    isLoading={isLoadingIntegrations || isLoadingTicket}
+                />
 
-            <CustomerLink
-                selectedIntegration={selectedIntegration}
-                shopper={shopper}
-                isLoading={isLoadingIntegrations}
-            />
-            {hasData && (
-                <>
-                    <ShopifyTags
-                        tags={shopper?.data?.tags}
-                        integrationId={selectedIntegration?.id}
-                        externalId={selectedExternalId}
-                        customerId={customerId}
-                        ticketId={ticketId}
-                    />
-                    <CustomerInfoFieldList fields={fields} context={context} />
-                </>
-            )}
-
+                <CustomerLink
+                    selectedIntegration={selectedIntegration}
+                    shopper={shopper}
+                    isLoading={isLoadingIntegrations}
+                />
+                {hasData && (
+                    <>
+                        <ShopifyTags
+                            tags={shopper?.data?.tags}
+                            integrationId={selectedIntegration?.id}
+                            externalId={selectedExternalId}
+                            customerId={customerId}
+                            ticketId={ticketId}
+                        />
+                        <CustomerInfoFieldList
+                            fields={fields}
+                            context={context}
+                        />
+                    </>
+                )}
+            </Box>
             <OrdersList
                 orders={orders}
                 isLoadingOrders={isLoadingOrders}
                 productsMap={productsMap}
+                draftOrders={draftOrders}
+                isLoadingDraftOrders={isLoadingDraftOrders}
             />
-        </Box>
+        </>
     )
 }

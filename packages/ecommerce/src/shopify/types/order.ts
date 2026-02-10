@@ -71,3 +71,29 @@ export type OrderCardOrder = {
     fulfillment_status: FulfillmentStatusValue | null
     line_items: OrderCardLineItem[]
 }
+
+export type ShopifyProductData = {
+    title: string
+    // REST API format (schema_version: "2025-07")
+    image?: {
+        id?: number
+        src: string
+        alt: string | null
+        variant_ids: number[]
+    } | null
+    images?: Array<{
+        id?: number
+        src: string
+        alt: string | null
+        variant_ids: number[]
+    }>
+    // GraphQL format (schema_version: "2025-07-graphql")
+    featuredMedia?: {
+        image?: { url: string; altText: string | null }
+    } | null
+    media?: {
+        nodes: Array<{
+            image?: { url: string; altText: string | null }
+        }>
+    }
+}

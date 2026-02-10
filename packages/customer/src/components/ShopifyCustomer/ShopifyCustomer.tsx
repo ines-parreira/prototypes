@@ -45,7 +45,7 @@ export function ShopifyCustomer() {
     }, [ticket?.data?.customer?.integrations])
 
     return (
-        <Box padding="sm" flexDirection="column">
+        <Box flexDirection="column">
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}

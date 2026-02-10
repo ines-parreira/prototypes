@@ -8,4 +8,5 @@ export type {
     OrderImage,
     OrderLineItem,
     OrderProduct,
+    ShopifyProductData,
 } from './order'

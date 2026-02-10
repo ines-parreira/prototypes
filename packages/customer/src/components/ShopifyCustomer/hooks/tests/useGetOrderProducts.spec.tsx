@@ -49,7 +49,7 @@ const createOrder = (
 
 const createLineItem = (
     productId: number | null,
-    productExists = true,
+    productExists?: boolean,
 ): OrderLineItem => ({
     id: 1,
     title: 'Product',
@@ -84,6 +84,44 @@ const createProduct = (externalId: string, title: string, withImage = false) =>
         },
     })
 
+const createGraphQLProduct = (
+    externalId: string,
+    title: string,
+    withImage = false,
+) =>
+    mockEcommerceData({
+        external_id: externalId,
+        data: {
+            title,
+            featuredMedia: withImage
+                ? {
+                      image: {
+                          url: 'https://example.com/graphql-img.jpg',
+                          altText: 'GraphQL Alt',
+                      },
+                  }
+                : null,
+            media: withImage
+                ? {
+                      nodes: [
+                          {
+                              image: {
+                                  url: 'https://example.com/graphql-img.jpg',
+                                  altText: 'GraphQL Alt',
+                              },
+                          },
+                          {
+                              image: {
+                                  url: 'https://example.com/graphql-img2.jpg',
+                                  altText: 'GraphQL Alt 2',
+                              },
+                          },
+                      ],
+                  }
+                : { nodes: [] },
+        },
+    })
+
 const setupHandler = (
     products: ReturnType<typeof createProduct>[],
     onRequest?: () => void,
@@ -101,7 +139,7 @@ const setupHandler = (
 describe('useGetOrderProducts', () => {
     it('returns loading state initially', () => {
         setupHandler([createProduct('101', 'Test')])
-        const orders = [createOrder('order-1', [createLineItem(101)])]
+        const orders = [createOrder('order-1', [createLineItem(101, true)])]
 
         const { result } = renderHook(() =>
             useGetOrderProducts({ integrationId: 1, orders }),
@@ -113,7 +151,7 @@ describe('useGetOrderProducts', () => {
 
     it('returns products map with correct data structure', async () => {
         setupHandler([createProduct('101', 'Test Product', true)])
-        const orders = [createOrder('order-1', [createLineItem(101)])]
+        const orders = [createOrder('order-1', [createLineItem(101, true)])]
 
         const { result } = renderHook(() =>
             useGetOrderProducts({ integrationId: 1, orders }),
@@ -145,8 +183,11 @@ describe('useGetOrderProducts', () => {
             createProduct('102', 'Product B'),
         ])
         const orders = [
-            createOrder('order-1', [createLineItem(101), createLineItem(101)]),
-            createOrder('order-2', [createLineItem(102)]),
+            createOrder('order-1', [
+                createLineItem(101, true),
+                createLineItem(101, true),
+            ]),
+            createOrder('order-2', [createLineItem(102, true)]),
         ]
 
         const waitForRequest = handler.waitForRequest(server)
@@ -173,7 +214,7 @@ describe('useGetOrderProducts', () => {
             'integrationId is undefined',
             {
                 integrationId: undefined,
-                orders: [createOrder('o', [createLineItem(101)])],
+                orders: [createOrder('o', [createLineItem(101, true)])],
             },
         ],
         ['orders is undefined', { integrationId: 1, orders: undefined }],
@@ -184,7 +225,7 @@ describe('useGetOrderProducts', () => {
                 integrationId: 1,
                 orders: [
                     createOrder('o', [
-                        createLineItem(null),
+                        createLineItem(null, true),
                         createLineItem(102, false),
                     ]),
                 ],
@@ -213,7 +254,7 @@ describe('useGetOrderProducts', () => {
             createProduct('101', 'Valid'),
             createProduct('invalid', 'Invalid'),
         ])
-        const orders = [createOrder('order-1', [createLineItem(101)])]
+        const orders = [createOrder('order-1', [createLineItem(101, true)])]
 
         const { result } = renderHook(() =>
             useGetOrderProducts({ integrationId: 1, orders }),
@@ -223,5 +264,104 @@ describe('useGetOrderProducts', () => {
 
         expect(result.current.productsMap.size).toBe(1)
         expect(result.current.productsMap.has(101)).toBe(true)
+    })
+
+    it('fetches products when product_exists is undefined (draft orders)', async () => {
+        setupHandler([createProduct('101', 'Draft Order Product', true)])
+        const orders = [
+            createOrder('order-1', [createLineItem(101, undefined)]),
+        ]
+
+        const { result } = renderHook(() =>
+            useGetOrderProducts({ integrationId: 1, orders }),
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.productsMap.size).toBe(1)
+        expect(result.current.productsMap.get(101)?.title).toBe(
+            'Draft Order Product',
+        )
+    })
+
+    it('handles GraphQL schema format with featuredMedia and media', async () => {
+        setupHandler([createGraphQLProduct('101', 'GraphQL Product', true)])
+        const orders = [createOrder('order-1', [createLineItem(101, true)])]
+
+        const { result } = renderHook(() =>
+            useGetOrderProducts({ integrationId: 1, orders }),
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.productsMap.get(101)).toEqual({
+            id: 101,
+            title: 'GraphQL Product',
+            image: {
+                alt: 'GraphQL Alt',
+                src: 'https://example.com/graphql-img.jpg',
+                variant_ids: [],
+            },
+            images: [
+                {
+                    alt: 'GraphQL Alt',
+                    src: 'https://example.com/graphql-img.jpg',
+                    variant_ids: [],
+                },
+                {
+                    alt: 'GraphQL Alt 2',
+                    src: 'https://example.com/graphql-img2.jpg',
+                    variant_ids: [],
+                },
+            ],
+        })
+    })
+
+    it('handles GraphQL schema format without images', async () => {
+        setupHandler([
+            createGraphQLProduct('101', 'GraphQL Product No Image', false),
+        ])
+        const orders = [createOrder('order-1', [createLineItem(101, true)])]
+
+        const { result } = renderHook(() =>
+            useGetOrderProducts({ integrationId: 1, orders }),
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.productsMap.get(101)).toEqual({
+            id: 101,
+            title: 'GraphQL Product No Image',
+            image: null,
+            images: [],
+        })
+    })
+
+    it('handles mixed REST and GraphQL schema products', async () => {
+        setupHandler([
+            createProduct('101', 'REST Product', true),
+            createGraphQLProduct('102', 'GraphQL Product', true),
+        ])
+        const orders = [
+            createOrder('order-1', [
+                createLineItem(101, true),
+                createLineItem(102, true),
+            ]),
+        ]
+
+        const { result } = renderHook(() =>
+            useGetOrderProducts({ integrationId: 1, orders }),
+        )
+
+        await waitFor(() => expect(result.current.isLoading).toBe(false))
+
+        expect(result.current.productsMap.size).toBe(2)
+
+        expect(result.current.productsMap.get(101)?.image?.src).toBe(
+            'https://example.com/img.jpg',
+        )
+        expect(result.current.productsMap.get(102)?.image?.src).toBe(
+            'https://example.com/graphql-img.jpg',
+        )
     })
 })
