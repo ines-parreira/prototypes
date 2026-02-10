@@ -3,7 +3,7 @@ import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment'
 
 import { useAutomatedInteractionsBySkill } from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 
 import { useAiAgentAutomatedInteractionsMetric } from '../../analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
 import { ChartTypeToggle } from '../components/ChartTypeToggle/ChartTypeToggle'
@@ -17,17 +17,17 @@ const DATE_FORMAT = DateTimeFormatMapper[
 ] as string
 
 export const AnalyticsOverviewAutomatedInteractionsComboChart = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const { chartType, setChartType } = useChartTypeToggle()
 
     const trend = useAiAgentAutomatedInteractionsMetric()
 
     const { data: chartData, isLoading: isChartDataLoading } =
-        useAutomatedInteractionsBySkill(cleanStatsFilters, userTimezone)
+        useAutomatedInteractionsBySkill(statsFilters, userTimezone)
 
     const filteredChartData = chartData?.filter((item) => item.value !== 0)
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
 
     const isLoading =
         trend.isFetching || isChartDataLoading || !filteredChartData
@@ -65,13 +65,13 @@ export const AnalyticsOverviewAutomatedInteractionsComboChart = () => {
                     data={filteredChartData ?? []}
                     containerHeight={280}
                     period={
-                        cleanStatsFilters?.period
+                        statsFilters?.period
                             ? {
                                   start_datetime: moment(
-                                      cleanStatsFilters?.period?.start_datetime,
+                                      statsFilters?.period?.start_datetime,
                                   ).format(DATE_FORMAT),
                                   end_datetime: moment(
-                                      cleanStatsFilters?.period?.end_datetime,
+                                      statsFilters?.period?.end_datetime,
                                   ).format(DATE_FORMAT),
                               }
                             : undefined
@@ -85,10 +85,10 @@ export const AnalyticsOverviewAutomatedInteractionsComboChart = () => {
                     isLoading={isLoading}
                     period={{
                         start_datetime: moment(
-                            cleanStatsFilters?.period?.start_datetime,
+                            statsFilters?.period?.start_datetime,
                         ).format(DATE_FORMAT),
                         end_datetime: moment(
-                            cleanStatsFilters?.period?.end_datetime,
+                            statsFilters?.period?.end_datetime,
                         ).format(DATE_FORMAT),
                     }}
                 />

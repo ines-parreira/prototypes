@@ -4,7 +4,7 @@ import type { ChartDataItem } from '@repo/reporting'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -35,15 +35,12 @@ type ProductsByIntegration = {
 }
 
 export const useTotalSalesByProduct = (): UseTotalSalesByProductResult => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
 
-    const totalSalesTrend = useGmvInfluencedTrend(
-        cleanStatsFilters,
-        userTimezone,
-    )
+    const totalSalesTrend = useGmvInfluencedTrend(statsFilters, userTimezone)
 
     const gmvByProductData = useMetricPerDimension<StringWhichShouldBeNumber>(
-        gmvByInfluencedProductQueryFactory(cleanStatsFilters, userTimezone),
+        gmvByInfluencedProductQueryFactory(statsFilters, userTimezone),
     )
     const productsByIntegration = useMemo((): ProductsByIntegration[] => {
         if (!gmvByProductData.data?.allData) {

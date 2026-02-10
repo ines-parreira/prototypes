@@ -1,13 +1,13 @@
 import type { MetricTrend } from '@repo/reporting'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 
 export const useOrdersInfluencedMetric = (): MetricTrend => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
 
     const { isFetching, isError, data } = useTotalNumberOfOrdersTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 

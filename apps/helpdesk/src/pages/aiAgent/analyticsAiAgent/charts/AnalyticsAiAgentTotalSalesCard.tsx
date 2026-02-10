@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { TrendCard } from '@repo/reporting'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
@@ -12,8 +12,8 @@ export const AnalyticsAiAgentTotalSalesCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
-    const gmvTrend = useGmvInfluencedTrend(cleanStatsFilters, userTimezone)
+    const { statsFilters, userTimezone } = useAutomateFilters()
+    const gmvTrend = useGmvInfluencedTrend(statsFilters, userTimezone)
 
     const trend = useMemo(() => {
         return {
@@ -29,7 +29,7 @@ export const AnalyticsAiAgentTotalSalesCard = ({
         }
     }, [gmvTrend])
 
-    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
+    const trendTooltipData = formatPreviousPeriod(statsFilters?.period)
 
     return (
         <TrendCard

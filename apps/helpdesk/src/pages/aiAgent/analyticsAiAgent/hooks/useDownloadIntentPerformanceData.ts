@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { useIntentPerformanceMetrics } from './useIntentPerformanceMetrics'
@@ -11,9 +11,9 @@ import { useIntentPerformanceMetrics } from './useIntentPerformanceMetrics'
 const INTENT_PERFORMANCE_FILENAME = 'ai-agent-intent-performance'
 
 export const useDownloadIntentPerformanceData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const { data, loadingStates } = useIntentPerformanceMetrics(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
@@ -45,7 +45,7 @@ export const useDownloadIntentPerformanceData = () => {
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
+        statsFilters.period,
         INTENT_PERFORMANCE_FILENAME,
     )
 

@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { createCsv } from 'utils/file'
 
 import { useShoppingAssistantChannelMetrics } from './useShoppingAssistantChannelMetrics'
@@ -25,9 +25,9 @@ const formatChannelName = (channel: string): string => {
 }
 
 export const useDownloadShoppingAssistantChannelData = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const { data, loadingStates } = useShoppingAssistantChannelMetrics(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
@@ -68,7 +68,7 @@ export const useDownloadShoppingAssistantChannelData = () => {
     }, [data])
 
     const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
+        statsFilters.period,
         SHOPPING_ASSISTANT_CHANNEL_FILENAME,
     )
 

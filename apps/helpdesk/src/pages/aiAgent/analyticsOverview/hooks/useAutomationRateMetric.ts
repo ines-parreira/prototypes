@@ -1,13 +1,13 @@
 import type { MetricTrend } from '@repo/reporting'
 
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 
 export const useAutomationRateMetric = (): MetricTrend => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
 
     const automationRateTrend = useAutomationRateTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 

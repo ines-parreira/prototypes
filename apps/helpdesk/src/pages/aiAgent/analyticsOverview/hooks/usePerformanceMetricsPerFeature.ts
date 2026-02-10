@@ -2,8 +2,8 @@ import { useMemo } from 'react'
 
 import { useTrendFromMultipleMetricsTrend } from 'domains/reporting/hooks/automate/automationTrends'
 import { FLOW_HANDOVER_TICKET_CREATED } from 'domains/reporting/hooks/automate/types'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     AutomationDatasetFilterMember,
     AutomationDatasetMeasure,
@@ -50,21 +50,21 @@ export type PerformanceMetricsPerFeature = {
 
 export const usePerformanceMetricsPerFeature =
     (): PerformanceMetricsPerFeature => {
-        const { cleanStatsFilters, userTimezone } = useStatsFilters()
+        const { statsFilters, userTimezone } = useAutomateFilters()
 
         const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
             AGENT_COST_PER_TICKET,
         )
 
         const aiAgentInteractions = useTrendFromMultipleMetricsTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
         )
 
         const flowsInteractions = useTrendFromMultipleMetricsTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             flowsAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
@@ -72,21 +72,21 @@ export const usePerformanceMetricsPerFeature =
 
         const articleRecommendationInteractions =
             useTrendFromMultipleMetricsTrend(
-                cleanStatsFilters,
+                statsFilters,
                 userTimezone,
                 articleRecommendationAutomatedInteractionsQueryFactory,
                 AutomationDatasetMeasure.AutomatedInteractions,
             )
 
         const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             orderManagementAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
         )
 
         const aiAgentHandovers = useTrendFromMultipleMetricsTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             (filters, timezone) => {
                 const baseQuery = automationDatasetQueryFactory(
@@ -109,7 +109,7 @@ export const usePerformanceMetricsPerFeature =
         )
 
         const flowsHandovers = useTrendFromMultipleMetricsTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             (filters, timezone) => {
                 const baseQuery = automationDatasetQueryFactory(
@@ -132,7 +132,7 @@ export const usePerformanceMetricsPerFeature =
         )
 
         const ticketHandleTime = useTicketHandleTimeTrend(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
         )
 

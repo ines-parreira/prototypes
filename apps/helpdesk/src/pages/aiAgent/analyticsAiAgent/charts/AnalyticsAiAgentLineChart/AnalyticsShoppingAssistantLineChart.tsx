@@ -1,16 +1,16 @@
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 
 import { ShoppingAssistantLineChart } from '../../components/AiAgentLineChart/ShoppingAssistantLineChart'
 
 export const AnalyticsShoppingAssistantLineChart = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
-    const gmvTrend = useGmvInfluencedTrend(cleanStatsFilters, userTimezone)
+    const gmvTrend = useGmvInfluencedTrend(statsFilters, userTimezone)
 
     const gmvTimeSeries = useGmvInfluenceOverTimeSeries(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
     )
@@ -20,7 +20,7 @@ export const AnalyticsShoppingAssistantLineChart = () => {
             gmvTrend={gmvTrend}
             gmvTimeSeries={gmvTimeSeries}
             granularity={granularity}
-            filters={cleanStatsFilters}
+            filters={statsFilters}
         />
     )
 }

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -43,23 +43,23 @@ type UseShoppingAssistantTopProductsMetricsResult = {
 
 export const useShoppingAssistantTopProductsMetrics =
     (): UseShoppingAssistantTopProductsMetricsResult => {
-        const { cleanStatsFilters, userTimezone } = useStatsFilters()
+        const { statsFilters, userTimezone } = useAutomateFilters()
 
         const recommendationsTotalData =
             useMetricPerDimension<StringWhichShouldBeNumber>(
                 shoppingAssistantTopProductsQueryFactory(
-                    cleanStatsFilters,
+                    statsFilters,
                     userTimezone,
                 ),
             )
 
         const clickTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
-            productClicksQueryFactory(cleanStatsFilters, userTimezone),
+            productClicksQueryFactory(statsFilters, userTimezone),
         )
 
         const boughtTotalData =
             useMetricPerDimension<StringWhichShouldBeNumber>(
-                productBoughtQueryFactory(cleanStatsFilters, userTimezone),
+                productBoughtQueryFactory(statsFilters, userTimezone),
             )
 
         const productsByIntegration = useMemo((): ProductsByIntegration[] => {

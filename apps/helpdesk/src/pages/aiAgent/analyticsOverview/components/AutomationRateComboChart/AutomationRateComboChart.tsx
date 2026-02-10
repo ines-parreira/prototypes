@@ -2,8 +2,8 @@ import { BarChart, ChartCard, DonutChart } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment'
 
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 
 import { ChartTypeToggle } from '../../components/ChartTypeToggle/ChartTypeToggle'
 import { useAutomationRateByFeature } from '../../hooks/useAutomationRateByFeature'
@@ -17,11 +17,11 @@ const DATE_FORMAT = DateTimeFormatMapper[
 ] as string
 
 export const AutomationRateComboChart = () => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const { chartType, setChartType } = useChartTypeToggle()
 
     const automationRateTrend = useAutomationRateTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
@@ -30,7 +30,7 @@ export const AutomationRateComboChart = () => {
 
     const filteredChartData = chartData?.filter((item) => item.value !== 0)
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
 
     const isLoading =
         automationRateTrend.isFetching ||
@@ -72,13 +72,13 @@ export const AutomationRateComboChart = () => {
                     data={filteredChartData ?? []}
                     containerHeight={280}
                     period={
-                        cleanStatsFilters?.period
+                        statsFilters?.period
                             ? {
                                   start_datetime: moment(
-                                      cleanStatsFilters?.period?.start_datetime,
+                                      statsFilters?.period?.start_datetime,
                                   ).format(DATE_FORMAT),
                                   end_datetime: moment(
-                                      cleanStatsFilters?.period?.end_datetime,
+                                      statsFilters?.period?.end_datetime,
                                   ).format(DATE_FORMAT),
                               }
                             : undefined
@@ -94,10 +94,10 @@ export const AutomationRateComboChart = () => {
                     valueFormatter={(value) => `${value}%`}
                     period={{
                         start_datetime: moment(
-                            cleanStatsFilters?.period?.start_datetime,
+                            statsFilters?.period?.start_datetime,
                         ).format(DATE_FORMAT),
                         end_datetime: moment(
-                            cleanStatsFilters?.period?.end_datetime,
+                            statsFilters?.period?.end_datetime,
                         ).format(DATE_FORMAT),
                     }}
                 />

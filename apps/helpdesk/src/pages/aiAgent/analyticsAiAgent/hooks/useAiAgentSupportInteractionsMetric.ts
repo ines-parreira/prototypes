@@ -1,7 +1,7 @@
 import type { MetricTrend } from '@repo/reporting'
 
 import { useSupportInteractionsTotal } from 'domains/reporting/hooks/ai-agent-insights/supportInteractionsMetrics'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
@@ -11,7 +11,7 @@ import {
 export const useAiAgentSupportInteractionsMetric = (): MetricTrend & {
     isFieldsAvailable: boolean
 } => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
@@ -24,15 +24,15 @@ export const useAiAgentSupportInteractionsMetric = (): MetricTrend & {
         isError: isErrorCurrent,
         data: currentData,
     } = useSupportInteractionsTotal(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         outcomeCustomFieldId,
         intentCustomFieldId,
     )
 
     const previousPeriodFilters = {
-        ...cleanStatsFilters,
-        period: getPreviousPeriod(cleanStatsFilters.period),
+        ...statsFilters,
+        period: getPreviousPeriod(statsFilters.period),
     }
     const {
         isFetching: isFetchingPrev,

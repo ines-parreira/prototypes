@@ -1,13 +1,13 @@
 import type { MetricTrend } from '@repo/reporting'
 
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 
 export const useAutomatedInteractionsMetric = (): MetricTrend => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { statsFilters, userTimezone } = useAutomateFilters()
 
     const automatedInteractionsTrend = useFilteredAutomatedInteractions(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 

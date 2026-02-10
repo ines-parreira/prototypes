@@ -8,7 +8,7 @@ import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
 
 import { useAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { useAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
@@ -27,21 +27,21 @@ const formatTooltipValue = (value: number) => {
 }
 
 export const AnalyticsSupportAgentLineChart = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
     const { data: timeSeriesData } =
         useAiAgentSupportInteractionsTimeSeriesData(
-            cleanStatsFilters,
+            statsFilters,
             userTimezone,
             granularity,
         )
 
     const supportInteractionsTrend = useAiAgentSupportInteractionsTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
 
     const value =
         supportInteractionsTrend.data?.value !== null &&

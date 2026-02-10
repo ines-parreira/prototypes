@@ -8,7 +8,7 @@ import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
 
 import { useAIAgentAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTimeSeriesData'
 import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
 
@@ -30,20 +30,20 @@ const formatTooltipValue = (value: number) => {
 }
 
 export const AIAgentAutomationLineChart = () => {
-    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+    const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
     const { data: timeSeriesData } = useAIAgentAutomationRateTimeSeriesData(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
     )
 
     const automationRateTrend = useAIAgentAutomationRateTrend(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
     )
 
-    const tooltipPeriod = formatPreviousPeriod(cleanStatsFilters?.period)
+    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
 
     const value =
         automationRateTrend.data?.value !== null &&
