@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import { useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -89,7 +88,6 @@ jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
 }))
-const mockUseFlag = assumeMock(useFlag)
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
@@ -262,8 +260,6 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType qa_failed for Draft message', async () => {
-        mockUseFlag.mockReturnValue(true)
-
         const props = {
             ...defaultProps,
             messages: [
@@ -301,7 +297,6 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType trial for Trial message', async () => {
-        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -339,7 +334,6 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_and_down for ai agent message', async () => {
-        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -378,7 +372,6 @@ describe('TicketMessages', () => {
     })
 
     it('should log AiAgentTicketViewed event with bannerType thumbs_up_improve_response for ai agent message', async () => {
-        mockUseFlag.mockReturnValue(true)
         const props = {
             ...defaultProps,
             messages: [
@@ -459,38 +452,6 @@ describe('TicketMessages', () => {
         )
 
         expect(screen.getByText('Message')).toBeInTheDocument()
-    })
-
-    it('should handle feature flag disabled state', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const props = {
-            ...defaultProps,
-            messages: [
-                {
-                    ...defaultProps.messages[0],
-                    body_html: 'message',
-                    sender: {
-                        id: 1,
-                        name: 'AI Agent',
-                        firstname: 'AI',
-                        lastname: 'Agent',
-                        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS[0],
-                    },
-                },
-            ],
-        }
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketMessages {...props} />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        expect(screen.getByText('Message')).toBeInTheDocument()
-        expect(logEventMock).not.toHaveBeenCalled()
     })
 
     it('should handle messages with highlighted elements', () => {
@@ -759,8 +720,6 @@ describe('TicketMessages', () => {
     })
 
     it('should not log events when banner type is empty', () => {
-        mockUseFlag.mockReturnValue(true)
-
         const props = {
             ...defaultProps,
             messages: [

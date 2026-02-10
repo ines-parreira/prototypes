@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -62,9 +61,6 @@ export default function TicketMessages({
     ticketMeta,
     messagePosition,
 }: Props) {
-    const isFeedbackToAiAgentEnabled = useFlag(
-        FeatureFlagKey.FeedbackToAIAgentInTicketViews,
-    )
     const isTicketAfterFeedbackCollectionPeriod =
         useTicketIsAfterFeedbackCollectionPeriod()
 
@@ -105,9 +101,9 @@ export default function TicketMessages({
         getShouldDisplayAuditLogEvents,
     )
 
-    const isAIAgentMessage =
-        isFeedbackToAiAgentEnabled &&
-        AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(message.sender.email)
+    const isAIAgentMessage = AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
+        message.sender.email,
+    )
 
     const isAIAgentInternalNote = isAIAgentMessage && !message.public
 

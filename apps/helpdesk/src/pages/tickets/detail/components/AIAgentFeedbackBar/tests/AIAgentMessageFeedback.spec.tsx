@@ -30,6 +30,14 @@ jest.mock('state/ui/ticketAIAgentFeedback')
 jest.mock('react-cookie')
 jest.mock('hooks/useHasAgentPrivileges')
 jest.mock('@repo/logging')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    HelpCenterApiClientProvider: ({
+        children,
+    }: {
+        children: React.ReactNode
+    }) => children,
+    useHelpCenterApi: jest.fn(() => ({ client: {} })),
+}))
 
 const queryClient = mockQueryClient()
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
@@ -87,6 +95,10 @@ describe('AIAgentMessageFeedback', () => {
         let client = getLDClient()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         client = ldClientMock
+    })
+
+    afterEach(() => {
+        queryClient.clear()
     })
 
     it.each([

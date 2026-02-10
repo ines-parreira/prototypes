@@ -1,7 +1,6 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -71,10 +70,6 @@ type Props = {
 }
 
 const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
-    const isFeedbackToAiAgentV3Enabled = useFlag(
-        FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3,
-    )
-
     const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
@@ -375,23 +370,21 @@ const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
                         </div>
                     )}
                     <div>
-                        {isFeedbackToAiAgentV3Enabled && (
-                            <FeedbackOtherResourcesSelect
-                                helpCenterId={messageFeedback.helpCenterId}
-                                guidanceHelpCenterId={
-                                    messageFeedback.guidanceHelpCenterId
-                                }
-                                snippetHelpCenterId={
-                                    messageFeedback.snippetHelpCenterId
-                                }
-                                shopName={messageFeedback.shopName}
-                                shopType={messageFeedback.shopType}
-                                onSubmit={handleSubmitOtherResources}
-                                onRemove={handleDeleteOtherResources}
-                                initialValues={otherResourcesInitial}
-                                accountId={accountId}
-                            />
-                        )}
+                        <FeedbackOtherResourcesSelect
+                            helpCenterId={messageFeedback.helpCenterId}
+                            guidanceHelpCenterId={
+                                messageFeedback.guidanceHelpCenterId
+                            }
+                            snippetHelpCenterId={
+                                messageFeedback.snippetHelpCenterId
+                            }
+                            shopName={messageFeedback.shopName}
+                            shopType={messageFeedback.shopType}
+                            onSubmit={handleSubmitOtherResources}
+                            onRemove={handleDeleteOtherResources}
+                            initialValues={otherResourcesInitial}
+                            accountId={accountId}
+                        />
                         <FeedbackCreateResource
                             shopType={messageFeedback.shopType}
                             shopName={messageFeedback.shopName}
