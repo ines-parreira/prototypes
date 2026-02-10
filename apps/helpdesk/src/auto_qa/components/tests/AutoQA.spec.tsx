@@ -249,16 +249,30 @@ describe('AutoQA', () => {
     })
 
     describe('UIVisionMilestone1 feature flag', () => {
-        it('should render star icon', () => {
+        it('should render star icon when UIVisionMilestone1 is enabled', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
 
             const { container } = renderWithRouter(<AutoQA />)
             const titleWrapper = container.querySelector(
                 '[class*="titleWrapper"]',
             )
+            const starIcon = titleWrapper?.querySelector('svg')
 
             expect(titleWrapper).toBeInTheDocument()
-            expect(titleWrapper?.children.length).toBeGreaterThan(3)
+            expect(starIcon).toBeInTheDocument()
+        })
+
+        it('should not render star icon when UIVisionMilestone1 is disabled', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(false)
+
+            const { container } = renderWithRouter(<AutoQA />)
+            const titleWrapper = container.querySelector(
+                '[class*="titleWrapper"]',
+            )
+            const starIcon = titleWrapper?.querySelector('svg')
+
+            expect(titleWrapper).toBeInTheDocument()
+            expect(starIcon).not.toBeInTheDocument()
         })
 
         it('should apply hasUIVisionMS1 class to container when UIVisionMilestone1 is enabled', () => {

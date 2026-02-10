@@ -5,11 +5,7 @@ import cn from 'classnames'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyBadge as Badge,
-    Icon,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Icon, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { SaveState } from 'auto_qa/hooks/useSaveState'
 import { TicketStatus } from 'business/types/ticket'
@@ -97,7 +93,6 @@ export default function AutoQA() {
                         can adjust both the scores and feedback to improve the
                         AI model.
                     </Tooltip>
-                    <Badge type={'magenta'}>BETA</Badge>
                 </div>
                 {isAfterFeedbackCollectionPeriod ? (
                     <AutoSaveBadge
