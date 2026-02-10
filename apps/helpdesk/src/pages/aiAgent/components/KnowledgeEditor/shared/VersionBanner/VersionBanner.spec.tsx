@@ -273,7 +273,7 @@ describe('VersionBanner', () => {
                 },
             })
 
-            expect(screen.getByText('By John Doe')).toBeInTheDocument()
+            expect(screen.getByText('Changes by John Doe')).toBeInTheDocument()
         })
 
         it('shows commit message with author name when both are available', () => {
@@ -291,7 +291,9 @@ describe('VersionBanner', () => {
             })
 
             expect(
-                screen.getByText('By Jane Smith: Fixed typo in greeting'),
+                screen.getByText(
+                    'Changes by Jane Smith: Fixed typo in greeting',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -306,7 +308,7 @@ describe('VersionBanner', () => {
             expect(
                 screen.queryByText(/Changes in this version/i),
             ).not.toBeInTheDocument()
-            expect(screen.queryByText(/^By /)).not.toBeInTheDocument()
+            expect(screen.queryByText(/^Changes by /)).not.toBeInTheDocument()
         })
 
         it('shows "unknown date" when publishedDatetime is null', () => {

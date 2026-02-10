@@ -42,9 +42,9 @@ function buildVersionLabel(
     const dateText = dateSource ? formatDate(dateSource) : ''
     const parts: string[] = [dateText || `Version ${version.version}`]
     if (isDraft) {
-        parts.push('(Draft)')
+        parts.push('(draft)')
     } else if (isCurrent) {
-        parts.push('(Current)')
+        parts.push('(current)')
     }
     return parts.join(' ')
 }

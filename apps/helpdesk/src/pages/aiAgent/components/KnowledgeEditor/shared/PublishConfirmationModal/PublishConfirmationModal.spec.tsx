@@ -33,13 +33,11 @@ describe('PublishConfirmationModal', () => {
     it('renders the commit message text field', () => {
         render(<PublishConfirmationModal {...defaultProps} />)
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         expect(textField).toBeInTheDocument()
         expect(textField).toHaveAttribute(
             'placeholder',
-            'e.g. Updated return policy',
+            'ex: Updated return window to 30 days',
         )
     })
 
@@ -81,9 +79,7 @@ describe('PublishConfirmationModal', () => {
             />,
         )
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         await user.type(textField, 'Fixed typo in description')
         await user.click(screen.getByRole('button', { name: 'Publish' }))
 
@@ -111,9 +107,7 @@ describe('PublishConfirmationModal', () => {
             />,
         )
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         await user.type(textField, 'Updated content{Enter}')
 
         expect(onPublish).toHaveBeenCalledWith('Updated content')
@@ -141,9 +135,7 @@ describe('PublishConfirmationModal', () => {
             />,
         )
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         await user.type(textField, 'Test{Enter}')
 
         expect(onPublish).not.toHaveBeenCalled()
@@ -159,9 +151,7 @@ describe('PublishConfirmationModal', () => {
             />,
         )
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         await user.type(textField, 'Some message')
         await user.click(screen.getByRole('button', { name: 'Publish' }))
 
@@ -172,9 +162,7 @@ describe('PublishConfirmationModal', () => {
         const user = userEvent.setup()
         render(<PublishConfirmationModal {...defaultProps} />)
 
-        const textField = screen.getByLabelText(
-            /describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
         await user.type(textField, 'Some message')
 
         const modal = screen.getByRole('dialog')

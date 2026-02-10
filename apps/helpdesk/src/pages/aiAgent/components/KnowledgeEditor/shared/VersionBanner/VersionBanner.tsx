@@ -72,13 +72,13 @@ export function VersionBanner({
 
         const getVersionDescription = () => {
             if (commitMessage && publisherName) {
-                return `By ${publisherName}: ${commitMessage}`
+                return `Changes by ${publisherName}: ${commitMessage}`
             }
             if (commitMessage) {
                 return `Changes in this version: ${commitMessage}`
             }
             if (publisherName) {
-                return `By ${publisherName}`
+                return `Changes by ${publisherName}`
             }
             return null
         }
@@ -93,7 +93,7 @@ export function VersionBanner({
                     size="sm"
                     isClosable={false}
                     icon="info"
-                    title={`You are viewing a previous version published on ${formattedDate}.`}
+                    title={`You are viewing a previous version published on ${formattedDate}`}
                     description={
                         <>
                             {versionDescription && (
@@ -106,7 +106,7 @@ export function VersionBanner({
                                 marginTop="xs"
                                 width="100%"
                             >
-                                <Box flexDirection="row" gap="sm">
+                                <Box flexDirection="row" gap="xs">
                                     <Button
                                         variant="primary"
                                         leadingSlot="arrow-left"

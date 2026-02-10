@@ -49,9 +49,7 @@ describe('KnowledgeEditorGuidancePublishModal', () => {
     it('renders commit message text field', () => {
         render(<KnowledgeEditorGuidancePublishModal />)
 
-        expect(
-            screen.getByLabelText(/Describe your changes for version history/i),
-        ).toBeInTheDocument()
+        expect(screen.getByLabelText(/Change summary/i)).toBeInTheDocument()
     })
 
     it('renders Cancel and Publish buttons', () => {
@@ -85,9 +83,7 @@ describe('KnowledgeEditorGuidancePublishModal', () => {
         const user = userEvent.setup()
         render(<KnowledgeEditorGuidancePublishModal />)
 
-        const textField = screen.getByLabelText(
-            /Describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/Change summary/i)
         await user.type(textField, 'Updated guidance content')
 
         const modal = screen.getByRole('dialog')

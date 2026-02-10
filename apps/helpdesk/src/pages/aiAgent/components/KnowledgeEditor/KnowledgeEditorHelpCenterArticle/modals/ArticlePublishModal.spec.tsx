@@ -49,9 +49,7 @@ describe('ArticlePublishModal', () => {
     it('renders commit message text field', () => {
         render(<ArticlePublishModal />)
 
-        expect(
-            screen.getByLabelText(/Describe your changes for version history/i),
-        ).toBeInTheDocument()
+        expect(screen.getByLabelText(/Change summary/i)).toBeInTheDocument()
     })
 
     it('renders Cancel and Publish buttons', () => {
@@ -85,9 +83,7 @@ describe('ArticlePublishModal', () => {
         const user = userEvent.setup()
         render(<ArticlePublishModal />)
 
-        const textField = screen.getByLabelText(
-            /Describe your changes for version history/i,
-        )
+        const textField = screen.getByLabelText(/Change summary/i)
         await user.type(textField, 'Updated article content')
 
         const modal = screen.getByRole('dialog')

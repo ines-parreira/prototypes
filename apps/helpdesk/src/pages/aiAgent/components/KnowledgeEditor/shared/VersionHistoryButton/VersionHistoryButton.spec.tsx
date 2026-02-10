@@ -118,14 +118,14 @@ describe('VersionHistoryButton', () => {
         ).toBeInTheDocument()
     })
 
-    it('marks the current version with "(Current)" label', async () => {
+    it('marks the current version with "(current)" label', async () => {
         const user = userEvent.setup()
         renderComponent({ currentVersionId: 2 })
 
         await user.click(getTriggerButton())
 
         const currentOption = screen.getByRole('option', {
-            name: /Jan 1, 2024.*\(Current\)/i,
+            name: /Jan 1, 2024.*\(current\)/i,
         })
         expect(currentOption).toBeInTheDocument()
     })

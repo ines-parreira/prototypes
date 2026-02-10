@@ -72,16 +72,19 @@ export const CancelButton = (props: {
 export const DeleteDraftButton = (props: {
     onDelete: () => void
     disabled?: boolean
-}) => (
-    <Button
-        onClick={props.onDelete}
-        isDisabled={props.disabled}
-        variant="tertiary"
-        intent="destructive"
-    >
-        Delete
-    </Button>
-)
+}) =>
+    withTooltip(
+        <Button
+            onClick={props.onDelete}
+            aria-label="Delete"
+            isDisabled={props.disabled}
+            variant="secondary"
+            intent="destructive"
+            icon="trash-empty"
+        />,
+        'Delete',
+        !!props.disabled,
+    )
 
 export const CopyIconButton = (props: {
     onCopy: () => void

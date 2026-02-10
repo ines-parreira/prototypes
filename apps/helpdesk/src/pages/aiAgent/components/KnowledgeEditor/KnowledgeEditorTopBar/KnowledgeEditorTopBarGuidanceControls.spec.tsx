@@ -42,15 +42,7 @@ jest.mock('./KnowledgeEditorTopBarCommonControls', () => ({
     }: {
         disabled: boolean
         onDelete?: () => void
-    }) => (
-        <button
-            disabled={disabled}
-            onClick={onDelete}
-            aria-label="delete draft"
-        >
-            Delete Draft
-        </button>
-    ),
+    }) => <button disabled={disabled} onClick={onDelete} aria-label="Delete" />,
     EditIconButton: ({
         disabled,
         onEdit,
@@ -400,7 +392,7 @@ describe('GuidanceToolbarControls', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: /delete/i }),
             ).toBeInTheDocument()
         })
     })
@@ -426,7 +418,7 @@ describe('GuidanceToolbarControls', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: /delete/i }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -463,7 +455,7 @@ describe('GuidanceToolbarControls', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /delete draft/i }),
+                screen.getByRole('button', { name: /delete/i }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /publish/i }),
@@ -482,9 +474,7 @@ describe('GuidanceToolbarControls', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('button', { name: /delete draft/i }),
-            )
+            await user.click(screen.getByRole('button', { name: /delete/i }))
 
             expect(mockActions.onDiscardCreate).toHaveBeenCalled()
         })
