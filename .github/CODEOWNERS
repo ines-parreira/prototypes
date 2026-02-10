@@ -1,10 +1,10 @@
 # CRM Reporting scope @gorgias/crm-reporting
 
-apps/helpdesk/src/domains/reporting @gorgias/crm-reporting-frontend
-apps/helpdesk/src/assets/img/paywalls/screens/chat_stats.png @gorgias/crm-reporting-frontend
-apps/helpdesk/src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/crm-reporting-frontend
+apps/helpdesk/src/domains/reporting @gorgias/cplt-analytics-frontend
+apps/helpdesk/src/assets/img/paywalls/screens/chat_stats.png @gorgias/cplt-analytics-frontend
+apps/helpdesk/src/assets/img/presentationals/satisfaction-survey-stats.png @gorgias/cplt-analytics-frontend
 
-packages/reporting @gorgias/crm-reporting-frontend
+packages/reporting @gorgias/cplt-analytics-frontend
 
 # Conv AI Orchestration scope
 apps/helpdesk/src/pages/aiAgent/ @gorgias/ai-agent-orchestration
