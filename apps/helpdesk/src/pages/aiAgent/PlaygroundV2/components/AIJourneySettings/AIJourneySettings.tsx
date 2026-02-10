@@ -46,6 +46,8 @@ const getJourneyLabel = (journeyType: JourneyTypeEnum): string => {
             return 'Win-back'
         case JourneyTypeEnum.PostPurchase:
             return 'Post Purchase'
+        case JourneyTypeEnum.Welcome:
+            return 'Welcome'
         default:
             return journeyType
     }
@@ -98,27 +100,18 @@ export const AIJourneySettings: React.FC = () => {
         cooldownPeriod,
         targetOrderStatus,
         postPurchaseWaitInMinutes,
+        waitTimeMinutes,
     } = aiJourneySettings
 
     const isCampaign = currentJourney?.type === JourneyTypeEnum.Campaign
     const isWinBack = currentJourney?.type === JourneyTypeEnum.WinBack
     const isPostPurchase = currentJourney?.type === JourneyTypeEnum.PostPurchase
+    const isWelcome = currentJourney?.type === JourneyTypeEnum.Welcome
 
-    const flowsOptions = flows
-        .filter(
-            (j) =>
-                [
-                    JourneyTypeEnum.CartAbandoned.toString(),
-                    JourneyTypeEnum.Campaign.toString(),
-                    JourneyTypeEnum.SessionAbandoned.toString(),
-                    JourneyTypeEnum.WinBack.toString(),
-                    JourneyTypeEnum.PostPurchase.toString(),
-                ].indexOf(j.type) > -1,
-        )
-        .map((journey) => ({
-            id: journey.id,
-            label: getJourneyLabel(journey.type),
-        }))
+    const flowsOptions = flows.map((journey) => ({
+        id: journey.id,
+        label: getJourneyLabel(journey.type),
+    }))
 
     const campaignsOptions = campaigns.map((campaign) => ({
         id: campaign.id,
@@ -209,6 +202,14 @@ export const AIJourneySettings: React.FC = () => {
                     : discountCodeMessageIdx,
         })
     }
+
+    const handleWelcomeWaitTimeField = (value: number) => {
+        setAIJourneySettings({
+            waitTimeMinutes: value,
+        })
+    }
+
+    const shouldRenderImageToggle = !isCampaign && !isWelcome
 
     if (isLoadingJourneys) {
         return <LoadingSpinner />
@@ -346,7 +347,7 @@ export const AIJourneySettings: React.FC = () => {
                 </div>
             )}
             <div className={css.toggleFieldsContainer}>
-                {!isCampaign && (
+                {shouldRenderImageToggle && (
                     <ToggleField
                         value={includeProductImage}
                         label="Include product image in first message"
@@ -525,6 +526,31 @@ export const AIJourneySettings: React.FC = () => {
                         />
                     </div>
                 </>
+            )}
+
+            {isWelcome && (
+                <div
+                    className={classNames([
+                        css.welcomeWaitField,
+                        css.inputFieldWrapper,
+                    ])}
+                >
+                    <NumberField
+                        label="Wait time before trigger (in minutes)"
+                        isInvalid={
+                            waitTimeMinutes !== undefined &&
+                            waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
+                        }
+                        value={waitTimeMinutes}
+                        onChange={handleWelcomeWaitTimeField}
+                        error={
+                            waitTimeMinutes !== undefined &&
+                            waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
+                                ? `Please enter wait time between 0 and ${POST_PURCHASE_MAX_WAIT_TIME} minutes (7 days)`
+                                : undefined
+                        }
+                    />
+                </div>
             )}
 
             {isCampaign && (

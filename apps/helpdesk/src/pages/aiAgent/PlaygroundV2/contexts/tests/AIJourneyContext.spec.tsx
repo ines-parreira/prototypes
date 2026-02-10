@@ -253,6 +253,7 @@ describe('AIJourneyContext', () => {
                 cooldownPeriod: undefined,
                 postPurchaseWaitInMinutes: undefined,
                 targetOrderStatus: undefined,
+                waitTimeMinutes: undefined,
             })
         })
 
@@ -287,6 +288,7 @@ describe('AIJourneyContext', () => {
                 cooldownPeriod: 90,
                 postPurchaseWaitInMinutes: undefined,
                 targetOrderStatus: undefined,
+                waitTimeMinutes: undefined,
             })
         })
 
@@ -321,7 +323,64 @@ describe('AIJourneyContext', () => {
                 cooldownPeriod: undefined,
                 targetOrderStatus: 'order_placed',
                 postPurchaseWaitInMinutes: 10,
+                waitTimeMinutes: undefined,
             })
+        })
+
+        it('should parse wait time for welcome flow', () => {
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    type: JourneyTypeEnum.Welcome,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                        wait_time_minutes: 15,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAIJourneyContext(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(result.current.aiJourneySettings).toEqual({
+                ...AI_JOURNEY_DEFAULT_STATE,
+                journeyId: 'journey-1',
+                totalFollowUp: 2,
+                includeProductImage: false,
+                includeDiscountCode: true,
+                discountCodeValue: 15,
+                discountCodeMessageIdx: 2,
+                outboundMessageInstructions: 'Test instructions',
+                inactiveDays: undefined,
+                cooldownPeriod: undefined,
+                targetOrderStatus: undefined,
+                postPurchaseWaitInMinutes: undefined,
+                waitTimeMinutes: 15,
+            })
+        })
+
+        it('should handle welcome flow without wait_time_minutes', () => {
+            mockUseJourneyData.mockReturnValue({
+                data: {
+                    ...mockJourneyData,
+                    type: JourneyTypeEnum.Welcome,
+                    configuration: {
+                        ...mockJourneyData.configuration,
+                    },
+                },
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() => useAIJourneyContext(), {
+                wrapper: createWrapper(),
+            })
+
+            expect(
+                result.current.aiJourneySettings.waitTimeMinutes,
+            ).toBeUndefined()
+            expect(result.current.aiJourneySettings.totalFollowUp).toBe(2)
         })
 
         it('should provide isLoadingJourneyData from useJourneyData hook', () => {

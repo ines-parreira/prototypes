@@ -13,6 +13,7 @@ import type {
     JourneyConfigurationApiDTO,
     JourneyDetailApiDTO,
     PostPurchaseJourneyConfigurationApiDTO,
+    WelcomeFlowConfigurationApiDTO,
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
@@ -46,6 +47,7 @@ export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
     cooldownPeriod: 30,
     targetOrderStatus: 'order_placed',
     postPurchaseWaitInMinutes: 1,
+    waitTimeMinutes: 1,
 }
 
 const journeySettingsMapper = {
@@ -60,11 +62,16 @@ const journeySettingsMapper = {
     cooldownPeriod: 'cooldown_days',
     targetOrderStatus: 'target_order_status',
     postPurchaseWaitInMinutes: 'post_purchase_wait_minutes',
+    waitTimeMinutes: 'wait_time_minutes',
 } as const
 
 function buildJourneyConfig(
     state: AIJourneySettings,
-): JourneyConfigurationApiDTO {
+):
+    | JourneyConfigurationApiDTO
+    | WinbackJourneyConfigurationApiDTO
+    | PostPurchaseJourneyConfigurationApiDTO
+    | WelcomeFlowConfigurationApiDTO {
     return {
         [journeySettingsMapper.totalFollowUp]: state.totalFollowUp,
         [journeySettingsMapper.includeProductImage]: state.includeProductImage,
@@ -77,7 +84,8 @@ function buildJourneyConfig(
         [journeySettingsMapper.targetOrderStatus]: state.targetOrderStatus,
         [journeySettingsMapper.postPurchaseWaitInMinutes]:
             state.postPurchaseWaitInMinutes,
-    } as JourneyConfigurationApiDTO
+        [journeySettingsMapper.waitTimeMinutes]: state.waitTimeMinutes,
+    }
 }
 
 function parseJourneyConfig(
@@ -94,6 +102,12 @@ function parseJourneyConfig(
     const postPurchaseConfig =
         journeyData.type === JourneyTypeEnum.PostPurchase
             ? (config as PostPurchaseJourneyConfigurationApiDTO)
+            : null
+
+    // treat welcome specific configurations
+    const welcomeConfig =
+        journeyData.type === JourneyTypeEnum.Welcome
+            ? (config as WelcomeFlowConfigurationApiDTO)
             : null
 
     return {
@@ -121,6 +135,8 @@ function parseJourneyConfig(
             postPurchaseConfig?.[
                 journeySettingsMapper.postPurchaseWaitInMinutes
             ] ?? undefined,
+        waitTimeMinutes:
+            welcomeConfig?.[journeySettingsMapper.waitTimeMinutes] ?? undefined,
     }
 }
 

@@ -84,6 +84,16 @@ const mockFlows: JourneyApiDTO[] = [
         state: 'active' as const,
         created_datetime: '2024-01-01T00:00:00Z',
     },
+    {
+        id: 'flow-5',
+        type: JourneyTypeEnum.Welcome,
+        account_id: 123,
+        store_integration_id: 123,
+        store_name: 'test-shop',
+        store_type: 'shopify',
+        state: 'active' as const,
+        created_datetime: '2024-01-01T00:00:00Z',
+    },
 ]
 
 const mockCampaigns: JourneyApiDTO[] = [
@@ -1122,6 +1132,129 @@ describe('AIJourneySettings', () => {
                     targetOrderStatus: 'order_fulfilled',
                 })
             })
+        })
+    })
+
+    describe('Welcome flow', () => {
+        it('should render trigger event and wait time fields', () => {
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(screen.queryByText('Product')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Total number of messages to send'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Include discount code'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Discount code value')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Include product image in first message'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    'In which message should the discount code be sent',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Audience to include'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Audience to exclude'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Wait time before trigger (in minutes)'),
+            ).toBeInTheDocument()
+        })
+
+        it('should allow changing wait time after trigger', async () => {
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                }),
+            )
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            const waitTimeInput = screen.getByRole('textbox', {
+                name: /wait time before trigger \(in minutes\)/i,
+            })
+
+            await user.clear(waitTimeInput)
+            await user.type(waitTimeInput, '60')
+            await user.tab()
+
+            await waitFor(() => {
+                expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                    waitTimeMinutes: 60,
+                })
+            })
+        })
+
+        it('should display default wait time value of 1', () => {
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                    },
+                }),
+            )
+
+            renderComponent()
+
+            const waitTimeInput = screen.getByRole('textbox', {
+                name: /wait time before trigger \(in minutes\)/i,
+            })
+            expect(waitTimeInput).toHaveValue('1')
+        })
+
+        it('should display error when wait time exceeds maximum', () => {
+            const MAX_WAIT_TIME = 10080
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        waitTimeMinutes: 15000,
+                    },
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    `Please enter wait time between 0 and ${MAX_WAIT_TIME} minutes (7 days)`,
+                ),
+            ).toBeInTheDocument()
         })
     })
 })

@@ -58,6 +58,7 @@ export type AIJourneySettings = {
     cooldownPeriod: number
     targetOrderStatus?: OrderStatus
     postPurchaseWaitInMinutes?: number
+    waitTimeMinutes: number
 }
 
 export type DraftKnowledge = {

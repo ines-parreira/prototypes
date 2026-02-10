@@ -88,6 +88,7 @@ export const useSettingsChanged = () => {
             targetOrderStatus: aiJourneySettings.targetOrderStatus,
             postPurchaseWaitInMinutes:
                 aiJourneySettings.postPurchaseWaitInMinutes,
+            waitTimeMinutes: aiJourneySettings.waitTimeMinutes,
         }),
         [aiJourneySettings],
     )
