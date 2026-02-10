@@ -274,36 +274,42 @@ export const KnowledgeHubTable = ({
 
     // Apply manual sorting OR stable row order
     const displayData = useMemo(() => {
-        // No sort active - return unsorted data
         if (sortState.length === 0) {
             sortedRowIdsRef.current = null
             cachedSortStateRef.current = null
             return filteredAndGroupedData
         }
 
-        // Check if user clicked a column header (sortState changed)
         const sortStateChanged =
             !cachedSortStateRef.current ||
             sortState[0]?.id !== cachedSortStateRef.current[0]?.id ||
             sortState[0]?.desc !== cachedSortStateRef.current[0]?.desc
-        // User clicked header → Do fresh sort
+
         if (sortStateChanged) {
             const sortedData = sortData(filteredAndGroupedData, sortState)
-            // Cache the sort order as string IDs for stable reordering
-            // String normalization ensures consistent comparison with backend data
             sortedRowIdsRef.current = sortedData.map((row) => String(row.id))
-            cachedSortStateRef.current = sortState
+
+            // Metrics load asynchronously — defer caching the sort state until
+            // metric values are available so the next render re-sorts with real data.
+            const awaitingMetrics =
+                sortState[0].id.startsWith(METRICS_COLUMN_PREFIX) &&
+                !filteredAndGroupedData.some(
+                    (item) => item.metrics !== undefined,
+                )
+
+            if (!awaitingMetrics) {
+                cachedSortStateRef.current = sortState
+            }
 
             return sortedData
         }
 
-        // No header click → Maintain existing sort order
-        // If no cached order exists, do fresh sort
         if (!sortedRowIdsRef.current || sortedRowIdsRef.current.length === 0) {
             const sortedData = sortData(filteredAndGroupedData, sortState)
             sortedRowIdsRef.current = sortedData.map((row) => String(row.id))
             return sortedData
         }
+
         return applyStableRowOrder(
             filteredAndGroupedData,
             sortedRowIdsRef.current,

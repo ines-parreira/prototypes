@@ -52,7 +52,9 @@ export const useKnowledgeHubSortingPreference = (
     )
 
     const validatedRawState = useMemo(() => {
-        if (!isSortingState(rawSortState)) return DEFAULT_SORT
+        if (!isSortingState(rawSortState)) {
+            return DEFAULT_SORT
+        }
         return rawSortState
     }, [rawSortState])
 
@@ -66,13 +68,10 @@ export const useKnowledgeHubSortingPreference = (
             const isValidColumn = availableColumnIds.includes(sortColumnId)
 
             if (!isValidColumn) {
-                // Special handling for metrics columns during initial load
-                // Metrics columns may not be in availableColumnIds yet due to race condition
                 if (isMetricsColumn(sortColumnId)) {
                     return validatedRawState
                 }
 
-                // For non-metrics columns, fall back to default if invalid
                 return DEFAULT_SORT
             }
         }

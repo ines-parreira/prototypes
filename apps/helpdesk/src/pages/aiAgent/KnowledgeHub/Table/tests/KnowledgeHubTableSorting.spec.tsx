@@ -20,7 +20,10 @@ import {
     KnowledgeType,
     KnowledgeVisibility,
 } from 'pages/aiAgent/KnowledgeHub/types'
-import type { KnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
+import type {
+    GroupedKnowledgeItem,
+    KnowledgeItem,
+} from 'pages/aiAgent/KnowledgeHub/types'
 import { EMPTY_HELP_CENTER_ID } from 'pages/automate/common/components/HelpCenterSelect'
 
 const mockStore = configureMockStore()
@@ -898,6 +901,181 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
                 ).toBeInTheDocument()
                 expect(
                     within(dataRows[1]).getByText('Aardvark'),
+                ).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Branch 4: Async metrics data triggers re-sort', () => {
+        const metricsBaseData: KnowledgeItem[] = [
+            {
+                id: '1',
+                type: KnowledgeType.Guidance,
+                title: 'Item A',
+                lastUpdatedAt: '2024-01-01T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+            },
+            {
+                id: '2',
+                type: KnowledgeType.Guidance,
+                title: 'Item B',
+                lastUpdatedAt: '2024-01-02T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+            },
+            {
+                id: '3',
+                type: KnowledgeType.Guidance,
+                title: 'Item C',
+                lastUpdatedAt: '2024-01-03T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+            },
+        ]
+
+        const enrichWithMetrics = (
+            data: KnowledgeItem[],
+        ): GroupedKnowledgeItem[] => {
+            const metricsValues = [
+                { tickets: 5, handoverTickets: 2, csat: 70 },
+                { tickets: 50, handoverTickets: 10, csat: 90 },
+                { tickets: 20, handoverTickets: 5, csat: 80 },
+            ]
+
+            return data.map((item, i) => ({
+                ...item,
+                metrics: {
+                    ...metricsValues[i],
+                    resourceSourceSetId: i + 1,
+                },
+            }))
+        }
+
+        it('should re-sort when metrics data arrives after initial sort on metrics column', async () => {
+            currentSortState = [{ id: 'metrics.tickets', desc: true }]
+
+            const { rerender } = renderComponent({
+                data: metricsBaseData,
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                expect(screen.getByText('Item A')).toBeInTheDocument()
+                expect(screen.getByText('Item B')).toBeInTheDocument()
+                expect(screen.getByText('Item C')).toBeInTheDocument()
+            })
+
+            await rerenderComponent(rerender, {
+                data: enrichWithMetrics(metricsBaseData),
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const dataRows = rows.slice(1)
+
+                expect(
+                    within(dataRows[0]).getByText('Item B'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[1]).getByText('Item C'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[2]).getByText('Item A'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should maintain stable order after metrics-based sort when non-sort data changes', async () => {
+            currentSortState = [{ id: 'metrics.tickets', desc: true }]
+
+            const dataWithMetrics = enrichWithMetrics(metricsBaseData)
+
+            const { rerender } = renderComponent({
+                data: dataWithMetrics,
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const dataRows = rows.slice(1)
+
+                expect(
+                    within(dataRows[0]).getByText('Item B'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[1]).getByText('Item C'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[2]).getByText('Item A'),
+                ).toBeInTheDocument()
+            })
+
+            const updatedData: GroupedKnowledgeItem[] = [
+                { ...dataWithMetrics[0], title: 'Item A EDITED' },
+                dataWithMetrics[1],
+                dataWithMetrics[2],
+            ]
+
+            await rerenderComponent(rerender, {
+                data: updatedData,
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const dataRows = rows.slice(1)
+
+                expect(
+                    within(dataRows[0]).getByText('Item B'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[1]).getByText('Item C'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[2]).getByText('Item A EDITED'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not re-sort on non-metrics column when metrics data arrives', async () => {
+            currentSortState = [{ id: 'title', desc: false }]
+
+            const { rerender } = renderComponent({
+                data: metricsBaseData,
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const dataRows = rows.slice(1)
+
+                expect(
+                    within(dataRows[0]).getByText('Item A'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[1]).getByText('Item B'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[2]).getByText('Item C'),
+                ).toBeInTheDocument()
+            })
+
+            await rerenderComponent(rerender, {
+                data: enrichWithMetrics(metricsBaseData),
+                isMetricsEnabled: true,
+            })
+
+            await waitFor(() => {
+                const rows = screen.getAllByRole('row')
+                const dataRows = rows.slice(1)
+
+                expect(
+                    within(dataRows[0]).getByText('Item A'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[1]).getByText('Item B'),
+                ).toBeInTheDocument()
+                expect(
+                    within(dataRows[2]).getByText('Item C'),
                 ).toBeInTheDocument()
             })
         })
