@@ -124,6 +124,16 @@ describe('StatusMenu', () => {
         } as any)
     })
 
+    it('should pass userId to useUserAvailability', () => {
+        render(<StatusMenu onUpdateStatusStart={onUpdateStatusStart} />)
+
+        expect(useUserAvailabilityMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                userId: 123,
+            }),
+        )
+    })
+
     it.each(mockStatuses)('should render the $name status', ({ name }) => {
         const { getByText } = render(
             <StatusMenu onUpdateStatusStart={onUpdateStatusStart} />,
@@ -235,6 +245,7 @@ describe('StatusMenu', () => {
                     isLoading: true,
                     isError: false,
                     error: null,
+                    isFetching: false,
                 } as ReturnType<typeof useUserAvailability>)
             },
         },

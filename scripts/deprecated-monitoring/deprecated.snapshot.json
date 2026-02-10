@@ -4828,11 +4828,12 @@
         },
         {
           "name": "LegacyBadge",
-          "count": 122,
+          "count": 123,
           "files": [
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
             "apps/helpdesk/src/auto_qa/components/SaveBadge.tsx",
             "apps/helpdesk/src/common/navigation/hooks/useMainNavigationItems.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/charts/TableStat/TableStat.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/StatsNav/StatsNavLink.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle.tsx",

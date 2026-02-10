@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { produce } from 'immer'
 import moment from 'moment-timezone'
 
@@ -9,6 +10,7 @@ import {
 } from 'domains/reporting/config/stats'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import type {
+    AgentAvailabilityStatCell,
     LegacyStatsFilters,
     NumericStatAxisValue,
     NumericStatCell,
@@ -22,6 +24,7 @@ import TableStat from 'domains/reporting/pages/common/components/charts/TableSta
 import StatCurrentDate from 'domains/reporting/pages/common/components/StatCurrentDate'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import StatWrapper from 'domains/reporting/pages/common/layout/StatWrapper'
+import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
 import css from 'domains/reporting/pages/live/agents/LiveAgents.less'
 import { LiveAgentsFilters } from 'domains/reporting/pages/live/agents/LiveAgentsFilters'
 import StatsFiltersContext from 'domains/reporting/pages/StatsFiltersContext'
@@ -35,6 +38,9 @@ export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
+    const isAgentAvailabilityEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
     const { cleanStatsFilters: statsFilters, userTimezone } = useAppSelector(
         getCleanStatsFiltersWithTimezone,
     )
@@ -75,8 +81,18 @@ function LiveAgents() {
     }, [fetchUserPerformancePage, userPerformance])
 
     const formattedUserPerformance = useMemo(() => {
-        return userPerformance && formatUserPerformanceData(userPerformance)
-    }, [userPerformance])
+        return (
+            userPerformance &&
+            formatUserPerformanceData(
+                userPerformance,
+                isAgentAvailabilityEnabled,
+            )
+        )
+    }, [userPerformance, isAgentAvailabilityEnabled])
+
+    usePerformancePageAgentAvailabilities({
+        enabled: isAgentAvailabilityEnabled,
+    })
 
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
@@ -138,6 +154,7 @@ function LiveAgents() {
 
 const formatUserPerformanceData = (
     stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
+    isAgentAvailabilityEnabled: boolean,
 ) => {
     return produce<
         Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
@@ -148,6 +165,11 @@ const formatUserPerformanceData = (
                     | NumericStatCell
                     | OnlineTimeDetailStatCell
                     | TicketDetailStatCell
+                    | AgentAvailabilityStatCell
+                    | {
+                          type: StatType.User
+                          value: { name: string; id: number }
+                      }
                 )[]
             >
         >
@@ -189,8 +211,23 @@ const formatUserPerformanceData = (
         data.axes.x[onlineTimeTypeIndex].name = 'Online status'
         data.axes.x[onlineTimeTypeIndex].type = StatType.OnlineState
 
-        data.lines = data.lines.map((line) =>
-            line.reduce(
+        // Calculate splice index for Availability column
+        const SECOND_COLUMN_INDEX = 1
+        const availabilitySpliceIdx = isAgentAvailabilityEnabled
+            ? onlineTimeTypeIndex > -1
+                ? onlineTimeTypeIndex + 1
+                : SECOND_COLUMN_INDEX
+            : -1
+
+        if (isAgentAvailabilityEnabled) {
+            data.axes.x.splice(availabilitySpliceIdx, 0, {
+                name: 'Availability',
+                type: StatType.AgentAvailability,
+            })
+        }
+
+        data.lines = data.lines.map((line) => {
+            const processedLine = line.reduce(
                 (acc, value, index) => {
                     if (!acc || !value) {
                         return acc
@@ -228,9 +265,42 @@ const formatUserPerformanceData = (
                     | NumericStatCell
                     | OnlineTimeDetailStatCell
                     | TicketDetailStatCell
+                    | AgentAvailabilityStatCell
+                    | {
+                          type: StatType.User
+                          value: { name: string; id: number }
+                      }
                 )[],
-            ),
-        )
+            )
+
+            // Add AgentAvailabilityStatCell if the feature is enabled
+            if (isAgentAvailabilityEnabled && availabilitySpliceIdx >= 0) {
+                const userCell = line.find(
+                    (cell) => cell.type === StatType.User,
+                )
+
+                if (
+                    !userCell ||
+                    !('value' in userCell) ||
+                    !userCell.value ||
+                    typeof userCell.value !== 'object' ||
+                    !('id' in userCell.value) ||
+                    typeof userCell.value.id !== 'number'
+                ) {
+                    return processedLine
+                }
+
+                const userId = userCell.value.id
+
+                // Always add cell to maintain column alignment
+                processedLine.splice(availabilitySpliceIdx, 0, {
+                    type: StatType.AgentAvailability,
+                    value: userId,
+                } as AgentAvailabilityStatCell)
+            }
+
+            return processedLine
+        })
     })
 }
 

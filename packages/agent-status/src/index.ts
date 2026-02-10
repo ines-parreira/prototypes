@@ -4,6 +4,8 @@ export { AgentStatusesTable } from './components'
 export { DeleteStatusConfirmationModal } from './components/DeleteStatusModal'
 export { UserInfoHeader, UserInfoHeaderContainer } from './components'
 export type { UserInfoHeaderProps } from './components/UserInfoHeader'
+export { AgentAvailabilityStatusSelect } from './components/AgentAvailabilityStatusSelect'
+export type { AgentAvailabilityStatusSelectProps } from './components/AgentAvailabilityStatusSelect'
 
 export {
     DURATION_LIMITS,
@@ -55,3 +57,5 @@ export { NotificationStatus } from './utils/LegacyBridge/context'
 
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
 export { AgentAvatar } from './components'
+
+export { AVAILABLE_STATUS } from './constants'

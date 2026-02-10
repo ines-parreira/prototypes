@@ -1,6 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
@@ -12,6 +14,7 @@ import { TicketChannel } from 'business/types/ticket'
 import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
+import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -45,6 +48,31 @@ jest.mock(
         DrillDownModal: () => null,
     }),
 )
+jest.mock(
+    'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell',
+    () => ({
+        AgentAvailabilityCell: () => <div>AgentAvailabilityCell</div>,
+    }),
+)
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useListUserAvailabilities: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+        isError: false,
+        error: null,
+    })),
+}))
+jest.mock(
+    'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities',
+    () => ({
+        usePerformancePageAgentAvailabilities: jest.fn(),
+    }),
+)
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock(
     'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter',
@@ -55,6 +83,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
+const useFlagMock = assumeMock(useFlag)
+const usePerformancePageAgentAvailabilitiesMock = assumeMock(
+    usePerformancePageAgentAvailabilities,
+)
 
 describe('LiveAgents', () => {
     const defaultState = {
@@ -85,6 +117,13 @@ describe('LiveAgents', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
+        useFlagMock.mockReturnValue(false)
+        usePerformancePageAgentAvailabilitiesMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as any)
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
@@ -170,5 +209,69 @@ describe('LiveAgents', () => {
 
         expect(getByText('ONLINE STATUS')).toBeInTheDocument()
         expect(screen.queryByText('ONLINE TIME')).not.toBeInTheDocument()
+    })
+
+    it('should not render availability column when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(screen.queryByText('AVAILABILITY')).not.toBeInTheDocument()
+    })
+
+    it('should render availability column when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(screen.getByText('AVAILABILITY')).toBeInTheDocument()
+    })
+
+    it('should call usePerformancePageAgentAvailabilities with enabled=true when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
+            enabled: true,
+        })
+    })
+
+    it('should call usePerformancePageAgentAvailabilities with enabled=false when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
+            enabled: false,
+        })
     })
 })

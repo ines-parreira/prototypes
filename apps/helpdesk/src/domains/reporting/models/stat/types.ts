@@ -310,6 +310,7 @@ export type ApiStatsFilters = StatsFiltersWithLogicalOperator &
     ApiOnlyStatsFiltersWithLogicalOperator
 
 export enum StatType {
+    AgentAvailability = 'agent-availability',
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',
     Boolean = 'bool',
     Currency = 'currency',
@@ -403,6 +404,7 @@ export type NumericStatAxisValue = {
         | StatType.OnlineTime
         | StatType.TicketDetails
         | StatType.OnlineState
+        | StatType.AgentAvailability
     value?: number
 }
 
@@ -433,6 +435,11 @@ export type NumericStatCell = {
     value: number
 }
 
+export type AgentAvailabilityStatCell = {
+    type: StatType.AgentAvailability
+    value: number
+}
+
 export type TicketDetailStatCell = {
     type: StatType.TicketDetails
     value: number
@@ -448,6 +455,7 @@ export type OnlineTimeDetailStatCell = {
 export type StatCell =
     | TextStatCell
     | NumericStatCell
+    | AgentAvailabilityStatCell
     | TicketDetailStatCell
     | OnlineTimeDetailStatCell
     | { type: StatType.Date; value: string | null }

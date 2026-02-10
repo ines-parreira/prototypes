@@ -228,6 +228,7 @@ const defaultYAxeGridLines = {
 }
 
 export enum StatValueType {
+    AgentAvailability = 'agent-availability',
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',
     Boolean = 'bool',
     Currency = 'currency',
@@ -610,6 +611,7 @@ export const stats = toImmutable<
                 'Current agent online status and total amount of online time today calculated in your local timezone.',
             'Online status': 'Current agent online status',
             'Tickets closed': 'Number of tickets closed per assigned agents',
+            Availability: 'Current agent availability status',
         },
     },
     [TICKETS_CLOSED_PER_AGENT]: {

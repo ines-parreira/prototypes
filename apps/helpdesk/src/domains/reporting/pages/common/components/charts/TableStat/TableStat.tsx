@@ -31,6 +31,7 @@ import type { LegacyStatsFilters } from 'domains/reporting/models/stat/types'
 import DistributionVariantStat, {
     DistributionStatVariant,
 } from 'domains/reporting/pages/common/components/charts/DistributionVariantStat'
+import { AgentAvailabilityCell } from 'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell'
 import ProductCell from 'domains/reporting/pages/common/components/charts/TableStat/cells/ProductCell'
 import css from 'domains/reporting/pages/common/components/charts/TableStat/TableStat.less'
 import TicketDetailsStat from 'domains/reporting/pages/common/components/charts/TableStat/TicketDetailsStat'
@@ -247,6 +248,15 @@ export class TableStat extends Component<
                         </Badge>
                     </div>
                 )
+            }
+            case StatValueType.AgentAvailability: {
+                const userId = metric.get('value') as number
+
+                if (!userId && typeof userId !== 'number') {
+                    return null
+                }
+
+                return <AgentAvailabilityCell userId={userId} />
             }
             case StatValueType.User: {
                 return (

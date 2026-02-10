@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -18,9 +19,22 @@ import type { Integration } from 'models/integration/types'
 import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import * as channelsService from 'services/channels'
 import { initialState } from 'state/tags/reducers'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
+
+// Mock the AgentAvailabilityCell component
+jest.mock(
+    'domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell',
+    () => ({
+        AgentAvailabilityCell: ({ userId }: { userId: number }) => (
+            <div data-testid="agent-availability-cell">
+                Agent Availability Cell - User {userId}
+            </div>
+        ),
+    }),
+)
 
 const mockStore = configureMockStore()
 
@@ -412,5 +426,106 @@ describe('TableStat', () => {
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render AgentAvailabilityCell when type is AgentAvailability with valid userId', () => {
+        const queryClient = mockQueryClient()
+        const tableStatDataWithAgentAvailability = fromJS({
+            data: {
+                axes: {
+                    x: [
+                        {
+                            name: 'Agent Status',
+                            type: StatValueType.AgentAvailability,
+                        },
+                    ],
+                },
+                lines: [
+                    [
+                        {
+                            type: StatValueType.AgentAvailability,
+                            value: 123,
+                        },
+                    ],
+                ],
+            },
+            name: 'agent_availability',
+            label: 'Agent Availability',
+            meta: {},
+        }) as Map<any, any>
+
+        const config = statsConfig.find(
+            (__config, key) => key === TICKETS_CLOSED_PER_AGENT,
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TableStat
+                        {...(tableStatDataWithAgentAvailability.toObject() as ComponentProps<
+                            typeof TableStat
+                        >)}
+                        context={{ tagColors: null }}
+                        config={config}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.getByTestId('agent-availability-cell'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Agent Availability Cell - User 123'),
+        ).toBeInTheDocument()
+    })
+
+    it('should return null when AgentAvailability userId is null', () => {
+        const queryClient = mockQueryClient()
+        const tableStatDataWithNullUserId = fromJS({
+            data: {
+                axes: {
+                    x: [
+                        {
+                            name: 'Agent Status',
+                            type: StatValueType.AgentAvailability,
+                        },
+                    ],
+                },
+                lines: [
+                    [
+                        {
+                            type: StatValueType.AgentAvailability,
+                            value: null,
+                        },
+                    ],
+                ],
+            },
+            name: 'agent_availability',
+            label: 'Agent Availability',
+            meta: {},
+        }) as Map<any, any>
+
+        const config = statsConfig.find(
+            (__config, key) => key === TICKETS_CLOSED_PER_AGENT,
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <QueryClientProvider client={queryClient}>
+                    <TableStat
+                        {...(tableStatDataWithNullUserId.toObject() as ComponentProps<
+                            typeof TableStat
+                        >)}
+                        context={{ tagColors: null }}
+                        config={config}
+                    />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByTestId('agent-availability-cell'),
+        ).not.toBeInTheDocument()
     })
 })
