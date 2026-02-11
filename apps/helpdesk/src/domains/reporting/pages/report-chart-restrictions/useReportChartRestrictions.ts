@@ -75,11 +75,8 @@ export const getUserChartsRestrictions = (
 export const useReportChartRestrictions = () => {
     const currentAccountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
-    const {
-        reportRestrictionsMap,
-        chartRestrictionsMap,
-        moduleRestrictionsMap,
-    } = useReportRestrictions()
+    const { reportRestrictionsMap, moduleRestrictionsMap } =
+        useReportRestrictions()
 
     const accountRestrictions = useMemo(
         () => getAccountRestrictions(currentAccountId),
@@ -166,20 +163,17 @@ export const useReportChartRestrictions = () => {
             }
             const path = `${STATS_ROUTE_PREFIX}${reportConfig.reportPath}`
             const isPathRestricted = !!reportRestrictionsMap[path]
-            const isChartRestricted = !!chartRestrictionsMap[chartId]
             const isChartPartOfRestrictedReport =
                 isRouteRestrictedToCurrentUser(path)
             return (
                 isChartStrictlyRestricted ||
                 isChartPartOfRestrictedReport ||
-                isPathRestricted ||
-                isChartRestricted
+                isPathRestricted
             )
         },
         [
             isRouteRestrictedToCurrentUser,
             reportRestrictionsMap,
-            chartRestrictionsMap,
             userChartRestrictions,
         ],
     )

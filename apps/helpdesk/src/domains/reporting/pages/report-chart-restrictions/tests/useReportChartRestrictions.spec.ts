@@ -206,7 +206,6 @@ describe('useReportChartRestrictions', () => {
         )
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {},
-            chartRestrictionsMap: {},
             moduleRestrictionsMap: {},
         })
     })
@@ -427,7 +426,6 @@ describe('useReportChartRestrictions', () => {
                     [SupportPerformanceAgentsReportConfig.id]: true,
                     [HelpCenterReportConfig.id]: true,
                 },
-                chartRestrictionsMap: {},
                 moduleRestrictionsMap: {},
             })
 

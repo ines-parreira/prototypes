@@ -110,7 +110,6 @@ jest.mock('domains/reporting/hooks/dashboards/useReportRestrictions')
 const useReportRestrictionsMock = assumeMock(useReportRestrictions)
 useReportRestrictionsMock.mockReturnValue({
     reportRestrictionsMap: {},
-    chartRestrictionsMap: {},
     moduleRestrictionsMap: {},
 })
 

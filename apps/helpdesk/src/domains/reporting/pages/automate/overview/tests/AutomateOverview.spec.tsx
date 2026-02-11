@@ -312,11 +312,7 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        useFlagMock.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.AutomateAIAgentInteractions) return true
-
-            return false
-        })
+        useFlagMock.mockReturnValue(false)
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
             automatedInteractionTrend,
@@ -942,17 +938,11 @@ describe('<AutomateOverview />', () => {
 
     describe('AI Agent KPI Charts', () => {
         beforeEach(() => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
-                    return true
-                return false
-            })
+            useFlagMock.mockReturnValue(false)
         })
 
         it('should render AI Agent KPI charts when ActionDrivenAiAgentNavigation flag is enabled', () => {
             useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AutomateAIAgentInteractions)
-                    return true
                 if (
                     flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
                 )

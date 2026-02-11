@@ -41,9 +41,6 @@ export default function AutomateOverviewContent() {
     const isTicketTimeToHandleEnabled = useFlag(
         FeatureFlagKey.ObservabilityTicketTimeToHandle,
     )
-    const isAutomateAIAgentInteractionsEnabled = useFlag(
-        FeatureFlagKey.AutomateAIAgentInteractions,
-    )
 
     const isDurationLast3Days = useMemo(() => {
         const startDateTime = moment(statsFilters.period.start_datetime)
@@ -217,16 +214,14 @@ export default function AutomateOverviewContent() {
                             config={AutomateOverviewReportConfig}
                         />
                     </DashboardGridCell>
-                    {isAutomateAIAgentInteractionsEnabled && (
-                        <DashboardGridCell size={12}>
-                            <DashboardComponent
-                                chart={
-                                    AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar
-                                }
-                                config={AutomateOverviewReportConfig}
-                            />
-                        </DashboardGridCell>
-                    )}
+                    <DashboardGridCell size={12}>
+                        <DashboardComponent
+                            chart={
+                                AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar
+                            }
+                            config={AutomateOverviewReportConfig}
+                        />
+                    </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>

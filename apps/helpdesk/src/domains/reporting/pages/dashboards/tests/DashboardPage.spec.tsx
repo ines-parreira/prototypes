@@ -212,7 +212,6 @@ describe('DashboardPage', () => {
         } as any)
         useReportRestrictionsMock.mockReturnValue({
             reportRestrictionsMap: {},
-            chartRestrictionsMap: {},
             moduleRestrictionsMap: {},
         })
     })

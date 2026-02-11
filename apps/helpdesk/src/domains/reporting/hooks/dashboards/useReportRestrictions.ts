@@ -4,7 +4,6 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { AutomateAiAgentsReportConfig } from 'domains/reporting/pages/automate/ai-agent/AutomateAiAgentsReportConfig'
 import { AiSalesAgentReportConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentReportConfig'
-import { AutomateOverviewChart } from 'domains/reporting/pages/automate/overview/AutomateOverviewReportConfig'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { HelpCenterReportConfig } from 'domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import { SatisfactionReportConfig } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionReportConfig'
@@ -31,9 +30,6 @@ export const useReportRestrictions = () => {
     )
     const isReportingVoiceOfCustomerEnabled = useFlag(
         FeatureFlagKey.ReportingVoiceOfCustomer,
-    )
-    const isAutomateAIAgentInteractionsEnabled = useFlag(
-        FeatureFlagKey.AutomateAIAgentInteractions,
     )
 
     const user = useAppSelector(getCurrentUser)
@@ -62,14 +58,6 @@ export const useReportRestrictions = () => {
         ],
     )
 
-    const chartRestrictionsMap: RestrictionsMap = useMemo(
-        () => ({
-            [AutomateOverviewChart.AIAgentAutomatedInteractionsGraphBar]:
-                !isAutomateAIAgentInteractionsEnabled,
-        }),
-        [isAutomateAIAgentInteractionsEnabled],
-    )
-
     const moduleRestrictionsMap: RestrictionsMap = useMemo(
         () => ({
             [BASE_VOICE_OF_CUSTOMER_PATH]: !isReportingVoiceOfCustomerEnabled,
@@ -79,30 +67,20 @@ export const useReportRestrictions = () => {
 
     return {
         reportRestrictionsMap,
-        chartRestrictionsMap,
         moduleRestrictionsMap,
     }
 }
 
 export const isChartRestricted = (
     reportRestrictionsMap: RestrictionsMap,
-    chartRestrictionsMap: RestrictionsMap,
     chartId: string,
 ) => {
     const { reportConfig } = getComponentConfig(chartId)
     if (!reportConfig) return false
-    return (
-        !!reportRestrictionsMap[reportConfig.id] ||
-        chartRestrictionsMap[chartId] === true
-    )
+    return !!reportRestrictionsMap[reportConfig.id]
 }
 
 export const useIsChartRestricted = (chartId: string) => {
-    const { reportRestrictionsMap, chartRestrictionsMap } =
-        useReportRestrictions()
-    return isChartRestricted(
-        reportRestrictionsMap,
-        chartRestrictionsMap,
-        chartId,
-    )
+    const { reportRestrictionsMap } = useReportRestrictions()
+    return isChartRestricted(reportRestrictionsMap, chartId)
 }
