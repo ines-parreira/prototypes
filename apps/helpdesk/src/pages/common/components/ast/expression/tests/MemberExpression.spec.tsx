@@ -25,6 +25,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
 import { IdentifierCategoryKey } from 'models/rule/types'
 import { generateExpression } from 'models/rule/utils'
+import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions'
 import type { RootState } from 'state/types'
 
 import { MemberExpression } from '../MemberExpression'
@@ -36,6 +37,19 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
 }))
 const mockUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
+
+jest.mock(
+    'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions',
+    () => ({
+        useMetafieldDefinitions: jest.fn().mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+            error: null,
+        }),
+    }),
+)
+const mockUseMetafieldDefinitions = assumeMock(useMetafieldDefinitions)
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -168,6 +182,9 @@ describe('<MemberExpression/>', () => {
                         current_subscription: {
                             products: automationSubscriptionProductPrices,
                         },
+                    }),
+                    integrations: fromJS({
+                        integrations: [],
                     }),
                     ...state,
                 })}
@@ -899,6 +916,86 @@ describe('<MemberExpression/>', () => {
                 ),
             )
             expect(customerSelectionCall[4]).toBeDefined()
+        })
+    })
+
+    describe('Shopify Metafield Callbacks', () => {
+        const shopifyIntegrationState = {
+            integrations: fromJS({
+                integrations: [
+                    {
+                        type: 'shopify',
+                        id: 1,
+                        name: 'Test Store',
+                    },
+                ],
+            }),
+        }
+
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseMetafieldDefinitions.mockReturnValue({
+                data: [
+                    {
+                        id: '1',
+                        key: 'vip_status',
+                        name: 'VIP Status',
+                        type: 'single_line_text_field',
+                        category: 'Customer',
+                        isVisible: true,
+                    },
+                ],
+                isLoading: false,
+                isError: false,
+                error: null,
+            })
+        })
+
+        it('should transition to metafields view when selecting a store', () => {
+            renderComponent({}, shopifyIntegrationState)
+
+            fireEvent.click(screen.getByText('Shopify Customer Metafields'))
+            expect(screen.getByText('Test Store')).toBeInTheDocument()
+
+            fireEvent.click(screen.getByText('Test Store'))
+
+            expect(screen.getByText('VIP Status')).toBeInTheDocument()
+        })
+
+        it('should return to stores view when clicking back from metafields', () => {
+            renderComponent({}, shopifyIntegrationState)
+
+            fireEvent.click(screen.getByText('Shopify Customer Metafields'))
+            fireEvent.click(screen.getByText('Test Store'))
+
+            expect(screen.getByText('VIP Status')).toBeInTheDocument()
+
+            fireEvent.click(screen.getByText('Test Store'))
+
+            expect(screen.queryByText('VIP Status')).not.toBeInTheDocument()
+            expect(screen.getByText('Test Store')).toBeInTheDocument()
+        })
+
+        it('should close dropdown and update AST when selecting a metafield', () => {
+            const modifyCodeAST = jest.fn()
+            renderComponent(
+                {
+                    actions: {
+                        modifyCodeAST,
+                        getCondition: jest.fn(),
+                    },
+                },
+                shopifyIntegrationState,
+            )
+
+            fireEvent.click(screen.getByText('Shopify Customer Metafields'))
+            fireEvent.click(screen.getByText('Test Store'))
+            fireEvent.click(screen.getByText('VIP Status'))
+
+            expect(modifyCodeAST).toHaveBeenCalled()
+            expect(screen.getByText('Message')).toBeInTheDocument()
+            expect(screen.getByText('Ticket')).toBeInTheDocument()
+            expect(screen.getByText('Customer')).toBeInTheDocument()
         })
     })
 })

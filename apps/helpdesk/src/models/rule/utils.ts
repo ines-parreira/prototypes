@@ -1,5 +1,9 @@
 import type { Expression } from 'estree'
 
+import {
+    buildMetafieldBasePath,
+    METAFIELD_CATEGORY_PATTERNS,
+} from 'pages/common/components/ast/expression/metafields/constants'
 import type { SupportedCategories } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/types'
 
 import type { ObjectExpressionPropertyKey } from '../../state/rules/types'
@@ -49,17 +53,17 @@ export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
     const jointPath = path.slice(0, path.length - 1).join('.')
     if (
         jointPath.includes('shopify.customer.metafields') ||
-        /integrations\.\d+\.customer\.metafields/.test(jointPath)
+        METAFIELD_CATEGORY_PATTERNS.Customer.test(jointPath)
     ) {
         return IdentifierCategoryKey.ShopifyCustomerMetafields
     } else if (
         jointPath.includes('shopify.last_order.metafields') ||
-        /integrations\.\d+\.orders\.0\.metafields/.test(jointPath)
+        METAFIELD_CATEGORY_PATTERNS.Order.test(jointPath)
     ) {
         return IdentifierCategoryKey.ShopifyLastOrderMetafields
     } else if (
         jointPath.includes('shopify.last_draft_order.metafields') ||
-        /integrations\.\d+\.draft_orders\.0\.metafields/.test(jointPath)
+        METAFIELD_CATEGORY_PATTERNS.DraftOrder.test(jointPath)
     ) {
         return IdentifierCategoryKey.ShopifyLastDraftOrderMetafields
     } else if (jointPath.includes('shopify.last_order')) {
@@ -92,13 +96,5 @@ export function getMetafieldTreePath(
     category: SupportedCategories,
     integrationId: number,
 ): string {
-    const basePath = `ticket.customer.integrations[${integrationId}]`
-    switch (category) {
-        case 'Customer':
-            return `${basePath}.customer.metafields`
-        case 'Order':
-            return `${basePath}.orders[0].metafields`
-        case 'DraftOrder':
-            return `${basePath}.draft_orders[0].metafields`
-    }
+    return buildMetafieldBasePath(integrationId, category)
 }

@@ -29,7 +29,7 @@ describe('<Expression />', () => {
             <QueryClientProvider client={appQueryClient}>
                 <Expression {...minProps} {...props} />
             </QueryClientProvider>,
-            {},
+            { integrations: fromJS({ integrations: [] }) },
         )
 
     it('should render UnknownSyntax because the passed type is invalid, and pass all props to child', () => {

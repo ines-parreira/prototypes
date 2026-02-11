@@ -39,7 +39,7 @@ const renderComponent = (
                 <CallExpression {...commonProps} {...props} />
             </RuleContext.Provider>
         </QueryClientProvider>,
-        {},
+        { integrations: fromJS({ integrations: [] }) },
     )
 
 describe('<CallExpression />', () => {

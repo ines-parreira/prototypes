@@ -23,6 +23,7 @@ import {
     findStoreById,
     getActiveIntegrationId,
     getDisplayStoreName,
+    getMetafieldValueSuffix,
     hasMetafieldInPath,
     parsePathToExpressionSegments,
 } from '../utils'
@@ -105,7 +106,11 @@ export function useMetafieldRuleSelection({
             setShowMetafieldSelection(category)
 
             const treePath = getMetafieldTreePath(category, selectedStore.id)
-            const fullPath = `${treePath}.${field.key}.value`
+
+            const valueSuffix = getMetafieldValueSuffix(field.type)
+
+            const fullPath = `${treePath}.${field.key}${valueSuffix}`
+
             const expressionSegments = parsePathToExpressionSegments(fullPath)
 
             actions.modifyCodeAST(
@@ -139,6 +144,7 @@ export function useMetafieldRuleSelection({
         if (
             !hasMetafieldInTree ||
             !metafieldKeyFromTree ||
+            !metafieldCategoryFromTree ||
             !metafields.length ||
             selectedMetafield
         ) {
@@ -148,6 +154,7 @@ export function useMetafieldRuleSelection({
         const matchingField = findMetafieldByKey(
             metafields,
             metafieldKeyFromTree,
+            metafieldCategoryFromTree,
         )
         if (matchingField) {
             setSelectedMetafield(matchingField)
@@ -155,6 +162,7 @@ export function useMetafieldRuleSelection({
     }, [
         hasMetafieldInTree,
         metafieldKeyFromTree,
+        metafieldCategoryFromTree,
         metafields,
         selectedMetafield,
     ])

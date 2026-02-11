@@ -29,7 +29,10 @@ import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
-import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import {
+    getShopifyIntegrationsSortedByName,
+    makeHasIntegrationOfTypes,
+} from 'state/integrations/selectors'
 import { isTimedeltaOperator, RuleOperation } from 'state/rules/types'
 import { humanizeChannel } from 'state/ticket/utils'
 import { getLanguageDisplayName, humanizeString } from 'utils'
@@ -41,7 +44,15 @@ import {
     getCustomFieldOperators,
     getFieldSchemaDefinitionKey,
 } from '../ViewTable/Filters/utils'
-import { getCustomFieldIdFromPath } from './utils'
+import {
+    applyMetafieldWidgetConfig,
+    getMetafieldOperatorOptions,
+} from './expression/metafields/utils'
+import {
+    getCustomFieldIdFromPath,
+    getIntegrationIdFromPath,
+    getMetafieldKeyFromPath,
+} from './utils'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import { CustomDropdownInput } from './widget/CustomDropdownInput'
@@ -57,6 +68,7 @@ import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrat
 import StatusSelect from './widget/StatusSelect'
 import TagsSelect from './widget/TagsSelect'
 import { useGetCustomFieldById } from './widget/useGetCustomFieldById'
+import { useGetMetafieldByKey } from './widget/useGetMetafieldByKey'
 
 import css from './Widget.less'
 
@@ -144,6 +156,16 @@ const Widget = ({
     const schemaDefinitionKey = customField
         ? getFieldSchemaDefinitionKey(customField)
         : undefined
+
+    const shopifyIntegrations =
+        useAppSelector(getShopifyIntegrationsSortedByName) ?? []
+    const shopifyIntegrationId = shopifyIntegrations[0]?.id
+
+    const integrationIdFromPath = getIntegrationIdFromPath(leftsiblings)
+    const metafieldIntegrationId = integrationIdFromPath ?? shopifyIntegrationId
+
+    const metafieldKey = getMetafieldKeyFromPath(leftsiblings)
+    const metafield = useGetMetafieldByKey(metafieldKey, metafieldIntegrationId)
 
     // State for rich field text field handling
     const [textFieldState, setTextFieldState] = useState<TextFieldState | null>(
@@ -514,7 +536,9 @@ const Widget = ({
             operators = fromJS(BASIC_OPERATORS)
         }
 
-        if (leftsiblings.includes('custom_fields')) {
+        if (leftsiblings?.includes('metafields')) {
+            widget.options = getMetafieldOperatorOptions(metafield?.type)
+        } else if (leftsiblings.includes('custom_fields')) {
             // Get custom field operators from schemas based on field type
             const customFieldOperators = getCustomFieldOperators(
                 schemas,
@@ -639,6 +663,19 @@ const Widget = ({
             'code_ast',
         ),
     )
+
+    if (left.includes('metafields') && left.last() !== 'operators') {
+        const updated = applyMetafieldWidgetConfig(
+            widget,
+            metafield?.type,
+            operatorName as string | undefined,
+        )
+        widget.type = updated.type
+        if (updated.options) {
+            widget.options = updated.options
+        }
+    }
+
     const isOperatorRelative = isTimedeltaOperator(operatorName)
 
     if (widget.type === 'datetime-select' && isOperatorRelative) {

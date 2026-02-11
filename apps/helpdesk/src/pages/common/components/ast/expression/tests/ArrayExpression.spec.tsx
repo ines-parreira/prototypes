@@ -27,7 +27,11 @@ describe('<ArrayExpression />', () => {
         props?: Partial<ComponentProps<typeof ArrayExpression>>,
     ) =>
         render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({ integrations: [] }),
+                })}
+            >
                 <QueryClientProvider client={appQueryClient}>
                     <ArrayExpression {...minProps} {...props} />
                 </QueryClientProvider>

@@ -45,6 +45,14 @@ const defaultState = {
 
 const useGetCustomFieldByIdMock = assumeMock(useGetCustomFieldById)
 jest.mock('../widget/useGetCustomFieldById')
+
+jest.mock('../widget/useGetMetafieldByKey', () => ({
+    useGetMetafieldByKey: jest.fn().mockReturnValue(null),
+}))
+const useGetMetafieldByKeyMock = jest.mocked(
+    require('../widget/useGetMetafieldByKey').useGetMetafieldByKey,
+)
+
 const queryClient = mockQueryClient()
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
@@ -894,6 +902,55 @@ describe('<Widget />', () => {
 
             expect(screen.getByText('is')).toBeInTheDocument()
             expect(screen.getByText('is not')).toBeInTheDocument()
+        })
+    })
+
+    describe('Metafields', () => {
+        afterEach(() => {
+            useGetMetafieldByKeyMock.mockReturnValue(null)
+        })
+
+        it('should render metafield operators based on metafield type', () => {
+            useGetMetafieldByKeyMock.mockReturnValue({
+                key: 'custom.notes',
+                type: 'single_line_text_field',
+            })
+            renderComponent({
+                leftsiblings: fromJS([
+                    'definitions',
+                    'integrations',
+                    '123',
+                    'customer',
+                    'metafields',
+                    'custom.notes',
+                    'operators',
+                ]),
+            })
+
+            expect(screen.getByText('is')).toBeInTheDocument()
+            expect(screen.getByText('is not')).toBeInTheDocument()
+            expect(screen.getByText('contains')).toBeInTheDocument()
+        })
+
+        it('should apply metafield widget config for boolean type', () => {
+            useGetMetafieldByKeyMock.mockReturnValue({
+                key: 'custom.active',
+                type: 'boolean',
+            })
+            renderComponent({
+                leftsiblings: fromJS([
+                    'definitions',
+                    'integrations',
+                    '123',
+                    'customer',
+                    'metafields',
+                    'custom.active',
+                    'value',
+                ]),
+            })
+
+            expect(screen.getByText('True')).toBeInTheDocument()
+            expect(screen.getByText('False')).toBeInTheDocument()
         })
     })
 })

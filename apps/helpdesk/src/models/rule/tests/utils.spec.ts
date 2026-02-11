@@ -1,6 +1,6 @@
 import type { RuleObject } from '../types'
 import { IdentifierCategoryKey } from '../types'
-import { getAstPath, getCategoryFromPath } from '../utils'
+import { getAstPath, getCategoryFromPath, getMetafieldTreePath } from '../utils'
 
 describe('rule utils', () => {
     describe('getAstPath', () => {
@@ -119,5 +119,88 @@ describe('rule utils', () => {
         ])('should return the identifier category %s', (key, path) => {
             expect(getCategoryFromPath(path)).toBe(key)
         })
+
+        it.each([
+            [
+                IdentifierCategoryKey.ShopifyCustomerMetafields,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'shopify',
+                    'stores',
+                    '123',
+                    'customer',
+                    'metafields',
+                    'vip_status',
+                    'value',
+                ],
+            ],
+            [
+                IdentifierCategoryKey.ShopifyLastOrderMetafields,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'shopify',
+                    'stores',
+                    '456',
+                    'last_order',
+                    'metafields',
+                    'order_tag',
+                    'value',
+                ],
+            ],
+            [
+                IdentifierCategoryKey.ShopifyLastDraftOrderMetafields,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'shopify',
+                    'stores',
+                    '789',
+                    'last_draft_order',
+                    'metafields',
+                    'draft_note',
+                    'value',
+                ],
+            ],
+        ])(
+            'should return the metafield identifier category %s for new path format',
+            (key, path) => {
+                expect(getCategoryFromPath(path)).toBe(key)
+            },
+        )
+    })
+
+    describe('getMetafieldTreePath', () => {
+        it.each([
+            {
+                category: 'Customer' as const,
+                integrationId: 123,
+                expected:
+                    'ticket.customer.integrations.shopify.stores.123.customer.metafields',
+            },
+            {
+                category: 'Order' as const,
+                integrationId: 456,
+                expected:
+                    'ticket.customer.integrations.shopify.stores.456.last_order.metafields',
+            },
+            {
+                category: 'DraftOrder' as const,
+                integrationId: 789,
+                expected:
+                    'ticket.customer.integrations.shopify.stores.789.last_draft_order.metafields',
+            },
+        ])(
+            'returns correct path for $category category',
+            ({ category, integrationId, expected }) => {
+                expect(getMetafieldTreePath(category, integrationId)).toBe(
+                    expected,
+                )
+            },
+        )
     })
 })

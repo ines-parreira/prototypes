@@ -9,7 +9,12 @@ import type { Field } from 'pages/settings/storeManagement/storeDetailsPage/Shop
 import type { SupportedCategories } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/types'
 
 import { getMetafieldWidgetConfig } from '../../utils/getMetafieldWidgetConfig'
-import { METAFIELD_CATEGORY_KEYS } from './constants'
+import {
+    INTEGRATION_ID_REGEX,
+    METAFIELD_CATEGORY_KEYS,
+    METAFIELD_CATEGORY_PATTERNS,
+    NESTED_VALUE_METAFIELD_TYPES,
+} from './constants'
 import type { SyntaxTreeLeaves } from './types'
 
 export type WidgetOption = {
@@ -56,19 +61,19 @@ export function extractMetafieldCategoryFromTree(
     const path = syntaxTreeLeaves.join('.')
     if (
         path.includes('shopify.customer.metafields') ||
-        /integrations\.\d+\.customer\.metafields/.test(path)
+        METAFIELD_CATEGORY_PATTERNS.Customer.test(path)
     ) {
         return 'Customer'
     }
     if (
         path.includes('shopify.last_order.metafields') ||
-        /integrations\.\d+\.orders\.0\.metafields/.test(path)
+        METAFIELD_CATEGORY_PATTERNS.Order.test(path)
     ) {
         return 'Order'
     }
     if (
         path.includes('shopify.last_draft_order.metafields') ||
-        /integrations\.\d+\.draft_orders\.0\.metafields/.test(path)
+        METAFIELD_CATEGORY_PATTERNS.DraftOrder.test(path)
     ) {
         return 'DraftOrder'
     }
@@ -80,7 +85,7 @@ export function extractIntegrationIdFromTree(
 ): number | null {
     if (!syntaxTreeLeaves) return null
     const path = syntaxTreeLeaves.join('.')
-    const match = path.match(/integrations\.(\d+)\./)
+    const match = path.match(INTEGRATION_ID_REGEX)
     return match ? parseInt(match[1], 10) : null
 }
 
@@ -143,8 +148,9 @@ export function findStoreById(
 export function findMetafieldByKey(
     metafields: Field[],
     key: string,
+    category: SupportedCategories,
 ): Field | undefined {
-    return metafields.find((f) => f.key === key)
+    return metafields.find((f) => f.key === key && f.category === category)
 }
 
 export function isMetafieldCategory(category: IdentifierCategoryKey): boolean {
@@ -176,6 +182,16 @@ export function getMetafieldOperatorOptions(
         value: key,
         label: (value as { label?: string })?.label || key,
     }))
+}
+
+export function getMetafieldValueSuffix(fieldType: string): string {
+    if (fieldType === 'money') {
+        return '.value.amount'
+    }
+    if (NESTED_VALUE_METAFIELD_TYPES.includes(fieldType)) {
+        return '.value.value'
+    }
+    return '.value'
 }
 
 type WidgetConfig<T extends WidgetOptionOrString = WidgetOption> = {

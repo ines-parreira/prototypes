@@ -31,7 +31,9 @@ const commonProps = {
 
 const renderComponent = (props: Partial<ComponentProps<typeof Property>>) =>
     render(
-        <Provider store={mockStore({})}>
+        <Provider
+            store={mockStore({ integrations: fromJS({ integrations: [] }) })}
+        >
             <QueryClientProvider client={appQueryClient}>
                 <Property {...commonProps} {...props} />
             </QueryClientProvider>

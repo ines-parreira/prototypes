@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { Expression } from 'estree'
 import type { List } from 'immutable'
@@ -24,7 +25,10 @@ import {
     getCategoryFromPath,
 } from 'models/rule/utils'
 import type { RuleItemActions } from 'pages/settings/rules/types'
-import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import {
+    getShopifyIntegrationsSortedByName,
+    makeHasIntegrationOfTypes,
+} from 'state/integrations/selectors'
 import type { ObjectExpressionPropertyKey } from 'state/rules/types'
 import { RuleOperation } from 'state/rules/types'
 import { getIconFromUrl } from 'utils'
@@ -32,6 +36,12 @@ import { getIconFromUrl } from 'utils'
 import { getFieldSchemaDefinitionKey } from '../../ViewTable/Filters/utils'
 import { getSyntaxTreeLeaves } from '../utils'
 import RuleSelect from '../widget/RuleSelect'
+import {
+    isMetafieldCategory,
+    MetafieldCategoryOptions,
+    MetafieldValueLabel,
+    useMetafieldRuleSelection,
+} from './metafields'
 
 import css from './MemberExpression.less'
 
@@ -87,6 +97,10 @@ export function MemberExpression({
 
     const hasIntegrationType = useAppSelector(makeHasIntegrationOfTypes)
     const { hasAccess } = useAiAgentAccess()
+    const enableShopifyMetafieldsInRules = useFlag(
+        FeatureFlagKey.EnableShopifyMetafieldsIngestionUIinRules,
+        false,
+    )
     const [selectedCategory, setSelectedCategory] =
         useState<IdentifierCategoryKey | null>(null)
 
@@ -104,6 +118,28 @@ export function MemberExpression({
         useState<CustomField | null>(null)
     const [selectedCustomerCustomField, setSelectedCustomerCustomField] =
         useState<CustomField | null>(null)
+
+    const shopifyIntegrations =
+        useAppSelector(getShopifyIntegrationsSortedByName) ?? []
+
+    const {
+        showMetafieldSelection,
+        selectedMetafield,
+        selectedStore,
+        metafieldLevel,
+        metafields,
+        isLoadingMetafields,
+        displayStoreName,
+        selectMetafield,
+        setSelectedStore,
+        setMetafieldLevel,
+        resetMetafieldSelection,
+    } = useMetafieldRuleSelection({
+        syntaxTreeLeaves,
+        actions,
+        parent,
+        shopifyIntegrations,
+    })
 
     const selectCustomFieldByType = useCallback(
         (field: CustomField | undefined, fieldType: ObjectType) => {
@@ -245,7 +281,10 @@ export function MemberExpression({
                 case IdentifierCategoryKey.ShopifyCustomerMetafields:
                 case IdentifierCategoryKey.ShopifyLastOrderMetafields:
                 case IdentifierCategoryKey.ShopifyLastDraftOrderMetafields:
-                    return false
+                    return (
+                        hasIntegrationType(IntegrationType.Shopify) &&
+                        enableShopifyMetafieldsInRules
+                    )
                 case IdentifierCategoryKey.Magento2Customer:
                 case IdentifierCategoryKey.Magento2LastOrder:
                     return hasIntegrationType(IntegrationType.Magento2)
@@ -263,10 +302,12 @@ export function MemberExpression({
                     return true
             }
         })
-    }, [hasIntegrationType, hasAccess])
+    }, [hasIntegrationType, hasAccess, enableShopifyMetafieldsInRules])
 
     const handleSelect = (value: string) => {
         setSelectedCategory(null)
+        resetMetafieldSelection()
+
         if (value === CustomFieldTreePath.Ticket) {
             setShowCustomFieldSelection(true)
             setShowCustomerCustomFieldSelection(false)
@@ -332,6 +373,15 @@ export function MemberExpression({
     ])
 
     const valueLabel = useMemo(() => {
+        if (selectedMetafield && showMetafieldSelection) {
+            return (
+                <MetafieldValueLabel
+                    selectedMetafield={selectedMetafield}
+                    displayStoreName={displayStoreName}
+                />
+            )
+        }
+
         if (!displayedValue) {
             return null
         }
@@ -364,7 +414,12 @@ export function MemberExpression({
                 {displayedValue.text}
             </>
         )
-    }, [displayedValue])
+    }, [
+        displayedValue,
+        selectedMetafield,
+        showMetafieldSelection,
+        displayStoreName,
+    ])
 
     return (
         <div className={css.memberExpressionContainer}>
@@ -408,7 +463,11 @@ export function MemberExpression({
                     <>
                         <div
                             className={css.backOption}
-                            onClick={() => setSelectedCategory(null)}
+                            onClick={() => {
+                                setSelectedCategory(null)
+                                setMetafieldLevel('stores')
+                                setSelectedStore(null)
+                            }}
                         >
                             <span className={css.optionContent}>
                                 <i
@@ -428,44 +487,75 @@ export function MemberExpression({
                             </span>
                         </div>
                         <div className={css.subOptions}>
-                            {IDENTIFIER_VARIABLES_BY_CATEGORY[
-                                selectedCategory
-                            ].map((subcategory) => {
-                                return subcategory.children ? (
-                                    <Fragment key={subcategory.label}>
-                                        <div className={css.subcategoryLabel}>
+                            {isMetafieldCategory(selectedCategory) && (
+                                <MetafieldCategoryOptions
+                                    selectedCategory={selectedCategory}
+                                    shopifyIntegrations={shopifyIntegrations}
+                                    selectedStore={selectedStore}
+                                    metafieldLevel={metafieldLevel}
+                                    metafields={metafields}
+                                    isLoadingMetafields={isLoadingMetafields}
+                                    onSelectStore={(store) => {
+                                        setSelectedStore(store)
+                                        setMetafieldLevel('metafields')
+                                    }}
+                                    onBackToStores={() => {
+                                        setMetafieldLevel('stores')
+                                        setSelectedStore(null)
+                                    }}
+                                    onSelectMetafield={(field, category) => {
+                                        setSelectedCategory(null)
+                                        selectMetafield(field, category)
+                                    }}
+                                />
+                            )}
+                            {!isMetafieldCategory(selectedCategory) &&
+                                IDENTIFIER_VARIABLES_BY_CATEGORY[
+                                    selectedCategory
+                                ].map((subcategory) => {
+                                    return subcategory.children ? (
+                                        <Fragment key={subcategory.label}>
+                                            <div
+                                                className={css.subcategoryLabel}
+                                            >
+                                                {subcategory.label}
+                                            </div>
+                                            {subcategory.children.map(
+                                                (element) => {
+                                                    return (
+                                                        <RuleSelect.Option
+                                                            className={
+                                                                css.subOption
+                                                            }
+                                                            key={element.value}
+                                                            onClick={() =>
+                                                                handleSelect(
+                                                                    element.value,
+                                                                )
+                                                            }
+                                                            value={
+                                                                element.value
+                                                            }
+                                                        >
+                                                            {element.label}
+                                                        </RuleSelect.Option>
+                                                    )
+                                                },
+                                            )}
+                                        </Fragment>
+                                    ) : (
+                                        <RuleSelect.Option
+                                            className={css.subOption}
+                                            key={subcategory.value}
+                                            onClick={() =>
+                                                handleSelect(subcategory.value)
+                                            }
+                                            value={subcategory.value}
+                                        >
                                             {subcategory.label}
-                                        </div>
-                                        {subcategory.children.map((element) => {
-                                            return (
-                                                <RuleSelect.Option
-                                                    className={css.subOption}
-                                                    key={element.value}
-                                                    onClick={() =>
-                                                        handleSelect(
-                                                            element.value,
-                                                        )
-                                                    }
-                                                    value={element.value}
-                                                >
-                                                    {element.label}
-                                                </RuleSelect.Option>
-                                            )
-                                        })}
-                                    </Fragment>
-                                ) : (
-                                    <RuleSelect.Option
-                                        className={css.subOption}
-                                        key={subcategory.value}
-                                        onClick={() =>
-                                            handleSelect(subcategory.value)
-                                        }
-                                        value={subcategory.value}
-                                    >
-                                        {subcategory.label}
-                                    </RuleSelect.Option>
-                                )
-                            })}
+                                        </RuleSelect.Option>
+                                    )
+                                })}
                         </div>
                     </>
                 )}

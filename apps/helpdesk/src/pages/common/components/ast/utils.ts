@@ -3,6 +3,7 @@ import type { Iterable, Map } from 'immutable'
 import { fromJS, List } from 'immutable'
 
 import { toImmutable } from 'common/utils'
+import { INTEGRATION_ID_REGEX } from 'pages/common/components/ast/expression/metafields/constants'
 import type { CodeASTType } from 'pages/settings/rules/types'
 import { ACTION_DEFAULT_STATE } from 'state/rules/constants'
 import { RuleOperation } from 'state/rules/types'
@@ -74,6 +75,36 @@ export function getCustomFieldIdFromPath(path?: List<any>) {
 
     const customFieldId = match[1]
     return parseInt(customFieldId, 10)
+}
+
+export function getMetafieldKeyFromPath(path?: List<any>): string | null {
+    if (!path) {
+        return null
+    }
+
+    const pathArray = path.toJS() as string[]
+    const metafieldsIdx = pathArray.indexOf('metafields')
+
+    if (metafieldsIdx === -1) {
+        return null
+    }
+
+    const key = pathArray[metafieldsIdx + 1]
+    if (key && key !== 'value') {
+        return key
+    }
+
+    return null
+}
+
+export function getIntegrationIdFromPath(path?: List<any>): number | null {
+    if (!path) {
+        return null
+    }
+
+    const pathString = path.join('.')
+    const match = pathString.match(INTEGRATION_ID_REGEX)
+    return match ? parseInt(match[1], 10) : null
 }
 
 export const updateCodeAst = (

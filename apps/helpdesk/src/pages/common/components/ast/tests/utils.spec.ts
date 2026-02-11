@@ -3,7 +3,10 @@ import { fromJS } from 'immutable'
 
 import { fromAST, isImmutable, toImmutable } from 'common/utils'
 import _schemas from 'fixtures/openapi.json'
-import { updateCodeAst } from 'pages/common/components/ast/utils'
+import {
+    getMetafieldKeyFromPath,
+    updateCodeAst,
+} from 'pages/common/components/ast/utils'
 import type { CodeASTType } from 'pages/settings/rules/types'
 import { getAST, getFirstExpressionOfAST } from 'utils'
 
@@ -249,5 +252,63 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
 
             expect(isImmutable(getFirstExpressionOfAST(ast))).toEqual(true)
         })
+    })
+})
+
+describe('getMetafieldKeyFromPath', () => {
+    it('should return null if path is undefined', () => {
+        expect(getMetafieldKeyFromPath(undefined)).toBeNull()
+    })
+
+    it('should return null if path does not contain metafields', () => {
+        const path = fromJS(['ticket', 'customer', 'email'])
+        expect(getMetafieldKeyFromPath(path)).toBeNull()
+    })
+
+    it('should extract metafield key from customer metafields path', () => {
+        const path = fromJS([
+            'definitions',
+            'Ticket',
+            'properties',
+            'customer',
+            'integrations',
+            'shopify',
+            'customer',
+            'metafields',
+            'loyalty_points',
+            'meta',
+            'operators',
+        ])
+        expect(getMetafieldKeyFromPath(path)).toBe('loyalty_points')
+    })
+
+    it('should extract metafield key from order metafields path', () => {
+        const path = fromJS([
+            'definitions',
+            'Ticket',
+            'properties',
+            'customer',
+            'integrations',
+            'shopify',
+            'last_order',
+            'metafields',
+            'gift_note',
+            'meta',
+            'operators',
+        ])
+        expect(getMetafieldKeyFromPath(path)).toBe('gift_note')
+    })
+
+    it('should return null if key after metafields is value', () => {
+        const path = fromJS([
+            'ticket',
+            'customer',
+            'integrations',
+            'shopify',
+            'customer',
+            'metafields',
+            'value',
+        ])
+        expect(getMetafieldKeyFromPath(path)).toBeNull()
     })
 })

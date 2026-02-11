@@ -10,12 +10,22 @@ import Identifier from 'pages/common/components/ast/Identifier'
 import type { RuleItemActions } from 'pages/settings/rules/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
+jest.mock('../widget/useGetMetafieldByKey', () => ({
+    useGetMetafieldByKey: jest.fn().mockReturnValue(null),
+}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const defaultState = {
+    integrations: fromJS({
+        integrations: [],
+    }),
+}
 
 describe('Identifier component', () => {
     it('should render', () => {
         const { container } = render(
-            <Provider store={mockStore({})}>
+            <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={appQueryClient}>
                     <Identifier
                         className="foo"

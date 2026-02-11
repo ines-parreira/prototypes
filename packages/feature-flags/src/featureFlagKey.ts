@@ -216,6 +216,7 @@ export enum FeatureFlagKey {
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     EnableShopifyMetafieldsIngestionUI = 'linear.project_shopify-metafields_enable_ingestion-ui',
     EnableShopifyMetafieldsIngestionUIinMacros = 'linear.project_shopify-metafields_enable_ingestion-ui-macros',
+    EnableShopifyMetafieldsIngestionUIinRules = 'linear.project_shopify-metafields_enable_ingestion-ui-rules',
     TriggerOnSearchKillSwitch = 'linear.task_AIORC-6090.kill-switch-for-trigger-on-search',
     ReportingP1MetricMigration = 'linear.project_new-stats-api.p1-metric-migration',
     ReportingP2MetricMigration = 'linear.project_new-stats-api.p2-metric-migration',

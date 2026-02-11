@@ -16,6 +16,7 @@ import {
     getDisplayStoreName,
     getMetafieldCategoryType,
     getMetafieldOperatorOptions,
+    getMetafieldValueSuffix,
     hasMetafieldInPath,
     isMetafieldCategory,
     parsePathToExpressionSegments,
@@ -72,11 +73,13 @@ describe('parsePathToExpressionSegments', () => {
         },
         {
             scenario: 'path with single bracket notation',
-            input: 'ticket.customer.integrations[123].customer.metafields',
+            input: 'ticket.customer.integrations.shopify.stores.123.customer.metafields',
             expected: [
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'customer',
                 'metafields',
@@ -84,11 +87,13 @@ describe('parsePathToExpressionSegments', () => {
         },
         {
             scenario: 'path with multiple bracket notations',
-            input: 'ticket.customer.integrations[123].orders[0].metafields',
+            input: 'ticket.customer.integrations.shopify.stores.123.orders[0].metafields',
             expected: [
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'orders',
                 '0',
@@ -97,11 +102,13 @@ describe('parsePathToExpressionSegments', () => {
         },
         {
             scenario: 'nested path with draft_orders',
-            input: 'ticket.customer.integrations[456].draft_orders[0].metafields.key.value',
+            input: 'ticket.customer.integrations.shopify.stores.456.draft_orders[0].metafields.key.value',
             expected: [
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '456',
                 'draft_orders',
                 '0',
@@ -138,6 +145,8 @@ describe('hasMetafieldInPath', () => {
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'customer',
                 'metafields',
@@ -172,6 +181,8 @@ describe('extractMetafieldKeyFromTree', () => {
             input: List([
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'customer',
                 'metafields',
@@ -231,6 +242,8 @@ describe('extractMetafieldCategoryFromTree', () => {
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'customer',
                 'metafields',
@@ -247,14 +260,15 @@ describe('extractMetafieldCategoryFromTree', () => {
         },
         {
             scenario:
-                'returns Order for integrations pattern orders.0.metafields',
+                'returns Order for integrations pattern last_order.metafields',
             input: List([
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '456',
-                'orders',
-                '0',
+                'last_order',
                 'metafields',
                 'key',
             ]),
@@ -270,14 +284,15 @@ describe('extractMetafieldCategoryFromTree', () => {
         },
         {
             scenario:
-                'returns DraftOrder for integrations pattern draft_orders.0.metafields',
+                'returns DraftOrder for integrations pattern last_draft_order.metafields',
             input: List([
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '789',
-                'draft_orders',
-                '0',
+                'last_draft_order',
                 'metafields',
                 'key',
             ]),
@@ -317,6 +332,8 @@ describe('extractIntegrationIdFromTree', () => {
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '123',
                 'customer',
                 'metafields',
@@ -329,6 +346,8 @@ describe('extractIntegrationIdFromTree', () => {
                 'ticket',
                 'customer',
                 'integrations',
+                'shopify',
+                'stores',
                 '98765',
                 'orders',
                 '0',
@@ -548,34 +567,90 @@ describe('findStoreById', () => {
 describe('findMetafieldByKey', () => {
     it.each([
         {
-            scenario: 'finds metafield when key matches',
+            scenario: 'finds metafield when key and category match',
             metafields: [
-                createMockField({ key: 'vip_status', name: 'VIP Status' }),
+                createMockField({
+                    key: 'vip_status',
+                    name: 'VIP Status',
+                    category: 'Customer',
+                }),
                 createMockField({
                     key: 'loyalty_points',
                     name: 'Loyalty Points',
+                    category: 'Customer',
                 }),
             ],
             key: 'loyalty_points',
+            category: 'Customer' as const,
             expectedName: 'Loyalty Points',
         },
         {
             scenario: 'returns undefined when key does not match',
             metafields: [
-                createMockField({ key: 'vip_status', name: 'VIP Status' }),
+                createMockField({
+                    key: 'vip_status',
+                    name: 'VIP Status',
+                    category: 'Customer',
+                }),
             ],
             key: 'non_existent',
+            category: 'Customer' as const,
             expectedName: undefined,
         },
         {
             scenario: 'returns undefined for empty metafields',
             metafields: [],
             key: 'any_key',
+            category: 'Customer' as const,
             expectedName: undefined,
         },
-    ])('$scenario', ({ metafields, key, expectedName }) => {
-        const result = findMetafieldByKey(metafields, key)
+        {
+            scenario:
+                'returns undefined when key matches but category does not',
+            metafields: [
+                createMockField({
+                    key: 'total',
+                    name: 'Order Total',
+                    category: 'Order',
+                }),
+            ],
+            key: 'total',
+            category: 'DraftOrder' as const,
+            expectedName: undefined,
+        },
+    ])('$scenario', ({ metafields, key, category, expectedName }) => {
+        const result = findMetafieldByKey(metafields, key, category)
         expect(result?.name).toBe(expectedName)
+    })
+
+    it('finds correct metafield when same key exists in multiple categories', () => {
+        const metafields = [
+            createMockField({
+                key: 'total',
+                name: 'Order Total',
+                category: 'Order',
+            }),
+            createMockField({
+                key: 'total',
+                name: 'Draft Order Total',
+                category: 'DraftOrder',
+            }),
+            createMockField({
+                key: 'total',
+                name: 'Customer Total',
+                category: 'Customer',
+            }),
+        ]
+
+        expect(findMetafieldByKey(metafields, 'total', 'Order')?.name).toBe(
+            'Order Total',
+        )
+        expect(
+            findMetafieldByKey(metafields, 'total', 'DraftOrder')?.name,
+        ).toBe('Draft Order Total')
+        expect(findMetafieldByKey(metafields, 'total', 'Customer')?.name).toBe(
+            'Customer Total',
+        )
     })
 })
 
@@ -680,6 +755,21 @@ describe('getMetafieldOperatorOptions', () => {
             expect(opt).toHaveProperty('value')
             expect(opt).toHaveProperty('label')
         })
+    })
+})
+
+describe('getMetafieldValueSuffix', () => {
+    it.each([
+        ['money', '.value.amount'],
+        ['rating', '.value.value'],
+        ['dimension', '.value.value'],
+        ['volume', '.value.value'],
+        ['weight', '.value.value'],
+        ['single_line_text_field', '.value'],
+        ['number_integer', '.value'],
+        ['boolean', '.value'],
+    ])('should return correct suffix for %s type', (fieldType, expected) => {
+        expect(getMetafieldValueSuffix(fieldType)).toBe(expected)
     })
 })
 
