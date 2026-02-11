@@ -77,7 +77,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
         }
 
         if (isDraft) {
-            return 'Articles become available for AI Agent when published and made public.'
+            return 'Publish your draft edits in order to enable this version for AI Agent'
         }
 
         if (isUnlisted) {

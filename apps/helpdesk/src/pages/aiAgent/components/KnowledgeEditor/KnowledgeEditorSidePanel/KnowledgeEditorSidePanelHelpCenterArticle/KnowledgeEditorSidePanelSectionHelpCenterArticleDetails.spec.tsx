@@ -525,7 +525,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
 
             const tooltip = screen.getByTestId('ai-agent-tooltip')
             expect(tooltip).toHaveTextContent(
-                'Articles become available for AI Agent when published and made public.',
+                'Publish your draft edits in order to enable this version for AI Agent',
             )
         })
 

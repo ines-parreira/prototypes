@@ -29,7 +29,7 @@ const getAiAgentStatusTooltip = (
         return 'Restore this version to be able to use it.'
     }
     if (isDraft) {
-        return 'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.'
+        return 'Publish your draft edits in order to enable this version for AI Agent'
     }
     if (isAtLimit && !visibility) {
         return limitMessage

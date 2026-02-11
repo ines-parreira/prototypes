@@ -168,7 +168,7 @@ describe('useGuidanceDetailsFromContext', () => {
                 )
 
                 expect(result.current.aiAgentStatus.tooltip).toBe(
-                    'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.',
+                    'Publish your draft edits in order to enable this version for AI Agent',
                 )
             })
 
@@ -197,7 +197,7 @@ describe('useGuidanceDetailsFromContext', () => {
                 )
 
                 expect(result.current.aiAgentStatus.tooltip).toBe(
-                    'Only published versions can be enabled for AI Agent. Publish this version to enable it for AI Agent.',
+                    'Publish your draft edits in order to enable this version for AI Agent',
                 )
             })
         })

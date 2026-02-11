@@ -130,6 +130,30 @@ describe('VersionHistoryButton', () => {
         expect(currentOption).toBeInTheDocument()
     })
 
+    it('marks draft versions with "(draft edits)" label', async () => {
+        const user = userEvent.setup()
+        renderComponent({
+            versions: [
+                {
+                    id: 5,
+                    version: 5,
+                    published_datetime: null,
+                    created_datetime: '2025-03-15T10:00:00Z',
+                    commit_message: 'Draft changes',
+                    publisher_user_id: 1,
+                },
+            ],
+            currentVersionId: 5,
+        })
+
+        await user.click(getTriggerButton())
+
+        const draftOption = screen.getByRole('option', {
+            name: /Jan 1, 2024.*\(draft edits\)/i,
+        })
+        expect(draftOption).toBeInTheDocument()
+    })
+
     it('shows user name when user has no commit message', async () => {
         useVersionUsers.mockReturnValue({
             userNames: new Map([
