@@ -105,7 +105,6 @@ export const shortcuts: Shortcuts = {
                 key: 'a',
                 description: 'Open the assignee dropdown.',
             },
-
             OPEN_TAGS: {
                 key: 't',
                 description: 'Open the tags dropdown.',
@@ -256,6 +255,15 @@ export const shortcuts: Shortcuts = {
             CLOSE_TICKET: {
                 key: 'c',
                 description: 'Close selected tickets.',
+            },
+        },
+    },
+    InfobarTicketTags: {
+        description: 'Infobar ticket tags',
+        actions: {
+            OPEN_TAGS: {
+                key: 't',
+                description: 'Open the tags dropdown.',
             },
         },
     },

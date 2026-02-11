@@ -1,4 +1,6 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { useShortcuts } from '@repo/utils'
 
 import type { ColorValue } from '@gorgias/axiom'
 import {
@@ -37,6 +39,7 @@ export function TagsMultiSelect({
     onChange,
     'aria-label': ariaLabel = 'Tags selection',
 }: TagsMultiSelectProps) {
+    const [isTagMenuOpen, setIsTagMenuOpen] = useState(false)
     const {
         data: tagList,
         search,
@@ -113,6 +116,16 @@ export function TagsMultiSelect({
         [onChange, value],
     )
 
+    const actions = {
+        OPEN_TAGS: {
+            action: () => {
+                setIsTagMenuOpen((s) => !s)
+            },
+        },
+    }
+
+    useShortcuts('InfobarTicketTags', actions)
+
     return (
         <div className={css.container}>
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
@@ -141,6 +154,8 @@ export function TagsMultiSelect({
                                 )}
                             </>
                         )}
+                        isOpen={isTagMenuOpen}
+                        onOpenChange={setIsTagMenuOpen}
                         isSearchable={true}
                         searchValue={search}
                         onSearchChange={setSearch}
