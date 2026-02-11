@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -37,7 +36,6 @@ type Props = {
 function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
     const { onSubmit } = useFormSubmit(integration)
     const { isDeleting, performDelete } = useDeletePhoneIntegration(integration)
-    const useVoiceSpamDetection = useFlag(FeatureFlagKey.UseVoiceSpamDetection)
 
     const { getCountryFromPhoneNumberId } = usePhoneNumbers()
     const phoneNumberCountry = integration.meta.phone_number_id
@@ -84,7 +82,7 @@ function VoiceIntegrationSettingsForm({ integration }: Props): JSX.Element {
                         <VoiceIntegrationSettingCallTranscription />
                     </SettingsCardContent>
                 </SettingsCard>
-                {useVoiceSpamDetection && isUsPhoneNumber && (
+                {isUsPhoneNumber && (
                     <SettingsCard>
                         <SettingsCardHeader>
                             <SettingsCardTitle>

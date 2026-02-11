@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -14,17 +13,12 @@ import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall
 
 jest.mock('models/voiceCall/utils')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
 
 const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')
 const useAgentDetailsSpy = jest.spyOn(voiceCallHooks, 'useAgentDetails')
 
 const isFinalVoiceCallStatusMock = assumeMock(isFinalVoiceCallStatus)
 const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
-const useFlagMock = assumeMock(useFlag)
 
 describe('VoiceCallActivity', () => {
     it('should render completed inbound call activity', () => {
@@ -502,8 +496,7 @@ describe('VoiceCallActivity', () => {
     )
 
     describe('Spam detection feature', () => {
-        it('should display spam tag when feature flag is enabled and call is marked as possible spam', () => {
-            useFlagMock.mockReturnValue(true)
+        it('should display spam tag when call is marked as possible spam', () => {
             useCustomerDetailsSpy.mockReturnValue({
                 customer: { name: 'Customer Name' },
             } as any)
@@ -531,35 +524,7 @@ describe('VoiceCallActivity', () => {
             expect(getByText('Agent Name')).toBeInTheDocument()
         })
 
-        it('should not display spam tag when feature flag is disabled even if call is marked as possible spam', () => {
-            useFlagMock.mockReturnValue(false)
-            useCustomerDetailsSpy.mockReturnValue({
-                customer: { name: 'Customer Name' },
-            } as any)
-            useAgentDetailsSpy.mockReturnValue({
-                data: { name: 'Agent Name' },
-            } as any)
-            isFinalVoiceCallStatusMock.mockReturnValue(true)
-
-            const voiceCall = {
-                agentId: 1,
-                customerId: 2,
-                phoneNumberSource: '123',
-                phoneNumberDestination: '456',
-                status: VoiceCallStatus.Completed,
-                direction: 'inbound',
-                isPossibleSpam: true,
-            } as VoiceCallSummary
-
-            const { queryByText } = render(
-                <VoiceCallActivity voiceCall={voiceCall} />,
-            )
-
-            expect(queryByText('Maybe spam')).not.toBeInTheDocument()
-        })
-
-        it('should not display spam tag when call is not marked as possible spam even if feature flag is enabled', () => {
-            useFlagMock.mockReturnValue(true)
+        it('should not display spam tag when call is not marked as possible spam', () => {
             useCustomerDetailsSpy.mockReturnValue({
                 customer: { name: 'Customer Name' },
             } as any)

@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 
 import { Icon, Tag } from '@gorgias/axiom'
@@ -22,7 +21,6 @@ type Props = {
 const UNKNOWN_AGENT = 'Unknown agent'
 
 const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
-    const useSpamDetection = useFlag(FeatureFlagKey.UseVoiceSpamDetection)
     return (
         <div className={css.callActivityContainer}>
             <i className={classNames('material-icons', css.phoneIcon)}>
@@ -45,7 +43,7 @@ const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
                     }
                 />
             )}
-            {useSpamDetection && voiceCall.isPossibleSpam && (
+            {voiceCall.isPossibleSpam && (
                 <span className={css.maybeSpamTag}>
                     <Tag
                         leadingSlot={<Icon name={'triangle-warning'} />}
