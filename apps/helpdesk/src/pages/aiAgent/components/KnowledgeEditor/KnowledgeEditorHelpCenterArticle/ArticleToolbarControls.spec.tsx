@@ -702,7 +702,7 @@ describe('ArticleToolbarControls', () => {
                 createMockToolbar({
                     state: { type: 'published-with-draft' },
                     editDisabledReason:
-                        'You already have a draft version. Only one draft is allowed.',
+                        'This version is read-only. View the version with draft edits to make changes.',
                 }),
             )
             render(<ArticleToolbarControls />)

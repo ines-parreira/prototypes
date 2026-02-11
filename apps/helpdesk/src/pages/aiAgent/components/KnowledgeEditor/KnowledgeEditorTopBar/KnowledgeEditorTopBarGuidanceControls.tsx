@@ -95,7 +95,10 @@ export const GuidanceToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
-                    <EditIconButton disabled={true} />
+                    <EditIconButton
+                        disabled={true}
+                        disabledReason="This version is read-only. View the version with draft edits to make changes."
+                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}

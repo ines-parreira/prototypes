@@ -5,7 +5,19 @@ export const withTooltip = (
     title: string,
     isDisabled: boolean,
     shortcut?: string,
+    caption?: string,
 ) => {
+    // Show tooltip if disabled with caption
+    if (isDisabled && caption) {
+        return (
+            <Tooltip placement="bottom">
+                <TooltipTrigger>{button}</TooltipTrigger>
+                <TooltipContent caption={caption} />
+            </Tooltip>
+        )
+    }
+
+    // Don't show tooltip when disabled and no caption
     if (isDisabled) {
         return button
     }
@@ -24,8 +36,6 @@ export const EditIconButton = (props: {
     disabledReason?: string
 }) => {
     const isDisabled = props.disabled || !props.onEdit
-    const tooltipTitle =
-        props.disabledReason && !props.onEdit ? props.disabledReason : 'Edit'
 
     return withTooltip(
         <Button
@@ -35,8 +45,10 @@ export const EditIconButton = (props: {
             variant="secondary"
             icon="edit-pencil"
         />,
-        tooltipTitle,
+        'Edit',
         isDisabled,
+        undefined,
+        props.disabledReason,
     )
 }
 

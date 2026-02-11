@@ -152,7 +152,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         state.isUpdating || state.isAutoSaving || isGuidanceArticleUpdating
 
     const editDisabledReason = !canEdit
-        ? 'You already have a draft version. Only one draft is allowed at a time, so the published version is read-only.'
+        ? 'This version is read-only. View the version with draft edits to make changes.'
         : undefined
 
     return {

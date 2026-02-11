@@ -410,7 +410,7 @@ describe('useArticleToolbar', () => {
 
             expect(result.current.canEdit).toBe(false)
             expect(result.current.editDisabledReason).toBe(
-                'You already have a draft version. Only one draft is allowed at a time, so the published version is read-only.',
+                'This version is read-only. View the version with draft edits to make changes.',
             )
         })
     })

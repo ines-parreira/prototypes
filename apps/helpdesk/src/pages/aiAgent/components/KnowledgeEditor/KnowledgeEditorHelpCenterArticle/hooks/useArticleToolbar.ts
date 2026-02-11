@@ -143,7 +143,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
     const isDisabled = state.isUpdating || state.isAutoSaving
 
     const editDisabledReason = !canEdit
-        ? 'You already have a draft version. Only one draft is allowed at a time, so the published version is read-only.'
+        ? 'This version is read-only. View the version with draft edits to make changes.'
         : undefined
 
     return {
