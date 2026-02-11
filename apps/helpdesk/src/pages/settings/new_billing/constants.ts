@@ -19,6 +19,7 @@ export const SELECTED_PRODUCTS_SESSION_STORAGE_KEY =
 export const ACTIVATE_PAYMENT_WITH_SHOPIFY_URL =
     '/integrations/shopify/billing/activate'
 
+export const STORE_MANAGEMENT_PATH = '/app/settings/store-management'
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
 
 export const DATE_FORMAT = 'LL'

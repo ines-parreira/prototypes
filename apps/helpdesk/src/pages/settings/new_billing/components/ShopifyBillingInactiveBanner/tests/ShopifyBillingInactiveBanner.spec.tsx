@@ -7,6 +7,7 @@ import {
     payingWithCreditCard,
     payWithShopify,
     payWithShopifyButNotActivated,
+    payWithShopifyButNotActivatedAndPastDue,
     trial,
 } from 'pages/settings/new_billing/fixtures'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
@@ -49,6 +50,31 @@ describe('ShopifyBillingInactiveBanner', () => {
         ).toBeInTheDocument()
     })
 
+    it('should render past due banner when Shopify billing is inactive and subscription is past due', async () => {
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivatedAndPastDue)
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <ShopifyBillingInactiveBanner />
+            </MemoryRouter>,
+            {},
+        )
+
+        expect(
+            await screen.findByText('Subscription payment past due'),
+        ).toBeInTheDocument()
+
+        expect(
+            screen.getByText(
+                'Your payment is overdue because your Shopify billing integration is inactive. Please activate it in Store Management to resume payment collection and avoid service interruption.',
+            ),
+        ).toBeInTheDocument()
+
+        expect(screen.getByText('Go to Store Management')).toBeInTheDocument()
+    })
+
     it('should not render the banner when Shopify billing is active', async () => {
         mockedServer.onGet('/billing/state').reply(200, payWithShopify)
 
@@ -64,6 +90,9 @@ describe('ShopifyBillingInactiveBanner', () => {
 
         expect(
             screen.queryByText('Your Shopify billing integration is inactive.'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Subscription payment past due'),
         ).not.toBeInTheDocument()
     })
 
@@ -83,6 +112,9 @@ describe('ShopifyBillingInactiveBanner', () => {
         expect(
             screen.queryByText('Your Shopify billing integration is inactive.'),
         ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Subscription payment past due'),
+        ).not.toBeInTheDocument()
     })
 
     it('should not render when Shopify billing is null', async () => {
@@ -100,6 +132,9 @@ describe('ShopifyBillingInactiveBanner', () => {
 
         expect(
             screen.queryByText('Your Shopify billing integration is inactive.'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Subscription payment past due'),
         ).not.toBeInTheDocument()
     })
 
@@ -123,6 +158,27 @@ describe('ShopifyBillingInactiveBanner', () => {
             'href',
             '/integrations/shopify/billing/activate',
         )
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('should render link to Store Management when subscription is past due', async () => {
+        mockedServer
+            .onGet('/billing/state')
+            .reply(200, payWithShopifyButNotActivatedAndPastDue)
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <ShopifyBillingInactiveBanner />
+            </MemoryRouter>,
+            {},
+        )
+
+        const link = await screen.findByRole('link', {
+            name: /Go to Store Management/i,
+        })
+
+        expect(link).toHaveAttribute('href', '/app/settings/store-management')
         expect(link).toHaveAttribute('target', '_blank')
         expect(link).toHaveAttribute('rel', 'noopener noreferrer')
     })

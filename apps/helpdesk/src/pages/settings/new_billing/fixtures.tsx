@@ -256,6 +256,21 @@ export const payWithShopifyButNotActivated: BillingState = {
     },
 }
 
+export const payWithShopifyButNotActivatedAndPastDue: BillingState = {
+    ...payingWithCreditCard,
+    subscription: {
+        ...payingWithCreditCard.subscription,
+        status: SubscriptionStatus.PAST_DUE,
+    },
+    customer: {
+        ...payingWithCreditCard.customer,
+        credit_card: null,
+        shopify_billing: {
+            subscription_id: null,
+        },
+    },
+}
+
 export const payWithShopify: BillingState = {
     ...payingWithCreditCard,
     customer: {
