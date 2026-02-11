@@ -1,6 +1,6 @@
 import type { Map } from 'immutable'
 
-import { Button } from '@gorgias/axiom'
+import { Box, Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -39,40 +39,41 @@ export const IntegrationActionButtons = ({
     }
 
     return (
-        <div>
-            <Button
-                type="submit"
-                className="mr-2"
-                isLoading={isSubmitting}
-                isDisabled={submitIsDisabled}
-            >
-                {isUpdate ? 'Update Connection' : 'Connect App'}
-            </Button>
-            {isUpdate &&
-                isDeactivated &&
-                (isManual ? (
-                    <Button
-                        type="submit"
-                        className="mr-2"
-                        isLoading={isSubmitting}
-                        isDisabled={submitIsDisabled}
-                    >
-                        Reconnect
-                    </Button>
-                ) : (
-                    <ConfirmButton
-                        id="reconnect-integration"
-                        isLoading={isSubmitting}
-                        onConfirm={() => reconnect(integration, redirectUri)}
-                        confirmationContent="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
-                    >
-                        Reconnect
-                    </ConfirmButton>
-                ))}
+        <Box justifyContent="space-between">
+            <Box gap="sm">
+                <Button
+                    type="submit"
+                    isLoading={isSubmitting}
+                    isDisabled={submitIsDisabled}
+                >
+                    {isUpdate ? 'Update Connection' : 'Connect App'}
+                </Button>
+                {isUpdate &&
+                    isDeactivated &&
+                    (isManual ? (
+                        <Button
+                            type="submit"
+                            isLoading={isSubmitting}
+                            isDisabled={submitIsDisabled}
+                        >
+                            Reconnect
+                        </Button>
+                    ) : (
+                        <ConfirmButton
+                            id="reconnect-integration"
+                            isLoading={isSubmitting}
+                            onConfirm={() =>
+                                reconnect(integration, redirectUri)
+                            }
+                            confirmationContent="You first need to delete the integration on your Magento2 store so that you can re-add it using this button"
+                        >
+                            Reconnect
+                        </ConfirmButton>
+                    ))}
+            </Box>
             {isUpdate && (
                 <ConfirmButton
                     id="delete-integration"
-                    className="float-right"
                     onConfirm={() => dispatch(deleteIntegration(integration))}
                     confirmationContent={INTEGRATION_REMOVAL_CONFIGURATION_TEXT}
                     intent="destructive"
@@ -81,7 +82,7 @@ export const IntegrationActionButtons = ({
                     Delete App
                 </ConfirmButton>
             )}
-        </div>
+        </Box>
     )
 }
 

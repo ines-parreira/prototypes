@@ -176,39 +176,47 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
               </label>
             </div>
           </div>
-          <div>
-            <button
-              aria-disabled="true"
-              class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
-              data-disabled="true"
-              data-name="button"
-              data-rac=""
-              data-react-aria-pressable="true"
-              disabled=""
-              id="react-aria-:r4:"
-              type="button"
+          <div
+            data-name="box"
+            style="display: flex; justify-content: space-between;"
+          >
+            <div
+              data-name="box"
+              style="display: flex; gap: 12px;"
             >
-              <div
-                class="ui-button-surface-a432"
+              <button
+                aria-disabled="true"
+                class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432 ui-button-isdisabled-a432"
+                data-disabled="true"
+                data-name="button"
+                data-rac=""
+                data-react-aria-pressable="true"
+                disabled=""
+                id="react-aria-:r4:"
+                type="button"
               >
-                <span
-                  class="ui-button-content-a432"
+                <div
+                  class="ui-button-surface-a432"
                 >
                   <span
-                    class="typography-bold-md ui-text-text-d239"
-                    data-name="text"
-                    style="text-align: left; text-wrap: nowrap;"
+                    class="ui-button-content-a432"
                   >
-                    <strong>
-                      Update Connection
-                    </strong>
+                    <span
+                      class="typography-bold-md ui-text-text-d239"
+                      data-name="text"
+                      style="text-align: left; text-wrap: nowrap;"
+                    >
+                      <strong>
+                        Update Connection
+                      </strong>
+                    </span>
                   </span>
-                </span>
-              </div>
-            </button>
+                </div>
+              </button>
+            </div>
             <button
               aria-disabled="false"
-              class="ui-button-wrapper-cef1 float-right ui-button-fill-cef1 ui-button-destructive-cef1"
+              class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-destructive-cef1"
               id="integration-deletion-confirm-button"
               type="button"
             >

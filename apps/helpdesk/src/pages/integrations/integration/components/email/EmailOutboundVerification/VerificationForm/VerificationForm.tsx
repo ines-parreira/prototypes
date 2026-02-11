@@ -4,7 +4,7 @@ import { useState } from 'react'
 import classNames from 'classnames'
 import { Form, FormGroup, Label } from 'reactstrap'
 
-import { Button } from '@gorgias/axiom'
+import { Box, Button } from '@gorgias/axiom'
 
 import { states } from 'config/states'
 import { states as countries } from 'fixtures/states'
@@ -175,9 +175,11 @@ export default function VerificationForm({
                 </FormGroup>
             </div>
             {showSubmitButton && (
-                <Button type="submit" className="mt-4" isLoading={isLoading}>
-                    Submit
-                </Button>
+                <Box mt="md">
+                    <Button type="submit" isLoading={isLoading}>
+                        Submit
+                    </Button>
+                </Box>
             )}
         </Form>
     )

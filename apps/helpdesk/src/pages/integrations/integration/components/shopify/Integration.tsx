@@ -5,6 +5,7 @@ import type { Map } from 'immutable'
 import { Col, Container, Row } from 'reactstrap'
 
 import {
+    Box,
     Button,
     LegacyLabel as Label,
     LegacyToggleField as ToggleField,
@@ -235,41 +236,40 @@ export default function Integration({
                             />
                         </div>
 
-                        <div>
-                            {needScopeUpdate && (
-                                <Button
-                                    className="mr-2"
-                                    isLoading={isSubmitting}
-                                    onClick={retriggerOAuthFlow}
-                                >
-                                    Update App Permissions
-                                </Button>
-                            )}
+                        <Box justifyContent="space-between">
+                            <Box gap="sm">
+                                {needScopeUpdate && (
+                                    <Button
+                                        isLoading={isSubmitting}
+                                        onClick={retriggerOAuthFlow}
+                                    >
+                                        Update App Permissions
+                                    </Button>
+                                )}
 
-                            {!isAuthenticationPending && (
-                                <Button
-                                    type="submit"
-                                    className="mr-2"
-                                    isDisabled={
-                                        isSubmitting ||
-                                        !areIntegrationOptionsDirty
-                                    }
-                                    isLoading={isSubmitting}
-                                >
-                                    Update Connection
-                                </Button>
-                            )}
+                                {!isAuthenticationPending && (
+                                    <Button
+                                        type="submit"
+                                        isDisabled={
+                                            isSubmitting ||
+                                            !areIntegrationOptionsDirty
+                                        }
+                                        isLoading={isSubmitting}
+                                    >
+                                        Update Connection
+                                    </Button>
+                                )}
 
-                            {!isActive && (
-                                <Button
-                                    isLoading={isSubmitting}
-                                    onClick={retriggerOAuthFlow}
-                                >
-                                    Reconnect
-                                </Button>
-                            )}
+                                {!isActive && (
+                                    <Button
+                                        isLoading={isSubmitting}
+                                        onClick={retriggerOAuthFlow}
+                                    >
+                                        Reconnect
+                                    </Button>
+                                )}
+                            </Box>
                             <ConfirmButton
-                                className="float-right"
                                 id="integration-deletion-confirm-button"
                                 onConfirm={() =>
                                     dispatch(deleteIntegration(integration))
@@ -282,7 +282,7 @@ export default function Integration({
                             >
                                 Delete App
                             </ConfirmButton>
-                        </div>
+                        </Box>
                     </form>
 
                     <BackToConvertButton />

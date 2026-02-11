@@ -43,7 +43,7 @@ const EmailIntegrationUpdateLayout = ({ integration, children }: Props) => {
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {integration.name}{' '}
-                            <span className="text-faded align-middle">
+                            <span className="text-faded align-middle ml-2">
                                 {integration.meta?.address}
                             </span>
                         </BreadcrumbItem>

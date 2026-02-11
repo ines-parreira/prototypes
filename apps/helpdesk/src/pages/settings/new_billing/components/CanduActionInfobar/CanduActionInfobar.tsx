@@ -1,8 +1,6 @@
-import { Button } from '@gorgias/axiom'
+import { Box, Button } from '@gorgias/axiom'
 
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
-
-import css from './CanduActionInfobar.less'
 
 type Props = {
     text: string
@@ -18,11 +16,9 @@ const CanduActionInfobar = ({ text, btnLabel, canduId, onClick }: Props) => {
                 className="mt-4"
                 icon
                 customActions={
-                    <div className={css.actions}>
-                        <Button className="mr-3" onClick={onClick}>
-                            {btnLabel}
-                        </Button>
-                    </div>
+                    <Box>
+                        <Button onClick={onClick}>{btnLabel}</Button>
+                    </Box>
                 }
                 type={AlertType.Info}
             >
