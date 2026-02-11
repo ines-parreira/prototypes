@@ -136,7 +136,7 @@ describe('AiAgentStatusCell', () => {
         expect(tag).toHaveAttribute('data-color', 'grey')
     })
 
-    it('should render "No Store connected" tag when store integration is undefined', () => {
+    it('should render "No store connected" tag when store integration is undefined', () => {
         mockUseStoreIntegration.mockReturnValue({
             storeIntegration: undefined,
             isConnected: false,
@@ -146,11 +146,11 @@ describe('AiAgentStatusCell', () => {
         render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('No Store connected')
+        expect(tag).toHaveTextContent('No store connected')
         expect(tag).toHaveAttribute('data-color', 'grey')
     })
 
-    it('should render "No Store connected" tag when store is not connected', () => {
+    it('should render "No store connected" tag when store is not connected', () => {
         mockUseStoreIntegration.mockReturnValue({
             storeIntegration: {
                 id: 456,
@@ -164,7 +164,7 @@ describe('AiAgentStatusCell', () => {
         render(<AiAgentStatusCell chat={mockChat} />)
 
         const tag = screen.getByTestId('tag')
-        expect(tag).toHaveTextContent('No Store connected')
+        expect(tag).toHaveTextContent('No store connected')
         expect(tag).toHaveAttribute('data-color', 'grey')
     })
 

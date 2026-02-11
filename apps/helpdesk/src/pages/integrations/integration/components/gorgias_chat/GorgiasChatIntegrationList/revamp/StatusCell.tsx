@@ -33,7 +33,7 @@ const GorgiasChatIntegrationStatusFeedbackMapping = {
     [GorgiasChatStatusEnum.OFFLINE]: 'Offline',
     [GorgiasChatStatusEnum.HIDDEN]: 'Hidden',
     [GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS]: 'Hidden',
-    [GorgiasChatStatusEnum.NOT_INSTALLED]: 'Not Installed',
+    [GorgiasChatStatusEnum.NOT_INSTALLED]: 'Not installed',
 }
 
 type StatusCellProps = {

@@ -223,7 +223,7 @@ describe('StatusCell', () => {
             expect(tag).toBeInTheDocument()
         })
 
-        it('should render Not Installed status with red tag', () => {
+        it('should render Not installed status with red tag', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
                 isChatStatusLoading: false,
@@ -243,7 +243,7 @@ describe('StatusCell', () => {
                 <StatusCell chat={chat} loading={loading} />,
             )
 
-            expect(screen.getByText('Not Installed')).toBeInTheDocument()
+            expect(screen.getByText('Not installed')).toBeInTheDocument()
 
             const tag = container.querySelector('[data-color="red"]')
             expect(tag).toBeInTheDocument()

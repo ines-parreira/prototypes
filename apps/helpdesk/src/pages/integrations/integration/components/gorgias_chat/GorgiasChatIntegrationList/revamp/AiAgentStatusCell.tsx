@@ -64,7 +64,7 @@ export function AiAgentStatusCell({ chat }: AiAgentStatusProps) {
     }
 
     if (!isConnected) {
-        return <Tag color={TagColor.Grey}>No Store connected</Tag>
+        return <Tag color={TagColor.Grey}>No store connected</Tag>
     }
 
     if (!hasSubscriptionAccess && storeIntegration) {
