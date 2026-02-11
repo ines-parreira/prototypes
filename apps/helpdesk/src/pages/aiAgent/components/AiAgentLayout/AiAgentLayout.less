@@ -1,13 +1,4 @@
 :local {
-    .container {
-        [class*='styles--cardContent--'] {
-            // Currently the content and the header are both padded by 24px.
-            // This padding is not needed for the card content as it ends up being 48px.
-            // This level of scope is set so it affects only ai agent components.
-            padding-top: 0;
-        }
-    }
-
     .customAiAgentTitle {
         display: flex;
 
@@ -29,5 +20,16 @@
         display: flex;
         align-items: center;
         gap: 12px;
+    }
+}
+
+.axiom :local {
+    .container {
+        [class*='styles--cardContent--'] {
+            // Currently the content and the header are both padded by 24px.
+            // This padding is not needed for the card content as it ends up being 48px.
+            // This level of scope is set so it affects only ai agent components.
+            padding-top: 0;
+        }
     }
 }
