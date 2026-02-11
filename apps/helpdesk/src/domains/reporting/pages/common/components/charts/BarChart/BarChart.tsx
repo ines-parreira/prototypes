@@ -8,6 +8,7 @@ import type {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
+import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Bar } from 'react-chartjs-2'
@@ -203,11 +204,9 @@ export function BarChart({
                             ...yAxisScale,
                         },
                         x: {
-                            ticks: {
-                                ...(renderXTickLabel
-                                    ? { callback: renderXTickLabel }
-                                    : {}),
-                            },
+                            ticks: renderXTickLabel
+                                ? { callback: renderXTickLabel }
+                                : {},
                             stacked: isStacked,
                         },
                     },
@@ -261,7 +260,7 @@ export function BarChart({
     }
 
     return (
-        <div className={wrapperclassNames}>
+        <div className={classnames(css.chartWrapper, wrapperclassNames)}>
             <div className={css.container}>
                 <Bar
                     id={CHART_TOOLTIP_TARGET}

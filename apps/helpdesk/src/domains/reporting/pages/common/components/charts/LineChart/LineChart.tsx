@@ -9,6 +9,7 @@ import type {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
+import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Line } from 'react-chartjs-2'
@@ -201,11 +202,9 @@ export function LineChart({
                             ...yAxisScale,
                         },
                         x: {
-                            ticks: {
-                                ...(renderXTickLabel
-                                    ? { callback: renderXTickLabel }
-                                    : {}),
-                            },
+                            ticks: renderXTickLabel
+                                ? { callback: renderXTickLabel }
+                                : {},
                         },
                     },
                     plugins: {
@@ -261,7 +260,7 @@ export function LineChart({
     }
 
     return (
-        <div className={wrapperclassNames}>
+        <div className={classnames(css.chartWrapper, wrapperclassNames)}>
             <div className={css.container}>
                 <Line
                     id={CHART_TOOLTIP_TARGET}

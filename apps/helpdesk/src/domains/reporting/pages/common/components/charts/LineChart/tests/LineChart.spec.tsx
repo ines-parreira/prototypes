@@ -193,4 +193,69 @@ describe('<LineChart />', () => {
             }
         })
     })
+
+    it('should render with custom x-axis tick label callback', () => {
+        const renderXTickLabel = jest.fn((value: number | string) =>
+            String(value).toUpperCase(),
+        )
+        render(
+            <LineChart
+                data={[ticketsCreatedDataItem]}
+                renderXTickLabel={renderXTickLabel}
+            />,
+        )
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const xTicksCallback = lastCall?.options?.scales?.x?.ticks?.callback
+
+        expect(xTicksCallback).toBe(renderXTickLabel)
+    })
+
+    it('should render without x-axis tick label callback when not provided', () => {
+        render(<LineChart data={[ticketsCreatedDataItem]} />)
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const xTicksCallback = lastCall?.options?.scales?.x?.ticks?.callback
+
+        expect(xTicksCallback).toBeUndefined()
+    })
+
+    it('should hide datasets based on defaultDatasetVisibility with false value', () => {
+        const dataItem1 = { ...ticketsCreatedDataItem, label: 'Dataset 1' }
+        const dataItem2 = { ...ticketsCreatedDataItem, label: 'Dataset 2' }
+
+        render(
+            <LineChart
+                data={[dataItem1, dataItem2]}
+                defaultDatasetVisibility={{ 0: true, 1: false }}
+            />,
+        )
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const datasets = lastCall?.data?.datasets
+
+        expect(datasets?.[0]?.hidden).toBe(false)
+        expect(datasets?.[1]?.hidden).toBe(true)
+    })
+
+    it('should hide datasets when key is missing in defaultDatasetVisibility', () => {
+        const dataItem1 = { ...ticketsCreatedDataItem, label: 'Dataset 1' }
+        const dataItem2 = { ...ticketsCreatedDataItem, label: 'Dataset 2' }
+        const dataItem3 = { ...ticketsCreatedDataItem, label: 'Dataset 3' }
+
+        render(
+            <LineChart
+                data={[dataItem1, dataItem2, dataItem3]}
+                defaultDatasetVisibility={{ 0: true }}
+            />,
+        )
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const datasets = lastCall?.data?.datasets
+
+        // When key is missing (undefined), !undefined = true, so line is hidden
+        expect(datasets?.[0]?.hidden).toBe(false)
+        expect(datasets?.[1]?.hidden).toBe(true)
+        expect(datasets?.[2]?.hidden).toBe(true)
+    })
 })

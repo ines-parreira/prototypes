@@ -2,7 +2,9 @@
 
 exports[`<LineChart /> should render the line chart 1`] = `
 <div>
-  <div>
+  <div
+    class="chartWrapper"
+  >
     <div
       class="container"
     >

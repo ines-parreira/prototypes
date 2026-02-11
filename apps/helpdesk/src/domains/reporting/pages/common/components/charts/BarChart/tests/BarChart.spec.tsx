@@ -309,4 +309,45 @@ describe('<BarChart />', () => {
             expect(actual).toEqual(withBorderRadius)
         })
     })
+
+    it('should apply wrapper class names when provided', () => {
+        const customClass = 'custom-wrapper-class'
+        const { container } = render(
+            <BarChart
+                data={[ticketsCreatedDataItem]}
+                wrapperclassNames={customClass}
+            />,
+        )
+
+        const wrapperDiv = container.querySelector(`.${customClass}`)
+        expect(wrapperDiv).toBeInTheDocument()
+        expect(wrapperDiv).toHaveClass('chartWrapper')
+        expect(wrapperDiv).toHaveClass(customClass)
+    })
+
+    it('should render with custom x-axis tick label callback', () => {
+        const renderXTickLabel = jest.fn((value: number | string) =>
+            String(value).toUpperCase(),
+        )
+        render(
+            <BarChart
+                data={[ticketsCreatedDataItem]}
+                renderXTickLabel={renderXTickLabel}
+            />,
+        )
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const xTicksCallback = lastCall?.options?.scales?.x?.ticks?.callback
+
+        expect(xTicksCallback).toBe(renderXTickLabel)
+    })
+
+    it('should render without x-axis tick label callback when not provided', () => {
+        render(<BarChart data={[ticketsCreatedDataItem]} />)
+
+        const lastCall = chartSpy.mock.lastCall?.[1]
+        const xTicksCallback = lastCall?.options?.scales?.x?.ticks?.callback
+
+        expect(xTicksCallback).toBeUndefined()
+    })
 })

@@ -100,7 +100,7 @@ export const OPTIONS = (colorTokens: ChartColors & AnalyticsTheme): unknown =>
             },
         },
         maintainAspectRatio: false,
-        resizeDelay: 1000,
+        resizeDelay: 200,
     })
 
 export const barChartStackedOptionsOverrides = {

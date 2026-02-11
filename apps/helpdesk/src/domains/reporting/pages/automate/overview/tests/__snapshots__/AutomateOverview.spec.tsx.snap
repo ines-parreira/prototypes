@@ -515,10 +515,16 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -552,10 +558,16 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -590,14 +602,18 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                 />
               </div>
               <div
-                class="chartWrapper"
+                class="chartContent"
               >
                 <div
-                  class="container"
-                />
-                <div
-                  class="legend legend legendOnLeft"
-                />
+                  class="chartWrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -631,8 +647,12 @@ exports[`<AutomateOverview /> Autoresponder deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
-                BarChart
+              <div
+                class="chartContent"
+              >
+                <div>
+                  BarChart
+                </div>
               </div>
             </div>
           </div>
@@ -1163,10 +1183,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1200,10 +1226,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1238,14 +1270,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 />
               </div>
               <div
-                class="chartWrapper"
+                class="chartContent"
               >
                 <div
-                  class="container"
-                />
-                <div
-                  class="legend legend legendOnLeft"
-                />
+                  class="chartWrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1279,8 +1315,12 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
-                BarChart
+              <div
+                class="chartContent"
+              >
+                <div>
+                  BarChart
+                </div>
               </div>
             </div>
           </div>
@@ -1811,10 +1851,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1848,10 +1894,16 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1886,14 +1938,18 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                 />
               </div>
               <div
-                class="chartWrapper"
+                class="chartContent"
               >
                 <div
-                  class="container"
-                />
-                <div
-                  class="legend legend legendOnLeft"
-                />
+                  class="chartWrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1927,8 +1983,12 @@ exports[`<AutomateOverview /> Quickresponse deprecation should return false when
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
-                BarChart
+              <div
+                class="chartContent"
+              >
+                <div>
+                  BarChart
+                </div>
               </div>
             </div>
           </div>
@@ -2459,10 +2519,16 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -2496,10 +2562,16 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -2534,14 +2606,18 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                 />
               </div>
               <div
-                class="chartWrapper"
+                class="chartContent"
               >
                 <div
-                  class="container"
-                />
-                <div
-                  class="legend legend legendOnLeft"
-                />
+                  class="chartWrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -2575,8 +2651,12 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
-                BarChart
+              <div
+                class="chartContent"
+              >
+                <div>
+                  BarChart
+                </div>
               </div>
             </div>
           </div>
@@ -3107,10 +3187,16 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -3144,10 +3230,16 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
+              <div
+                class="chartContent"
+              >
                 <div
-                  class="container"
-                />
+                  class="chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -3182,14 +3274,18 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                 />
               </div>
               <div
-                class="chartWrapper"
+                class="chartContent"
               >
                 <div
-                  class="container"
-                />
-                <div
-                  class="legend legend legendOnLeft"
-                />
+                  class="chartWrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -3223,8 +3319,12 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                   class="chartsActionMenu"
                 />
               </div>
-              <div>
-                BarChart
+              <div
+                class="chartContent"
+              >
+                <div>
+                  BarChart
+                </div>
               </div>
             </div>
           </div>

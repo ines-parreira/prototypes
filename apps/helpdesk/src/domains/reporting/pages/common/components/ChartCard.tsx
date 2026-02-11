@@ -63,7 +63,7 @@ export default function ChartCard({
                 </div>
             </div>
 
-            {children}
+            <div className={css.chartContent}>{children}</div>
         </Card>
     )
 }

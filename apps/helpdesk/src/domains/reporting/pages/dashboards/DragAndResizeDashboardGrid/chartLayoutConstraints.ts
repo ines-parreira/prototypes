@@ -23,7 +23,7 @@ const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
     },
     [ChartType.Graph]: {
         default: { width: 6, height: 14 },
-        min: { width: 3, height: 12 },
+        min: { width: 3, height: 8 },
         max: { width: 12, height: 24 },
     },
     [ChartType.Table]: {
