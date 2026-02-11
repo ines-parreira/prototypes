@@ -87,7 +87,7 @@ export function InfobarTicketCustomerDetails({
             className={css.container}
             flexDirection="column"
             gap="xs"
-            padding="md"
+            paddingTop="md"
             paddingBottom="sm"
         >
             <InfobarTicketCustomerHeader
@@ -100,7 +100,9 @@ export function InfobarTicketCustomerDetails({
                 hasShopifyIntegration={hasShopifyIntegration}
             />
             {!!similarCustomer && !isLoadingSimilarCustomer && (
-                <DuplicateCustomer onClick={handleViewSimilarCustomer} />
+                <div className={css.duplicateCustomer}>
+                    <DuplicateCustomer onClick={handleViewSimilarCustomer} />
+                </div>
             )}
             <InfobarCustomerFields
                 customer={ticketCustomer}

@@ -107,16 +107,18 @@ export const InfobarTicketCustomerInstagramSection = ({
             className={css.instagramContainer}
             flexDirection="column"
             gap="xs"
-            padding="md"
+            paddingTop="md"
             paddingBottom="sm"
         >
-            <Heading size="sm">Instagram</Heading>
+            <Heading size="sm" className={css.heading}>
+                Instagram
+            </Heading>
             <OverflowList
                 nonExpandedLineCount={2}
                 className={css.overflowList}
                 isExpanded={isExpanded}
                 onExpandedChange={setIsExpanded}
-                gap={1}
+                gap="xxxxs"
                 key={`instagram-overflow-list-${customer.id}-${isExpanded}`}
             >
                 <OverflowListItem className={css.overflowListItem}>
@@ -184,7 +186,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                         </Text>
                     </FieldRow>
                 </OverflowListItem>
-                <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <Box className={css.overflowListToggle}>
                     <OverflowListShowMore
                         leadingSlot="arrow-chevron-down"
                         className={css.overflowListToggle}
@@ -192,7 +194,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                         Show more
                     </OverflowListShowMore>
                 </Box>
-                <Box paddingTop="xxs" className={css.overflowListToggle}>
+                <Box className={css.overflowListToggle}>
                     <OverflowListShowLess leadingSlot="arrow-chevron-up">
                         Show less
                     </OverflowListShowLess>

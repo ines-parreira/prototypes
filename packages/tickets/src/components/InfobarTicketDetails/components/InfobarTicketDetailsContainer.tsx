@@ -12,7 +12,7 @@ export function InfobarTicketDetailsContainer({
             className={css.container}
             flexDirection="column"
             gap="xs"
-            padding="md"
+            paddingTop="md"
             paddingBottom="sm"
         >
             {children}

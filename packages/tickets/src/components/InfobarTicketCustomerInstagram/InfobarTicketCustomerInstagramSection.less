@@ -5,6 +5,10 @@
         background: var(--elevation-neutral-default);
     }
 
+    .heading {
+        margin: 0 var(--spacing-md);
+    }
+
     .overflowList {
         width: 100%;
         padding: 0;
@@ -14,6 +18,7 @@
     .overflowListItem {
         width: 100%;
         min-height: 24px;
+        padding: 0 var(--spacing-md);
     }
 
     .instagramHandle {
@@ -30,6 +35,9 @@
     }
 
     .overflowListToggle {
-        margin-left: calc(-1 * var(--spacing-xs));
+        padding-top: calc(var(--spacing-xxs) - var(--spacing-xxxxs));
+        button {
+            margin-left: var(--spacing-xs);
+        }
     }
 }

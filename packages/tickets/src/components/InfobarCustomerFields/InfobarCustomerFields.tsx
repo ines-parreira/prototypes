@@ -36,13 +36,19 @@ export function InfobarCustomerFields({
                 customer={customer}
                 ticketId={ticketId}
             />
-            <Box paddingTop="xxs" className={css.overflowListToggle}>
-                <OverflowListShowMore leadingSlot="arrow-chevron-down">
+            <Box className={css.overflowListToggle}>
+                <OverflowListShowMore
+                    leadingSlot="arrow-chevron-down"
+                    className={css.overflowListToggle}
+                >
                     Show more
                 </OverflowListShowMore>
             </Box>
-            <Box paddingTop="xxs" className={css.overflowListToggle}>
-                <OverflowListShowLess leadingSlot="arrow-chevron-up">
+            <Box className={css.overflowListToggle}>
+                <OverflowListShowLess
+                    leadingSlot="arrow-chevron-up"
+                    className={css.overflowListToggle}
+                >
                     Show less
                 </OverflowListShowLess>
             </Box>

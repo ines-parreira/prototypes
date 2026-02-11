@@ -9,6 +9,7 @@
 
     .overflowListItem {
         width: 100%;
+        padding: 0 var(--spacing-md);
     }
 
     .fieldValue {
@@ -23,6 +24,9 @@
     }
 
     .overflowListToggle {
-        margin-left: calc(-1 * var(--spacing-xs));
+        padding-top: calc(var(--spacing-xxs) - var(--spacing-xxxxs));
+        button {
+            margin-left: var(--spacing-xs);
+        }
     }
 }

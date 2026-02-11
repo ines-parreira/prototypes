@@ -57,12 +57,12 @@ export function InfobarTicketFields({
                     onFieldBlur={onFieldBlur}
                 />
             ))}
-            <Box paddingTop="xxs" className={css.overflowListToggle}>
+            <Box className={css.overflowListToggle}>
                 <OverflowListShowMore leadingSlot="arrow-chevron-down">
                     Show more
                 </OverflowListShowMore>
             </Box>
-            <Box paddingTop="xxs" className={css.overflowListToggle}>
+            <Box className={css.overflowListToggle}>
                 <OverflowListShowLess leadingSlot="arrow-chevron-up">
                     Show less
                 </OverflowListShowLess>
