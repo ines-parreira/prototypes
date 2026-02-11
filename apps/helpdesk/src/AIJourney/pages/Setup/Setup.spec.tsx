@@ -595,7 +595,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     cooldownDays: undefined,
                     waitTimeMinutes: 0,
                     targetOrderStatus: undefined,
-                    postPurchaseWaitMinutes: undefined,
+                    postPurchaseWaitMinutes: 0,
                 })
             })
         })
@@ -729,7 +729,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         inactive_days: undefined,
                         cooldown_days: undefined,
                         wait_time_minutes: 0,
-                        post_purchase_wait_minutes: undefined,
+                        post_purchase_wait_minutes: 0,
                         target_order_status: undefined,
                     },
                 })
@@ -1879,6 +1879,50 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         })
     })
 
+    it('should disable continue button when post_purchase_wait_minutes is undefined', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'post-purchase',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(screen.getByText('Select'))
+        })
+        await act(async () => {
+            await user.click(screen.getByText('+1 555-123-4567'))
+        })
+
+        await act(async () => {
+            await user.click(screen.getAllByRole('button', { name: '4' })[0])
+        })
+
+        const waitTimeInput = screen.getByRole('spinbutton')
+        await act(async () => {
+            await user.clear(waitTimeInput)
+        })
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeDisabled()
+    })
+
     it('should call handleUpdate with post_purchase_wait_minutes when updating post-purchase journey', async () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: {
@@ -2242,6 +2286,116 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
                 ),
             ).toBeInTheDocument()
         })
+    })
+
+    it('should disable continue button when wait_time_minutes is undefined', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: undefined,
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+
+        await act(async () => {
+            await user.click(screen.getByText('Select'))
+        })
+        await act(async () => {
+            await user.click(screen.getByText('+1 555-123-4567'))
+        })
+
+        const waitTimeInput = screen.getByDisplayValue('0')
+        await act(async () => {
+            await user.clear(waitTimeInput)
+        })
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeDisabled()
+    })
+
+    it('should enable continue button when wait_time_minutes is 0', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    wait_time_minutes: 0,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeEnabled()
+    })
+
+    it('should disable continue button when wait_time_minutes exceeds maximum', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeyData: {
+                configuration: {
+                    max_follow_up_messages: 2,
+                    offer_discount: false,
+                    sms_sender_number: '+1 555-123-4567',
+                    sms_sender_integration_id: 1,
+                    include_image: false,
+                    wait_time_minutes: 10081,
+                },
+            },
+            currentIntegration: { id: 1, name: 'shopify-store' },
+            shopName: 'shopify-store',
+            isLoading: false,
+            journeyType: 'welcome',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
+                    </IntegrationsProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const continueButton = screen.getByTestId('ai-journey-button')
+        expect(continueButton).toBeDisabled()
     })
 
     it('should call handleUpdate with wait_time_minutes when updating welcome journey', async () => {

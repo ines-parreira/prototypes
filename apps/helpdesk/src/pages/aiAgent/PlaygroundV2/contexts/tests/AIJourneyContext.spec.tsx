@@ -1189,6 +1189,238 @@ describe('AIJourneyContext', () => {
 
                 expect(result.current.hasInvalidFields).toBe(false)
             })
+
+            it('should return true when postPurchaseWaitInMinutes is explicitly set to undefined', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        postPurchaseWaitInMinutes: undefined,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should return true when postPurchaseWaitInMinutes is NaN', () => {
+                const mockPostPurchaseJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.PostPurchase,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockPostPurchaseJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.PostPurchase,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        postPurchaseWaitInMinutes: NaN,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should return false when welcome journey has valid wait time', () => {
+                const mockWelcomeJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.Welcome,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockWelcomeJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.Welcome,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            wait_time_minutes: 5000,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        journeyId: 'journey-1',
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(false)
+            })
+
+            it('should return true when welcome journey wait time exceeds MAX_WAIT_TIME', () => {
+                const mockWelcomeJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.Welcome,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockWelcomeJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.Welcome,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            wait_time_minutes: 15000,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        journeyId: 'journey-1',
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should return true when waitTimeMinutes is explicitly set to undefined for welcome journey', () => {
+                const mockWelcomeJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.Welcome,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockWelcomeJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.Welcome,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        journeyId: 'journey-1',
+                        waitTimeMinutes: undefined,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
+
+            it('should return true when waitTimeMinutes is NaN for welcome journey', () => {
+                const mockWelcomeJourneys = [
+                    {
+                        id: 'journey-1',
+                        type: JourneyTypeEnum.Welcome,
+                        state: 'active',
+                    },
+                ]
+
+                mockUseJourneys.mockReturnValue({
+                    data: mockWelcomeJourneys,
+                    isLoading: false,
+                })
+
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.Welcome,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        journeyId: 'journey-1',
+                        waitTimeMinutes: NaN,
+                    })
+                })
+
+                expect(result.current.hasInvalidFields).toBe(true)
+            })
         })
     })
 })

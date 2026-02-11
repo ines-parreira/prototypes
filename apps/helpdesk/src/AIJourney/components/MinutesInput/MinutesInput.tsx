@@ -9,7 +9,7 @@ type MinutesInputProps = {
     value?: number
     isDisabled?: boolean
     max?: number
-    onChange?: (value: number) => void
+    onChange?: (value: number | undefined) => void
     onValidationChange?: (isValid: boolean) => void
 }
 
@@ -34,7 +34,7 @@ export const MinutesInput = ({
         const newValue = input.valueAsNumber
 
         if (Number.isNaN(newValue)) {
-            onChange(0)
+            onChange(undefined)
             setIsValid(false)
             onValidationChange(false)
             return

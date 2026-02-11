@@ -10,7 +10,7 @@ import css from './WaitTime.less'
 type WaitTimeFieldProps = {
     value?: number
     isDisabled?: boolean
-    onChange?: (value: number) => void
+    onChange?: (value?: number) => void
     onValidationChange?: (isValid: boolean) => void
     showError?: boolean
     title?: string
@@ -38,7 +38,7 @@ export const WaitTimeField = ({
     )
 
     const handleChange = useCallback(
-        (newValue: number) => {
+        (newValue?: number) => {
             setHasInteracted(true)
             onChange(newValue)
         },

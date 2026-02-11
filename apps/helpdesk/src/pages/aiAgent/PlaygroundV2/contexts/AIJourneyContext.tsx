@@ -362,16 +362,38 @@ const WrappedAIJourneyProvider = ({
     const hasInvalidFields = useMemo(() => {
         const isPostPurchase =
             currentJourney?.type === JourneyTypeEnum.PostPurchase
-        if (!isPostPurchase) {
+        const isWelcome = currentJourney?.type === JourneyTypeEnum.Welcome
+
+        if (!isPostPurchase && !isWelcome) {
             return false
         }
 
-        return (
-            aiJourneySettings.postPurchaseWaitInMinutes !== undefined &&
-            aiJourneySettings.postPurchaseWaitInMinutes >
+        if (isPostPurchase) {
+            if (
+                aiJourneySettings.postPurchaseWaitInMinutes === undefined ||
+                isNaN(aiJourneySettings.postPurchaseWaitInMinutes)
+            )
+                return true
+            return (
+                aiJourneySettings.postPurchaseWaitInMinutes >
                 POST_PURCHASE_MAX_WAIT_TIME
-        )
-    }, [currentJourney?.type, aiJourneySettings.postPurchaseWaitInMinutes])
+            )
+        } else if (isWelcome) {
+            if (
+                aiJourneySettings.waitTimeMinutes === undefined ||
+                isNaN(aiJourneySettings.waitTimeMinutes)
+            )
+                return true
+            return (
+                aiJourneySettings.waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
+            )
+        }
+        return false
+    }, [
+        currentJourney?.type,
+        aiJourneySettings.postPurchaseWaitInMinutes,
+        aiJourneySettings.waitTimeMinutes,
+    ])
 
     const contextValue = useMemo(
         () => ({

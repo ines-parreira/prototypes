@@ -137,12 +137,15 @@ export const Setup = ({ journeyType }: SetupProps) => {
     >()
     const [inactiveDays, setInactiveDays] = useState<number>()
     const [cooldownDays, setCooldownDays] = useState<number | null>()
-    const [waitTimeMinutes, setWaitTimeMinutes] = useState<number>(0)
+    const [waitTimeMinutes, setWaitTimeMinutes] = useState<number | undefined>(
+        0,
+    )
     const [targetOrderStatus, setTargetOrderStatus] = useState<
         'order_placed' | 'order_fulfilled'
     >()
-    const [postPurchaseWaitMinutes, setPostPurchaseWaitMinutes] =
-        useState<number>()
+    const [postPurchaseWaitMinutes, setPostPurchaseWaitMinutes] = useState<
+        number | undefined
+    >(0)
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -242,7 +245,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setCooldownDays(newValue)
     }
 
-    const handleUpdateWaitTimeMinutes = (newValue: number) => {
+    const handleUpdateWaitTimeMinutes = (newValue?: number) => {
         setWaitTimeMinutes(newValue)
     }
 
@@ -252,7 +255,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         setTargetOrderStatus(newValue)
     }
 
-    const handleUpdatePostPurchaseWaitMinutes = (newValue: number) => {
+    const handleUpdatePostPurchaseWaitMinutes = (newValue?: number) => {
         setPostPurchaseWaitMinutes(newValue)
     }
 
@@ -295,12 +298,24 @@ export const Setup = ({ journeyType }: SetupProps) => {
             return true
         }
 
-        if (
-            journeyType === JOURNEY_TYPES.POST_PURCHASE &&
-            postPurchaseWaitMinutes
-        ) {
-            if (!postPurchaseWaitMinutes) return true
-            return postPurchaseWaitMinutes > POST_PURCHASE_MAX_WAIT_TIME
+        // Validate wait time for WELCOME journey
+        if (journeyType === JOURNEY_TYPES.WELCOME) {
+            if (waitTimeMinutes === undefined) {
+                return true
+            }
+            if (waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME) {
+                return true
+            }
+        }
+
+        // Validate wait time for POST_PURCHASE journey
+        if (journeyType === JOURNEY_TYPES.POST_PURCHASE) {
+            if (postPurchaseWaitMinutes === undefined) {
+                return true
+            }
+            if (postPurchaseWaitMinutes > POST_PURCHASE_MAX_WAIT_TIME) {
+                return true
+            }
         }
 
         // Journey-specific validations
@@ -335,6 +350,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         includedAudienceListIds,
         numberOfMessageValue,
         postPurchaseWaitMinutes,
+        waitTimeMinutes,
     ])
 
     const showMessageWithDiscountCode =

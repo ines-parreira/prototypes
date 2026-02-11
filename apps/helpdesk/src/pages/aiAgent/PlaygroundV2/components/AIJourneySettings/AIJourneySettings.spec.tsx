@@ -1052,7 +1052,7 @@ describe('AIJourneySettings', () => {
             })
         })
 
-        it('should display default wait time value of 1', () => {
+        it('should display empty wait time when value is undefined', () => {
             const postPurchaseFlow = mockFlows.find(
                 (f) => f.type === JourneyTypeEnum.PostPurchase,
             )
@@ -1073,7 +1073,7 @@ describe('AIJourneySettings', () => {
             const waitTimeInput = screen.getByRole('textbox', {
                 name: /wait time after trigger \(in minutes\)/i,
             })
-            expect(waitTimeInput).toHaveValue('1')
+            expect(waitTimeInput).toHaveValue('')
         })
 
         it('should display error when wait time exceeds maximum', () => {
