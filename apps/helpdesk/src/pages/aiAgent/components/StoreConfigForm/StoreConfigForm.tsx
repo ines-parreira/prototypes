@@ -98,6 +98,7 @@ export const StoreConfigForm = ({
     const standaloneFFEnabled = useFlag(
         FeatureFlagKey.StandaloneHandoverCapabilities,
     )
+    const newToneOfVoiceEnabled = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
 
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
     const shouldDisplayChannelsSection = section ? true : tab === 'channels'
@@ -934,7 +935,7 @@ export const StoreConfigForm = ({
                         </p>
                     </section>
                 </form>
-                {shouldDisplayGeneralSections && (
+                {shouldDisplayGeneralSections && !newToneOfVoiceEnabled && (
                     <div className={css.ticketPreviewContainer}>
                         <TicketPreview
                             toneOfVoice={formValues.toneOfVoice}

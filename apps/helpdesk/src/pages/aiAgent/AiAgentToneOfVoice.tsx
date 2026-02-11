@@ -40,11 +40,23 @@ enum ToneOfVoiceTab {
     ChannelSpecific = 'channel-specific',
 }
 
-const VERBOSITY_OPTIONS = [
-    { id: 'concise', name: 'Concise' },
+const VERBOSITY_OPTIONS: { id: Verbosity; name: string }[] = [
+    {
+        id: 'concise',
+        name: 'Concise',
+    },
     { id: 'balanced', name: 'Balanced' },
-    { id: 'detailed', name: 'Detailed' },
+    {
+        id: 'detailed',
+        name: 'Detailed',
+    },
 ]
+
+const VERBOSITY_CAPTIONS: Record<Verbosity, string> = {
+    concise: 'Brief and to the point',
+    balanced: 'Moderate detail',
+    detailed: 'Comprehensive explanations',
+}
 
 const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
     if (!storeConfiguration) {
@@ -145,6 +157,7 @@ export function AiAgentToneOfVoice() {
     const [forbiddenPhrases, setForbiddenPhrases] = useState<string>(
         savedValues.forbiddenPhrases,
     )
+    const [validationError, setValidationError] = useState<boolean>(false)
 
     const [personalityExpanded, setPersonalityExpanded] =
         useState<boolean>(true)
@@ -154,8 +167,8 @@ export function AiAgentToneOfVoice() {
     const [emojisExpanded, setEmojisExpanded] = useState<boolean>(true)
 
     const [emailExpanded, setEmailExpanded] = useState<boolean>(true)
-    const [chatExpanded, setChatExpanded] = useState<boolean>(true)
-    const [smsExpanded, setSmsExpanded] = useState<boolean>(true)
+    const [chatExpanded, setChatExpanded] = useState<boolean>(false)
+    const [smsExpanded, setSmsExpanded] = useState<boolean>(false)
 
     const [emailInstructions, setEmailInstructions] = useState<string>(
         savedValues.emailInstructions,
@@ -451,14 +464,16 @@ export function AiAgentToneOfVoice() {
                     />
                     <Box display="flex" flexDirection="column" gap="md">
                         <EmojiPicker
-                            label="Allowed Emojis"
+                            label="Allowed emojis"
                             value={allowedEmojis}
                             onChange={setAllowedEmojis}
+                            onError={setValidationError}
                         />
                         <EmojiPicker
-                            label="Forbidden Emojis"
+                            label="Forbidden emojis"
                             value={forbiddenEmojis}
                             onChange={setForbiddenEmojis}
+                            onError={setValidationError}
                         />
                     </Box>
                 </Box>
@@ -507,13 +522,16 @@ export function AiAgentToneOfVoice() {
                                         (opt) => opt.id === emailVerbosity,
                                     ) || VERBOSITY_OPTIONS[0]
                                 }
-                                onChange={(item) =>
-                                    setEmailVerbosity(item.id as Verbosity)
-                                }
+                                onChange={(item) => setEmailVerbosity(item.id)}
                                 label="Verbosity"
                             >
                                 {(item) => (
-                                    <ListItem id={item.id} label={item.name} />
+                                    <ListItem
+                                        id={item.id}
+                                        label={item.name}
+                                        caption={VERBOSITY_CAPTIONS[item.id]}
+                                        textValue={item.name}
+                                    />
                                 )}
                             </SelectField>
                         </Box>
@@ -550,13 +568,16 @@ export function AiAgentToneOfVoice() {
                                         (opt) => opt.id === chatVerbosity,
                                     ) || VERBOSITY_OPTIONS[0]
                                 }
-                                onChange={(item) =>
-                                    setChatVerbosity(item.id as Verbosity)
-                                }
+                                onChange={(item) => setChatVerbosity(item.id)}
                                 label="Verbosity"
                             >
                                 {(item) => (
-                                    <ListItem id={item.id} label={item.name} />
+                                    <ListItem
+                                        id={item.id}
+                                        label={item.name}
+                                        caption={VERBOSITY_CAPTIONS[item.id]}
+                                        textValue={item.name}
+                                    />
                                 )}
                             </SelectField>
                         </Box>
@@ -593,13 +614,16 @@ export function AiAgentToneOfVoice() {
                                         (opt) => opt.id === smsVerbosity,
                                     ) || VERBOSITY_OPTIONS[0]
                                 }
-                                onChange={(item) =>
-                                    setSmsVerbosity(item.id as Verbosity)
-                                }
+                                onChange={(item) => setSmsVerbosity(item.id)}
                                 label="Verbosity"
                             >
                                 {(item) => (
-                                    <ListItem id={item.id} label={item.name} />
+                                    <ListItem
+                                        id={item.id}
+                                        label={item.name}
+                                        caption={VERBOSITY_CAPTIONS[item.id]}
+                                        textValue={item.name}
+                                    />
                                 )}
                             </SelectField>
                         </Box>
@@ -624,7 +648,7 @@ export function AiAgentToneOfVoice() {
         <>
             <UnsavedChangesPrompt
                 onSave={handleSave}
-                when={isDirty}
+                when={isDirty && !validationError}
                 onDiscard={handleDiscard}
                 shouldRedirectAfterSave
             />
@@ -647,7 +671,7 @@ export function AiAgentToneOfVoice() {
                                 </Button>
                             )}
                             <Button
-                                isDisabled={!isDirty}
+                                isDisabled={!isDirty || validationError}
                                 isLoading={isSubmitting}
                                 onClick={handleSave}
                                 variant="primary"

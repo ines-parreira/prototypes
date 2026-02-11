@@ -2175,13 +2175,26 @@ describe('<StoreConfigForm />', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should show ticket preview when tab is general', () => {
+        it('should show ticket preview when tab is general and AiAgentToneOfVoice flag is disabled', () => {
             mockUseParams.mockReturnValue({ tab: 'general' })
+            useFlagMock.mockReturnValue(false)
             renderComponent()
 
             expect(
                 screen.getByText(/Example of AI Agent's Tone of Voice/i),
             ).toBeInTheDocument()
+        })
+
+        it('should not show ticket preview when tab is general and AiAgentToneOfVoice flag is enabled', () => {
+            mockUseParams.mockReturnValue({ tab: 'general' })
+            useFlagMock.mockImplementation(
+                (key) => FeatureFlagKey.AiAgentToneOfVoice === key || false,
+            )
+            renderComponent()
+
+            expect(
+                screen.queryByText(/Example of AI Agent's Tone of Voice/i),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -6,10 +6,12 @@ import { EmojiPicker } from './EmojiPicker'
 describe('EmojiPicker', () => {
     const mockOnChange = jest.fn()
     const mockOnValidationChange = jest.fn()
+    const mockOnError = jest.fn()
 
     beforeEach(() => {
         mockOnChange.mockClear()
         mockOnValidationChange.mockClear()
+        mockOnError.mockClear()
     })
 
     it('should render with placeholder', () => {
@@ -63,6 +65,7 @@ describe('EmojiPicker', () => {
                 value=""
                 onChange={mockOnChange}
                 onValidationChange={mockOnValidationChange}
+                onError={mockOnError}
             />,
         )
 
@@ -75,6 +78,7 @@ describe('EmojiPicker', () => {
             ).toBeInTheDocument()
         })
         expect(mockOnValidationChange).toHaveBeenCalledWith(false)
+        expect(mockOnError).toHaveBeenCalledWith(true)
     })
 
     it('should not show validation error for emoji-only text', async () => {
@@ -85,6 +89,7 @@ describe('EmojiPicker', () => {
                 value=""
                 onChange={mockOnChange}
                 onValidationChange={mockOnValidationChange}
+                onError={mockOnError}
             />,
         )
 
@@ -99,6 +104,7 @@ describe('EmojiPicker', () => {
             ).not.toBeInTheDocument()
         })
         expect(mockOnValidationChange).toHaveBeenCalledWith(true)
+        expect(mockOnError).toHaveBeenCalledWith(false)
     })
 
     it('should open emoji picker when clicking the emoji button', async () => {
@@ -197,6 +203,7 @@ describe('EmojiPicker', () => {
                 value=""
                 onChange={mockOnChange}
                 error="Custom error message"
+                onError={mockOnError}
             />,
         )
 
@@ -208,5 +215,35 @@ describe('EmojiPicker', () => {
         expect(
             screen.queryByText('Only emojis are allowed'),
         ).not.toBeInTheDocument()
+        // onError should still be called for validation state
+        expect(mockOnError).toHaveBeenCalledWith(true)
+    })
+
+    it('should call onError when error state changes from error to valid', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <EmojiPicker
+                value=""
+                onChange={mockOnChange}
+                onError={mockOnError}
+            />,
+        )
+
+        const input = screen.getByRole('textbox')
+
+        // First, create an error
+        await user.type(input, 'Hello')
+
+        await waitFor(() => {
+            expect(mockOnError).toHaveBeenCalledWith(true)
+        })
+
+        // Clear the error by clearing the input
+        await user.clear(input)
+
+        await waitFor(() => {
+            expect(mockOnError).toHaveBeenCalledWith(false)
+        })
     })
 })

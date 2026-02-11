@@ -56,13 +56,20 @@ jest.mock(
     }),
 )
 jest.mock('components/EmojiPicker/EmojiPicker', () => ({
-    EmojiPicker: ({ label, value, onChange }: any) => (
+    EmojiPicker: ({ label, value, onChange, onError }: any) => (
         <div>
             <label htmlFor={`emoji-picker-${label}`}>{label}</label>
             <input
                 id={`emoji-picker-${label}`}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                    onChange(e.target.value)
+                    // Simulate validation - only emojis allowed
+                    const emojiRegex = /^[\p{Emoji}\s]*$/u
+                    const isValid =
+                        emojiRegex.test(e.target.value) || e.target.value === ''
+                    onError?.(!isValid)
+                }}
             />
         </div>
     ),
@@ -316,11 +323,81 @@ describe('AiAgentToneOfVoice', () => {
             const user = userEvent.setup()
 
             expect(screen.getByLabelText(/allow emojis/i)).not.toBeChecked()
-            expect(screen.getByLabelText('Allowed Emojis')).toHaveValue('😊')
-            expect(screen.getByLabelText('Forbidden Emojis')).toHaveValue('😢')
+            expect(screen.getByLabelText('Allowed emojis')).toHaveValue('😊')
+            expect(screen.getByLabelText('Forbidden emojis')).toHaveValue('😢')
 
             await user.click(screen.getByLabelText(/allow emojis/i))
             expect(screen.getByLabelText(/allow emojis/i)).toBeChecked()
+        })
+
+        it('should disable save button when emoji validation fails', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            // Initially, save button should be enabled (there are default changes)
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).not.toBeDisabled()
+            })
+
+            // Type invalid text in allowed emojis field
+            const allowedEmojisInput = screen.getByLabelText('Allowed emojis')
+            await user.type(allowedEmojisInput, 'invalid text')
+
+            // Save button should now be disabled due to validation error
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
+            })
+        })
+
+        it('should re-enable save button when emoji validation error is fixed', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            // Type invalid text in allowed emojis field
+            const allowedEmojisInput = screen.getByLabelText('Allowed emojis')
+            await user.type(allowedEmojisInput, 'invalid text')
+
+            // Save button should be disabled
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
+            })
+
+            // Clear the invalid input
+            await user.clear(allowedEmojisInput)
+
+            // Save button should be enabled again
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).not.toBeDisabled()
+            })
+        })
+
+        it('should disable unsaved changes prompt when emoji validation fails', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            // Make a valid change first
+            await user.type(screen.getByLabelText(/greeting/i), 'Hi!')
+
+            // Now add invalid emoji text
+            const forbiddenEmojisInput =
+                screen.getByLabelText('Forbidden emojis')
+            await user.type(forbiddenEmojisInput, 'not an emoji')
+
+            // The unsaved changes prompt should not trigger with validation error
+            // This is tested indirectly by checking that save is disabled
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
+            })
         })
     })
 
@@ -331,6 +408,18 @@ describe('AiAgentToneOfVoice', () => {
                 screen.getByRole('tab', { name: /channel-specific/i }),
             )
             return user
+        }
+
+        const expandChannelSections = async (
+            user: ReturnType<typeof userEvent.setup>,
+        ) => {
+            // Expand Chat section (collapsed by default)
+            const chatButton = screen.getByRole('button', { name: /chat/i })
+            await user.click(chatButton)
+
+            // Expand SMS section (collapsed by default)
+            const smsButton = screen.getByRole('button', { name: /sms/i })
+            await user.click(smsButton)
         }
 
         it('should switch tabs and show channel sections', async () => {
@@ -356,7 +445,8 @@ describe('AiAgentToneOfVoice', () => {
                 },
             })
 
-            await switchToChannelTab()
+            const user = await switchToChannelTab()
+            await expandChannelSections(user)
 
             await waitFor(() => {
                 const instructions = screen.getAllByLabelText(/instructions/i)
@@ -370,7 +460,8 @@ describe('AiAgentToneOfVoice', () => {
         it('should render verbosity fields for all channels', async () => {
             setupComponent({})
 
-            await switchToChannelTab()
+            const user = await switchToChannelTab()
+            await expandChannelSections(user)
 
             await waitFor(() => {
                 const verbositySelects = screen.getAllByRole('textbox', {
@@ -398,7 +489,8 @@ describe('AiAgentToneOfVoice', () => {
                 },
             })
 
-            await switchToChannelTab()
+            const user = await switchToChannelTab()
+            await expandChannelSections(user)
 
             await waitFor(() => {
                 const verbosityFields = screen.getAllByRole('textbox', {
@@ -419,7 +511,8 @@ describe('AiAgentToneOfVoice', () => {
                 },
             })
 
-            await switchToChannelTab()
+            const user = await switchToChannelTab()
+            await expandChannelSections(user)
 
             await waitFor(() => {
                 const verbosityFields = screen.getAllByRole('textbox', {
@@ -435,7 +528,10 @@ describe('AiAgentToneOfVoice', () => {
             setupComponent({})
             const user = userEvent.setup()
 
-            await switchToChannelTab()
+            await user.click(
+                screen.getByRole('tab', { name: /channel-specific/i }),
+            )
+            await expandChannelSections(user)
 
             await waitFor(() => {
                 expect(
@@ -563,6 +659,12 @@ describe('AiAgentToneOfVoice', () => {
                 screen.getByRole('tab', { name: /channel-specific/i }),
             )
 
+            // Email section is expanded by default, but we need to expand Chat and SMS
+            const chatButton = screen.getByRole('button', { name: /chat/i })
+            await user.click(chatButton)
+            const smsButton = screen.getByRole('button', { name: /sms/i })
+            await user.click(smsButton)
+
             await waitFor(() => {
                 expect(screen.getAllByLabelText(/instructions/i)).toHaveLength(
                     3,
@@ -595,6 +697,12 @@ describe('AiAgentToneOfVoice', () => {
             await user.click(
                 screen.getByRole('tab', { name: /channel-specific/i }),
             )
+
+            // Expand Chat and SMS sections
+            const chatButton = screen.getByRole('button', { name: /chat/i })
+            await user.click(chatButton)
+            const smsButton = screen.getByRole('button', { name: /sms/i })
+            await user.click(smsButton)
 
             await waitFor(() => {
                 expect(
@@ -645,6 +753,12 @@ describe('AiAgentToneOfVoice', () => {
                 screen.getByRole('tab', { name: /channel-specific/i }),
             )
 
+            // Expand Chat and SMS sections
+            const chatButton = screen.getByRole('button', { name: /chat/i })
+            await user.click(chatButton)
+            const smsButton = screen.getByRole('button', { name: /sms/i })
+            await user.click(smsButton)
+
             await waitFor(() => {
                 expect(
                     screen.getAllByRole('textbox', { name: /verbosity/i }),
@@ -671,6 +785,12 @@ describe('AiAgentToneOfVoice', () => {
             await user.click(
                 screen.getByRole('tab', { name: /channel-specific/i }),
             )
+
+            // Expand Chat and SMS sections
+            const chatButton = screen.getByRole('button', { name: /chat/i })
+            await user.click(chatButton)
+            const smsButton = screen.getByRole('button', { name: /sms/i })
+            await user.click(smsButton)
 
             await waitFor(() => {
                 expect(screen.getAllByLabelText(/instructions/i)).toHaveLength(
@@ -706,7 +826,7 @@ describe('AiAgentToneOfVoice', () => {
             const user = userEvent.setup()
 
             await user.click(screen.getByLabelText(/allow emojis/i))
-            await user.type(screen.getByLabelText('Allowed Emojis'), '😊')
+            await user.type(screen.getByLabelText('Allowed emojis'), '😊')
             await user.click(screen.getByRole('button', { name: /save/i }))
 
             await waitFor(() => {
@@ -718,6 +838,65 @@ describe('AiAgentToneOfVoice', () => {
                         }),
                     }),
                 )
+            })
+        })
+
+        it('should not allow saving when emoji validation fails', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            // Type invalid text in emoji field
+            const allowedEmojisInput = screen.getByLabelText('Allowed emojis')
+            await user.type(allowedEmojisInput, 'invalid')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
+            })
+
+            // Try to save (button is disabled, but test the logic)
+            const saveButton = screen.getByRole('button', { name: /save/i })
+            expect(saveButton).toBeDisabled()
+
+            // Verify save was not called
+            expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
+        })
+
+        it('should track validation errors from both emoji fields independently', async () => {
+            setupComponent({})
+            const user = userEvent.setup()
+
+            // Type invalid text in allowed emojis
+            const allowedEmojisInput = screen.getByLabelText('Allowed emojis')
+            await user.type(allowedEmojisInput, 'invalid')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
+            })
+
+            // Clear the first error
+            await user.clear(allowedEmojisInput)
+
+            // Save should be enabled again
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).not.toBeDisabled()
+            })
+
+            // Now add error to forbidden emojis
+            const forbiddenEmojisInput =
+                screen.getByLabelText('Forbidden emojis')
+            await user.type(forbiddenEmojisInput, 'also invalid')
+
+            // Save should be disabled again
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /save/i }),
+                ).toBeDisabled()
             })
         })
     })

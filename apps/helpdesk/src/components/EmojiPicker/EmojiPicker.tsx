@@ -5,7 +5,7 @@ import { Icon, IconName } from '@gorgias/axiom'
 
 import 'emoji-mart/css/emoji-mart.css'
 
-import { type ChangeEvent, useState } from 'react'
+import { type ChangeEvent, useEffect, useState } from 'react'
 
 import {
     autoUpdate,
@@ -34,6 +34,7 @@ export type EmojiPickerProps = {
     error?: string
     caption?: string
     'aria-label'?: string
+    onError?: (isError: boolean) => void
 }
 
 const EMOJI_REGEX = /^[\p{Emoji}\s]*$/u
@@ -54,6 +55,7 @@ export const EmojiPicker = ({
     error,
     caption,
     'aria-label': ariaLabel,
+    onError,
 }: EmojiPickerProps) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isFocused, setIsFocused] = useState(false)
@@ -66,6 +68,14 @@ export const EmojiPicker = ({
         middleware: [offset(8), flip(), shift({ padding: 8 })],
         whileElementsMounted: autoUpdate,
     })
+
+    useEffect(() => {
+        if (validationError) {
+            onError?.(true)
+        } else {
+            onError?.(false)
+        }
+    }, [validationError, onError])
 
     const click = useClick(context)
     const dismiss = useDismiss(context)
