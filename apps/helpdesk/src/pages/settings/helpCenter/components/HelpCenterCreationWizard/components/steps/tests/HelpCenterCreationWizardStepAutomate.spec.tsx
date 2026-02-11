@@ -5,6 +5,7 @@ import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -30,6 +31,7 @@ import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelp
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -57,6 +59,12 @@ jest.mock('state/notifications/actions', () => ({
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),
 }))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
+    }),
+)
 
 const helpCenterFixture = {
     ...getHelpCentersResponseFixture.data[0],
@@ -114,6 +122,9 @@ const mockedUseGetHelpCenterArticleList = jest.mocked(
     useGetHelpCenterArticleList,
 )
 const mockedUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
+const mockedUseIsArticleRecommendationsEnabledWhileSunset = jest.mocked(
+    useIsArticleRecommendationsEnabledWhileSunset,
+)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
@@ -212,6 +223,11 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         mockedUseGetHelpCenterList.mockReturnValue({
             data: null,
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
+
+        mockedUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInSettings: true,
+            enabledInStatistics: true,
+        })
     })
     it('should render', () => {
         renderComponent({})
@@ -384,6 +400,29 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             expect(
                 screen.queryByLabelText(/Article Recommendation/i),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should hide article recommendation when killswitch is enabled', () => {
+            mockedUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue(
+                {
+                    enabledInSettings: false,
+                    enabledInStatistics: false,
+                },
+            )
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
+            )
+
+            expect(
+                screen.queryByText('Article Recommendation'),
             ).not.toBeInTheDocument()
         })
 
@@ -595,6 +634,97 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             expect(mockOnSave).not.toBeCalled()
             expect(mockOnAction).toHaveBeenCalledWith(NEXT_ACTION.PREVIOUS_STEP)
+        })
+
+        it('should not update article recommendation when killswitch is enabled', async () => {
+            mockedUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue(
+                {
+                    enabledInSettings: false,
+                    enabledInStatistics: false,
+                },
+            )
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
+            )
+
+            const user = userEvent.setup()
+            await user.click(screen.getByText('Finish'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockSelfServiceConfigUpdate).not.toHaveBeenCalled()
+        })
+
+        it('should clear article recommendation when disabled for current help center', async () => {
+            const draft = {}
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    articleRecommendationHelpCenterId: helpCenterFixture.id,
+                },
+            })
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
+            )
+
+            fireEvent.click(
+                screen.getByLabelText(
+                    /Recommend articles from this Help Center in my Chat/i,
+                ),
+            )
+            fireEvent.click(screen.getByText('Finish'))
+
+            await waitFor(() =>
+                expect(mockSelfServiceConfigUpdate).toBeCalled(),
+            )
+            const draftFunction = (
+                mockSelfServiceConfigUpdate.mock.calls[0] as [
+                    (draft: unknown) => void,
+                ]
+            )[0]
+            draftFunction(draft)
+            expect(draft).toEqual({
+                articleRecommendationHelpCenterId: undefined,
+            })
+        })
+
+        it('should not update when article recommendation already set for same help center', async () => {
+            mockedUseSelfServiceConfiguration.mockReturnValue({
+                ...defaultUseSelfServiceConfiguration,
+                selfServiceConfiguration: {
+                    ...selfServiceConfiguration1,
+                    articleRecommendationHelpCenterId: helpCenterFixture.id,
+                },
+            })
+
+            renderComponent(
+                {},
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
+            )
+
+            fireEvent.click(screen.getByText('Finish'))
+
+            await waitFor(() => expect(mockOnSave).toBeCalled())
+            expect(mockSelfServiceConfigUpdate).not.toHaveBeenCalled()
         })
     })
 })

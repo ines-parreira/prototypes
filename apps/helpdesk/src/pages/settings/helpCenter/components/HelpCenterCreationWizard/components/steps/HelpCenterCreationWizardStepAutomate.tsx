@@ -26,6 +26,7 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import type { HelpCenterContactFormIntegrationTypes } from 'pages/settings/common/SelectStore/SelectStore'
 import SelectStore from 'pages/settings/common/SelectStore/SelectStore'
 import {
@@ -61,6 +62,7 @@ type HelpCenterCreationWizardAutomateItemsProps = Props & {
     updateArticleRecommendationEnabled: (enabled: boolean) => void
     updateFlows: (flows: Entrypoint[]) => void
     setIsSelfServiceConfigurationLoading: (isLoading: boolean) => void
+    isArticleRecommendationFeatureEnabled: boolean
 }
 
 type HelpCenterCreationWizardAutomateItemsRef = () => Promise<void>
@@ -80,6 +82,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             updateArticleRecommendationEnabled,
             updateFlows,
             setIsSelfServiceConfigurationLoading,
+            isArticleRecommendationFeatureEnabled,
         },
         ref,
     ) => {
@@ -150,7 +153,11 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
         }, [automationSettings.workflows, isFetchPending, updateFlows])
 
         useEffect(() => {
-            if (!isFetchPending && chatIntegrations.length > 0) {
+            if (
+                !isFetchPending &&
+                chatIntegrations.length > 0 &&
+                isArticleRecommendationFeatureEnabled
+            ) {
                 updateArticleRecommendationEnabled(
                     !isArticleRecomAlreadyEnabled,
                 )
@@ -160,6 +167,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             isArticleRecomAlreadyEnabled,
             isFetchPending,
             updateArticleRecommendationEnabled,
+            isArticleRecommendationFeatureEnabled,
         ])
 
         const onSave = useCallback(async () => {
@@ -168,25 +176,28 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             )
             await handleHelpCenterAutomationSettingsUpdate(automationSettings)
 
-            // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
-            if (
-                state.articleRecommendationEnabled &&
-                selfServiceConfiguration?.articleRecommendationHelpCenterId !==
-                    helpCenter.id
-            ) {
-                await handleSelfServiceConfigurationUpdate((draft) => {
-                    draft.articleRecommendationHelpCenterId = helpCenter.id
-                })
-            }
+            // Only update article recommendation if the feature is enabled
+            if (isArticleRecommendationFeatureEnabled) {
+                // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
+                if (
+                    state.articleRecommendationEnabled &&
+                    selfServiceConfiguration?.articleRecommendationHelpCenterId !==
+                        helpCenter.id
+                ) {
+                    await handleSelfServiceConfigurationUpdate((draft) => {
+                        draft.articleRecommendationHelpCenterId = helpCenter.id
+                    })
+                }
 
-            if (
-                !state.articleRecommendationEnabled &&
-                selfServiceConfiguration?.articleRecommendationHelpCenterId ===
-                    helpCenter.id
-            ) {
-                await handleSelfServiceConfigurationUpdate((draft) => {
-                    draft.articleRecommendationHelpCenterId = undefined
-                })
+                if (
+                    !state.articleRecommendationEnabled &&
+                    selfServiceConfiguration?.articleRecommendationHelpCenterId ===
+                        helpCenter.id
+                ) {
+                    await handleSelfServiceConfigurationUpdate((draft) => {
+                        draft.articleRecommendationHelpCenterId = undefined
+                    })
+                }
             }
         }, [
             handleHelpCenterAutomationSettingsUpdate,
@@ -195,6 +206,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             selfServiceConfiguration?.articleRecommendationHelpCenterId,
             state.articleRecommendationEnabled,
             state.flows,
+            isArticleRecommendationFeatureEnabled,
         ])
 
         useImperativeHandle(ref, () => onSave, [onSave])
@@ -207,6 +219,8 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
         const isFormDisabled = !automationSettings || isLoading
 
         const hasActiveChat = !!chatIntegrations.length
+        const shouldShowArticleRecommendation =
+            hasActiveChat && isArticleRecommendationFeatureEnabled
 
         return (
             <>
@@ -217,7 +231,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
                         isDisabled={isFormDisabled}
                     />
                 )}
-                {hasActiveChat && (
+                {shouldShowArticleRecommendation && (
                     <HelpCenterWizardArticleRec
                         isArticleRecomAlreadyEnabled={
                             isArticleRecomAlreadyEnabled
@@ -258,6 +272,9 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
         useState(false)
     const automateItemsRef =
         useRef<HelpCenterCreationWizardAutomateItemsRef>(null)
+
+    const { enabledInSettings: isArticleRecommendationFeatureEnabled } =
+        useIsArticleRecommendationsEnabledWhileSunset()
 
     const {
         isLoading: isHelpCenterWizardLoading,
@@ -453,6 +470,9 @@ const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
                         updateFlows={updateFlows}
                         setIsSelfServiceConfigurationLoading={
                             setIsSelfServiceConfigurationLoading
+                        }
+                        isArticleRecommendationFeatureEnabled={
+                            isArticleRecommendationFeatureEnabled
                         }
                     />
                 )}
