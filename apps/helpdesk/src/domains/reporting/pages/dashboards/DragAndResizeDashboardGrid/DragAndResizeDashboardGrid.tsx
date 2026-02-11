@@ -224,6 +224,7 @@ export const DragAndResizeDashboardGrid = ({
                 }}
                 resizeConfig={{
                     enabled: currentBreakpoint === 'lg',
+                    handles: ['se'],
                 }}
                 compactor={verticalCompactor}
                 onLayoutChange={handleLayoutChange}

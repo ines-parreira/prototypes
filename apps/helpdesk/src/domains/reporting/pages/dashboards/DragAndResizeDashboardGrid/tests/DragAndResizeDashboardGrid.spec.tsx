@@ -19,6 +19,7 @@ let capturedOnResizeStop: ((layout: any) => void) | null = null
 let capturedOnBreakpointChange:
     | ((breakpoint: string, cols: number) => void)
     | null = null
+let capturedResizeConfig: any = null
 
 jest.mock('react-grid-layout', () => {
     const MockResponsiveGridLayout = ({
@@ -41,6 +42,7 @@ jest.mock('react-grid-layout', () => {
         capturedOnDragStop = onDragStop
         capturedOnResizeStop = onResizeStop
         capturedOnBreakpointChange = onBreakpointChange
+        capturedResizeConfig = resizeConfig
 
         const layout = layouts?.lg || []
 
@@ -1061,6 +1063,34 @@ describe('DragAndResizeDashboardGrid', () => {
             })
             expect(gridLayout).toHaveAttribute('data-is-draggable', 'false')
             expect(gridLayout).toHaveAttribute('data-is-resizable', 'false')
+        })
+    })
+
+    describe('Custom Resize Handle', () => {
+        beforeEach(() => {
+            capturedResizeConfig = null
+        })
+
+        it('should configure resize handles as southeast only', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            expect(capturedResizeConfig).toBeDefined()
+            expect(capturedResizeConfig?.enabled).toBe(true)
+            expect(capturedResizeConfig?.handles).toEqual(['se'])
+        })
+
+        it('should not provide custom handle component (uses default handle styled with CSS)', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            expect(capturedResizeConfig).toBeDefined()
+            // We use the default handle styled with CSS, not a custom React component
+            expect(capturedResizeConfig?.handleComponent).toBeUndefined()
         })
     })
 })

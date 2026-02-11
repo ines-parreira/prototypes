@@ -19,7 +19,7 @@
 }
 
 .react-grid-item {
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
 
     > * {
@@ -27,5 +27,61 @@
         height: 100%;
         box-sizing: border-box;
         overflow: auto;
+    }
+}
+
+.react-resizable-handle-se {
+    background: none !important;
+
+    width: 28px !important;
+    height: 28px !important;
+    bottom: 0 !important;
+    right: 0 !important;
+
+    opacity: 0;
+    transition: opacity 200ms ease;
+    cursor: nwse-resize !important;
+    z-index: 10;
+
+    &::after {
+        display: none !important;
+    }
+
+    &::before {
+        content: '';
+        display: block;
+        width: 16px;
+        height: 16px;
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg"><path fill="%236b7280" d="M1.41421 11C0.523309 11 0.0771421 9.92286 0.707107 9.29289L9.29289 0.707107C9.92286 0.0771425 11 0.523309 11 1.41421V7C11 9.20914 9.20914 11 7 11H1.41421Z"/></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    &:hover,
+    &:active {
+        opacity: 1;
+
+        &::before {
+            background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg"><path fill="%238b5cf6" d="M1.41421 11C0.523309 11 0.0771421 9.92286 0.707107 9.29289L9.29289 0.707107C9.92286 0.0771425 11 0.523309 11 1.41421V7C11 9.20914 9.20914 11 7 11H1.41421Z"/></svg>');
+        }
+    }
+}
+
+[data-drag-enabled='true'] {
+    .react-grid-item {
+        &:hover,
+        &.react-resizing {
+            .react-resizable-handle-se {
+                opacity: 1;
+
+                &::before {
+                    background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 11 11" xmlns="http://www.w3.org/2000/svg"><path fill="%238b5cf6" d="M1.41421 11C0.523309 11 0.0771421 9.92286 0.707107 9.29289L9.29289 0.707107C9.92286 0.0771425 11 0.523309 11 1.41421V7C11 9.20914 9.20914 11 7 11H1.41421Z"/></svg>');
+                }
+            }
+        }
     }
 }
