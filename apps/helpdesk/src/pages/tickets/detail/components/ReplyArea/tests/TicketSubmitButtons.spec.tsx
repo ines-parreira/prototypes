@@ -125,6 +125,7 @@ const legacyBridgeProps = {
     dtpEnabled: {
         isEnabled: false,
     },
+    humanizeChannel: jest.fn(),
 }
 
 describe('<TicketSubmitButtons />', () => {

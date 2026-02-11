@@ -39,6 +39,7 @@
         "moment": "catalog:moment",
         "react": "catalog:react",
         "react-dom": "catalog:react",
+        "react-json-pretty": "catalog:react-json-pretty",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",

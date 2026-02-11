@@ -23,6 +23,7 @@ import { SearchAndPreviewCustomersPanel } from '../SearchAndPreviewCustomersPane
 
 const mockOnClose = vi.fn()
 const mockOnSetCustomer = vi.fn()
+const mockOnMergeCustomer = vi.fn()
 
 const mockSearchResults: CustomerHighlightDataItem[] = [
     {
@@ -106,6 +107,7 @@ const defaultProps = {
     isOpen: true,
     onClose: mockOnClose,
     onSetCustomer: mockOnSetCustomer,
+    onMergeCustomer: mockOnMergeCustomer,
 }
 
 describe('SearchAndPreviewCustomersPanel', () => {

@@ -38,6 +38,10 @@ const mockDtpEnabled: LegacyBridgeContextType['dtpEnabled'] = {
     isEnabled: true,
 }
 
+const mockHumanizeChannel: LegacyBridgeContextType['humanizeChannel'] = vi.fn(
+    (channelIdentifier) => String(channelIdentifier),
+)
+
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
@@ -57,6 +61,7 @@ describe('TicketsLegacyBridgeProvider', () => {
                 voiceDevice={mockVoiceDevice}
                 dtpToggle={mockDtpToggle}
                 dtpEnabled={mockDtpEnabled}
+                humanizeChannel={mockHumanizeChannel}
             >
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
@@ -100,6 +105,7 @@ describe('TicketsLegacyBridgeProvider', () => {
                 voiceDevice={mockVoiceDevice}
                 dtpToggle={mockDtpToggle}
                 dtpEnabled={mockDtpEnabled}
+                humanizeChannel={mockHumanizeChannel}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
@@ -148,6 +154,7 @@ describe('useTicketsLegacyBridge', () => {
                 voiceDevice={mockVoiceDevice}
                 dtpToggle={mockDtpToggle}
                 dtpEnabled={mockDtpEnabled}
+                humanizeChannel={mockHumanizeChannel}
             >
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,

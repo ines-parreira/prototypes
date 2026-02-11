@@ -15,11 +15,12 @@ import { useCustomerChannels } from '../../../InfobarCustomerFields/hooks'
 
 import css from './CustomerListItem.less'
 
-export interface CustomerListItemProps {
+export type CustomerListItemProps = {
     customer: Customer | CustomerHighlightDataItem
     isDuplicate?: boolean
     onSetCustomer: (customer: Customer) => void
     onPreviewCustomer: (customer: Customer) => void
+    onMergeCustomer: (customer: Customer) => void
 }
 
 function isCustomerWithHighlights(
@@ -33,6 +34,7 @@ export function CustomerListItem({
     isDuplicate,
     onSetCustomer,
     onPreviewCustomer,
+    onMergeCustomer,
 }: CustomerListItemProps) {
     const transformedCustomer = isCustomerWithHighlights(customer)
         ? customerHighlightsTransform(customer)
@@ -123,7 +125,11 @@ export function CustomerListItem({
                     )}
                 </Box>
                 <Box gap="xxxs" marginTop="xxxs">
-                    <Button size="sm" variant="secondary">
+                    <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => onMergeCustomer(originalCustomer)}
+                    >
                         Merge
                     </Button>
                     <Button

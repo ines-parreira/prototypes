@@ -8,6 +8,7 @@ import { CustomerListItem } from '../CustomerListItem'
 
 const mockOnSetCustomer = vi.fn()
 const mockOnPreviewCustomer = vi.fn()
+const mockOnMergeCustomer = vi.fn()
 
 const defaultProps = {
     customer: mockCustomer({
@@ -29,6 +30,7 @@ const defaultProps = {
     }),
     onSetCustomer: mockOnSetCustomer,
     onPreviewCustomer: mockOnPreviewCustomer,
+    onMergeCustomer: mockOnMergeCustomer,
 }
 
 describe('CustomerListItem', () => {

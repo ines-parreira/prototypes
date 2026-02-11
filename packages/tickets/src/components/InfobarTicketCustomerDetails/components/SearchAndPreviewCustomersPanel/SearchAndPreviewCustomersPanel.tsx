@@ -22,6 +22,7 @@ export type SearchCustomersPanelProps = {
     isOpen: boolean
     onClose: () => void
     onSetCustomer: (customer: Customer) => void
+    onMergeCustomer: (customer: Customer) => void
     previewedCustomer?: Customer | null
 }
 
@@ -29,6 +30,7 @@ export function SearchAndPreviewCustomersPanel({
     isOpen,
     onClose,
     onSetCustomer,
+    onMergeCustomer,
     previewedCustomer,
 }: SearchCustomersPanelProps) {
     const [mode, setMode] = useState<'search' | 'preview'>('search')
@@ -125,6 +127,7 @@ export function SearchAndPreviewCustomersPanel({
                                     isDuplicate
                                     onSetCustomer={handleSetCustomer}
                                     onPreviewCustomer={handlePreviewCustomer}
+                                    onMergeCustomer={onMergeCustomer}
                                 />
                             </>
                         )}
@@ -154,6 +157,7 @@ export function SearchAndPreviewCustomersPanel({
                                             onPreviewCustomer={
                                                 handlePreviewCustomer
                                             }
+                                            onMergeCustomer={onMergeCustomer}
                                         />
                                     ))}
                                 </Box>
@@ -169,6 +173,7 @@ export function SearchAndPreviewCustomersPanel({
                     handleClose(false)
                 }}
                 onSetCustomer={handleSetCustomer}
+                onMergeCustomer={onMergeCustomer}
             />
         )
     }, [
@@ -184,6 +189,7 @@ export function SearchAndPreviewCustomersPanel({
         isSearching,
         searchResults,
         searchError,
+        onMergeCustomer,
     ])
 
     return (

@@ -41,6 +41,7 @@ type LegacyBridgeOptions = {
     voiceDevice?: LegacyBridgeContextType['voiceDevice']
     dtpToggle?: LegacyBridgeContextType['dtpToggle']
     dtpEnabled?: LegacyBridgeContextType['dtpEnabled']
+    humanizeChannel?: LegacyBridgeContextType['humanizeChannel']
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -96,6 +97,7 @@ const defaultOptions = {
     dtpEnabled: {
         isEnabled: true,
     },
+    humanizeChannel: vi.fn((channelIdentifier) => String(channelIdentifier)),
 }
 
 export const render = (element: ReactElement, options?: RenderOptions) => {

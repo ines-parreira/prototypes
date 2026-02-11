@@ -1,0 +1,32 @@
+:local {
+    .content {
+        max-height: 70vh;
+    }
+
+    .footer {
+        width: 100%;
+    }
+
+    .radioGroup {
+        :global(label) {
+            gap: var(--spacing-xxxs);
+        }
+    }
+
+    .cardSubtext {
+        color: var(--content-neutral-secondary);
+    }
+
+    .jsonPretty {
+        :global(.__json-pretty__) {
+            background-color: var(--surface-neutral-secondary);
+            padding: var(--spacing-xs);
+            border-radius: 4px;
+
+            :global(.__json-key__) {
+                font-weight: bold;
+                color: var(--content-accent-default);
+            }
+        }
+    }
+}

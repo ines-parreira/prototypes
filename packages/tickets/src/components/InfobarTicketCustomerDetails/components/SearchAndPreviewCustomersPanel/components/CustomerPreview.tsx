@@ -19,6 +19,7 @@ type CustomerPreviewProps = {
     onGoBack: () => void
     onClose: () => void
     onSetCustomer: (customer: Customer) => void
+    onMergeCustomer: (customer: Customer) => void
 }
 
 export function CustomerPreview({
@@ -26,6 +27,7 @@ export function CustomerPreview({
     onGoBack,
     onClose,
     onSetCustomer,
+    onMergeCustomer,
 }: CustomerPreviewProps) {
     const customerDisplayName = useMemo(() => {
         return customer
@@ -56,7 +58,12 @@ export function CustomerPreview({
                     <Heading size="sm">{customerDisplayName}</Heading>
                 </Box>
                 <Box gap="xxxs">
-                    <Button variant="secondary">Merge</Button>
+                    <Button
+                        variant="secondary"
+                        onClick={() => onMergeCustomer(customer)}
+                    >
+                        Merge
+                    </Button>
                     <Button
                         variant="secondary"
                         onClick={() => onSetCustomer(customer)}

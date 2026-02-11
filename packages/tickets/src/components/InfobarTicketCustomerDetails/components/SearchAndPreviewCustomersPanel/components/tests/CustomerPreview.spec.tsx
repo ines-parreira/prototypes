@@ -24,6 +24,7 @@ import { CustomerPreview } from '../CustomerPreview'
 const mockOnGoBack = vi.fn()
 const mockOnClose = vi.fn()
 const mockOnSetCustomer = vi.fn()
+const mockOnMergeCustomer = vi.fn()
 
 const mockCustomerData = mockCustomer({
     id: 123,
@@ -43,6 +44,7 @@ const defaultProps = {
     onGoBack: mockOnGoBack,
     onClose: mockOnClose,
     onSetCustomer: mockOnSetCustomer,
+    onMergeCustomer: mockOnMergeCustomer,
 }
 
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>

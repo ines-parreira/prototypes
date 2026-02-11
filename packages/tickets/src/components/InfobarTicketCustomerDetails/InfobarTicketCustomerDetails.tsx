@@ -6,6 +6,7 @@ import type { Customer, TicketCustomer } from '@gorgias/helpdesk-types'
 import { InfobarCustomerFields } from '../InfobarCustomerFields/InfobarCustomerFields'
 import { InfobarTicketCustomerHeader } from '../InfobarTicketCustomerHeader/InfobarTicketCustomerHeader'
 import { useGetTicketData } from '../InfobarTicketDetails/components/InfobarTicketTags/hooks/useGetTicketData'
+import { MergeCustomersModal } from '../MergeCustomersModal/MergeCustomersModal'
 import { DuplicateCustomer } from './components/DuplicateCustomer/DuplicateCustomer'
 import { CustomerPreview } from './components/SearchAndPreviewCustomersPanel/components/CustomerPreview'
 import { SearchAndPreviewCustomersPanel } from './components/SearchAndPreviewCustomersPanel/SearchAndPreviewCustomersPanel'
@@ -44,6 +45,11 @@ export function InfobarTicketCustomerDetails({
         null,
     )
 
+    const [isMergeModalOpen, setIsMergeModalOpen] = useState(false)
+    const [customerToMerge, setCustomerToMerge] = useState<Customer | null>(
+        null,
+    )
+
     const { data: similarCustomer, isLoading: isLoadingSimilarCustomer } =
         useGetSimilarCustomer(ticketCustomer?.id)
 
@@ -58,14 +64,23 @@ export function InfobarTicketCustomerDetails({
         setIsSwitchModalOpen(true)
     }, [])
 
+    const closeAllPanels = () => {
+        setIsViewingSimilarCustomer(false)
+        setIsSearchAndPreviewPanelOpen(false)
+    }
+
     const handleConfirmSwitch = useCallback(
         (customer: Customer) => {
             void updateTicketCustomer(customer as TicketCustomer)
-            setIsViewingSimilarCustomer(false)
-            setIsSearchAndPreviewPanelOpen(false)
+            closeAllPanels()
         },
         [updateTicketCustomer],
     )
+
+    const handleOpenMergeModal = useCallback((customer: Customer) => {
+        setCustomerToMerge(customer)
+        setIsMergeModalOpen(true)
+    }, [])
 
     return (
         <Box
@@ -98,6 +113,7 @@ export function InfobarTicketCustomerDetails({
                 }}
                 previewedCustomer={similarCustomer}
                 onSetCustomer={handleOpenSwitchModal}
+                onMergeCustomer={handleOpenMergeModal}
             />
             <SidePanel
                 isOpen={isViewingSimilarCustomer}
@@ -112,6 +128,7 @@ export function InfobarTicketCustomerDetails({
                     onGoBack={() => setIsViewingSimilarCustomer(false)}
                     onClose={() => setIsViewingSimilarCustomer(false)}
                     onSetCustomer={handleOpenSwitchModal}
+                    onMergeCustomer={handleOpenMergeModal}
                 />
             </SidePanel>
             <SwitchCustomerConfirmationModal
@@ -120,6 +137,16 @@ export function InfobarTicketCustomerDetails({
                 customer={customerToSwitch}
                 onConfirm={handleConfirmSwitch}
             />
+            {ticketCustomer && (
+                <MergeCustomersModal
+                    isOpen={isMergeModalOpen}
+                    onOpenChange={setIsMergeModalOpen}
+                    destinationCustomer={ticketCustomer as Customer}
+                    sourceCustomer={customerToMerge}
+                    ticketId={Number(ticketId)}
+                    onMerge={closeAllPanels}
+                />
+            )}
         </Box>
     )
 }

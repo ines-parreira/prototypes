@@ -5,6 +5,7 @@ import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import useIsToggleEnabled from 'split-ticket-view-toggle/components/useIsToggleEnabled'
+import { humanizeChannel } from 'state/ticket/utils'
 
 import {
     useLegacyDispatchAuditLogEvents,
@@ -42,6 +43,7 @@ export const useTicketLegacyBridgeFunctions = () => {
             voiceDevice,
             dtpToggle,
             dtpEnabled,
+            humanizeChannel,
         }),
         [
             dispatchNotification,

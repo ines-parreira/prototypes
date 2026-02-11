@@ -86,6 +86,7 @@ export type LegacyBridgeContextType = {
     dtpEnabled: {
         isEnabled: boolean
     }
+    humanizeChannel: (channelIdentifier: string) => string
 }
 
 export const LegacyBridgeContext =
