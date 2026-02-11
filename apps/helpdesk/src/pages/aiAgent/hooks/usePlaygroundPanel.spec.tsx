@@ -320,6 +320,92 @@ describe('usePlaygroundPanel', () => {
         })
     })
 
+    describe('collapseNavbar parameter', () => {
+        it('should pass collapseNavbar=true to PlaygroundPanel by default', async () => {
+            const { result } = renderHook(() => usePlaygroundPanel())
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        collapseNavbar: true,
+                    }),
+                }),
+            )
+        })
+
+        it('should pass collapseNavbar=false to PlaygroundPanel when specified', async () => {
+            const { result } = renderHook(() =>
+                usePlaygroundPanel({ collapseNavbar: false }),
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        collapseNavbar: false,
+                    }),
+                }),
+            )
+        })
+
+        it('should pass collapseNavbar=true to PlaygroundPanel when explicitly specified', async () => {
+            const { result } = renderHook(() =>
+                usePlaygroundPanel({ collapseNavbar: true }),
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    props: expect.objectContaining({
+                        collapseNavbar: true,
+                    }),
+                }),
+            )
+        })
+
+        it('should create new playground panel when collapseNavbar changes', async () => {
+            const { result, rerender } = renderHook(
+                ({ collapseNavbar }) => usePlaygroundPanel({ collapseNavbar }),
+                { initialProps: { collapseNavbar: true } },
+            )
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const firstCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const firstPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[firstCallIndex]?.[0]
+
+            rerender({ collapseNavbar: false })
+
+            await act(async () => {
+                await result.current.openPlayground()
+            })
+
+            const secondCallIndex =
+                mockSetCollapsibleColumnChildren.mock.calls.length - 1
+            const secondPanel =
+                mockSetCollapsibleColumnChildren.mock.calls[
+                    secondCallIndex
+                ]?.[0]
+
+            expect(firstPanel).not.toBe(secondPanel)
+            expect(secondPanel.props.collapseNavbar).toBe(false)
+        })
+    })
+
     describe('callback stability', () => {
         it('should maintain stable callback references', () => {
             const { result, rerender } = renderHook(() => usePlaygroundPanel())
@@ -358,6 +444,19 @@ describe('usePlaygroundPanel', () => {
             const firstOpenPlayground = result.current.openPlayground
 
             rerender({ draftKnowledge: draftKnowledge2 })
+
+            expect(result.current.openPlayground).not.toBe(firstOpenPlayground)
+        })
+
+        it('should update callbacks when collapseNavbar changes', () => {
+            const { result, rerender } = renderHook(
+                ({ collapseNavbar }) => usePlaygroundPanel({ collapseNavbar }),
+                { initialProps: { collapseNavbar: true } },
+            )
+
+            const firstOpenPlayground = result.current.openPlayground
+
+            rerender({ collapseNavbar: false })
 
             expect(result.current.openPlayground).not.toBe(firstOpenPlayground)
         })

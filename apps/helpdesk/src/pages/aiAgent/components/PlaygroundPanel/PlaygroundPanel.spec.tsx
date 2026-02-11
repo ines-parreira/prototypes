@@ -15,9 +15,11 @@ jest.mock('pages/aiAgent/PlaygroundV2/utils/playground.utils', () => ({
     ),
 }))
 
+const mockSetNavBarDisplay = jest.fn()
+
 jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
     useNavBar: jest.fn(() => ({
-        setNavBarDisplay: jest.fn(),
+        setNavBarDisplay: mockSetNavBarDisplay,
     })),
 }))
 
@@ -39,6 +41,7 @@ describe('PlaygroundPanel', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockSetNavBarDisplay.mockClear()
 
         mockUseAppContext.mockReturnValue({
             setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
@@ -69,6 +72,24 @@ describe('PlaygroundPanel', () => {
             expect(
                 screen.getByTestId('ai-agent-playground'),
             ).toBeInTheDocument()
+        })
+
+        it('should collapse navbar on mount by default', () => {
+            render(<PlaygroundPanel />)
+
+            expect(mockSetNavBarDisplay).toHaveBeenCalledWith('collapsed')
+        })
+
+        it('should not collapse navbar when collapseNavbar=false', () => {
+            render(<PlaygroundPanel collapseNavbar={false} />)
+
+            expect(mockSetNavBarDisplay).not.toHaveBeenCalled()
+        })
+
+        it('should collapse navbar when collapseNavbar=true', () => {
+            render(<PlaygroundPanel collapseNavbar={true} />)
+
+            expect(mockSetNavBarDisplay).toHaveBeenCalledWith('collapsed')
         })
 
         it('should render actions toggle in disabled state initially', () => {

@@ -22,6 +22,7 @@ type Props = {
     onClose?: () => void
     draftKnowledge?: DraftKnowledge
     onGuidanceClick?: (guidanceArticleId: number) => void
+    collapseNavbar?: boolean
 }
 
 type ActionsSectionProps = {
@@ -59,6 +60,7 @@ export const PlaygroundPanel = ({
     onClose,
     draftKnowledge,
     onGuidanceClick,
+    collapseNavbar = true,
 }: Props) => {
     const { setIsCollapsibleColumnOpen } = useAppContext()
     const [resetPlayground, setResetPlayground] = useState(false)
@@ -72,7 +74,9 @@ export const PlaygroundPanel = ({
     const { setNavBarDisplay } = useNavBar()
 
     useEffectOnce(() => {
-        setNavBarDisplay('collapsed')
+        if (collapseNavbar) {
+            setNavBarDisplay('collapsed')
+        }
     })
 
     const onModalConfirm = () => {

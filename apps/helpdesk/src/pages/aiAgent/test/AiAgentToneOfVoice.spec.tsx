@@ -162,6 +162,7 @@ describe('AiAgentToneOfVoice', () => {
             isPlaygroundOpen: false,
         } as any)
         mockUseDisplayPlaygroundButtonInLayoutHeader.mockReturnValue(true)
+        mockTogglePlayground.mockClear()
     })
 
     describe('Component rendering', () => {
@@ -188,6 +189,20 @@ describe('AiAgentToneOfVoice', () => {
             expect(
                 screen.getByText(/by using ai agent, you agree to comply/i),
             ).toBeInTheDocument()
+        })
+
+        it('should call usePlaygroundPanel with collapseNavbar=false', () => {
+            setupComponent({})
+
+            expect(mockUsePlaygroundPanel).toHaveBeenCalledWith({
+                collapseNavbar: false,
+            })
+        })
+
+        it('should toggle playground on mount', () => {
+            setupComponent({})
+
+            expect(mockTogglePlayground).toHaveBeenCalledTimes(1)
         })
 
         it.each([
@@ -219,7 +234,7 @@ describe('AiAgentToneOfVoice', () => {
             const testButton = screen.getByRole('button', { name: /test/i })
             await user.click(testButton)
 
-            expect(mockTogglePlayground).toHaveBeenCalledTimes(1)
+            expect(mockTogglePlayground).toHaveBeenCalledTimes(2)
         })
 
         it('should not render test button when playground is already open', () => {

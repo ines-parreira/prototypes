@@ -12,11 +12,13 @@ const REMOVE_CHILDREN_DELAY = 300
 type Props = {
     draftKnowledge?: DraftKnowledge
     onGuidanceClick?: (guidanceArticleId: number) => void
+    collapseNavbar?: boolean
 }
 
 export const usePlaygroundPanel = ({
     draftKnowledge,
     onGuidanceClick,
+    collapseNavbar = true,
 }: Props = {}) => {
     const { shopName } = useParams<{
         shopName?: string
@@ -34,9 +36,10 @@ export const usePlaygroundPanel = ({
                 shopName={shopName}
                 draftKnowledge={draftKnowledge}
                 onGuidanceClick={onGuidanceClick}
+                collapseNavbar={collapseNavbar}
             />
         ),
-        [shopName, draftKnowledge, onGuidanceClick],
+        [shopName, draftKnowledge, onGuidanceClick, collapseNavbar],
     )
 
     const openPlayground = useCallback(async () => {

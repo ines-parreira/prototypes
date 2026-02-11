@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
 import {
     Box,
     Button,
@@ -123,7 +125,10 @@ export function AiAgentToneOfVoice() {
     const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
-    const { togglePlayground, isPlaygroundOpen } = usePlaygroundPanel()
+    const { togglePlayground, isPlaygroundOpen } = usePlaygroundPanel({
+        collapseNavbar: false,
+    })
+
     const { resolvedShopName } = useShopNameResolution()
     const shouldShowTestButton = useDisplayPlaygroundButtonInLayoutHeader({
         shopName: resolvedShopName,
@@ -138,6 +143,10 @@ export function AiAgentToneOfVoice() {
         () => getSavedValues(storeConfiguration),
         [storeConfiguration],
     )
+
+    useEffectOnce(() => {
+        togglePlayground()
+    })
 
     const [genericToneOfVoice, setGenericToneOfVoice] = useState<string>(
         savedValues.genericToneOfVoice,
