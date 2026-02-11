@@ -35,7 +35,8 @@ import { useAiAgentStoreConfigurationContext } from './providers/AiAgentStoreCon
 import css from './AiAgentToneOfVoice.less'
 
 const TEXT_FIELD_CHARACTER_LIMIT = 600
-const CUSTOM_PERSONALITY_CHARACTER_LIMIT = 1500
+const CUSTOM_PERSONALITY_CHARACTER_LIMIT = 3000
+const PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT = 1500
 
 enum ToneOfVoiceTab {
     General = 'general',
@@ -58,6 +59,41 @@ const VERBOSITY_CAPTIONS: Record<Verbosity, string> = {
     concise: 'Brief and to the point',
     balanced: 'Moderate detail',
     detailed: 'Comprehensive explanations',
+}
+
+interface VerbositySelectFieldProps {
+    value: Verbosity
+    onChange: (verbosity: Verbosity) => void
+}
+
+const VerbositySelectField = ({
+    value,
+    onChange,
+}: VerbositySelectFieldProps) => {
+    return (
+        <Box maxWidth="160px">
+            <SelectField
+                items={VERBOSITY_OPTIONS}
+                value={
+                    VERBOSITY_OPTIONS.find((opt) => opt.id === value) ||
+                    VERBOSITY_OPTIONS[0]
+                }
+                onChange={(item: (typeof VERBOSITY_OPTIONS)[number]) =>
+                    onChange(item.id)
+                }
+                label="Verbosity"
+            >
+                {(item: (typeof VERBOSITY_OPTIONS)[number]) => (
+                    <ListItem
+                        id={item.id}
+                        label={item.name}
+                        caption={VERBOSITY_CAPTIONS[item.id]}
+                        textValue={item.name}
+                    />
+                )}
+            </SelectField>
+        </Box>
+    )
 }
 
 const getSavedValues = (storeConfiguration: StoreConfiguration | undefined) => {
@@ -523,36 +559,19 @@ export function AiAgentToneOfVoice() {
                         gap="md"
                         width="100%"
                     >
-                        <Box maxWidth="160px">
-                            <SelectField
-                                items={VERBOSITY_OPTIONS}
-                                value={
-                                    VERBOSITY_OPTIONS.find(
-                                        (opt) => opt.id === emailVerbosity,
-                                    ) || VERBOSITY_OPTIONS[0]
-                                }
-                                onChange={(item) => setEmailVerbosity(item.id)}
-                                label="Verbosity"
-                            >
-                                {(item) => (
-                                    <ListItem
-                                        id={item.id}
-                                        label={item.name}
-                                        caption={VERBOSITY_CAPTIONS[item.id]}
-                                        textValue={item.name}
-                                    />
-                                )}
-                            </SelectField>
-                        </Box>
+                        <VerbositySelectField
+                            value={emailVerbosity}
+                            onChange={setEmailVerbosity}
+                        />
                         <TextAreaField
                             value={emailInstructions}
                             onChange={createCharacterLimitHandler(
                                 setEmailInstructions,
-                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                                PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT,
                             )}
                             label="Instructions"
                             placeholder="To sound more human, please never submit responses in numbered lists. Instead, separate by paragraphs."
-                            caption={`${emailInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            caption={`${emailInstructions.length}/${PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT}`}
                             rows={3}
                         />
                     </Box>
@@ -569,36 +588,19 @@ export function AiAgentToneOfVoice() {
                         gap="md"
                         width="100%"
                     >
-                        <Box maxWidth="160px">
-                            <SelectField
-                                items={VERBOSITY_OPTIONS}
-                                value={
-                                    VERBOSITY_OPTIONS.find(
-                                        (opt) => opt.id === chatVerbosity,
-                                    ) || VERBOSITY_OPTIONS[0]
-                                }
-                                onChange={(item) => setChatVerbosity(item.id)}
-                                label="Verbosity"
-                            >
-                                {(item) => (
-                                    <ListItem
-                                        id={item.id}
-                                        label={item.name}
-                                        caption={VERBOSITY_CAPTIONS[item.id]}
-                                        textValue={item.name}
-                                    />
-                                )}
-                            </SelectField>
-                        </Box>
+                        <VerbositySelectField
+                            value={chatVerbosity}
+                            onChange={setChatVerbosity}
+                        />
                         <TextAreaField
                             value={chatInstructions}
                             onChange={createCharacterLimitHandler(
                                 setChatInstructions,
-                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                                PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT,
                             )}
                             label="Instructions"
                             placeholder="Keep replies brief, friendly, and conversational like talking to a good friend. Use small paragraphs (2–3 lines max) per message and get to the point quickly."
-                            caption={`${chatInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            caption={`${chatInstructions.length}/${PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT}`}
                             rows={3}
                         />
                     </Box>
@@ -615,36 +617,19 @@ export function AiAgentToneOfVoice() {
                         gap="md"
                         width="100%"
                     >
-                        <Box maxWidth="160px">
-                            <SelectField
-                                items={VERBOSITY_OPTIONS}
-                                value={
-                                    VERBOSITY_OPTIONS.find(
-                                        (opt) => opt.id === smsVerbosity,
-                                    ) || VERBOSITY_OPTIONS[0]
-                                }
-                                onChange={(item) => setSmsVerbosity(item.id)}
-                                label="Verbosity"
-                            >
-                                {(item) => (
-                                    <ListItem
-                                        id={item.id}
-                                        label={item.name}
-                                        caption={VERBOSITY_CAPTIONS[item.id]}
-                                        textValue={item.name}
-                                    />
-                                )}
-                            </SelectField>
-                        </Box>
+                        <VerbositySelectField
+                            value={smsVerbosity}
+                            onChange={setSmsVerbosity}
+                        />
                         <TextAreaField
                             value={smsInstructions}
                             onChange={createCharacterLimitHandler(
                                 setSmsInstructions,
-                                CUSTOM_PERSONALITY_CHARACTER_LIMIT,
+                                PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT,
                             )}
                             label="Instructions"
                             placeholder="Keep it brief and upbeat (1–2 lines). No greeting or sign-off. Use simple language, include only essential info, and ask at most one question"
-                            caption={`${smsInstructions.length}/${CUSTOM_PERSONALITY_CHARACTER_LIMIT}`}
+                            caption={`${smsInstructions.length}/${PER_CHANNEL_PER_PERSONALITY_CHARACTER_LIMIT}`}
                             rows={3}
                         />
                     </Box>
@@ -693,7 +678,7 @@ export function AiAgentToneOfVoice() {
                         <Tabs
                             selectedItem={activeTab}
                             onSelectionChange={(tab) =>
-                                setActiveTab(tab as ToneOfVoiceTab)
+                                setActiveTab(tab.valueOf() as ToneOfVoiceTab)
                             }
                         >
                             <TabList>
