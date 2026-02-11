@@ -164,9 +164,7 @@ describe('SetupTaskSection', () => {
     it('should show first incomplete category tasks by default', () => {
         renderComponent()
 
-        expect(
-            screen.getByText(/Enable.*Trigger on Search/),
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Enable.*Search Assist/)).toBeInTheDocument()
     })
 
     it('should switch category when clicking on a different tab', () => {
@@ -176,7 +174,7 @@ describe('SetupTaskSection', () => {
 
         expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
         expect(
-            screen.queryByText(/Enable.*Trigger on Search/),
+            screen.queryByText(/Enable.*Search Assist/),
         ).not.toBeInTheDocument()
     })
 
@@ -281,20 +279,18 @@ describe('SetupTaskSection', () => {
     it('should handle multiple category switches correctly', () => {
         renderComponent()
 
-        expect(
-            screen.getByText(/Enable.*Trigger on Search/),
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Enable.*Search Assist/)).toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Essential'))
         expect(screen.getByText('Verify your email domain')).toBeInTheDocument()
         expect(
-            screen.queryByText(/Enable.*Trigger on Search/),
+            screen.queryByText(/Enable.*Search Assist/),
         ).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Train'))
         expect(screen.getByText('Create an Action')).toBeInTheDocument()
         expect(
-            screen.queryByText(/Enable.*Trigger on Search/),
+            screen.queryByText(/Enable.*Search Assist/),
         ).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByText('Deploy'))

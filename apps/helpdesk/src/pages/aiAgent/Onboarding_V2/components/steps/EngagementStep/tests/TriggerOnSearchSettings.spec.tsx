@@ -52,13 +52,13 @@ describe('TriggerOnSearchSettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByAltText(
-                    'image showing an example of the trigger on search',
+                    'image showing an example of the search assist',
                 ),
             ).toBeInTheDocument()
         })
 
         it('should render with custom description', () => {
-            const customDescription = 'Custom trigger on search description'
+            const customDescription = 'Custom search assist description'
             render(
                 <Wrapper>
                     <TriggerOnSearchSettings

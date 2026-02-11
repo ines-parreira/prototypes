@@ -5,7 +5,7 @@ import { EnableTriggerOnSearchTask } from '../EnableTriggerOnSearch.task'
 import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('EnableTriggerOnSearchTask', () => {
-    it('should display the task when trigger on search is not enabled', () => {
+    it('should display the task when search assist is not enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutTriggerOnSearch()
@@ -30,7 +30,7 @@ describe('EnableTriggerOnSearchTask', () => {
         expect(task.display).toBe(true)
     })
 
-    it('should not display the task when trigger on search is not enabled', () => {
+    it('should not display the task when search assist is not enabled', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withTriggerOnSearch()
@@ -104,7 +104,7 @@ describe('EnableTriggerOnSearchTask', () => {
         expect(task.display).toBe(false)
     })
 
-    it('should not display the task when user do have the trigger on search kill switch flag', () => {
+    it('should not display the task when user do have the search assist kill switch flag', () => {
         const aiAgentStoreConfiguration =
             AiAgentStoreConfigurationFixture.start()
                 .withoutTriggerOnSearch()

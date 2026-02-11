@@ -55,7 +55,7 @@ export const TriggerOnSearchSettings = ({
         <EngagementSettingsCard>
             <EngagementSettingsCardContentWrapper>
                 <EngagementSettingsCardImage
-                    alt="image showing an example of the trigger on search"
+                    alt="image showing an example of the Search Assist"
                     src={assetsUrl(
                         '/img/ai-agent/ai_agent_trigger_on_search_small.png',
                     )}
@@ -64,7 +64,7 @@ export const TriggerOnSearchSettings = ({
                 <EngagementSettingsCardContent className={css.cardContent}>
                     <div className={css.cardHeader}>
                         <EngagementSettingsCardTitle>
-                            Trigger on search
+                            Search Assist
                         </EngagementSettingsCardTitle>
                         {!storeConfiguration?.isSalesHelpOnSearchEnabled && (
                             <EngagementSettingsCardImpact

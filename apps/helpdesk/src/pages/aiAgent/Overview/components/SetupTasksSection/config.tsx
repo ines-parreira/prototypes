@@ -62,7 +62,7 @@ export const TASK_CONFIG_TEMPLATES: Record<
     [TasksCategory.Customize]: [
         {
             stepName: StepName.ENABLE_TRIGGER_ON_SEARCH,
-            displayName: `Turn on 'Trigger on search' to boost conversion by 25%`,
+            displayName: `Turn on 'Search Assist' to boost conversion by 25%`,
             bodyComponent: PrepareTriggerOnSearchBody,
         },
         {
