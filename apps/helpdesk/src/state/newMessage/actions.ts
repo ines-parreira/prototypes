@@ -1106,12 +1106,23 @@ export function prepareTicketMessage({
                 }
 
                 if (dataToSend.newMessage.channel === TicketChannel.Email) {
+                    // When email extra content (signature/thread) was added to the composer,
+                    // it's visible and editable by the agent. Always use frontend's version
+                    // to respect what the agent sees and intends to send - whether they edited
+                    // it (deletions, modifications) or are sending it as-is.
+                    // Note: Read from original replyAreaState (before mutation by prepareTicketDataToSend)
+                    const threadHistoryVisibleInComposer =
+                        replyAreaState.emailExtraAdded
+
+                    const shouldLetBackendRebuildThread =
+                        emailThreadSizeFF && !threadHistoryVisibleInComposer
+
                     messageToSend = {
                         ...dataToSend.newMessage,
                         ticket_id: ticket?.get('id'),
                         source: {
                             ...dataToSend.newMessage.source,
-                            extra: emailThreadSizeFF
+                            extra: shouldLetBackendRebuildThread
                                 ? {
                                       ...dataToSend.newMessage.source.extra,
                                       include_thread: true,

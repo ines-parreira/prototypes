@@ -1565,6 +1565,98 @@ describe('actions', () => {
                 })
             })
 
+            it('should add include_thread=false when emailThreadSizeFF is true and email extra was added (thread visible in composer)', async () => {
+                getLDClientSpy.mockReturnValueOnce({
+                    variation: () => true,
+                } as any)
+
+                const contentState = ContentState.createFromText('My reply')
+
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'channel'], TicketChannel.Email)
+                        .setIn(
+                            ['newMessage', 'source', 'type'],
+                            TicketMessageSourceType.Email,
+                        )
+                        .setIn(['newMessage', 'body_text'], 'text email')
+                        .setIn(['state', 'contentState'], contentState)
+                        .setIn(['state', 'emailExtraAdded'], true),
+                })
+
+                const { messageToSend } = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        emailThreadSizeFF: true,
+                    }),
+                )
+
+                expect(messageToSend.source.extra?.include_thread).toBe(false)
+            })
+
+            it('should add include_thread=true when emailThreadSizeFF is true and email extra was NOT initially visible', async () => {
+                getLDClientSpy.mockReturnValueOnce({
+                    variation: () => true,
+                } as any)
+
+                const contentState = ContentState.createFromText('My reply')
+
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'channel'], TicketChannel.Email)
+                        .setIn(
+                            ['newMessage', 'source', 'type'],
+                            TicketMessageSourceType.Email,
+                        )
+                        .setIn(['newMessage', 'body_text'], 'text email')
+                        .setIn(['state', 'contentState'], contentState)
+                        .setIn(['state', 'emailExtraAdded'], false),
+                })
+
+                const { messageToSend } = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        emailThreadSizeFF: true,
+                    }),
+                )
+
+                // Thread was not initially visible (emailExtraAdded=false before prepareTicketDataToSend),
+                // so backend can safely rebuild from database.
+                expect(messageToSend.source.extra?.include_thread).toBe(true)
+            })
+
+            it('should add include_thread=false when emailThreadSizeFF is false (legacy behavior)', async () => {
+                getLDClientSpy.mockReturnValueOnce({
+                    variation: () => false,
+                } as any)
+
+                const contentState = ContentState.createFromText('My reply')
+
+                store = mockStore({
+                    ...defaultState,
+                    ticket: emailTicket.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'channel'], TicketChannel.Email)
+                        .setIn(
+                            ['newMessage', 'source', 'type'],
+                            TicketMessageSourceType.Email,
+                        )
+                        .setIn(['newMessage', 'body_text'], 'text email')
+                        .setIn(['state', 'contentState'], contentState)
+                        .setIn(['state', 'emailExtraAdded'], true),
+                })
+
+                const { messageToSend } = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        emailThreadSizeFF: false,
+                    }),
+                )
+
+                expect(messageToSend.source.extra?.include_thread).toBe(false)
+            })
+
             it('should reject with TicketMessageActionValidationError on action validation error', async () => {
                 store = mockStore({
                     ...defaultState,
