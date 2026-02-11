@@ -1,6 +1,4 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { useFormContext } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
 
 import {
     Box,
@@ -22,22 +20,14 @@ import {
 } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 
 export const PurchaseGuidanceSection = () => {
-    const { shopName } = useParams<{ shopName: string }>()
     const { watch, setValue } = useFormContext<SalesSettingsData>()
 
     const salesPersuasionLevel = watch('salesPersuasionLevel')
-    const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
 
     const handleChange = (value: PersuasionLevel) => {
         setValue('salesPersuasionLevel', value, {
             shouldValidate: true,
             shouldDirty: true,
-        })
-
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesUsed, {
-            persuasion: value,
-            discount: salesDiscountStrategyLevel,
-            shopName,
         })
     }
 

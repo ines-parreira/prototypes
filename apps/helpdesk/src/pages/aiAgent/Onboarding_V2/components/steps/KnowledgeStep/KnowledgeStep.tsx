@@ -132,12 +132,12 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                             removeShoppingAssistantTrialOptin()
                         }
 
-                        logEvent(
-                            SegmentEvent.AiAgentNewOnboardingWizardFinished,
-                            {
-                                shopName,
-                            },
-                        )
+                        logEvent(SegmentEvent.AiAgentOnboardingCompleted, {
+                            onboardingFlow: 'wizard',
+                            totalSteps,
+                            shopName,
+                        })
+
                         history.push({
                             pathname: nextPath,
                             search: `?shopName=${encodeURIComponent(shopName)}&from=onboarding`,

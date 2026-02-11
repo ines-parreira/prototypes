@@ -26,6 +26,7 @@ import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOn
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingIntegrationRedirection'
 import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding_V2/hooks/useShopifyIntegrations'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
+import { useTrackFieldValue } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackFieldValue'
 import {
     LoadingPulserIcon,
     OnboardingBody,
@@ -46,9 +47,14 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     setIsStoreSelected,
     isStoreSelected,
 }) => {
-    const { shopName, shopType } = useParams<{
+    const {
+        shopName,
+        shopType,
+        step: stepName,
+    } = useParams<{
         shopName: string
         shopType: string
+        step: string
     }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { redirectToIntegration } = useOnboardingIntegrationRedirection()
@@ -98,6 +104,15 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
     })
 
     const { handleSubmit } = methods
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'selectedShop',
+        fieldType: 'select',
+        fieldValue: selectedShop,
+    })
 
     const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(selectedShop)

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useEffect } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -8,6 +9,7 @@ import { Box, ProgressBar, Text } from '@gorgias/axiom'
 
 import { useHideBanners } from 'AlertBanners/hooks/useHideBanners'
 import { OnboardingNavigationButtons } from 'pages/aiAgent/Onboarding_V2/components/common/OnboardingNavigationButtons/OnboardingNavigationButtons'
+import { useTrackStepCompleted } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackStepCompleted'
 
 import css from './ConvAiOnboardingLayoutV2.less'
 
@@ -96,29 +98,54 @@ export const OnboardingContentContainer: React.FC<{
 }) => {
     const { step, shopName } = useParams<{ step: string; shopName: string }>()
 
+    const stepName = step ?? 'unknown'
+    const safeShopName = shopName ?? 'unknown'
+    const isLastStep = currentStep === totalSteps
+
+    const trackStepCompleted = useTrackStepCompleted({
+        currentStep,
+        stepName: stepName,
+        shopName: safeShopName,
+    })
+
+    useEffect(() => {
+        logEvent(SegmentEvent.AiAgentOnboardingStepViewed, {
+            onboardingFlow: 'wizard',
+            stepName,
+            stepNumber: currentStep,
+            shopName: safeShopName,
+        })
+    }, [stepName, currentStep, safeShopName])
+
     const onNextAction = () => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
-            Step: step,
-            shopName,
-            type: 'next',
+        trackStepCompleted()
+        logEvent(SegmentEvent.AiAgentOnboardingButtonClicked, {
+            onboardingFlow: 'wizard',
+            buttonType: isLastStep ? 'finish' : 'next',
+            stepName,
+            stepNumber: currentStep,
+            shopName: safeShopName,
         })
         onNextClick()
     }
 
     const onBackAction = () => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
-            Step: step,
-            shopName,
-            type: 'back',
+        logEvent(SegmentEvent.AiAgentOnboardingButtonClicked, {
+            onboardingFlow: 'wizard',
+            buttonType: 'back',
+            stepName,
+            stepNumber: currentStep,
+            shopName: safeShopName,
         })
         onBackClick()
     }
 
     const onCloseAction = () => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardButtonClicked, {
-            Step: step,
-            shopName,
-            type: 'close',
+        logEvent(SegmentEvent.AiAgentOnboardingClosed, {
+            onboardingFlow: 'wizard',
+            stepNumber: currentStep,
+            isCompleted: false,
+            shopName: safeShopName,
         })
         onCloseClick?.()
     }

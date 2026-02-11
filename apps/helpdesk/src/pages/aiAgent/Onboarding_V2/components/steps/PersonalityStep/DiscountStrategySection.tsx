@@ -1,6 +1,4 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { useFormContext } from 'react-hook-form'
-import { useParams } from 'react-router-dom'
 
 import {
     Box,
@@ -25,7 +23,6 @@ import {
 import css from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep.less'
 
 export const DiscountStrategySection = () => {
-    const { shopName } = useParams<{ shopName: string }>()
     const {
         watch,
         setValue,
@@ -33,7 +30,6 @@ export const DiscountStrategySection = () => {
         formState: { errors },
     } = useFormContext<SalesSettingsData>()
 
-    const salesPersuasionLevel = watch('salesPersuasionLevel')
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
 
@@ -58,12 +54,6 @@ export const DiscountStrategySection = () => {
         }
 
         void trigger('salesDiscountMax')
-
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesUsed, {
-            persuasion: salesPersuasionLevel,
-            discount: value,
-            shopName,
-        })
     }
 
     const handleMaxChange = (value: string) => {
@@ -81,11 +71,6 @@ export const DiscountStrategySection = () => {
         setValue('salesDiscountMax', safeValue, {
             shouldValidate: true,
             shouldDirty: true,
-        })
-
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardDiscountChanged, {
-            value: safeValue,
-            shopName,
         })
 
         if (parsedValue === 0) {

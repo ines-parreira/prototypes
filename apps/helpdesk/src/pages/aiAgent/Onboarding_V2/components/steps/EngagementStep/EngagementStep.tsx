@@ -22,6 +22,7 @@ import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hook
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
+import { useTrackFieldValue } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackFieldValue'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -43,7 +44,10 @@ export const EngagementStep = ({
     goToStep,
     isStoreSelected,
 }: StepProps) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, step: stepName } = useParams<{
+        shopName: string
+        step: string
+    }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const { data } = useGetOnboardingData(shopName)
     const {
@@ -99,6 +103,33 @@ export const EngagementStep = ({
     const isSalesHelpOnSearchEnabled = watch('isSalesHelpOnSearchEnabled')
     const isConversationStartersEnabled = watch('isConversationStartersEnabled')
     const isAskAnythingInputEnabled = watch('isAskAnythingInputEnabled')
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'isSalesHelpOnSearchEnabled',
+        fieldType: 'toggle',
+        fieldValue: isSalesHelpOnSearchEnabled,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'isConversationStartersEnabled',
+        fieldType: 'toggle',
+        fieldValue: isConversationStartersEnabled,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'isAskAnythingInputEnabled',
+        fieldType: 'toggle',
+        fieldValue: isAskAnythingInputEnabled,
+    })
 
     const onNextClick = (forceEnabled: boolean = false) => {
         if (!isDirty) {

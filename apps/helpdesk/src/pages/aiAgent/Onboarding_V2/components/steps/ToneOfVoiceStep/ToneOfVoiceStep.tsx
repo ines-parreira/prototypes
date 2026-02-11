@@ -16,6 +16,7 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheck
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
+import { useTrackFieldValue } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackFieldValue'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -55,7 +56,10 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
     goToStep,
     isStoreSelected,
 }) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, step: stepName } = useParams<{
+        shopName: string
+        step: string
+    }>()
     const { validSteps } = useSteps({ shopName, isStoreSelected })
     const isFirstStep = currentStep === 1
 
@@ -99,6 +103,25 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
 
     const toneOfVoice = watch('toneOfVoice')
     const customToneOfVoiceGuidance = watch('customToneOfVoiceGuidance')
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'toneOfVoice',
+        fieldType: 'select',
+        fieldValue: toneOfVoice,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'customToneOfVoiceGuidance',
+        fieldType: 'textarea',
+        fieldValue: customToneOfVoiceGuidance,
+        debounceMs: 1000,
+    })
 
     const {
         latestCustomToneOfVoicePreview,

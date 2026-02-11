@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
@@ -16,12 +16,14 @@ import { PersonalityStep } from 'pages/aiAgent/Onboarding_V2/components/steps/Pe
 import { ShopifyIntegrationStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep'
 import { ToneOfVoiceStep } from 'pages/aiAgent/Onboarding_V2/components/steps/ToneOfVoiceStep/ToneOfVoiceStep'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
 import { ConvAiOnboardingLayout } from 'pages/aiAgent/Onboarding_V2/layout/ConvAiOnboardingLayout'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 
 export const AiAgentOnboarding = () => {
     const [isStoreSelected, setIsStoreSelected] = useState(false)
+    const hasTrackedOpenRef = useRef(false)
     const { shopName, step, shopType } = useParams<{
         shopName: string
         step: string
@@ -31,6 +33,7 @@ export const AiAgentOnboarding = () => {
         shopName,
         isStoreSelected,
     })
+    const { data: onboardingData } = useGetOnboardingData(shopName)
     const history = useHistory()
 
     const currentIndex = validSteps.findIndex(
@@ -66,11 +69,22 @@ export const AiAgentOnboarding = () => {
     )
 
     useEffect(() => {
-        logEvent(SegmentEvent.AiAgentNewOnboardingWizardStepViewed, {
-            step,
-            shopName,
+        if (hasTrackedOpenRef.current || !validSteps.length) return
+
+        const isReturningUser = Boolean(
+            onboardingData && 'id' in onboardingData,
+        )
+        const stepNumber = currentIndex + 1
+
+        logEvent(SegmentEvent.AiAgentOnboardingOpened, {
+            onboardingFlow: 'wizard',
+            stepNumber,
+            isReturningUser,
+            shopName: shopName ?? 'unknown',
         })
-    }, [step, shopName])
+
+        hasTrackedOpenRef.current = true
+    }, [onboardingData, validSteps, currentIndex, shopName])
 
     // Always allow onboarding wizard to be accessible regardless of the flag
 

@@ -22,6 +22,7 @@ import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheck
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingIntegrationRedirection'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
+import { useTrackFieldValue } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackFieldValue'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
@@ -89,7 +90,10 @@ export const HandoverStep: FC<StepProps> = ({
     goToStep,
     isStoreSelected,
 }) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, step: stepName } = useParams<{
+        shopName: string
+        step: string
+    }>()
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
@@ -165,6 +169,34 @@ export const HandoverStep: FC<StepProps> = ({
     const webhookThirdParty = watch('webhookThirdParty')
     const webhookRequiredFields = watch('webhookRequiredFields')
     const webhookIntegration = watch('webhookIntegration')
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'handoverMethod',
+        fieldType: 'select',
+        fieldValue: handoverMethod,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'email',
+        fieldType: 'input',
+        fieldValue: email,
+        debounceMs: 1000,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'webhookThirdParty',
+        fieldType: 'select',
+        fieldValue: webhookThirdParty,
+    })
 
     const {
         mutate: doUpdateOnboardingMutation,
@@ -314,5 +346,3 @@ export const HandoverStep: FC<StepProps> = ({
         </OnboardingBody>
     )
 }
-
-export default HandoverStep

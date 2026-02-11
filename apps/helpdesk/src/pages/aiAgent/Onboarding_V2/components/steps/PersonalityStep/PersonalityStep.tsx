@@ -2,7 +2,6 @@ import type { FC } from 'react'
 import { useMemo } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 import { z } from 'zod'
@@ -25,6 +24,7 @@ import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hook
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
+import { useTrackFieldValue } from 'pages/aiAgent/Onboarding_V2/hooks/useTrackFieldValue'
 import { useTransformToneOfVoiceConversations } from 'pages/aiAgent/Onboarding_V2/hooks/useTransformToneOfVoiceConversations'
 import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useUpdateOnboarding'
 import {
@@ -86,7 +86,10 @@ export const PersonalityStep: FC<StepProps> = ({
     goToStep,
     isStoreSelected,
 }) => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { shopName, step: stepName } = useParams<{
+        shopName: string
+        step: string
+    }>()
 
     const { validSteps } = useSteps({ shopName, isStoreSelected })
 
@@ -131,6 +134,36 @@ export const PersonalityStep: FC<StepProps> = ({
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
 
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'salesPersuasionLevel',
+        fieldType: 'slider',
+        fieldValue: salesPersuasionLevel,
+        debounceMs: 1000,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'salesDiscountStrategyLevel',
+        fieldType: 'slider',
+        fieldValue: salesDiscountStrategyLevel,
+        debounceMs: 1000,
+    })
+
+    useTrackFieldValue({
+        currentStep,
+        stepName,
+        shopName,
+        fieldName: 'salesDiscountMax',
+        fieldType: 'input',
+        fieldValue: salesDiscountMax,
+        debounceMs: 1000,
+    })
+
     const { previewConversation, isPreviewLoading } =
         useTransformToneOfVoiceConversations(
             storeIntegration.id,
@@ -166,15 +199,6 @@ export const PersonalityStep: FC<StepProps> = ({
                 { id: data.id, data: updatedData },
                 {
                     onSuccess: () => {
-                        logEvent(
-                            SegmentEvent.AiAgentNewOnboardingWizardSalesGaugesSaved,
-                            {
-                                persuasion: salesPersuasionLevel,
-                                discount: salesDiscountStrategyLevel,
-                                shopName,
-                            },
-                        )
-
                         onNextStep()
                     },
                 },
