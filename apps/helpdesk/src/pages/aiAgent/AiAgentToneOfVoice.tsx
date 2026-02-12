@@ -507,7 +507,11 @@ export function AiAgentToneOfVoice() {
                         value={allowEmojis}
                         onChange={() => setAllowEmojis(!allowEmojis)}
                     />
-                    <Box display="flex" flexDirection="column" gap="md">
+                    <Box
+                        display={allowEmojis ? 'flex' : 'none'}
+                        flexDirection="column"
+                        gap="md"
+                    >
                         <EmojiPicker
                             label="Allowed emojis"
                             value={allowedEmojis}
