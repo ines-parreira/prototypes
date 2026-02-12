@@ -1,8 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { List } from 'immutable'
+import { fromJS, List } from 'immutable'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { mockListMetafieldDefinitionsHandler } from '@gorgias/helpdesk-mocks'
 import type { MetafieldDefinition } from '@gorgias/helpdesk-types'
@@ -108,14 +111,23 @@ const mockListMetafieldDefinitions = mockListMetafieldDefinitionsHandler(
         }),
 )
 
+const mockStore = configureMockStore([thunk])
+
+const store = mockStore({
+    currentAccount: fromJS({ id: 1 }),
+    currentUser: fromJS({ id: 2 }),
+})
+
 describe('useMetafieldRuleSelection', () => {
     let queryClient: QueryClient
     let mockActions: RuleItemActions
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
+        <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        </Provider>
     )
 
     beforeAll(() => {

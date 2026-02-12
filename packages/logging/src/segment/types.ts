@@ -443,6 +443,8 @@ export enum SegmentEvent {
     ShopifyMetafieldsOpenImportModal = 'shopify/metafields/import-modal/open',
     ShopifyMetafieldsCloseImportModal = 'shopify/metafields/import-modal/close',
     ShopifyMetafieldsOpenMacroDropdown = 'shopify/metafields/macro-dropdown/open',
+    ShopifyMetafieldsSelectedMetafieldForMacros = 'shopify/metafields/macro/selected-metafield',
+    ShopifyMetafieldsSelectedMetafieldForRule = 'shopify/metafields/rule/selected-metafield',
     ShopifyOrderClicked = 'widget/shopify-order-link/link-clicked',
     ShopifyProfileClicked = 'widget/shopify-profile-link/link-clicked',
     ShopifyRefundOrderCancel = 'shopify/refund-order/cancel',

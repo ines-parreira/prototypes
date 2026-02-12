@@ -72,6 +72,11 @@ export function ShopifyMetafieldVariablePicker({
     const handleMetafieldSelect = (field: Field) => {
         if (!selectedStore || !selectedCategory) return
 
+        logEvent(SegmentEvent.ShopifyMetafieldsSelectedMetafieldForMacros, {
+            accountId,
+            userId,
+        })
+
         const variableValue = getMetafieldVariableValue(
             selectedStore.id,
             selectedCategory,

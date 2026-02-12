@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 
+import useAppSelector from 'hooks/useAppSelector'
 import type { ShopifyIntegration } from 'models/integration/types'
 import { generateExpression, getMetafieldTreePath } from 'models/rule/utils'
 import { useMetafieldDefinitions } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldDefinitions'
 import type { Field } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/types'
 import type { SupportedCategories } from 'pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/types'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 import { RuleOperation } from 'state/rules/types'
 
 import type {
@@ -71,6 +75,9 @@ export function useMetafieldRuleSelection({
     const [metafieldLevel, setMetafieldLevel] =
         useState<MetafieldLevel>('stores')
 
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
+
     const activeIntegrationId = getActiveIntegrationId(
         selectedStore?.id,
         integrationIdFromTree,
@@ -102,6 +109,11 @@ export function useMetafieldRuleSelection({
         (field: Field, category: SupportedCategories) => {
             if (!selectedStore) return
 
+            logEvent(SegmentEvent.ShopifyMetafieldsSelectedMetafieldForRule, {
+                accountId,
+                userId,
+            })
+
             setSelectedMetafield(field)
             setShowMetafieldSelection(category)
 
@@ -119,7 +131,7 @@ export function useMetafieldRuleSelection({
                 RuleOperation.Update,
             )
         },
-        [actions, parent, selectedStore],
+        [accountId, userId, actions, parent, selectedStore],
     )
 
     const resetMetafieldSelection = useCallback(() => {
