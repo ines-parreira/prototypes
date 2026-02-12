@@ -571,7 +571,7 @@ describe('<SalesSettings />', () => {
             })
 
             expect(windowOpenSpy).toHaveBeenCalledWith(
-                'https://admin.shopify.com/store/test-store/discounts?method=automatic&discount_type=free_shipping%2Cmoney_off_orders',
+                'https://admin.shopify.com/store/test-store/discounts?method=automatic',
                 '_blank',
             )
 

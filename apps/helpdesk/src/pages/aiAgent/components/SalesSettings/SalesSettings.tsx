@@ -381,7 +381,7 @@ export const SalesSettings = () => {
                                         intent="secondary"
                                         onClick={() => {
                                             window.open(
-                                                `${shopifyAdminBaseUrl(storeConfiguration.storeName)}/discounts?method=automatic&discount_type=free_shipping%2Cmoney_off_orders`,
+                                                `${shopifyAdminBaseUrl(storeConfiguration.storeName)}/discounts?method=automatic`,
                                                 '_blank',
                                             )
                                         }}
