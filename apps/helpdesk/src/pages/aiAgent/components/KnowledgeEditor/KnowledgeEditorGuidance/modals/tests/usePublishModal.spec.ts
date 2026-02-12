@@ -96,10 +96,25 @@ describe('usePublishModal', () => {
     })
 
     describe('isOpen', () => {
-        it('should return true when activeModal is publish', () => {
+        it('should return true when activeModal is publish and not first publish', () => {
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(true)
+        })
+
+        it('should return false when activeModal is publish but is first publish', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: { ...mockGuidance, publishedVersionId: null },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => usePublishModal())
+
+            expect(result.current.isOpen).toBe(false)
         })
 
         it('should return false when activeModal is null', () => {
@@ -136,6 +151,71 @@ describe('usePublishModal', () => {
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(false)
+        })
+    })
+
+    describe('first publish', () => {
+        it('should auto-publish with empty commit message on first publish', async () => {
+            mockUpdateGuidanceArticle.mockResolvedValue({
+                title: 'Updated Title',
+                content: 'Updated Content',
+            })
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: { ...mockGuidance, publishedVersionId: null },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await Promise.resolve()
+            })
+
+            expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                {
+                    isCurrent: true,
+                    commitMessage: undefined,
+                },
+                {
+                    articleId: 123,
+                    locale: 'en-US',
+                },
+            )
+        })
+
+        it('should not auto-publish when not first publish', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: { ...mockGuidance, publishedVersionId: 2 },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            renderHook(() => usePublishModal())
+
+            expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
+        })
+
+        it('should not auto-publish when activeModal is not publish', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    activeModal: null,
+                    guidance: { ...mockGuidance, publishedVersionId: null },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            renderHook(() => usePublishModal())
+
+            expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
         })
     })
 

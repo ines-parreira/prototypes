@@ -282,11 +282,12 @@ describe('KnowledgeEditorGuidance', () => {
                 key === FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
         )
 
-        // Set up a draft article (isCurrent: false) to enable publish button
+        // Set up a draft article (isCurrent: false) with published version to enable publish button
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
                 ...guidanceArticle,
                 isCurrent: false,
+                publishedVersionId: 1,
             },
             isGuidanceArticleLoading: false,
             refetch: jest.fn(),
@@ -566,11 +567,12 @@ describe('KnowledgeEditorGuidance', () => {
 
         updateGuidanceArticle.mockResolvedValue(updatedArticle)
 
-        // Set up a draft article (isCurrent: false) to enable publish button
+        // Set up a draft article (isCurrent: false) with published version to enable publish button
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
                 ...guidanceArticle,
                 isCurrent: false,
+                publishedVersionId: 1,
             },
             isGuidanceArticleLoading: false,
             refetch: jest.fn(),

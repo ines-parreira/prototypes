@@ -139,10 +139,30 @@ describe('usePublishModal', () => {
     })
 
     describe('isOpen', () => {
-        it('should return true when activeModal is "publish"', () => {
+        it('should return true when activeModal is "publish" and not first publish', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                published_version_id: 123,
+                            },
+                        },
+                    },
+                }),
+            )
+
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(true)
+        })
+
+        it('should return false when activeModal is "publish" but is first publish', () => {
+            const { result } = renderHook(() => usePublishModal())
+
+            expect(result.current.isOpen).toBe(false)
         })
 
         it('should return false when activeModal is null', () => {
@@ -191,6 +211,70 @@ describe('usePublishModal', () => {
             const { result } = renderHook(() => usePublishModal())
 
             expect(result.current.isOpen).toBe(false)
+        })
+    })
+
+    describe('first publish', () => {
+        it('should auto-publish with empty commit message on first publish', async () => {
+            mockMutateAsync.mockResolvedValue({
+                data: {
+                    title: 'Updated Title',
+                    content: 'Updated Content',
+                },
+            })
+
+            renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await Promise.resolve()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith([
+                undefined,
+                {
+                    help_center_id: 1,
+                    article_id: 123,
+                    locale: 'en-US',
+                },
+                {
+                    is_current: true,
+                    commit_message: undefined,
+                },
+            ])
+        })
+
+        it('should not auto-publish when not first publish', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                published_version_id: 123,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            renderHook(() => usePublishModal())
+
+            expect(mockMutateAsync).not.toHaveBeenCalled()
+        })
+
+        it('should not auto-publish when activeModal is not publish', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        activeModal: null,
+                    },
+                }),
+            )
+
+            renderHook(() => usePublishModal())
+
+            expect(mockMutateAsync).not.toHaveBeenCalled()
         })
     })
 

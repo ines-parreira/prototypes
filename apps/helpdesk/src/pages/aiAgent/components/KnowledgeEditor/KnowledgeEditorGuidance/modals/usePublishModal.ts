@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
@@ -68,8 +68,16 @@ export const usePublishModal = () => {
         ],
     )
 
+    const isFirstPublish = !state.guidance?.publishedVersionId
+
+    useEffect(() => {
+        if (state.activeModal === 'publish' && isFirstPublish) {
+            onPublish('')
+        }
+    }, [state.activeModal, isFirstPublish, onPublish])
+
     return {
-        isOpen: state.activeModal === 'publish',
+        isOpen: state.activeModal === 'publish' && !isFirstPublish,
         isPublishing: state.isUpdating,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onPublish,

@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
@@ -70,8 +70,17 @@ export const usePublishModal = () => {
         ],
     )
 
+    const isFirstPublish =
+        state.article?.translation.published_version_id === null
+
+    useEffect(() => {
+        if (state.activeModal === 'publish' && isFirstPublish) {
+            onPublish('')
+        }
+    }, [state.activeModal, isFirstPublish, onPublish])
+
     return {
-        isOpen: state.activeModal === 'publish',
+        isOpen: state.activeModal === 'publish' && !isFirstPublish,
         isPublishing: state.isUpdating,
         onClose: () => dispatch({ type: 'CLOSE_MODAL' }),
         onPublish,
