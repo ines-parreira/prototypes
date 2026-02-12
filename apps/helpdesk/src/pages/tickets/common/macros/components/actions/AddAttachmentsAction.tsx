@@ -4,6 +4,7 @@ import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Badge } from 'reactstrap'
 
+import { MAX_ATTACHMENTS_SIZE } from 'config/editor'
 import type { Attachment } from 'models/ticket/types'
 import FileField from 'pages/common/forms/FileField'
 import { fileIconFromContentType } from 'pages/tickets/common/utils'
@@ -22,6 +23,20 @@ export default class AddAttachmentsAction extends Component<Props> {
 
     _removeAttachment = (fileIndex: number) => {
         this.props.removeAttachment(this.props.index, fileIndex)
+    }
+
+    _getExistingAttachmentsSize = () => {
+        const attachments: Map<any, any> = this.props.action.getIn(
+            ['arguments', 'attachments'],
+            fromJS([]),
+        )
+        return attachments
+            .toArray()
+            .reduce(
+                (sum: number, file: Map<any, any>) =>
+                    sum + (file.get('size') || 0),
+                0,
+            )
     }
 
     // Render uploaded attachments
@@ -49,6 +64,9 @@ export default class AddAttachmentsAction extends Component<Props> {
     }
 
     render() {
+        const existingSize = this._getExistingAttachmentsSize()
+        const remainingSize = MAX_ATTACHMENTS_SIZE - existingSize
+
         return (
             <div>
                 {this._renderAttachments()}
@@ -64,6 +82,7 @@ export default class AddAttachmentsAction extends Component<Props> {
                     multiple
                     noPreview
                     returnFiles
+                    maxSize={remainingSize}
                 />
             </div>
         )
