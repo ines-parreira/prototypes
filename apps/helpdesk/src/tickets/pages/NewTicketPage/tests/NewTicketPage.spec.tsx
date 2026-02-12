@@ -1,6 +1,9 @@
 import { Handle, Panel } from '@repo/layout'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
-import { NewTicketInfobarNavigation } from '@repo/tickets'
+import {
+    NewTicketInfobarNavigation,
+    TicketsLegacyBridgeProvider,
+} from '@repo/tickets'
 import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -108,10 +111,54 @@ afterAll(() => {
     server.close()
 })
 
+const legacyBridgeTestProps = {
+    dispatchNotification: jest.fn(),
+    dispatchDismissNotification: jest.fn(),
+    dispatchAuditLogEvents: jest.fn(),
+    dispatchHideAuditLogEvents: jest.fn(),
+    toggleQuickReplies: jest.fn(),
+    onToggleUnread: jest.fn(),
+    ticketViewNavigation: {
+        shouldDisplay: false,
+        shouldUseLegacyFunctions: false,
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        legacyGoToPrevTicket: jest.fn(),
+        isPreviousEnabled: false,
+        legacyGoToNextTicket: jest.fn(),
+        isNextEnabled: false,
+    },
+    handleTicketDraft: {
+        hasDraft: false,
+        onResumeDraft: jest.fn(),
+        onDiscardDraft: jest.fn(),
+    },
+    makeOutboundCall: jest.fn(),
+    voiceDevice: {
+        device: {},
+        call: null,
+    },
+    dtpToggle: {
+        isEnabled: false,
+        setIsEnabled: jest.fn(),
+        previousTicketId: undefined,
+        nextTicketId: undefined,
+        setPrevNextTicketIds: jest.fn(),
+        shouldRedirectToSplitView: false,
+        setShouldRedirectToSplitView: jest.fn(),
+    },
+    dtpEnabled: {
+        isEnabled: false,
+    },
+    humanizeChannel: jest.fn(),
+}
+
 const renderComponent = () => {
     const user = userEvent.setup()
     const result = renderWithStoreAndQueryClientAndRouter(
-        <NewTicketPage />,
+        <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
+            <NewTicketPage />
+        </TicketsLegacyBridgeProvider>,
         {},
         {
             path: '/app/tickets/new',
@@ -397,6 +444,12 @@ describe('NewTicketPage', () => {
     })
 
     describe('infobar content based on activeTab', () => {
+        beforeEach(() => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                isExpanded: true,
+            } as any)
+        })
+
         it('renders Shopify content when activeTab is Shopify', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,

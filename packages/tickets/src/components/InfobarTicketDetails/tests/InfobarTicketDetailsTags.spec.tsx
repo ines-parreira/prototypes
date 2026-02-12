@@ -3,6 +3,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
+    mockCreateTagHandler,
     mockGetTicketHandler,
     mockListTagsHandler,
     mockTag,
@@ -86,11 +87,13 @@ const mockListTags = mockListTagsHandler(async ({ data }) =>
 )
 
 const mockUpdateTicket = mockUpdateTicketHandler()
+const mockCreateTag = mockCreateTagHandler()
 
 const localHandlers = [
     mockGetTicket.handler,
     mockListTags.handler,
     mockUpdateTicket.handler,
+    mockCreateTag.handler,
 ]
 
 const server = setupServer()
@@ -362,6 +365,110 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
 
             await waitForQueriesSettled()
+        })
+    })
+
+    describe('Creating tags', () => {
+        it('should create a new tag when search returns no results and create is clicked', async () => {
+            const createdTag = mockTag({
+                id: 100,
+                name: 'NewTag',
+                decoration: null,
+            })
+
+            const mockCreateTagCustom = mockCreateTagHandler(async () =>
+                HttpResponse.json(createdTag),
+            )
+
+            const mockListTagsSearchAware = mockListTagsHandler(
+                async ({ data, request }) => {
+                    const url = new URL(request.url)
+                    const search = url.searchParams.get('search') || ''
+
+                    if (search) {
+                        return HttpResponse.json({
+                            ...data,
+                            data: [],
+                            meta: {
+                                total_resources: 0,
+                                prev_cursor: null,
+                                next_cursor: null,
+                            },
+                        })
+                    }
+
+                    return HttpResponse.json({
+                        ...data,
+                        data: allTags,
+                        meta: {
+                            total_resources: allTags.length,
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    })
+                },
+            )
+
+            server.use(
+                mockGetTicket.handler,
+                mockListTagsSearchAware.handler,
+                mockCreateTagCustom.handler,
+                mockUpdateTicket.handler,
+            )
+
+            const waitForCreateTagRequest =
+                mockCreateTagCustom.waitForRequest(server)
+            const waitForUpdateTicketRequest =
+                mockUpdateTicket.waitForRequest(server)
+
+            const { user } = render(
+                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
+            )
+
+            await waitFor(() => {
+                expect(getAddButton()).toBeInTheDocument()
+            })
+
+            await user.click(getAddButton())
+
+            await waitFor(() => {
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+            })
+
+            const searchInput = screen.getByRole('searchbox')
+            await user.type(searchInput, 'NewTag')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /create tag/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /create tag/i }),
+            )
+
+            await waitForCreateTagRequest(async (request) => {
+                const body = await request.clone().json()
+                expect(body.name).toBe('NewTag')
+            })
+
+            await waitForUpdateTicketRequest(async (request) => {
+                const body = await request.clone().json()
+                expect(body.tags).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({ id: 1, name: 'Bug' }),
+                        expect.objectContaining({
+                            id: 2,
+                            name: 'Feature Request',
+                        }),
+                        expect.objectContaining({
+                            id: 100,
+                            name: 'NewTag',
+                        }),
+                    ]),
+                )
+            })
         })
     })
 

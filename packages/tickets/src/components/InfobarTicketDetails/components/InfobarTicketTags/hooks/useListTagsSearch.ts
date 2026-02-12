@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import { useDebouncedValue } from '@repo/hooks'
+import { DurationInMs } from '@repo/utils'
 
 import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
@@ -15,7 +16,7 @@ export const useListTagsSearch = () => {
             order_by: ListTagsOrderBy.UsageDescNameDesc,
         },
         {
-            staleTime: 60000 * 5,
+            staleTime: DurationInMs.FiveMinutes,
             keepPreviousData: true,
         },
     )

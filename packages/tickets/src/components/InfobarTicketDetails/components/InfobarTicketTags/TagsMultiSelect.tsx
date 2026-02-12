@@ -8,15 +8,20 @@ import {
     CheckBoxField,
     Dot,
     Icon,
+    ListFooter,
     ListItem,
     MultiSelect,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
     Tag,
+    Text,
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
+import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
+import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
+import { useCreateTicketTag } from './hooks/useCreateTicketTag'
 import { useListTagsSearch } from './hooks/useListTagsSearch'
 import { sortByAscendingIdOrder } from './hooks/useUpdateTicketTags'
 import { TagsMultiSelectShowMore } from './TagsMultiSelectShowMore'
@@ -40,6 +45,8 @@ export function TagsMultiSelect({
     'aria-label': ariaLabel = 'Tags selection',
 }: TagsMultiSelectProps) {
     const [isTagMenuOpen, setIsTagMenuOpen] = useState(false)
+    const { dispatchNotification } = useTicketsLegacyBridge()
+    const { createTicketTag, isCreating } = useCreateTicketTag()
     const {
         data: tagList,
         search,
@@ -68,6 +75,28 @@ export function TagsMultiSelect({
                 })) ?? [],
         [tagList],
     )
+
+    const canCreateTag = search.trim() !== ''
+
+    const handleCreateTag = useCallback(async () => {
+        try {
+            const createdTag = await createTicketTag(search.trim())
+            onChange([...value, createdTag].sort(sortByAscendingIdOrder))
+            setSearch('')
+        } catch {
+            dispatchNotification({
+                status: NotificationStatus.Error,
+                message: 'Failed to create new tag',
+            })
+        }
+    }, [
+        createTicketTag,
+        search,
+        dispatchNotification,
+        onChange,
+        value,
+        setSearch,
+    ])
 
     const handleSelectChange = useCallback(
         (selectedOptions: TicketTagOption[]) => {
@@ -166,6 +195,26 @@ export function TagsMultiSelect({
                         isLoading={isLoading}
                         onLoadMore={() => shouldLoadMore && onLoad()}
                         aria-label={ariaLabel}
+                        footer={
+                            canCreateTag ? (
+                                <ListFooter>
+                                    <Button
+                                        size="sm"
+                                        variant="tertiary"
+                                        onClick={handleCreateTag}
+                                        isLoading={isCreating}
+                                    >
+                                        <Text variant="bold" size="sm">
+                                            Create tag:
+                                        </Text>
+                                        {` `}
+                                        <Text variant="regular" size="sm">
+                                            {search}
+                                        </Text>
+                                    </Button>
+                                </ListFooter>
+                            ) : undefined
+                        }
                     >
                         {(option) => (
                             <ListItem

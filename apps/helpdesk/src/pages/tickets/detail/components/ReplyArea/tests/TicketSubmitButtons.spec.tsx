@@ -86,7 +86,7 @@ const testQueryClient = new QueryClient({
     },
 })
 
-const legacyBridgeProps = {
+const legacyBridgeTestProps = {
     dispatchNotification: jest.fn(),
     dispatchDismissNotification: jest.fn(),
     dispatchAuditLogEvents: jest.fn(),
@@ -154,7 +154,7 @@ describe('<TicketSubmitButtons />', () => {
             ...render(
                 <MemoryRouter>
                     <Provider store={store}>
-                        <TicketsLegacyBridgeProvider {...legacyBridgeProps}>
+                        <TicketsLegacyBridgeProvider {...legacyBridgeTestProps}>
                             <QueryClientProvider client={testQueryClient}>
                                 <TicketSubmitButtons
                                     submit={props?.submit ?? mockSubmit}

@@ -1,12 +1,17 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { mockTicketTag } from '@gorgias/helpdesk-mocks'
+import {
+    mockCreateTagHandler,
+    mockListTagsHandler,
+    mockTag,
+    mockTicketTag,
+} from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../../tests/render.utils'
-import * as useListTagsSearchModule from './hooks/useListTagsSearch'
+import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { TagsMultiSelect } from './TagsMultiSelect'
 
-vi.mock('./hooks/useListTagsSearch')
 vi.mock('@repo/utils', async () => {
     const actual = await vi.importActual('@repo/utils')
     return {
@@ -15,41 +20,84 @@ vi.mock('@repo/utils', async () => {
     }
 })
 
-const mockTags = [
+const tag1 = mockTag({ id: 1, name: 'Bug', decoration: { color: 'red' } })
+const tag2 = mockTag({ id: 2, name: 'Feature', decoration: null })
+const allTags = [tag1, tag2]
+
+const mockTicketTags = [
     mockTicketTag({ id: 1, name: 'Bug', decoration: { color: 'red' } }),
     mockTicketTag({ id: 2, name: 'Feature', decoration: null }),
 ]
 
-const mockUseListTagsSearchReturn = {
-    data: {
-        pages: [
-            {
-                data: {
-                    data: mockTags,
-                },
-            },
-        ],
+const emptyListResponse = {
+    data: [],
+    meta: {
+        total_resources: 0,
+        prev_cursor: null,
+        next_cursor: null,
     },
-    search: '',
-    setSearch: vi.fn(),
-    isLoading: false,
-    isFetching: false,
-    isFetchingNextPage: false,
-    hasNextPage: false,
-    fetchNextPage: vi.fn(),
-    onLoad: vi.fn(),
-    shouldLoadMore: false,
+}
+
+const populatedListResponse = {
+    data: allTags,
+    meta: {
+        total_resources: allTags.length,
+        prev_cursor: null,
+        next_cursor: null,
+    },
+}
+
+const mockListTags = mockListTagsHandler(async ({ data }) =>
+    HttpResponse.json({ ...data, ...populatedListResponse }),
+)
+
+const mockListTagsSearchAware = mockListTagsHandler(
+    async ({ data, request }) => {
+        const url = new URL(request.url)
+        const search = url.searchParams.get('search') || ''
+
+        if (search) {
+            return HttpResponse.json({ ...data, ...emptyListResponse })
+        }
+
+        return HttpResponse.json({ ...data, ...populatedListResponse })
+    },
+)
+
+const mockCreateTag = mockCreateTagHandler()
+
+const localHandlers = [mockListTags.handler, mockCreateTag.handler]
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+beforeEach(() => {
+    server.use(...localHandlers)
+    testAppQueryClient.clear()
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const waitForQueriesSettled = async () => {
+    await waitFor(() => {
+        expect(testAppQueryClient.isFetching()).toBe(0)
+    })
 }
 
 describe('TagsMultiSelect', () => {
-    beforeEach(() => {
-        vi.mocked(useListTagsSearchModule.useListTagsSearch).mockReturnValue(
-            mockUseListTagsSearchReturn as any,
-        )
-    })
+    it('renders correctly with selected tags', async () => {
+        render(<TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />)
 
-    it('renders correctly with selected tags', () => {
-        render(<TagsMultiSelect value={mockTags} onChange={vi.fn()} />)
+        await waitForQueriesSettled()
 
         expect(screen.getAllByText('Bug')[0]).toBeInTheDocument()
         expect(screen.getAllByText('Feature')[0]).toBeInTheDocument()
@@ -58,8 +106,10 @@ describe('TagsMultiSelect', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders add tags button when no tags are selected', () => {
+    it('renders add tags button when no tags are selected', async () => {
         render(<TagsMultiSelect value={[]} onChange={vi.fn()} />)
+
+        await waitForQueriesSettled()
 
         expect(
             screen.getByRole('button', { name: /add tags/i }),
@@ -70,21 +120,159 @@ describe('TagsMultiSelect', () => {
         const onChange = vi.fn()
 
         const { user } = render(
-            <TagsMultiSelect value={mockTags} onChange={onChange} />,
+            <TagsMultiSelect value={mockTicketTags} onChange={onChange} />,
         )
 
-        const closeTags = screen.getAllByRole('button', { name: /remove tag/i })
+        await waitForQueriesSettled()
+
+        const closeTags = screen.getAllByRole('button', {
+            name: /remove tag/i,
+        })
         await user.click(closeTags[0])
 
-        expect(onChange).toHaveBeenCalledWith([mockTags[1]])
+        expect(onChange).toHaveBeenCalledWith([mockTicketTags[1]])
+    })
+
+    describe('Create tag', () => {
+        it('should show create button when search returns no results', async () => {
+            server.use(mockListTagsSearchAware.handler)
+
+            const { user } = render(
+                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
+            )
+
+            await waitForQueriesSettled()
+
+            await user.click(screen.getByRole('button', { name: /add tags/i }))
+
+            await waitFor(() => {
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+            })
+
+            await user.type(screen.getByRole('searchbox'), 'NewTag')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /create tag/i }),
+                ).toBeInTheDocument()
+            })
+
+            await waitForQueriesSettled()
+        })
+
+        it('should not show create button when search is empty', async () => {
+            server.use(mockListTagsSearchAware.handler)
+
+            const { user } = render(
+                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
+            )
+
+            await waitForQueriesSettled()
+
+            await user.click(screen.getByRole('button', { name: /add tags/i }))
+
+            await waitFor(() => {
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByRole('button', { name: /create tag/i }),
+            ).not.toBeInTheDocument()
+
+            await waitForQueriesSettled()
+        })
+
+        it('should not show create button when results exist', async () => {
+            const { user } = render(
+                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
+            )
+
+            await waitForQueriesSettled()
+
+            await user.click(screen.getByRole('button', { name: /add tags/i }))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: 'Bug' }),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByRole('button', { name: /create tag/i }),
+            ).not.toBeInTheDocument()
+
+            await waitForQueriesSettled()
+        })
+
+        it('should call onChange with new tag after creation', async () => {
+            const createdTag = mockTag({
+                id: 100,
+                name: 'NewTag',
+                decoration: null,
+            })
+
+            const mockCreateTagCustom = mockCreateTagHandler(async () =>
+                HttpResponse.json(createdTag),
+            )
+
+            server.use(
+                mockListTagsSearchAware.handler,
+                mockCreateTagCustom.handler,
+            )
+
+            const onChange = vi.fn()
+            const { user } = render(
+                <TagsMultiSelect value={mockTicketTags} onChange={onChange} />,
+            )
+
+            await waitForQueriesSettled()
+
+            const addButton = screen.getByRole('button', {
+                name: /add-plus/i,
+            })
+            await user.click(addButton)
+
+            await waitFor(() => {
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+            })
+
+            await user.type(screen.getByRole('searchbox'), 'NewTag')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /create tag/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /create tag/i }),
+            )
+
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith(
+                    expect.arrayContaining([
+                        expect.objectContaining({ id: 1, name: 'Bug' }),
+                        expect.objectContaining({ id: 2, name: 'Feature' }),
+                        expect.objectContaining({
+                            id: 100,
+                            name: 'NewTag',
+                        }),
+                    ]),
+                )
+            })
+
+            await waitForQueriesSettled()
+        })
     })
 
     it('allows selecting a tag from the dropdown and removing it', async () => {
         const onChange = vi.fn()
 
         const { user, rerender } = render(
-            <TagsMultiSelect value={[mockTags[0]]} onChange={onChange} />,
+            <TagsMultiSelect value={[mockTicketTags[0]]} onChange={onChange} />,
         )
+
+        await waitForQueriesSettled()
 
         const addButton = screen.getByRole('button', { name: /add-plus/i })
         await user.click(addButton)
@@ -97,15 +285,22 @@ describe('TagsMultiSelect', () => {
 
         await user.click(screen.getByRole('option', { name: 'Feature' }))
 
-        expect(onChange).toHaveBeenCalledWith([mockTags[0], mockTags[1]])
+        expect(onChange).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({ id: 1, name: 'Bug' }),
+                expect.objectContaining({ id: 2, name: 'Feature' }),
+            ]),
+        )
 
         await user.keyboard('{Escape}')
         onChange.mockClear()
-        rerender(<TagsMultiSelect value={mockTags} onChange={onChange} />)
+        rerender(<TagsMultiSelect value={mockTicketTags} onChange={onChange} />)
 
-        const closeTags = screen.getAllByRole('button', { name: /remove tag/i })
+        const closeTags = screen.getAllByRole('button', {
+            name: /remove tag/i,
+        })
         await user.click(closeTags[0])
 
-        expect(onChange).toHaveBeenCalledWith([mockTags[1]])
+        expect(onChange).toHaveBeenCalledWith([mockTicketTags[1]])
     })
 })
