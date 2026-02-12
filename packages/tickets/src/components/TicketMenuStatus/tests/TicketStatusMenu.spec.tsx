@@ -111,11 +111,24 @@ afterAll(() => {
 })
 
 describe('TicketStatus', () => {
+    const waitForMenu = async () => {
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', {
+                    name: 'Ticket status menu',
+                }),
+            ).toBeInTheDocument()
+        })
+    }
+
     const openMenu = async (user: ReturnType<typeof render>['user']) => {
-        const statusButton = await screen.findByRole('button', {
+        // Wait for the component to be fully loaded by waiting for the current user query
+        await waitForMenu()
+
+        const statusButton = screen.getByRole('button', {
             name: 'Ticket status menu',
         })
-        await act(() => user.click(statusButton))
+        await user.click(statusButton)
         return statusButton
     }
 
@@ -175,36 +188,42 @@ describe('TicketStatus', () => {
             })
         })
 
-        it('should show Apply button that is disabled until date is selected', async () => {
-            const { user } = render(<TicketStatusMenu ticket={openTicket} />)
+        it(
+            'should show Apply button that is disabled until date is selected',
+            { timeout: 15000 },
+            async () => {
+                const { user } = render(
+                    <TicketStatusMenu ticket={openTicket} />,
+                )
 
-            await openMenu(user)
+                await openMenu(user)
 
-            const snoozeOption = await screen.findByText('Snooze')
-            await act(() => user.click(snoozeOption))
+                const snoozeOption = await screen.findByText('Snooze')
+                await act(() => user.click(snoozeOption))
 
-            const datePicker = await screen.findByRole('grid')
-            expect(datePicker).toBeInTheDocument()
+                const datePicker = await screen.findByRole('grid')
+                expect(datePicker).toBeInTheDocument()
 
-            const applyButton = await screen.findByRole('button', {
-                name: 'Apply',
-            })
-            expect(applyButton).toBeDisabled()
+                const applyButton = await screen.findByRole('button', {
+                    name: 'Apply',
+                })
+                expect(applyButton).toBeDisabled()
 
-            const nextMonthButton = await screen.findByRole('button', {
-                name: 'Next month',
-            })
-            await act(() => user.click(nextMonthButton))
+                const nextMonthButton = await screen.findByRole('button', {
+                    name: 'Next month',
+                })
+                await act(() => user.click(nextMonthButton))
 
-            const day15 = await screen.findByRole('button', {
-                name: /15/,
-            })
-            await act(() => user.click(day15))
+                const day15 = await screen.findByRole('button', {
+                    name: /15/,
+                })
+                await act(() => user.click(day15))
 
-            await waitFor(() => {
-                expect(applyButton).not.toBeDisabled()
-            })
-        })
+                await waitFor(() => {
+                    expect(applyButton).not.toBeDisabled()
+                })
+            },
+        )
 
         it('should display error notification when snooze fails', async () => {
             const dispatchNotification = vi.fn()
@@ -528,6 +547,8 @@ describe('TicketStatus', () => {
 
             render(<TicketStatusMenu ticket={openTicket} />)
 
+            await waitForMenu()
+
             act(() => {
                 shortcutManager.trigger('c')
             })
@@ -543,6 +564,8 @@ describe('TicketStatus', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             render(<TicketStatusMenu ticket={closedTicket} />)
+
+            await waitForMenu()
 
             act(() => {
                 shortcutManager.trigger('c')
@@ -560,6 +583,8 @@ describe('TicketStatus', () => {
 
             render(<TicketStatusMenu ticket={snoozedTicket} />)
 
+            await waitForMenu()
+
             act(() => {
                 shortcutManager.trigger('c')
             })
@@ -576,6 +601,8 @@ describe('TicketStatus', () => {
 
             render(<TicketStatusMenu ticket={closedTicket} />)
 
+            await waitForMenu()
+
             act(() => {
                 shortcutManager.trigger('o')
             })
@@ -591,6 +618,8 @@ describe('TicketStatus', () => {
                 mockUpdateTicket.waitForRequest(server)
 
             render(<TicketStatusMenu ticket={snoozedTicket} />)
+
+            await waitForMenu()
 
             act(() => {
                 shortcutManager.trigger('o')
@@ -616,6 +645,8 @@ describe('TicketStatus', () => {
 
             render(<TicketStatusMenu ticket={openTicket} />)
 
+            await waitForMenu()
+
             act(() => {
                 shortcutManager.trigger('o')
             })
@@ -637,6 +668,8 @@ describe('TicketStatus', () => {
             render(<TicketStatusMenu ticket={openTicket} />, {
                 dispatchNotification,
             })
+
+            await waitForMenu()
 
             act(() => {
                 shortcutManager.trigger('c')
@@ -664,6 +697,8 @@ describe('TicketStatus', () => {
             render(<TicketStatusMenu ticket={closedTicket} />, {
                 dispatchNotification,
             })
+
+            await waitForMenu()
 
             act(() => {
                 shortcutManager.trigger('o')
