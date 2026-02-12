@@ -127,8 +127,14 @@ const defaultProps: StepProps = {
     goToStep: jest.fn(),
 }
 
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
+
 const renderWithProvider = (props = defaultProps) => {
-    const queryClient = new QueryClient()
     const history = createMemoryHistory({
         initialEntries: [
             `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/knowledge`,
@@ -137,7 +143,7 @@ const renderWithProvider = (props = defaultProps) => {
 
     const result = renderWithRouter(
         <Provider store={configureMockStore()()}>
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={testQueryClient}>
                 <KnowledgeStep {...props} />
             </QueryClientProvider>
         </Provider>,
@@ -155,6 +161,9 @@ const renderWithProvider = (props = defaultProps) => {
 }
 
 describe('KnowledgeStep', () => {
+    const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+    })
     const mockDispatch = jest.fn()
     const mockRemoveShoppingAssistantTrialOptin = jest.fn()
     const mockStartSalesTrialMutateAsync = jest
@@ -162,6 +171,7 @@ describe('KnowledgeStep', () => {
         .mockResolvedValue(undefined)
 
     beforeEach(() => {
+        testQueryClient.clear()
         jest.clearAllMocks()
 
         useGetHelpCentersByShopNameMock.mockReturnValue({
@@ -380,9 +390,7 @@ describe('KnowledgeStep', () => {
 
         const nextButton = screen.getByText('Finish setup')
 
-        act(() => {
-            userEvent.click(nextButton)
-        })
+        await act(() => user.click(nextButton))
 
         await waitFor(() => {
             expect(history.location.pathname).toEqual(
@@ -405,9 +413,7 @@ describe('KnowledgeStep', () => {
 
         const nextButton = screen.getByRole('button', { name: /finish/i })
 
-        act(() => {
-            userEvent.click(nextButton)
-        })
+        await act(() => user.click(nextButton))
 
         await waitFor(() => {
             expect(history.location.pathname).toEqual('/app/ai-agent/overview')
@@ -419,6 +425,8 @@ describe('KnowledgeStep', () => {
 
     describe('Shopping Assistant trial functionality', () => {
         beforeEach(() => {
+            testQueryClient.clear()
+
             mockUseLocalStorage.mockReturnValue([
                 true, // shoppingAssistantTrialOptin = true
                 jest.fn(),
@@ -437,9 +445,7 @@ describe('KnowledgeStep', () => {
 
             const nextButton = screen.getByText('Finish setup')
 
-            act(() => {
-                userEvent.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(mockStartSalesTrialMutateAsync).toHaveBeenCalledWith([
@@ -464,9 +470,7 @@ describe('KnowledgeStep', () => {
 
             const nextButton = screen.getByText('Finish setup')
 
-            act(() => {
-                userEvent.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(mockStartSalesTrialMutateAsync).not.toHaveBeenCalled()
@@ -493,9 +497,7 @@ describe('KnowledgeStep', () => {
 
             const nextButton = screen.getByText('Finish setup')
 
-            act(() => {
-                userEvent.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(mockStartSalesTrialMutateAsync).not.toHaveBeenCalled()
@@ -550,6 +552,8 @@ describe('KnowledgeStep', () => {
 
     describe('Loading state management', () => {
         beforeEach(() => {
+            testQueryClient.clear()
+
             useGetHelpCentersByShopNameMock.mockReturnValue({
                 isHelpCenterLoading: false,
                 helpCenters: getHelpCentersResponseFixture.data,
@@ -584,9 +588,7 @@ describe('KnowledgeStep', () => {
 
             const nextButton = screen.getByRole('button', { name: /finish/i })
 
-            act(() => {
-                userEvent.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(history.location.pathname).toEqual(

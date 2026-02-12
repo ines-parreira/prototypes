@@ -1,4 +1,3 @@
-import { getLDClient } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -31,7 +30,12 @@ import { EngagementStep } from '../EngagementStep'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
-const queryClient = new QueryClient()
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
 
 const history = createMemoryHistory({
     initialEntries: [
@@ -60,8 +64,6 @@ const mockUseLowestPotentialImpact = assumeMock(useLowestPotentialImpact)
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardings')
-
 const mockGmvData = [
     [
         {
@@ -81,7 +83,7 @@ const goToStep = jest.fn()
 const renderWithProviders = (props = {}) => {
     return renderWithRouter(
         <Provider store={mockStore(defaultState)}>
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={testQueryClient}>
                 <EngagementStep
                     currentStep={4}
                     totalSteps={5}
@@ -100,10 +102,9 @@ const renderWithProviders = (props = {}) => {
 
 describe('EngagementStep', () => {
     beforeEach(() => {
+        testQueryClient.clear()
+
         ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
 
         mockUseGmvUsdOver30Days.mockReturnValue({
             data: mockGmvData,
@@ -211,7 +212,7 @@ describe('EngagementStep', () => {
 
         const backButton = screen.getByRole('button', { name: /Back/i })
 
-        await user.click(backButton)
+        await act(() => user.click(backButton))
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalled()
@@ -232,11 +233,11 @@ describe('EngagementStep', () => {
         expect(toggles.length).toBeGreaterThan(0)
 
         // Flip the first toggle to make the form dirty
-        await user.click(toggles[0])
+        await act(() => user.click(toggles[0]))
 
         // Click "Next"
         const nextButton = screen.getByRole('button', { name: /next/i })
-        await user.click(nextButton)
+        await act(() => user.click(nextButton))
 
         await waitFor(() => {
             expect(mutateUpdateOnboardingMock).toHaveBeenCalledWith(

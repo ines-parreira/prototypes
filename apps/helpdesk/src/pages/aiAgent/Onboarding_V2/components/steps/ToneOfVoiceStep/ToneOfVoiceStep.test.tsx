@@ -295,9 +295,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const backButton = screen.getByRole('button', { name: /back/i })
-            await act(async () => {
-                await user.click(backButton)
-            })
+            await act(() => user.click(backButton))
             await waitForQueriesSettled()
 
             expect(goToStep).toHaveBeenCalledWith(
@@ -319,9 +317,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -347,9 +343,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             expect(screen.getByText('Professional')).toBeInTheDocument()
@@ -369,9 +363,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await act(async () => {
-                await user.click(customOption)
-            })
+            await act(() => user.click(customOption))
             await waitForQueriesSettled()
 
             expect(
@@ -393,9 +385,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await act(async () => {
-                await user.click(customOption)
-            })
+            await act(() => user.click(customOption))
             await waitForQueriesSettled()
 
             expect(
@@ -430,15 +420,11 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -474,9 +460,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await act(async () => {
-                await user.click(customOption)
-            })
+            await act(() => user.click(customOption))
             await waitForQueriesSettled()
 
             const textarea =
@@ -488,9 +472,7 @@ describe('ToneOfVoiceStep', () => {
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -532,15 +514,11 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -580,9 +558,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -615,15 +591,11 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -651,15 +623,11 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -712,15 +680,11 @@ describe('ToneOfVoiceStep', () => {
             await waitForQueriesSettled()
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -760,9 +724,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Friendly')
 
             const professionalOption = screen.getByText('Professional')
-            await act(async () => {
-                await user.click(professionalOption)
-            })
+            await act(() => user.click(professionalOption))
             await waitForQueriesSettled()
 
             // Wait for the form state to update after clicking
@@ -774,9 +736,7 @@ describe('ToneOfVoiceStep', () => {
             })
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(() => {
@@ -806,22 +766,16 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await act(async () => {
-                await user.click(customOption)
-            })
+            await act(() => user.click(customOption))
             await waitForQueriesSettled()
 
             const textarea =
                 await screen.findByLabelText(/custom tone of voice/i)
-            await act(async () => {
-                await user.clear(textarea)
-            })
+            await act(() => user.clear(textarea))
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             expect(
@@ -854,9 +808,7 @@ describe('ToneOfVoiceStep', () => {
             await screen.findByText('Custom')
 
             const customOption = screen.getByText('Custom')
-            await act(async () => {
-                await user.click(customOption)
-            })
+            await act(() => user.click(customOption))
             await waitForQueriesSettled()
 
             const textarea =
@@ -868,9 +820,7 @@ describe('ToneOfVoiceStep', () => {
             await waitForQueriesSettled()
 
             const nextButton = screen.getByRole('button', { name: /next/i })
-            await act(async () => {
-                await user.click(nextButton)
-            })
+            await act(() => user.click(nextButton))
             await waitForQueriesSettled()
 
             await waitFor(

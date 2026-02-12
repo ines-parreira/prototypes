@@ -3,7 +3,7 @@ import type React from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
@@ -103,7 +103,13 @@ const useAiAgentScopesForAutomationPlanMock = assumeMock(
     useAiAgentScopesForAutomationPlan,
 )
 
-const queryClient = new QueryClient()
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
+
 const history = createMemoryHistory()
 
 const renderComponent = (
@@ -113,7 +119,7 @@ const renderComponent = (
     history.push(initialRoute)
 
     return renderWithRouter(
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={testQueryClient}>
             <Provider store={mockStore(defaultState)}>
                 <AiAgentOnboarding />
             </Provider>
@@ -123,7 +129,13 @@ const renderComponent = (
 }
 
 describe('AiAgentOnboarding', () => {
+    const user = userEvent.setup({
+        advanceTimers: jest.advanceTimersByTime,
+    })
+
     beforeEach(() => {
+        testQueryClient.clear()
+
         // Populate the return values of the mocked hooks
         mockUseShopifyIntegrationAndScope.mockReturnValue({
             integration: null,
@@ -200,10 +212,12 @@ describe('AiAgentOnboarding', () => {
         })
 
         // Click Next
-        userEvent.click(
-            screen.getByRole('button', {
-                name: /Next/i,
-            }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', {
+                    name: /Next/i,
+                }),
+            ),
         )
 
         await waitFor(() => {
@@ -230,7 +244,7 @@ describe('AiAgentOnboarding', () => {
         })
 
         // Click Back
-        userEvent.click(screen.getByText(/Back/i))
+        await act(() => user.click(screen.getByText(/Back/i)))
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(

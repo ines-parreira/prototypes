@@ -1,6 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -27,7 +27,12 @@ const mockUseLowestPotentialImpact = assumeMock(useLowestPotentialImpact)
 
 jest.spyOn(hooks, 'default').mockReturnValue(fromJS(shopifyIntegration))
 
-const queryClient = new QueryClient()
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
 
 const history = createMemoryHistory({
     initialEntries: [`/shop/${shopifyIntegration.meta.shop_name}`],
@@ -53,7 +58,7 @@ const mockLowestPotentialImpact = '$500'
 const renderWithProvider = (props = defaultProps) => {
     return renderWithRouter(
         <Provider store={configureMockStore()()}>
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={testQueryClient}>
                 <EngagementStepConfirmationPopup {...props} />
             </QueryClientProvider>
         </Provider>,
@@ -67,6 +72,7 @@ const renderWithProvider = (props = defaultProps) => {
 
 describe('EngagementStepConfirmationPopup', () => {
     beforeEach(() => {
+        testQueryClient.clear()
         jest.clearAllMocks()
 
         mockUseGmvUsdOver30Days.mockReturnValue({
@@ -112,7 +118,7 @@ describe('EngagementStepConfirmationPopup', () => {
 
         const turnOffButton = screen.getByRole('button', { name: 'Turn Off' })
 
-        await user.click(turnOffButton)
+        await act(() => user.click(turnOffButton))
 
         expect(defaultProps.onTurnOff).toHaveBeenCalledTimes(1)
     })
@@ -125,7 +131,7 @@ describe('EngagementStepConfirmationPopup', () => {
             name: 'Keep Engagement Features On',
         })
 
-        await user.click(keepOnButton)
+        await act(() => user.click(keepOnButton))
 
         expect(defaultProps.onKeepOn).toHaveBeenCalledTimes(1)
     })

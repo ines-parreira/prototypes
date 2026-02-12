@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
-import React from 'react'
 
-import { assumeMock, userEvent } from '@repo/testing'
+import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -48,7 +48,12 @@ const history = createMemoryHistory({
     ],
 })
 
-const queryClient = new QueryClient()
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -90,7 +95,7 @@ const renderComponent = (
     props: ComponentProps<typeof PersonalityStep> = defaultProps,
 ) => {
     renderWithRouter(
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={testQueryClient}>
             <Provider store={mockStore(defaultState)}>
                 <PersonalityStep {...props} />
             </Provider>
@@ -104,9 +109,11 @@ const renderComponent = (
 }
 
 describe('PersonalityStep - With prepopulated data', () => {
-    beforeAll(() => {
-        queryClient.clear()
+    beforeEach(() => {
+        testQueryClient.clear()
+    })
 
+    beforeAll(() => {
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
             data: {
@@ -160,6 +167,10 @@ describe('PersonalityStep - With prepopulated data', () => {
 })
 
 describe('PersonalityStep - Empty state', () => {
+    beforeEach(() => {
+        testQueryClient.clear()
+    })
+
     beforeAll(() => {
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
@@ -194,10 +205,6 @@ describe('PersonalityStep - Empty state', () => {
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SALES,
         ])
-    })
-
-    afterAll(() => {
-        queryClient.clear()
     })
 
     it('should render without crashing', () => {
@@ -286,14 +293,17 @@ describe('PersonalityStep - Empty state', () => {
     })
 
     it('should update the max percentage discount when valid discount', async () => {
+        const user = userEvent.setup()
         renderComponent()
 
         const maxDiscountInput =
             screen.getByLabelText<HTMLInputElement>(/Fixed discount \(%\)/)
 
         // Remove the default value
-        userEvent.clear(maxDiscountInput)
-        await userEvent.type(maxDiscountInput, '15')
+        await act(() => user.clear(maxDiscountInput))
+
+        await act(() => user.type(maxDiscountInput, '15'))
+
         expect(maxDiscountInput).toHaveValue('15')
 
         await waitFor(() => {
@@ -438,9 +448,11 @@ describe('PersonalityStep - Preview information', () => {
         currentStepName: WizardStepEnum.SALES_PERSONALITY,
     }
 
-    beforeAll(() => {
-        queryClient.clear()
+    beforeEach(() => {
+        testQueryClient.clear()
+    })
 
+    beforeAll(() => {
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
             data: defaultMockData,
@@ -687,8 +699,14 @@ describe('PersonalityStep - Onboarding mutation', () => {
             })
         })
 
-        it('should render with default values', () => {
+        it('should render with default values', async () => {
             renderComponent()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText(/Fixed discount \(%\)/),
+                ).toBeInTheDocument()
+            })
 
             expect(
                 screen.getByText(
@@ -709,10 +727,12 @@ describe('PersonalityStep - Onboarding mutation', () => {
         })
 
         it('should call doUpdateOnboardingMutation with default values when clicking on next', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
             const nextButton = screen.getByText(/Next/i)
-            userEvent.click(nextButton)
+
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(doUpdateOnboardingMutationMock).toHaveBeenCalled()
@@ -754,15 +774,18 @@ describe('PersonalityStep - Onboarding mutation', () => {
         })
 
         it('should not call doUpdateOnboardingMutation when no values are changed', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
             const nextButton = screen.getByText(/Next/i)
-            userEvent.click(nextButton)
+
+            await act(() => user.click(nextButton))
 
             expect(doUpdateOnboardingMutationMock).not.toHaveBeenCalled()
         })
 
         it('should call doUpdateOnboardingMutation when values are changed', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
             const maxDiscountInput =
@@ -771,7 +794,8 @@ describe('PersonalityStep - Onboarding mutation', () => {
             expect(maxDiscountInput.value).toBe('0')
 
             const nextButton = screen.getByText(/Next/i)
-            userEvent.click(nextButton)
+
+            await act(() => user.click(nextButton))
 
             await waitFor(() => {
                 expect(doUpdateOnboardingMutationMock).toHaveBeenCalled()

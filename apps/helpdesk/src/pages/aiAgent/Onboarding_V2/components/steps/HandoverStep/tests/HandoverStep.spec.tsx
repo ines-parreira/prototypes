@@ -106,14 +106,19 @@ const history = createMemoryHistory({
     ],
 })
 
-const queryClient = new QueryClient()
+const testQueryClient = new QueryClient({
+    defaultOptions: {
+        queries: { retry: false },
+        mutations: { retry: false },
+    },
+})
 
 const renderComponent = (isStoreSelected = true) => {
     const store = mockStore(defaultState)
     store.dispatch = mockDispatch
 
     renderWithRouter(
-        <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={testQueryClient}>
             <Provider store={store}>
                 <HandoverStep
                     currentStep={5}
@@ -147,6 +152,7 @@ describe('HandoverStep', () => {
     }
     beforeEach(() => {
         jest.clearAllMocks()
+        testQueryClient.clear()
 
         useGetOnboardingDataMock.mockReturnValue({
             isLoading: false,
@@ -459,7 +465,7 @@ describe('HandoverStep', () => {
             store.dispatch = mockDispatch
 
             renderWithRouter(
-                <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={testQueryClient}>
                     <Provider store={store}>
                         <HandoverStep
                             currentStep={5}
