@@ -25,7 +25,7 @@ export const getPlaygroundExecutions = async (
 
 export const createTestSession = async (
     baseUrl?: string,
-    payload?: AiAgentPlaygroundOptions,
+    payload: AiAgentPlaygroundOptions | {} = {},
 ) => {
     const client = baseUrl ? createApiClient(baseUrl) : aiAgentApiClient
     const response = await client.post<CreateTestSessionResponse>(

@@ -211,6 +211,7 @@ describe('useAiJourneyMessages', () => {
         const mockProduct = {
             id: 123,
             handle: 'test-product',
+            title: 'Test Product',
             variants: [{ id: 456, price: '99.99' }],
         }
 
@@ -249,6 +250,97 @@ describe('useAiJourneyMessages', () => {
                 page: {
                     url: 'https://test-shop.myshopify.com/products/test-product',
                     productId: '123',
+                },
+                lastOrder: {
+                    id: 1,
+                    createdAt: expect.any(String),
+                    items: [
+                        {
+                            name: 'Test Product',
+                            variantId: '456',
+                            productId: '123',
+                            quantity: 1,
+                            linePrice: 99.99,
+                        },
+                    ],
+                },
+                order: {
+                    id: expect.stringMatching(/^order-\d+$/),
+                    lineItems: [
+                        {
+                            productId: '123',
+                            variantId: '456',
+                            quantity: 1,
+                            price: '99.99',
+                            title: 'Test Product',
+                        },
+                    ],
+                    totalPrice: 99.99,
+                    currency: 'USD',
+                    financialStatus: 'paid',
+                    fulfillmentStatus: null,
+                    createdAt: expect.any(String),
+                },
+            }),
+        ])
+    })
+
+    it('should use fallback values when product variant data is missing', async () => {
+        const mockProduct = {
+            id: 789,
+            handle: 'incomplete-product',
+            title: 'Incomplete Product',
+            variants: [],
+        }
+
+        const { result } = renderHook(
+            () => ({
+                aiJourneyMessages: useAiJourneyMessages(),
+                aiJourneyContext: useAIJourneyContext(),
+            }),
+            {
+                wrapper: createWrapper(),
+            },
+        )
+
+        await act(async () => {
+            result.current.aiJourneyContext.setAIJourneySettings({
+                selectedProduct: mockProduct as any,
+            })
+        })
+
+        await act(async () => {
+            await result.current.aiJourneyMessages.triggerMessage()
+        })
+
+        expect(mockMutateAsync).toHaveBeenCalledWith([
+            expect.objectContaining({
+                cart: {
+                    lineItems: [
+                        {
+                            variantId: 'variant-1',
+                            productId: '789',
+                            quantity: 1,
+                            linePrice: 99.99,
+                        },
+                    ],
+                },
+                order: {
+                    id: expect.stringMatching(/^order-\d+$/),
+                    lineItems: [
+                        {
+                            productId: '789',
+                            variantId: 'variant-1',
+                            quantity: 1,
+                            price: '99.99',
+                            title: 'Incomplete Product',
+                        },
+                    ],
+                    totalPrice: 99.99,
+                    currency: 'USD',
+                    financialStatus: 'paid',
+                    fulfillmentStatus: null,
+                    createdAt: expect.any(String),
                 },
             }),
         ])

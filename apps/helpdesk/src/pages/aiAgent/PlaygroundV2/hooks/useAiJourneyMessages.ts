@@ -95,6 +95,28 @@ const createAIJourneyPayload: (
             ],
         }
 
+        payload.order = {
+            id: `order-${Date.now()}`,
+            lineItems: [
+                {
+                    productId: String(selectedProduct.id),
+                    variantId: String(
+                        selectedProduct.variants[0]?.id || 'variant-1',
+                    ),
+                    quantity: 1,
+                    price: String(
+                        selectedProduct.variants[0]?.price || '99.99',
+                    ),
+                    title: selectedProduct.title,
+                },
+            ],
+            totalPrice: Number(selectedProduct.variants[0]?.price || 99.99),
+            currency: 'USD',
+            financialStatus: 'paid',
+            fulfillmentStatus: null,
+            createdAt: new Date().toISOString(),
+        }
+
         if (shopDomain) {
             payload.page = {
                 url: `https://${shopDomain}/products/${selectedProduct.handle}`,
