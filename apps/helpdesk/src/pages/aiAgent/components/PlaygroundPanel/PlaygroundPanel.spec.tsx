@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 
 import { PlaygroundPanel } from './PlaygroundPanel'
 
@@ -8,12 +8,6 @@ jest.mock('../../PlaygroundV2/AiAgentPlayground')
 jest.mock(
     '../../PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal',
 )
-jest.mock('pages/aiAgent/PlaygroundV2/utils/playground.utils', () => ({
-    getActionsToggleTooltipContent: jest.fn(
-        (actionsAllowed) =>
-            `Actions are ${actionsAllowed ? 'enabled' : 'disabled'}`,
-    ),
-}))
 
 const mockSetNavBarDisplay = jest.fn()
 
@@ -21,11 +15,6 @@ jest.mock('common/navigation/hooks/useNavBar/useNavBar', () => ({
     useNavBar: jest.fn(() => ({
         setNavBarDisplay: mockSetNavBarDisplay,
     })),
-}))
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(() => false),
 }))
 
 const mockUseAppContext = require('pages/AppContext').useAppContext as jest.Mock
@@ -92,13 +81,6 @@ describe('PlaygroundPanel', () => {
             expect(mockSetNavBarDisplay).toHaveBeenCalledWith('collapsed')
         })
 
-        it('should render actions toggle in disabled state initially', () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-            expect(toggle).not.toBeChecked()
-        })
-
         it('should render reset button', () => {
             render(<PlaygroundPanel />)
 
@@ -117,34 +99,32 @@ describe('PlaygroundPanel', () => {
             expect(closeButton).toBeInTheDocument()
         })
 
-        it('should render Actions label', () => {
+        it('should render settings button', () => {
             render(<PlaygroundPanel />)
 
-            expect(screen.getByText('Actions')).toBeInTheDocument()
-        })
-
-        it('should render info tooltip', () => {
-            render(<PlaygroundPanel />)
-
-            const infoIcon = screen.getByText('info')
-            expect(infoIcon).toBeInTheDocument()
+            const settingsButton = screen.getByRole('button', {
+                name: /open playground settings/i,
+            })
+            expect(settingsButton).toBeInTheDocument()
         })
     })
 
     describe('close functionality', () => {
         it('should call setIsCollapsibleColumnOpen(false) when close button is clicked', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const closeButton = screen.getByRole('button', {
                 name: /close playground panel/i,
             })
 
-            await userEvent.click(closeButton)
+            await user.click(closeButton)
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
         })
 
         it('should call onClose callback when provided and close button is clicked', async () => {
+            const user = userEvent.setup()
             const mockOnClose = jest.fn()
             render(<PlaygroundPanel onClose={mockOnClose} />)
 
@@ -152,12 +132,13 @@ describe('PlaygroundPanel', () => {
                 name: /close playground panel/i,
             })
 
-            await userEvent.click(closeButton)
+            await user.click(closeButton)
 
             expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
 
         it('should call both setIsCollapsibleColumnOpen and onClose when both are available', async () => {
+            const user = userEvent.setup()
             const mockOnClose = jest.fn()
             render(<PlaygroundPanel onClose={mockOnClose} />)
 
@@ -165,33 +146,35 @@ describe('PlaygroundPanel', () => {
                 name: /close playground panel/i,
             })
 
-            await userEvent.click(closeButton)
+            await user.click(closeButton)
 
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
             expect(mockOnClose).toHaveBeenCalledTimes(1)
         })
 
         it('should not throw error when onClose is not provided', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const closeButton = screen.getByRole('button', {
                 name: /close playground panel/i,
             })
 
-            await expect(userEvent.click(closeButton)).resolves.not.toThrow()
+            await expect(user.click(closeButton)).resolves.not.toThrow()
             expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
         })
     })
 
     describe('reset playground functionality', () => {
         it('should pass resetPlayground=true to AiAgentPlayground when reset button is clicked', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const resetButton = screen.getByRole('button', {
                 name: /reset playground/i,
             })
 
-            await userEvent.click(resetButton)
+            await user.click(resetButton)
 
             await waitFor(() => {
                 expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
@@ -204,13 +187,14 @@ describe('PlaygroundPanel', () => {
         })
 
         it('should reset resetPlayground to false after callback', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const resetButton = screen.getByRole('button', {
                 name: /reset playground/i,
             })
 
-            await userEvent.click(resetButton)
+            await user.click(resetButton)
 
             // Get the resetPlaygroundCallback prop
             const lastCall =
@@ -226,100 +210,6 @@ describe('PlaygroundPanel', () => {
                 expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
                     expect.objectContaining({
                         resetPlayground: false,
-                    }),
-                    {},
-                )
-            })
-        })
-    })
-
-    describe('actions toggle functionality', () => {
-        it('should open modal when toggle is clicked to enable actions', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-
-            await userEvent.click(toggle)
-
-            await waitFor(() => {
-                expect(screen.getByTestId('actions-modal')).toBeInTheDocument()
-            })
-        })
-
-        it('should close modal when cancel is clicked', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-            await userEvent.click(toggle)
-
-            const closeButton = await screen.findByText('Close Modal')
-            await userEvent.click(closeButton)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByTestId('actions-modal'),
-                ).not.toBeInTheDocument()
-            })
-        })
-
-        it('should enable actions and close modal when confirmed', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-            await userEvent.click(toggle)
-
-            const confirmButton = await screen.findByText('Confirm Modal')
-            await userEvent.click(confirmButton)
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByTestId('actions-modal'),
-                ).not.toBeInTheDocument()
-                expect(toggle).toBeChecked()
-            })
-        })
-
-        it('should pass actionsAllowed=true to AiAgentPlayground after confirmation', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-            await userEvent.click(toggle)
-
-            const confirmButton = await screen.findByText('Confirm Modal')
-            await userEvent.click(confirmButton)
-
-            await waitFor(() => {
-                expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
-                    expect.objectContaining({
-                        arePlaygroundActionsAllowed: true,
-                    }),
-                    {},
-                )
-            })
-        })
-
-        it('should disable actions when toggle is clicked while enabled', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-
-            // Enable actions
-            await userEvent.click(toggle)
-            const confirmButton = await screen.findByText('Confirm Modal')
-            await userEvent.click(confirmButton)
-
-            await waitFor(() => {
-                expect(toggle).toBeChecked()
-            })
-
-            // Disable actions
-            await userEvent.click(toggle)
-
-            await waitFor(() => {
-                expect(toggle).not.toBeChecked()
-                expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
-                    expect.objectContaining({
-                        arePlaygroundActionsAllowed: false,
                     }),
                     {},
                 )
@@ -418,103 +308,18 @@ describe('PlaygroundPanel', () => {
         })
     })
 
-    describe('PlaygroundActionsModal integration', () => {
-        it('should pass isOpen=false initially to PlaygroundActionsModal', () => {
-            render(<PlaygroundPanel />)
-
-            expect(MockPlaygroundActionsModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    isOpen: false,
-                }),
-                {},
-            )
-        })
-
-        it('should pass onClose callback to PlaygroundActionsModal', () => {
-            render(<PlaygroundPanel />)
-
-            expect(MockPlaygroundActionsModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    onClose: expect.any(Function),
-                }),
-                {},
-            )
-        })
-
-        it('should pass onConfirm callback to PlaygroundActionsModal', () => {
-            render(<PlaygroundPanel />)
-
-            expect(MockPlaygroundActionsModal).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    onConfirm: expect.any(Function),
-                }),
-                {},
-            )
-        })
-    })
-
-    describe('tooltip content', () => {
-        it('should show correct tooltip content when actions are disabled', () => {
-            const {
-                getActionsToggleTooltipContent,
-            } = require('pages/aiAgent/PlaygroundV2/utils/playground.utils')
-
-            render(<PlaygroundPanel />)
-
-            expect(getActionsToggleTooltipContent).toHaveBeenCalledWith(false)
-        })
-
-        it('should show correct tooltip content when actions are enabled', async () => {
-            const {
-                getActionsToggleTooltipContent,
-            } = require('pages/aiAgent/PlaygroundV2/utils/playground.utils')
-
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-            await userEvent.click(toggle)
-
-            const confirmButton = await screen.findByText('Confirm Modal')
-            await userEvent.click(confirmButton)
-
-            await waitFor(() => {
-                expect(getActionsToggleTooltipContent).toHaveBeenCalledWith(
-                    true,
-                )
-            })
-        })
-    })
-
     describe('edge cases', () => {
-        it('should handle rapid toggle clicks', async () => {
-            render(<PlaygroundPanel />)
-
-            const toggle = screen.getByRole('checkbox')
-
-            await userEvent.click(toggle)
-
-            // Close the modal
-            const closeButton = await screen.findByText('Close Modal')
-            await userEvent.click(closeButton)
-
-            await userEvent.click(toggle)
-
-            // Should still open the modal on the last click
-            await waitFor(() => {
-                expect(screen.getByTestId('actions-modal')).toBeInTheDocument()
-            })
-        })
-
         it('should handle multiple reset clicks', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const resetButton = screen.getByRole('button', {
                 name: /reset playground/i,
             })
 
-            await userEvent.click(resetButton)
-            await userEvent.click(resetButton)
-            await userEvent.click(resetButton)
+            await user.click(resetButton)
+            await user.click(resetButton)
+            await user.click(resetButton)
 
             expect(MockAiAgentPlayground).toHaveBeenLastCalledWith(
                 expect.objectContaining({
@@ -527,13 +332,14 @@ describe('PlaygroundPanel', () => {
 
     describe('button tooltips', () => {
         it('should show tooltip when hovering over reset button', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const resetButton = screen.getByRole('button', {
                 name: /reset playground/i,
             })
 
-            await userEvent.hover(resetButton)
+            await user.hover(resetButton)
 
             await waitFor(() => {
                 expect(screen.getByText('Reset test')).toBeInTheDocument()
@@ -541,13 +347,14 @@ describe('PlaygroundPanel', () => {
         })
 
         it('should show tooltip when hovering over close button', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             const closeButton = screen.getByRole('button', {
                 name: /close playground panel/i,
             })
 
-            await userEvent.hover(closeButton)
+            await user.hover(closeButton)
 
             await waitFor(() => {
                 expect(screen.getByText('Close')).toBeInTheDocument()
@@ -556,23 +363,8 @@ describe('PlaygroundPanel', () => {
     })
 
     describe('Settings toggle functionality', () => {
-        const mockUseFlag = require('@repo/feature-flags').useFlag as jest.Mock
-
-        beforeEach(() => {
-            jest.clearAllMocks()
-            mockUseFlag.mockReturnValue(true)
-        })
-
-        it('should show settings button and hide actions toggle when enabled', () => {
-            render(<PlaygroundPanel />)
-
-            expect(
-                screen.getByRole('button', { name: /settings/i }),
-            ).toBeInTheDocument()
-            expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
-        })
-
         it('should toggle inplaceSettingsOpen prop when settings button clicked', async () => {
+            const user = userEvent.setup()
             render(<PlaygroundPanel />)
 
             expect(MockAiAgentPlayground).toHaveBeenCalledWith(
@@ -580,8 +372,10 @@ describe('PlaygroundPanel', () => {
                 {},
             )
 
-            await userEvent.click(
-                screen.getByRole('button', { name: /settings/i }),
+            await user.click(
+                screen.getByRole('button', {
+                    name: /open playground settings/i,
+                }),
             )
 
             await waitFor(() => {

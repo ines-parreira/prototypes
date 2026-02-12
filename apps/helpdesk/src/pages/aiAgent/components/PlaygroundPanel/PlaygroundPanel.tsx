@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 
 import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -8,10 +7,7 @@ import { Button, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import PlaygroundActionsModal from 'pages/aiAgent/PlaygroundV2/components/PlaygroundActionsModal/PlaygroundActionsModal'
 import type { DraftKnowledge } from 'pages/aiAgent/PlaygroundV2/types'
-import { getActionsToggleTooltipContent } from 'pages/aiAgent/PlaygroundV2/utils/playground.utils'
 import { useAppContext } from 'pages/AppContext'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 
 import { AiAgentPlayground } from '../../PlaygroundV2/AiAgentPlayground'
 
@@ -23,36 +19,6 @@ type Props = {
     draftKnowledge?: DraftKnowledge
     onGuidanceClick?: (guidanceArticleId: number) => void
     collapseNavbar?: boolean
-}
-
-type ActionsSectionProps = {
-    actionsAllowed: boolean
-    setActionsAllowed: (value: boolean) => void
-    setIsModalOpen: (value: boolean) => void
-}
-
-const ActionsSection = ({
-    actionsAllowed,
-    setActionsAllowed,
-    setIsModalOpen,
-}: ActionsSectionProps) => {
-    const handleActionsAllowed = () =>
-        actionsAllowed ? setActionsAllowed(false) : setIsModalOpen(true)
-
-    return (
-        <div className={css['actions-allowed-container']}>
-            <div className={css['actions-allowed-toggle']}>
-                <NewToggleButton
-                    checked={actionsAllowed}
-                    onChange={handleActionsAllowed}
-                />
-                <span className={css['toggle-label']}>Actions</span>
-            </div>
-            <IconTooltip icon="info" interactive>
-                {getActionsToggleTooltipContent(actionsAllowed)}
-            </IconTooltip>
-        </div>
-    )
 }
 
 export const PlaygroundPanel = ({
@@ -113,8 +79,6 @@ export const PlaygroundPanel = ({
         [onGuidanceClick, handleClose],
     )
 
-    const usePlaygroundSettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
-
     return (
         <div className={css['playground-panel']} data-name={'playground-panel'}>
             <PlaygroundActionsModal
@@ -128,28 +92,17 @@ export const PlaygroundPanel = ({
                         <span className={css['panel-header-title']}>Test</span>
                     </div>
                     <div className={css['panel-header-actions']}>
-                        {!usePlaygroundSettings && (
-                            <ActionsSection
-                                actionsAllowed={actionsAllowed}
-                                setActionsAllowed={setActionsAllowed}
-                                setIsModalOpen={setIsModalOpen}
-                            />
-                        )}
                         <div>
-                            {usePlaygroundSettings && (
-                                <>
-                                    <Button
-                                        icon="settings"
-                                        variant="tertiary"
-                                        onClick={handleClickSettings}
-                                        aria-label="open playground settings"
-                                        ref={settingsRef}
-                                    />
-                                    <Tooltip target={settingsRef}>
-                                        Open settings
-                                    </Tooltip>
-                                </>
-                            )}
+                            <Button
+                                icon="settings"
+                                variant="tertiary"
+                                onClick={handleClickSettings}
+                                aria-label="open playground settings"
+                                ref={settingsRef}
+                            />
+                            <Tooltip target={settingsRef}>
+                                Open settings
+                            </Tooltip>
                             <Button
                                 icon="undo"
                                 variant="tertiary"

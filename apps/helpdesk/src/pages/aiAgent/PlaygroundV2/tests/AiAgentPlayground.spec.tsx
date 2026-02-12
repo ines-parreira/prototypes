@@ -171,6 +171,18 @@ jest.mock('hooks/useAppSelector', () => ({
     })),
 }))
 
+const mockWarpToCollapsibleColumn = jest.fn((children) => (
+    <div data-testid="collapsible-column">{children}</div>
+))
+const mockSetCollapsibleColumnChildren = jest.fn()
+
+jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
+    useCollapsibleColumn: jest.fn(() => ({
+        warpToCollapsibleColumn: mockWarpToCollapsibleColumn,
+        setCollapsibleColumnChildren: mockSetCollapsibleColumnChildren,
+    })),
+}))
+
 const mockUsePlaygroundPrerequisites = jest.mocked(usePlaygroundPrerequisites)
 const mockUsePlaygroundResources = jest.mocked(usePlaygroundResources)
 const mockUsePlaygroundTracking = jest.mocked(usePlaygroundTracking)
@@ -235,6 +247,8 @@ const mockQueryClient = {
 describe('AiAgentPlayground', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockWarpToCollapsibleColumn.mockClear()
+        mockSetCollapsibleColumnChildren.mockClear()
         mockUseShopNameResolution.mockReturnValue({
             resolvedShopName: 'test-store',
         } as any)
@@ -444,6 +458,24 @@ describe('AiAgentPlayground', () => {
             await waitFor(() => {
                 expect(mockResetCallback).toHaveBeenCalled()
             })
+        })
+    })
+
+    describe('Settings on side panel', () => {
+        it('should render settings in collapsible column when withSettingsOnSidePanel is true', () => {
+            renderComponent({ withSettingsOnSidePanel: true })
+
+            expect(screen.getByTestId('collapsible-column')).toBeInTheDocument()
+            expect(
+                screen.getByTestId('playground-settings'),
+            ).toBeInTheDocument()
+            expect(mockWarpToCollapsibleColumn).toHaveBeenCalled()
+        })
+
+        it('should clear collapsible column children when withSettingsOnSidePanel is true', () => {
+            renderComponent({ withSettingsOnSidePanel: true })
+
+            expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(null)
         })
     })
 

@@ -35,7 +35,6 @@ describe('usePlaygroundTracking', () => {
 
         result.current.onTestMessageSent({
             channel: 'email',
-            playgroundSettings: 'default',
         })
 
         expect(mockLogEvent).toHaveBeenCalledWith(
@@ -44,7 +43,6 @@ describe('usePlaygroundTracking', () => {
                 shopName: 'test-shop',
                 currentPath: window.location.pathname,
                 channel: 'email',
-                playgroundSettings: 'default',
             },
         )
     })
@@ -56,7 +54,6 @@ describe('usePlaygroundTracking', () => {
 
         result.current.onTestMessageSent({
             channel: 'chat',
-            playgroundSettings: 'custom',
         })
 
         expect(mockLogEvent).toHaveBeenCalledWith(
@@ -101,12 +98,10 @@ describe('usePlaygroundTracking', () => {
 
         result.current.onTestMessageSent({
             channel: 'email',
-            playgroundSettings: 'default',
         })
 
         result.current.onTestMessageSent({
             channel: 'chat',
-            playgroundSettings: 'custom',
         })
 
         expect(mockLogEvent).toHaveBeenCalledTimes(2)
@@ -117,7 +112,6 @@ describe('usePlaygroundTracking', () => {
                 shopName: 'test-shop',
                 currentPath: window.location.pathname,
                 channel: 'email',
-                playgroundSettings: 'default',
             },
         )
         expect(mockLogEvent).toHaveBeenNthCalledWith(
@@ -127,7 +121,6 @@ describe('usePlaygroundTracking', () => {
                 shopName: 'test-shop',
                 currentPath: window.location.pathname,
                 channel: 'chat',
-                playgroundSettings: 'custom',
             },
         )
     })

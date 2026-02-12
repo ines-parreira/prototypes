@@ -91,9 +91,7 @@ const ContextConsumer = ({
         }
     }, [resetPlayground, resetPlaygroundCallback, events])
 
-    const shouldDisplaySettings = useFlag(FeatureFlagKey.AiJourneyPlayground)
-
-    if (withSettingsOnSidePanel && shouldDisplaySettings) {
+    if (withSettingsOnSidePanel) {
         return warpToCollapsibleColumn(<PlaygroundSettings />)
     }
 

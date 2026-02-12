@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import { useParams } from 'react-router'
@@ -24,21 +23,10 @@ import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles
 import { useMessagesContext } from '../../contexts/MessagesContext'
 import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
 import { usePlaygroundTracking } from '../../hooks/usePlaygroundTracking'
-import type {
-    PlaygroundChannelAvailability,
-    PlaygroundChannels,
-    PlaygroundCustomer,
-    PlaygroundTemplateMessage,
-} from '../../types'
+import type { PlaygroundTemplateMessage } from '../../types'
 import { PlaygroundEvent } from '../../types'
 import { mapPlaygroundFormValuesToMessage } from '../../utils/playground-messages.utils'
-import type { TicketData } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
-import {
-    PlaygroundCustomerSelection,
-    SenderTypeValues,
-} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
 import { PlaygroundPredefinedMessages } from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
-import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
 
 import css from './PlaygroundInputSection.less'
 
@@ -70,35 +58,6 @@ const froalaConfig = {
     toolbarContainer: `#${TOOLBAR_CONTAINER_ID}`,
 }
 
-const STANDALONE_CHANNEL_SEGMENTS = [
-    {
-        label: 'Chat',
-        value: 'chat',
-    },
-]
-
-const CHANNEL_SEGMENTS = [
-    {
-        label: 'Email',
-        value: 'email',
-    },
-    {
-        label: 'Chat',
-        value: 'chat',
-    },
-]
-
-const CHAT_AVAILABILITY_SEGMENTS = [
-    {
-        label: 'Online',
-        value: 'online',
-    },
-    {
-        label: 'Offline',
-        value: 'offline',
-    },
-]
-
 type Props = {
     withResetButton: boolean
 }
@@ -108,13 +67,7 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         shopName: string
     }>()
 
-    const {
-        channel,
-        channelAvailability,
-        onChannelChange,
-        onChannelAvailabilityChange,
-        isDraftKnowledgeReady,
-    } = useCoreContext()
+    const { channel, isDraftKnowledgeReady } = useCoreContext()
 
     const { onMessageSend, isMessageSending, messages } = useMessagesContext()
 
@@ -143,19 +96,11 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         guidanceHelpCenterId: storeConfiguration?.guidanceHelpCenterId ?? null,
     })
 
-    const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        SenderTypeValues.NEW_CUSTOMER,
-    )
     const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false)
 
     const subjectInputRef = useRef<HTMLInputElement | null>(null)
 
     const { onTestMessageSent } = usePlaygroundTracking({ shopName })
-
-    const isStandalone = useFlag(
-        FeatureFlagKey.StandaloneHandoverCapabilities,
-        false,
-    )
 
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
@@ -173,36 +118,6 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         onFormValuesChange('message', message.content)
         onFormValuesChange('subject', message.title)
     }
-
-    const handleCustomerChange = useCallback(
-        (customer: PlaygroundCustomer) => {
-            onFormValuesChange('customer', customer)
-        },
-        [onFormValuesChange],
-    )
-
-    const handleTicketChange = useCallback(
-        (ticketData: TicketData) => {
-            onFormValuesChange('customer', ticketData.customer)
-            onFormValuesChange('subject', ticketData.subject)
-            onFormValuesChange('message', ticketData.message)
-        },
-        [onFormValuesChange],
-    )
-
-    const handleChannelChange = useCallback(
-        (value: string) => {
-            onChannelChange(value as PlaygroundChannels)
-        },
-        [onChannelChange],
-    )
-
-    const handleChannelAvailabilityChange = useCallback(
-        (value: string) => {
-            onChannelAvailabilityChange(value as PlaygroundChannelAvailability)
-        },
-        [onChannelAvailabilityChange],
-    )
 
     const handleSendMessage = useCallback(() => {
         if (!isFormValid) {
@@ -226,13 +141,7 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
             new CustomEvent(MESSAGE_SENT_AI_AGENT_PLAYGROUND_EVENT),
         )
 
-        onTestMessageSent({
-            channel,
-            playgroundSettings:
-                channel === 'email'
-                    ? senderSelectedOption
-                    : channelAvailability,
-        })
+        onTestMessageSent({ channel })
     }, [
         isFormValid,
         onMessageSend,
@@ -240,8 +149,6 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         onFormValuesChange,
         onTestMessageSent,
         channel,
-        senderSelectedOption,
-        channelAvailability,
     ])
 
     const onReset = useCallback(() => {
@@ -288,53 +195,8 @@ export const PlaygroundInputSection = ({ withResetButton }: Props) => {
         return null
     }, [isDraftKnowledgeReady, disabledMessage, isFormDisabled])
 
-    const shouldRenderSettingsPanel = useFlag(
-        FeatureFlagKey.AiJourneyPlayground,
-        false,
-    )
-
     return (
         <div className={css.container}>
-            {!shouldRenderSettingsPanel && (
-                <>
-                    <div
-                        className={classnames(css.section, css.topSection, {
-                            [css.disabled]: !isInitialMessage,
-                        })}
-                    >
-                        <div className={css.segmentControl}>
-                            <PlaygroundSegmentControl
-                                selectedValue={channel}
-                                onValueChange={handleChannelChange}
-                                isDisabled={!isInitialMessage}
-                                segments={
-                                    isStandalone
-                                        ? STANDALONE_CHANNEL_SEGMENTS
-                                        : CHANNEL_SEGMENTS
-                                }
-                            />
-                            {channel === 'chat' && (
-                                <PlaygroundSegmentControl
-                                    selectedValue={channelAvailability}
-                                    onValueChange={
-                                        handleChannelAvailabilityChange
-                                    }
-                                    isDisabled={!isInitialMessage}
-                                    segments={CHAT_AVAILABILITY_SEGMENTS}
-                                />
-                            )}
-                        </div>
-                        <PlaygroundCustomerSelection
-                            customer={formValues.customer}
-                            onCustomerChange={handleCustomerChange}
-                            onTicketChange={handleTicketChange}
-                            isDisabled={!isInitialMessage}
-                            senderType={senderSelectedOption}
-                            onSenderTypeChange={setSenderSelectedOption}
-                        />
-                    </div>
-                </>
-            )}
             {channel === 'email' && (
                 <div
                     className={classnames(css.section, {

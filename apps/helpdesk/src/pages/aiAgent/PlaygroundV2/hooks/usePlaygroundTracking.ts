@@ -9,13 +9,7 @@ type UsePlaygroundTrackingProps = {
 type PlaygroundTrackingCallbacks = {
     onTestPageViewed: () => void
     onPlaygroundReset: () => void
-    onTestMessageSent: ({
-        channel,
-        playgroundSettings,
-    }: {
-        channel: string
-        playgroundSettings: string
-    }) => void
+    onTestMessageSent: ({ channel }: { channel: string }) => void
 }
 
 export const usePlaygroundTracking = ({
@@ -34,17 +28,10 @@ export const usePlaygroundTracking = ({
     }, [eventContext])
 
     const onTestMessageSent = useCallback(
-        ({
-            channel,
-            playgroundSettings,
-        }: {
-            channel: string
-            playgroundSettings: string
-        }) => {
+        ({ channel }: { channel: string }) => {
             logEvent(SegmentEvent.AiAgentTestMessageSent, {
                 ...eventContext,
                 channel,
-                playgroundSettings,
             })
         },
         [eventContext],

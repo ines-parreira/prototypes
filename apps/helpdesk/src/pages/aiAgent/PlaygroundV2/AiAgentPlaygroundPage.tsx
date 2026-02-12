@@ -9,14 +9,11 @@ import { TEST } from 'pages/aiAgent/constants'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { AiAgentPlayground } from './AiAgentPlayground'
-import PlaygroundActionsToggle from './components/PlaygroundActionsToggle/PlaygroundActionsToggle'
 import { useShopNameResolution } from './hooks/useShopNameResolution'
 
 import css from './AiAgentPlaygroundPage.less'
 
 export const AiAgentPlaygroundPage = () => {
-    const [arePlaygroundActionsAllowed, setArePlaygroundActionsAllowed] =
-        useState<boolean>(false)
     const [shouldPlaygroundReset, setShouldPlaygroundReset] =
         useState<boolean>(false)
 
@@ -25,8 +22,6 @@ export const AiAgentPlaygroundPage = () => {
 
     const { setIsCollapsibleColumnOpen, isCollapsibleColumnOpen } =
         useCollapsibleColumn()
-
-    const sidePanelEnabled = useFlag(FeatureFlagKey.AiJourneyPlayground, false)
 
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled, false)
 
@@ -39,12 +34,10 @@ export const AiAgentPlaygroundPage = () => {
     )
 
     useEffect(() => {
-        if (sidePanelEnabled) {
-            setIsCollapsibleColumnOpen(true)
-        }
-    }, [sidePanelEnabled, setIsCollapsibleColumnOpen])
+        setIsCollapsibleColumnOpen(true)
+    }, [setIsCollapsibleColumnOpen])
 
-    const titleChildren = sidePanelEnabled ? (
+    const titleChildren = (
         <div className={css.actions}>
             <Button
                 leadingSlot="undo"
@@ -65,13 +58,6 @@ export const AiAgentPlaygroundPage = () => {
                 </Button>
             )}
         </div>
-    ) : (
-        <PlaygroundActionsToggle
-            value={arePlaygroundActionsAllowed}
-            onChange={() =>
-                setArePlaygroundActionsAllowed(!arePlaygroundActionsAllowed)
-            }
-        />
     )
 
     return (
@@ -82,8 +68,7 @@ export const AiAgentPlaygroundPage = () => {
             titleChildren={titleChildren}
         >
             <AiAgentPlayground
-                arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
-                withResetButton={!sidePanelEnabled}
+                withResetButton={false}
                 withSettingsOnSidePanel
                 resetPlayground={shouldPlaygroundReset}
                 resetPlaygroundCallback={() => setShouldPlaygroundReset(false)}

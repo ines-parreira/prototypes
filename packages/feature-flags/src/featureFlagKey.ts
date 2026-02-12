@@ -50,7 +50,6 @@ export enum FeatureFlagKey {
     AiAgentSmsChannel = 'ai-agent-sms-channel',
     AiAgentAnalyticsDashboardsNewScreens = 'linear.project_revamp-ai-agent-analytics-dashboards.show-new-screens',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
-    AiJourneyPlayground = 'ai-journey-playground',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',
     AiJourneyWinBackEnabled = 'ai-journey-win-back-enabled',
