@@ -21,6 +21,7 @@ import type {
     DashboardChartSchema,
     DashboardChild,
     DashboardInput,
+    DashboardRowSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -331,7 +332,7 @@ describe('getGroupChartsIntoRows', () => {
         expect(result).toEqual([])
     })
 
-    it('should wrap charts into a row', () => {
+    it('should wrap charts into a row without metadata when no existing children provided', () => {
         const charts = ['chart1', 'chart2', 'chart3']
 
         const result = getGroupChartsIntoRows(charts)
@@ -343,6 +344,76 @@ describe('getGroupChartsIntoRows', () => {
                 { config_id: 'chart3', type: 'chart' },
             ],
             type: 'row',
+        })
+    })
+
+    it('should preserve metadata from existing children when provided', () => {
+        const charts = ['chart1', 'chart2', 'chart3']
+        const existingChildren: DashboardChild[] = [
+            {
+                type: DashboardChildType.Row,
+                children: [
+                    {
+                        config_id: 'chart1',
+                        type: DashboardChildType.Chart,
+                        metadata: { layout: { x: 0, y: 0, w: 2, h: 9 } },
+                    },
+                    {
+                        config_id: 'chart2',
+                        type: DashboardChildType.Chart,
+                        metadata: { layout: { x: 2, y: 0, w: 2, h: 9 } },
+                    },
+                ],
+            },
+        ]
+
+        const result = getGroupChartsIntoRows(charts, existingChildren)
+
+        expect(result[0]).toHaveProperty('children')
+        const row = result[0] as DashboardRowSchema
+        expect(row.children[0]).toMatchObject({
+            config_id: 'chart1',
+            metadata: { layout: { x: 0, y: 0, w: 2, h: 9 } },
+        })
+        expect(row.children[1]).toMatchObject({
+            config_id: 'chart2',
+            metadata: { layout: { x: 2, y: 0, w: 2, h: 9 } },
+        })
+        expect(row.children[2]).toEqual({
+            config_id: 'chart3',
+            type: 'chart',
+        })
+    })
+
+    it('should handle nested structures when flattening charts', () => {
+        const charts = ['chart1', 'chart2']
+        const existingChildren: DashboardChild[] = [
+            {
+                type: DashboardChildType.Section,
+                children: [
+                    {
+                        type: DashboardChildType.Row,
+                        children: [
+                            {
+                                config_id: 'chart1',
+                                type: DashboardChildType.Chart,
+                                metadata: {
+                                    layout: { x: 0, y: 0, w: 4, h: 22 },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]
+
+        const result = getGroupChartsIntoRows(charts, existingChildren)
+
+        expect(result[0]).toHaveProperty('children')
+        const row = result[0] as DashboardRowSchema
+        expect(row.children[0]).toMatchObject({
+            config_id: 'chart1',
+            metadata: { layout: { x: 0, y: 0, w: 4, h: 22 } },
         })
     })
 })

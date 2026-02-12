@@ -201,18 +201,49 @@ export function getErrorMessage(
     return defaultMessage
 }
 
-export const getGroupChartsIntoRows = (charts: string[]): DashboardChild[] => {
+export const flattenCharts = (
+    children: DashboardChild[],
+): DashboardChartSchema[] => {
+    return children.flatMap((child: DashboardChild) => {
+        switch (child.type) {
+            case DashboardChildType.Row:
+            case DashboardChildType.Section:
+                return flattenCharts(child.children)
+            case DashboardChildType.Chart:
+                return [child]
+        }
+    })
+}
+
+export const getGroupChartsIntoRows = (
+    charts: string[],
+    existingChildren?: DashboardChild[],
+): DashboardChild[] => {
     if (!charts.length) {
         return []
+    }
+
+    const metadataMap = new Map<string, DashboardChartSchema['metadata']>()
+    if (existingChildren) {
+        const existingCharts = flattenCharts(existingChildren)
+        existingCharts.forEach((chart) => {
+            if (chart.metadata) {
+                metadataMap.set(chart.config_id, chart.metadata)
+            }
+        })
     }
 
     return [
         {
             type: DashboardChildType.Row,
-            children: charts.map((chartId) => ({
-                config_id: chartId,
-                type: DashboardChildType.Chart,
-            })),
+            children: charts.map((chartId) => {
+                const existingMetadata = metadataMap.get(chartId)
+                return {
+                    config_id: chartId,
+                    type: DashboardChildType.Chart,
+                    ...(existingMetadata && { metadata: existingMetadata }),
+                }
+            }),
         },
     ]
 }

@@ -96,8 +96,8 @@ export const useDashboardActions = () => {
             }
 
             const children = chartIds
-                ? getGroupChartsIntoRows(chartIds)
-                : dashboard?.children
+                ? getGroupChartsIntoRows(chartIds, dashboard.children)
+                : dashboard.children
 
             const apiDashboard = createDashboardPayload({
                 ...dashboard,
@@ -191,7 +191,7 @@ export const useDashboardActions = () => {
             errorMessage?: string
         }) => {
             const children = chartIds
-                ? getGroupChartsIntoRows(chartIds)
+                ? getGroupChartsIntoRows(chartIds, dashboard.children)
                 : dashboard.children
 
             const apiDashboard = createDashboardPayload({

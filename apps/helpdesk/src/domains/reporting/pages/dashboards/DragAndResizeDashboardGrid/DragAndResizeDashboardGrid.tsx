@@ -14,7 +14,10 @@ import 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndRes
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
-import { calculateChartPositions } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
+import {
+    calculateChartPositionsWithOccupied,
+    type OccupiedGrid,
+} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { clampLayoutToConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/layoutUtils'
 import type {
@@ -27,20 +30,9 @@ import {
     ChartType,
     DashboardChildType,
 } from 'domains/reporting/pages/dashboards/types'
+import { flattenCharts } from 'domains/reporting/pages/dashboards/utils'
 
 const COLS = 12
-
-const flattenCharts = (children: DashboardChild[]): DashboardChartSchema[] => {
-    return children.flatMap((child: DashboardChild) => {
-        switch (child.type) {
-            case DashboardChildType.Row:
-            case DashboardChildType.Section:
-                return flattenCharts(child.children)
-            case DashboardChildType.Chart:
-                return [child]
-        }
-    })
-}
 
 const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
     const charts = flattenCharts(dashboard.children)
@@ -64,36 +56,70 @@ export const DragAndResizeDashboardGrid = ({
 
     const initialLayout = useMemo(() => {
         const charts = flattenCharts(dashboard.children)
-        const hasSavedLayouts = charts.every((chart) => chart.metadata?.layout)
 
-        const chartConstraints = charts.map((chart) => {
-            const { chartConfig } = getComponentConfig(chart.config_id)
-            const chartType = chartConfig?.chartType ?? ChartType.Card
-            return getChartConstraints(chartType)
+        const chartsWithLayouts: DashboardChartSchema[] = []
+        const chartsWithoutLayouts: DashboardChartSchema[] = []
+        const chartsWithoutLayoutsConstraints: ReturnType<
+            typeof getChartConstraints
+        >[] = []
+
+        charts.forEach((chart) => {
+            if (chart.metadata?.layout) {
+                chartsWithLayouts.push(chart)
+            } else {
+                chartsWithoutLayouts.push(chart)
+                const { chartConfig } = getComponentConfig(chart.config_id)
+                const chartType = chartConfig?.chartType ?? ChartType.Card
+                chartsWithoutLayoutsConstraints.push(
+                    getChartConstraints(chartType),
+                )
+            }
         })
 
-        const calculatedPositions = hasSavedLayouts
-            ? []
-            : calculateChartPositions(chartConstraints, COLS)
+        const occupiedGrid: OccupiedGrid = new Set()
+        chartsWithLayouts.forEach((chart) => {
+            const layout = chart.metadata!.layout!
+            for (let row = layout.y; row < layout.y + layout.h; row++) {
+                for (let col = layout.x; col < layout.x + layout.w; col++) {
+                    occupiedGrid.add(`${col},${row}`)
+                }
+            }
+        })
 
-        return charts.map((chart, index) => {
+        const newChartPositions = calculateChartPositionsWithOccupied(
+            chartsWithoutLayoutsConstraints,
+            COLS,
+            occupiedGrid,
+        )
+
+        const layoutMap = new Map<string, ChartLayoutMetadata>()
+
+        chartsWithLayouts.forEach((chart) => {
+            layoutMap.set(chart.config_id, chart.metadata!.layout!)
+        })
+
+        chartsWithoutLayouts.forEach((chart, index) => {
+            layoutMap.set(chart.config_id, newChartPositions[index])
+        })
+
+        return charts.map((chart) => {
             const { chartConfig } = getComponentConfig(chart.config_id)
             const chartType = chartConfig?.chartType ?? ChartType.Card
             const constraints = getChartConstraints(chartType)
 
-            const savedLayout = chart.metadata?.layout
-            const calculatedPosition = calculatedPositions[index]
-
-            const position = savedLayout
-                ? clampLayoutToConstraints(savedLayout, constraints, COLS)
-                : calculatedPosition
+            const position = layoutMap.get(chart.config_id)!
+            const clampedPosition = clampLayoutToConstraints(
+                position,
+                constraints,
+                COLS,
+            )
 
             return {
                 i: chart.config_id,
-                x: position.x,
-                y: position.y,
-                w: position.w,
-                h: position.h,
+                x: clampedPosition.x,
+                y: clampedPosition.y,
+                w: clampedPosition.w,
+                h: clampedPosition.h,
                 minW: constraints.min.width,
                 maxW: constraints.max.width,
                 minH: constraints.min.height,

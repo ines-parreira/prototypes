@@ -626,6 +626,166 @@ describe('useDashboardActions', () => {
             })
         })
 
+        it('should preserve metadata when creating dashboard with chartIds and existing children', async () => {
+            const dashboardWithMetadata: DashboardSchema = {
+                id: 1,
+                name: 'Test Report with Metadata',
+                analytics_filter_id: null,
+                emoji: '📊',
+                children: [
+                    {
+                        type: DashboardChildType.Row,
+                        children: [
+                            {
+                                type: DashboardChildType.Chart,
+                                config_id: 'chart-1',
+                                metadata: {
+                                    layout: { x: 0, y: 0, w: 2, h: 9 },
+                                },
+                            },
+                            {
+                                type: DashboardChildType.Chart,
+                                config_id: 'chart-2',
+                                metadata: {
+                                    layout: { x: 2, y: 0, w: 2, h: 9 },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const createMock = mockCreateAnalyticsCustomReportHandler(
+                async ({ data }) => {
+                    return HttpResponse.json({ ...data, id: 1 })
+                },
+            )
+            const waitForRequest = createMock.waitForRequest(server)
+            server.use(createMock.handler)
+
+            const { result } = renderDashboardHook()
+
+            result.current.createDashboardHandler({
+                dashboard: dashboardWithMetadata,
+                chartIds: ['chart-1', 'chart-2', 'chart-3'],
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const requestBody = await request.json()
+                const children = requestBody.children[0].children
+
+                // Verify chart-1 preserved metadata
+                expect(children[0]).toEqual({
+                    type: 'chart',
+                    config_id: 'chart-1',
+                    metadata: {
+                        layout: { x: 0, y: 0, w: 2, h: 9 },
+                    },
+                })
+
+                // Verify chart-2 preserved metadata
+                expect(children[1]).toEqual({
+                    type: 'chart',
+                    config_id: 'chart-2',
+                    metadata: {
+                        layout: { x: 2, y: 0, w: 2, h: 9 },
+                    },
+                })
+
+                // Verify chart-3 has empty metadata (new chart)
+                expect(children[2]).toEqual({
+                    type: 'chart',
+                    config_id: 'chart-3',
+                    metadata: {},
+                })
+            })
+        })
+
+        it('should create dashboard without chartIds using dashboard children', async () => {
+            const dashboardWithChildren: DashboardSchema = {
+                id: 1,
+                name: 'Dashboard with existing structure',
+                analytics_filter_id: null,
+                emoji: '📊',
+                children: [
+                    {
+                        type: DashboardChildType.Row,
+                        children: [
+                            {
+                                type: DashboardChildType.Chart,
+                                config_id: 'existing-chart',
+                                metadata: {
+                                    layout: { x: 0, y: 0, w: 2, h: 9 },
+                                },
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const createMock = mockCreateAnalyticsCustomReportHandler(
+                async ({ data }) => {
+                    return HttpResponse.json({ ...data, id: 1 })
+                },
+            )
+            const waitForRequest = createMock.waitForRequest(server)
+            server.use(createMock.handler)
+
+            const { result } = renderDashboardHook()
+
+            result.current.createDashboardHandler({
+                dashboard: dashboardWithChildren,
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const requestBody = await request.json()
+
+                expect(requestBody.children).toEqual([
+                    {
+                        type: 'row',
+                        metadata: {},
+                        children: [
+                            {
+                                type: 'chart',
+                                config_id: 'existing-chart',
+                                metadata: {
+                                    layout: { x: 0, y: 0, w: 2, h: 9 },
+                                },
+                            },
+                        ],
+                    },
+                ])
+            })
+        })
+
+        it('should create dashboard when children property is undefined', async () => {
+            const dashboardWithoutChildrenProperty = {
+                id: 1,
+                name: 'Dashboard without children property',
+                analytics_filter_id: null,
+                emoji: '📊',
+            } as DashboardSchema
+
+            const createMock = mockCreateAnalyticsCustomReportHandler(
+                async ({ data }) => {
+                    return HttpResponse.json({ ...data, id: 1 })
+                },
+            )
+            const waitForRequest = createMock.waitForRequest(server)
+            server.use(createMock.handler)
+
+            const { result } = renderDashboardHook()
+
+            result.current.createDashboardHandler({
+                dashboard: dashboardWithoutChildrenProperty,
+            })
+
+            await waitForRequest(async (request: Request) => {
+                const requestBody = await request.json()
+                expect(requestBody.children).toEqual([])
+            })
+        })
+
         it('should not call the mutation if dashboards limit is reached', async () => {
             const listMock = mockListAnalyticsCustomReportsHandler(async () => {
                 return HttpResponse.json(

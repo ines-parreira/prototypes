@@ -1066,6 +1066,129 @@ describe('DragAndResizeDashboardGrid', () => {
         })
     })
 
+    describe('Mixed layout state handling', () => {
+        it('should preserve existing layouts when adding new chart without layout', () => {
+            const chartWithLayout: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-with-layout',
+                metadata: {
+                    layout: {
+                        x: 0,
+                        y: 0,
+                        w: 3,
+                        h: 9,
+                    },
+                },
+            }
+
+            const chartWithoutLayout = createMockChart('chart-without-layout')
+
+            const dashboard = createMockDashboard([
+                createMockRow([chartWithLayout, chartWithoutLayout]),
+            ])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const chart1Element = screen.getByRole('img', {
+                name: /chart chart-with-layout/i,
+            })
+            const chart1Grid = JSON.parse(
+                chart1Element.parentElement!.getAttribute('data-grid')!,
+            )
+
+            expect(chart1Grid).toMatchObject({ x: 0, y: 0, w: 3, h: 9 })
+
+            const chart2Element = screen.getByRole('img', {
+                name: /chart chart-without-layout/i,
+            })
+            const chart2Grid = JSON.parse(
+                chart2Element.parentElement!.getAttribute('data-grid')!,
+            )
+
+            expect(chart2Grid.x).toBeGreaterThanOrEqual(3)
+        })
+
+        it('should handle all charts having layouts', () => {
+            const chart1: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-1',
+                metadata: {
+                    layout: {
+                        x: 0,
+                        y: 0,
+                        w: 3,
+                        h: 4,
+                    },
+                },
+            }
+
+            const chart2: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-2',
+                metadata: {
+                    layout: {
+                        x: 3,
+                        y: 0,
+                        w: 3,
+                        h: 9,
+                    },
+                },
+            }
+
+            const dashboard = createMockDashboard([
+                createMockRow([chart1, chart2]),
+            ])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const chart1Element = screen.getByRole('img', {
+                name: /chart chart-1/i,
+            })
+            const chart1Grid = JSON.parse(
+                chart1Element.parentElement!.getAttribute('data-grid')!,
+            )
+            expect(chart1Grid).toMatchObject({ x: 0, y: 0, w: 3, h: 4 })
+
+            const chart2Element = screen.getByRole('img', {
+                name: /chart chart-2/i,
+            })
+            const chart2Grid = JSON.parse(
+                chart2Element.parentElement!.getAttribute('data-grid')!,
+            )
+            expect(chart2Grid).toMatchObject({ x: 3, y: 0, w: 3, h: 9 })
+        })
+
+        it('should clamp invalid saved layouts to constraints', () => {
+            const chart: DashboardChartSchema = {
+                type: DashboardChildType.Chart,
+                config_id: 'chart-1',
+                metadata: {
+                    layout: {
+                        x: 20,
+                        y: 0,
+                        w: 100,
+                        h: 100,
+                    },
+                },
+            }
+
+            const dashboard = createMockDashboard([createMockRow([chart])])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            const chartElement = screen.getByRole('img', {
+                name: /chart chart-1/i,
+            })
+            const chartGrid = JSON.parse(
+                chartElement.parentElement!.getAttribute('data-grid')!,
+            )
+
+            expect(chartGrid.x).toBeLessThanOrEqual(12)
+            expect(chartGrid.w).toBeLessThanOrEqual(chartGrid.maxW)
+            expect(chartGrid.h).toBeLessThanOrEqual(chartGrid.maxH)
+        })
+    })
+
     describe('Custom Resize Handle', () => {
         beforeEach(() => {
             capturedResizeConfig = null

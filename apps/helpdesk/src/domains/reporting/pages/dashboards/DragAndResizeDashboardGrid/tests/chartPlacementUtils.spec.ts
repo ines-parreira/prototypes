@@ -1,5 +1,8 @@
 import type { ChartLayoutConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
-import { calculateChartPositions } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
+import {
+    calculateChartPositions,
+    calculateChartPositionsWithOccupied,
+} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 
 describe('chartPlacementUtils', () => {
     describe('calculateChartPositions', () => {
@@ -185,6 +188,86 @@ describe('chartPlacementUtils', () => {
             const positions = calculateChartPositions(constraints, 12)
 
             expect(positions).toEqual([{ x: 0, y: 960, w: 15, h: 2 }])
+        })
+    })
+
+    describe('calculateChartPositionsWithOccupied', () => {
+        it('should calculate positions for new charts avoiding occupied cells', () => {
+            const occupiedGrid = new Set<string>()
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 2; col++) {
+                    occupiedGrid.add(`${col},${row}`)
+                }
+            }
+
+            const newChartConstraints: ChartLayoutConstraints[] = [
+                {
+                    default: { width: 2, height: 9 },
+                    min: { width: 1, height: 6 },
+                    max: { width: 4, height: 12 },
+                },
+            ]
+
+            const positions = calculateChartPositionsWithOccupied(
+                newChartConstraints,
+                12,
+                occupiedGrid,
+            )
+
+            expect(positions).toEqual([{ x: 2, y: 0, w: 2, h: 9 }])
+        })
+
+        it('should place new charts on next row when current row is full', () => {
+            const occupiedGrid = new Set<string>()
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 12; col++) {
+                    occupiedGrid.add(`${col},${row}`)
+                }
+            }
+
+            const newChartConstraints: ChartLayoutConstraints[] = [
+                {
+                    default: { width: 2, height: 9 },
+                    min: { width: 1, height: 6 },
+                    max: { width: 4, height: 12 },
+                },
+            ]
+
+            const positions = calculateChartPositionsWithOccupied(
+                newChartConstraints,
+                12,
+                occupiedGrid,
+            )
+
+            expect(positions).toEqual([{ x: 0, y: 9, w: 2, h: 9 }])
+        })
+
+        it('should prevent overlaps between multiple new charts', () => {
+            const occupiedGrid = new Set<string>()
+
+            const newChartConstraints: ChartLayoutConstraints[] = [
+                {
+                    default: { width: 2, height: 9 },
+                    min: { width: 1, height: 6 },
+                    max: { width: 4, height: 12 },
+                },
+                {
+                    default: { width: 2, height: 9 },
+                    min: { width: 1, height: 6 },
+                    max: { width: 4, height: 12 },
+                },
+            ]
+
+            const positions = calculateChartPositionsWithOccupied(
+                newChartConstraints,
+                12,
+                occupiedGrid,
+            )
+
+            expect(positions).toEqual([
+                { x: 0, y: 0, w: 2, h: 9 },
+                { x: 2, y: 0, w: 2, h: 9 },
+            ])
         })
     })
 })

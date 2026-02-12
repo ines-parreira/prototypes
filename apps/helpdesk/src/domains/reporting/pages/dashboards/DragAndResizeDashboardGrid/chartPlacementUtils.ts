@@ -9,7 +9,7 @@ export type GridPosition = {
     h: number
 }
 
-type OccupiedGrid = Set<string>
+export type OccupiedGrid = Set<string>
 
 const getCellKey = (x: number, y: number): string => `${x},${y}`
 
@@ -79,6 +79,32 @@ export const calculateChartPositions = (
     cols: number,
 ): GridPosition[] => {
     const occupiedGrid: OccupiedGrid = new Set()
+    const positions: GridPosition[] = []
+
+    chartConstraints.forEach((constraints) => {
+        const width = constraints.default.width
+        const height = constraints.default.height
+
+        const { x, y } = findNextAvailablePosition(
+            occupiedGrid,
+            width,
+            height,
+            cols,
+        )
+
+        markPositionOccupied(occupiedGrid, x, y, width, height)
+
+        positions.push({ x, y, w: width, h: height })
+    })
+
+    return positions
+}
+
+export const calculateChartPositionsWithOccupied = (
+    chartConstraints: ChartLayoutConstraints[],
+    cols: number,
+    occupiedGrid: OccupiedGrid,
+): GridPosition[] => {
     const positions: GridPosition[] = []
 
     chartConstraints.forEach((constraints) => {
