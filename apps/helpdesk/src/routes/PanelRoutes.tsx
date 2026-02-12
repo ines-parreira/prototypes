@@ -1,4 +1,9 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useAreFlagsLoading,
+    useFlag,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Handle, PanelGroup, Panels } from '@repo/layout'
 import {
@@ -36,8 +41,10 @@ export default function PanelRoutes() {
     const hasRedirectDeprecatedTicketRoutes = useFlag(
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
     )
+    const areFlagsLoading = useAreFlagsLoading()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMS1Dot5 = useHelpdeskV2MS1Dot5Flag()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const { width } = useWindowSize()
     const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
@@ -46,6 +53,10 @@ export default function PanelRoutes() {
 
     const match = useRouteMatch<{ viewId?: string }>('/app/views/:viewId?')
     const viewId = match?.params.viewId || 'default'
+
+    if (areFlagsLoading) {
+        return null
+    }
 
     if (isMobileResolution) {
         return (
@@ -66,7 +77,7 @@ export default function PanelRoutes() {
                 onToggleUnread={onToggleUnread}
             >
                 <Panels size={width}>
-                    <GlobalNavigationPanel />
+                    {!hasWayfindingMS1Flag && <GlobalNavigationPanel />}
                     <Switch>
                         <Route path="/app/tickets">
                             <TicketsPage />
@@ -88,6 +99,104 @@ export default function PanelRoutes() {
     // `TicketInfobarPanel`. When switching between the ticket routes, the
     // `TicketListPanel` can simply (dis)appear without the detail/infobar
     // panels re-rendering, but this can only be achieved by using react keys.
+    const routes = (
+        <>
+            {hasUIVisionMS1 && (
+                <Switch key="ui-vision-dtp">
+                    <Route exact path="/app/views/:viewId?">
+                        <PanelGroup
+                            className={css.dtpWrapper}
+                            subtractSize={10}
+                        >
+                            <TicketsListPanel
+                                key={`ticket-list-panel-${viewId}`}
+                            />
+                        </PanelGroup>
+                        <Handle className={css.dtpHandle} />
+                    </Route>
+                    <Route exact path="/app/views/:viewId/:ticketId">
+                        <PanelGroup
+                            className={css.dtpWrapper}
+                            subtractSize={10}
+                        >
+                            <TicketsListPanel
+                                key={`ticket-list-panel-${viewId}`}
+                                registerOnToggleUnread={registerOnToggleUnread}
+                            />
+                        </PanelGroup>
+                        <Handle className={css.dtpHandle} />
+                    </Route>
+                </Switch>
+            )}
+            <ContentPanels key="content" subtractSize={10}>
+                <Switch>
+                    <Route exact path="/app">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/new/:visibility?">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/search">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    <Route exact path="/app/tickets/:viewId/:viewSlug?">
+                        <ViewPanel key="view-panel" />
+                    </Route>
+                    {hasUIVisionMS1Dot5 && (
+                        <Route exact path="/app/ticket/new">
+                            <NewTicketPage />
+                        </Route>
+                    )}
+                    <Route exact path="/app/ticket/:ticketId">
+                        <TicketDetailWithInfobar key="ticket-detail-with-infobar" />
+                    </Route>
+                    <Route exact path="/app/views/:viewId?">
+                        {!hasUIVisionMS1 && (
+                            <>
+                                <TicketsListPanel
+                                    key={`ticket-list-panel-${viewId}`}
+                                />
+                                <Handle />
+                            </>
+                        )}
+                        <TicketEmptyPanel key="ticket-empty-panel" />
+                    </Route>
+                    <Route exact path="/app/views/:viewId/:ticketId">
+                        {!hasUIVisionMS1 && (
+                            <>
+                                <TicketsListPanel
+                                    key={`ticket-list-panel-${viewId}`}
+                                    registerOnToggleUnread={
+                                        registerOnToggleUnread
+                                    }
+                                />
+                                <Handle />
+                            </>
+                        )}
+                        <TicketDetailWithInfobar
+                            key="ticket-detail-with-infobar"
+                            onToggleUnread={onToggleUnread}
+                        />
+                    </Route>
+                </Switch>
+            </ContentPanels>
+        </>
+    )
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <TicketsLegacyBridgeProvider
+                {...ticketLegacyBridgeFunctions}
+                onToggleUnread={onToggleUnread}
+            >
+                {routes}
+            </TicketsLegacyBridgeProvider>
+        )
+    }
+
     return (
         <TicketsLegacyBridgeProvider
             {...ticketLegacyBridgeFunctions}
@@ -97,90 +206,7 @@ export default function PanelRoutes() {
                 <GlobalNavigationPanel key="global-navigation" />
                 <TicketsNavbarPanel key="navbar" />
                 <Handle />
-                {hasUIVisionMS1 && (
-                    <Switch key="ui-vision-dtp">
-                        <Route exact path="/app/views/:viewId?">
-                            <PanelGroup
-                                className={css.dtpWrapper}
-                                subtractSize={10}
-                            >
-                                <TicketsListPanel
-                                    key={`ticket-list-panel-${viewId}`}
-                                />
-                            </PanelGroup>
-                            <Handle className={css.dtpHandle} />
-                        </Route>
-                        <Route exact path="/app/views/:viewId/:ticketId">
-                            <PanelGroup
-                                className={css.dtpWrapper}
-                                subtractSize={10}
-                            >
-                                <TicketsListPanel
-                                    key={`ticket-list-panel-${viewId}`}
-                                    registerOnToggleUnread={
-                                        registerOnToggleUnread
-                                    }
-                                />
-                            </PanelGroup>
-                            <Handle className={css.dtpHandle} />
-                        </Route>
-                    </Switch>
-                )}
-                <ContentPanels key="content" subtractSize={10}>
-                    <Switch>
-                        <Route exact path="/app">
-                            <ViewPanel key="view-panel" />
-                        </Route>
-                        <Route exact path="/app/tickets">
-                            <ViewPanel key="view-panel" />
-                        </Route>
-                        <Route exact path="/app/tickets/new/:visibility?">
-                            <ViewPanel key="view-panel" />
-                        </Route>
-                        <Route exact path="/app/tickets/search">
-                            <ViewPanel key="view-panel" />
-                        </Route>
-                        <Route exact path="/app/tickets/:viewId/:viewSlug?">
-                            <ViewPanel key="view-panel" />
-                        </Route>
-                        {hasUIVisionMS1Dot5 && (
-                            <Route exact path="/app/ticket/new">
-                                <NewTicketPage />
-                            </Route>
-                        )}
-                        <Route exact path="/app/ticket/:ticketId">
-                            <TicketDetailWithInfobar key="ticket-detail-with-infobar" />
-                        </Route>
-                        <Route exact path="/app/views/:viewId?">
-                            {!hasUIVisionMS1 && (
-                                <>
-                                    <TicketsListPanel
-                                        key={`ticket-list-panel-${viewId}`}
-                                    />
-                                    <Handle />
-                                </>
-                            )}
-                            <TicketEmptyPanel key="ticket-empty-panel" />
-                        </Route>
-                        <Route exact path="/app/views/:viewId/:ticketId">
-                            {!hasUIVisionMS1 && (
-                                <>
-                                    <TicketsListPanel
-                                        key={`ticket-list-panel-${viewId}`}
-                                        registerOnToggleUnread={
-                                            registerOnToggleUnread
-                                        }
-                                    />
-                                    <Handle />
-                                </>
-                            )}
-                            <TicketDetailWithInfobar
-                                key="ticket-detail-with-infobar"
-                                onToggleUnread={onToggleUnread}
-                            />
-                        </Route>
-                    </Switch>
-                </ContentPanels>
+                {routes}
             </Panels>
             <TranslationsOnboardingModal />
         </TicketsLegacyBridgeProvider>

@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -17,6 +18,15 @@ import Navbar from '../Navbar'
 import { NavBarProvider } from '../NavBarProvider'
 
 import css from '../Navbar.less'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+}))
+
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 jest.mock('../../hooks/useShowGlobalNavFeatureFlag', () => ({
     useDesktopOnlyShowGlobalNavFeatureFlag: jest.fn(),
@@ -72,6 +82,7 @@ describe('Navbar', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(false)
         useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
     })
 
     it('should set the navbar width if resizing is not disabled', () => {
@@ -174,5 +185,31 @@ describe('Navbar', () => {
             </NavBarContext.Provider>,
         )
         expect(container.firstChild).not.toHaveAttribute('style')
+    })
+
+    describe('with wayfinding flag enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('should not render the main navigation, title or split ticket view toggle when wayfinding flag is enabled', () => {
+            const { queryByText } = renderWithContext(
+                <Navbar
+                    {...props}
+                    title="beep-boop-title"
+                    splitTicketViewToggle={<button>SplitTicketView</button>}
+                />,
+            )
+            expect(queryByText('MainNavigation')).not.toBeInTheDocument()
+            expect(queryByText('beep-boop-title')).not.toBeInTheDocument()
+            expect(queryByText('SplitTicketView')).not.toBeInTheDocument()
+        })
+
+        it('should still render header content when wayfinding flag is enabled', () => {
+            const { getByText } = renderWithContext(
+                <Navbar {...props} headerContent={<div>HeaderContent</div>} />,
+            )
+            expect(getByText('HeaderContent')).toBeInTheDocument()
+        })
     })
 })

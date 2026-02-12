@@ -1,6 +1,7 @@
 import type { ComponentType, ReactNode } from 'react'
 import { memo } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
@@ -48,6 +49,7 @@ const App = ({
     children,
 }: Props) => {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const dispatch = useAppDispatch()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
@@ -72,19 +74,23 @@ const App = ({
 
     return (
         <div id="app-root" className={css.app}>
-            {showGlobalNav && <GlobalNavigation />}
-
-            {Navbar ? (
+            {!hasWayfindingMS1Flag && (
                 <>
-                    {showGlobalNav ? (
-                        <CollapsibleNavBarWrapper>
-                            <Navbar />
-                        </CollapsibleNavBarWrapper>
-                    ) : (
-                        <Navbar />
-                    )}
+                    {showGlobalNav && <GlobalNavigation />}
+
+                    {Navbar ? (
+                        <>
+                            {showGlobalNav ? (
+                                <CollapsibleNavBarWrapper>
+                                    <Navbar />
+                                </CollapsibleNavBarWrapper>
+                            ) : (
+                                <Navbar />
+                            )}
+                        </>
+                    ) : null}
                 </>
-            ) : null}
+            )}
 
             <div
                 className={cn('d-flex flex-grow-1 flex-column', css.container, {

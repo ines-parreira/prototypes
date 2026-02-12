@@ -1,4 +1,6 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
+import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -9,11 +11,21 @@ import { account } from 'fixtures/account'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import { type VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import PanelRoutes from '../PanelRoutes'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+    useFlag: jest.fn().mockReturnValue(false),
+}))
+
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
@@ -78,6 +90,7 @@ describe('PanelRoutes', () => {
             isEnabled: true,
             setIsEnabled: jest.fn(),
         } as any)
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
     })
 
     it('should render the mobile routes for mobile resolutions', () => {
@@ -190,5 +203,27 @@ describe('PanelRoutes', () => {
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketInfobarPanel')).toBeInTheDocument()
+    })
+
+    describe('with wayfinding flag enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('should not render GlobalNavigationPanel or TicketsNavbarPanel when wayfinding flag is enabled', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <Panels size={100}>
+                    <PanelRoutes />
+                </Panels>,
+                {},
+                { route: '/app', path: '*' },
+            )
+            expect(
+                screen.queryByText('GlobalNavigationPanel'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('TicketsNavbarPanel'),
+            ).not.toBeInTheDocument()
+        })
     })
 })

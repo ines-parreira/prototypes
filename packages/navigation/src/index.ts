@@ -8,3 +8,14 @@ export type {
     TicketInfobarNavigationContextValue,
     TicketInfobarNavigationState,
 } from './types'
+
+export {
+    SidebarRoot,
+    SidebarContent,
+    SidebarFooter,
+} from './components/Sidebar'
+export type {
+    SidebarProps,
+    SidebarContentProps,
+    SidebarFooterProps,
+} from './components/Sidebar'

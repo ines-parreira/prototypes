@@ -35,6 +35,7 @@ const mockUseLastSelectedStore = assumeMock(useLastSelectedStore)
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
     useFlag: jest.fn(),
 }))
 

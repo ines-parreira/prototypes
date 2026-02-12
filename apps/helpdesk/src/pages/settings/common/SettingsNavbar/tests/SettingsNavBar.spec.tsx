@@ -26,6 +26,7 @@ jest.mock('@repo/logging', () => ({
 }))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
     useFlag: jest.fn(() => false),
 }))
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({

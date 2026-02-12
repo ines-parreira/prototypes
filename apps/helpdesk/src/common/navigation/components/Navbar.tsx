@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react'
 import type { ReactNode, RefObject } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import cn from 'classnames'
 
 import { NotificationsButton } from 'common/notifications'
@@ -47,6 +48,7 @@ export default function Navbar({
     const { navBarDisplay } = useNavBar()
 
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const enableResize = useMemo(() => {
         if (disableResize) {
@@ -76,14 +78,16 @@ export default function Navbar({
                     [css['hidden-panel']]: !isOpenedPanel,
                 })}
             >
-                <div className={css['nav-dropdown-wrapper']}>
-                    {showGlobalNav ? (
-                        <div className={css.title}>{title}</div>
-                    ) : (
-                        <MainNavigation activeContent={activeContent} />
-                    )}
-                    {splitTicketViewToggle}
-                </div>
+                {!hasWayfindingMS1Flag && (
+                    <div className={css['nav-dropdown-wrapper']}>
+                        {showGlobalNav ? (
+                            <div className={css.title}>{title}</div>
+                        ) : (
+                            <MainNavigation activeContent={activeContent} />
+                        )}
+                        {splitTicketViewToggle}
+                    </div>
+                )}
                 {hasHeaderContent && (
                     <div className={css['navbar-cta-group']}>
                         {!showGlobalNav && (
