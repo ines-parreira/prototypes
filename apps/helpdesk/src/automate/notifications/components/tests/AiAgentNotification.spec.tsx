@@ -207,7 +207,8 @@ describe('AiAgentNotification', () => {
                 ...basePayload,
                 ai_agent_notification_type:
                     AiAgentNotificationType.NewOpportunityGenerated,
-                opportunity_id: 123,
+                opportunity_ids: [123],
+                total_tickets: 4,
             },
         }
 

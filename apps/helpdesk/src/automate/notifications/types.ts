@@ -16,7 +16,8 @@ export type AiAgentNotificationPayload = {
     shop_type: string
     ticket_id?: string
     agent_id?: number
-    opportunity_id?: number
+    opportunity_ids?: number[]
+    total_tickets?: number
 }
 
 export type WorkflowConfigurationUpdatedNotificationPayload = {

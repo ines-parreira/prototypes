@@ -29,7 +29,8 @@ export const getNotificationParams = (
         shop_name: shopName,
         ticket_id: ticketId,
         agent_id: agentId,
-        opportunity_id: opportunityId,
+        opportunity_ids: opportunityIds,
+        total_tickets: totalTickets,
     } = payload
 
     const routes = getAiAgentNavigationRoutes(shopName)
@@ -101,12 +102,13 @@ export const getNotificationParams = (
                 redirectTo: `/app/ai-agent/shopify/${shopName}/trial?from=notification`,
             }
         case AiAgentNotificationType.NewOpportunityGenerated:
+            if (!opportunityIds || !opportunityIds.length) return null
+            const totalOpportunities = opportunityIds.length
             return {
-                title: 'New AI Agent Opportunities',
-                subtitle:
-                    'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+                title: 'New opportunities to improve AI Agent',
+                subtitle: `We found ${totalOpportunities} opportunities affecting ${totalTickets} tickets. Review and apply high-impact fixes to improve responses.`,
                 redirectTo: routes.opportunitiesWithId(
-                    opportunityId?.toString(),
+                    opportunityIds[0].toString(),
                 ),
             }
         default:
