@@ -1,9 +1,10 @@
 import type { RefObject } from 'react'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import _capitalize from 'lodash/capitalize'
+
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import logoShopify from 'assets/img/integrations/shopify.svg'
 import type {
     GuidanceVariable,
     GuidanceVariableGroup,
@@ -15,7 +16,10 @@ import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Search from 'pages/common/components/Search'
 
-import { findManyGuidanceVariables } from '../../guidance-variables/utils'
+import {
+    findManyGuidanceVariables,
+    pickCategoryLogo,
+} from '../../guidance-variables/utils'
 import { useToolbarContext } from '../ToolbarContext'
 
 import css from './GuidanceVariableDropdown.less'
@@ -247,8 +251,14 @@ const GuidanceVariableDropdown = ({
                                 <div className={css.itemContent}>
                                     <span className={css.itemIcon}>
                                         <img
-                                            src={logoShopify}
-                                            alt="shopify logo"
+                                            src={
+                                                pickCategoryLogo(option.name)
+                                                    .src
+                                            }
+                                            alt={
+                                                pickCategoryLogo(option.name)
+                                                    .alt
+                                            }
                                             className={css.shopifyLogo}
                                             width={20}
                                             height={20}
@@ -256,7 +266,7 @@ const GuidanceVariableDropdown = ({
                                     </span>
                                     <span className={css.itemName}>
                                         {'category' in option
-                                            ? `${option.category === 'customer' ? 'Customer' : 'Order'}: ${option.name}`
+                                            ? `${_capitalize(option.category)}: ${option.name}`
                                             : option.name}
                                     </span>
                                 </div>
@@ -299,8 +309,16 @@ const GuidanceVariableDropdown = ({
                                         <div className={css.itemContent}>
                                             <span className={css.itemIcon}>
                                                 <img
-                                                    src={logoShopify}
-                                                    alt="shopify logo"
+                                                    src={
+                                                        pickCategoryLogo(
+                                                            variable.category,
+                                                        ).src
+                                                    }
+                                                    alt={
+                                                        pickCategoryLogo(
+                                                            variable.category,
+                                                        ).alt
+                                                    }
                                                     className={css.shopifyLogo}
                                                     width={20}
                                                     height={20}

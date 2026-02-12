@@ -1,21 +1,14 @@
 import type { MouseEvent, ReactNode } from 'react'
-import React, {
-    useCallback,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import logoShopify from 'assets/img/integrations/shopify.svg'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
-import { parseGuidanceVariable } from './utils'
+import { parseGuidanceVariable, pickCategoryLogo } from './utils'
 
 import css from './GuidanceVariableTag.less'
 
@@ -63,9 +56,21 @@ export default function GuidanceVariableTag({
     const variableName = useMemo(() => {
         if (!variable) return 'Invalid variable'
 
-        const prefix = variable.category === 'customer' ? 'Customer' : 'Order'
+        const categoryMap = {
+            customer: 'Customer',
+            order: 'Order',
+            ticket: 'Ticket',
+        }
+
+        const prefix = categoryMap[variable.category]
 
         return `${prefix}: ${variable.name}`
+    }, [variable])
+
+    const logoConfig = useMemo(() => {
+        if (!variable) return pickCategoryLogo('shopify')
+
+        return pickCategoryLogo(variable.category)
     }, [variable])
 
     return (
@@ -78,8 +83,8 @@ export default function GuidanceVariableTag({
                 onClick={handleClick}
             >
                 <img
-                    src={logoShopify}
-                    alt="shopify logo"
+                    src={logoConfig.src}
+                    alt={logoConfig.alt}
                     className={css.shopifyLogo}
                     width={14}
                     height={14}

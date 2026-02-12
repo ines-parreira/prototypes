@@ -2,6 +2,8 @@ import type { ContentBlock, ContentState } from 'draft-js'
 import { Modifier, SelectionState } from 'draft-js'
 import _capitalize from 'lodash/capitalize'
 
+import logoGorgias from 'assets/img/icons/gorgias-icon-logo-black.png'
+import logoShopify from 'assets/img/integrations/shopify.svg'
 import type {
     GuidanceVariable,
     GuidanceVariableGroup,
@@ -136,4 +138,17 @@ export const replaceGuidanceVariablesPlaceholdersWithLabels = (
 
         return `${_capitalize(variable.category)}: ${variable.name}`
     })
+}
+
+/**
+ * Get logo configuration based on variable category
+ */
+export const pickCategoryLogo = (
+    category: string,
+): { src: string; alt: string } => {
+    if (category.toLowerCase() === 'ticket') {
+        return { src: logoGorgias, alt: 'gorgias logo' }
+    }
+
+    return { src: logoShopify, alt: 'shopify logo' }
 }

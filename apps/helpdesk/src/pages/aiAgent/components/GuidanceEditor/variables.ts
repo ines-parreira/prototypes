@@ -2,6 +2,16 @@ import type { GuidanceVariableGroup } from './variables.types'
 
 export const guidanceVariables: GuidanceVariableGroup[] = [
     {
+        name: 'Ticket',
+        variables: [
+            {
+                name: 'Creation date',
+                value: '&&&ticket.created_at&&&',
+                category: 'ticket',
+            },
+        ],
+    },
+    {
         name: 'Shopify',
         variables: [
             {
@@ -28,6 +38,11 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
                 name: 'Order count',
                 value: '&&&customer.orders_count&&&',
                 category: 'customer',
+            },
+            {
+                name: 'Discount codes',
+                value: '&&&order.discount_codes&&&',
+                category: 'order',
             },
             {
                 name: 'Total spent',
@@ -140,6 +155,11 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
                 category: 'order',
             },
             {
+                name: 'Fulfillment - Service',
+                value: '&&&order.fulfillment.service&&&',
+                category: 'order',
+            },
+            {
                 name: 'Currency',
                 value: '&&&order.currency&&&',
                 category: 'order',
@@ -152,11 +172,6 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
             {
                 name: 'Total tax',
                 value: '&&&order.current_total_tax&&&',
-                category: 'order',
-            },
-            {
-                name: 'Discount codes',
-                value: '&&&order.discount_codes&&&',
                 category: 'order',
             },
             {
@@ -192,6 +207,26 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
             {
                 name: 'Total weight',
                 value: '&&&order.total_weight&&&',
+                category: 'order',
+            },
+            {
+                name: 'Shipment - Status',
+                value: '&&&order.fulfillment.shipment_status&&&',
+                category: 'order',
+            },
+            {
+                name: 'Refund - Processed at',
+                value: '&&&order.refund.processed_at&&&',
+                category: 'order',
+            },
+            {
+                name: 'Return - Received at',
+                value: '&&&order.return.received_at&&&',
+                category: 'order',
+            },
+            {
+                name: 'Return - Closed at',
+                value: '&&&order.return.closed_at&&&',
                 category: 'order',
             },
         ],

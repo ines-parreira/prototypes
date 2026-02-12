@@ -17,6 +17,8 @@ jest.mock('../../ToolbarContext', () => ({
 
 jest.mock('../../../guidance-variables/utils', () => ({
     findManyGuidanceVariables: jest.fn(),
+    pickCategoryLogo: jest.requireActual('../../../guidance-variables/utils')
+        .pickCategoryLogo,
 }))
 
 jest.mock('pages/common/components/dropdown/Dropdown', () => {

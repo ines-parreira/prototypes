@@ -11,6 +11,7 @@ jest.mock('pages/common/draftjs/plugins/toolbar/ToolbarContext', () => ({
 
 jest.mock('../utils', () => ({
     parseGuidanceVariable: jest.fn(),
+    pickCategoryLogo: jest.requireActual('../utils').pickCategoryLogo,
 }))
 
 jest.mock('@gorgias/axiom', () => ({
