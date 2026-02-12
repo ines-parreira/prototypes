@@ -280,7 +280,6 @@ describe('UserMenu', () => {
 
         expect(getByText('Back')).toBeInTheDocument()
         expect(getByText('Help Center')).toBeInTheDocument()
-        expect(getByText('Gorgias Webinars')).toBeInTheDocument()
         expect(getByText('Gorgias Academy')).toBeInTheDocument()
         expect(getByText('Gorgias Community')).toBeInTheDocument()
         expect(getByText('Keyboard shortcuts')).toBeInTheDocument()
@@ -288,7 +287,6 @@ describe('UserMenu', () => {
 
     it.each([
         ['Help Center', 'helpdocs'],
-        ['Gorgias Webinars', 'gorgiaswebinars'],
         ['Gorgias Academy', 'gorgiasacademy'],
         ['Gorgias Community', 'gorgiascommunity'],
     ])('should handle clicks for %s on the learn screen', (label, link) => {

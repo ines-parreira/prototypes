@@ -323,31 +323,6 @@ export default function UserMenu({ onClose }: Props) {
                         Help Center
                     </a>
                     <a
-                        href="https://app.getcontrast.io/gorgias?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu"
-                        target="_blank"
-                        rel="noreferrer"
-                        className={cn(css['dropdown-item-user-menu'])}
-                        onClick={() => {
-                            logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                link: 'gorgiaswebinars',
-                                user_email: currentUser.get('email'),
-                                user_role: currentUser.getIn(['role', 'name']),
-                            })
-                            onClose()
-                        }}
-                    >
-                        <i
-                            className={cn(
-                                'material-icons-outlined mr-2',
-                                css.icon,
-                            )}
-                            title="Gorgias Webinars"
-                        >
-                            subscriptions
-                        </i>
-                        Gorgias Webinars
-                    </a>
-                    <a
                         href="https://academy.gorgias.com/trainings?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu"
                         target="_blank"
                         rel="noreferrer"
