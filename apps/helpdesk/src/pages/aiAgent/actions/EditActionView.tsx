@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _noop from 'lodash/noop'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -236,11 +235,6 @@ const EditActionView = ({ configuration }: Props) => {
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)
 
-    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
-        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
-        false,
-    )
-
     useEffect(() => {
         if (isDeleteActionSuccess) {
             history.push(routes.actions)
@@ -252,18 +246,13 @@ const EditActionView = ({ configuration }: Props) => {
     useEffect(() => {
         if (isEditActionSuccess) {
             if (isSaveAndTestButtonClicked) {
-                if (isPlaygroundAvailableEverywhere) {
-                    openPlaygroundPanel()
-                    setIsSaveAndTestButtonClicked(false)
-                } else {
-                    history.push(routes.test)
-                }
+                openPlaygroundPanel()
+                setIsSaveAndTestButtonClicked(false)
             }
         }
     }, [
         isEditActionSuccess,
         isSaveAndTestButtonClicked,
-        isPlaygroundAvailableEverywhere,
         openPlaygroundPanel,
         history,
         routes,

@@ -371,6 +371,147 @@ describe('<EditActionView />', () => {
         })
     })
 
+    it('should open playground panel when "Save and test" succeeds', async () => {
+        const mockUpsertAction = jest.fn().mockResolvedValue({ success: true })
+        const mockOpenPlayground = jest.fn()
+        let isSuccess = false
+
+        mockUseUpsertAction.mockImplementation(
+            () =>
+                ({
+                    isLoading: false,
+                    mutateAsync: mockUpsertAction.mockImplementation(
+                        async (...__) => {
+                            isSuccess = true
+                            return { success: true }
+                        },
+                    ),
+                    get isSuccess() {
+                        return isSuccess
+                    },
+                }) as any,
+        )
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: mockOpenPlayground,
+            closePlayground: jest.fn(),
+        } as unknown as ReturnType<typeof usePlaygroundPanel>)
+
+        const { rerender } = renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            },
+        )
+
+        await act(async () => {
+            fireEvent.click(screen.getByText('Save and test'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockUpsertAction,
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(mockOpenPlayground).toHaveBeenCalled()
+        })
+    })
+
+    it('should not open playground panel when "Save changes" succeeds (not "Save and test")', async () => {
+        const mockUpsertAction = jest.fn().mockResolvedValue({ success: true })
+        const mockOpenPlayground = jest.fn()
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockUpsertAction,
+            isSuccess: false,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: mockOpenPlayground,
+            closePlayground: jest.fn(),
+        } as unknown as ReturnType<typeof usePlaygroundPanel>)
+
+        const { rerender } = renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            },
+        )
+
+        await act(async () => {
+            fireEvent.click(screen.getByText('Save changes'))
+        })
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: mockUpsertAction,
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        rerender(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(mockOpenPlayground).not.toHaveBeenCalled()
+        })
+    })
+
+    it('should not open playground panel when isEditActionSuccess is true but no button was clicked', async () => {
+        const mockOpenPlayground = jest.fn()
+
+        mockUseUpsertAction.mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn(),
+            isSuccess: true,
+        } as unknown as ReturnType<typeof useUpsertAction>)
+
+        mockUsePlaygroundPanel.mockReturnValue({
+            openPlayground: mockOpenPlayground,
+            closePlayground: jest.fn(),
+        } as unknown as ReturnType<typeof usePlaygroundPanel>)
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={queryClient}>
+                    <EditActionView configuration={configuration} />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/app/ai-agent/:shopType/:shopName/actions/edit/:id',
+                route: `/app/ai-agent/shopify/shopify-store/actions/edit/${configuration.id}`,
+            },
+        )
+        await waitFor(() => {
+            expect(mockOpenPlayground).not.toHaveBeenCalled()
+        })
+    })
+
     it('should redirect to actions on delete success', async () => {
         mockUseDeleteAction.mockReturnValue({
             isLoading: false,

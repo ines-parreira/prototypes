@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import classnames from 'classnames'
 
@@ -43,11 +42,6 @@ export const AiAgentLayout = ({
     fullscreen,
     titleChildren,
 }: Props) => {
-    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
-        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
-        false,
-    )
-
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
     const { togglePlayground, isPlaygroundOpen } = usePlaygroundPanel()
 
@@ -91,8 +85,7 @@ export const AiAgentLayout = ({
                 </div>
                 <div className={css.testButtonContainer}>
                     {titleChildren}
-                    {isPlaygroundAvailableEverywhere &&
-                        displayPlaygroundButtonInLayoutHeader &&
+                    {displayPlaygroundButtonInLayoutHeader &&
                         !isPlaygroundOpen && (
                             <Button
                                 onClick={togglePlayground}
@@ -109,7 +102,6 @@ export const AiAgentLayout = ({
         titleChildren,
         displayPlaygroundButtonInLayoutHeader,
         isPlaygroundOpen,
-        isPlaygroundAvailableEverywhere,
         togglePlayground,
     ])
 

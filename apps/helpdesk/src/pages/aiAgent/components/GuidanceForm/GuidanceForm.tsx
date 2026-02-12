@@ -89,10 +89,6 @@ export const GuidanceForm = ({
         FeatureFlagKey.AiAgentSupportActionInGuidance,
         false,
     )
-    const isPlaygroundAvailableEverywhere = useFlag<boolean>(
-        FeatureFlagKey.MakePlaygroundAvailableEverywhere,
-        false,
-    )
 
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -210,7 +206,7 @@ export const GuidanceForm = ({
                 handleOnTriggerActivateAiAgentNotification()
             }
 
-            if (isPlaygroundAvailableEverywhere && redirectTo === routes.test) {
+            if (redirectTo === routes.test) {
                 openPlaygroundPanel()
             } else if (redirectTo) {
                 history.push(redirectTo)

@@ -152,7 +152,6 @@ export enum FeatureFlagKey {
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
-    MakePlaygroundAvailableEverywhere = 'linear.project.make-playground-available-everywhere',
     MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     NewDomainVerification = 'new-domain-verification',
