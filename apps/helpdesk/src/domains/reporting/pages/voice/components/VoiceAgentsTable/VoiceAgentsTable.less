@@ -2,7 +2,8 @@
     .container {
         width: 100%;
         overflow-y: auto;
-        max-height: calc(100vh - 350px);
+        display: flex;
+        flex-direction: column;
     }
 
     .agentsContainer {
@@ -90,6 +91,10 @@
         width: 13%;
         min-width: 125px;
     }
+}
+
+:global(.react-grid-item) :local(.container) {
+    height: 100%;
 }
 
 .axiom :local {

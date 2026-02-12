@@ -27,9 +27,10 @@
 
     .container {
         width: 100%;
-        max-height: calc(100vh - 200px);
         overflow: auto;
         margin-bottom: var(--layout-spacing-m);
+        display: flex;
+        flex-direction: column;
     }
 
     .rowCell {
@@ -70,6 +71,10 @@
         margin-left: var(--layout-spacing-xs);
         margin-bottom: var(--layout-spacing-xs);
     }
+}
+
+:global(.react-grid-item) :local(.container) {
+    height: 100%;
 }
 
 .axiom :local {

@@ -67,20 +67,10 @@
 
     .container {
         width: 100%;
-        max-height: calc(100vh - 300px);
         margin-bottom: var(--layout-spacing-m);
-        @media (min-height: @table-max-height) {
-            max-height: calc(@table-max-height - 300px);
-            margin-bottom: 0;
-        }
         overflow: auto;
-
-        &.withPagination {
-            max-height: calc(100vh - 412px);
-            @media (min-height: @table-max-height) {
-                max-height: calc(@table-max-height - 412px);
-            }
-        }
+        display: flex;
+        flex-direction: column;
     }
 
     .limitedHeight {
@@ -257,6 +247,10 @@
         padding-left: var(--layout-spacing-xs);
         padding-bottom: var(--layout-spacing-xs);
     }
+}
+
+:global(.react-grid-item) :local(.container) {
+    height: 100%;
 }
 
 .axiom :local {

@@ -2,7 +2,8 @@
     .container {
         width: 100%;
         overflow-y: auto;
-        max-height: calc(100vh - 300px);
+        display: flex;
+        flex-direction: column;
     }
 
     .table {
@@ -124,6 +125,10 @@
     .timerBadge {
         gap: var(--layout-spacing-xxs);
     }
+}
+
+:global(.react-grid-item) :local(.container) {
+    height: 100%;
 }
 
 .axiom :local {
