@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
@@ -23,34 +22,17 @@ const isValidTicketTimeReference = (
     )
 }
 
-const LEGACY_TICKET_TIME_REFERENCE = TicketTimeReference.TaggedAt
 const DEFAULT_TICKET_TIME_REFERENCE = TicketTimeReference.CreatedAt
-
-const getEffectiveTicketTimeReference = (
-    value: TicketTimeReference,
-    isSupported = false,
-) => {
-    if (!isSupported) return LEGACY_TICKET_TIME_REFERENCE
-
-    return isValidTicketTimeReference(value)
-        ? value
-        : DEFAULT_TICKET_TIME_REFERENCE
-}
 
 export const useTicketTimeReference = (
     entity: Entity,
 ): [TicketTimeReference, (value: TicketTimeReference) => void] => {
-    const isReportingExtendFieldAndTagEnabled = useFlag(
-        FeatureFlagKey.ReportingExtendFieldAndTag,
-    )
-
     const [selectedTicketTimeReference, setSelectedTicketTimeReference] =
         useLocalStorage(getStorageKey(entity), DEFAULT_TICKET_TIME_REFERENCE)
 
-    const value = getEffectiveTicketTimeReference(
-        selectedTicketTimeReference,
-        isReportingExtendFieldAndTagEnabled,
-    )
+    const value = isValidTicketTimeReference(selectedTicketTimeReference)
+        ? selectedTicketTimeReference
+        : DEFAULT_TICKET_TIME_REFERENCE
 
     const handleTicketTimeReferenceChange = useCallback(
         (value: TicketTimeReference) => {

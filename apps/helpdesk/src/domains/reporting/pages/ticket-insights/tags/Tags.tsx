@@ -23,17 +23,13 @@ export function Tags() {
     const isReportingFilteringAndCalculationsTagsReportEnabled = useFlag(
         FeatureFlagKey.ReportingFilteringAndCalculationsTagsReport,
     )
-    const isReportingExtendFieldAndTagEnabled = useFlag(
-        FeatureFlagKey.ReportingExtendFieldAndTag,
-    )
 
     return (
         <div className="full-width">
             <StatsPage
                 title={TicketInsightsTagsReportConfig.reportName}
                 titleExtra={
-                    isReportingFilteringAndCalculationsTagsReportEnabled ||
-                    isReportingExtendFieldAndTagEnabled ? (
+                    isReportingFilteringAndCalculationsTagsReportEnabled ? (
                         <TagsActionMenu />
                     ) : (
                         <TagsReportDownloadDataButton />

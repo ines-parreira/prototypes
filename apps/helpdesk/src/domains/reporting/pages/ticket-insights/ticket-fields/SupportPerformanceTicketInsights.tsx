@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useGridSize } from '@repo/hooks'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
@@ -9,7 +8,6 @@ import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGr
 import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSection'
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
-import { DownloadTicketFieldsDataButton } from 'domains/reporting/pages/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import { TicketFieldsActionMenu } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsActionMenu'
 import { TicketFieldsBlankState } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
@@ -23,9 +21,6 @@ export function SupportPerformanceTicketInsights() {
     const getGridCellSize = useGridSize()
     useCleanStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
-    const isReportingExtendFieldAndTagEnabled = useFlag(
-        FeatureFlagKey.ReportingExtendFieldAndTag,
-    )
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
@@ -43,15 +38,9 @@ export function SupportPerformanceTicketInsights() {
             title={TicketFieldsReportConfig.reportName}
             titleExtra={
                 selectedCustomField.id ? (
-                    isReportingExtendFieldAndTagEnabled ? (
-                        <TicketFieldsActionMenu
-                            ticketFieldId={selectedCustomField.id}
-                        />
-                    ) : (
-                        <DownloadTicketFieldsDataButton
-                            selectedCustomFieldId={selectedCustomField.id}
-                        />
-                    )
+                    <TicketFieldsActionMenu
+                        ticketFieldId={selectedCustomField.id}
+                    />
                 ) : null
             }
         >

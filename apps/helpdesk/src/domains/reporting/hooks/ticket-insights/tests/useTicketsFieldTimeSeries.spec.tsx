@@ -27,7 +27,7 @@ describe('useTicketsFieldTimeSeries', () => {
 
         expect(useCustomFieldsTrendMock).toHaveBeenCalledWith({
             selectedCustomFieldId: 2,
-            ticketFieldsTicketTimeReference: TicketTimeReference.TaggedAt,
+            ticketFieldsTicketTimeReference: TicketTimeReference.CreatedAt,
         })
         expect(result.current).toEqual(response)
     })

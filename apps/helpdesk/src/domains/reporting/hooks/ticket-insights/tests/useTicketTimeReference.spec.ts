@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -14,9 +13,6 @@ import { TicketTimeReference } from 'domains/reporting/models/stat/types'
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
-
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useLocalStorage: jest.fn(),
@@ -25,26 +21,14 @@ const useLocalStorageMock = assumeMock(useLocalStorage)
 
 describe('useTicketTimeReference', () => {
     beforeEach(() => {
-        useFlagMock.mockReturnValue(false)
-
         useLocalStorageMock.mockReturnValue([
-            TicketTimeReference.TaggedAt,
+            TicketTimeReference.CreatedAt,
             jest.fn(),
             () => void 0,
         ])
     })
 
-    it('should return default value when the feature flag is disabled', () => {
-        const { result } = renderHook(() => useTicketTimeReference(Entity.Tag))
-
-        const [actual] = result.current
-        const expected = TicketTimeReference.TaggedAt
-
-        expect(actual).toBe(expected)
-    })
-
-    it('should return stored value when feature flag is enabled and value is valid', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should return stored value when value is valid', () => {
         useLocalStorageMock.mockReturnValue([
             TicketTimeReference.CreatedAt,
             jest.fn(),
@@ -59,8 +43,7 @@ describe('useTicketTimeReference', () => {
         expect(actual).toBe(expected)
     })
 
-    it('should return default value when feature flag is enabled but stored value is invalid', () => {
-        useFlagMock.mockReturnValue(true)
+    it('should return default value when stored value is invalid', () => {
         useLocalStorageMock.mockReturnValue([
             'invalid-value',
             jest.fn(),

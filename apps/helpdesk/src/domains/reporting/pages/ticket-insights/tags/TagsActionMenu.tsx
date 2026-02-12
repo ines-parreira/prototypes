@@ -1,5 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     TagSelection,
     useTagResultsSelection,
@@ -47,10 +45,6 @@ export const TAG_ACTIONS_DOWNLOAD_OPTION_LABEL = 'Download Data'
 const CANDU_ID = 'tags-report-action-menu'
 
 export const TagsActionMenu = () => {
-    const isReportingExtendFieldAndTagEnabled = useFlag(
-        FeatureFlagKey.ReportingExtendFieldAndTag,
-    )
-
     const [tagResultsSelection, setTagResultsSelection] =
         useTagResultsSelection()
 
@@ -80,28 +74,24 @@ export const TagsActionMenu = () => {
                 />
             </ActionMenuSelectGroup>
 
-            {isReportingExtendFieldAndTagEnabled && (
-                <>
-                    <ActionMenuSeparator />
+            <ActionMenuSeparator />
 
-                    <ActionMenuLabel>{TAGS_REFERENCE_LABEL}</ActionMenuLabel>
-                    <ActionMenuSelectGroup
-                        value={ticketTimeReference}
-                        onValueChange={setTicketTimeReference}
-                    >
-                        <ActionMenuSelectItem
-                            value={TicketTimeReference.TaggedAt}
-                            label={TAGS_ALL_STATUSES_LABEL}
-                            description={TAGS_ALL_STATUSES_SUBTITLE}
-                        />
-                        <ActionMenuSelectItem
-                            value={TicketTimeReference.CreatedAt}
-                            label={TAGS_CREATION_DATE_LABEL}
-                            description={TAGS_CREATION_DATE_SUBTITLE}
-                        />
-                    </ActionMenuSelectGroup>
-                </>
-            )}
+            <ActionMenuLabel>{TAGS_REFERENCE_LABEL}</ActionMenuLabel>
+            <ActionMenuSelectGroup
+                value={ticketTimeReference}
+                onValueChange={setTicketTimeReference}
+            >
+                <ActionMenuSelectItem
+                    value={TicketTimeReference.TaggedAt}
+                    label={TAGS_ALL_STATUSES_LABEL}
+                    description={TAGS_ALL_STATUSES_SUBTITLE}
+                />
+                <ActionMenuSelectItem
+                    value={TicketTimeReference.CreatedAt}
+                    label={TAGS_CREATION_DATE_LABEL}
+                    description={TAGS_CREATION_DATE_SUBTITLE}
+                />
+            </ActionMenuSelectGroup>
 
             <ActionMenuSeparator />
 

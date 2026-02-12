@@ -1,6 +1,5 @@
 import type { ComponentProps } from 'react'
 
-import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -14,7 +13,6 @@ import { AUTO_QA_FILTER_KEYS } from 'domains/reporting/pages/common/filters/cons
 import type FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { CustomFieldsTicketCountBreakdownTableChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
-import { DownloadTicketFieldsDataButton } from 'domains/reporting/pages/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
 import { SupportPerformanceTicketInsights } from 'domains/reporting/pages/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import { TicketDistributionChart } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketDistributionTable'
 import { TicketFieldsActionMenu } from 'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsActionMenu'
@@ -55,12 +53,6 @@ jest.mock(
 )
 const TicketInsightsFieldTrendMock = assumeMock(TicketInsightsFieldTrend)
 jest.mock(
-    'domains/reporting/pages/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton.tsx',
-)
-const DownloadTicketFieldsDataButtonMock = assumeMock(
-    DownloadTicketFieldsDataButton,
-)
-jest.mock(
     'domains/reporting/pages/ticket-insights/ticket-fields/TicketFieldsBlankState.tsx',
 )
 const TicketFieldsBlankStateMock = assumeMock(TicketFieldsBlankState)
@@ -77,8 +69,6 @@ const CustomFieldsTicketCountBreakdownTableChartMock = assumeMock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 const componentMock = jest.fn(() => <div />)
-jest.mock('@repo/feature-flags')
-const useFlagsMock = assumeMock(useFlag)
 jest.mock('domains/reporting/services/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
 jest.mock(
@@ -117,10 +107,8 @@ describe('<SupportPerformanceTicketInsights />', () => {
             componentMock,
         )
         TicketFieldsBlankStateMock.mockImplementation(componentMock)
-        DownloadTicketFieldsDataButtonMock.mockImplementation(componentMock)
         DrillDownModalMock.mockImplementation(componentMock)
         TicketFieldsActionMenuMock.mockImplementation(componentMock)
-        useFlagsMock.mockReturnValue(false)
         useCustomFieldsReportDataMock.mockReturnValue({
             download: downloadActionMock,
             isLoading: false,
@@ -150,20 +138,7 @@ describe('<SupportPerformanceTicketInsights />', () => {
         })
     })
 
-    it('should render DownloadTicketFieldsDataButton when feature flag is disabled', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <SupportPerformanceTicketInsights />
-            </Provider>,
-        )
-
-        expect(TicketFieldsActionMenuMock).not.toHaveBeenCalled()
-        expect(DownloadTicketFieldsDataButtonMock).toHaveBeenCalled()
-    })
-
-    it('should render TagActionsMenu when feature flag is enabled', () => {
-        useFlagsMock.mockReturnValue(true)
-
+    it('should render TicketFieldsActionMenu', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTicketInsights />
@@ -171,7 +146,6 @@ describe('<SupportPerformanceTicketInsights />', () => {
         )
 
         expect(TicketFieldsActionMenuMock).toHaveBeenCalled()
-        expect(DownloadTicketFieldsDataButtonMock).not.toHaveBeenCalled()
     })
 
     it('should render the Filters Panel with default optional filters and a Score filter', () => {
