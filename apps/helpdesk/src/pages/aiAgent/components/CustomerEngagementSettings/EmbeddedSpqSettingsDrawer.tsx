@@ -140,10 +140,11 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
                 <Box flexDirection="column" gap={4}>
                     <Box>
                         <h3>
-                            1. In Shopify, go to&nbsp;
+                            1. In your Shopify admin, go to&nbsp;
                             <a
                                 className={css.link}
                                 href={`https://admin.shopify.com/store/${shopName}/themes`}
+                                rel="noopener noreferrer"
                                 target="_blank"
                             >
                                 Themes <Icon name="external-link" />
@@ -161,11 +162,12 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
                 <Box flexDirection="column" gap={4}>
                     <Box>
                         <h3>
-                            2. Next to Edit theme, tap
+                            2. Open the
                             <span className={css.kebabIcon}>
                                 <Icon name="dots-kebab-vertical" />
                             </span>
-                            and click Edit Code
+                            menu, then click&nbsp;
+                            <strong>Edit Code</strong>
                         </h3>
                     </Box>
                     <Box>
@@ -178,7 +180,11 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
 
                 <Box flexDirection="column" gap={4}>
                     <Box>
-                        <h3>3. Find your page template</h3>
+                        <h3>
+                            3. Find the .liquid template for your product pages
+                            (for example, in the default Dawn theme, the product
+                            page template is main-product.liquid).
+                        </h3>
                     </Box>
                     <Box>
                         <img
@@ -190,7 +196,13 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
 
                 <Box flexDirection="column" gap={4}>
                     <Box>
-                        <h3>4. Copy and paste this code snippet</h3>
+                        <h3>
+                            <span>
+                                4. Copy and paste the code snippet from Gorgias
+                                into the template for your product page, then
+                                click <strong>Save</strong>.
+                            </span>
+                        </h3>
                     </Box>
                     <Box>
                         <div className={css.codeSnippet}>
@@ -207,6 +219,28 @@ const ManualInstallationContent = ({ shopName }: { shopName: string }) => {
                             <pre>{spqScript.current}</pre>
                         </div>
                     </Box>
+                </Box>
+                <Box>
+                    <Banner
+                        icon="info"
+                        intent="info"
+                        isClosable={false}
+                        title="Custom Styling"
+                    >
+                        <span>
+                            Note: to change the position and style the AI FAQs
+                            component, you may need to add{' '}
+                            <a
+                                className={css.link}
+                                href="https://help.shopify.com/en/manual/online-store/themes/customizing-themes/edit-code/add-css"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                custom CSS <Icon name="external-link" />
+                            </a>
+                            .
+                        </span>
+                    </Banner>
                 </Box>
             </Box>
         </>
