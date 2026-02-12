@@ -332,7 +332,8 @@ export const Infobar = ({
                         <TicketTimelineWidgetContainer />
                     )}
 
-                {!hasUIVisionMS1 && (
+                {(!hasUIVisionMS1 ||
+                    isCurrentlyOnCustomerPage(defaultCustomerId)) && (
                     <div className={css.infobarSearchWrapper}>
                         <Search
                             className={css.infobarSearch}

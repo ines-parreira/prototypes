@@ -29,6 +29,7 @@ import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
 import { setCustomer } from 'state/ticket/actions'
 import { startEditionMode, stopEditionMode } from 'state/widgets/actions'
 import { WidgetEnvironment } from 'state/widgets/types'
+import { isCurrentlyOnCustomerPage } from 'utils'
 import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore()
@@ -155,11 +156,26 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/common/components/infobar/Infobar/TicketTimelineWidget/TicketTimelineWidgetContainer',
+    () => ({
+        TicketTimelineWidgetContainer: () => (
+            <div>TicketTimelineWidgetContainer</div>
+        ),
+    }),
+)
+
 jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
 jest.mock('@repo/tickets')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
+
+jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
+    isCurrentlyOnCustomerPage: jest.fn(() => false),
+}))
+const isCurrentlyOnCustomerPageMock = assumeMock(isCurrentlyOnCustomerPage)
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
@@ -786,6 +802,42 @@ describe('<Infobar/>', () => {
                 name: 'Update customer: John Doe',
             })
             expect(modalTitle).toBeInTheDocument()
+        })
+    })
+
+    describe('V2 MS1 flag on customer page', () => {
+        it('should render search bar when V2 flag is on and on customer page', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByPlaceholderText(
+                    'Search for customers by email, order number, etc.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render search bar when V2 flag is on and not on customer page', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByPlaceholderText(
+                    'Search for customers by email, order number, etc.',
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 })

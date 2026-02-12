@@ -23,6 +23,7 @@ import {
 } from 'constants/integration'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { isCurrentlyOnCustomerPage } from 'utils'
 import { renderWithRouter } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
@@ -42,6 +43,12 @@ const useFlagMock = useFlag as jest.Mock<boolean, [string]>
 
 jest.mock('@repo/tickets')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
+
+jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
+    isCurrentlyOnCustomerPage: jest.fn(() => false),
+}))
+const isCurrentlyOnCustomerPageMock = assumeMock(isCurrentlyOnCustomerPage)
 
 jest.mock('../CustomerTimelineWidget', () => ({
     CustomerTimelineWidget: () => <div>CustomerTimelineWidget</div>,
@@ -612,6 +619,43 @@ describe('<InfobarCustomerInfo/>', () => {
         expect(
             screen.queryByRole('link', { name: /@/ }),
         ).not.toBeInTheDocument()
+    })
+
+    describe('V2 MS1 flag on customer page', () => {
+        it('should render customer profile when V2 flag is on and on customer page', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(true)
+
+            renderWithProviders(<InfobarCustomerInfo {...minProps} />)
+
+            expect(screen.getByText('CustomerFields')).toBeInTheDocument()
+            expect(
+                screen.getByText('CustomerTimelineWidget'),
+            ).toBeInTheDocument()
+        })
+
+        it('should apply customerInfoWithPadding class when V2 flag is on and on customer page', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(true)
+
+            const { container } = renderWithProviders(
+                <InfobarCustomerInfo {...minProps} />,
+            )
+
+            const customerInfoDiv = container.querySelector(
+                '.customerInfoWithPadding',
+            )
+            expect(customerInfoDiv).toBeInTheDocument()
+        })
+
+        it('should not render customer profile when V2 flag is on and not on customer page', () => {
+            useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithProviders(<InfobarCustomerInfo {...minProps} />)
+
+            expect(screen.queryByText('CustomerFields')).not.toBeInTheDocument()
+        })
     })
 
     describe('Instagram integration from messages', () => {

@@ -285,10 +285,13 @@ const InfobarCustomerInfo = ({
         >
             <div
                 className={cn(css.customerInfo, {
-                    [css.customerInfoWithPadding]: !hasUIVisionMS1,
+                    [css.customerInfoWithPadding]:
+                        !hasUIVisionMS1 ||
+                        isCurrentlyOnCustomerPage(customer.get('id')),
                 })}
             >
-                {!hasUIVisionMS1 && (
+                {(!hasUIVisionMS1 ||
+                    isCurrentlyOnCustomerPage(customer.get('id'))) && (
                     <>
                         <div className={css.customerProfile}>
                             {hasTicketThreadRevamp ? (
