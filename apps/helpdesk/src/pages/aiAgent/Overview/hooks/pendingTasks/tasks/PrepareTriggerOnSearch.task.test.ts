@@ -40,7 +40,7 @@ describe('PrepareTriggerOnSearchTask', () => {
             const data = createMockData()
             const task = new PrepareTriggerOnSearchTask(data, mockRoutes)
 
-            expect(task.title).toBe('Enable Search Assist')
+            expect(task.title).toBe('Enable Search assist')
             expect(task.caption).toBe(
                 'Proactively reach out to shoppers after a search.',
             )
@@ -103,7 +103,7 @@ describe('PrepareTriggerOnSearchTask', () => {
             expect(task.display).toBe(false)
         })
 
-        it('should not be displayed when search assist is disabled', () => {
+        it('should not be displayed when Search assist is disabled', () => {
             const data = createMockData({
                 aiAgentStoreConfiguration: {
                     monitoredEmailIntegrations: [],
@@ -133,7 +133,7 @@ describe('PrepareTriggerOnSearchTask', () => {
             expect(task.display).toBe(true)
         })
 
-        it('should not be displayed when both sales help on search is enabled and search assist is disabled', () => {
+        it('should not be displayed when both sales help on search is enabled and Search assist is disabled', () => {
             const data = createMockData({
                 aiAgentStoreConfiguration: {
                     monitoredEmailIntegrations: [],
@@ -213,7 +213,7 @@ describe('PrepareTriggerOnSearchTask', () => {
             expect(task.completed).toBe(false)
         })
 
-        it('should be completed when search assist is disabled', () => {
+        it('should be completed when Search assist is disabled', () => {
             const data = createMockData({
                 aiAgentStoreConfiguration: {
                     monitoredEmailIntegrations: [],

@@ -7,7 +7,7 @@ import { Task } from './Task'
 export class EnableTriggerOnSearchTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
         super(
-            'Enable Search Assist',
+            'Enable Search assist',
             'Proactively reach out to shoppers after a search.',
             'RECOMMENDED',
             data,

@@ -52,7 +52,7 @@ describe('TriggerOnSearchSettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByAltText(
-                    'image showing an example of the search assist',
+                    'image showing an example of the Search assist',
                 ),
             ).toBeInTheDocument()
         })

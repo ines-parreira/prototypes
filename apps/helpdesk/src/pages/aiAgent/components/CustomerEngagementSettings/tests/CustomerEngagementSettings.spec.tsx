@@ -1033,7 +1033,7 @@ describe('CustomerEngagementSettings', () => {
         })
     })
 
-    describe('Search Assist', () => {
+    describe('Search assist', () => {
         it('should render the settings if kill switch is disabled', () => {
             mockUseFlag.mockImplementation((flag) => {
                 if (flag === FeatureFlagKey.TriggerOnSearchKillSwitch) {
@@ -1092,7 +1092,7 @@ describe('CustomerEngagementSettings', () => {
             const result = renderComponent()
 
             expect(
-                within(result.container).queryByText('Search Assist'),
+                within(result.container).queryByText('Search assist'),
             ).not.toBeInTheDocument()
         })
     })

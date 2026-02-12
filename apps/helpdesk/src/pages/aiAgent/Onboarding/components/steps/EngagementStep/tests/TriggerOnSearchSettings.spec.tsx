@@ -61,7 +61,7 @@ describe('TriggerOnSearchSettings', () => {
                 </Wrapper>,
             )
 
-            expect(screen.getByText('Search Assist')).toBeInTheDocument()
+            expect(screen.getByText('Search assist')).toBeInTheDocument()
             expect(
                 screen.getByText(
                     'Send a personalized message right after a shopper searches to guide them to the right product and drive more conversions.',
@@ -69,7 +69,7 @@ describe('TriggerOnSearchSettings', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByAltText(
-                    'image showing an example of the Search Assist',
+                    'image showing an example of the Search assist',
                 ),
             ).toBeInTheDocument()
         })
@@ -100,7 +100,7 @@ describe('TriggerOnSearchSettings', () => {
             )
 
             const image = screen.getByAltText(
-                'image showing an example of the Search Assist',
+                'image showing an example of the Search assist',
             )
             expect(image).toHaveAttribute(
                 'src',
@@ -165,7 +165,7 @@ describe('TriggerOnSearchSettings', () => {
 
             // The EngagementSettingsCardImpact component should be rendered
             // We can verify this indirectly by checking for the presence of the card structure
-            expect(screen.getByText('Search Assist')).toBeInTheDocument()
+            expect(screen.getByText('Search assist')).toBeInTheDocument()
             expect(screen.getByRole('checkbox')).toBeChecked()
         })
 
@@ -180,7 +180,7 @@ describe('TriggerOnSearchSettings', () => {
             )
 
             // The component should still render with loading state
-            expect(screen.getByText('Search Assist')).toBeInTheDocument()
+            expect(screen.getByText('Search assist')).toBeInTheDocument()
             expect(screen.getByRole('checkbox')).toBeChecked()
         })
 
@@ -195,7 +195,7 @@ describe('TriggerOnSearchSettings', () => {
             )
 
             // The component should render even without GMV data
-            expect(screen.getByText('Search Assist')).toBeInTheDocument()
+            expect(screen.getByText('Search assist')).toBeInTheDocument()
             expect(screen.getByRole('checkbox')).toBeChecked()
         })
 

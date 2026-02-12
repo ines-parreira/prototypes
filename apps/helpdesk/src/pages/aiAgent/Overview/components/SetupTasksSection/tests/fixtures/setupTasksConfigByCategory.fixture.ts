@@ -26,7 +26,7 @@ export const mockSetupTasksConfigByCategory = {
         Customize: [
             {
                 stepName: 'ENABLE_TRIGGER_ON_SEARCH' as any,
-                displayName: `Enable 'Search Assist'`,
+                displayName: `Enable 'Search assist'`,
                 isCompleted: false,
                 body: PrepareTriggerOnSearchBody,
             },
