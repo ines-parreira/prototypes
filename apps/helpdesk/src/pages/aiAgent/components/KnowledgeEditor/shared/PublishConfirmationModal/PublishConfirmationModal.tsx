@@ -54,11 +54,11 @@ export const PublishConfirmationModal = ({
                 <Box width="100%">
                     <TextAreaField
                         label="Change summary (optional)"
-                        placeholder="ex: Updated return window to 30 days"
+                        placeholder="Updated return window from 15 to 30 days"
                         value={commitMessage}
                         onChange={handleCommitMessageChange}
                         onKeyDown={handleKeyDown}
-                        caption={`Briefely describe what changed in this version. ${commitMessage.length}/${COMMIT_MESSAGE_CHARACTER_LIMIT}`}
+                        caption={`Briefly describe what changed in this version. ${commitMessage.length}/${COMMIT_MESSAGE_CHARACTER_LIMIT}`}
                         autoFocus
                         rows={3}
                     />

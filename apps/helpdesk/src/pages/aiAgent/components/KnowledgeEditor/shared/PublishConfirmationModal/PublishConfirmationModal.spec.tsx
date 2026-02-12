@@ -37,7 +37,7 @@ describe('PublishConfirmationModal', () => {
         expect(textField).toBeInTheDocument()
         expect(textField).toHaveAttribute(
             'placeholder',
-            'ex: Updated return window to 30 days',
+            'Updated return window from 15 to 30 days',
         )
     })
 
