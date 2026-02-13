@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import {
+    basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
     convertPlan0,
@@ -15,7 +16,7 @@ import {
     smsPlan1,
     voicePlan0,
 } from 'fixtures/plans'
-import { ProductType } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -68,6 +69,7 @@ describe('ProductCard', () => {
                     type={ProductType.Helpdesk}
                     plan={basicMonthlyHelpdeskPlan}
                     isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
                 />
             </Provider>,
         )
@@ -81,6 +83,7 @@ describe('ProductCard', () => {
                     type={ProductType.Automation}
                     plan={basicYearlyAutomationPlan}
                     isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
                 />
             </Provider>,
         )
@@ -91,7 +94,12 @@ describe('ProductCard', () => {
     it('should render an inactive ProductCard component', () => {
         render(
             <Provider store={store}>
-                <ProductCard type={ProductType.Automation} isDisabled={false} />
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                    plan={undefined}
+                />
             </Provider>,
         )
 
@@ -102,7 +110,12 @@ describe('ProductCard', () => {
     it('should render a disabled ProductCard component', () => {
         render(
             <Provider store={store}>
-                <ProductCard type={ProductType.Automation} isDisabled={true} />
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={true}
+                    tooltipDisabledCTACallback={jest.fn()}
+                    plan={undefined}
+                />
             </Provider>,
         )
 
@@ -127,6 +140,7 @@ describe('ProductCard', () => {
                 type: productType,
                 plan: plans[productType],
                 isDisabled: false,
+                tooltipDisabledCTACallback: jest.fn(),
             }
 
             const user = userEvent.setup()
@@ -156,14 +170,94 @@ describe('ProductCard', () => {
         },
     )
 
+    describe('Yearly contract plan behavior', () => {
+        const yearlyContractPlan = {
+            ...basicYearlyAutomationPlan,
+            invoice_cadence: Cadence.Month,
+        } as typeof basicYearlyAutomationPlan
+
+        it('should disable Manage button for yearly contract plans', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={yearlyContractPlan}
+                        isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /manage/i }),
+            ).toBeAriaDisabled()
+        })
+
+        it('should disable Subscribe button for yearly contract plans without active plan', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                        plan={undefined}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /subscribe/i }),
+            ).not.toBeAriaDisabled()
+        })
+
+        it('should not disable Manage button when cadence matches invoice_cadence', () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={basicMonthlyAutomationPlan}
+                        isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /manage/i }),
+            ).not.toBeAriaDisabled()
+        })
+
+        it('should show contact us tooltip for yearly contract plans', async () => {
+            render(
+                <Provider store={store}>
+                    <ProductCard
+                        type={ProductType.Automation}
+                        plan={yearlyContractPlan}
+                        isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                    />
+                </Provider>,
+            )
+
+            const manageButton = screen.getByRole('button', { name: /manage/i })
+            const user = userEvent.setup()
+            await act(async () => {
+                await user.hover(manageButton)
+            })
+
+            expect(screen.getByText(/contact our team/i)).toBeInTheDocument()
+        })
+    })
+
     describe('Tracking events', () => {
         it('should log BillingUsageAndPlansManageProductClicked event when clicking Manage button', async () => {
             render(
                 <Provider store={store}>
                     <ProductCard
                         type={ProductType.Automation}
-                        plan={basicYearlyAutomationPlan}
+                        plan={basicMonthlyAutomationPlan}
                         isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -188,6 +282,8 @@ describe('ProductCard', () => {
                     <ProductCard
                         type={ProductType.Automation}
                         isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                        plan={undefined}
                     />
                 </Provider>,
             )
@@ -215,6 +311,7 @@ describe('ProductCard', () => {
                         type={ProductType.Voice}
                         plan={voicePlan0}
                         isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -233,7 +330,12 @@ describe('ProductCard', () => {
         it('should log correct URL for different product types when clicking Subscribe', async () => {
             render(
                 <Provider store={store}>
-                    <ProductCard type={ProductType.SMS} isDisabled={false} />
+                    <ProductCard
+                        type={ProductType.SMS}
+                        isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
+                        plan={undefined}
+                    />
                 </Provider>,
             )
 
@@ -260,6 +362,7 @@ describe('ProductCard', () => {
                         plan={basicYearlyAutomationPlan}
                         isDisabled={false}
                         scheduledToCancelAt={null}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -268,7 +371,7 @@ describe('ProductCard', () => {
             expect(screen.queryByText(/Active until/i)).not.toBeInTheDocument()
         })
 
-        it('should show "Active until <date>" warning badge when product has cancellation scheduled', () => {
+        it('should show Active until <date> warning badge when product has cancellation scheduled', () => {
             const cancellationDate = '2025-12-31T23:59:59Z'
 
             render(
@@ -278,6 +381,7 @@ describe('ProductCard', () => {
                         plan={basicYearlyAutomationPlan}
                         isDisabled={false}
                         scheduledToCancelAt={cancellationDate}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -295,9 +399,10 @@ describe('ProductCard', () => {
                 <Provider store={store}>
                     <ProductCard
                         type={ProductType.Automation}
-                        plan={null}
+                        plan={undefined}
                         isDisabled={false}
                         scheduledToCancelAt={cancellationDate}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -316,6 +421,7 @@ describe('ProductCard', () => {
                         plan={voicePlan0}
                         isDisabled={false}
                         scheduledToCancelAt={cancellationDate}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -332,6 +438,7 @@ describe('ProductCard', () => {
                         type={ProductType.Convert}
                         plan={convertPlan0}
                         isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -350,6 +457,7 @@ describe('ProductCard', () => {
                         plan={basicYearlyAutomationPlan}
                         isDisabled={false}
                         isLoading={true}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -363,9 +471,10 @@ describe('ProductCard', () => {
                 <Provider store={store}>
                     <ProductCard
                         type={ProductType.Automation}
-                        plan={null}
+                        plan={undefined}
                         isDisabled={false}
                         isLoading={true}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -384,6 +493,7 @@ describe('ProductCard', () => {
                         isDisabled={false}
                         scheduledToCancelAt={cancellationDate}
                         isLoading={true}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -401,6 +511,7 @@ describe('ProductCard', () => {
                         plan={basicYearlyAutomationPlan}
                         isDisabled={false}
                         isLoading={false}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )
@@ -415,6 +526,7 @@ describe('ProductCard', () => {
                         type={ProductType.Automation}
                         plan={basicYearlyAutomationPlan}
                         isDisabled={false}
+                        tooltipDisabledCTACallback={jest.fn()}
                     />
                 </Provider>,
             )

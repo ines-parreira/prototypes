@@ -21,6 +21,7 @@ import {
     isEnterprise,
     isLegacyAutomate,
     isTrial,
+    isYearlyContractPlan,
 } from 'models/billing/utils'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
@@ -28,6 +29,7 @@ import {
     getCurrentHelpdeskCadence,
 } from 'state/billing/selectors'
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
+import { TicketPurpose } from 'state/billing/types'
 
 import { BILLING_PROCESS_PATH, DATE_FORMAT } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
@@ -37,7 +39,7 @@ import css from './ProductCard.less'
 
 export type ProductCardProps = {
     type: ProductType
-    plan?: Plan | null
+    plan: Plan | undefined
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner | null
     isDisabled: boolean
@@ -45,8 +47,32 @@ export type ProductCardProps = {
     autoUpgradeEnabled?: boolean | null
     scheduledToCancelAt?: string | null
     isLoading?: boolean
+    tooltipDisabledCTACallback: (ticketPurpose: TicketPurpose) => void
 }
 
+const ContactUsTooltip = ({
+    type,
+    tooltipDisabledCTACallback,
+}: Pick<ProductCardProps, 'type' | 'tooltipDisabledCTACallback'>) => (
+    <Tooltip
+        placement="top"
+        target={`productCardButton_${type}`}
+        autohide={false}
+    >
+        <>
+            Because you&apos;re on a custom plan, please{' '}
+            <span
+                className={css.link}
+                onClick={() =>
+                    tooltipDisabledCTACallback(TicketPurpose.CONTACT_US)
+                }
+            >
+                contact our team
+            </span>{' '}
+            to make changes.
+        </>
+    </Tooltip>
+)
 const ProductCard = ({
     type,
     plan,
@@ -57,11 +83,13 @@ const ProductCard = ({
     autoUpgradeEnabled = false,
     scheduledToCancelAt,
     isLoading = false,
+    tooltipDisabledCTACallback,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPlans)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
     const productInfo = getProductInfo(type, plan)
+    const isYearlyPlan = isYearlyContractPlan(plan)
 
     const { className, canduOverageStatus } = useMemo(() => {
         if (
@@ -105,7 +133,7 @@ const ProductCard = ({
         return (
             <>
                 {type === ProductType.Helpdesk && <>{plan.name} - </>}
-                <b>{getPlanPriceFormatted(plan)}</b>/{plan.cadence}
+                <b>{getPlanPriceFormatted(plan)}</b>/{plan.invoice_cadence}
             </>
         )
     }, [plan, type, productInfo])
@@ -130,6 +158,14 @@ const ProductCard = ({
                         {disabledTooltip}
                     </Tooltip>
                 )}
+
+                {isYearlyPlan && (
+                    <ContactUsTooltip
+                        type={type}
+                        tooltipDisabledCTACallback={tooltipDisabledCTACallback}
+                    />
+                )}
+
                 <Button
                     intent="primary"
                     isDisabled={isDisabled}
@@ -164,26 +200,37 @@ const ProductCard = ({
         history,
         isDisabled,
         disabledTooltip,
+        tooltipDisabledCTACallback,
+        isYearlyPlan,
     ])
 
     const updateContainer = useMemo(
         () => (
-            <Button
-                intent="secondary"
-                onClick={() => {
-                    const url = `${BILLING_PROCESS_PATH}/${type}`
-                    logEvent(
-                        SegmentEvent.BillingUsageAndPlansManageProductClicked,
-                        { url: url },
-                    )
-                    history.push(url)
-                }}
-                id={`productCardButton_${type}`}
-            >
-                Manage
-            </Button>
+            <>
+                {isYearlyPlan && (
+                    <ContactUsTooltip
+                        type={type}
+                        tooltipDisabledCTACallback={tooltipDisabledCTACallback}
+                    />
+                )}
+                <Button
+                    intent="secondary"
+                    isDisabled={isYearlyPlan}
+                    onClick={() => {
+                        const url = `${BILLING_PROCESS_PATH}/${type}`
+                        logEvent(
+                            SegmentEvent.BillingUsageAndPlansManageProductClicked,
+                            { url: url },
+                        )
+                        history.push(url)
+                    }}
+                    id={`productCardButton_${type}`}
+                >
+                    Manage
+                </Button>
+            </>
         ),
-        [history, type],
+        [history, type, tooltipDisabledCTACallback, isYearlyPlan],
     )
 
     const counter = useMemo(() => {

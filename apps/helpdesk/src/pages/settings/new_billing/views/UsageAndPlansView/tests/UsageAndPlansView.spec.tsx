@@ -15,6 +15,10 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    basicQuarterlyHelpdeskPlan,
+    basicYearlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
+    basicYearlyInvoicedQuarterlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
@@ -217,6 +221,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -228,6 +233,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -239,6 +245,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -250,6 +257,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -263,6 +271,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -320,6 +329,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
                 scheduledToCancelAt: '2024-01-14T22:40:22+00:00',
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -330,6 +340,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -340,6 +351,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -350,6 +362,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -362,6 +375,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
                 scheduledToCancelAt: '2024-01-14T22:40:22+00:00',
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -438,6 +452,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -449,6 +464,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -460,6 +476,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -472,6 +489,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 banner: smsBanner,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -484,6 +502,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -548,6 +567,7 @@ describe('UsageAndPlansView', () => {
                 ],
                 isDisabled: true,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -565,6 +585,41 @@ describe('UsageAndPlansView', () => {
                 placement: 'top',
                 target: 'update-billing-frequency',
             },
+            {},
+        )
+    })
+
+    it('should pass yearly helpdesk plan and tooltipDisabledCTACallback to ProductCard', () => {
+        const alteredStore = {
+            ...store,
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicYearlyHelpdeskPlan.plan_id,
+                    },
+                },
+            }),
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+            />,
+            alteredStore,
+        )
+
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                type: ProductType.Helpdesk,
+                plan: basicYearlyHelpdeskPlan,
+                isDisabled: false,
+                tooltipDisabledCTACallback: expect.any(Function),
+            }),
             {},
         )
     })
@@ -740,6 +795,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -751,6 +807,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -763,6 +820,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -775,6 +833,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -788,6 +847,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
                 scheduledToCancelAt: null,
+                tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
@@ -1318,79 +1378,29 @@ describe('UsageAndPlansView', () => {
 
     describe('Payment plan label display', () => {
         it('should display "Billed Monthly" for standard monthly plan', () => {
-            const monthlyPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                cadence: Cadence.Month,
-                invoice_cadence: 'month',
-            } as HelpdeskPlan
-
-            const alteredBilling = {
-                ...mockedBilling,
-                products: [
-                    {
-                        id: HELPDESK_PRODUCT_ID,
-                        type: ProductType.Helpdesk,
-                        prices: [monthlyPlan],
-                    },
-                    ...products.slice(1),
-                ],
-            }
-
-            const alteredStore = {
-                billing: fromJS(alteredBilling),
-                integrations: fromJS(mockedIntegrations),
-                currentAccount: fromJS({
-                    ...mockedAccount,
-                    current_subscription: {
-                        ...mockedAccount.current_subscription,
-                        products: {
-                            [HELPDESK_PRODUCT_ID]: monthlyPlan.plan_id,
-                        },
-                    },
-                }),
-            }
-
             renderWithStoreAndQueryClientAndRouter(
                 <UsageAndPlansView
                     contactBilling={jest.fn()}
                     periodEnd="2021-01-01"
                     currentUsage={mockedUsage}
                 />,
-                alteredStore,
+                store,
             )
 
             expect(screen.getByText('Billed Monthly')).toBeInTheDocument()
         })
 
         it('should display "Billed Quarterly" for standard quarterly plan', () => {
-            const quarterlyPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'pro-quarter-plan',
-                cadence: Cadence.Quarter,
-                invoice_cadence: Cadence.Quarter,
-            } as HelpdeskPlan
-
-            const alteredBilling = {
-                ...mockedBilling,
-                products: [
-                    {
-                        id: HELPDESK_PRODUCT_ID,
-                        type: ProductType.Helpdesk,
-                        prices: [quarterlyPlan],
-                    },
-                    ...products.slice(1),
-                ],
-            }
-
             const alteredStore = {
-                billing: fromJS(alteredBilling),
+                billing: fromJS(mockedBilling),
                 integrations: fromJS(mockedIntegrations),
                 currentAccount: fromJS({
                     ...mockedAccount,
                     current_subscription: {
                         ...mockedAccount.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: quarterlyPlan.plan_id,
+                            [HELPDESK_PRODUCT_ID]:
+                                basicQuarterlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -1409,34 +1419,16 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should display "Billed Yearly" for standard yearly plan', () => {
-            const yearlyPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'pro-year-plan',
-                cadence: Cadence.Year,
-                invoice_cadence: 'year',
-            } as HelpdeskPlan
-
-            const alteredBilling = {
-                ...mockedBilling,
-                products: [
-                    {
-                        id: HELPDESK_PRODUCT_ID,
-                        type: ProductType.Helpdesk,
-                        prices: [yearlyPlan],
-                    },
-                    ...products.slice(1),
-                ],
-            }
-
             const alteredStore = {
-                billing: fromJS(alteredBilling),
+                billing: fromJS(mockedBilling),
                 integrations: fromJS(mockedIntegrations),
                 currentAccount: fromJS({
                     ...mockedAccount,
                     current_subscription: {
                         ...mockedAccount.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: yearlyPlan.plan_id,
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -1455,34 +1447,28 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should display "Annual plan (billed quarterly)" for custom yearly plan billed quarterly', () => {
-            const customPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'custom-year-quarter-plan',
-                cadence: Cadence.Year,
-                invoice_cadence: Cadence.Quarter,
-            } as HelpdeskPlan
-
-            const alteredBilling = {
-                ...mockedBilling,
-                products: [
-                    {
-                        id: HELPDESK_PRODUCT_ID,
-                        type: ProductType.Helpdesk,
-                        prices: [customPlan],
-                    },
-                    ...products.slice(1),
-                ],
-            }
-
             const alteredStore = {
-                billing: fromJS(alteredBilling),
+                billing: fromJS({
+                    ...mockedBilling,
+                    products: [
+                        {
+                            type: ProductType.Helpdesk,
+                            prices: [
+                                ...helpdeskProduct.prices,
+                                basicYearlyInvoicedQuarterlyHelpdeskPlan,
+                            ],
+                        },
+                        ...products.slice(1),
+                    ],
+                }),
                 integrations: fromJS(mockedIntegrations),
                 currentAccount: fromJS({
                     ...mockedAccount,
                     current_subscription: {
                         ...mockedAccount.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedQuarterlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -1503,34 +1489,28 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should display "Annual plan (billed monthly)" for custom yearly plan billed monthly', () => {
-            const customPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'custom-year-month-plan',
-                cadence: Cadence.Year,
-                invoice_cadence: 'month',
-            } as HelpdeskPlan
-
-            const alteredBilling = {
-                ...mockedBilling,
-                products: [
-                    {
-                        id: HELPDESK_PRODUCT_ID,
-                        type: ProductType.Helpdesk,
-                        prices: [customPlan],
-                    },
-                    ...products.slice(1),
-                ],
-            }
-
             const alteredStore = {
-                billing: fromJS(alteredBilling),
+                billing: fromJS({
+                    ...mockedBilling,
+                    products: [
+                        {
+                            type: ProductType.Helpdesk,
+                            prices: [
+                                ...helpdeskProduct.prices,
+                                basicYearlyInvoicedMonthlyHelpdeskPlan,
+                            ],
+                        },
+                        ...products.slice(1),
+                    ],
+                }),
                 integrations: fromJS(mockedIntegrations),
                 currentAccount: fromJS({
                     ...mockedAccount,
                     current_subscription: {
                         ...mockedAccount.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: customPlan.plan_id,
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),

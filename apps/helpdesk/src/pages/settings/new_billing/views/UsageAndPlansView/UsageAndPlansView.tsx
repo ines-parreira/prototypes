@@ -286,6 +286,7 @@ const UsageAndPlansView = ({
                         plan={currentHelpdeskPlan}
                         usage={currentUsage?.helpdesk}
                         banner={helpdeskBanner}
+                        tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
                             isSubscribedToHelpdeskStarter ||
                             (!currentHelpdeskPlan && !!scheduledToCancelAt)
@@ -303,6 +304,7 @@ const UsageAndPlansView = ({
                         isDisabled={
                             !currentAutomatePlan && !!scheduledToCancelAt
                         }
+                        tooltipDisabledCTACallback={contactBilling}
                         scheduledToCancelAt={
                             currentAutomatePlan
                                 ? scheduledToCancelAt ||
@@ -319,6 +321,7 @@ const UsageAndPlansView = ({
                         plan={currentVoicePlan}
                         usage={currentUsage?.voice}
                         banner={voiceBanner}
+                        tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
                             (!currentVoicePlan && !!scheduledToCancelAt) ||
                             isTrialingSubscription
@@ -340,6 +343,7 @@ const UsageAndPlansView = ({
                         plan={currentSmsPlan}
                         usage={currentUsage?.sms}
                         banner={smsBanner}
+                        tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
                             (!currentSmsPlan && !!scheduledToCancelAt) ||
                             isTrialingSubscription
@@ -361,6 +365,7 @@ const UsageAndPlansView = ({
                         plan={currentConvertPlan}
                         usage={currentUsage?.convert}
                         banner={convertBanner}
+                        tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
                             !currentConvertPlan && !!scheduledToCancelAt
                         }

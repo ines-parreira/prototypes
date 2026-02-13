@@ -370,7 +370,7 @@ export function generatePaymentPlanLabel(
  * differs from its invoice cadence (billing frequency). For example, an annual
  * plan that bills quarterly would be considered a custom plan.
  *
- * @param currentHelpdeskPlan - The helpdesk plan to check. If undefined, returns false.
+ * @param plan - The plan object to check. If undefined, returns false.
  * @returns `true` if the plan's cadence differs from its invoice cadence, `false` otherwise
  *
  * @example
@@ -381,8 +381,6 @@ export function generatePaymentPlanLabel(
  * // Standard monthly plan
  * isYearlyContractPlan({ cadence: Cadence.Month, invoice_cadence: Cadence.Month }) // false
  */
-export function isYearlyContractPlan(
-    currentHelpdeskPlan: HelpdeskPlan | undefined,
-) {
-    return currentHelpdeskPlan?.cadence !== currentHelpdeskPlan?.invoice_cadence
+export function isYearlyContractPlan(plan: Plan | undefined) {
+    return plan?.cadence !== plan?.invoice_cadence
 }
