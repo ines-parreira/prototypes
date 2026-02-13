@@ -17,7 +17,7 @@ export type ChartLayoutConstraints = {
 
 const baseConstraints: Record<ChartType, ChartLayoutConstraints> = {
     [ChartType.Card]: {
-        default: { width: 3, height: 6 },
+        default: { width: 3, height: 4 },
         min: { width: 3, height: 4 },
         max: { width: 6, height: 16 },
     },

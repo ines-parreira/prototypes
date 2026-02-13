@@ -14,10 +14,8 @@ import 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndRes
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
 import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartLayoutConstraints'
-import {
-    calculateChartPositionsWithOccupied,
-    type OccupiedGrid,
-} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
+import { calculateChartPositionsWithOccupied } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
+import type { OccupiedGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { clampLayoutToConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/layoutUtils'
 import type {
@@ -244,7 +242,7 @@ export const DragAndResizeDashboardGrid = ({
                 breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
                 cols={{ lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }}
                 rowHeight={20}
-                containerPadding={[25, 20]}
+                containerPadding={[24, 24]}
                 dragConfig={{
                     enabled: currentBreakpoint === 'lg',
                 }}
