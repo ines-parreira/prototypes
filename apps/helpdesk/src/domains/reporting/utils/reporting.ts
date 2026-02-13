@@ -118,6 +118,7 @@ export const TicketsFirstAgentResponseTimeMembers = {
 
 export const TicketMessagesEnrichedResponseTimesMembers: StatsFiltersMembers = {
     ...TicketStatsFiltersMembers,
+    integrations: TicketMessagesEnrichedResponseTimesMember.Integration,
     agents: TicketMessagesEnrichedResponseTimesMember.TicketMessageUserId,
 }
 

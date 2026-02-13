@@ -6,7 +6,6 @@ import {
     TicketDimension,
     TicketMember,
 } from 'domains/reporting/models/cubes/TicketCube'
-import { TicketMessagesMember } from 'domains/reporting/models/cubes/TicketMessagesCube'
 import {
     TicketMessagesEnrichedResponseTimesDimension,
     TicketMessagesEnrichedResponseTimesMeasure,
@@ -80,7 +79,7 @@ describe('medianResponseTime', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
+                        member: TicketMessagesEnrichedResponseTimesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.values.map(String),
                     },
@@ -137,7 +136,7 @@ describe('medianResponseTime', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
+                        member: TicketMessagesEnrichedResponseTimesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.values.map(String),
                     },
@@ -198,7 +197,7 @@ describe('medianResponseTime', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
+                        member: TicketMessagesEnrichedResponseTimesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.values.map(String),
                     },
@@ -253,7 +252,7 @@ describe('medianResponseTime', () => {
                         values: [formatReportingQueryDate(periodEnd)],
                     },
                     {
-                        member: TicketMessagesMember.Integration,
+                        member: TicketMessagesEnrichedResponseTimesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.values.map(String),
                     },
