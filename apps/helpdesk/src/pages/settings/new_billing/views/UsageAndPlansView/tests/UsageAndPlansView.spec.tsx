@@ -275,10 +275,8 @@ describe('UsageAndPlansView', () => {
     })
 
     it('should render not with product cards if subscribing is disabled for the user', () => {
-        mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.BillingPreventSubscriptionAnyPlan
-                ? true
-                : false,
+        mockUseFlag.mockImplementation(
+            (flag) => flag === FeatureFlagKey.BillingPreventSubscriptionAnyPlan,
         )
         renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
@@ -1369,7 +1367,7 @@ describe('UsageAndPlansView', () => {
                 ...basicMonthlyHelpdeskPlan,
                 plan_id: 'pro-quarter-plan',
                 cadence: Cadence.Quarter,
-                invoice_cadence: 'quarter',
+                invoice_cadence: Cadence.Quarter,
             } as HelpdeskPlan
 
             const alteredBilling = {
@@ -1461,7 +1459,7 @@ describe('UsageAndPlansView', () => {
                 ...basicMonthlyHelpdeskPlan,
                 plan_id: 'custom-year-quarter-plan',
                 cadence: Cadence.Year,
-                invoice_cadence: 'quarter',
+                invoice_cadence: Cadence.Quarter,
             } as HelpdeskPlan
 
             const alteredBilling = {
@@ -1550,6 +1548,113 @@ describe('UsageAndPlansView', () => {
             expect(
                 screen.getByText('Annual plan (billed monthly)'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('CustomPlanBanner', () => {
+        it('should render CustomPlanBanner for custom yearly plan', async () => {
+            const customYearlyPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'custom-year-quarter-plan',
+                cadence: Cadence.Year,
+                invoice_cadence: Cadence.Quarter,
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [customYearlyPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            const alteredStore = {
+                billing: fromJS(alteredBilling),
+                integrations: fromJS(mockedIntegrations),
+                currentAccount: fromJS({
+                    ...mockedAccount,
+                    current_subscription: {
+                        ...mockedAccount.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]: customYearlyPlan.plan_id,
+                        },
+                    },
+                }),
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                alteredStore,
+            )
+
+            expect(await screen.findByText('Contact us')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /close/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render CustomPlanBanner for monthly plan', () => {
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                store,
+            )
+
+            expect(
+                screen.queryByText(
+                    /Because you're on a custom plan, please contact our team to make changes to your subscription/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render CustomPlanBanner when subscription is canceled', () => {
+            const yearlyPlan = {
+                ...basicMonthlyHelpdeskPlan,
+                plan_id: 'pro-year-plan',
+                cadence: Cadence.Year,
+                invoice_cadence: 'year',
+            } as HelpdeskPlan
+
+            const alteredBilling = {
+                ...mockedBilling,
+                products: [
+                    {
+                        id: HELPDESK_PRODUCT_ID,
+                        type: ProductType.Helpdesk,
+                        prices: [yearlyPlan],
+                    },
+                    ...products.slice(1),
+                ],
+            }
+
+            renderWithStoreAndQueryClientAndRouter(
+                <UsageAndPlansView
+                    contactBilling={jest.fn()}
+                    periodEnd="2021-01-01"
+                    currentUsage={mockedUsage}
+                />,
+                {
+                    ...storeWithCanceledSubscription,
+                    billing: fromJS(alteredBilling),
+                },
+            )
+
+            expect(
+                screen.queryByText(
+                    /Because you're on a custom plan, please contact our team to make changes to your subscription/i,
+                ),
+            ).not.toBeInTheDocument()
         })
     })
 })

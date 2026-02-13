@@ -11,7 +11,11 @@ import { AlertBannerTypes } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
-import { generatePaymentPlanLabel, getProductInfo } from 'models/billing/utils'
+import {
+    generatePaymentPlanLabel,
+    getProductInfo,
+    isYearlyContractPlan,
+} from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
@@ -44,6 +48,7 @@ import {
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '../../constants'
 import useProductCancellations from '../../hooks/useProductCancellations'
+import { CustomPlanBanner } from './CustomPlanBanner'
 
 import css from './UsageAndPlansView.less'
 
@@ -210,6 +215,8 @@ const UsageAndPlansView = ({
         logEvent(SegmentEvent.BillingUsageAndPlansVisited, { url: pathname })
     })
 
+    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+
     return (
         <div className={css.container}>
             <ShopifyBillingInactiveBanner />
@@ -242,6 +249,7 @@ const UsageAndPlansView = ({
                         <>{`You don't have any active subscriptions.`}</>
                     )}
                 </div>
+
                 {hasSubscription ? (
                     <div className={css.generalInfoItem}>
                         <span>
@@ -263,6 +271,14 @@ const UsageAndPlansView = ({
             {isCurrentSubscriptionCanceled ? null : (
                 <BillingScheduledDowngrades />
             )}
+            {hasSubscription && isYearlyPlan && (
+                <CustomPlanBanner
+                    contactUsCallback={() =>
+                        contactBilling(TicketPurpose.CONTACT_US)
+                    }
+                />
+            )}
+
             {subscripingDisabledForUser ? null : (
                 <div className={css.productsGridContainer}>
                     <ProductCard
