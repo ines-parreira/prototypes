@@ -378,7 +378,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               >
                 <span
                   class="react-aria-SelectValue"
-                  data-name="select-custom-trigger"
                   data-rac=""
                   id="react-aria-:r7:"
                 >

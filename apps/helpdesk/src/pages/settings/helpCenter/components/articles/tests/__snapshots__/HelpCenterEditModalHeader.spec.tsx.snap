@@ -132,7 +132,6 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         >
           <span
             class="react-aria-SelectValue"
-            data-name="select-custom-trigger"
             data-rac=""
             id="react-aria-:r9:"
           >

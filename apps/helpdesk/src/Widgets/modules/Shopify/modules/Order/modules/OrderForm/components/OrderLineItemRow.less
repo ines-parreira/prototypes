@@ -61,14 +61,15 @@
     }
 
     .quantityButtonsContainer {
+        display: flex;
         flex-direction: column;
-        max-height: calc(~'1.5em + .75rem + 2px');
+        height: calc(~'1.5em + .75rem + 2px');
     }
 
     .quantityBtn {
         display: inline-flex !important;
         align-items: center;
-        height: 50%;
+        height: 50% !important;
         font-size: 0.5rem !important;
         z-index: 0;
         margin-left: 0 !important;
@@ -81,16 +82,18 @@
 
     .quantityBtnUp {
         margin-bottom: 0 !important;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-        border-top-left-radius: 0;
+        border-bottom-right-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: var(--spacing-xs) !important;
     }
 
     .quantityBtnDown {
         border-top: 0 !important;
-        border-top-right-radius: 0;
-        border-bottom-left-radius: 0;
-        border-top-left-radius: 0;
+        border-top-right-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-right-radius: var(--spacing-xs) !important;
     }
 
     .times {

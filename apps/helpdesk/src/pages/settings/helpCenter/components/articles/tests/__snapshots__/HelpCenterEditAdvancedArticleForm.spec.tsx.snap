@@ -63,7 +63,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         >
           <span
             class="react-aria-SelectValue"
-            data-name="select-custom-trigger"
             data-rac=""
             id="react-aria-:r7:"
           >
@@ -183,7 +182,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           >
             <span
               class="react-aria-SelectValue"
-              data-name="select-custom-trigger"
               data-rac=""
               id="react-aria-:rn:"
             >
