@@ -24,6 +24,14 @@ const ticketSLAScope = defineScope({
         'storeId',
         'status',
         'slaPolicyUuid',
+        'score',
+        'resolutionCompleteness',
+        'communicationSkills',
+        'languageProficiency',
+        'accuracy',
+        'efficiency',
+        'internalCompliance',
+        'brandVoice',
     ],
 })
 
