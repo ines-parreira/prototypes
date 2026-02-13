@@ -294,6 +294,13 @@ export function TimelineFilters({
         } else if (filterType === 'interactionType') {
             // Reset to show both tickets and orders
             setInteractionTypeFilters({ ticket: true, order: true })
+        } else if (filterType === 'ticketStatus') {
+            // Reset to show all statuses - toggle any that are not currently selected
+            STATUS_FILTERS.forEach((filter) => {
+                if (!selectedStatusKeys.includes(filter.value)) {
+                    toggleSelectedStatus(filter.value)
+                }
+            })
         }
     }
 

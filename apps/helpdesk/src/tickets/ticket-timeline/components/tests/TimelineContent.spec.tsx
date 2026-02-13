@@ -13,11 +13,11 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
-import { useTicketList } from 'timeline/hooks/useTicketList'
 import { TimelineItemKind } from 'timeline/types'
 import type { FilterKey, InteractionFilterType } from 'timeline/types'
 
 import { useOrderProducts } from '../../hooks/useOrderProducts'
+import { useTicketList } from '../../hooks/useTicketList'
 import { useTimelineData } from '../../hooks/useTimelineData'
 import type { ChannelToIconFn, SortOption } from '../../hooks/useTimelineData'
 import { TimelineContent } from '../TimelineContent'
@@ -31,7 +31,7 @@ jest.mock('@repo/feature-flags', () => ({
     },
 }))
 
-jest.mock('timeline/hooks/useTicketList', () => ({
+jest.mock('../../hooks/useTicketList', () => ({
     useTicketList: jest.fn(),
 }))
 
@@ -166,6 +166,10 @@ describe('TimelineContent', () => {
             tickets: [],
             isLoading: false,
             isError: false,
+            totalTickets: 0,
+            hasNextPage: false,
+            fetchNextPage: jest.fn(),
+            isFetchingNextPage: false,
         })
 
         useGetCustomerMock.mockReturnValue({
@@ -242,6 +246,10 @@ describe('TimelineContent', () => {
                 tickets: [],
                 isLoading: true,
                 isError: false,
+                totalTickets: 0,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                isFetchingNextPage: false,
             })
 
             useTimelineDataMock.mockReturnValue({
@@ -759,6 +767,10 @@ describe('TimelineContent', () => {
                 tickets,
                 isLoading: false,
                 isError: false,
+                totalTickets: tickets.length,
+                hasNextPage: false,
+                fetchNextPage: jest.fn(),
+                isFetchingNextPage: false,
             })
 
             renderComponent()

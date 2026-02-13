@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 import { formatTicketTime, TicketListItem } from '@repo/tickets'
 import type { EnrichedTicket } from '@repo/tickets'
@@ -22,6 +22,9 @@ type Props = {
     activeTicketId?: string
     onSelectTicket: (ticket: EnrichedTicket) => void
     onSelectOrder: (order: Order) => void
+    hasNextPage?: boolean
+    fetchNextPage?: () => void
+    isFetchingNextPage?: boolean
 }
 
 export function TimelineList({
@@ -33,7 +36,12 @@ export function TimelineList({
     activeTicketId,
     onSelectTicket,
     onSelectOrder,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
 }: Props) {
+    const loadMoreRef = useRef<HTMLDivElement>(null)
+
     // Create a map for fast lookup of enriched ticket data
     const enrichedTicketMap = useMemo(() => {
         const map = new Map<number, EnrichedTicket>()
@@ -42,6 +50,33 @@ export function TimelineList({
         })
         return map
     }, [enrichedTickets])
+
+    // Set up intersection observer for infinite scrolling
+    useEffect(() => {
+        if (!loadMoreRef.current || !hasNextPage || !fetchNextPage) {
+            return
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [entry] = entries
+                if (
+                    entry.isIntersecting &&
+                    hasNextPage &&
+                    !isFetchingNextPage
+                ) {
+                    fetchNextPage()
+                }
+            },
+            { threshold: 0.1 },
+        )
+
+        observer.observe(loadMoreRef.current)
+
+        return () => {
+            observer.disconnect()
+        }
+    }, [hasNextPage, fetchNextPage, isFetchingNextPage])
     if (isLoading) {
         return (
             <Box flexDirection="column" gap="md" padding={'md'}>
@@ -144,6 +179,20 @@ export function TimelineList({
                     }
                 })}
             </ol>
+            {hasNextPage && (
+                <Box
+                    ref={loadMoreRef}
+                    paddingTop="md"
+                    paddingBottom="md"
+                    flexDirection="column"
+                    gap="md"
+                >
+                    {isFetchingNextPage &&
+                        Array.from({ length: 10 }).map((_, index) => (
+                            <Skeleton key={index} count={3} />
+                        ))}
+                </Box>
+            )}
         </Box>
     )
 }

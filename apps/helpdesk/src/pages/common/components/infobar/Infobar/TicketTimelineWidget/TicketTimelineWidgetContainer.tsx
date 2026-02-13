@@ -12,6 +12,7 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useGetCustomer } from 'models/customer/queries'
 import type { Customer } from 'models/customer/types'
 import { TicketTimelineSidePanelPreview } from 'tickets/ticket-timeline/components/TicketTimelineSidePanelPreview'
+import { TICKET_FETCHED_LIMIT } from 'tickets/ticket-timeline/constants'
 import { useTicketList } from 'timeline/hooks/useTicketList'
 
 import { channelToCommunicationIcon } from './channelToCommunicationIcon'
@@ -124,6 +125,7 @@ export function TicketTimelineWidgetContainer() {
                     customerName={customerName}
                     onToggleTimeline={handleToggleTimeline}
                     onSelectTicket={handleSelectTicket}
+                    fetchLimit={TICKET_FETCHED_LIMIT}
                 />
             </div>
             <TicketTimelineSidePanelPreview

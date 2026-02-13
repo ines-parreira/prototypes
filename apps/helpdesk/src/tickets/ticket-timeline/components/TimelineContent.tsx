@@ -10,9 +10,9 @@ import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useGetCustomer } from 'models/customer/queries'
 import { extractOrders } from 'timeline/helpers/orders'
-import { useTicketList } from 'timeline/hooks/useTicketList'
 
 import { useOrderProducts } from '../hooks/useOrderProducts'
+import { useTicketList } from '../hooks/useTicketList'
 import { useTimelineData } from '../hooks/useTimelineData'
 import type { ChannelToIconFn } from '../hooks/useTimelineData'
 import { TicketTimelineSidePanelPreview } from './TicketTimelineSidePanelPreview'
@@ -33,7 +33,13 @@ export function TimelineContent({
     activeTicketId,
     channelToCommunicationIcon,
 }: Props) {
-    const { tickets, isLoading: isLoadingTickets } = useTicketList(shopperId)
+    const {
+        tickets,
+        isLoading: isLoadingTickets,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useTicketList(shopperId)
 
     const { data: customerData } = useGetCustomer(shopperId, {
         enabled: !!shopperId,
@@ -162,6 +168,9 @@ export function TimelineContent({
                     activeTicketId={activeTicketId}
                     onSelectTicket={handleSelectTicket}
                     onSelectOrder={handleSelectOrder}
+                    hasNextPage={hasNextPage}
+                    fetchNextPage={fetchNextPage}
+                    isFetchingNextPage={isFetchingNextPage}
                 />
             </div>
             <TicketTimelineSidePanelPreview

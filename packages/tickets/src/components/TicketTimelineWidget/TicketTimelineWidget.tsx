@@ -13,6 +13,7 @@ export type TicketTimelineWidgetProps = {
     customerName?: string
     onToggleTimeline: () => void
     onSelectTicket?: (ticket: EnrichedTicket) => void
+    fetchLimit?: number
 }
 
 export function TicketTimelineWidget({
@@ -24,6 +25,7 @@ export function TicketTimelineWidget({
     customerName,
     onToggleTimeline,
     onSelectTicket,
+    fetchLimit,
 }: TicketTimelineWidgetProps) {
     const shouldDisplayTicketsList = totalNumber > 1 && !isLoading
 
@@ -35,6 +37,7 @@ export function TicketTimelineWidget({
                 snoozedTicketsNumber={snoozedTicketsNumber}
                 customerName={customerName}
                 isLoading={isLoading}
+                fetchLimit={fetchLimit}
             />
 
             {isLoading && <Skeleton count={3} />}

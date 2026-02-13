@@ -267,12 +267,13 @@ describe('TimelineFilters', () => {
             })
         })
 
-        it('should remove Ticket Status filter', async () => {
+        it('should remove Ticket Status filter and reset to all statuses', async () => {
             const user = userEvent.setup()
             const { container } = renderComponent({
-                selectedStatusKeys: ['open', 'closed'],
+                selectedStatusKeys: ['snooze'],
             })
 
+            // Add the ticket status filter
             const filterButton = screen.getByRole('button', {
                 name: /slider-filter/i,
             })
@@ -289,25 +290,30 @@ describe('TimelineFilters', () => {
                 ticketStatusOptions[ticketStatusOptions.length - 1],
             )
 
+            // Wait for the ticket status tag to be rendered
             await waitFor(() => {
-                expect(
-                    screen.queryAllByText('Open, Closed').length,
-                ).toBeGreaterThan(0)
+                const snoozedTags = screen.queryAllByText('Snoozed')
+                expect(snoozedTags.length).toBeGreaterThan(1)
             })
 
+            // Close the dropdown by pressing Escape
+            await user.keyboard('{Escape}')
+
+            // Clear previous mock calls before testing the remove functionality
+            mockToggleSelectedStatus.mockClear()
+
+            // Get all close buttons - there should be 2 (interaction type + ticket status)
             const closeButtons = container.querySelectorAll(
                 '[data-name="tag-close-button"]',
             )
-            const ticketStatusCloseButton = closeButtons[1] as HTMLElement
+            expect(closeButtons.length).toBeGreaterThan(1)
 
-            await user.click(ticketStatusCloseButton)
+            // Click the second close button (ticket status filter)
+            await user.click(closeButtons[1] as HTMLElement)
 
-            // Verify the filter tag was removed by checking it's no longer the dominant text
-            await waitFor(() => {
-                const openClosedTexts = screen.queryAllByText('Open, Closed')
-                // After removal, there should be at most 1 occurrence (hidden select option)
-                expect(openClosedTexts.length).toBeLessThanOrEqual(1)
-            })
+            // Verify that all statuses not currently selected are toggled
+            expect(mockToggleSelectedStatus).toHaveBeenCalledWith('open')
+            expect(mockToggleSelectedStatus).toHaveBeenCalledWith('closed')
         })
     })
 

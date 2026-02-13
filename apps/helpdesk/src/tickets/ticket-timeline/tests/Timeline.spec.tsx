@@ -5,7 +5,6 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { MemoryRouter } from 'react-router-dom'
 
-import { useListTickets } from '@gorgias/helpdesk-queries'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 import { TicketStatus } from '@gorgias/helpdesk-types'
 
@@ -16,6 +15,7 @@ import type { Customer } from 'models/customer/types'
 import { IntegrationType } from 'models/integration/constants'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { useTicketList } from 'timeline/hooks/useTicketList'
 import Timeline from 'timeline/Timeline'
 
 jest.mock('@repo/feature-flags', () => ({
@@ -23,10 +23,7 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('@gorgias/helpdesk-queries', () => ({
-    ...jest.requireActual('@gorgias/helpdesk-queries'),
-    useListTickets: jest.fn(),
-}))
+jest.mock('timeline/hooks/useTicketList')
 
 jest.mock('state/customers/selectors', () => ({
     ...jest.requireActual('state/customers/selectors'),
@@ -40,7 +37,7 @@ jest.mock('models/customer/queries', () => ({
     useGetCustomer: jest.fn(),
 }))
 
-const useListTicketsMock = assumeMock(useListTickets)
+const useTicketListMock = assumeMock(useTicketList)
 const useFlagMock = assumeMock(useFlag)
 
 // Mock Redux selectors
@@ -158,10 +155,10 @@ describe('Timeline Integration Tests', () => {
             { id: number; [key: string]: any }
         > = new globalThis.Map(),
     ) => {
-        // Mock useListTickets to return tickets regardless of shopperId
-        useListTicketsMock.mockImplementation((__params: any) => {
+        // Mock useTicketList to return tickets regardless of shopperId
+        useTicketListMock.mockImplementation((__shopperId: any) => {
             return {
-                data: { data: { data: tickets } },
+                tickets,
                 isLoading: false,
                 isError: false,
             } as any
@@ -260,8 +257,8 @@ describe('Timeline Integration Tests', () => {
 
     // Helper to mock loading state
     const mockLoadingState = () => {
-        useListTicketsMock.mockReturnValue({
-            data: undefined,
+        useTicketListMock.mockReturnValue({
+            tickets: [],
             isLoading: true,
             isError: false,
         } as any)
@@ -284,9 +281,9 @@ describe('Timeline Integration Tests', () => {
                 }) as any,
         )
 
-        // Default mock for useListTickets
-        useListTicketsMock.mockReturnValue({
-            data: { data: { data: [] } },
+        // Default mock for useTicketList
+        useTicketListMock.mockReturnValue({
+            tickets: [],
             isLoading: false,
             isError: false,
         } as any)
@@ -1885,13 +1882,12 @@ describe('Timeline Integration Tests', () => {
 
         describe('TimelineList Rendering', () => {
             it('should render loading spinner when tickets are loading', () => {
-                useListTicketsMock.mockImplementation(
+                useTicketListMock.mockImplementation(
                     () =>
                         ({
-                            data: undefined,
+                            tickets: [],
                             isLoading: true,
                             isError: false,
-                            refetch: jest.fn(),
                         }) as any,
                 )
 

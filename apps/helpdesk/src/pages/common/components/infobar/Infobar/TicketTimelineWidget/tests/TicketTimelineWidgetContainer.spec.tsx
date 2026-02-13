@@ -126,7 +126,11 @@ describe('TicketTimelineWidgetContainer', () => {
                 },
             },
         } as any,
-        useTicketList: { tickets: [], isLoading: false, isError: false },
+        useTicketList: {
+            tickets: [],
+            isLoading: false,
+            isError: false,
+        },
         useTicketTimeline: {
             isOpen: false,
             shopperId: null,

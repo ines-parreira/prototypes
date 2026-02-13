@@ -116,6 +116,51 @@ describe('TicketTimelineWidget', () => {
             expect(screen.getByText('5')).toBeInTheDocument()
         })
 
+        it('should display pagination indicator when totalNumber exceeds fetchLimit', () => {
+            renderComponent({
+                totalNumber: 10,
+                openTicketsNumber: 5,
+                snoozedTicketsNumber: 2,
+                fetchLimit: 10,
+            })
+
+            expect(screen.getByText('10+')).toBeInTheDocument()
+        })
+
+        it('should display pagination indicator when totalNumber is greater than fetchLimit', () => {
+            renderComponent({
+                totalNumber: 15,
+                openTicketsNumber: 5,
+                snoozedTicketsNumber: 2,
+                fetchLimit: 10,
+            })
+
+            expect(screen.getByText('10+')).toBeInTheDocument()
+        })
+
+        it('should display exact count when totalNumber is less than fetchLimit', () => {
+            renderComponent({
+                totalNumber: 8,
+                openTicketsNumber: 5,
+                snoozedTicketsNumber: 2,
+                fetchLimit: 10,
+            })
+
+            expect(screen.getByText('8')).toBeInTheDocument()
+            expect(screen.queryByText('10+')).not.toBeInTheDocument()
+        })
+
+        it('should display exact count when fetchLimit is not provided', () => {
+            renderComponent({
+                totalNumber: 15,
+                openTicketsNumber: 5,
+                snoozedTicketsNumber: 2,
+            })
+
+            expect(screen.getByText('15')).toBeInTheDocument()
+            expect(screen.queryByText('10+')).not.toBeInTheDocument()
+        })
+
         it('should display open tickets count when there are multiple tickets', () => {
             renderComponent({
                 totalNumber: 3,

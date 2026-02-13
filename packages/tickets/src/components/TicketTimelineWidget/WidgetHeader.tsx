@@ -8,6 +8,14 @@ type WidgetHeaderProps = {
     snoozedTicketsNumber: number
     customerName?: string
     isLoading: boolean
+    fetchLimit?: number
+}
+
+function formatCount(count: number, limit?: number): string {
+    if (limit && count >= limit) {
+        return `${limit}+`
+    }
+    return String(count)
 }
 
 export function WidgetHeader({
@@ -16,6 +24,7 @@ export function WidgetHeader({
     snoozedTicketsNumber,
     customerName,
     isLoading,
+    fetchLimit,
 }: WidgetHeaderProps) {
     return (
         <Box mb={totalNumber > 1 ? 'sm' : undefined}>
@@ -27,7 +36,7 @@ export function WidgetHeader({
                     {!isLoading && (
                         <Box gap="xs" alignItems="center">
                             <Tag color="grey" className={styles.tag}>
-                                {totalNumber}
+                                {formatCount(totalNumber, fetchLimit)}
                             </Tag>
 
                             {totalNumber === 1 && (

@@ -85,6 +85,10 @@ describe('CustomerTimelineButton', () => {
         isLoading: false,
         isError: false,
         tickets,
+        totalTickets: tickets.length,
+        hasNextPage: false,
+        fetchNextPage: jest.fn(),
+        isFetchingNextPage: false,
     }
 
     beforeEach(() => {
