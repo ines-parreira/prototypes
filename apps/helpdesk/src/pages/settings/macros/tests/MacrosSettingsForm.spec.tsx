@@ -4,6 +4,7 @@ import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -104,6 +105,7 @@ jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),
     useParams: jest.fn(),
 }))
+const mockedUseLocation = jest.requireMock('react-router-dom').useLocation
 const mockedUseParams = assumeMock(useParams)
 
 jest.mock('state/notifications/actions')
@@ -146,6 +148,12 @@ describe('<MacrosSettingsForm />', () => {
         useAppSelectorMock.mockReturnValue(fromJS([]))
         useHasAgentPrivilegesMock.mockReturnValue(true)
         mockedUseParams.mockReturnValue({ macroId: mockMacroId.toString() })
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '',
+            hash: '',
+            state: null,
+        })
     })
 
     it('should render an empty form when no macro id', () => {
@@ -215,6 +223,7 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should create macro and redirect to /app/settings/macros', async () => {
+        const user = userEvent.setup()
         const createMock = mockCreateMacroHandler()
         server.use(createMock.handler)
         const waitForCreate = createMock.waitForRequest(server)
@@ -222,7 +231,7 @@ describe('<MacrosSettingsForm />', () => {
         mockedUseParams.mockReturnValue({})
         renderComponent()
 
-        screen.getByText('Create macro').click()
+        await user.click(screen.getByText('Create macro'))
 
         await waitForCreate(async (request) => {
             const requestBody = await request.json()
@@ -242,10 +251,12 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should update macro and redirect to app/settings/macros', async () => {
+        const user = userEvent.setup()
         const getMock = mockGetMacroHandler(async ({ data }) => {
             return HttpResponse.json({
                 ...data,
                 id: mockMacroId,
+                archived_datetime: null,
             })
         })
 
@@ -260,13 +271,14 @@ describe('<MacrosSettingsForm />', () => {
             expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
         )
 
-        screen.getByText('Update macro').click()
+        await user.click(screen.getByText('Update macro'))
 
         await waitForUpdate(async (request) => {
             const requestBody = await request.json()
             expect(requestBody).toEqual({
                 ...getMock.data,
                 id: mockMacroId,
+                archived_datetime: null,
                 actions: [],
             })
         })
@@ -276,11 +288,58 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully updated macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.goBack).toHaveBeenCalled()
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active',
+            )
+        })
+    })
+
+    it('should update archived macro and redirect to app/settings/macros/archived', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: '2025-04-09T4:14:27',
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+        const waitForUpdate = updateMock.waitForRequest(server)
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitForUpdate(async (request) => {
+            const requestBody = await request.json()
+            expect(requestBody).toEqual({
+                ...getMock.data,
+                id: mockMacroId,
+                archived_datetime: '2025-04-09T4:14:27',
+                actions: [],
+            })
+        })
+
+        await waitFor(() => {
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                message: 'Successfully updated macro',
+                status: NotificationStatus.Success,
+            })
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/archived',
+            )
         })
     })
 
     it('should remove empty custom field macro', async () => {
+        const user = userEvent.setup()
         const macroActions = [
             {
                 name: MacroActionName.SetCustomFieldValue,
@@ -316,6 +375,7 @@ describe('<MacrosSettingsForm />', () => {
 
         const customFieldsMacro = mockMacro({
             actions: macroActions,
+            archived_datetime: null,
         })
 
         const getMock = mockGetMacroHandler(async () =>
@@ -332,7 +392,7 @@ describe('<MacrosSettingsForm />', () => {
             expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
         )
 
-        screen.getByText('Update macro').click()
+        await user.click(screen.getByText('Update macro'))
 
         await waitForUpdate(async (request) => {
             const requestBody = await request.json()
@@ -347,7 +407,9 @@ describe('<MacrosSettingsForm />', () => {
                 message: 'Successfully updated macro',
                 status: NotificationStatus.Success,
             })
-            expect(history.goBack).toHaveBeenCalled()
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active',
+            )
         })
     })
 
@@ -402,15 +464,18 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should delete macro and redirect to /app/settings/macros', async () => {
+        const user = userEvent.setup()
         const deleteMock = mockDeleteMacroHandler()
         server.use(deleteMock.handler)
         const waitForDelete = deleteMock.waitForRequest(server)
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('Delete macro').click()
-        })
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Delete macro'))
 
         await waitForDelete(async () => {
             expect(notify).toHaveBeenNthCalledWith(1, {
@@ -422,14 +487,17 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should duplicate macro and redirect ', async () => {
+        const user = userEvent.setup()
         const { name, actions, language } = getMock.data
         const waitForCreate = createMock.waitForRequest(server)
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('Duplicate macro').click()
-        })
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Duplicate macro'))
 
         await waitForCreate(async (request) => {
             const requestBody = await request.json()
@@ -449,6 +517,7 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should notify when failing to duplicate macro', async () => {
+        const user = userEvent.setup()
         const createMock = mockCreateMacroHandler(
             async () =>
                 new HttpResponse({ error: 'error' } as unknown as null, {
@@ -459,9 +528,13 @@ describe('<MacrosSettingsForm />', () => {
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('Duplicate macro').click()
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
 
+        await user.click(screen.getByText('Duplicate macro'))
+
+        await waitFor(() => {
             expect(notify).toHaveBeenNthCalledWith(1, {
                 title: 'Failed to duplicate macro',
                 message: null,
@@ -472,14 +545,17 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should update actions of macro form', async () => {
+        const user = userEvent.setup()
         const getMock = mockGetMacroHandler()
         server.use(getMock.handler)
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('MacroEditMock').click()
-        })
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('MacroEditMock'))
 
         expect(screen.getAllByText(MacroActionName.Http)).toHaveLength(2)
         expect(
@@ -488,6 +564,7 @@ describe('<MacrosSettingsForm />', () => {
     })
 
     it('should archive macro', async () => {
+        const user = userEvent.setup()
         const archiveMock = mockBulkArchiveMacrosHandler()
         const getMock = mockGetMacroHandler(async ({ data }) =>
             HttpResponse.json({
@@ -502,9 +579,11 @@ describe('<MacrosSettingsForm />', () => {
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('Archive macro').click()
-        })
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Archive macro'))
 
         await waitForArchive(async (request) => {
             const requestBody = await request.json()
@@ -514,11 +593,14 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(history.goBack).toHaveBeenCalled()
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active',
+            )
         })
     })
 
     it('should unarchive macro', async () => {
+        const user = userEvent.setup()
         const unarchiveMock = mockBulkUnarchiveMacrosHandler()
         const getMock = mockGetMacroHandler(async ({ data }) =>
             HttpResponse.json({
@@ -533,9 +615,11 @@ describe('<MacrosSettingsForm />', () => {
 
         renderComponent()
 
-        await waitFor(() => {
-            screen.getByText('Unarchive macro').click()
-        })
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Unarchive macro'))
 
         await waitForUnarchive(async (request) => {
             const requestBody = await request.json()
@@ -545,7 +629,281 @@ describe('<MacrosSettingsForm />', () => {
         })
 
         await waitFor(() => {
-            expect(history.goBack).toHaveBeenCalled()
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/archived',
+            )
+        })
+    })
+
+    it('should preserve search params from location.state when updating', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: null,
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '',
+            hash: '',
+            state: { search: 'sort=name&filter=active' },
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active?sort=name&filter=active',
+            )
+        })
+    })
+
+    it('should preserve search params from location.search when updating', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: null,
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '?page=2&limit=50',
+            hash: '',
+            state: null,
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active?page=2&limit=50',
+            )
+        })
+    })
+
+    it('should extract search params from document.referrer when available', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: null,
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '',
+            hash: '',
+            state: null,
+        })
+
+        Object.defineProperty(document, 'referrer', {
+            writable: true,
+            configurable: true,
+            value: 'https://example.com/app/settings/macros/active?view=grid&tag=support',
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active?view=grid&tag=support',
+            )
+        })
+
+        Object.defineProperty(document, 'referrer', {
+            writable: true,
+            configurable: true,
+            value: '',
+        })
+    })
+
+    it('should handle document.referrer parsing failure gracefully', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: null,
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '',
+            hash: '',
+            state: null,
+        })
+
+        Object.defineProperty(document, 'referrer', {
+            writable: true,
+            configurable: true,
+            value: 'https://other-domain.com',
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active',
+            )
+        })
+
+        Object.defineProperty(document, 'referrer', {
+            writable: true,
+            configurable: true,
+            value: '',
+        })
+    })
+
+    it('should remove cursor param when preserving search params', async () => {
+        const user = userEvent.setup()
+        const getMock = mockGetMacroHandler(async ({ data }) => {
+            return HttpResponse.json({
+                ...data,
+                id: mockMacroId,
+                archived_datetime: null,
+            })
+        })
+
+        const updateMock = mockUpdateMacroHandler()
+        server.use(getMock.handler)
+        server.use(updateMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '?page=2&cursor=abc123&filter=active',
+            hash: '',
+            state: null,
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Update macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active?page=2&filter=active',
+            )
+        })
+    })
+
+    it('should preserve search params when archiving macro', async () => {
+        const user = userEvent.setup()
+        const archiveMock = mockBulkArchiveMacrosHandler()
+        const getMock = mockGetMacroHandler(async ({ data }) =>
+            HttpResponse.json({
+                ...data,
+                archived_datetime: null,
+            }),
+        )
+        server.use(getMock.handler)
+        server.use(archiveMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '?view=list&tag=important',
+            hash: '',
+            state: null,
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Archive macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/active?view=list&tag=important',
+            )
+        })
+    })
+
+    it('should preserve search params when unarchiving macro', async () => {
+        const user = userEvent.setup()
+        const unarchiveMock = mockBulkUnarchiveMacrosHandler()
+        const getMock = mockGetMacroHandler(async ({ data }) =>
+            HttpResponse.json({
+                ...data,
+                archived_datetime: '2025-04-09T4:14:27',
+            }),
+        )
+        server.use(getMock.handler)
+        server.use(unarchiveMock.handler)
+
+        mockedUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros/1',
+            search: '?sort=date&order=desc',
+            hash: '',
+            state: null,
+        })
+
+        renderComponent()
+
+        await waitFor(() =>
+            expect(screen.queryByText('LoaderMock')).not.toBeInTheDocument(),
+        )
+
+        await user.click(screen.getByText('Unarchive macro'))
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/macros/archived?sort=date&order=desc',
+            )
         })
     })
 })

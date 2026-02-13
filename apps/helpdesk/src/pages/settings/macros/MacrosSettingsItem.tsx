@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react'
 import { formatDatetime } from '@repo/utils'
 import type { DateTimeResultFormatType } from '@repo/utils'
 import classnames from 'classnames'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import type { Macro } from '@gorgias/helpdesk-queries'
 
@@ -44,7 +44,11 @@ export function MacrosSettingsItem({
     setSelectedMacrosIds,
 }: Props) {
     const { actions, language, name, updated_datetime, usage } = macro
-    const to = `/app/settings/macros/${macro.id}`
+    const location = useLocation()
+    const to = {
+        pathname: `/app/settings/macros/${macro.id}`,
+        state: { search: location.search },
+    }
 
     const tags = useMemo(() => {
         const tags = actions

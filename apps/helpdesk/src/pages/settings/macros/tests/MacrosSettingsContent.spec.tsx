@@ -4,7 +4,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { useRouteMatch } from 'react-router-dom'
+import { useLocation, useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import type { ListMacrosParams } from '@gorgias/helpdesk-queries'
@@ -94,6 +94,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
+            useLocation: jest.fn(),
             Link: jest.fn(
                 ({ children }: { children: React.ReactNode }) => children,
             ),
@@ -107,6 +108,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 
 jest.mock('@gorgias/helpdesk-queries', () => ({
     __esModule: true,
@@ -159,6 +161,12 @@ describe('<MacrosSettingsContent/>', () => {
             mutateAsync: mockMutateBulkUnarchive,
         } as unknown as ReturnType<typeof useBulkUnarchiveMacros>)
         mockUseRouteMatch.mockReturnValue(false)
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros',
+            search: '',
+            hash: '',
+            state: null,
+        })
     })
 
     it('should display list of macros', () => {

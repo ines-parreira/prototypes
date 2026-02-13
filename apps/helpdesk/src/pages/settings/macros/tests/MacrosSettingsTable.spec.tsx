@@ -6,7 +6,7 @@ import { assumeMock, userEvent } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import { useRouteMatch } from 'react-router-dom'
+import { useLocation, useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
@@ -54,6 +54,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
+            useLocation: jest.fn(),
             Link: jest.fn(
                 ({ children }: { children: React.ReactNode }) => children,
             ),
@@ -61,6 +62,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -92,6 +94,12 @@ describe('<MacrosSettingsTable />', () => {
         useHasAgentPrivilegesMock.mockReturnValue(true)
         mockUseFlag.mockReturnValue(false)
         mockUseRouteMatch.mockReturnValue(false)
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros',
+            search: '',
+            hash: '',
+            state: null,
+        })
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
             mutate: mockMutateBulkArchive,

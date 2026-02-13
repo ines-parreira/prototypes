@@ -4,7 +4,8 @@ import { assumeMock } from '@repo/testing'
 import type { QueryClient } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
-import { useRouteMatch } from 'react-router-dom'
+import userEvent from '@testing-library/user-event'
+import { useLocation, useRouteMatch } from 'react-router-dom'
 
 import { macros } from 'fixtures/macro'
 import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
@@ -44,6 +45,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
+            useLocation: jest.fn(),
             Link: jest.fn(
                 ({ children }: { children: React.ReactNode }) => children,
             ),
@@ -52,6 +54,7 @@ jest.mock(
 )
 
 const mockUseRouteMatch = useRouteMatch as jest.Mock
+const mockUseLocation = useLocation as jest.Mock
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
@@ -86,6 +89,12 @@ describe('<MacrosSettingsItem />', () => {
 
     beforeEach(() => {
         mockUseRouteMatch.mockReturnValue(false)
+        mockUseLocation.mockReturnValue({
+            pathname: '/app/settings/macros',
+            search: '',
+            hash: '',
+            state: null,
+        })
         useQueryClientMock.mockImplementation(
             () =>
                 ({
@@ -109,13 +118,14 @@ describe('<MacrosSettingsItem />', () => {
     })
 
     it('should duplicate a macro', async () => {
+        const user = userEvent.setup()
         render(<MacrosSettingsItem {...minProps} />)
 
         await screen.findByText('more_vert')
 
-        screen.getByText('more_vert').click()
+        await user.click(screen.getByText('more_vert'))
         await screen.findByText(/Make a copy/)
-        screen.getByText(/Make a copy/).click()
+        await user.click(screen.getByText(/Make a copy/))
 
         await waitFor(() => {
             expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(
@@ -125,14 +135,15 @@ describe('<MacrosSettingsItem />', () => {
     })
 
     it('should delete macro', async () => {
+        const user = userEvent.setup()
         render(<MacrosSettingsItem {...minProps} />)
 
         await screen.findByText('more_vert')
-        screen.getByText('more_vert').click()
+        await user.click(screen.getByText('more_vert'))
         await screen.findByText(/Delete/)
-        screen.getByText(/Delete/).click()
+        await user.click(screen.getByText(/Delete/))
         await screen.findByText('Confirm', { exact: false })
-        screen.getByText('Confirm', { exact: false }).click()
+        await user.click(screen.getByText('Confirm', { exact: false }))
 
         await waitFor(() => {
             expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)

@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -50,10 +50,41 @@ const MacrosSettingsForm = () => {
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const { macroId } = useParams<{ macroId?: string }>()
+    const location = useLocation()
     const agents = useAppSelector(getHumanAgents)
     const dispatch = useAppDispatch()
     const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
     const isMacroLoaded = useRef(false)
+
+    const buildRedirectUrl = useCallback(
+        (basePath: string) => {
+            let searchParams: URLSearchParams
+
+            const stateSearch = (location.state as any)?.search
+            if (stateSearch) {
+                searchParams = new URLSearchParams(stateSearch)
+            } else if (location.search) {
+                searchParams = new URLSearchParams(location.search)
+            } else {
+                try {
+                    const referrer = document.referrer
+                    if (referrer && referrer.includes(basePath)) {
+                        const url = new URL(referrer)
+                        searchParams = new URLSearchParams(url.search)
+                    } else {
+                        searchParams = new URLSearchParams()
+                    }
+                } catch {
+                    searchParams = new URLSearchParams()
+                }
+            }
+
+            searchParams.delete('cursor')
+            const queryString = searchParams.toString()
+            return queryString ? `${basePath}?${queryString}` : basePath
+        },
+        [location.search, location.state],
+    )
 
     const { data, isInitialLoading } = useGetMacro(parseInt(macroId!), {
         query: {
@@ -180,7 +211,10 @@ const MacrosSettingsForm = () => {
                                     status: NotificationStatus.Success,
                                 }),
                             )
-                            history.goBack()
+                            const basePath = macro?.archived_datetime
+                                ? '/app/settings/macros/archived'
+                                : '/app/settings/macros/active'
+                            history.push(buildRedirectUrl(basePath))
                         },
                     },
                 )
@@ -230,10 +264,11 @@ const MacrosSettingsForm = () => {
                 bulkUnarchiveMacros({
                     data: { ids: [parseInt(macroId)] },
                 })
+                history.push(buildRedirectUrl('/app/settings/macros/archived'))
             } else {
                 bulkArchiveMacros({ data: { ids: [parseInt(macroId)] } })
+                history.push(buildRedirectUrl('/app/settings/macros/active'))
             }
-            history.goBack()
         }
     }
 
