@@ -50,7 +50,7 @@ export const getAdvancedVoicePeriodFilters = (
 
 export const getTicketPeriodFilters = (filters: StatsFilters) => {
     const extraFilters = []
-    if (filters.tags) {
+    if (filters.tags?.length) {
         extraFilters.push(
             {
                 member: TicketMember.PeriodStart,
