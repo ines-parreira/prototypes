@@ -1,6 +1,7 @@
 // @repo/agent-status
 
 export { AgentStatusesTable } from './components'
+export { UserRealtimeAvailabilityUpdates } from './components'
 export { DeleteStatusConfirmationModal } from './components/DeleteStatusModal'
 export { UserInfoHeader, UserInfoHeaderContainer } from './components'
 export type { UserInfoHeaderProps } from './components/UserInfoHeader'
@@ -26,6 +27,7 @@ export {
     useUpdateUserAvailabilityStatus,
     useListUserAvailabilities,
     useAvailabilityStatusColor,
+    useUserAvailabilityRealtimeHandler,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'

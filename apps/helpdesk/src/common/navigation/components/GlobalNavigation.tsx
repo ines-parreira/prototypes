@@ -1,3 +1,4 @@
+import { UserRealtimeAvailabilityUpdates } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cn from 'classnames'
 import { Link } from 'react-router-dom'
@@ -32,6 +33,9 @@ export default function GlobalNavigation() {
         FeatureFlagKey.AutomateSettingsRevamp,
     )
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
+    const isAgentAvailabilityEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
 
     const { isModuleRestrictedToCurrentUser } = useReportChartRestrictions()
     const isAccessRestrictedToStatistics =
@@ -43,6 +47,10 @@ export default function GlobalNavigation() {
 
     useNavBarShortcuts()
 
+    const currentUserId = currentUser?.get('id')
+    const shouldRenderUserRealtimeAvailabilityUpdates =
+        isAgentAvailabilityEnabled && typeof currentUserId === 'number'
+
     return (
         <nav
             className={cn(css.container, {
@@ -52,6 +60,9 @@ export default function GlobalNavigation() {
             onMouseLeave={onNavLeave}
             onFocus={onNavHover}
         >
+            {shouldRenderUserRealtimeAvailabilityUpdates && (
+                <UserRealtimeAvailabilityUpdates userId={currentUserId} />
+            )}
             <section className={css.section}>
                 <div className={css.items}>
                     <GlobalNavigationItem

@@ -20,3 +20,4 @@ export { useCustomUserUnavailabilityModal } from './useCustomUserUnavailabilityM
 export { useAgentPhoneStatus } from './useAgentPhoneStatus'
 export { useListUserAvailabilities } from './useListUserAvailabilities'
 export { useAvailabilityStatusColor } from './useAvailabilityStatusColor'
+export { useUserAvailabilityRealtimeHandler } from './useUserAvailabilityRealtimeHandler'

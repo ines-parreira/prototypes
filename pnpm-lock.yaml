@@ -52,8 +52,8 @@ catalogs:
       version: 1.0.1
   events:
     '@gorgias/events':
-      specifier: ^0.13.4
-      version: 0.13.4
+      specifier: ^0.13.5
+      version: 0.13.5
   feature-flags:
     launchdarkly-js-client-sdk:
       specifier: ^3.3.0
@@ -171,6 +171,10 @@ catalogs:
     react-router-dom-v5-compat:
       specifier: ^6.30.3
       version: 6.30.3
+  realtime-ably:
+    '@gorgias/realtime-ably':
+      specifier: ^0.2.21
+      version: 0.2.21
   recharts:
     recharts:
       specifier: 3.6.0
@@ -492,7 +496,7 @@ importers:
         version: 2.0.4
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.4
+        version: 0.13.5
       '@gorgias/help-center-client':
         specifier: catalog:rest-api-sdk
         version: 0.3.14
@@ -1538,6 +1542,12 @@ importers:
 
   packages/agent-status:
     dependencies:
+      '@gorgias/events':
+        specifier: catalog:events
+        version: 0.13.5
+      '@gorgias/realtime-ably':
+        specifier: catalog:realtime-ably
+        version: 0.2.21(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@repo/user':
         specifier: workspace:*
         version: link:../user
@@ -2615,7 +2625,7 @@ importers:
         version: 0.176.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.4
+        version: 0.13.5
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.102
@@ -4326,6 +4336,10 @@ packages:
     resolution: {integrity: sha512-YvmtgqfUagp0fn5YV0x9AFFJHH0vj+GzTq/GiPZ2dcIAxSv4OtUf36T4VvnsN//7p/TDXmJzVag4nL8Kp8hkkQ==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.13.4/6415ba052b5a92f3bf5462bee18e0406004feadf}
     engines: {node: '>=22.22.0'}
 
+  '@gorgias/events@0.13.5':
+    resolution: {integrity: sha512-F0UrSXZ4bN+Q+Wr8web/eJ59CWqKYF4s5EHnNtNKRv/9IyJG3c0V6Wi3kEzBdSJMLPK1ilXIF4uTZyPcq4yP/Q==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.13.5/4aa63313140c339a14b4172cd1014ccfd069089c}
+    engines: {node: '>=22.22.0'}
+
   '@gorgias/help-center-client@0.3.14':
     resolution: {integrity: sha512-cDCg9d4lBN3nQ9NNdSt0shv1bAbhDK9byk0BE/Dg6kI9z4VaiWsclIskZW7SYaBYma5YAn8O4nIgvWozUul/Vg==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-client/0.3.14/4d4af1ea8e06f7ed285c9e32a81d7fb2880e1db4}
 
@@ -4382,6 +4396,14 @@ packages:
 
   '@gorgias/realtime-ably@0.2.20':
     resolution: {integrity: sha512-O+SmiaXLIZrOuO6Q8wi8WECuE8Pf8C0CMJjq9Ajr8TH8U32sEPqPXX05Ras+xirvwI/URdQaJ3rnHCFFSVEB7w==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime-ably/0.2.20/4ef3b49bf7eca3b3a26941fc3d227f096dc6fabc}
+    engines: {node: '>=22.22.0'}
+    peerDependencies:
+      '@tanstack/react-query': 4.36.1
+      react: ^17
+      react-dom: ^17
+
+  '@gorgias/realtime-ably@0.2.21':
+    resolution: {integrity: sha512-tM/M9NRdP1YF+jhutuyZ6ArmhEc67FIfVIkv2eS3N/p9I5WxpFTeL3BZyiZ4qhGIY3ZskS47NF1U+mhjfqMYmQ==, tarball: https://npm.pkg.github.com/download/@gorgias/realtime-ably/0.2.21/ce53f2a9c23558bb6768ed23262e2940935b73ae}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       '@tanstack/react-query': 4.36.1
@@ -16295,6 +16317,8 @@ snapshots:
 
   '@gorgias/events@0.13.4': {}
 
+  '@gorgias/events@0.13.5': {}
+
   '@gorgias/help-center-client@0.3.14':
     dependencies:
       '@gorgias/help-center-types': 0.4.8
@@ -16439,6 +16463,23 @@ snapshots:
   '@gorgias/realtime-ably@0.2.20(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@gorgias/events': 0.13.4
+      '@gorgias/helpdesk-client': 0.10.102
+      '@gorgias/helpdesk-queries': 0.9.119(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      ably: 2.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      lodash-es: 4.17.21
+      path-to-regexp: 8.2.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    transitivePeerDependencies:
+      - bufferutil
+      - debug
+      - react-native
+      - utf-8-validate
+
+  '@gorgias/realtime-ably@0.2.21(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@gorgias/events': 0.13.5
       '@gorgias/helpdesk-client': 0.10.102
       '@gorgias/helpdesk-queries': 0.9.119(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)

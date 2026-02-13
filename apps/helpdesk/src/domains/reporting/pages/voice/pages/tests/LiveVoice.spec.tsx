@@ -1,10 +1,9 @@
-import type { ComponentType } from 'react'
 import type React from 'react'
+import type { ComponentType } from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import type { DomainEvent } from '@gorgias/events'
 import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useChannel } from '@gorgias/realtime-ably'
 
@@ -129,7 +128,10 @@ describe('LiveVoice', () => {
                 account_id: 123,
             },
         }
-        useChannelMock.mock.calls[0][0]?.onEvent!(event as DomainEvent)
+
+        // TODO: fix this
+        // @ts-expect-error - after adding availability update/create events, this is not typed correctly
+        useChannelMock.mock.calls[0][0]?.onEvent!(event)
         expect(useLiveVoiceUpdatesMock).toHaveBeenCalledWith({
             agent_ids: [1, 2],
             integration_ids: [3, 4],

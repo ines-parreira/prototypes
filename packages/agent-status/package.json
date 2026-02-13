@@ -18,7 +18,9 @@
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
+        "@gorgias/events": "catalog:events",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/realtime-ably": "catalog:realtime-ably",
         "@repo/forms": "workspace:*",
         "@repo/user": "workspace:*",
         "@repo/utils": "workspace:*",

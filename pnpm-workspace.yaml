@@ -58,8 +58,10 @@ catalogs:
     '@gorgias/knowledge-service-types': '^0.4.25'
     '@gorgias/knowledge-service-validators': '^0.2.52'
     '@tanstack/react-query': '4.36.1'
+  realtime-ably:
+    '@gorgias/realtime-ably': '^0.2.21'
   events:
-    '@gorgias/events': '^0.13.4'
+    '@gorgias/events': '^0.13.5'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'
