@@ -915,6 +915,7 @@ export function compareAndReportQueries<TCube extends Cube = Cube>(
                         ),
                     },
                 },
+                [`different_queries`, metricName],
             )
             return false
         }

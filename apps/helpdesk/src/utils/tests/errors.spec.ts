@@ -5,7 +5,13 @@ import {
     mockStagingEnvironment,
 } from '@repo/testing'
 import { GorgiasUIEnv } from '@repo/utils'
-import { captureException, init, setTag, setUser } from '@sentry/react'
+import {
+    captureException,
+    init,
+    setTag,
+    setUser,
+    withScope,
+} from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import type { ScopeContext } from '@sentry/types'
 
@@ -35,6 +41,7 @@ const captureExceptionMock = captureException as jest.MockedFunction<
 const initMock = assumeMock(init)
 const setUserMock = assumeMock(setUser)
 const setTagMock = assumeMock(setTag)
+const withScopeMock = assumeMock(withScope)
 
 const consoleErrorMock = jest.fn()
 global.console.error = consoleErrorMock
@@ -49,6 +56,11 @@ describe('errors util', () => {
         userAgentMock.mockReturnValue(
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36',
         )
+        withScopeMock.mockImplementation((callback: any) => {
+            callback({
+                setFingerprint: jest.fn(),
+            })
+        })
     })
 
     describe('initErrorReporter', () => {
@@ -200,6 +212,61 @@ describe('errors util', () => {
                 defaultOptions.extra,
             )
         })
+
+        it('should convert non-Error objects to Error instances', () => {
+            mockProductionEnvironment()
+
+            const stringError = 'String error message'
+            reportError(stringError)
+
+            expect(captureExceptionMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    message: stringError,
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('should handle reportError without options.extra in development', () => {
+            mockDevelopmentEnvironment()
+
+            reportError(testError)
+
+            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
+            expect(consoleErrorMock).not.toHaveBeenCalledWith(
+                ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
+                expect.anything(),
+            )
+        })
+
+        it('should set fingerprints when provided in production', () => {
+            mockProductionEnvironment()
+            const mockSetFingerprint = jest.fn()
+            withScopeMock.mockImplementation((callback: any) => {
+                callback({
+                    setFingerprint: mockSetFingerprint,
+                })
+            })
+
+            const fingerprints = ['custom', 'fingerprint']
+            reportError(testError, defaultOptions, fingerprints)
+
+            expect(mockSetFingerprint).toHaveBeenCalledWith(fingerprints)
+        })
+
+        it('should not call setFingerprint when fingerprints not provided', () => {
+            mockProductionEnvironment()
+            const mockSetFingerprint = jest.fn()
+            withScopeMock.mockImplementation((callback: any) => {
+                callback({
+                    setFingerprint: mockSetFingerprint,
+                })
+            })
+
+            reportError(testError, defaultOptions)
+
+            expect(mockSetFingerprint).not.toHaveBeenCalled()
+        })
     })
 
     describe('getAdditionalErrorInfo', () => {
@@ -251,8 +318,8 @@ describe('errors util', () => {
             const testError = new Error('Test error')
             const result = getAdditionalErrorInfo(testError)
 
-            expect(result.extra.focused_element).toBe('INPUT')
-            expect(result.extra.focused_element_id).toBe('test-input')
+            expect((result.extra as any).focused_element).toBe('INPUT')
+            expect((result.extra as any).focused_element_id).toBe('test-input')
         })
 
         it('should capture focused element tagName when element has no id', () => {
@@ -265,8 +332,8 @@ describe('errors util', () => {
             const testError = new Error('Test error')
             const result = getAdditionalErrorInfo(testError)
 
-            expect(result.extra.focused_element).toBe('BUTTON')
-            expect(result.extra.focused_element_id).toBe('')
+            expect((result.extra as any).focused_element).toBe('BUTTON')
+            expect((result.extra as any).focused_element_id).toBe('')
         })
 
         it('should handle undefined activeElement', () => {
@@ -278,8 +345,8 @@ describe('errors util', () => {
             const testError = new Error('Test error')
             const result = getAdditionalErrorInfo(testError)
 
-            expect(result.extra.focused_element).toBeUndefined()
-            expect(result.extra.focused_element_id).toBeUndefined()
+            expect((result.extra as any).focused_element).toBeUndefined()
+            expect((result.extra as any).focused_element_id).toBeUndefined()
         })
 
         it('should return error info object when getCallerInfo throws', () => {
@@ -290,9 +357,28 @@ describe('errors util', () => {
             const result = getAdditionalErrorInfo(mockError)
 
             expect(result).toHaveProperty('extra')
-            expect(result.extra.info_error).toBe(
+            expect((result.extra as any).info_error).toBe(
                 'Failed to get additional error info',
             )
+        })
+
+        it('should merge options.extra when getCallerInfo throws', () => {
+            const mockError = {
+                stack: undefined,
+            } as Error
+            const options: Partial<ScopeContext> = {
+                extra: {
+                    customField: 'customValue',
+                },
+            }
+
+            const result = getAdditionalErrorInfo(mockError, options)
+
+            expect(result).toHaveProperty('extra')
+            expect((result.extra as any).info_error).toBe(
+                'Failed to get additional error info',
+            )
+            expect((result.extra as any).customField).toBe('customValue')
         })
     })
 

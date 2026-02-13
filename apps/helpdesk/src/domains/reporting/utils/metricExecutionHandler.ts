@@ -119,6 +119,7 @@ export async function metricExecutionHandler<
                                 query: JSON.stringify(config.newPayload),
                             },
                         },
+                        ['pagination', config.metricName],
                     )
                 }
             }
@@ -159,6 +160,11 @@ export async function metricExecutionHandler<
                         payload: JSON.stringify(config.newPayload),
                     },
                 },
+                [
+                    `next_failed_${stage}`,
+                    config.metricName,
+                    (e as Error).message,
+                ],
             )
             throw e
         }

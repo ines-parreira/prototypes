@@ -231,6 +231,7 @@ describe('metricExecutionHandler', () => {
                     },
                     tags: { team: 'crm-reporting' },
                 },
+                ['next_failed_shadow', 'test-metric', 'New API failed'],
             )
         })
 
@@ -425,6 +426,7 @@ describe('metricExecutionHandler', () => {
                     }),
                     tags: { team: 'crm-reporting' },
                 }),
+                expect.any(Array),
             )
         })
 
@@ -460,6 +462,7 @@ describe('metricExecutionHandler', () => {
                     }),
                     tags: { team: 'crm-reporting' },
                 }),
+                expect.any(Array),
             )
             // Verify the error message
             const errorArg = reportErrorMock.mock.calls[0][0] as Error
@@ -631,6 +634,7 @@ describe('metricExecutionHandler', () => {
                         stage: 'live',
                     }),
                 }),
+                ['pagination', 'test-metric'],
             )
         })
 
@@ -667,6 +671,7 @@ describe('metricExecutionHandler', () => {
                         stage: 'complete',
                     }),
                 }),
+                ['pagination', 'voice-call-count'],
             )
         })
 

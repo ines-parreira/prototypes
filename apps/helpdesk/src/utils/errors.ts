@@ -84,6 +84,7 @@ export function initErrorReporter({
 export function reportError(
     error: Error | unknown,
     options?: Partial<ScopeContext>,
+    fingerprints?: string[],
 ) {
     const errorObj = error instanceof Error ? error : new Error(String(error))
 
@@ -94,15 +95,27 @@ export function reportError(
         }
     }
     if (isStaging() || isProduction()) {
-        Sentry.captureException(errorObj, getAdditionalErrorInfo(errorObj))
+        Sentry.withScope((scope) => {
+            if (fingerprints) scope.setFingerprint(fingerprints)
+            Sentry.captureException(
+                errorObj,
+                getAdditionalErrorInfo(errorObj, options),
+            )
+        })
     }
 }
 
-export function getAdditionalErrorInfo(errorObj: Error = new Error()) {
+export function getAdditionalErrorInfo(
+    errorObj: Error = new Error(),
+    options?: Partial<ScopeContext>,
+) {
     try {
         const callerInfo = getCallerInfo(errorObj)
         return {
+            ...options,
             extra: {
+                ...options?.extra,
+                // Collected info below takes precedence over options.extra
                 environment: getEnvironment(),
                 // Caller information
                 caller_function: callerInfo.functionName,
@@ -129,7 +142,9 @@ export function getAdditionalErrorInfo(errorObj: Error = new Error()) {
         }
     } catch {
         return {
+            ...options,
             extra: {
+                ...options?.extra,
                 info_error: 'Failed to get additional error info',
             },
         }
