@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { getSortByName } from '@repo/utils'
 import _intersectionBy from 'lodash/intersectionBy'
 
 import type { User } from 'config/types/user'
@@ -20,7 +21,6 @@ import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import type { RootState } from 'state/types'
-import { getSortByName } from 'utils/getSortByName'
 
 export type AgentPerformanceSorting<T> = {
     field: T

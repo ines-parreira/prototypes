@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { getSortByName } from '@repo/utils'
 
 import { getActiveViewFromTableSetting } from 'domains/reporting/hooks/useTableConfigSetting'
 import type { Product } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
@@ -12,7 +13,6 @@ import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/ty
 import { OrderDirection } from 'models/api/types'
 import { getProductInsightsTableConfigSettingsJS } from 'state/currentAccount/selectors'
 import type { RootState } from 'state/types'
-import { getSortByName } from 'utils/getSortByName'
 
 export type ProductInsightsSliceState = {
     products: Product[]

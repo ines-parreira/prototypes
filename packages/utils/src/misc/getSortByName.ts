@@ -1,3 +1,9 @@
+/**
+ * Sort comparator function for objects with a name property
+ *
+ * Migrated from: apps/helpdesk/src/utils/getSortByName.ts
+ */
+
 type NamedObject = {
     name: string
 }

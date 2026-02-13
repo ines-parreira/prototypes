@@ -1,3 +1,4 @@
+import { getSortByName } from '@repo/utils'
 import { fromJS } from 'immutable'
 
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
@@ -32,7 +33,6 @@ import { initialState as uiFiltersInitialState } from 'domains/reporting/state/u
 import { personNames } from 'fixtures/personNames'
 import { OrderDirection } from 'models/api/types'
 import type { RootState } from 'state/types'
-import { getSortByName } from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
     const agents = [

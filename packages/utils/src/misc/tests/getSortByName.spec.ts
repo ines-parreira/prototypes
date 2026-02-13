@@ -1,4 +1,4 @@
-import { getSortByName } from 'utils/getSortByName'
+import { getSortByName } from '../getSortByName'
 
 describe('getSortByName', () => {
     it.each([

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
+import { getSortByName } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -27,7 +28,6 @@ import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenter
 import type { RootState } from 'state/types'
 import configureStore from 'store/configureStore.prod'
 import type { InitialRootState } from 'types'
-import { getSortByName } from 'utils/getSortByName'
 import { renderWithRouter, renderWithStore } from 'utils/testing'
 
 jest.mock(

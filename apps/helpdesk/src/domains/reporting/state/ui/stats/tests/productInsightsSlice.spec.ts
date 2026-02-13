@@ -1,3 +1,4 @@
+import { getSortByName } from '@repo/utils'
 import { fromJS } from 'immutable'
 
 import type { Product } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
@@ -23,7 +24,6 @@ import { ProductInsightsTableColumns } from 'domains/reporting/state/ui/stats/ty
 import { opposite, OrderDirection } from 'models/api/types'
 import { AccountSettingType } from 'state/currentAccount/types'
 import type { RootState } from 'state/types'
-import { getSortByName } from 'utils/getSortByName'
 
 describe('productInsightsSlice', () => {
     const products: Product[] = [

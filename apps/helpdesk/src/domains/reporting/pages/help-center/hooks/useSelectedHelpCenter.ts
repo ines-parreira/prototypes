@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 
+import { getSortByName } from '@repo/utils'
+
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { useHelpCenterStatsFilters } from 'domains/reporting/pages/help-center/hooks/useHelpCenterStatsFilters'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
 import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import { getHelpCenterDomain } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import { getSortByName } from 'utils/getSortByName'
 
 export const useSelectedHelpCenter = () => {
     const { cleanStatsFilters } = useStatsFilters()

@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
+import { getSortByName } from '@repo/utils'
+
 import { getStatsStoreIntegrations } from 'domains/reporting/state/stats/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import { getSortByName } from 'utils/getSortByName'
 
 export function useShopifyIntegrations(): Integration[] {
     const allStoreIntegrations = useAppSelector(getStatsStoreIntegrations)
