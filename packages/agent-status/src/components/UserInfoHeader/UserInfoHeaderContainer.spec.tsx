@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../../constants'
+import * as hooks from '../../hooks'
 import { render } from '../../tests/render.utils'
 import type { UserInfoHeaderProps } from './UserInfoHeader'
 import { UserInfoHeaderContainer } from './UserInfoHeaderContainer'
@@ -16,6 +17,15 @@ vi.mock('@gorgias/helpdesk-queries', async () => {
         ...actual,
         useGetCurrentUser: vi.fn(),
         useGetUserAvailability: vi.fn(),
+    }
+})
+
+vi.mock('../../hooks', async () => {
+    const actual = await vi.importActual<typeof hooks>('../../hooks')
+    return {
+        ...actual,
+        useUserAvailabilityExpirationTime: vi.fn(),
+        useAvailabilityStatusColor: vi.fn(),
     }
 })
 
@@ -40,6 +50,10 @@ describe('UserInfoHeaderContainer', () => {
                 },
             },
         } as any)
+        vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
+            undefined,
+        )
+        vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(undefined)
     })
 
     describe('Loading states', () => {
@@ -118,6 +132,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue('red')
 
             render(
                 <UserInfoHeaderContainer
@@ -138,6 +153,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue('green')
 
             render(<UserInfoHeaderContainer />)
 
@@ -154,6 +170,9 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(
+                'orange',
+            )
 
             render(<UserInfoHeaderContainer />)
 
@@ -170,6 +189,9 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(
+                'orange',
+            )
 
             render(<UserInfoHeaderContainer />)
 
@@ -182,6 +204,9 @@ describe('UserInfoHeaderContainer', () => {
             vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
                 data: undefined,
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(
+                undefined,
+            )
 
             render(<UserInfoHeaderContainer />)
 
@@ -201,6 +226,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue('red')
 
             render(
                 <UserInfoHeaderContainer
@@ -214,7 +240,7 @@ describe('UserInfoHeaderContainer', () => {
         })
     })
 
-    describe('Status text with phone unavailability', () => {
+    describe('Status text', () => {
         beforeEach(() => {
             vi.mocked(helpdeskQueries.useGetCurrentUser).mockReturnValue({
                 data: {
@@ -261,12 +287,54 @@ describe('UserInfoHeaderContainer', () => {
             )
         })
 
-        it('should display normal status text when no phone unavailability status', () => {
+        it('should display expiration time when no phone unavailability status', () => {
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'custom',
+                        custom_user_availability_status_expires_datetime:
+                            '2026-01-30T14:30:00Z',
+                    },
+                },
+            } as any)
+            vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
+                '2:30pm',
+            )
+
             render(<UserInfoHeaderContainer />)
 
-            const statusText = screen.getByTestId('status-text')
-            // The status text should not be empty and should be the normal availability text
-            expect(statusText.textContent).toBeTruthy()
+            expect(screen.getByTestId('status-text')).toHaveTextContent(
+                '2:30pm',
+            )
+        })
+
+        it('should display undefined when no expiration time and no phone status', () => {
+            vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
+                undefined,
+            )
+
+            render(<UserInfoHeaderContainer />)
+
+            expect(screen.getByTestId('status-text')).toHaveTextContent('')
+        })
+
+        it('should call useUserAvailabilityExpirationTime with expires datetime', () => {
+            const expiresAt = '2026-01-30T14:30:00Z'
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'custom',
+                        custom_user_availability_status_expires_datetime:
+                            expiresAt,
+                    },
+                },
+            } as any)
+
+            render(<UserInfoHeaderContainer />)
+
+            expect(
+                hooks.useUserAvailabilityExpirationTime,
+            ).toHaveBeenCalledWith(expiresAt)
         })
     })
 })

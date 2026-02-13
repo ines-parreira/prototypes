@@ -30,6 +30,7 @@ const TIME_FORMAT_DICT = {
  * @param expiresAt - ISO 8601 datetime string when the status expires
  * @param dateFormat - User's preferred date format (en_US: MM/DD, en_GB: DD/MM)
  * @param timeFormat - User's preferred time format (12-hour AM/PM or 24-hour)
+ * @param timezone - User's timezone (e.g., "America/New_York"). If not provided, UTC is used.
  * @returns Formatted expiration time string
  *
  * @example
@@ -48,34 +49,39 @@ const TIME_FORMAT_DICT = {
  * // Returns: "02/09/26, 2:30pm"
  *
  * @example
- * // 10 days away with en_GB format
- * formatExpirationTime('2026-02-09T14:30:00Z', DateFormatType.en_GB, TimeFormatType.TwentyFourHour)
+ * // 10 days away with en_GB format and timezone
+ * formatExpirationTime('2026-02-09T14:30:00Z', DateFormatType.en_GB, TimeFormatType.TwentyFourHour, 'Europe/London')
  * // Returns: "09/02/26, 14:30"
  */
 export function formatExpirationTime(
     expiresAt: string,
     dateFormat: DateFormatType = en_US,
     timeFormat: TimeFormatType = AmPm,
+    timezone?: string,
 ): string {
     const expiryMoment = moment.utc(expiresAt)
     const now = moment.utc()
-    const diffMs = expiryMoment.diff(now)
+
+    const localExpiry = timezone ? expiryMoment.tz(timezone) : expiryMoment
+    const localNow = timezone ? now.tz(timezone) : now
+
+    const diffMs = localExpiry.diff(localNow)
 
     const timeFormatString = TIME_FORMAT_DICT[timeFormat]
 
     const isWithinOneDay = diffMs < DurationInMs.OneDay
 
     if (isWithinOneDay) {
-        return expiryMoment.format(timeFormatString)
+        return localExpiry.format(timeFormatString)
     }
 
     const isWithinOneWeek = diffMs < DurationInMs.OneWeek
 
     if (isWithinOneWeek) {
-        return expiryMoment.format(`dddd, ${timeFormatString}`)
+        return localExpiry.format(`dddd, ${timeFormatString}`)
     }
 
     const dateFormatString = DATE_FORMAT_DICT[dateFormat]
 
-    return expiryMoment.format(`${dateFormatString}, ${timeFormatString}`)
+    return localExpiry.format(`${dateFormatString}, ${timeFormatString}`)
 }

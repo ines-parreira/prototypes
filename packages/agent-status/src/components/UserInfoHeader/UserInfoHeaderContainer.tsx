@@ -7,9 +7,8 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import {
-    useAgentStatus,
     useAvailabilityStatusColor,
-    useAvailabilityStatusText,
+    useUserAvailabilityExpirationTime,
 } from '../../hooks'
 import type { AgentStatusWithSystem } from '../../types'
 import { UserInfoHeader } from './UserInfoHeader'
@@ -29,10 +28,9 @@ export function UserInfoHeaderContainer({
 
     const userAvailability = data?.data as unknown as UserAvailability
 
-    const customStatusId = userAvailability?.custom_user_availability_status_id
-    const customStatus = useAgentStatus(customStatusId)
-
-    const statusText = useAvailabilityStatusText(userAvailability, customStatus)
+    const statusText = useUserAvailabilityExpirationTime(
+        userAvailability?.custom_user_availability_status_expires_datetime,
+    )
 
     const indicatorColor = useAvailabilityStatusColor(
         userAvailability?.user_status,

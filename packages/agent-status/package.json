@@ -20,6 +20,7 @@
         "@gorgias/design-tokens": "catalog:axiom",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/forms": "workspace:*",
+        "@repo/user": "workspace:*",
         "@repo/utils": "workspace:*",
         "classnames": "catalog:styles",
         "moment": "catalog:moment",

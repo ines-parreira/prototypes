@@ -1,4 +1,4 @@
-export { useAvailabilityStatusText } from './useAvailabilityStatusText'
+export { useUserAvailabilityExpirationTime } from './useUserAvailabilityExpirationTime'
 export { useAgentStatus } from './useAgentStatus'
 export { useAgentStatuses } from './useAgentStatuses'
 export { useCreateAgentStatus } from './useCreateAgentStatus'
