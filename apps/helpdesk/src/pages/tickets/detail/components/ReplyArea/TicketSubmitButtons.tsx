@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useCloseTicket, useTicketFieldsValidation } from '@repo/tickets'
+import {
+    getMacroTicketFieldValues,
+    useHelpdeskV2MS1Flag,
+    useTicketFieldsValidation,
+} from '@repo/tickets'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -14,6 +17,7 @@ import {
     LegacyButton as Button,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import type { Macro } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -31,7 +35,12 @@ import {
     canSend as getCanSend,
     hasContent as getHasContent,
 } from 'state/newMessage/selectors'
-import { hasContentlessAction as getHasContentlessAction } from 'state/ticket/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import {
+    getAppliedMacro,
+    hasContentlessAction as getHasContentlessAction,
+} from 'state/ticket/selectors'
 
 import css from './TicketSubmitButtons.less'
 
@@ -74,8 +83,8 @@ export function TicketSubmitButtons({ submit }: Props) {
     const dispatch = useAppDispatch()
 
     const { isTranslationPending } = useOutboundTranslationContext()
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
-
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const appliedMacro = useAppSelector(getAppliedMacro)
     const hasContent = useAppSelector(getHasContent)
     const currentUserPreferences = useAppSelector(getPreferences)
     const isHidingTips = useAppSelector(getIsHidingTips)
@@ -86,7 +95,6 @@ export function TicketSubmitButtons({ submit }: Props) {
     const { validateTicketFields } = useTicketFieldsValidation(
         Number(ticket.get('id')),
     )
-    const { closeTicket } = useCloseTicket(Number(ticket.get('id')))
 
     const tip = useMemo(() => _sample(TIPS), [])
 
@@ -109,23 +117,32 @@ export function TicketSubmitButtons({ submit }: Props) {
             trackSendAndClosedClicked()
             submit({ status: TicketStatus.Closed })
         } else {
-            const { hasErrors } = validateTicketFields()
+            const { hasErrors } = validateTicketFields(
+                getMacroTicketFieldValues(appliedMacro?.toJS() as Macro),
+            )
 
             if (!ticket.get('id') || hasErrors) {
+                dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'This ticket cannot be closed. Please fill the required fields.',
+                    }),
+                )
                 return
             }
 
             trackSendAndClosedClicked()
             submit({ status: TicketStatus.Closed })
-            closeTicket()
         }
     }, [
         trackSendAndClosedClicked,
         hasUIVisionMS1,
-        closeTicket,
         ticket,
         submit,
         validateTicketFields,
+        dispatch,
+        appliedMacro,
     ])
 
     const isLoading = newMessage.getIn([

@@ -34,15 +34,14 @@ const mockUseFlag = useFlag as jest.Mock
 
 const mockValidateTicketFields = jest.fn()
 const mockCloseTicket = jest.fn()
+const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
+    useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
     useTicketFieldsValidation: () => ({
         validateTicketFields: mockValidateTicketFields,
         isValidating: false,
-    }),
-    useCloseTicket: () => ({
-        closeTicket: mockCloseTicket,
     }),
 }))
 
@@ -329,7 +328,7 @@ describe('<TicketSubmitButtons />', () => {
 
         describe('when hasUIVisionMS1 flag is disabled (legacy behavior)', () => {
             beforeEach(() => {
-                mockUseFlag.mockReturnValue(false)
+                mockUseHelpdeskV2MS1Flag.mockReturnValue(false)
             })
 
             it('should call submit with Closed status when clicking Send & Close', async () => {
@@ -364,7 +363,7 @@ describe('<TicketSubmitButtons />', () => {
 
         describe('when hasUIVisionMS1 flag is enabled', () => {
             beforeEach(() => {
-                mockUseFlag.mockReturnValue(true)
+                mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             })
 
             it('should return early if ticket has no id', async () => {
@@ -408,29 +407,6 @@ describe('<TicketSubmitButtons />', () => {
                 expect(mockSubmit).not.toHaveBeenCalled()
                 expect(mockCloseTicket).not.toHaveBeenCalled()
                 expect(logEvent).not.toHaveBeenCalled()
-            })
-
-            it('should call submit and closeTicket when validation passes', async () => {
-                mockValidateTicketFields.mockReturnValue({
-                    hasErrors: false,
-                    invalidFieldIds: [],
-                })
-
-                const { user, getByRole } = renderComponent(
-                    mockStore(existingTicketState),
-                )
-
-                const sendAndCloseButton = getByRole('button', {
-                    name: /Send & Close/,
-                })
-                await user.click(sendAndCloseButton)
-
-                expect(mockValidateTicketFields).toHaveBeenCalled()
-                expect(logEvent).toHaveBeenCalled()
-                expect(mockSubmit).toHaveBeenCalledWith({
-                    status: TicketStatus.Closed,
-                })
-                expect(mockCloseTicket).toHaveBeenCalled()
             })
         })
     })

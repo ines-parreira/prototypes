@@ -78,3 +78,7 @@ export {
     TicketTitleCustomer,
     TicketTitleSubject,
 } from './components/TicketHeader/TicketTitle'
+
+export { MacroActionName } from './utils/macros/types'
+export type { MacroResponseActionName } from './utils/macros/types'
+export { getMacroTicketFieldValues } from './components/InfobarTicketDetails/components/InfobarTicketFields/utils/getMacroTicketFieldValues'

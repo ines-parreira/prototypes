@@ -217,10 +217,12 @@ const mockUseKnowledgeSourceSideBar =
         .useKnowledgeSourceSideBar as jest.Mock
 
 const mockValidateTicketFields = jest.fn()
+const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
     useLiveTicketTranslationsUpdates: jest.fn(),
+    useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
     useTicketFieldsValidation: () => ({
         validateTicketFields: mockValidateTicketFields,
         isValidating: false,
@@ -1612,7 +1614,7 @@ describe('TicketDetailContainer component', () => {
         })
 
         it('should not trigger ticket field validation when sending a message without closing on existing ticket', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             useCustomFieldDefinitionsMock.mockReturnValue({
                 isLoading: false,
                 data: {
@@ -1652,8 +1654,8 @@ describe('TicketDetailContainer component', () => {
             expect(triggerTicketFieldsErrors).not.toHaveBeenCalled()
         })
 
-        it('should trigger ticket field validation when closing an existing ticket with hasUIVisionMS1 flag', async () => {
-            mockUseFlag.mockReturnValue(true)
+        it('should not trigger ticket field validation in submit when closing an existing ticket with hasUIVisionMS1 flag', async () => {
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             useCustomFieldDefinitionsMock.mockReturnValue({
                 isLoading: false,
                 data: {
@@ -1685,18 +1687,11 @@ describe('TicketDetailContainer component', () => {
             )
 
             userEvent.click(getByTestId('TicketView-submit'))
-
-            await waitFor(() => {
-                expect(triggerTicketFieldsErrors).toHaveBeenCalledWith([
-                    ticketInputFieldDefinition.id,
-                ])
-            })
-
-            expect(pendingMessageManager.sendMessage).not.toHaveBeenCalled()
+            expect(triggerTicketFieldsErrors).not.toHaveBeenCalled()
         })
 
         it('should not submit via keyboard shortcut when ticket field validation fails on existing ticket', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             mockValidateTicketFields.mockReturnValue({
                 hasErrors: true,
                 invalidFieldIds: [ticketInputFieldDefinition.id],
@@ -1733,7 +1728,7 @@ describe('TicketDetailContainer component', () => {
         })
 
         it('should allow keyboard shortcut submit when ticket field validation passes on existing ticket', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             mockValidateTicketFields.mockReturnValue({
                 hasErrors: false,
                 invalidFieldIds: [],
@@ -1769,7 +1764,7 @@ describe('TicketDetailContainer component', () => {
         })
 
         it('should skip ticket field validation on new ticket even with hasUIVisionMS1 flag', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
             mockValidateTicketFields.mockReturnValue({
                 hasErrors: true,
                 invalidFieldIds: [ticketInputFieldDefinition.id],

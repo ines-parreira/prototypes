@@ -388,6 +388,143 @@ describe('useTicketFieldsValidation', () => {
         expect(result.current.isValidating).toBe(true)
     })
 
+    it('should pass validation when macro values fill required empty fields', () => {
+        const fieldDefinitions: CustomField[] = [
+            {
+                id: 1,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+            {
+                id: 2,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+        ]
+
+        vi.spyOn(
+            useCustomFieldDefinitionsModule,
+            'useCustomFieldDefinitions',
+        ).mockReturnValue({
+            data: {
+                data: fieldDefinitions,
+            },
+            isLoading: false,
+        } as any)
+
+        vi.spyOn(
+            useCustomFieldsConditionsEvaluationResultsModule,
+            'useCustomFieldsConditionsEvaluationResults',
+        ).mockReturnValue({
+            evaluationResults: {},
+            conditionsLoading: false,
+        })
+
+        useTicketFieldsStore.getState().updateFieldValue(1, '')
+        useTicketFieldsStore.getState().updateFieldValue(2, '')
+
+        const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
+
+        const validation = result.current.validateTicketFields({
+            1: 'macro value 1',
+            2: 'macro value 2',
+        })
+
+        expect(validation.hasErrors).toBe(false)
+        expect(validation.invalidFieldIds).toEqual([])
+        expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should fail validation when macro values only fill some required fields', () => {
+        const fieldDefinitions: CustomField[] = [
+            {
+                id: 1,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+            {
+                id: 2,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+        ]
+
+        vi.spyOn(
+            useCustomFieldDefinitionsModule,
+            'useCustomFieldDefinitions',
+        ).mockReturnValue({
+            data: {
+                data: fieldDefinitions,
+            },
+            isLoading: false,
+        } as any)
+
+        vi.spyOn(
+            useCustomFieldsConditionsEvaluationResultsModule,
+            'useCustomFieldsConditionsEvaluationResults',
+        ).mockReturnValue({
+            evaluationResults: {},
+            conditionsLoading: false,
+        })
+
+        useTicketFieldsStore.getState().updateFieldValue(1, '')
+        useTicketFieldsStore.getState().updateFieldValue(2, '')
+
+        const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
+
+        const validation = result.current.validateTicketFields({
+            1: 'macro value',
+        })
+
+        expect(validation.hasErrors).toBe(true)
+        expect(validation.invalidFieldIds).toEqual([2])
+    })
+
+    it('should use store values for fields not present in macro values', () => {
+        const fieldDefinitions: CustomField[] = [
+            {
+                id: 1,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+            {
+                id: 2,
+                required: true,
+                requirement_type: RequirementType.Required,
+            } as CustomField,
+        ]
+
+        vi.spyOn(
+            useCustomFieldDefinitionsModule,
+            'useCustomFieldDefinitions',
+        ).mockReturnValue({
+            data: {
+                data: fieldDefinitions,
+            },
+            isLoading: false,
+        } as any)
+
+        vi.spyOn(
+            useCustomFieldsConditionsEvaluationResultsModule,
+            'useCustomFieldsConditionsEvaluationResults',
+        ).mockReturnValue({
+            evaluationResults: {},
+            conditionsLoading: false,
+        })
+
+        useTicketFieldsStore.getState().updateFieldValue(1, 'store value')
+        useTicketFieldsStore.getState().updateFieldValue(2, '')
+
+        const { result } = renderHook(() => useTicketFieldsValidation(ticketId))
+
+        const validation = result.current.validateTicketFields({
+            2: 'macro value',
+        })
+
+        expect(validation.hasErrors).toBe(false)
+        expect(validation.invalidFieldIds).toEqual([])
+    })
+
     it('should return isValidating true when any dependency is loading', () => {
         vi.spyOn(
             useCustomFieldDefinitionsModule,

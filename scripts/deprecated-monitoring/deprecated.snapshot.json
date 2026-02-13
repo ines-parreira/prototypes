@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-13T10:29:49.109Z",
-  "total": 4350,
+  "date": "2026-02-13T16:26:03.740Z",
+  "total": 4418,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -802,6 +802,88 @@
             "apps/helpdesk/src/pages/automate/common/components/AutomateExploreDataModal.tsx",
             "apps/helpdesk/src/pages/automate/common/components/AutomateSavingsCard.tsx",
             "apps/helpdesk/src/pages/settings/billing/automate/ROICalculator/ROICalculator.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "MacroActionName",
+      "comment": "*\n * @deprecated Use MacroActionName from @repo/tickets instead\n * @date 2026-02-12\n * @type macro-action-name-migration\n ",
+      "count": 68,
+      "filePath": "apps/helpdesk/src/models/macroAction/types.ts",
+      "usages": [
+        {
+          "name": "MacroActionName",
+          "files": [
+            "apps/helpdesk/src/business/macro.ts",
+            "apps/helpdesk/src/business/tests/macro.clearMacroBeforeApply.spec.ts",
+            "apps/helpdesk/src/config.ts",
+            "apps/helpdesk/src/fixtures/macro.ts",
+            "apps/helpdesk/src/models/macroAction/constants.ts",
+            "apps/helpdesk/src/models/ticket/tests/mocks.ts",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/utils.ts",
+            "apps/helpdesk/src/pages/settings/macros/MacrosSettingsForm.tsx",
+            "apps/helpdesk/src/pages/settings/macros/MacrosSettingsItem.tsx",
+            "apps/helpdesk/src/pages/settings/macros/tests/MacrosSettingsForm.spec.tsx",
+            "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyFAQEditor.tsx",
+            "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyReturnEditor.tsx",
+            "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyWismoEditor.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/AddInternalNoteAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/ResponseAction.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/tests/HttpAction.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroEdit.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroMessageActionsHeader.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroModal.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/tests/MacroEdit.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/tests/MacroMessageActionsHeader.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/tests/MacroModal.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/Preview/Preview.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/Preview/SetCustomerCustomFieldValuesPreview.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/Preview/SetCustomFieldValuesPreview.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/Preview/tests/Preview.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/Preview/tests/SetCustomerCustomFieldValuesPreview.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/common/tests/utils.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply/ActionPreviews/ActionPreviews.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply/ActionPreviews/SimpleActionPreview.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketReply.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketReplyAction.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketReplyActions.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketSubmitButtons.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyAction.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyActions.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyArea.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketSubmitButtons.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/RuleSuggestion.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/tests/Error.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/hooks/tests/useAIAgentMessageEvents.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/hooks/useAIAgentMessageEvents.ts",
+            "apps/helpdesk/src/pages/tickets/detail/tests/TicketDetailContainer.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/TicketDetailContainer.tsx",
+            "apps/helpdesk/src/state/macro/tests/utils.spec.ts",
+            "apps/helpdesk/src/state/macro/utils.ts",
+            "apps/helpdesk/src/state/newMessage/actions.ts",
+            "apps/helpdesk/src/state/newMessage/selectors.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/state/newMessage/utils.ts",
+            "apps/helpdesk/src/state/ticket/actions.ts",
+            "apps/helpdesk/src/state/ticket/reducers.ts",
+            "apps/helpdesk/src/state/ticket/selectors.ts",
+            "apps/helpdesk/src/state/ticket/tests/selectors.spec.ts",
+            "apps/helpdesk/src/state/ticket/utils.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/components/MessageActions.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageActions.spec.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageError.spec.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/hasCloseAction.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/hasHandoverAction.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/hasSnoozeAction.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/hasCloseAction.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/hasHandoverAction.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/hasSnoozeAction.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/transformers/tests/aiMessageEventsTransformer.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/transformers/tests/failedMessageTransformer.spec.ts",
+            "apps/helpdesk/src/utils/customFields.ts"
           ]
         }
       ]
@@ -3760,6 +3842,19 @@
       "usages": [
         {
           "name": "TooltipData",
+          "files": []
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "MacroResponseActionName",
+      "comment": "*\n * @deprecated Use MacroActionName from @repo/tickets instead\n * @date 2026-02-12\n * @type macro-action-name-migration\n ",
+      "count": 0,
+      "filePath": "apps/helpdesk/src/models/macroAction/types.ts",
+      "usages": [
+        {
+          "name": "MacroResponseActionName",
           "files": []
         }
       ]

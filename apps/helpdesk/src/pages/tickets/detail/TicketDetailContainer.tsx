@@ -11,6 +11,7 @@ import {
 } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
+    useHelpdeskV2MS1Flag,
     useLiveTicketTranslationsUpdates,
     useTicketFieldsValidation,
 } from '@repo/tickets'
@@ -23,6 +24,7 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
 import type { DomainEvent } from '@gorgias/events'
+import type { Macro } from '@gorgias/helpdesk-types'
 import { useAgentActivity } from '@gorgias/realtime-ably'
 
 import {
@@ -31,6 +33,7 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import { useSearch } from 'hooks/useSearch'
@@ -73,6 +76,7 @@ import {
     setCustomer,
     setStatus,
 } from 'state/ticket/actions'
+import { getAppliedMacro } from 'state/ticket/selectors'
 import { getSourceTypeOfResponse } from 'state/ticket/utils'
 import { updateCursor } from 'state/tickets/actions'
 import type { RootState } from 'state/types'
@@ -80,6 +84,7 @@ import { getActiveView } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { isMacOs } from 'utils/platform'
 
+import { getMacroTicketFieldValues } from '../../../../../../packages/tickets/src/components/InfobarTicketDetails/components/InfobarTicketFields/utils/getMacroTicketFieldValues'
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'
 import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
@@ -128,7 +133,8 @@ export const TicketDetailContainer = ({
     onToggleUnread,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const hasUIVisionMS1 = useFlag(FeatureFlagKey.UIVisionMilestone1)
+    const appliedMacro = useAppSelector(getAppliedMacro)
+    const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { customer: customerId } = useSearch<{ customer?: string }>()
     const ticketIdParamRef = useRef(ticketIdParam)
@@ -375,7 +381,9 @@ export const TicketDetailContainer = ({
         action,
         resetMessage = true,
     }: SubmitArgs) => {
+        // For the MS1 of the Helpdesk 2.0, we don't really on the submit function to perform the ticket fields validation.
         if (
+            !hasUIVisionMS1 &&
             status === TicketStatus.Closed &&
             checkTicketFieldErrors({ includeMacro: true })
         ) {
@@ -458,12 +466,23 @@ export const TicketDetailContainer = ({
                         e.stopImmediatePropagation()
                     }
 
-                    const { hasErrors } = validateTicketFields()
+                    const { hasErrors } = validateTicketFields(
+                        getMacroTicketFieldValues(
+                            appliedMacro?.toJS() as Macro,
+                        ),
+                    )
                     if (
                         hasUIVisionMS1 &&
                         hasErrors &&
                         ticketIdParam !== 'new'
                     ) {
+                        dispatch(
+                            notify({
+                                status: NotificationStatus.Error,
+                                message:
+                                    'This ticket cannot be closed. Please fill the required fields.',
+                            }),
+                        )
                         return
                     }
 
