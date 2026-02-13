@@ -17,6 +17,7 @@ import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import { Provider } from 'react-redux'
 
+import { predictionKey } from 'pages/common/draftjs/plugins/prediction/state'
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import { convertFromHTML } from 'utils/editor'
@@ -1214,6 +1215,81 @@ describe('RichFieldEditor', () => {
             const event = new KeyboardEvent('keydown', {
                 key: 'Tab',
                 shiftKey: true,
+                cancelable: true,
+                bubbles: true,
+            })
+            instanceRef.current!['editorWrapperRef']?.dispatchEvent(event)
+
+            expect(spyOnchange).not.toHaveBeenCalled()
+        })
+
+        it('should not handle Tab when prediction is active', () => {
+            const spyOnchange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={spyOnchange}
+                    ref={instanceRef}
+                />,
+            )
+
+            spyOnchange.mockClear()
+            predictionKey.set('some-key')
+
+            const event = new KeyboardEvent('keydown', {
+                key: 'Tab',
+                cancelable: true,
+                bubbles: true,
+            })
+            instanceRef.current!['editorWrapperRef']?.dispatchEvent(event)
+
+            expect(spyOnchange).not.toHaveBeenCalled()
+            predictionKey.set(null)
+        })
+
+        it('should not indent unstyled block when cursor is in the middle of text', () => {
+            const spyOnchange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'blk1',
+                type: 'unstyled',
+                text: 'hello',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const content = DraftContentState.createFromBlockArray([block])
+            let state = EditorState.createWithContent(content)
+            const sel = SelectionState.createEmpty('blk1').merge({
+                anchorOffset: 3,
+                focusOffset: 3,
+                hasFocus: true,
+            }) as SelectionState
+            state = EditorState.forceSelection(state, sel)
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={state}
+                    onChange={spyOnchange}
+                    ref={instanceRef}
+                />,
+            )
+
+            spyOnchange.mockClear()
+
+            const event = new KeyboardEvent('keydown', {
+                key: 'Tab',
                 cancelable: true,
                 bubbles: true,
             })

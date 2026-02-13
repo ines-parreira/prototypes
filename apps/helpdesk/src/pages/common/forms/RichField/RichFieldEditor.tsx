@@ -65,6 +65,7 @@ import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createPredictionPlugin from '../../draftjs/plugins/prediction'
+import { predictionKey } from '../../draftjs/plugins/prediction/state'
 import { createQuotesPlugin } from '../../draftjs/plugins/quotes/quotesPlugin'
 import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
 import { ActionName } from '../../draftjs/plugins/toolbar/types'
@@ -769,6 +770,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
         const target = event.target as HTMLElement
         if (target.closest('[data-find-replace-dialog]')) return
+        if (predictionKey.get()) return
 
         event.preventDefault()
         event.stopPropagation()
@@ -801,7 +803,10 @@ export class RichFieldEditor extends Component<Props, State> {
                 blockType === 'ordered-list-item'
             ) {
                 // RichUtils.onTab already handled list items (or correctly no-oped)
-            } else {
+            } else if (
+                keyEvent.shiftKey ||
+                (selection.getStartOffset() === 0 && selection.isCollapsed())
+            ) {
                 const depth = block.getDepth()
                 const newDepth = keyEvent.shiftKey
                     ? Math.max(0, depth - 1)
