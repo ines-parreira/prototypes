@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-06T20:45:50.988Z",
-  "total": 4327,
+  "date": "2026-02-13T10:29:49.109Z",
+  "total": 4350,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1239,6 +1239,50 @@
             "apps/helpdesk/src/settings/pages/order-management-routes/OrderManagementTrackRoute.tsx",
             "apps/helpdesk/src/settings/pages/tests/FlowsSettings.spec.tsx",
             "apps/helpdesk/src/tests/utils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "StatsPage",
+      "comment": "*\n * @deprecated This component is deprecated. Use `AnalyticsPage` instead for new reports.\n *\n * `AnalyticsPage` provides:\n * - Modern design using Axiom components\n * - Built-in tab support\n * - Sticky header with filters\n * - Better flexbox layout\n * - Consistent styling across analytics pages\n *\n * See `apps/helpdesk/src/domains/reporting/pages/common/layout/AnalyticsPage.tsx`\n * Example usage: `apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout.tsx`\n ",
+      "count": 30,
+      "filePath": "apps/helpdesk/src/domains/reporting/pages/common/layout/StatsPage.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/automate/ai-agent/AutomateAiAgentStatsReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentSalesOverview.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/automate/overview/AutomateOverviewContent.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/layout/tests/StatsPage.spec.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/convert/pages/CampaignsStats/CampaignsStats.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardPage.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterReport/HelpCenterReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/live/agents/LiveAgents.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/live/overview/LiveOverview.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/SatisfactionReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/self-service/SelfServiceStatsPage.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/sla/ServiceLevelAgreementsPage.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/agents/SupportPerformanceAgentsReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/auto-qa/AutoQA.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDays.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/channels/ChannelsReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReport.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenue.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfaction.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/intents/AutomateIntents.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/macros/AutomateMacros.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/tags/Tags.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/SupportPerformanceTicketInsights.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/product-insights/ProductInsightsPage.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice/pages/LiveVoice.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice/pages/VoiceAgents.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice/pages/VoiceOverview.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsView.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/AutomateLandingPage.tsx"
           ]
         }
       ]
@@ -3789,11 +3833,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1450,
+      "count": 1443,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 577,
+          "count": 575,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -3848,7 +3892,6 @@
             "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentCustomerEngagement.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentGuidanceLibrary.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/TicketPreview.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentPaywallView.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsView.tsx",
@@ -3874,7 +3917,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOnlineSettings.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverTopicsModel/HandoverTopicsModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ScrapeStoreDomainSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/SalesSettings/SalesSettings.tsx",
@@ -4376,7 +4418,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 298,
+          "count": 297,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -4431,7 +4473,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceActionsBadge.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ScrapeStoreDomainSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelCommonFields.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelHelpCenterArticle/components/SlugInput.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/PlaygroundPanel/PlaygroundPanel.tsx",
@@ -4680,7 +4721,7 @@
         },
         {
           "name": "LegacyLabel",
-          "count": 142,
+          "count": 141,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInputs.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/SimplifiedStepBuilderSteps.tsx",
@@ -4688,7 +4729,6 @@
             "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizardKnowledge.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/GuidanceSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/SalesSettings/SalesSettings.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/CustomFieldsFormComponent.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/SignatureFormComponent.tsx",
@@ -4828,9 +4868,8 @@
         },
         {
           "name": "LegacyBadge",
-          "count": 123,
+          "count": 122,
           "files": [
-            "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
             "apps/helpdesk/src/auto_qa/components/SaveBadge.tsx",
             "apps/helpdesk/src/common/navigation/hooks/useMainNavigationItems.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/charts/TableStat/cells/AgentAvailabilityCell.tsx",
@@ -5067,7 +5106,7 @@
         },
         {
           "name": "LegacyIconButton",
-          "count": 51,
+          "count": 48,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
             "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
@@ -5079,14 +5118,11 @@
             "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardActionButton.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInput.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/StepListItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentKnowledgeContainer.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/ItemDrawer.tsx",
             "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/RecommendationRuleCard.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceListRow.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/GuidanceSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ScrapeStoreDomainSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreCustomFieldList.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreTagList.tsx",

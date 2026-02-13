@@ -2,13 +2,13 @@ import { useMemo, useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
-import { useHistory, useLocation } from 'react-router'
 
-import { Box, Heading, TabItem, TabList, Tabs } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
@@ -28,8 +28,6 @@ import {
 import { useExportAiAgentAllAgentsToCSV } from '../hooks/useExportAiAgentAllAgentsToCSV'
 import { useExportAiAgentShoppingAssistantToCSV } from '../hooks/useExportAiAgentShoppingAssistantToCSV'
 import { useExportAiAgentSupportAgentToCSV } from '../hooks/useExportAiAgentSupportAgentToCSV'
-
-import css from './AnalyticsAiAgentLayout.less'
 
 const AI_AGENT_TAB_PARAM = 'ai-agent-tab'
 
@@ -53,8 +51,6 @@ const HEADER_NAVBAR_ITEMS = [
 
 export const AnalyticsAiAgentLayout = () => {
     useCleanStatsFilters()
-    const location = useLocation()
-    const history = useHistory()
     const contentRef = useRef<HTMLDivElement>(null)
     const { onAnalyticsReportViewed, onAnalyticsAiAgentTabSelected } =
         useAiAgentAnalyticsDashboardTracking()
@@ -127,63 +123,37 @@ export const AnalyticsAiAgentLayout = () => {
         }
     }, [activeTab])
 
-    const onTabChange = (tabParam: string | number) => {
-        const searchParams = new URLSearchParams(location.search)
-
-        const previousTab = searchParams.get(AI_AGENT_TAB_PARAM)?.toString()
-
+    const handleTabChangeCallback = ({
+        tabParam,
+        previousTab,
+    }: {
+        tabParam: string
+        previousTab: string | null
+    }) => {
         onAnalyticsAiAgentTabSelected({
-            tabName: tabParam.toString(),
+            tabName: tabParam,
             previousTab: previousTab ?? AiAgentAnalyticsQueryParams.AllAgents,
-        })
-
-        searchParams.set(AI_AGENT_TAB_PARAM, tabParam.toString())
-
-        history.replace({
-            pathname: location.pathname,
-            search: searchParams.toString(),
         })
     }
 
     return (
-        <Box
+        <AnalyticsPage
             ref={contentRef}
-            display="flex"
-            flexDirection="column"
-            flex={1}
-            minWidth="0px"
-        >
-            <Box
-                flexDirection="column"
-                justifyContent="space-between"
-                className={css.stickyHeader}
-            >
-                <Box
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    padding="lg"
-                >
-                    <Heading size="lg">AI Agent</Heading>
-                    <AnalyticsOverviewDownloadButton
-                        key={activeTab}
-                        contentRef={contentRef}
-                        useCsvExport={useCsvExport}
-                        pdfFileName={`ai-agent-${activeTab}`}
-                    />
-                </Box>
-                <Box width="100%" display="flex" flexDirection="column">
-                    <Tabs
-                        selectedItem={activeTab}
-                        onSelectionChange={onTabChange}
-                    >
-                        <TabList>
-                            {HEADER_NAVBAR_ITEMS.map(({ param, title }) => (
-                                <TabItem key={param} id={param} label={title} />
-                            ))}
-                        </TabList>
-                    </Tabs>
-                </Box>
+            title="AI Agent"
+            titleExtra={
+                <AnalyticsOverviewDownloadButton
+                    key={activeTab}
+                    contentRef={contentRef}
+                    useCsvExport={useCsvExport}
+                    pdfFileName={`ai-agent-${activeTab}`}
+                />
+            }
+            tabs={HEADER_NAVBAR_ITEMS}
+            tabParamName={AI_AGENT_TAB_PARAM}
+            activeTab={activeTab}
+            defaultTab={AiAgentAnalyticsQueryParams.AllAgents}
+            onTabChangeCallback={handleTabChangeCallback}
+            filtersSlot={
                 <Box padding="lg" paddingBottom="0px">
                     <FiltersPanelWrapper
                         persistentFilters={
@@ -202,10 +172,9 @@ export const AnalyticsAiAgentLayout = () => {
                         compact
                     />
                 </Box>
-            </Box>
-            <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
-                {renderDashboard}
-            </Box>
-        </Box>
+            }
+        >
+            {renderDashboard}
+        </AnalyticsPage>
     )
 }

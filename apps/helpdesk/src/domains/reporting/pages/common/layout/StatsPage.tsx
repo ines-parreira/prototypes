@@ -73,6 +73,19 @@ type Props = {
     banner?: ReactNode
 } & ComponentProps<typeof HeaderTitle>
 
+/**
+ * @deprecated This component is deprecated. Use `AnalyticsPage` instead for new reports.
+ *
+ * `AnalyticsPage` provides:
+ * - Modern design using Axiom components
+ * - Built-in tab support
+ * - Sticky header with filters
+ * - Better flexbox layout
+ * - Consistent styling across analytics pages
+ *
+ * See `apps/helpdesk/src/domains/reporting/pages/common/layout/AnalyticsPage.tsx`
+ * Example usage: `apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AnalyticsAiAgentLayout.tsx`
+ */
 export default function StatsPage({
     children,
     backgroundColor,

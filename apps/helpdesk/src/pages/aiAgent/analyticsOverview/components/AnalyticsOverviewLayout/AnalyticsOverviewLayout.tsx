@@ -3,21 +3,19 @@ import { useRef } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
 
-import { Box, Heading } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
+import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
+import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
+import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { STATS_ROUTES } from 'routes/constants'
-
-import { AnalyticsOverviewReportConfig } from '../../AnalyticsOverviewReportConfig'
-import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
-import { useExportAnalyticsOverviewToCSV } from '../../hooks/useExportAnalyticsOverviewToCSV'
-import { AnalyticsOverviewDownloadButton } from '../AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
-import { DashboardLayoutRenderer } from '../DashboardLayoutRenderer/DashboardLayoutRenderer'
-
-import css from './AnalyticsOverviewLayout.less'
 
 export const AnalyticsOverviewLayout = () => {
     useCleanStatsFilters()
@@ -35,54 +33,40 @@ export const AnalyticsOverviewLayout = () => {
     })
 
     return (
-        <Box
+        <AnalyticsPage
             ref={contentRef}
-            display="flex"
-            flexDirection="column"
-            flex={1}
-            minWidth="0px"
-        >
-            <Box
-                flexDirection="column"
-                justifyContent="space-between"
-                padding="lg"
-                paddingBottom="0px"
-                gap="lg"
-                className={css.stickyHeader}
-            >
-                <Box
-                    flexDirection="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                >
-                    <Heading size="lg">Overview</Heading>
-                    <AnalyticsOverviewDownloadButton
-                        contentRef={contentRef}
-                        useCsvExport={useExportAnalyticsOverviewToCSV}
+            title="Overview"
+            titleExtra={
+                <AnalyticsOverviewDownloadButton
+                    contentRef={contentRef}
+                    useCsvExport={useExportAnalyticsOverviewToCSV}
+                />
+            }
+            filtersSlot={
+                <Box padding="lg" paddingBottom="0px">
+                    <FiltersPanelWrapper
+                        persistentFilters={
+                            AnalyticsOverviewReportConfig.reportFilters
+                                .persistent
+                        }
+                        withSavedFilters={false}
+                        optionalFilters={[]}
+                        filterSettingsOverrides={{
+                            [FilterKey.Period]: {
+                                initialSettings: {
+                                    maxSpan: 365,
+                                },
+                            },
+                        }}
+                        compact
                     />
                 </Box>
-                <FiltersPanelWrapper
-                    persistentFilters={
-                        AnalyticsOverviewReportConfig.reportFilters.persistent
-                    }
-                    withSavedFilters={false}
-                    optionalFilters={[]}
-                    filterSettingsOverrides={{
-                        [FilterKey.Period]: {
-                            initialSettings: {
-                                maxSpan: 365,
-                            },
-                        },
-                    }}
-                    compact
-                />
-            </Box>
-            <Box display="flex" flexDirection="column" flex={1} minWidth="0px">
-                <DashboardLayoutRenderer
-                    layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
-                    reportConfig={AnalyticsOverviewReportConfig}
-                />
-            </Box>
-        </Box>
+            }
+        >
+            <DashboardLayoutRenderer
+                layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
+                reportConfig={AnalyticsOverviewReportConfig}
+            />
+        </AnalyticsPage>
     )
 }
