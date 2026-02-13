@@ -1,10 +1,4 @@
-import {
-    Icon,
-    LegacyIconButton as IconButton,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 export function InfobarToggle({
     isExpanded,
@@ -16,20 +10,13 @@ export function InfobarToggle({
     return (
         <Tooltip placement="left">
             <TooltipTrigger>
-                <IconButton
-                    fillStyle="ghost"
+                <Button
                     icon={
-                        <Icon
-                            name={
-                                isExpanded
-                                    ? 'system-bar-collapse'
-                                    : 'system-bar-expand'
-                            }
-                            size="md"
-                        />
+                        isExpanded ? 'system-bar-collapse' : 'system-bar-expand'
                     }
-                    intent="secondary"
-                    onClick={() => onToggle()}
+                    intent="regular"
+                    variant="tertiary"
+                    onClick={onToggle}
                 />
             </TooltipTrigger>
             <TooltipContent
