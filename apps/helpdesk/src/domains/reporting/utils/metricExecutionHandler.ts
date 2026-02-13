@@ -135,17 +135,21 @@ export async function metricExecutionHandler<
         } catch (e) {
             const isAxiosError = e instanceof AxiosError
             const statusCode = isAxiosError ? e?.response?.status : undefined
+            const errorMessage = (e as Error).message
 
             // Skip Sentry reporting for transient errors to avoid noise
-            // Transient errors: 202 (accepted but not ready), 429 (rate limit), 5xx (server errors)
-            if (isAxiosError && isTransientErrorStatus(statusCode)) {
+            // Transient errors: 202 (accepted but not ready), 429 (rate limit), 5xx (server errors), network errors
+            const isTransientError =
+                (isAxiosError && isTransientErrorStatus(statusCode)) ||
+                errorMessage === 'Network Error'
+
+            if (isTransientError) {
                 throw e
             }
-
             // Report all other errors to Sentry
             reportError(
                 new Error(
-                    `Next function failed in ${stage} mode for ${config.metricName}: ${(e as Error).message}`,
+                    `Next function failed in ${stage} mode for ${config.metricName}: ${errorMessage}`,
                 ),
                 {
                     tags: { team: SentryTeam.CRM_REPORTING },
