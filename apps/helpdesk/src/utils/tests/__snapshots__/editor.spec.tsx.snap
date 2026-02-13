@@ -20,7 +20,7 @@ exports[`editor utils convertToHTML should convert "header-three" to "h3" 1`] = 
 
 exports[`editor utils convertToHTML should convert "header-two" to "h2" 1`] = `"<blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><h2 data-gorgias-quote-depth="1">header-two</h2></blockquote>"`;
 
-exports[`editor utils convertToHTML should convert "ordered-list-item" to "ol" 1`] = `"<blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><ol><li data-gorgias-quote-depth="1">ordered-list-item</li></ol></blockquote>"`;
+exports[`editor utils convertToHTML should convert "ordered-list-item" to "ol" 1`] = `"<blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><ol type="1"><li data-gorgias-quote-depth="1">ordered-list-item</li></ol></blockquote>"`;
 
 exports[`editor utils convertToHTML should convert "unordered-list-item" to "ul" 1`] = `"<blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><ul><li data-gorgias-quote-depth="1">unordered-list-item</li></ul></blockquote>"`;
 

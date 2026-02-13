@@ -1,0 +1,96 @@
+@import (reference) '~css/typography';
+
+:local {
+    .dropdown {
+        min-width: 384px !important;
+        max-width: 400px;
+    }
+
+    .backButton {
+        max-width: 100%;
+        height: auto;
+        padding: 0 !important;
+        font-weight: 600;
+        text-transform: none;
+    }
+
+    .backButtonIconLabel {
+        overflow: hidden;
+    }
+
+    .header {
+        .caption-allcaps();
+        padding: var(--layout-spacing-xxs) var(--layout-spacing-xxs)
+            var(--layout-spacing-xs);
+        color: var(--main-primary); // legacy
+    }
+
+    .categoryName {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .search {
+        padding: var(--layout-spacing-s) var(--layout-spacing-xs);
+        width: 100%;
+        max-width: unset;
+    }
+
+    .noResults {
+        padding-left: var(--layout-spacing-xxs);
+        padding-top: var(--layout-spacing-xs);
+        display: block;
+        color: var(--neutral-grey-4); // legacy
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .itemContent {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+    }
+
+    .itemIcon {
+        font-size: 20px;
+        color: var(--neutral-grey-4); // legacy
+    }
+
+    .itemName {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .itemHighlighted {
+        background-color: var(--hover-default);
+    }
+
+    .itemTrailIcon {
+        color: var(--neutral-grey-4); // legacy
+    }
+}
+
+.axiom :local {
+    .noResults {
+        color: var(--content-neutral-secondary);
+    }
+
+    .header {
+        color: var(--content-accent-default);
+    }
+
+    .itemTrailIcon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .itemIcon {
+        color: var(--content-neutral-secondary);
+    }
+}

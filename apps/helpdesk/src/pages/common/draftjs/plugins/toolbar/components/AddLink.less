@@ -13,3 +13,18 @@
         margin-bottom: 1em;
     }
 }
+
+:local .popover {
+    border-radius: 4px;
+    border: 1px solid var(--neutral-grey-4); // legacy
+    background-color: var(--neutral-grey-0); // legacy
+    box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.2); // legacy
+}
+
+.axiom :local {
+    .popover {
+        border: 1px solid var(--border-neutral-default);
+        background-color: var(--elevation-neutral-default);
+        box-shadow: var(--effects-shadow-container);
+    }
+}

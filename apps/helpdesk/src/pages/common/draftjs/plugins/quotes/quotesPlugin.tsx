@@ -31,16 +31,39 @@ export const createQuotesPlugin = () => {
     return {
         blockRenderMap: DefaultDraftBlockRenderMap.map(
             (config: DraftBlockRenderConfig, blockType: DraftBlockType) => {
+                const isListType =
+                    blockType === EditorBlockType.OrderedListItem ||
+                    blockType === EditorBlockType.UnorderedListItem
+
+                const resolvedConfig = isListType
+                    ? { ...config, element: 'div' as const }
+                    : config
+
                 return WRAPPABLE_BLOCK_TYPES.indexOf(
                     blockType as EditorBlockType,
                 ) !== -1
                     ? {
-                          ...config,
+                          ...resolvedConfig,
                           wrapper: (
-                              <QuotesWrapper innerWrapper={config.wrapper} />
+                              <QuotesWrapper
+                                  innerWrapper={
+                                      isListType ? (
+                                          <div
+                                              className={
+                                                  blockType ===
+                                                  EditorBlockType.OrderedListItem
+                                                      ? 'list-wrapper list-wrapper-ol'
+                                                      : 'list-wrapper list-wrapper-ul'
+                                              }
+                                          />
+                                      ) : (
+                                          resolvedConfig.wrapper
+                                      )
+                                  }
+                              />
                           ),
                       }
-                    : config
+                    : resolvedConfig
             },
         ),
         blockStyleFn(block: ContentBlock): string | void {

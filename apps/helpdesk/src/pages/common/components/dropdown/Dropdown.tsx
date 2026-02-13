@@ -204,10 +204,10 @@ const Dropdown = forwardRef(
         const handleToggle = useCallback(
             (event: MouseEvent) => {
                 event.stopPropagation()
-                if (
-                    isOpen &&
-                    !refs.floating.current?.contains(event.target as Node)
-                ) {
+                const floatingEl = refs.floating.current
+                const target = event.target as Node
+                const contains = floatingEl?.contains(target)
+                if (isOpen && !contains) {
                     onToggle(!isOpen)
                 }
             },

@@ -1,0 +1,93 @@
+:local {
+    .findReplaceWrapper {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        height: 0;
+    }
+
+    .findReplaceDialog {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xxs);
+        background: var(--surface-neutral-primary);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        width: fit-content;
+        margin-left: auto;
+    }
+
+    .findRow,
+    .replaceRow {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .inputWrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input {
+        padding: 3px var(--spacing-xs);
+        padding-right: 56px;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 4px;
+        font-size: 12px;
+        outline: none;
+        min-width: 180px;
+
+        &:focus {
+            border-color: var(--border-accent-default, #0066cc);
+        }
+    }
+
+    .matchCount {
+        position: absolute;
+        right: var(--spacing-xxs);
+        font-size: 11px;
+        color: var(--content-neutral-secondary);
+        white-space: nowrap;
+        pointer-events: none;
+    }
+
+    .iconButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        padding: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 4px;
+        color: var(--content-neutral-secondary);
+        flex-shrink: 0;
+
+        &:hover:not(:disabled) {
+            background: var(--surface-neutral-secondary);
+            color: var(--content-neutral-default);
+        }
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    }
+
+    .chevronSpacer {
+        width: 22px;
+        flex-shrink: 0;
+    }
+
+    .highlight {
+        background-color: var(--dataviz-yellow);
+        border-radius: 2px;
+        padding: 0;
+    }
+}

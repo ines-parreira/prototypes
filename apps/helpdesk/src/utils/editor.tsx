@@ -18,6 +18,7 @@ import linkifyhtml from 'linkify-html'
 import _kebabeCase from 'lodash/kebabCase'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
+import { HORIZONTAL_RULE_ENTITY } from 'pages/common/draftjs/plugins/horizontalRule'
 import {
     getQuoteDepth,
     QUOTE_DEPTH_DATA_KEY,
@@ -123,6 +124,13 @@ const HTML_TO_BLOCK: Record<string, EditorBlockType> = Object.freeze({
     blockquote: EditorBlockType.Blockquote,
 })
 
+const OL_TYPES = ['1', 'a', 'i'] as const
+
+function getOrderedListNestElement(depth: number) {
+    const olType = OL_TYPES[depth % OL_TYPES.length]
+    return <ol type={olType} />
+}
+
 const QUOTE_HTML_ELEMENT = (
     <blockquote
         className={QUOTE_CLASS_NAME}
@@ -165,10 +173,53 @@ export function convertToHTML(contentState: ContentState): string {
                 const quoteDepth = getQuoteDepth(contentBlock)
                 const blockTag = BLOCK_TO_HTML[type as EditorBlockType]
                 if (blockTag) {
+                    const resolvedNest =
+                        type === EditorBlockType.OrderedListItem
+                            ? getOrderedListNestElement(depth)
+                            : blockTag.nest
+
+                    const isListItem =
+                        type === EditorBlockType.OrderedListItem ||
+                        type === EditorBlockType.UnorderedListItem
+                    const needsDepthAttr = !isListItem && depth > 0
+                    const visualListStyle = contentBlock
+                        .getData()
+                        .get('visualListStyle') as string | undefined
+
                     if (quoteDepth === 0) {
-                        return blockTag
+                        const extraAttrs: Record<string, unknown> = {}
+                        if (needsDepthAttr) {
+                            extraAttrs['data-depth'] = depth
+                        }
+                        if (isListItem && visualListStyle) {
+                            extraAttrs['data-visual-list-style'] =
+                                visualListStyle
+                        }
+
+                        if (Object.keys(extraAttrs).length > 0) {
+                            return {
+                                ...blockTag,
+                                element: cloneElement(
+                                    blockTag.element,
+                                    extraAttrs,
+                                ),
+                                ...(blockTag.empty
+                                    ? {
+                                          empty: cloneElement(
+                                              blockTag.empty,
+                                              extraAttrs,
+                                          ),
+                                      }
+                                    : {}),
+                                nest: resolvedNest,
+                            }
+                        }
+                        return resolvedNest !== blockTag.nest
+                            ? { ...blockTag, nest: resolvedNest }
+                            : blockTag
                     }
-                    const { element, empty, nest } = blockTag
+                    const { element, empty } = blockTag
+                    const nest = resolvedNest
                     const quoteElements = Array.from(
                         { length: quoteDepth },
                         (value, i) =>
@@ -251,6 +302,10 @@ export function convertToHTML(contentState: ContentState): string {
                     return `<a data-discount-code="${code}" href="${url}" target="_blank" rel="noreferrer">${code}</a>`
                 }
 
+                if (entity.type === HORIZONTAL_RULE_ENTITY) {
+                    return '<hr />'
+                }
+
                 if (entity.type === 'mention') {
                     return {
                         start: '<span class="gorgias-mention">',
@@ -323,6 +378,41 @@ const removeGorgiasQuoteNodes = (node: Node) => {
     }
 }
 
+const unwrapParagraphsInListItems = (node: Node) => {
+    for (const child of Array.from(node.childNodes)) {
+        unwrapParagraphsInListItems(child)
+    }
+
+    if (
+        node.nodeName === 'P' &&
+        node.parentNode &&
+        node.parentNode.nodeName === 'LI'
+    ) {
+        for (const child of Array.from(node.childNodes)) {
+            node.parentNode.insertBefore(child, node)
+        }
+        node.parentNode.removeChild(node)
+    }
+}
+
+const flattenNestedListsInListItems = (node: Node) => {
+    for (const child of Array.from(node.childNodes)) {
+        flattenNestedListsInListItems(child)
+    }
+
+    if (
+        (node.nodeName === 'UL' || node.nodeName === 'OL') &&
+        node.parentNode &&
+        node.parentNode.nodeName === 'LI'
+    ) {
+        const li = node.parentNode
+        const liParent = li.parentNode
+        if (liParent) {
+            liParent.insertBefore(node, li.nextSibling)
+        }
+    }
+}
+
 /**
  * Single convertFromHTML config for the entire app (same options everywhere if needed)
  * @param html
@@ -332,11 +422,20 @@ export function convertFromHTML(html: string): ContentState {
     // otherwise draft-convert will try to convert them to the editor blocks
     const wrapper = parseHtml(html).body
     removeGorgiasQuoteNodes(wrapper)
+    unwrapParagraphsInListItems(wrapper)
+    flattenNestedListsInListItems(wrapper)
 
     let converted: ContentState = _convertFromHTML({
         htmlToBlock: (nodeName: string, node) => {
             let blockType
             const data: Record<string, unknown> = {}
+
+            if (nodeName === 'hr') {
+                return {
+                    type: EditorBlockType.Atomic,
+                    data: {},
+                }
+            }
 
             if (
                 node instanceof HTMLElement &&
@@ -355,6 +454,14 @@ export function convertFromHTML(html: string): ContentState {
                         : EditorBlockType.OrderedListItem
             }
 
+            if (node instanceof HTMLElement && node.dataset.depth) {
+                data.__depth = parseInt(node.dataset.depth, 10)
+            }
+
+            if (node instanceof HTMLElement && node.dataset.visualListStyle) {
+                data.visualListStyle = node.dataset.visualListStyle
+            }
+
             return (
                 blockType && {
                     type: blockType,
@@ -363,6 +470,10 @@ export function convertFromHTML(html: string): ContentState {
             )
         },
         htmlToEntity: (nodeName: string, node: HTMLElement, createEntity) => {
+            if (nodeName === 'hr') {
+                return createEntity(HORIZONTAL_RULE_ENTITY, 'IMMUTABLE', {})
+            }
+
             if (nodeName === 'a' && node.getAttribute('data-discount-code')) {
                 return createEntity(
                     draftjsGorgiasCustomBlockRenderers.DiscountCodeLink,
@@ -446,6 +557,16 @@ export function convertFromHTML(html: string): ContentState {
                     return true
                 }
             })
+        }
+
+        const blockData = newBlock.getData()
+        const savedDepth = blockData.get('__depth') as number | undefined
+        if (savedDepth !== undefined && savedDepth > 0) {
+            newBlock = newBlock.set('depth', savedDepth) as ContentBlock
+            newBlock = newBlock.set(
+                'data',
+                blockData.delete('__depth'),
+            ) as ContentBlock
         }
 
         return newBlock
@@ -570,12 +691,12 @@ export function refreshEditor(editorState: EditorState): EditorState {
         contentState,
         editorState.getDecorator(),
     )
-    return EditorState.set(newEditorState, {
-        selection: editorState.getSelection(),
+    const withState = EditorState.set(newEditorState, {
         undoStack: editorState.getUndoStack(),
         redoStack: editorState.getRedoStack(),
         lastChangeType: editorState.getLastChangeType(),
     })
+    return EditorState.acceptSelection(withState, editorState.getSelection())
 }
 
 export function isValidSelectionKey(

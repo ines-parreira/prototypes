@@ -142,6 +142,9 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
               </i>
             </span>
           </button>
+          <span
+            aria-hidden="true"
+          />
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -235,4 +238,4 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
 </div>
 `;
 
-exports[`TicketReplyEditor component should render message with inline image 1`] = `"<div>this is an inline image: &lt;img alt="abc" src="<a href="https://this-is-a-link-of-image/and-this-is-the-image.png" class="linkified" target="_blank">https://this-is-a-link-of-image/and-this-is-the-image.png</a>" /&gt;this is an inline image: &lt;img alt="abc" src="<a href="https://this-is-a-link-of-image/and-this-is-the-image.png" class="linkified" target="_blank">https://this-is-a-link-of-image/and-this-is-the-image.png</a>" /&gt;</div>"`;
+exports[`TicketReplyEditor component should render message with inline image 1`] = `"<div>this is an inline image: </div><figure style="display:inline-block;margin:0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400" style="max-width: 100%" /></figure><div>this is an inline image: </div><figure style="display:inline-block;margin:0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400" style="max-width: 100%" /></figure><div><br /></div>"`;

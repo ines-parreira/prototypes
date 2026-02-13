@@ -28,6 +28,10 @@ type State = {
 }
 
 export default class RichField extends Component<Props, State> {
+    // Synchronous mirror of `this.state.editorState` to avoid stale reads
+    // between batched/async `setState` calls (e.g. in _didHTMLChanged).
+    _latestEditorState: EditorState | null = null
+
     constructor(props: Props) {
         super(props)
         const { defaultContentState } = props
@@ -50,7 +54,7 @@ export default class RichField extends Component<Props, State> {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        // when we do a preview we're changing the value directly and so we need to update the editor state
+        // update editor state only if value has changed externally (display-only or allowExternalChanges)
         if (
             !_isEqual(nextProps.value, this.props.value) &&
             (this.props.displayOnly || this.props.allowExternalChanges)
@@ -75,11 +79,9 @@ export default class RichField extends Component<Props, State> {
     }
 
     _didHTMLChanged = (html?: string) => {
-        if (this.state.editorState) {
-            return (
-                convertToHTML(this.state.editorState.getCurrentContent()) !==
-                html
-            )
+        const editorState = this._latestEditorState || this.state.editorState
+        if (editorState) {
+            return convertToHTML(editorState.getCurrentContent()) !== html
         }
     }
 
@@ -110,12 +112,13 @@ export default class RichField extends Component<Props, State> {
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
 
+        this._latestEditorState = editorState
         this.setState({ editorState }, callback)
     }
 
     handleEditorChange = (editorState: EditorState) => {
+        this._latestEditorState = editorState
         this.setState({ editorState }, () => {
-            // notify the parent of the new editor state
             this.props.onChange(editorState)
         })
     }

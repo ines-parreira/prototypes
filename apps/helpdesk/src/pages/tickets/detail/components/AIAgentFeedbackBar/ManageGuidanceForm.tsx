@@ -10,7 +10,6 @@ import {
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
-import Caption from 'gorgias-design-system/Input/Caption'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
@@ -441,10 +440,6 @@ export const ManageGuidanceForm = ({
                         availableActions={guidanceActions}
                         showActionsButton={areActionsInGuidanceEnabled}
                     />
-                    <Caption isValid>
-                        Provide instructions on how AI Agent should handle this
-                        situation.
-                    </Caption>
                 </div>
             </Drawer.Content>
             <Drawer.Footer className={css.footer}>

@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 
 import { RichUtils } from 'draft-js'
 
-import { ORDERED_LIST_ITEM, UNORDERED_LIST_ITEM } from '../constants'
 import type { ActionInjectedProps } from '../types'
 import Button from './Button'
 
@@ -44,10 +43,7 @@ const InlineStyle = ({
         const editorState = getEditorState()
         const blockType = RichUtils.getCurrentBlockType(editorState)
 
-        const isList =
-            blockType === UNORDERED_LIST_ITEM || blockType === ORDERED_LIST_ITEM
-
-        if (isList) {
+        if (blockType === style) {
             setEditorState(
                 RichUtils.onTab(
                     { preventDefault: () => {} } as any,

@@ -42,3 +42,5 @@ export const OrderedList = decorateComponentWithProps(InlineStyle, {
     isBlockType: true,
     name: 'Ordered List',
 })
+
+export { default as HeadingPicker } from './HeadingPicker'

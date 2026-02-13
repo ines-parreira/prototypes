@@ -23,7 +23,7 @@ declare module 'draft-js-plugins-editor' {
         spellCheck?: boolean
         keyBindingFn?: (
             event: KeyboardEvent,
-        ) => DraftEditorCommand | null | undefined
+        ) => DraftEditorCommand | string | null | undefined
         [key: string]: any
     }
 

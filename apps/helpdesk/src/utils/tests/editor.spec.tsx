@@ -22,7 +22,9 @@ import {
     EditorBlockType,
     editorStateWithReplacedText,
     findContentState,
+    focusToTheEndOfContent,
     getContentStateBlocksSnapshot,
+    getEntitySelectionState,
     getPlainText,
     getSelectedEntityKey,
     getSelectedText,
@@ -205,6 +207,62 @@ describe('editor utils', () => {
             )
             expect(convertToHTML(quotedContentState)).toMatchSnapshot()
         })
+        it('should convert ordered list items with depth-based ol types', () => {
+            const html =
+                '<ol><li>depth 0</li><ol><li>depth 1</li><ol><li>depth 2</li><ol><li>depth 3</li></ol></ol></ol></ol>'
+            const contentState = convertFromHTML(html)
+            const result = convertToHTML(contentState)
+            expect(result).toContain('<ol type="1">')
+            expect(result).toContain('<ol type="a">')
+            expect(result).toContain('<ol type="i">')
+        })
+
+        it('should convert video entity to html', () => {
+            let contentState = ContentState.createFromText('')
+            contentState = contentState.createEntity('video', 'MUTABLE', {
+                url: 'https://www.youtube.com/watch?v=test',
+                width: 500,
+            })
+            const entityKey = contentState.getLastCreatedEntityKey()
+            const editorState = AtomicBlockUtils.insertAtomicBlock(
+                EditorState.createEmpty(),
+                entityKey,
+                ' ',
+            )
+            const html = convertToHTML(editorState.getCurrentContent())
+            expect(html).toContain('gorgias-video-container')
+            expect(html).toContain(
+                'data-video-src="https://www.youtube.com/watch?v=test"',
+            )
+            expect(html).toContain('width="500"')
+        })
+
+        it('should convert discount code link entity to html', () => {
+            let contentState = ContentState.createFromText('')
+            contentState = contentState.createEntity(
+                'discount-code-link',
+                'IMMUTABLE',
+                {
+                    url: 'https://shop.com/discount',
+                    code: 'SAVE10',
+                },
+            )
+            const entityKey = contentState.getLastCreatedEntityKey()
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', 0)
+                .set('focusOffset', 0) as SelectionState
+            contentState = Modifier.insertText(
+                contentState,
+                selection,
+                'SAVE10',
+                undefined,
+                entityKey,
+            )
+            const html = convertToHTML(contentState)
+            expect(html).toContain('data-discount-code="SAVE10"')
+            expect(html).toContain('href="https://shop.com/discount"')
+        })
     })
 
     describe('from HTML', () => {
@@ -311,12 +369,158 @@ describe('editor utils', () => {
             ).toMatchSnapshot()
         })
 
+        it('should roundtrip video entity through convertToHTML and convertFromHTML', () => {
+            let contentState = ContentState.createFromText('')
+            contentState = contentState.createEntity('video', 'MUTABLE', {
+                url: 'https://www.youtube.com/watch?v=test',
+                width: 500,
+            })
+            const entityKey = contentState.getLastCreatedEntityKey()
+            const editorState = AtomicBlockUtils.insertAtomicBlock(
+                EditorState.createEmpty(),
+                entityKey,
+                ' ',
+            )
+            const html = convertToHTML(editorState.getCurrentContent())
+            const restored = convertFromHTML(html)
+            const blocks = restored.getBlocksAsArray()
+            const atomicBlock = blocks.find((b) => b.getType() === 'atomic')
+            expect(atomicBlock).toBeTruthy()
+            const restoredEntityKey = atomicBlock!.getEntityAt(0)
+            expect(restoredEntityKey).toBeTruthy()
+            const entity = restored.getEntity(restoredEntityKey)
+            expect(entity.getType()).toEqual('video')
+            expect(entity.getData().url).toEqual(
+                'https://www.youtube.com/watch?v=test',
+            )
+        })
+
+        it('should convert discount code link from html', () => {
+            const baseHTML =
+                '<a data-discount-code="SAVE10" href="https://shop.com/discount" target="_blank" rel="noreferrer">SAVE10</a>'
+            const contentState = convertFromHTML(baseHTML)
+            const block = contentState.getFirstBlock()
+            const entityKey = block.getEntityAt(0)
+            expect(entityKey).toBeTruthy()
+            const entity = contentState.getEntity(entityKey)
+            expect(entity.getType()).toEqual('discount-code-link')
+            expect(entity.getData()).toEqual({
+                url: 'https://shop.com/discount',
+                code: 'SAVE10',
+            })
+        })
+
+        it('should convert hr to horizontal rule entity', () => {
+            const baseHTML = '<div>Above</div><hr /><div>Below</div>'
+            const contentState = convertFromHTML(baseHTML)
+            const blocks = contentState.getBlocksAsArray()
+            const hrBlock = blocks.find((b) => b.getType() === 'atomic')
+            expect(hrBlock).toBeTruthy()
+        })
+
         it('should use data-templated-url & target', () => {
             const baseHTML =
                 '<div><a href="{{ticket.url}}" target="_self" data-templated-url="{{ticket.url}}">link</a></div>'
             const contentState = convertFromHTML(baseHTML)
             const newHTML = convertToHTML(contentState)
             expect(newHTML).toEqual(baseHTML)
+        })
+
+        it('should unwrap <p> inside <li> for unordered lists', () => {
+            const html = '<ul><li><p>Item 1</p></li><li><p>Item 2</p></li></ul>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks).toHaveLength(2)
+            expect(blocks[0].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[0].getText()).toBe('Item 1')
+            expect(blocks[1].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[1].getText()).toBe('Item 2')
+        })
+
+        it('should unwrap <p> inside <li> for ordered lists', () => {
+            const html = '<ol><li><p>First</p></li><li><p>Second</p></li></ol>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks).toHaveLength(2)
+            expect(blocks[0].getType()).toBe(EditorBlockType.OrderedListItem)
+            expect(blocks[0].getText()).toBe('First')
+            expect(blocks[1].getType()).toBe(EditorBlockType.OrderedListItem)
+            expect(blocks[1].getText()).toBe('Second')
+        })
+
+        it('should preserve inline formatting when unwrapping <p> inside <li>', () => {
+            const html =
+                '<ul><li><p><strong>Bold</strong> and <em>italic</em></p></li></ul>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            expect(block.getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(block.getText()).toBe('Bold and italic')
+            expect(block.getInlineStyleAt(0).has('BOLD')).toBe(true)
+            expect(block.getInlineStyleAt(10).has('ITALIC')).toBe(true)
+        })
+
+        it('should not affect standalone <p> tags outside lists', () => {
+            const html = '<p>Paragraph</p><ul><li><p>Item</p></li></ul>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks[0].getType()).toBe(EditorBlockType.Unstyled)
+            expect(blocks[0].getText()).toBe('Paragraph')
+            expect(blocks[1].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[1].getText()).toBe('Item')
+        })
+
+        it('should flatten nested UL inside LI without creating unstyled blocks', () => {
+            const html = '<ul><li>A<ul><li>B</li></ul></li><li>C</li></ul>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks).toHaveLength(3)
+            expect(blocks[0].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[0].getText()).toBe('A')
+            expect(blocks[0].getDepth()).toBe(0)
+            expect(blocks[1].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[1].getText()).toBe('B')
+            expect(blocks[1].getDepth()).toBe(1)
+            expect(blocks[2].getType()).toBe(EditorBlockType.UnorderedListItem)
+            expect(blocks[2].getText()).toBe('C')
+            expect(blocks[2].getDepth()).toBe(0)
+        })
+
+        it('should flatten nested OL inside LI without creating unstyled blocks', () => {
+            const html =
+                '<ol><li>First<ol><li>Second</li></ol></li><li>Third</li></ol>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks).toHaveLength(3)
+            expect(blocks[0].getType()).toBe(EditorBlockType.OrderedListItem)
+            expect(blocks[0].getText()).toBe('First')
+            expect(blocks[0].getDepth()).toBe(0)
+            expect(blocks[1].getType()).toBe(EditorBlockType.OrderedListItem)
+            expect(blocks[1].getText()).toBe('Second')
+            expect(blocks[1].getDepth()).toBe(1)
+            expect(blocks[2].getType()).toBe(EditorBlockType.OrderedListItem)
+            expect(blocks[2].getText()).toBe('Third')
+            expect(blocks[2].getDepth()).toBe(0)
+        })
+
+        it('should flatten deeply nested lists (3 levels) without creating unstyled blocks', () => {
+            const html =
+                '<ul><li>L0<ul><li>L1<ul><li>L2</li></ul></li></ul></li><li>Back to L0</li></ul>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks).toHaveLength(4)
+            expect(
+                blocks.every(
+                    (b) => b.getType() === EditorBlockType.UnorderedListItem,
+                ),
+            ).toBe(true)
+            expect(blocks[0].getText()).toBe('L0')
+            expect(blocks[0].getDepth()).toBe(0)
+            expect(blocks[1].getText()).toBe('L1')
+            expect(blocks[1].getDepth()).toBe(1)
+            expect(blocks[2].getText()).toBe('L2')
+            expect(blocks[2].getDepth()).toBe(2)
+            expect(blocks[3].getText()).toBe('Back to L0')
+            expect(blocks[3].getDepth()).toBe(0)
         })
     })
 
@@ -519,9 +723,13 @@ describe('editor utils', () => {
             )
             const newEditorState = refreshEditor(editorState)
             expect(newEditorState).not.toBe(editorState)
-            expect(newEditorState.getSelection()).toBe(
-                editorState.getSelection(),
-            )
+            const oldSel = editorState.getSelection()
+            const newSel = newEditorState.getSelection()
+            expect(newSel.getAnchorKey()).toBe(oldSel.getAnchorKey())
+            expect(newSel.getAnchorOffset()).toBe(oldSel.getAnchorOffset())
+            expect(newSel.getFocusKey()).toBe(oldSel.getFocusKey())
+            expect(newSel.getFocusOffset()).toBe(oldSel.getFocusOffset())
+            expect(newSel.getHasFocus()).toBe(oldSel.getHasFocus())
             expect(newEditorState.getCurrentContent()).toBe(
                 editorState.getCurrentContent(),
             )
@@ -913,6 +1121,98 @@ describe('editor utils', () => {
             counter.reset(ContentState.createFromText('Baz'))
             expect(counter.words).toBe(1)
             expect(counter.blocks).toBe(1)
+        })
+    })
+
+    describe('getEntitySelectionState', () => {
+        it('should find entity selection in a single block', () => {
+            let contentState = ContentState.createFromText('Hello world')
+            contentState = contentState.createEntity('LINK', 'MUTABLE', {
+                url: 'https://example.com',
+            })
+            const entityKey = contentState.getLastCreatedEntityKey()
+
+            const block = contentState.getFirstBlock()
+            const selection = SelectionState.createEmpty(block.getKey())
+                .set('anchorOffset', 6)
+                .set('focusOffset', 11) as SelectionState
+
+            contentState = Modifier.applyEntity(
+                contentState,
+                selection,
+                entityKey,
+            )
+
+            const result = getEntitySelectionState(contentState, entityKey)
+            expect(result).toBeDefined()
+            expect(result!.getAnchorOffset()).toBe(6)
+            expect(result!.getFocusOffset()).toBe(11)
+            expect(result!.getAnchorKey()).toBe(block.getKey())
+        })
+
+        it('should return undefined when entity key does not exist', () => {
+            const contentState = ContentState.createFromText('Hello world')
+            const result = getEntitySelectionState(
+                contentState,
+                'nonexistent-key',
+            )
+            expect(result).toBeUndefined()
+        })
+
+        it('should find entity in second block', () => {
+            let contentState = ContentState.createFromText('First\nSecond')
+            contentState = contentState.createEntity('LINK', 'MUTABLE', {
+                url: 'https://example.com',
+            })
+            const entityKey = contentState.getLastCreatedEntityKey()
+
+            const blocks = contentState.getBlocksAsArray()
+            const secondBlock = blocks[1]
+            const selection = SelectionState.createEmpty(secondBlock.getKey())
+                .set('anchorOffset', 0)
+                .set('focusOffset', 6) as SelectionState
+
+            contentState = Modifier.applyEntity(
+                contentState,
+                selection,
+                entityKey,
+            )
+
+            const result = getEntitySelectionState(contentState, entityKey)
+            expect(result).toBeDefined()
+            expect(result!.getAnchorKey()).toBe(secondBlock.getKey())
+            expect(result!.getAnchorOffset()).toBe(0)
+            expect(result!.getFocusOffset()).toBe(6)
+        })
+    })
+
+    describe('focusToTheEndOfContent', () => {
+        it('should move selection to end of last block', () => {
+            const editorState = EditorState.createWithContent(
+                ContentState.createFromText('Hello'),
+            )
+            const result = focusToTheEndOfContent(editorState)
+            const selection = result.getSelection()
+
+            const block = result.getCurrentContent().getLastBlock()
+            expect(selection.getAnchorKey()).toBe(block.getKey())
+            expect(selection.getAnchorOffset()).toBe(5)
+            expect(selection.getFocusKey()).toBe(block.getKey())
+            expect(selection.getFocusOffset()).toBe(5)
+        })
+
+        it('should move selection to end of last block with multi-block content', () => {
+            const editorState = EditorState.createWithContent(
+                ContentState.createFromText('First\nSecond\nThird'),
+            )
+            const result = focusToTheEndOfContent(editorState)
+            const selection = result.getSelection()
+
+            const lastBlock = result.getCurrentContent().getLastBlock()
+            expect(selection.getAnchorKey()).toBe(lastBlock.getKey())
+            expect(selection.getAnchorOffset()).toBe(5) // "Third".length
+            expect(selection.getFocusKey()).toBe(lastBlock.getKey())
+            expect(selection.getFocusOffset()).toBe(5)
         })
     })
 })

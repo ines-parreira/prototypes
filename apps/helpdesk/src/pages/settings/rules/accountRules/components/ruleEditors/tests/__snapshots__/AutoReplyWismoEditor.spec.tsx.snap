@@ -361,6 +361,9 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   </i>
                 </span>
               </button>
+              <span
+                aria-hidden="true"
+              />
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -421,7 +424,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   <i
                     class="material-icons icon"
                   >
-                    format_list_bulleted
+                    title
                   </i>
                 </span>
               </button>
@@ -429,6 +432,22 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
                 id="toolbar-button-9"
+                type="button"
+              >
+                <span
+                  class="ui-button-content-cef1"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    format_list_bulleted
+                  </i>
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                id="toolbar-button-10"
                 type="button"
               >
                 <span
@@ -704,7 +723,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-10"
+                id="toolbar-button-11"
                 type="button"
               >
                 <span
@@ -720,7 +739,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-11"
+                id="toolbar-button-12"
                 type="button"
               >
                 <span
@@ -736,7 +755,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-12"
+                id="toolbar-button-13"
                 type="button"
               >
                 <span
@@ -752,7 +771,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-13"
+                id="toolbar-button-14"
                 type="button"
               >
                 <span
@@ -765,10 +784,13 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   </i>
                 </span>
               </button>
+              <span
+                aria-hidden="true"
+              />
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-14"
+                id="toolbar-button-15"
                 type="button"
               >
                 <span
@@ -784,7 +806,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-15"
+                id="toolbar-button-16"
                 type="button"
               >
                 <span
@@ -800,7 +822,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-16"
+                id="toolbar-button-17"
                 type="button"
               >
                 <span
@@ -816,7 +838,23 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-17"
+                id="toolbar-button-18"
+                type="button"
+              >
+                <span
+                  class="ui-button-content-cef1"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    title
+                  </i>
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                id="toolbar-button-19"
                 type="button"
               >
                 <span
@@ -832,7 +870,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               <button
                 aria-disabled="false"
                 class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                id="toolbar-button-18"
+                id="toolbar-button-20"
                 type="button"
               >
                 <span

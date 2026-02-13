@@ -81,7 +81,7 @@ describe('InlineStyle', () => {
         expect(RichUtils.toggleBlockType).toHaveBeenCalled()
     })
 
-    it('calls onTab when block type is a list', () => {
+    it('calls onTab when clicking the same list type', () => {
         mockGetCurrentBlockType.mockReturnValue('unordered-list-item')
 
         render(
@@ -99,5 +99,28 @@ describe('InlineStyle', () => {
         fireEvent.click(button)
 
         expect(RichUtils.onTab).toHaveBeenCalled()
+    })
+
+    it('calls toggleBlockType when clicking a different list type', () => {
+        mockGetCurrentBlockType.mockReturnValue('ordered-list-item')
+
+        render(
+            <InlineStyle
+                name="Bulleted List"
+                icon="list-icon"
+                style="unordered-list-item"
+                isBlockType
+                getEditorState={mockGetEditorState}
+                setEditorState={mockSetEditorState}
+            />,
+        )
+
+        const button = screen.getByRole('button')
+        fireEvent.click(button)
+
+        expect(RichUtils.toggleBlockType).toHaveBeenCalledWith(
+            expect.anything(),
+            'unordered-list-item',
+        )
     })
 })

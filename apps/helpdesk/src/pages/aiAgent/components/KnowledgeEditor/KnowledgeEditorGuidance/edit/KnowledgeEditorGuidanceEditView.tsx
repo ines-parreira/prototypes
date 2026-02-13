@@ -1,4 +1,3 @@
-import Caption from 'gorgias-design-system/Input/Caption'
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
 import { GUIDANCE_EDITOR_DEFAULT_LABEL } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
@@ -54,10 +53,6 @@ export const KnowledgeEditorGuidanceEditView = ({
                 showActionsButton={true}
                 showVariablesButton={!!availableVariables?.length}
             />
-            <Caption isValid>
-                Provide instructions on how AI Agent should handle this
-                situation.
-            </Caption>
         </div>
     </div>
 )

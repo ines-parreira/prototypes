@@ -15,6 +15,7 @@ type State = {
     linkText: string
     linkUrl: string
     linkTarget: string
+    linkSelectionRect?: DOMRect
 }
 
 export type InjectedProps = {
@@ -67,6 +68,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
                 linkUrl: '',
                 linkEntityKey: undefined,
                 linkTarget: '_blank',
+                linkSelectionRect: undefined,
             })
         }
 
@@ -85,13 +87,17 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
             })
         }
 
-        _onToolbarPluginLinkCreate = (text: string) => {
+        _onToolbarPluginLinkCreate = (
+            text: string,
+            selectionRect?: DOMRect,
+        ) => {
             this.setState({
                 linkEntityKey: undefined,
                 linkIsOpen: true,
                 linkText: text,
                 linkUrl: '',
                 linkTarget: '_blank',
+                linkSelectionRect: selectionRect,
             })
         }
 

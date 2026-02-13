@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 
 import type { EditorState } from 'draft-js'
 
-import { Label } from '@gorgias/axiom'
+import { Label, Text } from '@gorgias/axiom'
 
 import { UploadType } from 'common/types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
@@ -36,8 +36,10 @@ const defaultToolbarActions = [
     ActionName.Emoji,
     ActionName.GuidanceVariable,
     ActionName.GuidanceAction,
+    ActionName.Heading,
     ActionName.BulletedList,
     ActionName.OrderedList,
+    ActionName.FindReplace,
 ]
 
 export function GuidanceEditor({
@@ -91,7 +93,15 @@ export function GuidanceEditor({
         }
 
         if (text === '') {
-            handleUpdateContent('')
+            const blocks = currentContent.getBlocksAsArray()
+            const hasStructuredBlocks = blocks.some(
+                (block) => block.getType() !== 'unstyled',
+            )
+            if (hasStructuredBlocks) {
+                handleUpdateContent(convertedHTML)
+            } else {
+                handleUpdateContent('')
+            }
             return
         }
 
@@ -103,6 +113,15 @@ export function GuidanceEditor({
             <Label className={css.label} isRequired>
                 {label}
             </Label>
+
+            <Text as="p" className={css.helperText} size="sm">
+                Describe the steps AI Agent should follow in clear, specific
+                phrases.
+            </Text>
+            <Text as="p" className={css.helperText} size="sm">
+                Type &apos;/&apos; or &apos;@&apos; to insert variables and
+                actions.
+            </Text>
 
             <ToolbarProvider
                 canAddProductCard={true}

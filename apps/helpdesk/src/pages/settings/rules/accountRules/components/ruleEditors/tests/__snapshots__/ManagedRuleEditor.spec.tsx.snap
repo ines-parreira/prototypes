@@ -315,7 +315,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-41"
+                    id="toolbar-button-45"
                     type="button"
                   >
                     <span
@@ -331,7 +331,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-42"
+                    id="toolbar-button-46"
                     type="button"
                   >
                     <span
@@ -347,7 +347,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-43"
+                    id="toolbar-button-47"
                     type="button"
                   >
                     <span
@@ -363,7 +363,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-44"
+                    id="toolbar-button-48"
                     type="button"
                   >
                     <span
@@ -376,10 +376,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-45"
+                    id="toolbar-button-49"
                     type="button"
                   >
                     <span
@@ -395,7 +398,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-46"
+                    id="toolbar-button-50"
                     type="button"
                   >
                     <span
@@ -411,7 +414,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-47"
+                    id="toolbar-button-51"
                     type="button"
                   >
                     <span
@@ -427,7 +430,23 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-48"
+                    id="toolbar-button-52"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        title
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-53"
                     type="button"
                   >
                     <span
@@ -443,7 +462,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-49"
+                    id="toolbar-button-54"
                     type="button"
                   >
                     <span
@@ -696,7 +715,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-50"
+                    id="toolbar-button-55"
                     type="button"
                   >
                     <span
@@ -712,7 +731,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-51"
+                    id="toolbar-button-56"
                     type="button"
                   >
                     <span
@@ -728,7 +747,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-52"
+                    id="toolbar-button-57"
                     type="button"
                   >
                     <span
@@ -744,7 +763,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-53"
+                    id="toolbar-button-58"
                     type="button"
                   >
                     <span
@@ -757,10 +776,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-54"
+                    id="toolbar-button-59"
                     type="button"
                   >
                     <span
@@ -776,7 +798,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-55"
+                    id="toolbar-button-60"
                     type="button"
                   >
                     <span
@@ -792,7 +814,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-56"
+                    id="toolbar-button-61"
                     type="button"
                   >
                     <span
@@ -808,7 +830,23 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-57"
+                    id="toolbar-button-62"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        title
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-63"
                     type="button"
                   >
                     <span
@@ -824,7 +862,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-58"
+                    id="toolbar-button-64"
                     type="button"
                   >
                     <span
@@ -860,15 +898,15 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           <label
             aria-checked="true"
             class="ui-label-label-a11c label"
-            for="toggle-button-39"
+            for="toggle-button-43"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-39"
-              name="toggle-button-39"
+              id="toggle-button-43"
+              name="toggle-button-43"
               type="checkbox"
             />
             <div
@@ -1022,7 +1060,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-59"
+                        id="toolbar-button-65"
                         type="button"
                       >
                         <span
@@ -1038,7 +1076,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-60"
+                        id="toolbar-button-66"
                         type="button"
                       >
                         <span
@@ -1054,7 +1092,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-61"
+                        id="toolbar-button-67"
                         type="button"
                       >
                         <span
@@ -1070,7 +1108,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-62"
+                        id="toolbar-button-68"
                         type="button"
                       >
                         <span
@@ -1083,10 +1121,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-63"
+                        id="toolbar-button-69"
                         type="button"
                       >
                         <span
@@ -1102,7 +1143,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-64"
+                        id="toolbar-button-70"
                         type="button"
                       >
                         <span
@@ -1134,7 +1175,23 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-65"
+                        id="toolbar-button-71"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-72"
                         type="button"
                       >
                         <span
@@ -1150,7 +1207,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-66"
+                        id="toolbar-button-73"
                         type="button"
                       >
                         <span
@@ -1305,7 +1362,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-67"
+                        id="toolbar-button-74"
                         type="button"
                       >
                         <span
@@ -1321,7 +1378,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-68"
+                        id="toolbar-button-75"
                         type="button"
                       >
                         <span
@@ -1337,7 +1394,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-69"
+                        id="toolbar-button-76"
                         type="button"
                       >
                         <span
@@ -1353,7 +1410,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-70"
+                        id="toolbar-button-77"
                         type="button"
                       >
                         <span
@@ -1366,10 +1423,13 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-71"
+                        id="toolbar-button-78"
                         type="button"
                       >
                         <span
@@ -1385,7 +1445,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-72"
+                        id="toolbar-button-79"
                         type="button"
                       >
                         <span
@@ -1417,7 +1477,23 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-73"
+                        id="toolbar-button-80"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-81"
                         type="button"
                       >
                         <span
@@ -1433,7 +1509,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-74"
+                        id="toolbar-button-82"
                         type="button"
                       >
                         <span
@@ -1486,7 +1562,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
         <div>
           <label
             class="ui-label-label-a11c label"
-            for="input-text-75"
+            for="input-text-83"
           >
             Return portal URL
             <abbr
@@ -1501,11 +1577,11 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="wrapper hasError"
           >
             <input
-              aria-describedby="input-text-75-caption"
+              aria-describedby="input-text-83-caption"
               class="input"
               data-resizable="false"
-              id="input-text-75"
-              name="input-text-75"
+              id="input-text-83"
+              name="input-text-83"
               required=""
               type="url"
               value=""
@@ -1513,7 +1589,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           </div>
           <div
             class="caption error"
-            id="input-text-75-caption"
+            id="input-text-83-caption"
           >
             Enter a valid URL.
           </div>
@@ -1797,7 +1873,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-79"
+                    id="toolbar-button-87"
                     type="button"
                   >
                     <span
@@ -1813,7 +1889,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-80"
+                    id="toolbar-button-88"
                     type="button"
                   >
                     <span
@@ -1829,7 +1905,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-81"
+                    id="toolbar-button-89"
                     type="button"
                   >
                     <span
@@ -1845,7 +1921,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-82"
+                    id="toolbar-button-90"
                     type="button"
                   >
                     <span
@@ -1858,10 +1934,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-83"
+                    id="toolbar-button-91"
                     type="button"
                   >
                     <span
@@ -1877,7 +1956,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-84"
+                    id="toolbar-button-92"
                     type="button"
                   >
                     <span
@@ -1893,7 +1972,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-85"
+                    id="toolbar-button-93"
                     type="button"
                   >
                     <span
@@ -1909,7 +1988,23 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-86"
+                    id="toolbar-button-94"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        title
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-95"
                     type="button"
                   >
                     <span
@@ -1925,7 +2020,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-87"
+                    id="toolbar-button-96"
                     type="button"
                   >
                     <span
@@ -2178,7 +2273,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-88"
+                    id="toolbar-button-97"
                     type="button"
                   >
                     <span
@@ -2194,7 +2289,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-89"
+                    id="toolbar-button-98"
                     type="button"
                   >
                     <span
@@ -2210,7 +2305,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-90"
+                    id="toolbar-button-99"
                     type="button"
                   >
                     <span
@@ -2226,7 +2321,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-91"
+                    id="toolbar-button-100"
                     type="button"
                   >
                     <span
@@ -2239,10 +2334,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-92"
+                    id="toolbar-button-101"
                     type="button"
                   >
                     <span
@@ -2258,7 +2356,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-93"
+                    id="toolbar-button-102"
                     type="button"
                   >
                     <span
@@ -2274,7 +2372,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-94"
+                    id="toolbar-button-103"
                     type="button"
                   >
                     <span
@@ -2290,7 +2388,23 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-95"
+                    id="toolbar-button-104"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        title
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-105"
                     type="button"
                   >
                     <span
@@ -2306,7 +2420,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-96"
+                    id="toolbar-button-106"
                     type="button"
                   >
                     <span
@@ -2342,15 +2456,15 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           <label
             aria-checked="true"
             class="ui-label-label-a11c label"
-            for="toggle-button-77"
+            for="toggle-button-85"
             role="switch"
           >
             <input
               checked=""
               class="input"
               disabled=""
-              id="toggle-button-77"
-              name="toggle-button-77"
+              id="toggle-button-85"
+              name="toggle-button-85"
               type="checkbox"
             />
             <div
@@ -2504,7 +2618,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-97"
+                        id="toolbar-button-107"
                         type="button"
                       >
                         <span
@@ -2520,7 +2634,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-98"
+                        id="toolbar-button-108"
                         type="button"
                       >
                         <span
@@ -2536,7 +2650,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-99"
+                        id="toolbar-button-109"
                         type="button"
                       >
                         <span
@@ -2552,7 +2666,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-100"
+                        id="toolbar-button-110"
                         type="button"
                       >
                         <span
@@ -2565,10 +2679,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-101"
+                        id="toolbar-button-111"
                         type="button"
                       >
                         <span
@@ -2584,7 +2701,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-102"
+                        id="toolbar-button-112"
                         type="button"
                       >
                         <span
@@ -2616,7 +2733,23 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-103"
+                        id="toolbar-button-113"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-114"
                         type="button"
                       >
                         <span
@@ -2632,7 +2765,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-104"
+                        id="toolbar-button-115"
                         type="button"
                       >
                         <span
@@ -2665,7 +2798,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             data-name="button"
             data-rac=""
             data-react-aria-pressable="true"
-            id="react-aria-:r0:"
+            id="react-aria-:r8:"
             tabindex="0"
             type="button"
           >
@@ -2758,7 +2891,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-105"
+                        id="toolbar-button-116"
                         type="button"
                       >
                         <span
@@ -2774,7 +2907,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-106"
+                        id="toolbar-button-117"
                         type="button"
                       >
                         <span
@@ -2790,7 +2923,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-107"
+                        id="toolbar-button-118"
                         type="button"
                       >
                         <span
@@ -2806,7 +2939,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-108"
+                        id="toolbar-button-119"
                         type="button"
                       >
                         <span
@@ -2819,10 +2952,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-109"
+                        id="toolbar-button-120"
                         type="button"
                       >
                         <span
@@ -2838,7 +2974,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-110"
+                        id="toolbar-button-121"
                         type="button"
                       >
                         <span
@@ -2870,7 +3006,23 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-111"
+                        id="toolbar-button-122"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-123"
                         type="button"
                       >
                         <span
@@ -2886,7 +3038,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-112"
+                        id="toolbar-button-124"
                         type="button"
                       >
                         <span
@@ -3272,6 +3424,9 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -3332,7 +3487,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <i
                         class="material-icons icon"
                       >
-                        format_list_bulleted
+                        title
                       </i>
                     </span>
                   </button>
@@ -3340,6 +3495,22 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
                     id="toolbar-button-13"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        format_list_bulleted
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-14"
                     type="button"
                   >
                     <span
@@ -3592,7 +3763,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-14"
+                    id="toolbar-button-15"
                     type="button"
                   >
                     <span
@@ -3608,7 +3779,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-15"
+                    id="toolbar-button-16"
                     type="button"
                   >
                     <span
@@ -3624,7 +3795,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-16"
+                    id="toolbar-button-17"
                     type="button"
                   >
                     <span
@@ -3640,7 +3811,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-17"
+                    id="toolbar-button-18"
                     type="button"
                   >
                     <span
@@ -3653,10 +3824,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       </i>
                     </span>
                   </button>
+                  <span
+                    aria-hidden="true"
+                  />
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-18"
+                    id="toolbar-button-19"
                     type="button"
                   >
                     <span
@@ -3672,7 +3846,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-19"
+                    id="toolbar-button-20"
                     type="button"
                   >
                     <span
@@ -3688,7 +3862,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-20"
+                    id="toolbar-button-21"
                     type="button"
                   >
                     <span
@@ -3704,7 +3878,23 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-21"
+                    id="toolbar-button-22"
+                    type="button"
+                  >
+                    <span
+                      class="ui-button-content-cef1"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        title
+                      </i>
+                    </span>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                    id="toolbar-button-23"
                     type="button"
                   >
                     <span
@@ -3720,7 +3910,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                    id="toolbar-button-22"
+                    id="toolbar-button-24"
                     type="button"
                   >
                     <span
@@ -3918,7 +4108,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-23"
+                        id="toolbar-button-25"
                         type="button"
                       >
                         <span
@@ -3934,7 +4124,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-24"
+                        id="toolbar-button-26"
                         type="button"
                       >
                         <span
@@ -3950,7 +4140,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-25"
+                        id="toolbar-button-27"
                         type="button"
                       >
                         <span
@@ -3966,7 +4156,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-26"
+                        id="toolbar-button-28"
                         type="button"
                       >
                         <span
@@ -3979,10 +4169,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-27"
+                        id="toolbar-button-29"
                         type="button"
                       >
                         <span
@@ -3998,7 +4191,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-28"
+                        id="toolbar-button-30"
                         type="button"
                       >
                         <span
@@ -4030,7 +4223,23 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-29"
+                        id="toolbar-button-31"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-32"
                         type="button"
                       >
                         <span
@@ -4046,7 +4255,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-30"
+                        id="toolbar-button-33"
                         type="button"
                       >
                         <span
@@ -4222,7 +4431,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-31"
+                        id="toolbar-button-34"
                         type="button"
                       >
                         <span
@@ -4238,7 +4447,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-32"
+                        id="toolbar-button-35"
                         type="button"
                       >
                         <span
@@ -4254,7 +4463,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-33"
+                        id="toolbar-button-36"
                         type="button"
                       >
                         <span
@@ -4270,7 +4479,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-34"
+                        id="toolbar-button-37"
                         type="button"
                       >
                         <span
@@ -4283,10 +4492,13 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                           </i>
                         </span>
                       </button>
+                      <span
+                        aria-hidden="true"
+                      />
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-35"
+                        id="toolbar-button-38"
                         type="button"
                       >
                         <span
@@ -4302,7 +4514,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-36"
+                        id="toolbar-button-39"
                         type="button"
                       >
                         <span
@@ -4334,7 +4546,23 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-37"
+                        id="toolbar-button-40"
+                        type="button"
+                      >
+                        <span
+                          class="ui-button-content-cef1"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            title
+                          </i>
+                        </span>
+                      </button>
+                      <button
+                        aria-disabled="false"
+                        class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+                        id="toolbar-button-41"
                         type="button"
                       >
                         <span
@@ -4350,7 +4578,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                       <button
                         aria-disabled="false"
                         class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-                        id="toolbar-button-38"
+                        id="toolbar-button-42"
                         type="button"
                       >
                         <span

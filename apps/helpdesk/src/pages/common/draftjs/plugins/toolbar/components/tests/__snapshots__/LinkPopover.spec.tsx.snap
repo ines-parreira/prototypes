@@ -4,6 +4,7 @@ exports[`<LinkPopover /> should render a link 1`] = `
 <body>
   <div>
     <a
+      class="link"
       href="http://gorgias.com"
       rel="noopener noreferrer"
       target="_blank"
@@ -31,6 +32,7 @@ exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
         class="modalContent"
       >
         <a
+          class="link"
           href="http://gorgias.com"
           rel="noopener noreferrer"
           target="_blank"

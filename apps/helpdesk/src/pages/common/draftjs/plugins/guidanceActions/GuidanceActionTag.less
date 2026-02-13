@@ -21,6 +21,7 @@
         line-height: 1;
         color: var(--neutral-grey-6); // legacy
         margin: 0;
+        user-select: none;
     }
 
     .invalid {
@@ -47,6 +48,10 @@
         }
     }
 
+    .wrapper[data-selected] .container {
+        background: rgba(0, 120, 255, 0.3);
+    }
+
     .children {
         display: none;
     }
@@ -65,5 +70,9 @@
     .invalid {
         background: var(--surface-error-secondary);
         color: var(--content-error-primary);
+    }
+
+    .wrapper[data-selected] .container {
+        background: rgba(0, 120, 255, 0.3);
     }
 }

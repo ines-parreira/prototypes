@@ -45,21 +45,21 @@ exports[`quotesPlugin blockRenderMap should define quote wrappers for the wrappa
     "wrapper": <QuotesWrapper />,
   },
   "ordered-list-item": {
-    "element": "li",
+    "element": "div",
     "wrapper": <QuotesWrapper
       innerWrapper={
-        <ol
-          className="public-DraftStyleDefault-ol"
+        <div
+          className="list-wrapper list-wrapper-ol"
         />
       }
     />,
   },
   "unordered-list-item": {
-    "element": "li",
+    "element": "div",
     "wrapper": <QuotesWrapper
       innerWrapper={
-        <ul
-          className="public-DraftStyleDefault-ul"
+        <div
+          className="list-wrapper list-wrapper-ul"
         />
       }
     />,

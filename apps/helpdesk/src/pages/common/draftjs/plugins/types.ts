@@ -54,8 +54,18 @@ export type Plugin = {
         event: KeyboardEvent,
         pluginMethods: PluginMethods,
     ) => Maybe<string>
+    handleBeforeInput?: (
+        chars: string,
+        editorState: EditorState,
+        pluginMethods: PluginMethods,
+    ) => string
     handleKeyCommand?: (
         key: string,
+        editorState: EditorState,
+        pluginMethods: PluginMethods,
+    ) => string
+    handleReturn?: (
+        event: KeyboardEvent,
         editorState: EditorState,
         pluginMethods: PluginMethods,
     ) => string
@@ -64,5 +74,8 @@ export type Plugin = {
         pluginMethods: PluginMethods,
     ) => EditorState
     onTab?: (event: KeyboardEvent, plugin: PluginMethods) => void
+    onDownArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void
+    onUpArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void
+    onLeftArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void
     onRightArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void
 }

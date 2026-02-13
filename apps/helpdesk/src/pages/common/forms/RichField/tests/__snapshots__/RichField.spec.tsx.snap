@@ -68,7 +68,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-9"
+          id="toolbar-button-10"
           type="button"
         >
           <span
@@ -84,7 +84,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-10"
+          id="toolbar-button-11"
           type="button"
         >
           <span
@@ -100,7 +100,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-11"
+          id="toolbar-button-12"
           type="button"
         >
           <span
@@ -116,7 +116,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-12"
+          id="toolbar-button-13"
           type="button"
         >
           <span
@@ -129,10 +129,13 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
             </i>
           </span>
         </button>
+        <span
+          aria-hidden="true"
+        />
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-13"
+          id="toolbar-button-14"
           type="button"
         >
           <span
@@ -148,7 +151,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-14"
+          id="toolbar-button-15"
           type="button"
         >
           <span
@@ -180,7 +183,23 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-15"
+          id="toolbar-button-16"
+          type="button"
+        >
+          <span
+            class="ui-button-content-cef1"
+          >
+            <i
+              class="material-icons icon"
+            >
+              title
+            </i>
+          </span>
+        </button>
+        <button
+          aria-disabled="false"
+          class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+          id="toolbar-button-17"
           type="button"
         >
           <span
@@ -196,7 +215,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-16"
+          id="toolbar-button-18"
           type="button"
         >
           <span
@@ -352,6 +371,9 @@ exports[`RichField should render a basic input 1`] = `
             </i>
           </span>
         </button>
+        <span
+          aria-hidden="true"
+        />
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
@@ -412,7 +434,7 @@ exports[`RichField should render a basic input 1`] = `
             <i
               class="material-icons icon"
             >
-              format_list_bulleted
+              title
             </i>
           </span>
         </button>
@@ -420,6 +442,22 @@ exports[`RichField should render a basic input 1`] = `
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
           id="toolbar-button-8"
+          type="button"
+        >
+          <span
+            class="ui-button-content-cef1"
+          >
+            <i
+              class="material-icons icon"
+            >
+              format_list_bulleted
+            </i>
+          </span>
+        </button>
+        <button
+          aria-disabled="false"
+          class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+          id="toolbar-button-9"
           type="button"
         >
           <span
@@ -514,7 +552,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-33"
+          id="toolbar-button-37"
           type="button"
         >
           <span
@@ -530,7 +568,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-34"
+          id="toolbar-button-38"
           type="button"
         >
           <span
@@ -546,7 +584,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-35"
+          id="toolbar-button-39"
           type="button"
         >
           <span
@@ -562,7 +600,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-36"
+          id="toolbar-button-40"
           type="button"
         >
           <span
@@ -575,10 +613,13 @@ exports[`RichField should render default content state 1`] = `
             </i>
           </span>
         </button>
+        <span
+          aria-hidden="true"
+        />
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-37"
+          id="toolbar-button-41"
           type="button"
         >
           <span
@@ -594,7 +635,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-38"
+          id="toolbar-button-42"
           type="button"
         >
           <span
@@ -626,7 +667,23 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-39"
+          id="toolbar-button-43"
+          type="button"
+        >
+          <span
+            class="ui-button-content-cef1"
+          >
+            <i
+              class="material-icons icon"
+            >
+              title
+            </i>
+          </span>
+        </button>
+        <button
+          aria-disabled="false"
+          class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+          id="toolbar-button-44"
           type="button"
         >
           <span
@@ -642,7 +699,7 @@ exports[`RichField should render default content state 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-40"
+          id="toolbar-button-45"
           type="button"
         >
           <span
@@ -778,7 +835,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-17"
+          id="toolbar-button-19"
           type="button"
         >
           <span
@@ -794,7 +851,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-18"
+          id="toolbar-button-20"
           type="button"
         >
           <span
@@ -810,7 +867,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-19"
+          id="toolbar-button-21"
           type="button"
         >
           <span
@@ -826,7 +883,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-20"
+          id="toolbar-button-22"
           type="button"
         >
           <span
@@ -839,10 +896,13 @@ exports[`RichField should render immutable variable 1`] = `
             </i>
           </span>
         </button>
+        <span
+          aria-hidden="true"
+        />
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-21"
+          id="toolbar-button-23"
           type="button"
         >
           <span
@@ -858,7 +918,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-22"
+          id="toolbar-button-24"
           type="button"
         >
           <span
@@ -890,7 +950,23 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-23"
+          id="toolbar-button-25"
+          type="button"
+        >
+          <span
+            class="ui-button-content-cef1"
+          >
+            <i
+              class="material-icons icon"
+            >
+              title
+            </i>
+          </span>
+        </button>
+        <button
+          aria-disabled="false"
+          class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+          id="toolbar-button-26"
           type="button"
         >
           <span
@@ -906,7 +982,7 @@ exports[`RichField should render immutable variable 1`] = `
         <button
           aria-disabled="false"
           class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-          id="toolbar-button-24"
+          id="toolbar-button-27"
           type="button"
         >
           <span
@@ -1002,7 +1078,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-25"
+            id="toolbar-button-28"
             type="button"
           >
             <span
@@ -1018,7 +1094,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-26"
+            id="toolbar-button-29"
             type="button"
           >
             <span
@@ -1034,7 +1110,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-27"
+            id="toolbar-button-30"
             type="button"
           >
             <span
@@ -1050,7 +1126,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-28"
+            id="toolbar-button-31"
             type="button"
           >
             <span
@@ -1063,10 +1139,13 @@ exports[`RichField should render mutable variable 1`] = `
               </i>
             </span>
           </button>
+          <span
+            aria-hidden="true"
+          />
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-29"
+            id="toolbar-button-32"
             type="button"
           >
             <span
@@ -1082,7 +1161,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-30"
+            id="toolbar-button-33"
             type="button"
           >
             <span
@@ -1114,7 +1193,23 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-31"
+            id="toolbar-button-34"
+            type="button"
+          >
+            <span
+              class="ui-button-content-cef1"
+            >
+              <i
+                class="material-icons icon"
+              >
+                title
+              </i>
+            </span>
+          </button>
+          <button
+            aria-disabled="false"
+            class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
+            id="toolbar-button-35"
             type="button"
           >
             <span
@@ -1130,7 +1225,7 @@ exports[`RichField should render mutable variable 1`] = `
           <button
             aria-disabled="false"
             class="ui-button-wrapper-cef1 button wrapper small ui-button-fill-cef1 ui-button-secondary-cef1 ui-button-small-cef1"
-            id="toolbar-button-32"
+            id="toolbar-button-36"
             type="button"
           >
             <span

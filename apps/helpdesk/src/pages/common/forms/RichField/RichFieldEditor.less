@@ -15,4 +15,189 @@
         font-size: 14px;
         color: #666;
     }
+
+    // Non-list block depth indentation
+    .blockDepth1 {
+        margin-left: 2.5em;
+    }
+
+    .blockDepth2 {
+        margin-left: 5em;
+    }
+
+    .blockDepth3 {
+        margin-left: 7.5em;
+    }
+
+    .blockDepth4 {
+        margin-left: 10em;
+    }
+
+    // List item base — padding reserves space for the marker,
+    // ::before sits inside that padding via left: 0
+    .listItem {
+        position: relative;
+        padding-left: 1.5em;
+        &::before {
+            position: absolute;
+            left: 0;
+            width: 1.5em;
+            text-align: center;
+        }
+    }
+
+    // Counter increment per depth (ordered only)
+    .listOrdered.listDepth0 {
+        counter-increment: ol0;
+    }
+
+    .listOrdered.listDepth1 {
+        counter-increment: ol1;
+    }
+
+    .listOrdered.listDepth2 {
+        counter-increment: ol2;
+    }
+
+    .listOrdered.listDepth3 {
+        counter-increment: ol3;
+    }
+
+    .listOrdered.listDepth4 {
+        counter-increment: ol4;
+    }
+
+    // Ordered markers: depth × markerStyle (cycle: decimal → alpha → roman)
+    .listOrdered.listDepth0.markerStyle0::before {
+        content: counter(ol0) '.';
+    }
+
+    .listOrdered.listDepth0.markerStyle1::before {
+        content: counter(ol0, lower-alpha) '.';
+    }
+
+    .listOrdered.listDepth0.markerStyle2::before {
+        content: counter(ol0, lower-roman) '.';
+    }
+
+    .listOrdered.listDepth1.markerStyle0::before {
+        content: counter(ol1) '.';
+    }
+
+    .listOrdered.listDepth1.markerStyle1::before {
+        content: counter(ol1, lower-alpha) '.';
+    }
+
+    .listOrdered.listDepth1.markerStyle2::before {
+        content: counter(ol1, lower-roman) '.';
+    }
+
+    .listOrdered.listDepth2.markerStyle0::before {
+        content: counter(ol2) '.';
+    }
+
+    .listOrdered.listDepth2.markerStyle1::before {
+        content: counter(ol2, lower-alpha) '.';
+    }
+
+    .listOrdered.listDepth2.markerStyle2::before {
+        content: counter(ol2, lower-roman) '.';
+    }
+
+    .listOrdered.listDepth3.markerStyle0::before {
+        content: counter(ol3) '.';
+    }
+
+    .listOrdered.listDepth3.markerStyle1::before {
+        content: counter(ol3, lower-alpha) '.';
+    }
+
+    .listOrdered.listDepth3.markerStyle2::before {
+        content: counter(ol3, lower-roman) '.';
+    }
+
+    .listOrdered.listDepth4.markerStyle0::before {
+        content: counter(ol4) '.';
+    }
+
+    .listOrdered.listDepth4.markerStyle1::before {
+        content: counter(ol4, lower-alpha) '.';
+    }
+
+    .listOrdered.listDepth4.markerStyle2::before {
+        content: counter(ol4, lower-roman) '.';
+    }
+
+    .listUnordered.markerStyle0::before {
+        content: '\2022';
+        font-size: 17px;
+        padding-right: 5px;
+        line-height: 22px;
+    }
+
+    .listUnordered.markerStyle1::before {
+        content: '\25CB';
+        font-size: 14px;
+        line-height: 22px;
+    }
+
+    .listUnordered.markerStyle2::before {
+        content: '\25A0';
+        font-size: 11px;
+        line-height: 22px;
+    }
+
+    // Counter reset per depth
+    .listResetDepth0 {
+        counter-reset: ol0;
+    }
+
+    .listResetDepth1 {
+        counter-reset: ol1;
+    }
+
+    .listResetDepth2 {
+        counter-reset: ol2;
+    }
+
+    .listResetDepth3 {
+        counter-reset: ol3;
+    }
+
+    .listResetDepth4 {
+        counter-reset: ol4;
+    }
+
+    // List depth indentation — each level adds 1.5em
+    .listDepth0 {
+        margin-left: 0;
+    }
+
+    .listDepth1 {
+        margin-left: 1.5em;
+    }
+
+    .listDepth2 {
+        margin-left: 3em;
+    }
+
+    .listDepth3 {
+        margin-left: 4.5em;
+    }
+
+    .listDepth4 {
+        margin-left: 6em;
+    }
+}
+
+// List wrapper spacing (global classes set on wrapper divs)
+:global {
+    .list-wrapper {
+        margin: 16px 0;
+        padding: 0;
+    }
+
+    .list-wrapper .list-wrapper {
+        margin: 0;
+    }
 }

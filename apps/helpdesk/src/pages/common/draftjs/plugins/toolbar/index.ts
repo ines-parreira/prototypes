@@ -1,8 +1,8 @@
 import type { ComponentType, KeyboardEvent, ReactNode } from 'react'
 
 import decorateComponentWithProps from 'decorate-component-with-props'
-import type { ContentBlock, EditorState } from 'draft-js'
-import { KeyBindingUtil } from 'draft-js'
+import type { ContentBlock } from 'draft-js'
+import { EditorState, KeyBindingUtil, Modifier } from 'draft-js'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
@@ -121,8 +121,33 @@ export default function toolbarPlugin(config: Config): Plugin {
                 ) {
                     setEditorState(removeLink(entityKey, editorState))
                 } else {
+                    let selectionRect: DOMRect | undefined
+                    try {
+                        const nativeSel = window.getSelection()
+                        if (nativeSel && nativeSel.rangeCount > 0) {
+                            const range = nativeSel.getRangeAt(0)
+                            const rect = range.getBoundingClientRect()
+                            if (rect.width > 0) selectionRect = rect
+                        }
+                    } catch {}
+                    if (!selection.isCollapsed()) {
+                        const highlighted = Modifier.applyInlineStyle(
+                            contentState,
+                            selection,
+                            'LINK_HIGHLIGHT',
+                        )
+                        setEditorState(
+                            EditorState.push(
+                                editorState,
+                                highlighted,
+                                'change-inline-style',
+                            ),
+                        )
+                    }
+
                     config.onLinkCreate(
                         getSelectedText(contentState, selection),
+                        selectionRect,
                     )
                 }
 

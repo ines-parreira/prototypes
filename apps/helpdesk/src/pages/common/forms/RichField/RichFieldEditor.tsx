@@ -11,13 +11,14 @@ import { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import type { ContentState } from 'draft-js'
+import type { ContentBlock, ContentState } from 'draft-js'
 import {
     EditorState,
     getDefaultKeyBinding,
     KeyBindingUtil,
     Modifier,
     RichUtils,
+    SelectionState,
 } from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
 import Editor, { composeDecorators } from 'draft-js-plugins-editor'
@@ -26,16 +27,27 @@ import type { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import _uniq from 'lodash/uniq'
+import { marked } from 'marked'
 import ReactPlayer from 'react-player'
 
 import type { UploadType } from 'common/types'
 import type { GuidanceVariableList } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import type { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import createAutoBlockPlugin from 'pages/common/draftjs/plugins/autoBlock'
+import createClearFormattingPlugin from 'pages/common/draftjs/plugins/clearFormatting'
+import createFindReplacePlugin from 'pages/common/draftjs/plugins/findReplace'
 import createGuidanceVariablesPlugin from 'pages/common/draftjs/plugins/guidance-variables'
 import createGuidanceActionsPlugin from 'pages/common/draftjs/plugins/guidanceActions'
-import { addVideo } from 'pages/common/draftjs/plugins/utils'
+import createHorizontalRulePlugin from 'pages/common/draftjs/plugins/horizontalRule'
+import { handleListReturn } from 'pages/common/draftjs/plugins/listReturn'
+import createSlashCommandPlugin from 'pages/common/draftjs/plugins/slashCommand'
+import {
+    addVideo,
+    linkifyWithTemplate,
+} from 'pages/common/draftjs/plugins/utils'
 import { extractUrlsFromString } from 'utils'
+import { linkify } from 'utils/linkify'
 
 import type { notify } from '../../../../state/notifications/actions'
 import type { ConnectedAction } from '../../../../state/types'
@@ -71,6 +83,117 @@ import css from './RichFieldEditor.less'
 
 import 'draft-js/dist/Draft.css'
 
+function getEffectiveListStyle(block: ContentBlock): 'ordered' | 'unordered' {
+    const visualListStyle = block.getData().get('visualListStyle') as
+        | string
+        | undefined
+    if (visualListStyle === 'ordered') return 'ordered'
+    if (visualListStyle === 'unordered') return 'unordered'
+    return block.getType() === 'ordered-list-item' ? 'ordered' : 'unordered'
+}
+
+function isListBlock(block: ContentBlock): boolean {
+    const type = block.getType()
+    return type === 'ordered-list-item' || type === 'unordered-list-item'
+}
+
+function findChainContext(
+    contentState: ContentState,
+    block: ContentBlock,
+    depth: number,
+    effectiveStyle: 'ordered' | 'unordered',
+): { chainStart: ContentBlock; hasStyleBreak: boolean } {
+    let chainStart = block
+    let prev: ContentBlock | undefined = contentState.getBlockBefore(
+        block.getKey(),
+    )
+    while (prev) {
+        if (prev.getDepth() > depth) {
+            prev = contentState.getBlockBefore(prev.getKey())
+            continue
+        }
+        if (prev.getDepth() < depth) break
+        if (
+            !isListBlock(prev) ||
+            getEffectiveListStyle(prev) !== effectiveStyle
+        )
+            break
+        chainStart = prev
+        prev = contentState.getBlockBefore(prev.getKey())
+    }
+
+    let chainPrev: ContentBlock | undefined = contentState.getBlockBefore(
+        chainStart.getKey(),
+    )
+    while (chainPrev && chainPrev.getDepth() > depth) {
+        chainPrev = contentState.getBlockBefore(chainPrev.getKey())
+    }
+    const hasStyleBreak =
+        !!chainPrev &&
+        chainPrev.getDepth() === depth &&
+        isListBlock(chainPrev) &&
+        getEffectiveListStyle(chainPrev) !== effectiveStyle
+
+    return { chainStart, hasStyleBreak }
+}
+
+function getStyleNestingLevel(
+    contentState: ContentState,
+    block: ContentBlock,
+    effectiveStyle: 'ordered' | 'unordered',
+): number {
+    const depth = block.getDepth()
+    if (depth === 0) return 0
+
+    const { chainStart, hasStyleBreak } = findChainContext(
+        contentState,
+        block,
+        depth,
+        effectiveStyle,
+    )
+    if (hasStyleBreak) return 0
+
+    let nestingLevel = 0
+    let targetDepth = depth - 1
+    let walkFrom: ContentBlock | undefined = contentState.getBlockBefore(
+        chainStart.getKey(),
+    )
+
+    while (walkFrom && targetDepth >= 0) {
+        if (walkFrom.getDepth() > targetDepth) {
+            walkFrom = contentState.getBlockBefore(walkFrom.getKey())
+            continue
+        }
+        if (walkFrom.getDepth() < targetDepth) break
+        if (!isListBlock(walkFrom)) break
+        if (getEffectiveListStyle(walkFrom) !== effectiveStyle) break
+
+        const ancestorContext = findChainContext(
+            contentState,
+            walkFrom,
+            targetDepth,
+            effectiveStyle,
+        )
+
+        nestingLevel++
+        if (ancestorContext.hasStyleBreak) break
+
+        targetDepth--
+        walkFrom = contentState.getBlockBefore(
+            ancestorContext.chainStart.getKey(),
+        )
+    }
+
+    return nestingLevel
+}
+
+const CUSTOM_STYLE_MAP = {
+    LINK_HIGHLIGHT: {
+        backgroundColor:
+            'var(--surface-accent-secondary, rgba(0, 120, 255, 0.15))',
+    },
+}
+
 type suggestionsType = List<any>
 type canAddMentionType = boolean
 
@@ -103,6 +226,7 @@ type Props = {
     isFocused: boolean
     isRequired?: boolean
     placeholder?: string
+    placeholderBehavior?: 'gmail' | 'persistent'
     canAddVideoPlayer?: boolean
     onInsertVideoAddedFromPastedLink?: () => void
     maxLength?: number
@@ -152,6 +276,7 @@ export class RichFieldEditor extends Component<Props, State> {
     plugins: Plugin[]
 
     editor: Editor | null = null
+    editorWrapperRef: HTMLDivElement | null = null
 
     dndPlugin?: ReturnType<typeof createDndUploadPlugin>
     pasteImage?: ReturnType<typeof createPasteImagePlugin>
@@ -166,6 +291,8 @@ export class RichFieldEditor extends Component<Props, State> {
     workflowVariablesPlugin?: ReturnType<typeof createWorkflowVariablesPlugin>
     guidanceVariablesPlugin?: ReturnType<typeof createGuidanceVariablesPlugin>
     guidanceActionsPlugin?: ReturnType<typeof createGuidanceActionsPlugin>
+    findReplacePlugin?: ReturnType<typeof createFindReplacePlugin>
+    slashCommandPlugin?: ReturnType<typeof createSlashCommandPlugin>
 
     state: State = {
         isDragging: false,
@@ -242,6 +369,31 @@ export class RichFieldEditor extends Component<Props, State> {
             plugins.push(this.guidanceVariablesPlugin)
         }
 
+        if (
+            props.displayedActions?.includes(ActionName.GuidanceVariable) ||
+            props.displayedActions?.includes(ActionName.GuidanceAction)
+        ) {
+            this.slashCommandPlugin = createSlashCommandPlugin({
+                getVariables: this.props.getGuidanceVariables,
+            })
+            plugins.push(this.slashCommandPlugin)
+        }
+
+        if (
+            props.displayedActions?.includes(ActionName.BulletedList) ||
+            props.displayedActions?.includes(ActionName.OrderedList)
+        ) {
+            plugins.push(createAutoBlockPlugin())
+            plugins.push(createHorizontalRulePlugin())
+        }
+
+        plugins.push(createClearFormattingPlugin())
+
+        if (props.displayedActions?.includes(ActionName.FindReplace)) {
+            this.findReplacePlugin = createFindReplacePlugin()
+            plugins.push(this.findReplacePlugin)
+        }
+
         if (this.props.predictionContext) {
             this.predictionPlugin = createPredictionPlugin({
                 context: this.props.predictionContext,
@@ -288,10 +440,41 @@ export class RichFieldEditor extends Component<Props, State> {
         ) {
             this._focusEditor()
         }
+
+        if (this.props.getGuidanceVariables) {
+            this._handleSelectionChange()
+        }
     }
 
     componentWillUnmount() {
+        cancelAnimationFrame(this._selectionChangeRAF)
         shortcutManager.clear(['SpotlightModal', 'Dialpad', 'PhoneCall'])
+        this.editorWrapperRef?.removeEventListener(
+            'keydown',
+            this._nativeTabHandler,
+            true,
+        )
+        this.editorWrapperRef?.removeEventListener(
+            'keydown',
+            this._nativeFindHandler,
+            true,
+        )
+        if (this.props.getGuidanceVariables) {
+            this.editorWrapperRef?.removeEventListener(
+                'copy',
+                this._nativeCopyHandler,
+                true,
+            )
+            this.editorWrapperRef?.removeEventListener(
+                'cut',
+                this._nativeCutHandler,
+                true,
+            )
+            document.removeEventListener(
+                'selectionchange',
+                this._handleSelectionChange,
+            )
+        }
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -304,15 +487,28 @@ export class RichFieldEditor extends Component<Props, State> {
         const { editorState, noAutoScroll } = this.props
         const { wasEverFocused } = this.state
 
+        if (this.findReplacePlugin?.store.isOpen) return
+        if (this.props.linkIsOpen) return
+
         if (!wasEverFocused) {
             this.setState({ wasEverFocused: true })
-            this.handleChildChange(EditorState.moveFocusToEnd(editorState))
+            if (!noAutoScroll) {
+                this.handleChildChange(EditorState.moveFocusToEnd(editorState))
+            }
         }
         setTimeout(() => {
+            const editorAlreadyFocused = this.editorWrapperRef?.contains(
+                document.activeElement,
+            )
             if (this.editor) {
-                this.editor.focus()
-                if (!noAutoScroll) {
-                    scrollToReactNode(this.editor as any)
+                if (this.findReplacePlugin?.store.isOpen) return
+                if (this.props.linkIsOpen) return
+
+                if (!editorAlreadyFocused) {
+                    this.editor.focus()
+                    if (!noAutoScroll) {
+                        scrollToReactNode(this.editor as any)
+                    }
                 }
 
                 shortcutManager.denylist([
@@ -324,9 +520,124 @@ export class RichFieldEditor extends Component<Props, State> {
         }, 0)
     }
 
-    // This is for handling things like Bold, Italic, etc..
-    _handleKeyCommand = (command: string) => {
+    _handleReturn = () => {
         const { editorState } = this.props
+        const listReturnState = handleListReturn(editorState)
+        if (listReturnState) {
+            this.handleChildChange(listReturnState)
+            return EditorHandledNotHandled.Handled
+        }
+
+        const selection = editorState.getSelection()
+        const contentState = editorState.getCurrentContent()
+        const block = contentState.getBlockForKey(selection.getStartKey())
+        const blockType = block.getType()
+        const visualListStyle = block.getData().get('visualListStyle')
+
+        if (
+            visualListStyle &&
+            (blockType === 'ordered-list-item' ||
+                blockType === 'unordered-list-item')
+        ) {
+            const splitContent = Modifier.splitBlock(contentState, selection)
+            const afterSplit = EditorState.push(
+                editorState,
+                splitContent,
+                'split-block',
+            )
+
+            const newContent = afterSplit.getCurrentContent()
+            const newBlockKey = afterSplit.getSelection().getStartKey()
+            const newBlock = newContent.getBlockForKey(newBlockKey)
+            const fixedBlock = newBlock.merge({
+                data: newBlock
+                    .getData()
+                    .set('visualListStyle', visualListStyle),
+            }) as typeof newBlock
+
+            const fixedContent = newContent.merge({
+                blockMap: newContent.getBlockMap().set(newBlockKey, fixedBlock),
+            }) as typeof newContent
+
+            this.handleChildChange(
+                EditorState.forceSelection(
+                    EditorState.push(
+                        afterSplit,
+                        fixedContent,
+                        'change-block-data',
+                    ),
+                    afterSplit.getSelection(),
+                ),
+            )
+            return EditorHandledNotHandled.Handled
+        }
+
+        return EditorHandledNotHandled.NotHandled
+    }
+
+    _handleKeyCommand = (command: string, latestEditorState?: EditorState) => {
+        const editorState = latestEditorState || this.props.editorState
+
+        if (command === 'select-all') {
+            const content = editorState.getCurrentContent()
+            const firstBlock = content.getFirstBlock()
+            const lastBlock = content.getLastBlock()
+            const selectAllSelection = new SelectionState({
+                anchorKey: firstBlock.getKey(),
+                anchorOffset: 0,
+                focusKey: lastBlock.getKey(),
+                focusOffset: lastBlock.getLength(),
+                hasFocus: true,
+            })
+            this.handleChildChange(
+                EditorState.forceSelection(editorState, selectAllSelection),
+            )
+            return EditorHandledNotHandled.Handled
+        }
+
+        if (command === 'unindent-block') {
+            const content = editorState.getCurrentContent()
+            const selection = editorState.getSelection()
+            const block = content.getBlockForKey(selection.getStartKey())
+            const blockKey = block.getKey()
+            const newBlock = block.set(
+                'depth',
+                block.getDepth() - 1,
+            ) as typeof block
+            const newBlockMap = content.getBlockMap().set(blockKey, newBlock)
+            const updatedContent = content.merge({
+                blockMap: newBlockMap,
+            }) as typeof content
+            this.handleChildChange(
+                EditorState.forceSelection(
+                    EditorState.push(
+                        editorState,
+                        updatedContent,
+                        'adjust-depth',
+                    ),
+                    selection,
+                ),
+            )
+            return EditorHandledNotHandled.Handled
+        }
+
+        const selection = editorState.getSelection()
+        if (
+            (command === 'backspace' || command === 'delete') &&
+            !selection.isCollapsed()
+        ) {
+            const content = editorState.getCurrentContent()
+            const newContent = Modifier.removeRange(
+                content,
+                selection,
+                command === 'backspace' ? 'backward' : 'forward',
+            )
+            this.handleChildChange(
+                EditorState.push(editorState, newContent, 'remove-range'),
+            )
+            return EditorHandledNotHandled.Handled
+        }
+
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
             this.handleChildChange(newState)
@@ -337,13 +648,310 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     _handleOnTab = (event: React.KeyboardEvent) => {
+        event.preventDefault()
         const { editorState } = this.props
         const newState = RichUtils.onTab(event, editorState, 4)
-        if (newState) {
-            this.handleChildChange(newState)
-            return EditorHandledNotHandled.Handled
+        if (!newState || newState === editorState) return
+
+        const oldContent = editorState.getCurrentContent()
+        const newContent = newState.getCurrentContent()
+        if (oldContent.getBlockMap().equals(newContent.getBlockMap())) return
+
+        this.handleChildChange(newState)
+    }
+
+    _nativeFindHandler: EventListener = (event) => {
+        const keyEvent = event as globalThis.KeyboardEvent
+        if (
+            (keyEvent.metaKey || keyEvent.ctrlKey) &&
+            keyEvent.key === 'f' &&
+            this.findReplacePlugin
+        ) {
+            event.preventDefault()
+            event.stopPropagation()
+            this.findReplacePlugin.open(true)
         }
-        return EditorHandledNotHandled.NotHandled
+    }
+
+    _getSelectedText = (): string | null => {
+        const { editorState } = this.props
+        const selection = editorState.getSelection()
+        if (selection.isCollapsed()) return null
+
+        const contentState = editorState.getCurrentContent()
+        const startKey = selection.getStartKey()
+        const endKey = selection.getEndKey()
+        const startOffset = selection.getStartOffset()
+        const endOffset = selection.getEndOffset()
+
+        const blocks = contentState.getBlockMap()
+        const selectedBlocks = blocks
+            .skipUntil((_, key) => key === startKey)
+            .takeUntil((_, key) => key === endKey)
+            .concat(blocks.filter((_, key) => key === endKey))
+
+        const textParts: string[] = []
+        selectedBlocks.forEach((block, key) => {
+            if (!block) return
+            const text = block.getText()
+            if (key === startKey && key === endKey) {
+                textParts.push(text.slice(startOffset, endOffset))
+            } else if (key === startKey) {
+                textParts.push(text.slice(startOffset))
+            } else if (key === endKey) {
+                textParts.push(text.slice(0, endOffset))
+            } else {
+                textParts.push(text)
+            }
+        })
+
+        return textParts.join('\n')
+    }
+
+    _nativeCopyHandler: EventListener = (event) => {
+        const text = this._getSelectedText()
+        if (!text) return
+
+        const clipboardEvent = event as ClipboardEvent
+        clipboardEvent.clipboardData?.setData('text/plain', text)
+        clipboardEvent.preventDefault()
+    }
+
+    _nativeCutHandler: EventListener = (event) => {
+        const text = this._getSelectedText()
+        if (!text) return
+
+        const clipboardEvent = event as ClipboardEvent
+        clipboardEvent.clipboardData?.setData('text/plain', text)
+        clipboardEvent.preventDefault()
+
+        const { editorState } = this.props
+        const contentState = editorState.getCurrentContent()
+        const selection = editorState.getSelection()
+        const newContentState = Modifier.removeRange(
+            contentState,
+            selection,
+            'backward',
+        )
+        const newEditorState = EditorState.push(
+            editorState,
+            newContentState,
+            'remove-range',
+        )
+        this.handleChildChange(newEditorState)
+    }
+
+    _selectionChangeRAF = 0
+
+    _handleSelectionChange = () => {
+        cancelAnimationFrame(this._selectionChangeRAF)
+        this._selectionChangeRAF = requestAnimationFrame(() => {
+            if (!this.editorWrapperRef) return
+            const sel = window.getSelection()
+            const hasRange = sel && sel.rangeCount > 0 && !sel.isCollapsed
+            const range = hasRange ? sel.getRangeAt(0) : null
+            const entities = this.editorWrapperRef.querySelectorAll(
+                '[data-guidance-entity]',
+            )
+            entities.forEach((node) => {
+                if (range && range.intersectsNode(node)) {
+                    node.setAttribute('data-selected', '')
+                } else {
+                    node.removeAttribute('data-selected')
+                }
+            })
+        })
+    }
+
+    _nativeTabHandler: EventListener = (event) => {
+        const keyEvent = event as globalThis.KeyboardEvent
+        if (keyEvent.key !== 'Tab') return
+
+        const target = event.target as HTMLElement
+        if (target.closest('[data-find-replace-dialog]')) return
+
+        event.preventDefault()
+        event.stopPropagation()
+
+        const { editorState } = this.props
+        const newState = RichUtils.onTab(
+            keyEvent as unknown as React.KeyboardEvent,
+            editorState,
+            4,
+        )
+
+        const oldContent = editorState.getCurrentContent()
+        const newContent = newState?.getCurrentContent()
+
+        const listTabWorked =
+            newState &&
+            newState !== editorState &&
+            newContent &&
+            !oldContent.getBlockMap().equals(newContent.getBlockMap())
+
+        if (listTabWorked) {
+            this.handleChildChange(newState)
+        } else {
+            const selection = editorState.getSelection()
+            const block = oldContent.getBlockForKey(selection.getStartKey())
+            const blockType = block.getType()
+
+            if (
+                blockType === 'unordered-list-item' ||
+                blockType === 'ordered-list-item'
+            ) {
+                // RichUtils.onTab already handled list items (or correctly no-oped)
+            } else {
+                const depth = block.getDepth()
+                const newDepth = keyEvent.shiftKey
+                    ? Math.max(0, depth - 1)
+                    : Math.min(4, depth + 1)
+
+                if (newDepth !== depth) {
+                    const blockKey = block.getKey()
+                    const newBlock = block.set(
+                        'depth',
+                        newDepth,
+                    ) as typeof block
+                    const newBlockMap = oldContent
+                        .getBlockMap()
+                        .set(blockKey, newBlock)
+                    const updatedContent = oldContent.merge({
+                        blockMap: newBlockMap,
+                    }) as typeof oldContent
+
+                    this.handleChildChange(
+                        EditorState.forceSelection(
+                            EditorState.push(
+                                editorState,
+                                updatedContent,
+                                'adjust-depth',
+                            ),
+                            editorState.getSelection(),
+                        ),
+                    )
+                }
+            }
+        }
+
+        setTimeout(() => {
+            if (
+                this.editor &&
+                !this.editorWrapperRef?.contains(document.activeElement)
+            ) {
+                this.editor.focus()
+            }
+        }, 0)
+    }
+
+    _blockStyleFn = (block: ContentBlock): string => {
+        const type = block.getType()
+        const classes: string[] = []
+
+        const isOrderedList = type === 'ordered-list-item'
+        const isUnorderedList = type === 'unordered-list-item'
+
+        if (isOrderedList || isUnorderedList) {
+            const depth = block.getDepth()
+            const effectiveStyle = getEffectiveListStyle(block)
+
+            classes.push(css.listItem)
+            classes.push(
+                effectiveStyle === 'ordered'
+                    ? css.listOrdered
+                    : css.listUnordered,
+            )
+
+            const depthClass = css[`listDepth${depth}` as keyof typeof css]
+            if (depthClass) classes.push(depthClass)
+
+            const contentState = this.props.editorState.getCurrentContent()
+
+            const nestingLevel = getStyleNestingLevel(
+                contentState,
+                block,
+                effectiveStyle,
+            )
+            const markerClass =
+                css[`markerStyle${nestingLevel % 3}` as keyof typeof css]
+            if (markerClass) classes.push(markerClass)
+
+            const blockBefore = contentState.getBlockBefore(block.getKey())
+
+            const shouldReset = (() => {
+                if (!blockBefore) return true
+
+                const prevType = blockBefore.getType()
+                const isPrevList =
+                    prevType === 'ordered-list-item' ||
+                    prevType === 'unordered-list-item'
+                if (!isPrevList) return true
+
+                const prevDepth = blockBefore.getDepth()
+                if (prevDepth < depth) return true
+                if (prevDepth > depth) return false
+
+                return getEffectiveListStyle(blockBefore) !== effectiveStyle
+            })()
+
+            if (shouldReset) {
+                const resetClass =
+                    css[`listResetDepth${depth}` as keyof typeof css]
+                if (resetClass) classes.push(resetClass)
+            }
+        } else {
+            const depth = block.getDepth()
+            if (depth > 0) {
+                const depthClass = css[`blockDepth${depth}` as keyof typeof css]
+                if (depthClass) classes.push(depthClass)
+            }
+        }
+
+        return classes.filter(Boolean).join(' ')
+    }
+
+    _setEditorWrapperRef = (ref: HTMLDivElement | null) => {
+        if (this.editorWrapperRef) {
+            this.editorWrapperRef.removeEventListener(
+                'keydown',
+                this._nativeTabHandler,
+                true,
+            )
+            this.editorWrapperRef.removeEventListener(
+                'keydown',
+                this._nativeFindHandler,
+                true,
+            )
+            if (this.props.getGuidanceVariables) {
+                this.editorWrapperRef.removeEventListener(
+                    'copy',
+                    this._nativeCopyHandler,
+                    true,
+                )
+                this.editorWrapperRef.removeEventListener(
+                    'cut',
+                    this._nativeCutHandler,
+                    true,
+                )
+                document.removeEventListener(
+                    'selectionchange',
+                    this._handleSelectionChange,
+                )
+            }
+        }
+        this.editorWrapperRef = ref
+        if (ref) {
+            ref.addEventListener('keydown', this._nativeTabHandler, true)
+            ref.addEventListener('keydown', this._nativeFindHandler, true)
+            if (this.props.getGuidanceVariables) {
+                ref.addEventListener('copy', this._nativeCopyHandler, true)
+                ref.addEventListener('cut', this._nativeCutHandler, true)
+                document.addEventListener(
+                    'selectionchange',
+                    this._handleSelectionChange,
+                )
+            }
+        }
     }
 
     _handlePastedText = (
@@ -364,13 +972,43 @@ export class RichFieldEditor extends Component<Props, State> {
             return EditorHandledNotHandled.NotHandled
         }
 
+        const selection = editorState.getSelection()
+        if (!selection.isCollapsed() && text && !html) {
+            const trimmedText = text.trim()
+            if (linkify.test(trimmedText)) {
+                const url = linkifyWithTemplate(trimmedText)
+                let contentState = editorState
+                    .getCurrentContent()
+                    .createEntity('link', 'MUTABLE', {
+                        url,
+                        target: '_blank',
+                    })
+                const entityKey = contentState.getLastCreatedEntityKey()
+                contentState = Modifier.applyEntity(
+                    contentState,
+                    selection,
+                    entityKey,
+                )
+                const newEditorState = EditorState.push(
+                    editorState,
+                    contentState,
+                    'apply-entity',
+                )
+                this.handleChildChange(newEditorState)
+                return EditorHandledNotHandled.Handled
+            }
+        }
+
+        const resolvedHtml =
+            html || (text ? (marked.parse(text) as string) : undefined)
+
         // manually convert pasted text/html with draft-convert to preserve newlines and empty blocks.
         // by default draft-js's convertFromHTML tries to clean-up the html, and remove extra newlines.
         // https://github.com/facebook/draft-js/issues/231
         const contentState = Modifier.replaceWithFragment(
             editorState.getCurrentContent(),
             editorState.getSelection(),
-            contentStateFromTextOrHTML(text, html).getBlockMap(),
+            contentStateFromTextOrHTML(text, resolvedHtml).getBlockMap(),
         )
 
         let newEditorState = (
@@ -468,7 +1106,32 @@ export class RichFieldEditor extends Component<Props, State> {
             return null
         }
 
+        if (e.key === 'a' && KeyBindingUtil.hasCommandModifier(e)) {
+            return 'select-all'
+        }
+
+        if (e.key === 'Backspace') {
+            const { editorState } = this.props
+            const selection = editorState.getSelection()
+            if (selection.isCollapsed() && selection.getStartOffset() === 0) {
+                const content = editorState.getCurrentContent()
+                const block = content.getBlockForKey(selection.getStartKey())
+                const blockType = block.getType()
+                if (
+                    block.getDepth() > 0 &&
+                    blockType !== 'unordered-list-item' &&
+                    blockType !== 'ordered-list-item'
+                ) {
+                    return 'unindent-block'
+                }
+            }
+        }
+
         if (KeyBindingUtil.hasCommandModifier(e) || e.altKey) {
+            return undefined
+        }
+
+        if (e.key === ' ') {
             return undefined
         }
 
@@ -507,6 +1170,7 @@ export class RichFieldEditor extends Component<Props, State> {
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging,
                     })}
+                    ref={this._setEditorWrapperRef}
                     onClick={onFocus}
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}
@@ -523,6 +1187,29 @@ export class RichFieldEditor extends Component<Props, State> {
                                 !this.props.quickReply && !this.props.minHeight,
                         })}
                     >
+                        {this.findReplacePlugin && (
+                            <this.findReplacePlugin.FindReplaceDialog
+                                store={this.findReplacePlugin.store}
+                                onSearchChange={
+                                    this.findReplacePlugin.onSearchChange
+                                }
+                                onReplaceChange={
+                                    this.findReplacePlugin.onReplaceChange
+                                }
+                                onFindNext={this.findReplacePlugin.onFindNext}
+                                onFindPrevious={
+                                    this.findReplacePlugin.onFindPrevious
+                                }
+                                onReplace={this.findReplacePlugin.onReplace}
+                                onReplaceAll={
+                                    this.findReplacePlugin.onReplaceAll
+                                }
+                                onClose={this.findReplacePlugin.close}
+                                onToggleReplace={
+                                    this.findReplacePlugin.toggleReplace
+                                }
+                            />
+                        )}
                         {header}
                         <DraftJsErrorBoundary
                             onError={(error) => {
@@ -536,6 +1223,7 @@ export class RichFieldEditor extends Component<Props, State> {
                                 editorState={this.props.editorState}
                                 onChange={this.handleChildChange}
                                 keyBindingFn={this._customKeyBindingFn}
+                                handleReturn={this._handleReturn}
                                 onFocus={this._onEditorFocus}
                                 onBlur={this._onEditorBlur}
                                 plugins={this.plugins}
@@ -543,11 +1231,15 @@ export class RichFieldEditor extends Component<Props, State> {
                                 onTab={this._handleOnTab}
                                 handlePastedText={this._handlePastedText}
                                 readOnly={displayOnly || this.props.readOnly}
-                                // once focused we're removing the placeholder (Gmail style)
+                                customStyleMap={CUSTOM_STYLE_MAP}
+                                blockStyleFn={this._blockStyleFn}
                                 placeholder={
-                                    !this.state.wasEverFocused
+                                    this.props.placeholderBehavior ===
+                                    'persistent'
                                         ? this.props.placeholder
-                                        : undefined
+                                        : !this.state.wasEverFocused
+                                          ? this.props.placeholder
+                                          : undefined
                                 }
                                 ref={(editor: Editor | null) => {
                                     this.editor = editor
@@ -563,6 +1255,9 @@ export class RichFieldEditor extends Component<Props, State> {
                             suggestions={this.props.mentionSearchResults}
                             canAddMention={!!this.props.canAddMention}
                         />
+                        {this.slashCommandPlugin && (
+                            <this.slashCommandPlugin.SlashCommandSuggestions />
+                        )}
                         {(isRequired || pattern) && (
                             <input
                                 value={this.props.editorState

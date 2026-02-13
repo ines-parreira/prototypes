@@ -74,7 +74,7 @@ export default function GuidanceVariableTag({
     }, [variable])
 
     return (
-        <span id={wrapperId} className={css.wrapper}>
+        <span id={wrapperId} className={css.wrapper} data-guidance-entity>
             <span
                 className={classNames(css.container, {
                     [css.invalid]: !variable,

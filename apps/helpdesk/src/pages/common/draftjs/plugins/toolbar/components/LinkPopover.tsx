@@ -52,6 +52,14 @@ export default function LinkPopover({
         [isEditingLink],
     )
 
+    const handleClick = useCallback(
+        (e: MouseEvent) => {
+            e.preventDefault()
+            window.open(url, '_blank', 'noopener,noreferrer')
+        },
+        [url],
+    )
+
     const handleMouseLeave = useCallback((e: MouseEvent) => {
         e.preventDefault()
         timeout.current = setTimeout(() => {
@@ -84,6 +92,8 @@ export default function LinkPopover({
             href={url}
             target="_blank"
             rel="noopener noreferrer"
+            className={css.link}
+            onClick={handleClick}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >

@@ -19,6 +19,8 @@ export enum ActionName {
     GuidanceAction = 'GUIDANCEACTION',
     BulletedList = 'BULLETEDLIST',
     OrderedList = 'ORDEREDLIST',
+    Heading = 'HEADING',
+    FindReplace = 'FINDREPLACE',
 }
 
 export type EditorStateSetter = (editorState: EditorState) => any
@@ -41,7 +43,7 @@ export type Config = {
         url: string,
         target: string,
     ) => void
-    onLinkCreate: (text: string) => void
+    onLinkCreate: (text: string, selectionRect?: DOMRect) => void
 }
 
 export type TooltipTourConfigurationType = {

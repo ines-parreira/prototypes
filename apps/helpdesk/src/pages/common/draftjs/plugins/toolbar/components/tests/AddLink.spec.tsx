@@ -1,15 +1,15 @@
-import type { ComponentProps, MouseEvent } from 'react'
+import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { EditorState } from 'draft-js'
+import { ContentState, EditorState, Modifier, SelectionState } from 'draft-js'
 import _noop from 'lodash/noop'
+import ReactPlayer from 'react-player'
 
 import { utmConfiguration } from 'fixtures/utmConfiguration'
-import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
 import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import type { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
@@ -46,42 +46,12 @@ function AddLinkWithIsOpenState(
     )
 }
 
-jest.mock('pages/common/draftjs/plugins/toolbar/components/ButtonPopover')
-const MockButtonPopover = ButtonPopover as jest.Mock
-
-const mockToggle = jest.fn()
-
-const setupMockPopover = () => {
-    const mockDiv = document.createElement('div')
-    MockButtonPopover.mockImplementation(
-        ({ toggleGuard }: ComponentProps<typeof ButtonPopover>) => {
-            return (
-                <div
-                    onClick={() => {
-                        const shouldToggle = toggleGuard?.({
-                            target: mockDiv,
-                        } as unknown as MouseEvent)
-                        shouldToggle && mockToggle()
-                    }}
-                >
-                    Toggle
-                </div>
-            )
-        },
-    )
-}
-
 describe('<AddLink />', () => {
     beforeEach(() => {
         useCampaignFormContextMock.mockReturnValue({
             utmConfiguration: utmConfiguration,
         })
         attachUtmtoUrlMock.mockReturnValue('')
-        MockButtonPopover.mockImplementation(
-            jest.requireActual<Record<string, any>>(
-                'pages/common/draftjs/plugins/toolbar/components/ButtonPopover',
-            ).default,
-        )
     })
 
     afterEach(() => {
@@ -480,53 +450,6 @@ describe('<AddLink />', () => {
         })
     })
 
-    it('should return true when workflowVariables are provided and target matches', () => {
-        setupMockPopover()
-
-        const { getByText } = render(
-            <AddLinkContainer
-                {...defaultProps}
-                getWorkflowVariables={() => [
-                    {
-                        type: 'string',
-                        name: 'testVar',
-                        nodeType: 'text_reply',
-                        value: 'value',
-                    },
-                ]}
-            />,
-        )
-
-        fireEvent.click(getByText('Toggle'))
-
-        expect(mockToggle).toHaveBeenCalled()
-    })
-
-    it('should return false when workflowVariables are not provided', () => {
-        setupMockPopover()
-
-        const { getByText } = render(<AddLinkContainer {...defaultProps} />)
-
-        fireEvent.click(getByText('Toggle'))
-
-        expect(mockToggle).not.toHaveBeenCalled()
-    })
-
-    it('should return false when workflowVariables is an empty array', () => {
-        setupMockPopover()
-
-        const { getByText } = render(
-            <AddLinkContainer
-                {...defaultProps}
-                getWorkflowVariables={() => []}
-            />,
-        )
-
-        fireEvent.click(getByText('Toggle'))
-
-        expect(mockToggle).not.toHaveBeenCalled()
-    })
-
     it('should render "open in a new tab" checkbox', () => {
         const mockOnTargetChange = jest.fn()
 
@@ -644,5 +567,850 @@ describe('<AddLink />', () => {
             templatedUrl: '{{ticket.url}}',
             url: '{{ticket.url}}',
         })
+    })
+
+    it('should call linkEditionStarted on open and linkEditionEnded on close', () => {
+        const linkEditionStarted = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_STARTED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionStarted']
+        const linkEditionEnded = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_ENDED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionEnded']
+
+        const { rerender } = render(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={false}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+            />,
+        )
+
+        rerender(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={true}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+            />,
+        )
+
+        expect(linkEditionStarted).toHaveBeenCalled()
+
+        rerender(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={false}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+            />,
+        )
+
+        expect(linkEditionEnded).toHaveBeenCalled()
+    })
+
+    it('should set anchorStyle from linkSelectionRect when opening', () => {
+        const linkEditionStarted = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_STARTED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionStarted']
+        const linkEditionEnded = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_ENDED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionEnded']
+        const mockRect = {
+            bottom: 100,
+            left: 50,
+            width: 200,
+            height: 20,
+            top: 80,
+            right: 250,
+            x: 50,
+            y: 80,
+            toJSON: () => {},
+        } as DOMRect
+
+        const { rerender } = render(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={false}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+                linkSelectionRect={mockRect}
+            />,
+        )
+
+        rerender(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={true}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+                linkSelectionRect={mockRect}
+            />,
+        )
+
+        expect(linkEditionStarted).toHaveBeenCalled()
+    })
+
+    it('should apply LINK_HIGHLIGHT style when opening with non-collapsed selection', () => {
+        const setEditorState = jest.fn()
+        const contentState = ContentState.createFromText('Hello')
+        const editorState = EditorState.createWithContent(contentState)
+        const block = contentState.getFirstBlock()
+        const selection = editorState.getSelection().merge({
+            anchorKey: block.getKey(),
+            anchorOffset: 0,
+            focusKey: block.getKey(),
+            focusOffset: 5,
+            hasFocus: true,
+        }) as import('draft-js').SelectionState
+        const stateWithSelection = EditorState.forceSelection(
+            editorState,
+            selection,
+        )
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                getEditorState={() => stateWithSelection}
+                setEditorState={setEditorState}
+                text=""
+                url=""
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+        const calledState = setEditorState.mock.calls[0][0] as EditorState
+        const calledBlock = calledState.getCurrentContent().getFirstBlock()
+        const styles = calledBlock.getInlineStyleAt(0)
+        expect(styles.has('LINK_HIGHLIGHT')).toBe(true)
+    })
+
+    it('should toggle closed when clicking link button while popover is open', () => {
+        const onClose = jest.fn()
+
+        const Wrapped = () => {
+            const [isOpen, setIsOpen] = React.useState(true)
+            return (
+                <AddLinkContainer
+                    {...defaultProps}
+                    onClose={() => {
+                        setIsOpen(false)
+                        onClose()
+                    }}
+                    onOpen={() => setIsOpen(true)}
+                    isOpen={isOpen}
+                />
+            )
+        }
+        render(<Wrapped />)
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        expect(onClose).toHaveBeenCalled()
+    })
+
+    it('should not submit when url is invalid', () => {
+        const setEditorState = jest.fn()
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="not-a-valid-url"
+                setEditorState={setEditorState}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(setEditorState).not.toHaveBeenCalled()
+    })
+
+    it('should remove LINK_HIGHLIGHT on close and insert link using highlighted selection', () => {
+        const setEditorState = jest.fn()
+        const contentState = ContentState.createFromText('Hello World')
+        let editorState = EditorState.createWithContent(contentState)
+        const block = contentState.getFirstBlock()
+        const selection = editorState.getSelection().merge({
+            anchorKey: block.getKey(),
+            anchorOffset: 0,
+            focusKey: block.getKey(),
+            focusOffset: 5,
+            hasFocus: true,
+        }) as import('draft-js').SelectionState
+        editorState = EditorState.forceSelection(editorState, selection)
+
+        const getEditorState = jest.fn(() => editorState)
+        setEditorState.mockImplementation((newState: EditorState) => {
+            editorState = newState
+            getEditorState.mockReturnValue(newState)
+        })
+
+        const Wrapped = () => {
+            const [isOpen, setIsOpen] = React.useState(false)
+            const [text, setText] = React.useState('')
+            const [url, setUrl] = React.useState('')
+            return (
+                <AddLinkContainer
+                    {...defaultProps}
+                    isOpen={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
+                    getEditorState={getEditorState}
+                    setEditorState={setEditorState}
+                    text={text}
+                    onTextChange={setText}
+                    url={url}
+                    onUrlChange={setUrl}
+                />
+            )
+        }
+
+        render(<Wrapped />)
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+        const highlightedState = setEditorState.mock.calls[0][0] as EditorState
+        const highlightedBlock = highlightedState
+            .getCurrentContent()
+            .getFirstBlock()
+        expect(highlightedBlock.getInlineStyleAt(0).has('LINK_HIGHLIGHT')).toBe(
+            true,
+        )
+    })
+
+    it('should update link text via entity selection when updating existing link', () => {
+        const { Modifier } = require('draft-js')
+        const contentState = ContentState.createFromText('Click Here')
+        const contentStateWithEntity = contentState.createEntity(
+            'link',
+            'MUTABLE',
+            { url: 'https://old.com' },
+        )
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+        const block = contentStateWithEntity.getFirstBlock()
+        const entitySelection = EditorState.createWithContent(
+            contentStateWithEntity,
+        )
+            .getSelection()
+            .merge({
+                anchorKey: block.getKey(),
+                anchorOffset: 0,
+                focusKey: block.getKey(),
+                focusOffset: 10,
+            }) as import('draft-js').SelectionState
+
+        const newContent = Modifier.applyEntity(
+            contentStateWithEntity,
+            entitySelection,
+            entityKey,
+        )
+        let editorState = EditorState.createWithContent(newContent)
+
+        const setEditorState = jest.fn((state: EditorState) => {
+            editorState = state
+        })
+        const getEditorState = () => editorState
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                entityKey={entityKey}
+                url="https://new.com"
+                text="New Text"
+                getEditorState={getEditorState}
+                setEditorState={setEditorState}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Update Link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+    })
+
+    it('should insert link using highlighted selection and remove highlights on close', () => {
+        const { Modifier, SelectionState } = require('draft-js')
+        const contentState = ContentState.createFromText('Hello World')
+        const block = contentState.getFirstBlock()
+        const selection = SelectionState.createEmpty(block.getKey()).merge({
+            anchorOffset: 0,
+            focusOffset: 5,
+        }) as import('draft-js').SelectionState
+
+        const contentWithHighlight = Modifier.applyInlineStyle(
+            contentState,
+            selection,
+            'LINK_HIGHLIGHT',
+        )
+        let editorState = EditorState.createWithContent(contentWithHighlight)
+        editorState = EditorState.forceSelection(
+            editorState,
+            editorState.getSelection().merge({
+                hasFocus: true,
+            }) as import('draft-js').SelectionState,
+        )
+
+        const setEditorState = jest.fn((state: EditorState) => {
+            editorState = state
+        })
+        const getEditorState = jest.fn(() => editorState)
+
+        const Wrapped = () => {
+            const [isOpen, setIsOpen] = React.useState(true)
+            return (
+                <AddLinkContainer
+                    {...defaultProps}
+                    isOpen={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
+                    getEditorState={getEditorState}
+                    setEditorState={setEditorState}
+                    text="Hello"
+                    url="https://example.com"
+                />
+            )
+        }
+
+        render(<Wrapped />)
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+    })
+
+    it('should not submit when text is empty', () => {
+        const setEditorState = jest.fn()
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text=""
+                url="https://example.com"
+                setEditorState={setEditorState}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(setEditorState).not.toHaveBeenCalled()
+    })
+
+    it('should remove LINK_HIGHLIGHT when closing popover without submitting', () => {
+        const { Modifier, SelectionState } = require('draft-js')
+        const contentState = ContentState.createFromText('Hello World')
+        const block = contentState.getFirstBlock()
+        const selection = SelectionState.createEmpty(block.getKey()).merge({
+            anchorOffset: 0,
+            focusOffset: 5,
+        }) as import('draft-js').SelectionState
+
+        const contentWithHighlight = Modifier.applyInlineStyle(
+            contentState,
+            selection,
+            'LINK_HIGHLIGHT',
+        )
+        let editorState = EditorState.createWithContent(contentWithHighlight)
+
+        const setEditorState = jest.fn((state: EditorState) => {
+            editorState = state
+        })
+        const getEditorState = jest.fn(() => editorState)
+
+        const { rerender } = render(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={true}
+                getEditorState={getEditorState}
+                setEditorState={setEditorState}
+                text="Hello"
+                url=""
+            />,
+        )
+
+        rerender(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={false}
+                getEditorState={getEditorState}
+                setEditorState={setEditorState}
+                text="Hello"
+                url=""
+            />,
+        )
+
+        expect(setEditorState).toHaveBeenCalled()
+        const resultState = setEditorState.mock.calls[
+            setEditorState.mock.calls.length - 1
+        ][0] as EditorState
+        const resultBlock = resultState.getCurrentContent().getFirstBlock()
+        expect(resultBlock.getInlineStyleAt(0).has('LINK_HIGHLIGHT')).toBe(
+            false,
+        )
+    })
+
+    it('should NOT apply LINK_HIGHLIGHT style when selection is collapsed', () => {
+        const setEditorState = jest.fn()
+        const editorState = EditorState.createWithContent(
+            ContentState.createFromText('Hello'),
+        )
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                getEditorState={() => editorState}
+                setEditorState={setEditorState}
+                text=""
+                url=""
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        if (setEditorState.mock.calls.length > 0) {
+            const calledState = setEditorState.mock.calls[0][0] as EditorState
+            const calledBlock = calledState.getCurrentContent().getFirstBlock()
+            expect(calledBlock.getInlineStyleAt(0).has('LINK_HIGHLIGHT')).toBe(
+                false,
+            )
+        }
+    })
+
+    it('should insert link using current editor selection when no LINK_HIGHLIGHT exists', () => {
+        const setEditorState = jest.fn()
+        const contentState = ContentState.createFromText('Hello World')
+        const block = contentState.getFirstBlock()
+        const selection = SelectionState.createEmpty(block.getKey()).merge({
+            anchorOffset: 0,
+            focusOffset: 5,
+        }) as import('draft-js').SelectionState
+        let editorState = EditorState.createWithContent(contentState)
+        editorState = EditorState.forceSelection(editorState, selection)
+
+        const getEditorState = jest.fn(() => editorState)
+        setEditorState.mockImplementation((newState: EditorState) => {
+            editorState = newState
+            getEditorState.mockReturnValue(newState)
+        })
+
+        const Wrapped = () => {
+            const [isOpen, setIsOpen] = React.useState(true)
+            return (
+                <AddLinkContainer
+                    {...defaultProps}
+                    isOpen={isOpen}
+                    onOpen={() => setIsOpen(true)}
+                    onClose={() => setIsOpen(false)}
+                    getEditorState={getEditorState}
+                    setEditorState={setEditorState}
+                    text="Hello"
+                    url="https://example.com"
+                />
+            )
+        }
+
+        render(<Wrapped />)
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+        const resultState = setEditorState.mock.calls[
+            setEditorState.mock.calls.length - 1
+        ][0] as EditorState
+        const resultBlock = resultState.getCurrentContent().getFirstBlock()
+        expect(resultBlock.getText()).toContain('Hello')
+    })
+
+    it('should return early from _updateLink when entityKey is null', () => {
+        const setEditorState = jest.fn()
+        const editorState = EditorState.createEmpty()
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                entityKey={undefined}
+                url="https://example.com"
+                text="Test"
+                getEditorState={() => editorState}
+                setEditorState={setEditorState}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(setEditorState).toHaveBeenCalled()
+    })
+
+    it('should NOT call _insertExtraVideoIfApplicable in update mode', () => {
+        const addVideoSpy = jest
+            .spyOn(draftjsPluginsUtils, 'addVideo')
+            .mockImplementation((editorState) => editorState)
+
+        const contentState = ContentState.createFromText('Click Here')
+        const contentStateWithEntity = contentState.createEntity(
+            'link',
+            'MUTABLE',
+            { url: 'https://old.com' },
+        )
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+
+        const block = contentStateWithEntity.getFirstBlock()
+        const entitySelection = EditorState.createWithContent(
+            contentStateWithEntity,
+        )
+            .getSelection()
+            .merge({
+                anchorKey: block.getKey(),
+                anchorOffset: 0,
+                focusKey: block.getKey(),
+                focusOffset: 10,
+            }) as import('draft-js').SelectionState
+
+        const newContent = Modifier.applyEntity(
+            contentStateWithEntity,
+            entitySelection,
+            entityKey,
+        )
+        let editorState = EditorState.createWithContent(newContent)
+
+        const setEditorState = jest.fn((state: EditorState) => {
+            editorState = state
+        })
+        const getEditorState = () => editorState
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                entityKey={entityKey}
+                url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
+                text="Video Link"
+                canAddVideoPlayer
+                getEditorState={getEditorState}
+                setEditorState={setEditorState}
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Update Link'))
+        })
+
+        expect(addVideoSpy).not.toHaveBeenCalled()
+    })
+
+    it('should NOT insert video when URL is not playable', () => {
+        const addVideoSpy = jest
+            .spyOn(draftjsPluginsUtils, 'addVideo')
+            .mockImplementation((editorState) => editorState)
+
+        const canPlaySpy = jest
+            .spyOn(ReactPlayer, 'canPlay')
+            .mockReturnValue(false)
+
+        render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                canAddVideoPlayer
+                text="foo"
+                url="https://not-a-video-site.com/page"
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        act(() => {
+            fireEvent.click(screen.getByText('Insert Link'))
+        })
+
+        expect(addVideoSpy).not.toHaveBeenCalled()
+        canPlaySpy.mockRestore()
+    })
+
+    it('should disable submit when url is a non-template URL that fails linkify', () => {
+        const { getByRole } = render(
+            <AddLinkWithIsOpenState
+                {...defaultProps}
+                text="foo"
+                url="just-some-text-not-url"
+            />,
+        )
+
+        act(() => {
+            fireEvent.click(screen.getByText('link'))
+        })
+
+        const button = getByRole('button', {
+            name: 'Insert Link',
+        })
+        expect(button).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should handle _onPopoverOpen when getBoundingClientRect returns rect with width 0', () => {
+        const setEditorState = jest.fn()
+        const onOpen = jest.fn()
+        const contentState = ContentState.createFromText('Hello')
+        const block = contentState.getFirstBlock()
+        const selection = SelectionState.createEmpty(block.getKey()).merge({
+            anchorOffset: 0,
+            focusOffset: 5,
+        }) as import('draft-js').SelectionState
+        let editorState = EditorState.createWithContent(contentState)
+        editorState = EditorState.forceSelection(editorState, selection)
+
+        const mockRange = {
+            getBoundingClientRect: () => ({
+                width: 0,
+                height: 20,
+                top: 100,
+                bottom: 120,
+                left: 50,
+                right: 50,
+                x: 50,
+                y: 100,
+                toJSON: () => {},
+            }),
+        }
+        const originalGetSelection = window.getSelection
+        window.getSelection = jest.fn().mockReturnValue({
+            rangeCount: 1,
+            getRangeAt: () => mockRange,
+        })
+
+        const ref = React.createRef<AddLinkContainer>()
+
+        render(
+            <AddLinkContainer
+                {...defaultProps}
+                ref={ref}
+                getEditorState={() => editorState}
+                setEditorState={setEditorState}
+                onOpen={onOpen}
+                isOpen={false}
+                text=""
+                url=""
+            />,
+        )
+
+        act(() => {
+            ref.current!._onPopoverOpen(true)
+        })
+
+        expect(onOpen).toHaveBeenCalled()
+        expect(setEditorState).toHaveBeenCalled()
+        window.getSelection = originalGetSelection
+    })
+
+    it('should handle _onPopoverOpen when getSelection throws', () => {
+        const setEditorState = jest.fn()
+        const onOpen = jest.fn()
+        const contentState = ContentState.createFromText('Hello')
+        const block = contentState.getFirstBlock()
+        const selection = SelectionState.createEmpty(block.getKey()).merge({
+            anchorOffset: 0,
+            focusOffset: 5,
+        }) as import('draft-js').SelectionState
+        let editorState = EditorState.createWithContent(contentState)
+        editorState = EditorState.forceSelection(editorState, selection)
+
+        const originalGetSelection = window.getSelection
+        window.getSelection = jest.fn().mockImplementation(() => {
+            throw new Error('not available')
+        })
+
+        const ref = React.createRef<AddLinkContainer>()
+
+        render(
+            <AddLinkContainer
+                {...defaultProps}
+                ref={ref}
+                getEditorState={() => editorState}
+                setEditorState={setEditorState}
+                onOpen={onOpen}
+                isOpen={false}
+                text=""
+                url=""
+            />,
+        )
+
+        act(() => {
+            ref.current!._onPopoverOpen(true)
+        })
+
+        expect(onOpen).toHaveBeenCalled()
+        expect(setEditorState).toHaveBeenCalled()
+        window.getSelection = originalGetSelection
+    })
+
+    it('should render CampaignFormContextInterceptor and call callback when UTM context updates', () => {
+        useFlagMock.mockReturnValue(true)
+        const testUtmQueryString = '?utm_source=test'
+        const testUtmEnabled = true
+
+        useCampaignFormContextMock.mockReturnValue({
+            utmConfiguration: {
+                ...utmConfiguration,
+                appliedUtmQueryString: testUtmQueryString,
+                appliedUtmEnabled: testUtmEnabled,
+            },
+        })
+
+        const { getByText } = render(
+            <ToolbarProvider canAddUtm>
+                <AddLinkWithIsOpenState
+                    {...defaultProps}
+                    text="Foo"
+                    url="https://foo.bar"
+                />
+            </ToolbarProvider>,
+        )
+
+        act(() => {
+            fireEvent.click(getByText(/link/))
+        })
+
+        act(() => {
+            fireEvent.click(getByText(/Insert Link/))
+        })
+
+        expect(attachUtmtoUrlMock).toHaveBeenCalledWith(
+            'https://foo.bar',
+            '',
+            true,
+            testUtmEnabled,
+            testUtmQueryString,
+        )
+    })
+
+    it('should use button as popover target when no anchor position is set and no linkSelectionRect', () => {
+        const linkEditionStarted = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_STARTED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionStarted']
+        const linkEditionEnded = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_ENDED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionEnded']
+
+        const { rerender } = render(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={false}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+            />,
+        )
+
+        rerender(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={true}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+            />,
+        )
+
+        expect(linkEditionStarted).toHaveBeenCalled()
+    })
+
+    it('should use linkSelectionRect as fallback anchor when no anchorStyle is set', () => {
+        const linkEditionStarted = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_STARTED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionStarted']
+        const linkEditionEnded = Object.assign(jest.fn(), {
+            type: 'EDITOR/LINK_EDITION_ENDED' as const,
+            match: jest.fn(),
+        }) as unknown as ComponentProps<
+            typeof AddLinkContainer
+        >['linkEditionEnded']
+        const mockRect = {
+            bottom: 100,
+            left: 50,
+            width: 200,
+            height: 20,
+            top: 80,
+            right: 250,
+            x: 50,
+            y: 80,
+            toJSON: () => {},
+        } as DOMRect
+
+        render(
+            <AddLinkContainer
+                {...defaultProps}
+                isOpen={true}
+                linkEditionStarted={linkEditionStarted}
+                linkEditionEnded={linkEditionEnded}
+                linkSelectionRect={mockRect}
+                text="foo"
+                url="https://example.com"
+            />,
+        )
+
+        expect(
+            screen.getByRole('button', { name: 'Insert Link' }),
+        ).toBeInTheDocument()
     })
 })

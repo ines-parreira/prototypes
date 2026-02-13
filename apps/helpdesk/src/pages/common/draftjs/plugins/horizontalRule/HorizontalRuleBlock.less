@@ -1,0 +1,15 @@
+:local {
+    .horizontalRule {
+        width: 100%;
+        height: 1px;
+        background-color: var(--border-neutral-default);
+        margin: var(--spacing-sm) 0;
+    }
+}
+
+:global {
+    figure:has(:local(.horizontalRule)) {
+        display: block !important;
+        width: 100%;
+    }
+}

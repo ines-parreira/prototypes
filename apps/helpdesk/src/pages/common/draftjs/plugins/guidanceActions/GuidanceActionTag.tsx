@@ -74,7 +74,7 @@ export default function GuidanceActionTag({
             onClick={onClick}
             target="_blank"
         >
-            <span id={wrapperId} className={css.wrapper}>
+            <span id={wrapperId} className={css.wrapper} data-guidance-entity>
                 <span
                     className={classNames(css.container, {
                         [css.invalid]: !action,

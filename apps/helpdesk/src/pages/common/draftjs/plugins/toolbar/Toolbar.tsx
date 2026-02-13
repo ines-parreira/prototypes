@@ -33,6 +33,7 @@ import {
     AddVideo,
     Bold,
     BulletedList,
+    HeadingPicker,
     Italic,
     OrderedList,
     Translate,
@@ -70,6 +71,7 @@ type Props = {
     getWorkflowVariables?: () => WorkflowVariableList
     getGuidanceVariables?: () => GuidanceVariableList
     isToolbarDisabled?: boolean
+    linkSelectionRect?: DOMRect
 } & ActionInjectedProps
 
 const renderButton = (
@@ -113,6 +115,7 @@ const Toolbar = ({
     onLinkClose,
     getWorkflowVariables,
     isToolbarDisabled = false,
+    linkSelectionRect,
 }: Props) => {
     const [isHovered, setIsHovered] = useState(false)
 
@@ -233,6 +236,7 @@ const Toolbar = ({
                             onOpen={onLinkOpen}
                             onClose={onLinkClose}
                             getWorkflowVariables={getWorkflowVariables}
+                            linkSelectionRect={linkSelectionRect}
                         />
                     )}
 
@@ -266,6 +270,9 @@ const Toolbar = ({
                                 isDisabled={!contactFormButtonEnabled}
                             />
                         )}
+                    {isActionDisplayed(ActionName.Heading) && (
+                        <HeadingPicker {...actionsProps} />
+                    )}
                     {isActionDisplayed(ActionName.BulletedList) && (
                         <BulletedList {...actionsProps} />
                     )}

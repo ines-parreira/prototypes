@@ -77,7 +77,7 @@ describe('GuidanceEditor', () => {
         expect(toolbar).toBeInTheDocument()
 
         const buttons = toolbar?.querySelectorAll('button')
-        expect(buttons).toHaveLength(9)
+        expect(buttons).toHaveLength(10)
 
         const icons = container.querySelectorAll('i.material-icons')
         expect(icons[0]).toHaveTextContent('format_bold')
@@ -85,8 +85,9 @@ describe('GuidanceEditor', () => {
         expect(icons[2]).toHaveTextContent('format_underline')
         expect(icons[3]).toHaveTextContent('link')
         expect(icons[4]).toHaveTextContent('insert_emoticon')
-        expect(icons[5]).toHaveTextContent('format_list_bulleted')
-        expect(icons[6]).toHaveTextContent('format_list_numbered')
+        expect(icons[5]).toHaveTextContent('title')
+        expect(icons[6]).toHaveTextContent('format_list_bulleted')
+        expect(icons[7]).toHaveTextContent('format_list_numbered')
 
         expect(toolbar).toHaveTextContent('Actions')
     })
@@ -100,7 +101,7 @@ describe('GuidanceEditor', () => {
         expect(toolbar).toBeInTheDocument()
 
         const buttons = toolbar?.querySelectorAll('button')
-        expect(buttons).toHaveLength(8)
+        expect(buttons).toHaveLength(9)
 
         expect(toolbar).not.toHaveTextContent('Actions')
     })
@@ -133,7 +134,7 @@ describe('GuidanceEditor', () => {
         expect(toolbar).toBeInTheDocument()
 
         const buttons = toolbar?.querySelectorAll('button')
-        expect(buttons).toHaveLength(9)
+        expect(buttons).toHaveLength(10)
     })
 
     it('handles empty content correctly', () => {

@@ -185,6 +185,7 @@
         "lodash": "catalog:lodash",
         "lottie-react": "^2.4.1",
         "lz-string": "1.4.4",
+        "marked": "^17.0.1",
         "md5": "2.2.1",
         "memoize-one": "5.0.0",
         "moment": "catalog:moment",
