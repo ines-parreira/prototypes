@@ -1,10 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { useDownloadAgentsPerformanceData } from 'domains/reporting/hooks/support-performance/agents/useDownloadAgentsPerformanceData'
+import { DOWNLOAD_BUTTON_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { saveZippedFiles } from 'utils/file'
-
-const DOWNLOAD_BUTTON_TITLE = 'Download Agents Performance Data'
 
 export const DownloadAgentsPerformanceDataButton = () => {
     const { files, fileName, isLoading } = useDownloadAgentsPerformanceData()
@@ -18,7 +17,7 @@ export const DownloadAgentsPerformanceDataButton = () => {
                 await saveZippedFiles(files, fileName)
             }}
             disabled={isLoading}
-            title={DOWNLOAD_BUTTON_TITLE}
+            title={DOWNLOAD_BUTTON_TITLES.AGENT_PERFORMANCE}
         />
     )
 }

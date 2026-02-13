@@ -12,7 +12,7 @@ import {
     AgentsShoutOutsConfig,
     TopPerformersChart,
 } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
-import { AgentsTableChart } from 'domains/reporting/pages/support-performance/agents/AgentsTableChart'
+import { AgentsTabbedChart } from 'domains/reporting/pages/support-performance/agents/AgentsTabbedChart'
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 import { TopClosedTicketsPerformers } from 'domains/reporting/pages/support-performance/agents/TopClosedTicketsPerformers'
 import { TopCsatPerformers } from 'domains/reporting/pages/support-performance/agents/TopCsatPerformers'
@@ -48,7 +48,7 @@ export const SupportPerformanceAgentsReportConfig: ReportConfig<AgentsChart> = {
     reportPath: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
     charts: {
         [AgentsChart.Table]: {
-            chartComponent: AgentsTableChart,
+            chartComponent: AgentsTabbedChart,
             label: SECTION_TITLES.AGENT_PERFORMANCE,
             csvProducer: [
                 {

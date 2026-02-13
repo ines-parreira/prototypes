@@ -311,7 +311,6 @@ export const StatsRoutes = () => {
                     path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
                 >
                     <Route
-                        exact
                         path={`${path}/${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`}
                         render={() => (
                             <App

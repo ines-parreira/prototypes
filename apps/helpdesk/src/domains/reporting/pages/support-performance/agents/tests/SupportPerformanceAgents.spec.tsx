@@ -1,10 +1,11 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useAgentsAverageMetrics } from 'domains/reporting/hooks/support-performance/agents/useAgentsAverageMetrics'
 import { useAgentsMetrics } from 'domains/reporting/hooks/support-performance/agents/useAgentsMetrics'
@@ -18,6 +19,7 @@ import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-perf
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
 import { TableColumnsOrder } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
+import { DownloadAgentsAvailabilityButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsAvailabilityButton'
 import { DownloadAgentsPerformanceDataButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import SupportPerformanceAgentsReport, {
     AGENTS_PAGE_TITLE,
@@ -45,6 +47,13 @@ jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice')
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable.tsx')
 const AgentTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
 jest.mock(
+    'domains/reporting/pages/support-performance/agents/AgentAvailabilityTable',
+)
+const AgentAvailabilityTableMock = assumeMock(
+    require('domains/reporting/pages/support-performance/agents/AgentAvailabilityTable')
+        .AgentAvailabilityTable,
+)
+jest.mock(
     'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper',
     () => (props: ComponentProps<typeof FiltersPanelWrapper>) => {
         return props.optionalFilters?.map((optionalFilter) => (
@@ -61,6 +70,12 @@ jest.mock(
 )
 const DownloadAgentsPerformanceDataButtonMock = assumeMock(
     DownloadAgentsPerformanceDataButton,
+)
+jest.mock(
+    'domains/reporting/pages/support-performance/agents/DownloadAgentsAvailabilityButton',
+)
+const DownloadAgentsAvailabilityButtonMock = assumeMock(
+    DownloadAgentsAvailabilityButton,
 )
 jest.mock(
     'domains/reporting/pages/support-performance/agents/TopCsatPerformers',
@@ -104,6 +119,8 @@ jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+jest.mock('@repo/feature-flags')
+const useFlagMock = assumeMock(useFlag)
 
 const componentMock = () => <div />
 
@@ -114,11 +131,13 @@ const defaultState = {
 describe('SupportPerformanceAgents', () => {
     AgentsPerformanceCardExtraMock.mockImplementation(componentMock)
     AgentTableWithDefaultStateMock.mockImplementation(componentMock)
+    AgentAvailabilityTableMock.mockImplementation(componentMock)
     TopCsatPerformersMock.mockImplementation(componentMock)
     TopFirstResponseTimePerformersMock.mockImplementation(componentMock)
     TopResponseTimePerformersMock.mockImplementation(componentMock)
     TopClosedTicketsPerformersMock.mockImplementation(componentMock)
     DownloadAgentsPerformanceDataButtonMock.mockImplementation(componentMock)
+    DownloadAgentsAvailabilityButtonMock.mockImplementation(componentMock)
     AnalyticsFooterMock.mockImplementation(componentMock)
     ChartsActionMenuMock.mockImplementation(componentMock)
     useAgentsMetricsMock.mockReturnValue({
@@ -146,11 +165,18 @@ describe('SupportPerformanceAgents', () => {
         hasAccess: false,
         isLoading: false,
     })
+    useFlagMock.mockReturnValue(false)
 
     it('should render the page title and section title', () => {
         renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             defaultState,
         )
@@ -161,21 +187,34 @@ describe('SupportPerformanceAgents', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render the export data button', () => {
+    it('should render the performance export data button on performance route', () => {
         renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             defaultState,
         )
 
         expect(DownloadAgentsPerformanceDataButtonMock).toHaveBeenCalled()
+        expect(DownloadAgentsAvailabilityButtonMock).not.toHaveBeenCalled()
     })
 
     it('should render the HeatmapSwitch and Agents Shoutout', () => {
         renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             defaultState,
         )
@@ -189,8 +228,14 @@ describe('SupportPerformanceAgents', () => {
 
     it('should render FiltersPanel', () => {
         const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             defaultState,
         )
@@ -205,8 +250,14 @@ describe('SupportPerformanceAgents', () => {
         const extendedOptionalFilters = [...AGENTS_OPTIONAL_FILTERS]
 
         const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             defaultState,
         )
@@ -237,8 +288,14 @@ describe('SupportPerformanceAgents', () => {
         ]
 
         const { getByText } = renderWithStore(
-            <MemoryRouter>
-                <SupportPerformanceAgentsReport />
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
             </MemoryRouter>,
             state,
         )
@@ -246,5 +303,50 @@ describe('SupportPerformanceAgents', () => {
         extendedOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
         })
+    })
+
+    it('should render availability export data button on availability route when feature flag is enabled', () => {
+        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
+            if (flag === FeatureFlagKey.CustomAgentUnavailableStatuses) {
+                return true
+            }
+            return false
+        })
+
+        renderWithStore(
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/availability',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
+            </MemoryRouter>,
+            defaultState,
+        )
+
+        expect(DownloadAgentsAvailabilityButtonMock).toHaveBeenCalled()
+        expect(DownloadAgentsPerformanceDataButtonMock).not.toHaveBeenCalled()
+    })
+
+    it('should not render availability route when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+
+        renderWithStore(
+            <MemoryRouter
+                initialEntries={[
+                    '/stats/support-performance-agents/performance',
+                ]}
+            >
+                <Route path="/stats/support-performance-agents">
+                    <SupportPerformanceAgentsReport />
+                </Route>
+            </MemoryRouter>,
+            defaultState,
+        )
+
+        expect(DownloadAgentsPerformanceDataButtonMock).toHaveBeenCalled()
+        expect(DownloadAgentsAvailabilityButtonMock).not.toHaveBeenCalled()
     })
 })

@@ -1,4 +1,6 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useGridSize } from '@repo/hooks'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { useCleanStatsFilters } from 'domains/reporting/hooks/useCleanStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -9,6 +11,7 @@ import DashboardSection from 'domains/reporting/pages/common/layout/DashboardSec
 import StatsPage from 'domains/reporting/pages/common/layout/StatsPage'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import { AGENTS_SHOUT_OUTS_TITLE } from 'domains/reporting/pages/support-performance/agents/AgentsShoutOutsConfig'
+import { DownloadAgentsAvailabilityButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsAvailabilityButton'
 import { DownloadAgentsPerformanceDataButton } from 'domains/reporting/pages/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
     AgentsChart,
@@ -18,7 +21,11 @@ import {
 export const AGENTS_PAGE_TITLE = 'Agents'
 
 export default function SupportPerformanceAgentsReport() {
+    const { path } = useRouteMatch()
     const getGridCellSize = useGridSize()
+    const isAgentAvailabilityEnabled = useFlag(
+        FeatureFlagKey.CustomAgentUnavailableStatuses,
+    )
     useCleanStatsFilters()
 
     return (
@@ -26,9 +33,16 @@ export default function SupportPerformanceAgentsReport() {
             <StatsPage
                 title={AGENTS_PAGE_TITLE}
                 titleExtra={
-                    <>
-                        <DownloadAgentsPerformanceDataButton />
-                    </>
+                    <Switch>
+                        <Route path={`${path}/performance`}>
+                            <DownloadAgentsPerformanceDataButton />
+                        </Route>
+                        {isAgentAvailabilityEnabled && (
+                            <Route path={`${path}/availability`}>
+                                <DownloadAgentsAvailabilityButton />
+                            </Route>
+                        )}
+                    </Switch>
                 }
             >
                 <DashboardSection>
@@ -93,6 +107,9 @@ export default function SupportPerformanceAgentsReport() {
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />
+                <Switch>
+                    <Redirect exact from={path} to={`${path}/performance`} />
+                </Switch>
             </StatsPage>
         </div>
     )
