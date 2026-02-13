@@ -179,6 +179,7 @@ exports[`view resources createView should resolve with a new View on success 2`]
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/",
@@ -222,6 +223,7 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/views/",
@@ -841,6 +843,7 @@ exports[`view resources updateView should resolve with an updated View on succes
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/7/",

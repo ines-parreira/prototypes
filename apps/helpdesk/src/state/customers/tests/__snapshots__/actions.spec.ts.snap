@@ -29,6 +29,7 @@ exports[`customers actions bulkDeleteCustomer() 1`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/customers/",

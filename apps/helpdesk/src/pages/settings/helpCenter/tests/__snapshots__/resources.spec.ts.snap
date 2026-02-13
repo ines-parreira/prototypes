@@ -36,6 +36,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
@@ -85,6 +86,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
@@ -127,6 +129,7 @@ exports[`getAIGeneratedArticlesByHelpCenterAndStore rejects if the server return
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/article-templates/ai/2",
@@ -175,6 +178,7 @@ exports[`getAIGeneratedArticlesByHelpCenterAndStore resolves with a list of AI a
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/article-templates/ai/2",
@@ -225,6 +229,7 @@ exports[`getArticleTemplate rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/article-templates/shippingPolicy",
@@ -275,6 +280,7 @@ exports[`getArticleTemplate resolves with an article template on success 1`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/article-templates/shippingPolicy",
@@ -325,6 +331,7 @@ exports[`getArticleTemplates rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/article-templates",
@@ -375,6 +382,7 @@ exports[`getArticleTemplates resolves with a list of article templates on succes
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/article-templates",
@@ -423,6 +431,7 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
@@ -471,6 +480,7 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-page-embedments",
@@ -519,6 +529,7 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-pages",
@@ -567,6 +578,7 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/shopify-pages",

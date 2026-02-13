@@ -126,6 +126,7 @@ exports[`macro resources createMacro should resolve with a new Macro on success 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/macros/",
@@ -265,6 +266,7 @@ exports[`macro resources fetchMacros should resolve with a Macro list on success
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/macros/",
@@ -576,6 +578,7 @@ exports[`macro resources updateMacro should resolve with the updated macro on su
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/macros/1/",

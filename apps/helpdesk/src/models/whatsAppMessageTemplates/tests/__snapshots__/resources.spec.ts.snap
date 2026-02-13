@@ -91,6 +91,7 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/integrations/whatsapp/message-templates",

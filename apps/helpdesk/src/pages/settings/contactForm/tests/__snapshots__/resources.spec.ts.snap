@@ -36,6 +36,7 @@ exports[`createContactForm rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms",
@@ -85,6 +86,7 @@ exports[`createContactForm resolves with a created contact form on success 1`] =
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms",
@@ -134,6 +136,7 @@ exports[`createPageEmbedment rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
@@ -183,6 +186,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
@@ -225,6 +229,7 @@ exports[`getContactForms rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms",
@@ -273,6 +278,7 @@ exports[`getContactForms resolves with a list of contact forms on success 1`] = 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms",
@@ -321,6 +327,7 @@ exports[`getPageEmbedments rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
@@ -369,6 +376,7 @@ exports[`getPageEmbedments resolves with a list of page embedments on success 1`
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-page-embedments",
@@ -417,6 +425,7 @@ exports[`getShopifyPages rejects if the server returns an error 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-pages",
@@ -465,6 +474,7 @@ exports[`getShopifyPages resolves with a list of shopify pages on success 1`] = 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/contact-forms/1/shopify-pages",

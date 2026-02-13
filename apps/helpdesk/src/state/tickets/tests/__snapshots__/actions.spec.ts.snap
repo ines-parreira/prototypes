@@ -36,6 +36,7 @@ exports[`tickets actions bulkUpdate() should call the jobs api with the given pa
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/jobs/",

@@ -30,6 +30,7 @@ exports[`widgets resources fetchWidgets should resolve with a list of widgets on
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/widgets/",

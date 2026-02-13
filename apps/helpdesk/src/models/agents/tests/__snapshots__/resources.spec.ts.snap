@@ -41,6 +41,7 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/users/",

@@ -36,6 +36,7 @@ exports[`search resource search should call the search endpoint with the type 1`
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/search/",

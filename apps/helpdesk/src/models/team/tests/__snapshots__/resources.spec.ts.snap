@@ -67,6 +67,7 @@ exports[`team resources createTeam should resolve with a new Team on success 2`]
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/teams/",
@@ -107,6 +108,7 @@ exports[`team resources deleteTeam should resolve on success 1`] = `
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/teams/1/",
@@ -174,6 +176,7 @@ exports[`team resources fetchTeamMembers should resolve with the team members on
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/teams/35/members",
@@ -243,6 +246,7 @@ exports[`team resources fetchTeams should resolve with a Team list on success 1`
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/teams/",
@@ -383,6 +387,7 @@ exports[`team resources updateTeam should resolve with the updated team on succe
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/teams/33/",

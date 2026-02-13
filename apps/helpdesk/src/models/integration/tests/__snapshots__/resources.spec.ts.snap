@@ -127,6 +127,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/integrations",

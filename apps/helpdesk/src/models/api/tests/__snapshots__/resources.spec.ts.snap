@@ -37,6 +37,7 @@ exports[`client resources createClient should return a proper new instance of ax
   "transitional": {
     "clarifyTimeoutError": false,
     "forcedJSONParsing": true,
+    "legacyInterceptorReqResOrdering": true,
     "silentJSONParsing": true,
   },
   "validateStatus": [Function],
@@ -94,6 +95,7 @@ exports[`client resources resources axios instance should resolve with data 1`] 
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api",
@@ -152,6 +154,7 @@ exports[`client resources resources axios instance should send a request with da
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api",

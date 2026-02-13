@@ -28,6 +28,7 @@ exports[`user resources createUserSetting should resolve on success 1`] = `
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/users/0/settings/",
@@ -79,6 +80,7 @@ exports[`user resources updateUserSetting should resolve on success 1`] = `
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/users/0/settings/2/",
@@ -139,6 +141,7 @@ exports[`user resources updateUserSetting should resolve on success 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/users/0/settings/2/",

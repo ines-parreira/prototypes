@@ -37,6 +37,7 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/foo/bar",
@@ -78,6 +79,7 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/foo/bar",
@@ -119,6 +121,7 @@ exports[`services GorgiasApi *cursorPaginate() should yield each page of request
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/foo/bar",
@@ -182,6 +185,7 @@ exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/billing/invoices/in_mf9u2x3j20z/confirm-payment/",
@@ -230,6 +234,7 @@ exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/integrations/shopify/order/draft/2/",
@@ -294,6 +299,7 @@ exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of gi
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/integrations/shopify/order/draft/2/send-invoice/",
@@ -341,6 +347,7 @@ exports[`services GorgiasApi getViewSharing() should fetch view's sharing option
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1",
@@ -402,6 +409,7 @@ exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/billing/invoices/in_1dj2801j2d/pay/",
@@ -456,6 +464,7 @@ exports[`services GorgiasApi setViewSharing() should update view's sharing optio
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1",
@@ -510,6 +519,7 @@ exports[`services GorgiasApi startSubscription() should start the subscription o
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/billing/subscription/start/",

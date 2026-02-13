@@ -36,6 +36,7 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/jobs/",
@@ -85,6 +86,7 @@ exports[`actions createJob() should call the job API with the view id in it's pa
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/jobs/",
@@ -143,6 +145,7 @@ exports[`actions deleteView() should update the active view with the same type w
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/",
@@ -229,6 +232,7 @@ exports[`actions fetchViewItems should fetch current page with cursor 1`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items/?cursor=1234",
@@ -307,6 +311,7 @@ exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items/",
@@ -385,6 +390,7 @@ exports[`actions fetchViewItems should fetch next page 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items?direction=next&cursor=123&ignored_item=7",
@@ -463,6 +469,7 @@ exports[`actions fetchViewItems should fetch prev page 2`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items?direction=prevcursor=123&ignored_item=7",
@@ -522,6 +529,7 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items/",
@@ -581,6 +589,7 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items/",
@@ -640,6 +649,7 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/1/items/",
@@ -764,6 +774,7 @@ exports[`actions submitView() should create view when id is 0 1`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/",
@@ -829,6 +840,7 @@ exports[`actions submitView() should update view 1`] = `
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/views/99/",

@@ -124,6 +124,7 @@ exports[`phone numbers resources createPhoneNumber should resolve with a new Pho
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/integrations/phone/phone-numbers/",
@@ -292,6 +293,7 @@ exports[`phone numbers resources updatePhoneNumber should resolve with the updat
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/integrations/phone/phone-numbers/1/",

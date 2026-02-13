@@ -28,6 +28,7 @@ exports[`account resources createAccountSetting should resolve on success 1`] = 
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/account/settings/",
@@ -129,6 +130,7 @@ exports[`account resources updateAccountSetting should resolve on success 1`] = 
     "transitional": {
       "clarifyTimeoutError": false,
       "forcedJSONParsing": true,
+      "legacyInterceptorReqResOrdering": true,
       "silentJSONParsing": true,
     },
     "url": "/api/account/settings/2/",
@@ -199,6 +201,7 @@ exports[`account resources updateAccountSetting should resolve on success 2`] = 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/account/settings/2/",

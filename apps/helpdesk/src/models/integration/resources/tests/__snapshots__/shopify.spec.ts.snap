@@ -33,6 +33,7 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Customer t
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/integrations/shopify/shop-tags/customers/list/",
@@ -85,6 +86,7 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Order tags
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/integrations/shopify/shop-tags/orders/list/",

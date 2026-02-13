@@ -29,6 +29,7 @@ exports[`HTTP event resources getHTTPEvent should resolve with an existing Custo
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/integrations/1/events/1",
@@ -77,6 +78,7 @@ exports[`HTTP event resources getHTTPEvents should resolve with a list of http e
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/integrations/1/events/",

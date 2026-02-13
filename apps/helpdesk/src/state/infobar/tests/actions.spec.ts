@@ -115,21 +115,23 @@ describe('infobar actions', () => {
 
             return store
                 .dispatch(actions.searchWithHighlights('alex'))
-                .finally(() =>
-                    expect(store.getActions()).toEqual([
-                        {
-                            type: SEARCH_CUSTOMERS_START,
-                        },
-                        {
-                            error: {
-                                message: 'some error message',
-                                name: 'AxiosError',
-                            },
-                            reason: 'Failed to do the search. Please try again...',
+                .finally(() => {
+                    const dispatched = store.getActions()
+                    expect(dispatched).toHaveLength(2)
+                    expect(dispatched[0]).toEqual({
+                        type: SEARCH_CUSTOMERS_START,
+                    })
+                    expect(dispatched[1]).toEqual(
+                        expect.objectContaining({
                             type: SEARCH_CUSTOMERS_ERROR,
-                        },
-                    ]),
-                )
+                            reason: 'Failed to do the search. Please try again...',
+                        }),
+                    )
+                    expect(dispatched[1].error).toBeInstanceOf(axios.AxiosError)
+                    expect(dispatched[1].error.message).toBe(
+                        'some error message',
+                    )
+                })
         })
     })
 

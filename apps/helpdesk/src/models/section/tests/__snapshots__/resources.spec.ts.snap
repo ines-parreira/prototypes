@@ -48,6 +48,7 @@ exports[`section resources createSection should resolve with a new Section on su
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/view-sections/",
@@ -146,6 +147,7 @@ exports[`section resources updateSection should resolve with an updated Section 
       "transitional": {
         "clarifyTimeoutError": false,
         "forcedJSONParsing": true,
+        "legacyInterceptorReqResOrdering": true,
         "silentJSONParsing": true,
       },
       "url": "/api/view-sections/1/",
