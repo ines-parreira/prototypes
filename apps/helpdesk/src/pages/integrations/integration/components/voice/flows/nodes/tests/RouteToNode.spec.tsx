@@ -20,6 +20,8 @@ import type {
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
+import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { RouteToNode } from '../RouteToNode'
 
@@ -61,7 +63,13 @@ const renderComponent = (
         <FlowProvider>
             <VoiceFlowProvider selectedNode={mockStep.id}>
                 <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                    <RouteToNode {...props} />
+                    <TextToSpeechContext.Provider
+                        value={
+                            { integrationId: 123 } as TextToSpeechContextType
+                        }
+                    >
+                        <RouteToNode {...props} />
+                    </TextToSpeechContext.Provider>
                 </Form>
             </VoiceFlowProvider>
         </FlowProvider>,

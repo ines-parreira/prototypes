@@ -16,6 +16,11 @@ import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { PlayMessageNode } from '../PlayMessageNode'
 
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
+    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+)
+
 describe('PlayMessageNode', () => {
     const renderComponent = (
         mockFlow: VoiceFlowFormValues,

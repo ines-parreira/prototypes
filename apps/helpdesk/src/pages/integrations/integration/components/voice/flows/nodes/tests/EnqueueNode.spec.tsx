@@ -24,6 +24,10 @@ import { EnqueueNode } from '../EnqueueNode'
 jest.mock(
     'pages/integrations/integration/components/voice/flows/utils/useDeleteNode',
 )
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
+    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+)
 
 const useDeleteNodeMock = assumeMock(useDeleteNode)
 const mockDeleteEnqueueBranches = jest.fn()

@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import { DropdownItem } from 'reactstrap'
 
@@ -78,7 +77,6 @@ const VoiceMessageField = ({
         VoiceMessageType.VoiceRecording,
         ...(allowNone ? [VoiceMessageType.None] : []),
     ]
-    const withPreview = useFlag(FeatureFlagKey.UseVoiceTTSRecording)
 
     useEffect(() => {
         if (
@@ -211,9 +209,9 @@ const VoiceMessageField = ({
                         selectedValue={value}
                         className={css.optionContentHorizontal}
                         isDisabled={isDisabled}
-                        withLength={withPreview}
+                        withLength={true}
                     />
-                    {withPreview && name && (
+                    {name && (
                         <VoiceMessageTTSPreviewFields
                             value={value}
                             onChange={onChange}

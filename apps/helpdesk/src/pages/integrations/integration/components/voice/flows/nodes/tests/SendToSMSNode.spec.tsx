@@ -16,6 +16,8 @@ import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
+import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
 import type { VoiceFlowFormValues } from '../../types'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { SendToSMSNode } from '../SendToSMSNode'
@@ -95,7 +97,15 @@ describe('SendToSMSNode', () => {
             <FlowProvider>
                 <VoiceFlowProvider selectedNode={step.id}>
                     <Form defaultValues={flowData} onValidSubmit={jest.fn()}>
-                        <SendToSMSNode {...props} />
+                        <TextToSpeechContext.Provider
+                            value={
+                                {
+                                    integrationId: 123,
+                                } as TextToSpeechContextType
+                            }
+                        >
+                            <SendToSMSNode {...props} />
+                        </TextToSpeechContext.Provider>
                     </Form>
                 </VoiceFlowProvider>
             </FlowProvider>,

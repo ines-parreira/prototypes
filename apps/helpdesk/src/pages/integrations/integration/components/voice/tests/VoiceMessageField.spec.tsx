@@ -1,5 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -15,6 +13,10 @@ import { notify } from 'state/notifications/actions'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import VoiceMessageField from '../VoiceMessageField'
+
+jest.mock('../VoiceMessageTTS/VoiceMessageTTSPreviewFields', () => () => (
+    <div>VoiceMessageTTSPreviewFields</div>
+))
 
 jest.mock('@gorgias/helpdesk-queries')
 jest.mock('state/notifications/actions')
@@ -35,9 +37,6 @@ const uploadResponse = (isLoading = false) =>
         isLoading,
         mutate: mutateUploadMock,
     }) as unknown as ReturnType<typeof useUploadCustomVoiceRecording>
-
-jest.mock('@repo/feature-flags')
-const useFlagsMock = assumeMock(useFlag)
 
 describe('VoiceMessageField', () => {
     const onChange = jest.fn()
@@ -151,22 +150,12 @@ describe('VoiceMessageField', () => {
         })
 
         it('should display preview fields', () => {
-            useFlagsMock.mockReturnValue(true)
             renderComponent()
 
             expect(
                 screen.getByText('VoiceMessageTTSPreviewFields'),
             ).toBeInTheDocument()
             expect(screen.getByText('21 / 1000')).toBeInTheDocument()
-        })
-
-        it('should not display preview fields when FF is off', () => {
-            useFlagsMock.mockReturnValue(false)
-            renderComponent()
-
-            expect(
-                screen.queryByText('VoiceMessageTTSPreviewFields'),
-            ).toBeNull()
         })
 
         it('should update text-to-speech content when typing', async () => {

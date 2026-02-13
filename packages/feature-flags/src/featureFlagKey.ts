@@ -207,7 +207,6 @@ export enum FeatureFlagKey {
     UIVisionMilestone1Dot5 = 'linear.project_ui-vision.milestone-1-5',
     UIVisionMilestone2 = 'linear.project_ui-vision.milestone-2',
     UIVisionWayfindingMS1 = 'linear.project_ui-vision-wayfinding-milestone-1',
-    UseVoiceTTSRecording = 'use-voice-tts-recording',
     VoiceCallDuringBusinessHours = 'voice-call-during-business-hours',
     VoiceSLA = 'voice-sla',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',

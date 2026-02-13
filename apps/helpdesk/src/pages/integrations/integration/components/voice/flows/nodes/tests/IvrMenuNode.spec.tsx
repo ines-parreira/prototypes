@@ -26,6 +26,10 @@ jest.mock(
         useUpdateNodes: () => mockUpdateNodes,
     }),
 )
+jest.mock(
+    'pages/integrations/integration/components/voice/VoiceMessageTTS/VoiceMessageTTSPreviewFields',
+    () => () => <div>VoiceMessageTTSPreviewFields</div>,
+)
 
 const matchesOriginal = HTMLElement.prototype.matches
 HTMLElement.prototype.matches = function (query: string) {

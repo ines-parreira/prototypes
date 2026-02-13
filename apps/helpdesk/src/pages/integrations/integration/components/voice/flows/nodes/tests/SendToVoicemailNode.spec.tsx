@@ -15,6 +15,8 @@ import type {
 import { FlowProvider } from 'core/ui/flows'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
+import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
+import TextToSpeechContext from '../../../VoiceMessageTTS/TextToSpeechContext'
 import VoiceFlowProvider from '../../VoiceFlowProvider'
 import { SendToVoicemailNode } from '../SendToVoicemailNode'
 
@@ -32,7 +34,15 @@ describe('SendToVoicemailNode', () => {
             <FlowProvider>
                 <VoiceFlowProvider selectedNode={mockStep.id}>
                     <Form defaultValues={mockFlow} onValidSubmit={jest.fn()}>
-                        <SendToVoicemailNode {...props} />
+                        <TextToSpeechContext.Provider
+                            value={
+                                {
+                                    integrationId: 123,
+                                } as TextToSpeechContextType
+                            }
+                        >
+                            <SendToVoicemailNode {...props} />
+                        </TextToSpeechContext.Provider>
                     </Form>
                 </VoiceFlowProvider>
             </FlowProvider>,
