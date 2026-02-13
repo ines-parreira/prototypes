@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { ArticleToolbarControls } from './ArticleToolbarControls'
+import { useArticleContext } from './context'
 import { useArticleToolbar } from './hooks/useArticleToolbar'
 import { useVersionHistory } from './hooks/useVersionHistory'
 
@@ -11,6 +12,10 @@ jest.mock('./hooks/useArticleToolbar', () => ({
 
 jest.mock('./hooks/useVersionHistory', () => ({
     useVersionHistory: jest.fn(),
+}))
+
+jest.mock('./context', () => ({
+    useArticleContext: jest.fn(),
 }))
 
 jest.mock('../shared/VersionHistoryButton', () => ({
@@ -23,6 +28,7 @@ jest.mock('../shared/VersionHistoryButton', () => ({
 
 const mockUseArticleToolbar = useArticleToolbar as jest.Mock
 const mockUseVersionHistory = useVersionHistory as jest.Mock
+const mockUseArticleContext = useArticleContext as jest.Mock
 
 describe('ArticleToolbarControls', () => {
     let mockOnClickEdit: jest.Mock
@@ -67,6 +73,9 @@ describe('ArticleToolbarControls', () => {
         mockOnDiscard = jest.fn()
         mockOnTest = jest.fn()
 
+        mockUseArticleContext.mockReturnValue({
+            dispatch: jest.fn(),
+        })
         mockUseArticleToolbar.mockReturnValue(createMockToolbar())
         mockUseVersionHistory.mockReturnValue({
             versions: [],
@@ -512,7 +521,12 @@ describe('ArticleToolbarControls', () => {
     })
 
     describe('viewing-historical-version state', () => {
+        const mockDispatch = jest.fn()
+
         beforeEach(() => {
+            mockUseArticleContext.mockReturnValue({
+                dispatch: mockDispatch,
+            })
             mockUseArticleToolbar.mockReturnValue(
                 createMockToolbar({
                     state: { type: 'viewing-historical-version' },
@@ -549,30 +563,46 @@ describe('ArticleToolbarControls', () => {
             })
         })
 
-        it('should render version history, edit, delete, and test buttons', () => {
+        it('should render version history, restore, and test buttons', () => {
             render(<ArticleToolbarControls />)
 
             expect(
                 screen.getByRole('button', { name: /version history/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /edit/i }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /delete/i }),
+                screen.getByRole('button', { name: /restore/i }),
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: /test/i }),
             ).toBeInTheDocument()
         })
 
-        it('should disable edit, delete, and test buttons', () => {
+        it('should not render edit or delete buttons', () => {
             render(<ArticleToolbarControls />)
 
-            expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled()
             expect(
-                screen.getByRole('button', { name: /delete/i }),
-            ).toBeDisabled()
+                screen.queryByRole('button', { name: /edit/i }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: /delete/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should dispatch SET_MODAL restore when restore button is clicked', async () => {
+            const user = userEvent.setup()
+            render(<ArticleToolbarControls />)
+
+            await user.click(screen.getByRole('button', { name: /restore/i }))
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'restore',
+            })
+        })
+
+        it('should disable test button', () => {
+            render(<ArticleToolbarControls />)
+
             expect(screen.getByRole('button', { name: /test/i })).toBeDisabled()
         })
 

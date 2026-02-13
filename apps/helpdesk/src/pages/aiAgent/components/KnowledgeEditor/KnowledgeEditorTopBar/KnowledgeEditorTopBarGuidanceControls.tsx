@@ -85,7 +85,7 @@ export const GuidanceToolbarControls = () => {
         onDiscardCreate,
     } = actions
 
-    const { state, config } = useGuidanceContext()
+    const { state, config, dispatch } = useGuidanceContext()
     const articleId = state.guidance?.id
     const shopName = config.shopName
     const showDuplicate = !!articleId && !!shopName
@@ -95,10 +95,6 @@ export const GuidanceToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
-                    <EditIconButton
-                        disabled={true}
-                        disabledReason="This version is read-only. View the version with draft edits to make changes."
-                    />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -114,13 +110,17 @@ export const GuidanceToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <MoreActionsMenu
-                        allDisabled={true}
-                        isDisabled={true}
-                        showDuplicate={showDuplicate}
-                        onOpenDeleteModal={onOpenDeleteModal}
-                        onOpenDuplicateModal={onOpenDuplicateModal}
-                    />
+                    <Button
+                        variant="primary"
+                        onClick={() =>
+                            dispatch({
+                                type: 'SET_MODAL',
+                                payload: 'restore',
+                            })
+                        }
+                    >
+                        Restore
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={true} />
                     )}

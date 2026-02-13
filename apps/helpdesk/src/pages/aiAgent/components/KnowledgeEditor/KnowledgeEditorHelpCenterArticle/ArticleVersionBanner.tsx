@@ -34,9 +34,6 @@ export function ArticleVersionBanner() {
             isViewingHistoricalVersion={isViewingHistoricalVersion}
             onGoToLatest={onGoToLatest}
             historicalVersion={state.historicalVersion}
-            onOpenRestoreModal={() =>
-                dispatch({ type: 'SET_MODAL', payload: 'restore' })
-            }
             isDiffMode={isDiffMode}
             onToggleDiff={isViewingHistoricalVersion ? onToggleDiff : undefined}
         />

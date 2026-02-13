@@ -43,7 +43,6 @@ type DefaultProps = {
     isViewingHistoricalVersion: boolean
     onGoToLatest: jest.Mock
     historicalVersion: HistoricalVersion
-    onOpenRestoreModal: jest.Mock
     isDiffMode?: boolean
     onToggleDiff?: jest.Mock
     className?: string
@@ -58,7 +57,6 @@ const defaultProps: DefaultProps = {
     isViewingHistoricalVersion: false,
     onGoToLatest: jest.fn(),
     historicalVersion: null,
-    onOpenRestoreModal: jest.fn(),
 }
 
 function renderComponent(overrides?: Partial<typeof defaultProps>) {
@@ -342,23 +340,7 @@ describe('VersionBanner', () => {
             expect(onGoToLatest).toHaveBeenCalledTimes(1)
         })
 
-        it('calls onOpenRestoreModal when "Restore this version" button is clicked', async () => {
-            const onOpenRestoreModal = jest.fn()
-            const user = userEvent.setup()
-
-            renderComponent({
-                ...historicalVersionProps,
-                onOpenRestoreModal,
-            })
-
-            await user.click(
-                screen.getByRole('button', { name: /Restore this version/i }),
-            )
-
-            expect(onOpenRestoreModal).toHaveBeenCalledTimes(1)
-        })
-
-        it('disables buttons when isDisabled is true', () => {
+        it('disables back to latest button when isDisabled is true', () => {
             renderComponent({
                 ...historicalVersionProps,
                 isDisabled: true,
@@ -367,9 +349,14 @@ describe('VersionBanner', () => {
             expect(
                 screen.getByRole('button', { name: /Back to latest/i }),
             ).toBeDisabled()
+        })
+
+        it('does not render a restore button', () => {
+            renderComponent(historicalVersionProps)
+
             expect(
-                screen.getByRole('button', { name: /Restore this version/i }),
-            ).toBeDisabled()
+                screen.queryByRole('button', { name: /Restore/i }),
+            ).not.toBeInTheDocument()
         })
 
         it('applies custom className when provided', () => {
@@ -389,7 +376,7 @@ describe('VersionBanner', () => {
                 )
             })
 
-            it('renders "Compare" button when onToggleDiff is provided and not in diff mode', () => {
+            it('renders unchecked toggle when onToggleDiff is provided and not in diff mode', () => {
                 renderComponent({
                     ...historicalVersionProps,
                     onToggleDiff: jest.fn(),
@@ -397,11 +384,12 @@ describe('VersionBanner', () => {
                 })
 
                 expect(
-                    screen.getByRole('button', { name: /Compare/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).not.toBeChecked()
             })
 
-            it('renders "View content" button when in diff mode', () => {
+            it('renders checked toggle when in diff mode', () => {
                 renderComponent({
                     ...historicalVersionProps,
                     onToggleDiff: jest.fn(),
@@ -409,24 +397,23 @@ describe('VersionBanner', () => {
                 })
 
                 expect(
-                    screen.getByRole('button', { name: /View content/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).toBeChecked()
             })
 
-            it('does not render diff toggle button when onToggleDiff is not provided', () => {
+            it('does not render diff toggle when onToggleDiff is not provided', () => {
                 renderComponent({
                     ...historicalVersionProps,
                 })
 
                 expect(
-                    screen.queryByRole('button', { name: /Compare/i }),
+                    screen.queryByText('Compare to current'),
                 ).not.toBeInTheDocument()
-                expect(
-                    screen.queryByRole('button', { name: /View content/i }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
 
-            it('calls onToggleDiff when "Compare" button is clicked', async () => {
+            it('calls onToggleDiff when toggle is clicked off', async () => {
                 const onToggleDiff = jest.fn()
                 const user = userEvent.setup()
 
@@ -436,14 +423,12 @@ describe('VersionBanner', () => {
                     isDiffMode: false,
                 })
 
-                await user.click(
-                    screen.getByRole('button', { name: /Compare/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(onToggleDiff).toHaveBeenCalledTimes(1)
             })
 
-            it('calls onToggleDiff when "View content" button is clicked', async () => {
+            it('calls onToggleDiff when toggle is clicked on', async () => {
                 const onToggleDiff = jest.fn()
                 const user = userEvent.setup()
 
@@ -453,14 +438,12 @@ describe('VersionBanner', () => {
                     isDiffMode: true,
                 })
 
-                await user.click(
-                    screen.getByRole('button', { name: /View content/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(onToggleDiff).toHaveBeenCalledTimes(1)
             })
 
-            it('disables diff toggle button when isDisabled is true', () => {
+            it('disables toggle when isDisabled is true', () => {
                 renderComponent({
                     ...historicalVersionProps,
                     onToggleDiff: jest.fn(),
@@ -468,12 +451,10 @@ describe('VersionBanner', () => {
                     isDisabled: true,
                 })
 
-                expect(
-                    screen.getByRole('button', { name: /Compare/i }),
-                ).toBeDisabled()
+                expect(screen.getByRole('switch')).toBeDisabled()
             })
 
-            it('does not render diff toggle button when feature flag is disabled', () => {
+            it('does not render diff toggle when feature flag is disabled', () => {
                 mockUseFlag.mockReturnValue(false)
 
                 renderComponent({
@@ -483,11 +464,9 @@ describe('VersionBanner', () => {
                 })
 
                 expect(
-                    screen.queryByRole('button', { name: /Compare/i }),
+                    screen.queryByText('Compare to current'),
                 ).not.toBeInTheDocument()
-                expect(
-                    screen.queryByRole('button', { name: /View content/i }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
         })
     })

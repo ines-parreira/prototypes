@@ -279,24 +279,17 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             expect(mockOnGoToLatest).toHaveBeenCalledTimes(1)
         })
 
-        it('"Restore this version" button dispatches SET_MODAL restore', async () => {
-            const user = userEvent.setup()
-
+        it('does not render a restore button in the banner', () => {
             renderComponent()
 
-            await user.click(
-                screen.getByRole('button', {
+            expect(
+                screen.queryByRole('button', {
                     name: /Restore this version/i,
                 }),
-            )
-
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_MODAL',
-                payload: 'restore',
-            })
+            ).not.toBeInTheDocument()
         })
 
-        it('buttons are disabled when isDisabled is true', () => {
+        it('back to latest button is disabled when isDisabled is true', () => {
             mockUseVersionBanner.mockReturnValue({
                 ...defaultMockState,
                 isDisabled: true,
@@ -306,11 +299,6 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
             expect(
                 screen.getByRole('button', { name: /Back to latest/i }),
-            ).toBeDisabled()
-            expect(
-                screen.getByRole('button', {
-                    name: /Restore this version/i,
-                }),
             ).toBeDisabled()
         })
 
@@ -322,7 +310,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 )
             })
 
-            it('renders "Compare" button when not in diff mode', () => {
+            it('renders unchecked toggle when not in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
                         guidanceMode: 'read',
@@ -341,11 +329,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 renderComponent()
 
                 expect(
-                    screen.getByRole('button', { name: /Compare/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).not.toBeChecked()
             })
 
-            it('renders "View content" button when in diff mode', () => {
+            it('renders checked toggle when in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
                         guidanceMode: 'diff',
@@ -364,11 +353,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 renderComponent()
 
                 expect(
-                    screen.getByRole('button', { name: /View content/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).toBeChecked()
             })
 
-            it('dispatches SET_MODE with "diff" when "Compare" is clicked', async () => {
+            it('dispatches SET_MODE with "diff" when toggle is clicked on', async () => {
                 const user = userEvent.setup()
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
@@ -387,9 +377,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
                 renderComponent()
 
-                await user.click(
-                    screen.getByRole('button', { name: /Compare/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SET_MODE',
@@ -397,7 +385,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 })
             })
 
-            it('dispatches SET_MODE with "read" when "View content" is clicked', async () => {
+            it('dispatches SET_MODE with "read" when toggle is clicked off', async () => {
                 const user = userEvent.setup()
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
@@ -416,9 +404,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
                 renderComponent()
 
-                await user.click(
-                    screen.getByRole('button', { name: /View content/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SET_MODE',
@@ -426,7 +412,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 })
             })
 
-            it('disables the diff toggle button when isDisabled is true', () => {
+            it('disables toggle when isDisabled is true', () => {
                 mockUseVersionBanner.mockReturnValue({
                     ...defaultMockState,
                     isDisabled: true,
@@ -448,12 +434,10 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
                 renderComponent()
 
-                expect(
-                    screen.getByRole('button', { name: /Compare/i }),
-                ).toBeDisabled()
+                expect(screen.getByRole('switch')).toBeDisabled()
             })
 
-            it('does not render diff toggle button when feature flag is disabled', () => {
+            it('does not render diff toggle when feature flag is disabled', () => {
                 mockUseFlag.mockReturnValue(false)
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
@@ -473,17 +457,15 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 renderComponent()
 
                 expect(
-                    screen.queryByRole('button', { name: /Compare/i }),
+                    screen.queryByText('Compare to current'),
                 ).not.toBeInTheDocument()
-                expect(
-                    screen.queryByRole('button', { name: /View content/i }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
         })
     })
 
     describe('when not viewing historical version', () => {
-        it('does not render the diff toggle button', () => {
+        it('does not render the diff toggle', () => {
             mockUseGuidanceContext.mockReturnValue({
                 state: {
                     guidanceMode: 'read',
@@ -495,11 +477,9 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             renderComponent()
 
             expect(
-                screen.queryByRole('button', { name: /Compare/i }),
+                screen.queryByText('Compare to current'),
             ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: /View content/i }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('switch')).not.toBeInTheDocument()
         })
     })
 

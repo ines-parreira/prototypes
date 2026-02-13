@@ -331,23 +331,17 @@ describe('ArticleVersionBanner', () => {
             expect(mockOnGoToLatest).toHaveBeenCalledTimes(1)
         })
 
-        it('should dispatch SET_MODAL restore when "Restore this version" is clicked', async () => {
-            const user = userEvent.setup()
+        it('should not render a restore button in the banner', () => {
             render(<ArticleVersionBanner />)
 
-            await user.click(
-                screen.getByRole('button', {
+            expect(
+                screen.queryByRole('button', {
                     name: /Restore this version/i,
                 }),
-            )
-
-            expect(mockDispatch).toHaveBeenCalledWith({
-                type: 'SET_MODAL',
-                payload: 'restore',
-            })
+            ).not.toBeInTheDocument()
         })
 
-        it('should disable buttons when isDisabled is true', () => {
+        it('should disable back to latest button when isDisabled is true', () => {
             mockUseVersionBanner.mockReturnValue(
                 createMockVersionBanner({ isDisabled: true }),
             )
@@ -356,11 +350,6 @@ describe('ArticleVersionBanner', () => {
 
             expect(
                 screen.getByRole('button', { name: /Back to latest/i }),
-            ).toBeDisabled()
-            expect(
-                screen.getByRole('button', {
-                    name: /Restore this version/i,
-                }),
             ).toBeDisabled()
         })
 
@@ -372,15 +361,16 @@ describe('ArticleVersionBanner', () => {
                 )
             })
 
-            it('should render "Compare" button when not in diff mode', () => {
+            it('should render unchecked toggle when not in diff mode', () => {
                 render(<ArticleVersionBanner />)
 
                 expect(
-                    screen.getByRole('button', { name: /Compare/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).not.toBeChecked()
             })
 
-            it('should render "View content" button when in diff mode', () => {
+            it('should render checked toggle when in diff mode', () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
                         articleMode: 'diff',
@@ -392,17 +382,16 @@ describe('ArticleVersionBanner', () => {
                 render(<ArticleVersionBanner />)
 
                 expect(
-                    screen.getByRole('button', { name: /View content/i }),
+                    screen.getByText('Compare to current'),
                 ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).toBeChecked()
             })
 
-            it('should dispatch SET_MODE with "diff" when "Compare" is clicked', async () => {
+            it('should dispatch SET_MODE with "diff" when toggle is clicked on', async () => {
                 const user = userEvent.setup()
                 render(<ArticleVersionBanner />)
 
-                await user.click(
-                    screen.getByRole('button', { name: /Compare/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SET_MODE',
@@ -410,7 +399,7 @@ describe('ArticleVersionBanner', () => {
                 })
             })
 
-            it('should dispatch SET_MODE with "read" when "View content" is clicked', async () => {
+            it('should dispatch SET_MODE with "read" when toggle is clicked off', async () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
                         articleMode: 'diff',
@@ -421,9 +410,7 @@ describe('ArticleVersionBanner', () => {
                 const user = userEvent.setup()
                 render(<ArticleVersionBanner />)
 
-                await user.click(
-                    screen.getByRole('button', { name: /View content/i }),
-                )
+                await user.click(screen.getByRole('switch'))
 
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SET_MODE',
@@ -431,35 +418,31 @@ describe('ArticleVersionBanner', () => {
                 })
             })
 
-            it('should disable the diff toggle button when isDisabled is true', () => {
+            it('should disable toggle when isDisabled is true', () => {
                 mockUseVersionBanner.mockReturnValue(
                     createMockVersionBanner({ isDisabled: true }),
                 )
 
                 render(<ArticleVersionBanner />)
 
-                expect(
-                    screen.getByRole('button', { name: /Compare/i }),
-                ).toBeDisabled()
+                expect(screen.getByRole('switch')).toBeDisabled()
             })
 
-            it('should not render diff toggle button when feature flag is disabled', () => {
+            it('should not render diff toggle when feature flag is disabled', () => {
                 mockUseFlag.mockReturnValue(false)
 
                 render(<ArticleVersionBanner />)
 
                 expect(
-                    screen.queryByRole('button', { name: /Compare/i }),
+                    screen.queryByText('Compare to current'),
                 ).not.toBeInTheDocument()
-                expect(
-                    screen.queryByRole('button', { name: /View content/i }),
-                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
         })
     })
 
     describe('when not viewing historical version', () => {
-        it('should not render the diff toggle button', () => {
+        it('should not render the diff toggle', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     articleMode: 'read',
@@ -471,11 +454,9 @@ describe('ArticleVersionBanner', () => {
             render(<ArticleVersionBanner />)
 
             expect(
-                screen.queryByRole('button', { name: /Compare/i }),
+                screen.queryByText('Compare to current'),
             ).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('button', { name: /View content/i }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('switch')).not.toBeInTheDocument()
         })
     })
 })

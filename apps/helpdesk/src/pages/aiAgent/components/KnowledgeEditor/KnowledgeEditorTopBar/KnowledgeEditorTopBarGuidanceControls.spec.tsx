@@ -148,6 +148,8 @@ describe('GuidanceToolbarControls', () => {
     })
 
     describe('viewing-historical-version state', () => {
+        const mockDispatch = jest.fn()
+
         beforeEach(() => {
             mockUseGuidanceToolbar.mockReturnValue({
                 ...defaultToolbarData,
@@ -155,6 +157,10 @@ describe('GuidanceToolbarControls', () => {
                     type: 'viewing-historical-version',
                 } as GuidanceToolbarState,
                 isVersionHistoryEnabled: true,
+            })
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextData,
+                dispatch: mockDispatch,
             })
         })
 
@@ -166,36 +172,37 @@ describe('GuidanceToolbarControls', () => {
             ).not.toBeDisabled()
         })
 
-        it('renders edit button disabled', () => {
-            renderComponent()
-
-            expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled()
-        })
-
-        it('renders all control buttons', () => {
+        it('does not render edit or more actions buttons', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /edit/i }),
-            ).toBeInTheDocument()
+                screen.queryByRole('button', { name: /edit/i }),
+            ).not.toBeInTheDocument()
             expect(
-                screen.getByRole('button', {
+                screen.queryByRole('button', {
                     name: /dots-kebab-vertical/i,
                 }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('button', { name: /test/i }),
-            ).toBeInTheDocument()
+            ).not.toBeInTheDocument()
         })
 
-        it('renders more actions menu button disabled', () => {
+        it('renders restore button', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', {
-                    name: /dots-kebab-vertical/i,
-                }),
-            ).toHaveAttribute('aria-disabled', 'true')
+                screen.getByRole('button', { name: /restore/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('dispatches SET_MODAL restore when restore button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByRole('button', { name: /restore/i }))
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'restore',
+            })
         })
 
         it('renders test button disabled when playground is closed', () => {

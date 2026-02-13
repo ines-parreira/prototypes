@@ -7,6 +7,7 @@ import {
     TestButton,
 } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarCommonControls'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
+import { useArticleContext } from './context'
 import { useArticleToolbar } from './hooks/useArticleToolbar'
 import { useVersionHistory } from './hooks/useVersionHistory'
 
@@ -24,6 +25,7 @@ export const ArticleToolbarControls = () => {
     } = useArticleToolbar()
 
     const versionHistory = useVersionHistory()
+    const { dispatch } = useArticleContext()
 
     const { onClickEdit, onClickPublish, onOpenDeleteModal, onDiscard } =
         actions
@@ -32,7 +34,6 @@ export const ArticleToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
-                    <EditIconButton disabled={true} />
                     {isVersionHistoryEnabled && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
@@ -48,7 +49,17 @@ export const ArticleToolbarControls = () => {
                             shouldLoadMore={versionHistory.shouldLoadMore}
                         />
                     )}
-                    <DeleteButton disabled={true} />
+                    <Button
+                        variant="primary"
+                        onClick={() =>
+                            dispatch({
+                                type: 'SET_MODAL',
+                                payload: 'restore',
+                            })
+                        }
+                    >
+                        Restore
+                    </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={true} />
                     )}

@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
-import { Banner, Box, Button } from '@gorgias/axiom'
+import { Banner, Box, Button, Text, ToggleField } from '@gorgias/axiom'
 import { useGetUser } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -27,7 +27,6 @@ type VersionBannerProps = {
     isViewingHistoricalVersion: boolean
     onGoToLatest: () => void
     historicalVersion: HistoricalVersion
-    onOpenRestoreModal: () => void
     isDiffMode?: boolean
     onToggleDiff?: () => void
     className?: string
@@ -42,7 +41,6 @@ export function VersionBanner({
     isViewingHistoricalVersion,
     onGoToLatest,
     historicalVersion,
-    onOpenRestoreModal,
     isDiffMode,
     onToggleDiff,
     className,
@@ -92,7 +90,6 @@ export function VersionBanner({
                     intent="info"
                     size="sm"
                     isClosable={false}
-                    icon="info"
                     title={`You are viewing a previous version published on ${formattedDate}`}
                     description={
                         <>
@@ -106,36 +103,30 @@ export function VersionBanner({
                                 marginTop="xs"
                                 width="100%"
                             >
-                                <Box flexDirection="row" gap="xs">
-                                    <Button
-                                        variant="primary"
-                                        leadingSlot="arrow-left"
-                                        onClick={onGoToLatest}
-                                        isDisabled={isDisabled}
-                                        size="sm"
-                                    >
-                                        Back to latest
-                                    </Button>
-                                    <Button
-                                        variant="secondary"
-                                        onClick={onOpenRestoreModal}
-                                        isDisabled={isDisabled}
-                                        size="sm"
-                                    >
-                                        Restore this version
-                                    </Button>
-                                </Box>
+                                <Button
+                                    variant="secondary"
+                                    leadingSlot="arrow-left"
+                                    onClick={onGoToLatest}
+                                    isDisabled={isDisabled}
+                                    size="sm"
+                                >
+                                    Back to latest
+                                </Button>
                                 {isDiffingEnabled && onToggleDiff && (
-                                    <Button
-                                        variant="tertiary"
-                                        onClick={onToggleDiff}
-                                        isDisabled={isDisabled}
-                                        size="sm"
+                                    <Box
+                                        flexDirection="row"
+                                        alignItems="center"
+                                        gap="xs"
                                     >
-                                        {isDiffMode
-                                            ? 'View content'
-                                            : 'Compare'}
-                                    </Button>
+                                        <ToggleField
+                                            value={!!isDiffMode}
+                                            onChange={() => onToggleDiff()}
+                                            isDisabled={isDisabled}
+                                        />
+                                        <Text size="sm" variant="medium">
+                                            Compare to current
+                                        </Text>
+                                    </Box>
                                 )}
                             </Box>
                         </>
