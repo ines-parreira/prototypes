@@ -139,13 +139,14 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && inputs.helpdesk-affected == 'true' }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
           files: apps/helpdesk/junit.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unittests-jest-${{ matrix.job-index }}
           name: codecov-test-results-jest-${{ matrix.job-index }}
           version: ${{ env.CODECOV_CLI_VERSION }}
+          report_type: test_results
 
   affected-tests:
     name: 'Packages tests'
@@ -228,13 +229,14 @@ jobs:
 
       - name: Upload test results to Codecov
         if: ${{ !cancelled() && steps.artifacts.outputs.junit-file }}
-        uses: codecov/test-results-action@v1
+        uses: codecov/codecov-action@v5
         with:
           files: ${{ steps.artifacts.outputs.junit-file }}
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: '${{ steps.sanitize.outputs.flag-name }}-results'
           name: '${{ steps.sanitize.outputs.flag-name }}-results'
           version: ${{ env.CODECOV_CLI_VERSION }}
+          report_type: test_results
 
   unaffected-tests:
     name: 'Unaffected packages status'

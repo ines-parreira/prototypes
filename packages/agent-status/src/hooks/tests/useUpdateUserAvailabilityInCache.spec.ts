@@ -15,13 +15,13 @@ describe('useUpdateUserAvailabilityInCache', () => {
     })
 
     it('should update user availability in cache', () => {
-        const userId = 123
+        const MOCK_USER_ID = 123
 
         testAppQueryClient.setQueryData(
-            queryKeys.userAvailability.getUserAvailability(userId),
+            queryKeys.userAvailability.getUserAvailability(MOCK_USER_ID),
             {
                 data: {
-                    user_id: userId,
+                    user_id: MOCK_USER_ID,
                     user_status: 'available',
                     custom_user_availability_status_id: null,
                 },
@@ -31,7 +31,7 @@ describe('useUpdateUserAvailabilityInCache', () => {
         const { result } = renderHook(() => useUpdateUserAvailabilityInCache())
 
         const updateData: UserAvailabilityDetail = {
-            user_id: userId,
+            user_id: MOCK_USER_ID,
             user_status: 'unavailable',
         } as UserAvailabilityDetail
 
@@ -39,12 +39,12 @@ describe('useUpdateUserAvailabilityInCache', () => {
 
         const updatedData =
             testAppQueryClient.getQueryData<GetUserAvailabilityResult>(
-                queryKeys.userAvailability.getUserAvailability(userId),
+                queryKeys.userAvailability.getUserAvailability(MOCK_USER_ID),
             )
 
         expect(updatedData).toEqual({
             data: {
-                user_id: userId,
+                user_id: MOCK_USER_ID,
                 user_status: 'unavailable',
             },
         })
