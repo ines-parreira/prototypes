@@ -189,7 +189,7 @@ export const EngagementStep = ({
                     subtitle="Choose which tools AI Agent can use to help shoppers and start conversations. You can always update these settings later."
                 />
                 <FormProvider {...methods}>
-                    <div className={css.form}>
+                    <Box flexDirection="column" gap="xs">
                         {!isTriggerOnSearchDisabled && (
                             <TriggerOnSearchSettings
                                 description="Help shoppers find the right product with a message right after they search and boost your chances of converting."
@@ -208,7 +208,7 @@ export const EngagementStep = ({
                             gmv={gmv}
                             isGmvLoading={isGmvLoading}
                         />
-                    </div>
+                    </Box>
                 </FormProvider>
             </OnboardingContentContainer>
             <OnboardingPreviewContainer showCaption>

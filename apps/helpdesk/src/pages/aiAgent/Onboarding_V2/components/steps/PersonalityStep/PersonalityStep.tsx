@@ -14,7 +14,6 @@ import AiAgentChatConversation from 'pages/aiAgent/Onboarding_V2/components/AiAg
 import { StepHeader } from 'pages/aiAgent/Onboarding_V2/components/StepHeader/StepHeader'
 import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import { DiscountStrategySection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategySection'
-import css from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersonalityStep.less'
 import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { PurchaseGuidanceSection } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PurchaseGuidanceSection'
 import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
@@ -249,7 +248,12 @@ export const PersonalityStep: FC<StepProps> = ({
                     </Box>
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer showCaption>
-                    <div className={css.chatWrapper}>
+                    <Box
+                        justifyContent="center"
+                        alignItems="center"
+                        width="100%"
+                        height="100%"
+                    >
                         <ChatIntegrationPreview {...chatPreviewSettings}>
                             <AiAgentChatConversation
                                 {...agentChatConversationSettings}
@@ -258,7 +262,7 @@ export const PersonalityStep: FC<StepProps> = ({
                                 removeLinksFromMessages
                             />
                         </ChatIntegrationPreview>
-                    </div>
+                    </Box>
                 </OnboardingPreviewContainer>
             </OnboardingBody>
         </FormProvider>

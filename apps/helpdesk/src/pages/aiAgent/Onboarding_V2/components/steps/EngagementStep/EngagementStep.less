@@ -1,41 +1,9 @@
-@import (reference) '~css/typography.less';
-@import (reference)
-    'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout.less';
-
 :local {
-    .description {
-        strong {
-            font-weight: 600;
-        }
-        margin-top: var(--layout-spacing-xs);
-        margin-bottom: var(--layout-spacing-xl);
-    }
-
-    .form {
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-s);
-    }
-
     .cardImage {
-        @media @tablets-up {
-            width: 100px;
-            min-width: 100px;
-            height: 100px;
-            min-height: 100px;
-            border-radius: 8px !important;
-        }
-    }
-
-    .closeButton {
-        background-color: var(--neutral-grey-1) !important; // legacy
-        border: none;
-        box-shadow: none;
-
-        &:hover {
-            background-color: var(--neutral-grey-1) !important; // legacy
-            border: none;
-            box-shadow: none;
-        }
+        width: 100px;
+        min-width: 100px;
+        height: 100px;
+        min-height: 100px;
+        border-radius: var(--layout-spacing-xs);
     }
 }
