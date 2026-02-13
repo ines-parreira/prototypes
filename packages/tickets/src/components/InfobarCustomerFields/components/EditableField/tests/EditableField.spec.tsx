@@ -395,4 +395,303 @@ describe('EditableField', () => {
             })
         })
     })
+
+    describe('Tooltip', () => {
+        describe('TextField', () => {
+            it('should not show tooltip when showTooltip is false', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, queryByText } = render(
+                    <EditableField
+                        value="Test value"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add"
+                        showTooltip={false}
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add')
+                await user.hover(input)
+
+                expect(queryByText('Test value')).not.toBeInTheDocument()
+            })
+
+            it('should show tooltip when showTooltip is true', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, getByText } = render(
+                    <EditableField
+                        value="Test value"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add')
+                await user.hover(input)
+
+                await waitFor(() => {
+                    expect(getByText('Test value')).toBeInTheDocument()
+                })
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(1)
+            })
+
+            it('should hide tooltip when field is focused', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, queryByText } = render(
+                    <EditableField
+                        value="Test value"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add')
+                await user.hover(input)
+
+                await waitFor(() => {
+                    expect(queryByText('Test value')).toBeInTheDocument()
+                })
+
+                await user.click(input)
+
+                await waitFor(() => {
+                    expect(queryByText('Test value')).not.toBeInTheDocument()
+                })
+            })
+
+            it('should not show tooltip when value is empty', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        value=""
+                        onValueChange={onValueChange}
+                        placeholder="+ Add"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add')
+                await user.hover(input)
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(0)
+            })
+        })
+
+        describe('NumberField', () => {
+            it('should not show tooltip when showTooltip is false', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, queryByText } = render(
+                    <EditableField
+                        type="number"
+                        value={42}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                        showTooltip={false}
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+                await user.hover(input)
+
+                expect(queryByText('42')).not.toBeInTheDocument()
+            })
+
+            it('should show tooltip when showTooltip is true', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, getByText } = render(
+                    <EditableField
+                        type="number"
+                        value={42}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+                await user.hover(input)
+
+                await waitFor(() => {
+                    expect(getByText('42')).toBeInTheDocument()
+                })
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(1)
+            })
+
+            it('should hide tooltip when field is focused', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText, queryByText } = render(
+                    <EditableField
+                        type="number"
+                        value={42}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+                await user.hover(input)
+
+                await waitFor(() => {
+                    expect(queryByText('42')).toBeInTheDocument()
+                })
+
+                await user.click(input)
+
+                await waitFor(() => {
+                    expect(queryByText('42')).not.toBeInTheDocument()
+                })
+            })
+
+            it('should not show tooltip when value is undefined', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                        showTooltip
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+                await user.hover(input)
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(0)
+            })
+        })
+
+        describe('TextAreaField', () => {
+            it('should not show tooltip when showTooltip is false', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="textarea"
+                        value="Test note"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add note"
+                        showTooltip={false}
+                    />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+                await user.hover(textarea)
+
+                const tooltipContent = document.querySelector(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipContent).not.toBeInTheDocument()
+            })
+
+            it('should show tooltip when showTooltip is true', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="textarea"
+                        value="Test note"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add note"
+                        showTooltip
+                    />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+                await user.hover(textarea)
+
+                await waitFor(() => {
+                    const tooltipContent = document.querySelector(
+                        '[data-name="tooltip-content"]',
+                    )
+                    expect(tooltipContent).toBeInTheDocument()
+                    expect(tooltipContent?.textContent).toContain('Test note')
+                })
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(1)
+            })
+
+            it('should hide tooltip when field is focused', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="textarea"
+                        value="Test note"
+                        onValueChange={onValueChange}
+                        placeholder="+ Add note"
+                        showTooltip
+                    />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+                await user.hover(textarea)
+
+                await waitFor(() => {
+                    const tooltipContent = document.querySelector(
+                        '[data-name="tooltip-content"]',
+                    )
+                    expect(tooltipContent).toBeInTheDocument()
+                })
+
+                await user.click(textarea)
+
+                await waitFor(() => {
+                    const tooltipContent = document.querySelector(
+                        '[data-name="tooltip-content"]',
+                    )
+                    expect(tooltipContent).not.toBeInTheDocument()
+                })
+            })
+
+            it('should not show tooltip when value is empty', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="textarea"
+                        value=""
+                        onValueChange={onValueChange}
+                        placeholder="+ Add note"
+                        showTooltip
+                    />,
+                )
+
+                const textarea = getByPlaceholderText('+ Add note')
+                await user.hover(textarea)
+
+                const tooltipTexts = document.querySelectorAll(
+                    '[data-name="tooltip-content"]',
+                )
+                expect(tooltipTexts.length).toBe(0)
+            })
+        })
+    })
 })

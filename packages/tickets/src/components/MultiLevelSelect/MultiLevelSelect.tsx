@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 
 import {
@@ -11,6 +11,8 @@ import {
     Select,
     SelectTrigger,
     TextField,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 
 import { getDisplayLabel } from './helpers/tree'
@@ -28,6 +30,7 @@ type Props = {
     ariaLabel?: string
     selectedValue?: TreeValue
     onSelect: (value: TreeValue | undefined) => void
+    showTooltip?: boolean
 }
 
 export function MultiLevelSelect(props: Props) {
@@ -42,6 +45,7 @@ export function MultiLevelSelect(props: Props) {
         isInvalid,
         isSearchable,
         ariaLabel,
+        showTooltip = false,
     } = props
 
     const [isOpen, setIsOpen] = useState(false)
@@ -145,68 +149,79 @@ export function MultiLevelSelect(props: Props) {
         [selectedValue, placeholder, ariaLabel, isInvalid, id],
     )
 
+    const tooltipContent = useMemo(
+        () => getDisplayLabel(selectedValue, true),
+        [selectedValue],
+    )
+
     return (
-        <Select
-            aria-labelledby={id}
-            items={selectOptions}
-            placeholder={placeholder}
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isSearchable={isSearchable}
-            searchValue={searchValue}
-            onSearchChange={handleSearchChange}
-            aria-label={ariaLabel}
-            isOpen={isOpen}
-            onOpenChange={handleOpenChange}
-            trigger={trigger}
-            keyName="id"
-            selectedItem={selectedOption}
-            onSelect={handleSelect}
-            minWidth={139}
-            maxWidth={139}
-            maxHeight={258}
-            size="sm"
-            header={
-                navigationState.canGoBack && (
-                    <ListHeader>
-                        <Button
-                            size="sm"
-                            variant="tertiary"
-                            onClick={handleGoBack}
-                            leadingSlot={IconName.ArrowChevronLeft}
-                        >
-                            {navigationState.parentLevelName}
-                        </Button>
-                    </ListHeader>
-                )
-            }
-            footer={
-                !!selectedOption && (
-                    <ListFooter>
-                        <Button
-                            size="sm"
-                            variant="tertiary"
-                            onClick={handleClear}
-                        >
-                            Clear selection
-                        </Button>
-                    </ListFooter>
-                )
-            }
-        >
-            {(option: TreeOption) => (
-                <ListItem
-                    key={option.id}
-                    textValue={option.label}
-                    label={option.label}
-                    caption={option.caption}
-                    trailingSlot={
-                        option.hasChildren && !searchValue ? (
-                            <Icon name={IconName.ArrowChevronRight} size="sm" />
-                        ) : undefined
-                    }
-                />
-            )}
-        </Select>
+        <Tooltip isDisabled={!showTooltip || !tooltipContent} placement="left">
+            <Select
+                aria-labelledby={id}
+                items={selectOptions}
+                placeholder={placeholder}
+                isDisabled={isDisabled}
+                isLoading={isLoading}
+                isSearchable={isSearchable}
+                searchValue={searchValue}
+                onSearchChange={handleSearchChange}
+                aria-label={ariaLabel}
+                isOpen={isOpen}
+                onOpenChange={handleOpenChange}
+                trigger={trigger}
+                keyName="id"
+                selectedItem={selectedOption}
+                onSelect={handleSelect}
+                minWidth={139}
+                maxWidth={139}
+                maxHeight={258}
+                size="sm"
+                header={
+                    navigationState.canGoBack && (
+                        <ListHeader>
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                onClick={handleGoBack}
+                                leadingSlot={IconName.ArrowChevronLeft}
+                            >
+                                {navigationState.parentLevelName}
+                            </Button>
+                        </ListHeader>
+                    )
+                }
+                footer={
+                    !!selectedOption && (
+                        <ListFooter>
+                            <Button
+                                size="sm"
+                                variant="tertiary"
+                                onClick={handleClear}
+                            >
+                                Clear selection
+                            </Button>
+                        </ListFooter>
+                    )
+                }
+            >
+                {(option: TreeOption) => (
+                    <ListItem
+                        key={option.id}
+                        textValue={option.label}
+                        label={option.label}
+                        caption={option.caption}
+                        trailingSlot={
+                            option.hasChildren && !searchValue ? (
+                                <Icon
+                                    name={IconName.ArrowChevronRight}
+                                    size="sm"
+                                />
+                            ) : undefined
+                        }
+                    />
+                )}
+            </Select>
+            <TooltipContent title={tooltipContent || undefined} />
+        </Tooltip>
     )
 }

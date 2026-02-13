@@ -57,6 +57,7 @@ export function InfobarBaseCustomerFields({
                         placeholder="+ Add"
                         ariaLabel="Note"
                         type="textarea"
+                        showTooltip
                     />
                 </FieldRow>
             </OverflowListItem>

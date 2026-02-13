@@ -189,4 +189,10 @@ describe('getDisplayLabel', () => {
         //@ts-ignore
         expect(getDisplayLabel(0)).toBe('0')
     })
+
+    it('should return full path with " > " separator when fullValue is true', () => {
+        const label = getDisplayLabel('Status::Shipping::Pending', true)
+
+        expect(label).toBe('Status > Shipping > Pending')
+    })
 })

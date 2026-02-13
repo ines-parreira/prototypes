@@ -45,6 +45,7 @@ export function CustomCustomerFieldInput({
                 className={className}
                 ariaLabel={field.label}
                 isInvalid={isInvalid}
+                showTooltip
             />
         )
     }
@@ -67,6 +68,7 @@ export function CustomCustomerFieldInput({
                 className={className}
                 ariaLabel={field.label}
                 isInvalid={isInvalid}
+                showTooltip
             />
         )
     }
@@ -90,6 +92,7 @@ export function CustomCustomerFieldInput({
                     placeholder="+ Add"
                     ariaLabel={field.label}
                     isInvalid={isInvalid}
+                    showTooltip
                 />
             </div>
         )

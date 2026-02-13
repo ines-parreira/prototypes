@@ -1,9 +1,18 @@
 import type { KeyboardEvent } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { isMacOs } from '@repo/utils'
 
-import { NumberField, TextAreaField, TextField } from '@gorgias/axiom'
+import {
+    NumberField,
+    Text,
+    TextAreaField,
+    TextField,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
+
+import css from './EditableField.less'
 
 type EditableFieldProps<T extends string | number> = {
     id?: string
@@ -16,6 +25,7 @@ type EditableFieldProps<T extends string | number> = {
     autoFocus?: boolean
     ariaLabel?: string
     isInvalid?: boolean
+    showTooltip?: boolean
 } & (T extends string
     ?
           | {
@@ -51,9 +61,11 @@ export function EditableField<T extends string | number = string | number>(
         onBlur,
         ariaLabel,
         isInvalid,
+        showTooltip = false,
     } = props
 
     const [error, setError] = useState<string | undefined>()
+    const [isFocused, setIsFocused] = useState(false)
 
     const handleChange = useCallback(
         (value: T) => {
@@ -95,6 +107,8 @@ export function EditableField<T extends string | number = string | number>(
     }, [value, validator, onValueChange, type])
 
     const handleFieldBlur = useCallback(() => {
+        setIsFocused(false)
+
         const [isValid, value] = handleValue()
         if (isValid) {
             onBlur?.(value as T)
@@ -120,64 +134,92 @@ export function EditableField<T extends string | number = string | number>(
         [type, handleValue],
     )
 
+    const tooltipContent = useMemo(() => value?.toString(), [value])
+
     if (type === 'number') {
         return (
-            <NumberField
-                aria-label={ariaLabel ?? placeholder}
-                id={id}
-                className={className}
-                value={value as number}
-                onChange={(value) => handleChange(value as T)}
-                placeholder={placeholder}
-                size="sm"
-                variant="secondary"
-                autoFocus={autoFocus}
-                error={error}
-                minValue={minValue}
-                maxValue={maxValue}
-                isInvalid={isInvalid}
-            />
+            <Tooltip
+                isDisabled={!showTooltip || isFocused || !tooltipContent}
+                placement="left"
+            >
+                <NumberField
+                    aria-label={ariaLabel ?? placeholder}
+                    id={id}
+                    className={className}
+                    value={value as number}
+                    onChange={(value) => handleChange(value as T)}
+                    placeholder={placeholder}
+                    size="sm"
+                    variant="secondary"
+                    autoFocus={autoFocus}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
+                    error={error}
+                    minValue={minValue}
+                    maxValue={maxValue}
+                    isInvalid={isInvalid}
+                />
+                <TooltipContent title={tooltipContent} />
+            </Tooltip>
         )
     }
 
     if (type === 'textarea') {
         return (
-            <TextAreaField
+            <Tooltip
+                isDisabled={!showTooltip || isFocused || !tooltipContent}
+                placement="left"
+            >
+                <TextAreaField
+                    id={id}
+                    className={className}
+                    aria-label={ariaLabel ?? placeholder}
+                    value={value as string}
+                    onChange={(value) => handleChange(value as T)}
+                    placeholder={placeholder}
+                    size="sm"
+                    variant="secondary"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={handleFieldBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus={autoFocus}
+                    error={error}
+                    isInvalid={isInvalid}
+                    autoResize
+                    maxRows={3}
+                />
+                <TooltipContent>
+                    <Text className={css.textAreaTooltipContent} size="sm">
+                        {tooltipContent}
+                    </Text>
+                </TooltipContent>
+            </Tooltip>
+        )
+    }
+
+    return (
+        <Tooltip
+            isDisabled={!showTooltip || isFocused || !tooltipContent}
+            placement="left"
+        >
+            <TextField
                 id={id}
                 className={className}
                 aria-label={ariaLabel ?? placeholder}
+                type="text"
                 value={value as string}
                 onChange={(value) => handleChange(value as T)}
                 placeholder={placeholder}
                 size="sm"
                 variant="secondary"
+                onFocus={() => setIsFocused(true)}
                 onBlur={handleFieldBlur}
                 onKeyDown={handleKeyDown}
                 autoFocus={autoFocus}
                 error={error}
                 isInvalid={isInvalid}
-                autoResize
-                maxRows={3}
             />
-        )
-    }
-
-    return (
-        <TextField
-            id={id}
-            className={className}
-            aria-label={ariaLabel ?? placeholder}
-            type="text"
-            value={value as string}
-            onChange={(value) => handleChange(value as T)}
-            placeholder={placeholder}
-            size="sm"
-            variant="secondary"
-            onBlur={handleFieldBlur}
-            onKeyDown={handleKeyDown}
-            autoFocus={autoFocus}
-            error={error}
-            isInvalid={isInvalid}
-        />
+            <TooltipContent title={tooltipContent} />
+        </Tooltip>
     )
 }

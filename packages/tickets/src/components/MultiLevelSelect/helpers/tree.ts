@@ -173,11 +173,14 @@ export function getPathFromValue(value: TreeValue | undefined): string[] {
  * Returning the last segment (e.g., "Order::Missing" → "Missing")
  * For boolean values, returns "Yes" or "No"
  */
-export function getDisplayLabel(value: TreeValue | undefined): string | null {
+export function getDisplayLabel(
+    value: TreeValue | undefined,
+    fullValue?: true,
+): string | null {
     if (value === null || value === undefined) return null
     if (typeof value === 'boolean') return value ? 'Yes' : 'No'
     if (typeof value !== 'string') return String(value)
 
     const parts = value.split(NESTING_DELIMITER)
-    return parts[parts.length - 1]
+    return fullValue ? parts.join(' > ') : parts[parts.length - 1]
 }

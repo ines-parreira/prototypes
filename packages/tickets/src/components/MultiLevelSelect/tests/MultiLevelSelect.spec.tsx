@@ -273,4 +273,60 @@ describe('MultiLevelSelect', () => {
         await screen.findAllByText('Open')
         await screen.findAllByText('Closed')
     })
+
+    it('should not show tooltip when showTooltip is false', async () => {
+        const { user } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                selectedValue="Status::Open"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+                showTooltip={false}
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await user.hover(trigger)
+
+        expect(screen.queryByText('Status > Open')).not.toBeInTheDocument()
+    })
+
+    it('should show tooltip with full hierarchical value when showTooltip is true', async () => {
+        const { user } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                selectedValue="Status::Open"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+                showTooltip
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await user.hover(trigger)
+
+        await waitFor(() => {
+            expect(screen.getByText('Status > Open')).toBeInTheDocument()
+        })
+    })
+
+    it('should not show tooltip when there is no selected value', async () => {
+        const { user } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+                showTooltip
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await user.hover(trigger)
+
+        const tooltipTexts = screen.queryAllByText(/.*>.*/)
+        expect(tooltipTexts).toHaveLength(0)
+    })
 })
