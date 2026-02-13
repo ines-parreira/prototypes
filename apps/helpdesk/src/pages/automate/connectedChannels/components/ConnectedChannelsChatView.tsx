@@ -201,7 +201,7 @@ export const ConnectedChannelsChatView = ({
 
     const { shouldShowPreviewForRevamp } = useShouldShowChatSettingsRevamp(
         storeIntegration,
-        integration?.get('id'),
+        integration?.get('id') ?? currentChannel?.value?.id,
     )
 
     const orderManagementExternalLink = useMemo(() => {
