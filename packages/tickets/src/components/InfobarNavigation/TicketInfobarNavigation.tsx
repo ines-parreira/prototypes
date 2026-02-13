@@ -1,9 +1,12 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
+import { ButtonGroup } from '@gorgias/axiom'
+
 import { useTicketInfobarNavigationShortcuts } from '../../hooks/useTicketInfobarNavigationShortcuts'
 import { InfobarNavigationContainer } from './components/InfobarNavigationContainer'
 import { InfobarNavigationItem } from './components/InfobarNavigationItem'
+import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
 
 type Props = {
     hasAIFeedback?: boolean
@@ -18,72 +21,58 @@ export function TicketInfobarNavigation({ hasAIFeedback, hasTimeline }: Props) {
 
     return (
         <InfobarNavigationContainer>
-            <InfobarNavigationItem
-                name="toggle"
-                icon={isExpanded ? 'system-bar-collapse' : 'system-bar-expand'}
-                onClick={() => onToggle()}
-                tooltip={{
-                    title: isExpanded ? 'Collapse' : 'Expand',
-                    shortcut: ']',
+            <InfobarToggle isExpanded={isExpanded} onToggle={onToggle} />
+            <ButtonGroup
+                size="lg"
+                withoutBorder
+                orientation="vertical"
+                selectedKey={activeTab}
+                onSelectionChange={(selectedKey: string) => {
+                    onChangeTab(selectedKey as TicketInfobarTab)
                 }}
-            />
-            <InfobarNavigationItem
-                name={TicketInfobarTab.Customer}
-                icon="customer-info"
-                onClick={() => onChangeTab(TicketInfobarTab.Customer)}
-                isActive={isExpanded && activeTab === TicketInfobarTab.Customer}
-                tooltip={{
-                    title: 'Details',
-                }}
-            />
-            {hasUIVisionMilestone2 && (
+            >
                 <InfobarNavigationItem
-                    name={TicketInfobarTab.Shopify}
-                    icon="vendor-shopify-colored"
-                    onClick={() => onChangeTab(TicketInfobarTab.Shopify)}
-                    isActive={
-                        isExpanded && activeTab === TicketInfobarTab.Shopify
-                    }
+                    name={TicketInfobarTab.Customer}
+                    icon="customer-info"
                     tooltip={{
-                        title: 'Shopify',
+                        title: 'Details',
                     }}
                 />
-            )}
-            {hasTimeline && (
+                {hasUIVisionMilestone2 && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Shopify}
+                        icon="vendor-shopify-colored"
+                        tooltip={{
+                            title: 'Shopify',
+                        }}
+                    />
+                )}
+                {hasTimeline && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Timeline}
+                        icon="history"
+                        tooltip={{
+                            title: 'Customer Timeline',
+                        }}
+                    />
+                )}
+                {hasAIFeedback && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.AIFeedback}
+                        icon="ai-agent-feedback"
+                        tooltip={{
+                            title: 'AI Feedback',
+                        }}
+                    />
+                )}
                 <InfobarNavigationItem
-                    name={TicketInfobarTab.Timeline}
-                    icon="history"
-                    onClick={() => onChangeTab(TicketInfobarTab.Timeline)}
-                    isActive={
-                        isExpanded && activeTab === TicketInfobarTab.Timeline
-                    }
+                    name={TicketInfobarTab.AutoQA}
+                    icon="star"
                     tooltip={{
-                        title: 'Customer Timeline',
+                        title: 'Auto QA',
                     }}
                 />
-            )}
-            {hasAIFeedback && (
-                <InfobarNavigationItem
-                    name={TicketInfobarTab.AIFeedback}
-                    icon="ai-agent-feedback"
-                    onClick={() => onChangeTab(TicketInfobarTab.AIFeedback)}
-                    isActive={
-                        isExpanded && activeTab === TicketInfobarTab.AIFeedback
-                    }
-                    tooltip={{
-                        title: 'AI Feedback',
-                    }}
-                />
-            )}
-            <InfobarNavigationItem
-                name={TicketInfobarTab.AutoQA}
-                icon="star"
-                onClick={() => onChangeTab(TicketInfobarTab.AutoQA)}
-                isActive={isExpanded && activeTab === TicketInfobarTab.AutoQA}
-                tooltip={{
-                    title: 'Auto QA',
-                }}
-            />
+            </ButtonGroup>
         </InfobarNavigationContainer>
     )
 }

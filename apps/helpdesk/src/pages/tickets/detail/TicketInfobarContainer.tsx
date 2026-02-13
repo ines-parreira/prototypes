@@ -102,6 +102,10 @@ export const TicketInfobarContainer = ({
     const tabCheckId = useRef<number>()
 
     useEffect(() => {
+        if (hasUIVisionMS1) {
+            return
+        }
+
         if (ticket.id && tabCheckId.current !== ticket.id) {
             tabCheckId.current = ticket.id
             const nextTab =
@@ -125,6 +129,7 @@ export const TicketInfobarContainer = ({
         dispatch,
         setPreferredTab,
         onChangeTab,
+        hasUIVisionMS1,
     ])
 
     const customer = useMemo(
