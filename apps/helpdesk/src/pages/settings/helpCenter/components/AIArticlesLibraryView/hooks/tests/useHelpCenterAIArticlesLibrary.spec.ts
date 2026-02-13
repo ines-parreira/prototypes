@@ -73,13 +73,12 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         })
     })
 
-    it("should return that it doesn't have any new articles", () => {
+    it('should return that it has new articles', () => {
         const { result } = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
-        // we have new articles, but we didn't generated at least 5 articles
-        expect(result.current.hasNewArticles).toBe(false)
+        expect(result.current.hasNewArticles).toBe(true)
     })
 
     it('should select the first article by default', () => {

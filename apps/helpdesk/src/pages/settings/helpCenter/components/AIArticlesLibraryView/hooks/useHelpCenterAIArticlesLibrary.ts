@@ -13,7 +13,6 @@ import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticl
 import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import { MINIMUM_AI_ARTICLES } from '../../CategoriesView/components/ArticleTemplateCard/constants'
 import { mapAILibraryArticlesData } from '../AIArticlesLibraryUtils'
 
 export const useHelpCenterAIArticlesLibrary = (
@@ -58,7 +57,6 @@ export const useHelpCenterAIArticlesLibrary = (
             locale,
             enabled,
         })
-    const fetchedArticlesCount = fetchedArticles?.length ?? 0
 
     const [selectedArticle, setSelectedArticle] =
         useState<AILibraryArticleItem>()
@@ -127,10 +125,7 @@ export const useHelpCenterAIArticlesLibrary = (
         setSelectedArticleType,
         selectedArticle,
         setSelectedArticle,
-        hasNewArticles:
-            newArticles.length > 0 &&
-            fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
-        showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
+        hasNewArticles: newArticles.length > 0,
         hasStoreConnectionOrDefaultStore: hasMultiStores
             ? !!storeIntegrationId
             : true,

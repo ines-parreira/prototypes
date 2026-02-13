@@ -64,4 +64,4 @@ export const ARTICLE_TEMPLATE_CATEGORIES: Record<
     },
 }
 
-export const MINIMUM_AI_ARTICLES = 5
+export const MAXIMUM_AI_ARTICLES = 5

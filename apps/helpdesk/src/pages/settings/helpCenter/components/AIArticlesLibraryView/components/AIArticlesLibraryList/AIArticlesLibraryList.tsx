@@ -29,7 +29,6 @@ type AIArticlesLibraryListProps = {
     >
     selectedArticleType: AIArticleToggleOptionValue
     setSelectedArticleType: Dispatch<SetStateAction<AIArticleToggleOptionValue>>
-    showLinkToArticleTemplates: boolean
     hasStoreConnection: boolean
     showLinkToConnectEmailToStore: boolean
 }
@@ -42,16 +41,13 @@ const AIArticlesLibraryList = ({
     setSelectedArticle,
     selectedArticleType,
     setSelectedArticleType,
-    showLinkToArticleTemplates,
     hasStoreConnection,
     showLinkToConnectEmailToStore,
 }: AIArticlesLibraryListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const showArticlesList = useMemo(
-        () =>
-            (!counters || counters[AIArticleToggleOptionValue.All] > 0) &&
-            !showLinkToArticleTemplates,
-        [counters, showLinkToArticleTemplates],
+        () => !counters || counters[AIArticleToggleOptionValue.All] > 0,
+        [counters],
     )
 
     const toggleOptions = AI_ARTICLES_TOGGLE_OPTIONS.map((option) => {
@@ -136,14 +132,6 @@ const AIArticlesLibraryList = ({
                     linkAddress={`/app/settings/channels/email`}
                     linkDescription="Connect store to email"
                     openNewTab
-                />
-            ) : showLinkToArticleTemplates ? (
-                <AIArticleLibraryRedirect
-                    message="We don't have any recommended articles for your Help
-                            Center yet. Check back next Monday to review newly
-                            generated articles."
-                    linkAddress={`/app/settings/help-center/${helpCenterId}/articles`}
-                    linkDescription="Get started with an article template"
                 />
             ) : showArticlesList ? (
                 <AIArticleList

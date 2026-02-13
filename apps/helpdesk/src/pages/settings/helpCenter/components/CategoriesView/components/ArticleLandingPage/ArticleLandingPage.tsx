@@ -30,7 +30,6 @@ import AddArticleCard from '../AddArticleCard'
 import AILibraryBanner from '../AILibraryBanner'
 import ArticleTemplateCard from '../ArticleTemplateCard'
 import ArticleTemplateCardSkeleton from '../ArticleTemplateCard/ArticleTemplateCardSkeleton'
-import { MINIMUM_AI_ARTICLES } from '../ArticleTemplateCard/constants'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 
 import css from './ArticleLandingPage.less'
@@ -78,7 +77,7 @@ const ArticleLandingPageComponent = ({
     const showAIBanner =
         hasAccessToAILibrary &&
         isEmptyStateMode &&
-        (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES &&
+        !!aiArticles?.length &&
         hasAIArticlesNotReviewed
 
     const { setSelectedArticleLanguage } = useEditionManager()

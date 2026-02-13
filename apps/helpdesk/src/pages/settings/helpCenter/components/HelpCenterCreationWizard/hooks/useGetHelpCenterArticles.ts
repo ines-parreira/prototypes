@@ -10,7 +10,7 @@ import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
 import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import { MINIMUM_AI_ARTICLES } from '../../CategoriesView/components/ArticleTemplateCard/constants'
+import { MAXIMUM_AI_ARTICLES } from '../../CategoriesView/components/ArticleTemplateCard/constants'
 import {
     groupArticlesByCategory,
     mapAIHelpCenterArticleData,
@@ -75,11 +75,11 @@ export const useGetHelpCenterArticles = (
             locale,
         )
 
-        const slicedAiArticles = mappedArticlesAI.slice(0, MINIMUM_AI_ARTICLES)
+        const limitedArticlesAI = mappedArticlesAI.slice(0, MAXIMUM_AI_ARTICLES)
 
-        if (slicedAiArticles.length) {
+        if (limitedArticlesAI.length) {
             return {
-                [ArticleTemplateType.AI]: slicedAiArticles,
+                [ArticleTemplateType.AI]: limitedArticlesAI,
                 [ArticleTemplateType.Template]: mappedArticleTemplates,
             }
         }

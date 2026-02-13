@@ -32,7 +32,6 @@ const AIArticlesLibraryView = () => {
         setSelectedArticle,
         selectedArticleType,
         setSelectedArticleType,
-        showLinkToArticleTemplates,
         hasStoreConnectionOrDefaultStore,
         showLinkToConnectEmailToStore,
         markArticleAsReviewed,
@@ -80,9 +79,6 @@ const AIArticlesLibraryView = () => {
                                 setSelectedArticle={setSelectedArticle}
                                 selectedArticleType={selectedArticleType}
                                 setSelectedArticleType={setSelectedArticleType}
-                                showLinkToArticleTemplates={
-                                    showLinkToArticleTemplates
-                                }
                                 helpCenterId={helpCenter.id}
                                 hasStoreConnection={
                                     hasStoreConnectionOrDefaultStore
@@ -97,8 +93,7 @@ const AIArticlesLibraryView = () => {
                                 onEdit={onEdit}
                                 article={
                                     !hasStoreConnectionOrDefaultStore ||
-                                    showLinkToConnectEmailToStore ||
-                                    showLinkToArticleTemplates
+                                    showLinkToConnectEmailToStore
                                         ? undefined
                                         : selectedArticle
                                 }
