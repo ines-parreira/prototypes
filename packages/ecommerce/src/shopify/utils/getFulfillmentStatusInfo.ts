@@ -1,7 +1,7 @@
 import { Color } from '@gorgias/axiom'
 import type { Color as ColorType } from '@gorgias/axiom'
 
-type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
+import type { FulfillmentStatusValue } from '../types/order'
 
 type FulfillmentStatusInfo = {
     label: string

@@ -36,7 +36,7 @@ export type OrderData = {
     line_items: OrderLineItem[]
 }
 
-type FinancialStatusValue =
+export type FinancialStatusValue =
     | 'pending'
     | 'authorized'
     | 'partially_paid'
@@ -45,7 +45,7 @@ type FinancialStatusValue =
     | 'refunded'
     | 'voided'
 
-type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
+export type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
 
 export type OrderCardLineItem = {
     title: string

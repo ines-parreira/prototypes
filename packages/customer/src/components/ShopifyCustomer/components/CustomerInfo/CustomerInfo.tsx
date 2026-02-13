@@ -1,3 +1,5 @@
+import { useCallback, useState } from 'react'
+
 import { useUserDateTimePreferences } from '@repo/user'
 
 import { Box } from '@gorgias/axiom'
@@ -7,9 +9,11 @@ import { useGetDraftOrders } from '../../hooks/useGetDraftOrders'
 import { useGetOrders } from '../../hooks/useGetOrders'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
+import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
+import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
 import { ShopifyTags } from './ShopifyTags'
 import type { FieldRenderContext } from './types'
@@ -85,6 +89,36 @@ export function CustomerInfo({
 
     const { fields } = useCustomerFieldPreferences()
 
+    const [selectedOrder, setSelectedOrder] =
+        useState<OrderEcommerceData | null>(null)
+    const [isOrderOpen, setIsOrderOpen] = useState(false)
+
+    const handleSelectOrder = useCallback((order: OrderEcommerceData) => {
+        setSelectedOrder(order)
+        setIsOrderOpen(true)
+    }, [])
+
+    const handleDuplicateOrder = useCallback(
+        (order: OrderEcommerceData['data']) => {
+            console.warn('Duplicate order:', order.name)
+        },
+        [],
+    )
+
+    const handleRefundOrder = useCallback(
+        (order: OrderEcommerceData['data']) => {
+            console.warn('Refund order:', order.name)
+        },
+        [],
+    )
+
+    const handleCancelOrder = useCallback(
+        (order: OrderEcommerceData['data']) => {
+            console.warn('Cancel order:', order.name)
+        },
+        [],
+    )
+
     return (
         <>
             <Box flexDirection="column" gap="sm" padding="md">
@@ -122,6 +156,16 @@ export function CustomerInfo({
                 productsMap={productsMap}
                 draftOrders={draftOrders}
                 isLoadingDraftOrders={isLoadingDraftOrders}
+                onSelectOrder={handleSelectOrder}
+            />
+            <OrderSidePanelPreview
+                order={selectedOrder?.data ?? null}
+                isOpen={isOrderOpen}
+                onOpenChange={setIsOrderOpen}
+                productsMap={productsMap}
+                onDuplicate={handleDuplicateOrder}
+                onRefund={handleRefundOrder}
+                onCancel={handleCancelOrder}
             />
         </>
     )

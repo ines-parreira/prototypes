@@ -1,3 +1,4 @@
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -21,9 +22,21 @@ import { useTimelineData } from '../../hooks/useTimelineData'
 import type { ChannelToIconFn, SortOption } from '../../hooks/useTimelineData'
 import { TimelineContent } from '../TimelineContent'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2MS2Flag: jest.fn(),
+    useFlag: jest.fn(() => false),
+    FeatureFlagKey: {
+        TicketThreadRevamp: 'ticket_thread_revamp',
+    },
+}))
+
 jest.mock('timeline/hooks/useTicketList', () => ({
     useTicketList: jest.fn(),
 }))
+
+jest.mock('tickets/ticket-detail/hooks/useTicket')
+jest.mock('timeline/ticket-modal/hooks/useTicketModalContext')
 
 jest.mock('models/customer/queries', () => ({
     ...jest.requireActual('models/customer/queries'),
@@ -42,6 +55,7 @@ jest.mock('../../hooks/useOrderProducts', () => ({
     useOrderProducts: jest.fn(),
 }))
 
+const useHelpdeskV2MS2FlagMock = assumeMock(useHelpdeskV2MS2Flag)
 const useTicketListMock = assumeMock(useTicketList)
 const useGetCustomerMock = assumeMock(useGetCustomer)
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -146,6 +160,8 @@ describe('TimelineContent', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        useHelpdeskV2MS2FlagMock.mockReturnValue(true)
+
         useTicketListMock.mockReturnValue({
             tickets: [],
             isLoading: false,
@@ -180,6 +196,43 @@ describe('TimelineContent', () => {
             isLoading: false,
             isError: false,
             hasShopifyIntegration: false,
+        })
+
+        const { useTicket } = require('tickets/ticket-detail/hooks/useTicket')
+        const {
+            useTicketModalContext,
+        } = require('timeline/ticket-modal/hooks/useTicketModalContext')
+
+        useTicket.mockImplementation((ticketId: number) => {
+            const subjectMap: Record<number, string> = {
+                1: 'First Ticket',
+                2: 'Second Ticket',
+                3: 'Third Ticket',
+                123: 'Active Ticket',
+                456: 'Test Ticket For Expand',
+            }
+            return {
+                body: [],
+                isLoading: false,
+                ticket: {
+                    ...createMockTicket({
+                        id: ticketId,
+                        subject:
+                            subjectMap[ticketId] || `Test Ticket ${ticketId}`,
+                    }),
+                    messages: [],
+                    summary: {
+                        content: 'Test summary',
+                        created_datetime: '2024-01-01T10:00:00Z',
+                        triggered_by: null,
+                        updated_datetime: '2024-01-01T10:00:00Z',
+                    },
+                },
+            }
+        })
+
+        useTicketModalContext.mockReturnValue({
+            isInsideSidePanel: true,
         })
     })
 
@@ -725,6 +778,250 @@ describe('TimelineContent', () => {
                     channelToIcon: mockChannelToIcon,
                 }),
             )
+        })
+    })
+
+    describe('Order selection and side panel', () => {
+        const setupWithOrders = () => {
+            const order1 = {
+                id: 101,
+                name: '#3519',
+                created_at: '2024-01-01T10:00:00Z',
+                updated_at: '2024-01-01T10:00:00Z',
+                currency: 'USD',
+                total_price: '150.00',
+                financial_status: 'paid' as const,
+                fulfillment_status: 'fulfilled' as const,
+                line_items: [],
+                note: '',
+                tags: '',
+                shipping_address: {} as any,
+                billing_address: {} as any,
+                discount_codes: [],
+                shipping_lines: [],
+                total_line_items_price: '150.00',
+                total_discounts: '0.00',
+                subtotal_price: '150.00',
+                total_tax: '0.00',
+                taxes_included: false,
+                discount_applications: [],
+                refunds: [],
+            }
+
+            const order2 = {
+                id: 102,
+                name: '#3520',
+                created_at: '2024-01-02T10:00:00Z',
+                updated_at: '2024-01-02T10:00:00Z',
+                currency: 'USD',
+                total_price: '200.00',
+                financial_status: 'pending' as const,
+                fulfillment_status: null,
+                line_items: [],
+                note: '',
+                tags: '',
+                shipping_address: {} as any,
+                billing_address: {} as any,
+                discount_codes: [],
+                shipping_lines: [],
+                total_line_items_price: '200.00',
+                total_discounts: '0.00',
+                subtotal_price: '200.00',
+                total_tax: '0.00',
+                taxes_included: false,
+                discount_applications: [],
+                refunds: [],
+            }
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Order, order: order1 },
+                    { kind: TimelineItemKind.Order, order: order2 },
+                ],
+                enrichedTickets: [],
+                totalNumber: 2,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            return { order1, order2 }
+        }
+
+        it('should open order side panel when order card is clicked', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should display order status tags in side panel', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                const paidTags = screen.getAllByText('Paid')
+                const fulfilledTags = screen.getAllByText('Fulfilled')
+                expect(paidTags.length).toBeGreaterThan(0)
+                expect(fulfilledTags.length).toBeGreaterThan(0)
+            })
+        })
+
+        it('should display pending and unfulfilled status for pending order', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3520'))
+
+            await waitFor(() => {
+                const pendingTags = screen.getAllByText('Pending')
+                const unfulfilledTags = screen.getAllByText('Unfulfilled')
+                expect(pendingTags.length).toBeGreaterThan(0)
+                expect(unfulfilledTags.length).toBeGreaterThan(0)
+            })
+        })
+
+        it('should display action buttons in order side panel', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /duplicate/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: /refund/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', { name: /cancel/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should close order side panel when close button is clicked', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+            })
+
+            const closeButton = screen.getByRole('button', {
+                name: /close preview/i,
+            })
+            await user.click(closeButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: /order #3519/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should log to console when duplicate button is clicked', async () => {
+            const user = userEvent.setup()
+            const consoleWarnSpy = jest
+                .spyOn(console, 'warn')
+                .mockImplementation()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /duplicate/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('button', { name: /duplicate/i }))
+
+            const calls = consoleWarnSpy.mock.calls
+            const duplicateCall = calls.find(
+                (call) => call[0] === 'Duplicate order:' && call[1] === '#3519',
+            )
+            expect(duplicateCall).toBeDefined()
+
+            consoleWarnSpy.mockRestore()
+        })
+
+        it('should log to console when refund button is clicked', async () => {
+            const user = userEvent.setup()
+            const consoleWarnSpy = jest
+                .spyOn(console, 'warn')
+                .mockImplementation()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /refund/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('button', { name: /refund/i }))
+
+            const calls = consoleWarnSpy.mock.calls
+            const refundCall = calls.find(
+                (call) => call[0] === 'Refund order:' && call[1] === '#3519',
+            )
+            expect(refundCall).toBeDefined()
+
+            consoleWarnSpy.mockRestore()
+        })
+
+        it('should log to console when cancel button is clicked', async () => {
+            const user = userEvent.setup()
+            const consoleWarnSpy = jest
+                .spyOn(console, 'warn')
+                .mockImplementation()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /cancel/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('button', { name: /cancel/i }))
+
+            const calls = consoleWarnSpy.mock.calls
+            const cancelCall = calls.find(
+                (call) => call[0] === 'Cancel order:' && call[1] === '#3519',
+            )
+            expect(cancelCall).toBeDefined()
+
+            consoleWarnSpy.mockRestore()
         })
     })
 })

@@ -80,15 +80,17 @@ export function SidePanelTicketHeader({
                     flexShrink={0}
                 >
                     <StatusTag status={ticket.status} isSnoozed={isSnoozed} />
-                    <Button
-                        as="button"
-                        icon="arrow-expand"
-                        intent="regular"
-                        size="sm"
-                        variant="tertiary"
-                        onClick={onExpand}
-                        aria-label="Expand ticket"
-                    />
+                    {onExpand && (
+                        <Button
+                            as="button"
+                            icon="arrow-expand"
+                            intent="regular"
+                            size="sm"
+                            variant="tertiary"
+                            onClick={onExpand}
+                            aria-label="Expand ticket"
+                        />
+                    )}
                     {additionalActions}
                 </Box>
             </Box>

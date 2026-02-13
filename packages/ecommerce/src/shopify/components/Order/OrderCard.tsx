@@ -20,25 +20,32 @@ export function OrderCard({
     order,
     displayedDate,
     productsMap,
+    onClick,
 }: OrderCardProps) {
     const moneySymbol = getMoneySymbol(order.currency, true)
 
     return (
-        <Card className={css.orderCard} gap="xxxs" withHoverEffect={false}>
-            <OrderCardHeader
-                orderName={order.name}
-                displayedDate={displayedDate}
-            />
-            <OrderCardProducts
-                lineItems={order.line_items}
-                productsMap={productsMap}
-                moneySymbol={moneySymbol}
-                totalPrice={order.total_price}
-            />
-            <OrderCardStatus
-                financialStatus={order.financial_status}
-                fulfillmentStatus={order.fulfillment_status}
-            />
-        </Card>
+        <div onClick={onClick}>
+            <Card
+                className={css.orderCard}
+                gap="xxxs"
+                withHoverEffect={!!onClick}
+            >
+                <OrderCardHeader
+                    orderName={order.name}
+                    displayedDate={displayedDate}
+                />
+                <OrderCardProducts
+                    lineItems={order.line_items}
+                    productsMap={productsMap}
+                    moneySymbol={moneySymbol}
+                    totalPrice={order.total_price}
+                />
+                <OrderCardStatus
+                    financialStatus={order.financial_status}
+                    fulfillmentStatus={order.fulfillment_status}
+                />
+            </Card>
+        </div>
     )
 }

@@ -13,6 +13,7 @@ type OrdersListProps = {
     productsMap: Map<number, OrderCardProduct> | undefined
     draftOrders: OrderEcommerceData[] | undefined
     isLoadingDraftOrders: boolean
+    onSelectOrder?: (order: OrderEcommerceData) => void
 }
 
 export function OrdersList({
@@ -21,6 +22,7 @@ export function OrdersList({
     productsMap,
     draftOrders,
     isLoadingDraftOrders,
+    onSelectOrder,
 }: OrdersListProps) {
     if (isLoadingOrders || isLoadingDraftOrders) {
         return null
@@ -52,6 +54,11 @@ export function OrdersList({
                                     order.data.created_at,
                                 )}
                                 productsMap={productsMap}
+                                onClick={
+                                    onSelectOrder
+                                        ? () => onSelectOrder(order)
+                                        : undefined
+                                }
                             />
                         ))}
                     </>
@@ -74,6 +81,11 @@ export function OrdersList({
                                         draftOrder.data.created_at,
                                     )}
                                     productsMap={productsMap}
+                                    onClick={
+                                        onSelectOrder
+                                            ? () => onSelectOrder(draftOrder)
+                                            : undefined
+                                    }
                                 />
                             ))}
                         </>

@@ -5,7 +5,7 @@ import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box, Skeleton, Text } from '@gorgias/axiom'
 
-import type { Product } from 'constants/integrations/types/shopify'
+import type { Order, Product } from 'constants/integrations/types/shopify'
 import type { TimelineItem } from 'timeline/types'
 import { TimelineItemKind } from 'timeline/types'
 
@@ -20,7 +20,8 @@ type Props = {
     totalNumber: number
     productsMap: Map<number, Product>
     activeTicketId?: string
-    onSelect: (ticket: EnrichedTicket) => void
+    onSelectTicket: (ticket: EnrichedTicket) => void
+    onSelectOrder: (order: Order) => void
 }
 
 export function TimelineList({
@@ -30,7 +31,8 @@ export function TimelineList({
     totalNumber,
     productsMap,
     activeTicketId,
-    onSelect,
+    onSelectTicket,
+    onSelectOrder,
 }: Props) {
     // Create a map for fast lookup of enriched ticket data
     const enrichedTicketMap = useMemo(() => {
@@ -93,6 +95,7 @@ export function TimelineList({
                                             item.order.created_at,
                                         )}
                                         productsMap={productsMap}
+                                        onSelect={onSelectOrder}
                                     />
                                 </li>
                             )
@@ -128,7 +131,9 @@ export function TimelineList({
                                                 ? css.activeTicket
                                                 : undefined
                                         }
-                                        onSelect={() => onSelect(enriched)}
+                                        onSelect={() =>
+                                            onSelectTicket(enriched)
+                                        }
                                     />
                                 </li>
                             )

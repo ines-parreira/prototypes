@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react'
 
+import { OrderSidePanelPreview } from '@repo/customer'
 import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box } from '@gorgias/axiom'
 
+import type { Order } from 'constants/integrations/types/shopify'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useGetCustomer } from 'models/customer/queries'
@@ -75,7 +77,10 @@ export function TimelineContent({
     const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
         null,
     )
-    const [isOpen, setIsOpen] = useState(false)
+    const [isTicketOpen, setIsTicketOpen] = useState(false)
+
+    const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+    const [isOrderOpen, setIsOrderOpen] = useState(false)
 
     const currentIndex = selectedTicket
         ? enrichedTickets.findIndex(
@@ -86,9 +91,29 @@ export function TimelineContent({
     const isLastTicket =
         currentIndex >= enrichedTickets.length - 1 || currentIndex === -1
 
-    const handleSelect = useCallback((enriched: EnrichedTicket) => {
+    const handleSelectTicket = useCallback((enriched: EnrichedTicket) => {
         setSelectedTicket(enriched)
-        setIsOpen(true)
+        setIsTicketOpen(true)
+    }, [])
+
+    const handleSelectOrder = useCallback((order: Order) => {
+        setSelectedOrder(order)
+        setIsOrderOpen(true)
+    }, [])
+
+    const handleDuplicateOrder = useCallback((order: Order) => {
+        // TODO: to be implemented in the follow-up PR
+        console.warn('Duplicate order:', order.name)
+    }, [])
+
+    const handleRefundOrder = useCallback((order: Order) => {
+        // TODO: to be implemented in the follow-up PR
+        console.warn('Refund order:', order.name)
+    }, [])
+
+    const handleCancelOrder = useCallback((order: Order) => {
+        // TODO: to be implemented in the follow-up PR
+        console.warn('Cancel order:', order.name)
     }, [])
 
     const handleNext = useCallback(() => {
@@ -135,17 +160,26 @@ export function TimelineContent({
                     totalNumber={totalNumber}
                     productsMap={productsMap}
                     activeTicketId={activeTicketId}
-                    onSelect={handleSelect}
+                    onSelectTicket={handleSelectTicket}
+                    onSelectOrder={handleSelectOrder}
                 />
             </div>
             <TicketTimelineSidePanelPreview
                 enrichedTicket={selectedTicket}
-                isOpen={isOpen}
-                onOpenChange={setIsOpen}
+                isOpen={isTicketOpen}
+                onOpenChange={setIsTicketOpen}
                 onNext={handleNext}
                 onPrevious={handlePrevious}
                 isFirstTicket={isFirstTicket}
                 isLastTicket={isLastTicket}
+            />
+            <OrderSidePanelPreview
+                order={selectedOrder}
+                isOpen={isOrderOpen}
+                onOpenChange={setIsOrderOpen}
+                onDuplicate={handleDuplicateOrder}
+                onRefund={handleRefundOrder}
+                onCancel={handleCancelOrder}
             />
         </Box>
     )

@@ -1,10 +1,19 @@
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
 import type { Order, Product } from 'constants/integrations/types/shopify'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { TimelineOrderCard } from '../components/TimelineOrderCard'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2MS2Flag: jest.fn(),
+}))
+
+const mockUseHelpdeskV2MS2Flag = jest.mocked(useHelpdeskV2MS2Flag)
 
 const createMockOrder = (overrides: Partial<Order>): Order =>
     ({
@@ -33,7 +42,7 @@ const createMockOrder = (overrides: Partial<Order>): Order =>
         ...overrides,
     }) as Order
 
-const renderOrderCard = (order: Order) => {
+const renderOrderCard = (order: Order, onSelect?: (order: Order) => void) => {
     const productsMap = new Map()
     return renderWithStoreAndQueryClientProvider(
         <MemoryRouter>
@@ -41,10 +50,15 @@ const renderOrderCard = (order: Order) => {
                 order={order}
                 productsMap={productsMap}
                 displayedDate="Jan 1, 2024"
+                onSelect={onSelect}
             />
         </MemoryRouter>,
     )
 }
+
+beforeEach(() => {
+    mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+})
 
 describe('TimelineOrderCard - Financial Status (getFinancialStatusInfo)', () => {
     it('should display "Paid" status for paid orders', () => {
@@ -489,5 +503,56 @@ describe('TimelineOrderCard - Image Display (getLineItemImageSrc)', () => {
 
         expect(product1Image?.getAttribute('src')).toContain('product1')
         expect(product2Image?.getAttribute('src')).toContain('product2')
+    })
+})
+
+describe('TimelineOrderCard - onClick behavior with feature flag', () => {
+    it('should trigger onSelect when feature flag is true and card is clicked', async () => {
+        const user = userEvent.setup()
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+        const order = createMockOrder({ financial_status: 'paid' as any })
+        const onSelect = jest.fn()
+
+        renderOrderCard(order, onSelect)
+
+        const orderText = screen.getByText('#1001')
+        const card = orderText.closest('div[class*="orderCard"]')
+
+        await user.click(card!.parentElement!)
+
+        expect(onSelect).toHaveBeenCalledWith(order)
+        expect(onSelect).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not trigger onSelect when feature flag is false and card is clicked', async () => {
+        const user = userEvent.setup()
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+        const order = createMockOrder({ financial_status: 'paid' as any })
+        const onSelect = jest.fn()
+
+        renderOrderCard(order, onSelect)
+
+        const orderText = screen.getByText('#1001')
+        const card = orderText.closest('div[class*="orderCard"]')
+
+        await user.click(card!.parentElement!)
+
+        expect(onSelect).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger onSelect when onSelect is not provided', async () => {
+        const user = userEvent.setup()
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+        const order = createMockOrder({ financial_status: 'paid' as any })
+        const onSelect = jest.fn()
+
+        renderOrderCard(order)
+
+        const orderText = screen.getByText('#1001')
+        const card = orderText.closest('div[class*="orderCard"]')
+
+        await user.click(card!.parentElement!)
+
+        expect(onSelect).not.toHaveBeenCalled()
     })
 })

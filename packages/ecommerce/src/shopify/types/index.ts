@@ -1,5 +1,7 @@
 export { FinancialStatus, FulfillmentStatus } from './status'
 export type {
+    FinancialStatusValue,
+    FulfillmentStatusValue,
     OrderCardImage,
     OrderCardLineItem,
     OrderCardOrder,

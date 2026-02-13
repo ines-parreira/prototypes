@@ -1,17 +1,10 @@
 import { Box, CardFooter, Tag } from '@gorgias/axiom'
 
+import type {
+    FinancialStatusValue,
+    FulfillmentStatusValue,
+} from '../../types/order'
 import { getFinancialStatusInfo, getFulfillmentStatusInfo } from '../../utils'
-
-type FinancialStatusValue =
-    | 'pending'
-    | 'authorized'
-    | 'partially_paid'
-    | 'paid'
-    | 'partially_refunded'
-    | 'refunded'
-    | 'voided'
-
-type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
 
 type OrderCardStatusProps = {
     financialStatus: FinancialStatusValue

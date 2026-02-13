@@ -1,14 +1,7 @@
 import { Color } from '@gorgias/axiom'
 import type { Color as ColorType } from '@gorgias/axiom'
 
-type FinancialStatusValue =
-    | 'pending'
-    | 'authorized'
-    | 'partially_paid'
-    | 'paid'
-    | 'partially_refunded'
-    | 'refunded'
-    | 'voided'
+import type { FinancialStatusValue } from '../types/order'
 
 type FinancialStatusInfo = {
     label: string
