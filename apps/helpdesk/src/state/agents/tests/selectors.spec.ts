@@ -1,7 +1,6 @@
 import { fromJS, List, Map } from 'immutable'
 
 import { UserRole } from 'config/types/user'
-import * as agentFixtures from 'fixtures/agents'
 import * as userFixtures from 'fixtures/users'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { initialState } from 'state/agents/reducers'
@@ -37,12 +36,9 @@ describe('agents selectors', () => {
 
             agents: initialState.mergeDeep({
                 pagination: {
-                    data: [{ id: 1 }, { id: 2 }],
                     meta: { next_cursor: null, prev_cursor: null },
                 },
                 all: allAgents,
-                locations: agentFixtures.locations,
-                typingStatuses: agentFixtures.typingStatuses,
             }),
         } as RootState
     })
@@ -71,9 +67,9 @@ describe('agents selectors', () => {
             const newState = {
                 ...state,
                 agents: state.agents.set(
-                    'locations',
+                    'pagination',
                     fromJS({
-                        ...agentFixtures.locations['1'],
+                        meta: { next_cursor: 'foo', prev_cursor: 'bar' },
                     }),
                 ),
             }
@@ -100,9 +96,9 @@ describe('agents selectors', () => {
             const newState = {
                 ...state,
                 agents: state.agents.set(
-                    'locations',
+                    'pagination',
                     fromJS({
-                        ...agentFixtures.locations['1'],
+                        meta: { next_cursor: 'foo', prev_cursor: 'bar' },
                     }),
                 ),
             }
@@ -147,9 +143,9 @@ describe('agents selectors', () => {
             const newState = {
                 ...state,
                 agents: state.agents.set(
-                    'locations',
+                    'pagination',
                     fromJS({
-                        ...agentFixtures.locations['1'],
+                        meta: { next_cursor: 'foo', prev_cursor: 'bar' },
                     }),
                 ),
             }
@@ -176,171 +172,6 @@ describe('agents selectors', () => {
         expect(selectors.getAgentJS(4)(state)).toEqual(gorgiasSupportAgent)
         expect(selectors.getAgentJS(12345)(state)).toBeUndefined()
         expect(selectors.getAgentJS()({} as RootState)).toBeUndefined()
-    })
-
-    it('getAgentsIdsLocation()', () => {
-        expect(selectors.getAgentsIdsLocation(state)).toEqualImmutable(
-            state.agents.get('locations'),
-        )
-        expect(
-            selectors.getAgentsIdsLocation({} as RootState),
-        ).toEqualImmutable(fromJS({}))
-    })
-
-    it('getAgentsIdsOnTicket()', () => {
-        expect(selectors.getAgentsIdsOnTicket('1')(state)).toEqualImmutable(
-            fromJS(['1', '2']),
-        )
-        expect(selectors.getAgentsIdsOnTicket('2')(state)).toEqualImmutable(
-            fromJS(['1']),
-        )
-        expect(selectors.getAgentsIdsOnTicket()(state)).toEqualImmutable(
-            fromJS([]),
-        )
-        expect(
-            selectors.getAgentsIdsOnTicket()({} as RootState),
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('getAgentsOnTicket()', () => {
-        const expected = fromJS([
-            {
-                customers: [{ id: 1 }, { id: 2 }],
-                ticket: '1',
-            },
-            {
-                customers: [{ id: 1 }],
-                ticket: '2',
-            },
-        ]) as List<any>
-        expect(selectors.getAgentsOnTicket('1')(state)).toEqualImmutable(
-            (expected.first() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getAgentsOnTicket('2')(state)).toEqualImmutable(
-            (expected.last() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getAgentsOnTicket()(state)).toEqualImmutable(
-            fromJS([]),
-        )
-        expect(selectors.getAgentsOnTicket()({} as RootState)).toEqualImmutable(
-            fromJS([]),
-        )
-    })
-
-    it('getOtherAgentsOnTicket()', () => {
-        const expected = fromJS([
-            {
-                customers: [{ id: 1 }],
-                ticket: '1',
-            },
-            {
-                customers: [{ id: 1 }],
-                ticket: '2',
-            },
-        ]) as List<any>
-        expect(selectors.getOtherAgentsOnTicket('1')(state)).toEqualImmutable(
-            (expected.first() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getOtherAgentsOnTicket('2')(state)).toEqualImmutable(
-            (expected.last() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getOtherAgentsOnTicket()(state)).toEqualImmutable(
-            fromJS([]),
-        )
-        expect(
-            selectors.getOtherAgentsOnTicket()({} as RootState),
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('getAgentsIdsTypingStatus()', () => {
-        expect(selectors.getAgentsIdsTypingStatus(state)).toEqualImmutable(
-            state.agents.get('typingStatuses'),
-        )
-        expect(
-            selectors.getAgentsIdsTypingStatus({} as RootState),
-        ).toEqualImmutable(fromJS({}))
-    })
-
-    it('getAgentsIdsTypingStatusOnTicket()', () => {
-        const expected = fromJS([
-            {
-                customers: ['1', '2'],
-                ticket: '1',
-            },
-            {
-                customers: ['1'],
-                ticket: '2',
-            },
-        ]) as List<any>
-        expect(
-            selectors.getAgentsIdsTypingStatusOnTicket('1')(state),
-        ).toEqualImmutable((expected.first() as Map<any, any>).get('customers'))
-        expect(
-            selectors.getAgentsIdsTypingStatusOnTicket('2')(state),
-        ).toEqualImmutable((expected.last() as Map<any, any>).get('customers'))
-        expect(
-            selectors.getAgentsIdsTypingStatusOnTicket()(state),
-        ).toEqualImmutable(fromJS([]))
-        expect(
-            selectors.getAgentsIdsTypingStatusOnTicket()({} as RootState),
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('getAgentsTypingOnTicket()', () => {
-        const expected = fromJS([
-            {
-                customers: [{ id: 1 }, { id: 2 }],
-                ticket: '1',
-            },
-            {
-                customers: [{ id: 1 }],
-                ticket: '2',
-            },
-        ]) as List<any>
-        expect(selectors.getAgentsTypingOnTicket('1')(state)).toEqualImmutable(
-            (expected.first() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getAgentsTypingOnTicket('2')(state)).toEqualImmutable(
-            (expected.last() as Map<any, any>).get('customers'),
-        )
-        expect(selectors.getAgentsTypingOnTicket()(state)).toEqualImmutable(
-            fromJS([]),
-        )
-        expect(
-            selectors.getAgentsTypingOnTicket()({} as RootState),
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('getOtherAgentsTypingOnTicket()', () => {
-        const expected = fromJS([
-            {
-                customers: [{ id: 1 }],
-                ticket: '1',
-            },
-            {
-                customers: [{ id: 1 }],
-                ticket: '2',
-            },
-        ]) as List<any>
-        expect(
-            selectors.getOtherAgentsTypingOnTicket('1')(state),
-        ).toEqualImmutable((expected.first() as Map<any, any>).get('customers'))
-        expect(
-            selectors.getOtherAgentsTypingOnTicket('2')(state),
-        ).toEqualImmutable((expected.last() as Map<any, any>).get('customers'))
-        expect(
-            selectors.getOtherAgentsTypingOnTicket()(state),
-        ).toEqualImmutable(fromJS([]))
-        expect(
-            selectors.getOtherAgentsTypingOnTicket()({} as RootState),
-        ).toEqualImmutable(fromJS([]))
-    })
-
-    it('isAgentTypingOnTicket()', () => {
-        expect(selectors.isAgentTypingOnTicket('1')(state)).toBe(true)
-        expect(selectors.isAgentTypingOnTicket('2')(state)).toBe(false)
-        expect(selectors.isAgentTypingOnTicket()(state)).toBe(false)
-        expect(selectors.isAgentTypingOnTicket()({} as RootState)).toBe(false)
     })
 
     it('getLabelledHumanAndBotAgents()', () => {

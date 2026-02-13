@@ -17,28 +17,6 @@ const sendEvents: SendEvent[] = [
         },
     },
     {
-        name: SocketEventType.AgentTypingStarted,
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentTypingStarted,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
-        name: SocketEventType.AgentTypingStopped,
-        dataToSend: function (id) {
-            return {
-                clientId: window.CLIENT_ID,
-                event: SocketEventType.AgentTypingStopped,
-                dataType: 'Ticket',
-                data: parseInt(id as string),
-            }
-        },
-    },
-    {
         name: SocketEventType.ViewsCountExpired,
         dataToSend: function (viewIds) {
             return {

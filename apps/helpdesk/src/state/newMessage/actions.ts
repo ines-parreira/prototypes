@@ -12,7 +12,6 @@ import _isNull from 'lodash/isNull'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import _split from 'lodash/split'
-import _throttle from 'lodash/throttle'
 
 import type { Macro } from '@gorgias/helpdesk-queries'
 
@@ -54,9 +53,6 @@ import type {
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import { isNewChannel } from 'services/channels'
-import socketManager from 'services/socketManager/socketManager'
-import { SocketEventType } from 'services/socketManager/types'
-import * as agentSelectors from 'state/agents/selectors'
 import {
     getCurrentAccountState,
     getDefaultIntegrationSettings,
@@ -95,7 +91,6 @@ import {
     addEmailExtraContent,
     deleteEmailExtraContent,
     getReplyThreadMessages,
-    hasOnlySignatureText,
 } from './emailExtraUtils'
 import {
     TicketMessageActionValidationError,
@@ -265,14 +260,6 @@ export const updateCampaignProductPosition = createAction<{
     position: AttachmentPosition
 }>(constants.UPDATE_CAMPAIGN_PRODUCT_POSITION)
 
-const _throttledIsTyping = _throttle(
-    (ticketId: string) => {
-        socketManager.send(SocketEventType.AgentTypingStarted, ticketId)
-    },
-    constants.TYPING_ACTIVITY_AGENT_TIMEOUT_MS,
-    { trailing: false },
-) // we don't want to throw event after the ticket has been left
-
 export const setResponseText =
     (args: Map<any, any> = fromJS({})) =>
     (
@@ -280,27 +267,9 @@ export const setResponseText =
         getState: () => RootState,
     ): ReturnType<StoreDispatch> => {
         const state = getState()
-        const { ticket, currentUser, newMessage } = state
-        const contentState = args.get('contentState') as ContentState
+        const { ticket, currentUser } = state
         const ticketId = ticket.get('id') as string
         const signature = selectors.getNewMessageSignature(state)
-
-        if (contentState && newMessage && ticketId) {
-            const plainText = contentState.getPlainText()
-
-            const shouldSendTypingEvent =
-                plainText &&
-                !hasOnlySignatureText(contentState, signature) &&
-                newMessage.getIn(['newMessage', 'source', 'type']) !==
-                    TicketMessageSourceType.InternalNote
-
-            if (shouldSendTypingEvent) {
-                _throttledIsTyping(ticketId)
-            } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
-                _throttledIsTyping.cancel()
-                socketManager.send(SocketEventType.AgentTypingStopped, ticketId)
-            }
-        }
 
         const topRankMacroState = ticketSelectors.getTopRankMacroState(state)
         // should have the same params in state/ticket/actions/applyMacroAction

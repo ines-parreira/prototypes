@@ -1,9 +1,10 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useMemo } from 'react'
 
 import type { User } from '@gorgias/helpdesk-queries'
+import { useAgentActivity } from '@gorgias/realtime-ably'
 
-import useAblyRealtimePresence from './useAblyRealtimePresence'
-import useSocketIOPresence from './useSocketIOPresence'
+import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 export type TicketPresenceState = {
     agentsViewing: User[]
@@ -11,31 +12,50 @@ export type TicketPresenceState = {
     agentsTyping: User[]
     hasBoth: boolean
 }
+
 export default function useCollisionDetection(
     ticketId: number,
 ): TicketPresenceState {
-    const isAblyRealtimeEnabled = useFlag(FeatureFlagKey.AblyRealtime)
+    const currentUser = useAppSelector(getCurrentUser)
+    const { getTicketActivity } = useAgentActivity()
+    const ticketActivity = getTicketActivity(ticketId)
 
-    const { agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth } =
-        useSocketIOPresence()
-    const {
-        agentsViewing: realtime_agentsViewing,
-        agentsViewingNotTyping: realtime_agentsViewingNotTyping,
-        agentsTyping: realtime_agentsTyping,
-        hasBoth: realtime_hasBoth,
-    } = useAblyRealtimePresence(ticketId)
+    const agentsViewing = useMemo(
+        () =>
+            ticketActivity.viewing.filter(
+                (user) => user.id !== currentUser.get('id'),
+            ),
+        [currentUser, ticketActivity.viewing],
+    )
+    const agentsTyping = useMemo(
+        () =>
+            ticketActivity.typing.filter(
+                (user) => user.id !== currentUser.get('id'),
+            ),
+        [currentUser, ticketActivity.typing],
+    )
+    const agentsViewingNotTyping = useMemo(
+        () =>
+            agentsViewing.filter(
+                (viewingUser) =>
+                    !agentsTyping.some(
+                        (typingUser) => typingUser.id === viewingUser.id,
+                    ),
+            ),
+        [agentsViewing, agentsTyping],
+    )
+    const hasBoth = useMemo(
+        () => agentsTyping.length > 0 && agentsViewingNotTyping.length > 0,
+        [agentsTyping, agentsViewingNotTyping],
+    )
 
-    return isAblyRealtimeEnabled
-        ? {
-              agentsViewing: realtime_agentsViewing,
-              agentsViewingNotTyping: realtime_agentsViewingNotTyping,
-              agentsTyping: realtime_agentsTyping,
-              hasBoth: realtime_hasBoth,
-          }
-        : {
-              agentsViewing,
-              agentsViewingNotTyping,
-              agentsTyping,
-              hasBoth,
-          }
+    return useMemo(
+        () => ({
+            agentsViewing,
+            agentsViewingNotTyping,
+            agentsTyping,
+            hasBoth,
+        }),
+        [agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth],
+    )
 }

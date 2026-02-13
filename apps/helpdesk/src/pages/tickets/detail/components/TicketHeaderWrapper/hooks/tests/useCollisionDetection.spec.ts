@@ -1,52 +1,40 @@
-import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
+import { fromJS } from 'immutable'
 
-import useAblyRealtimePresence from '../useAblyRealtimePresence'
+import { useAgentActivity } from '@gorgias/realtime-ably'
+
+import useAppSelector from 'hooks/useAppSelector'
+
 import useCollisionDetection from '../useCollisionDetection'
-import useSocketIOPresence from '../useSocketIOPresence'
 
-jest.mock('@repo/feature-flags')
-jest.mock('../useAblyRealtimePresence')
-jest.mock('../useSocketIOPresence')
+jest.mock('@gorgias/realtime-ably')
+jest.mock('hooks/useAppSelector')
 
-const mockUseFlag = useFlag as jest.Mock
-const mockUseAblyRealtimePresence = useAblyRealtimePresence as jest.Mock
-const mockUseSocketIOPresence = useSocketIOPresence as jest.Mock
+const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseAgentActivity = useAgentActivity as jest.Mock
 
 describe('useCollisionDetection', () => {
     const ticketId = 123
 
-    const mockPresence1 = {
-        agentsViewing: [{ id: 'agent1' }],
-        agentsViewingNotTyping: [{ id: 'agent1' }],
-        agentsTyping: [],
-        hasBoth: false,
-    }
+    it('should return the correct presence data', () => {
+        const currentUser = fromJS({ id: 'currentUser' })
+        const ticketActivity = {
+            viewing: [{ id: 'agent1' }, { id: 'agent2' }],
+            typing: [{ id: 'agent2' }],
+        }
 
-    const mockPresence2 = {
-        agentsViewing: [{ id: 'agent2' }],
-        agentsViewingNotTyping: [{ id: 'agent2' }],
-        agentsTyping: [],
-        hasBoth: false,
-    }
-
-    it('should use SocketIO presence when FF is false', () => {
-        mockUseFlag.mockReturnValue(false)
-        mockUseSocketIOPresence.mockReturnValue(mockPresence1)
-        mockUseAblyRealtimePresence.mockReturnValue(mockPresence2)
+        mockUseAppSelector.mockReturnValue(currentUser)
+        mockUseAgentActivity.mockReturnValue({
+            getTicketActivity: () => ticketActivity,
+        })
 
         const { result } = renderHook(() => useCollisionDetection(ticketId))
 
-        expect(result.current).toEqual(mockPresence1)
-    })
-
-    it('should use Realtime presence when FF is true', () => {
-        mockUseFlag.mockReturnValue(true)
-        mockUseSocketIOPresence.mockReturnValue(mockPresence2)
-        mockUseAblyRealtimePresence.mockReturnValue(mockPresence1)
-
-        const { result } = renderHook(() => useCollisionDetection(ticketId))
-
-        expect(result.current).toEqual(mockPresence1)
+        expect(result.current).toEqual({
+            agentsViewing: [{ id: 'agent1' }, { id: 'agent2' }],
+            agentsViewingNotTyping: [{ id: 'agent1' }],
+            agentsTyping: [{ id: 'agent2' }],
+            hasBoth: true,
+        })
     })
 })

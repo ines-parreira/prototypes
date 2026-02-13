@@ -58,18 +58,6 @@ export function fetchUsers(options: FetchAgentsOptions = {}) {
     }
 }
 
-export const setAgentsLocations = (locations: Record<string, unknown>) => ({
-    type: constants.SET_AGENTS_LOCATIONS,
-    data: locations,
-})
-
-export const setAgentsTypingStatuses = (
-    locations: Record<string, unknown>,
-) => ({
-    type: constants.SET_AGENTS_TYPING_STATUSES,
-    data: locations,
-})
-
 export const setAgentFeedbackMessageStatus = (
     status: FeedbackStatus | null,
     resourceType: ResourceSection,

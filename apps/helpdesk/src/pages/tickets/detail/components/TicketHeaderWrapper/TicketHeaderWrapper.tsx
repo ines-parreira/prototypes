@@ -5,10 +5,10 @@ import classnames from 'classnames'
 import useAppSelector from 'hooks/useAppSelector'
 import { AgentLabel } from 'pages/common/utils/labels'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
+import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import TicketFields from '../TicketFields/TicketFields'
-import useCollisionDetection from './hooks/useCollisionDetection'
 
 import css from './TicketHeaderWrapper.less'
 

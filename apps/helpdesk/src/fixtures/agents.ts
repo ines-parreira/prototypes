@@ -59,21 +59,3 @@ export const agents: User[] = [
         client_id: null,
     },
 ]
-export const locations = {
-    '1': {
-        Ticket: [1, 2],
-        Customer: [3],
-    },
-    '2': {
-        Ticket: [1],
-        Customer: [2],
-    },
-}
-export const typingStatuses = {
-    '1': {
-        Ticket: [1, 2],
-    },
-    '2': {
-        Ticket: [1],
-    },
-}

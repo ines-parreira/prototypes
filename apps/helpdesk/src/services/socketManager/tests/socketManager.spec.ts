@@ -226,12 +226,6 @@ describe('SocketManager', () => {
                         data: parseInt(id as string),
                     }
                 },
-                onLeave: function (id) {
-                    return (this as unknown as SocketManager).send(
-                        SocketEventType.AgentTypingStopped,
-                        id,
-                    )
-                },
             }
 
             socketManager.registerJoinEvents([event])
@@ -252,12 +246,6 @@ describe('SocketManager', () => {
                         dataType: 'Ticket',
                         data: parseInt(id as string),
                     }
-                },
-                onLeave: function (id) {
-                    return (this as unknown as SocketManager).send(
-                        SocketEventType.AgentTypingStopped,
-                        id,
-                    )
                 },
             }
 

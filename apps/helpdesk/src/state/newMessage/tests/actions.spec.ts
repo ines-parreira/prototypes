@@ -41,7 +41,6 @@ import { SearchType } from 'models/search/types'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as activityTracker from 'services/activityTracker'
 import { ActivityEvents } from 'services/activityTracker'
-import socketManager from 'services/socketManager/socketManager'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as actions from 'state/newMessage/actions'
@@ -75,7 +74,6 @@ import { getReplyAreaStateSnapshot } from './testUtils'
 const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
 
 type MockedRootState = {
-    agents?: Map<any, any>
     integrations?: Map<any, any>
     ticket?: Map<any, any>
     newMessage?: Map<any, any>
@@ -109,14 +107,6 @@ jest.mock(
             getQueryTimestamp: jest.fn(() => jest.fn()),
         }) as Record<string, unknown>,
 )
-
-jest.mock('services/socketManager/socketManager', () => {
-    return {
-        join: jest.fn(),
-        leave: jest.fn(),
-        send: jest.fn(),
-    }
-})
 
 jest.mock('services/activityTracker')
 
@@ -936,12 +926,6 @@ describe('actions', () => {
         })
 
         describe('setResponseText()', () => {
-            beforeEach(() => {
-                ;(socketManager.join as jest.Mock).mockReset()
-                ;(socketManager.leave as jest.Mock).mockReset()
-                ;(socketManager.send as jest.Mock).mockReset()
-            })
-
             it('should always pass the args to the reducer', () => {
                 store = mockStore({
                     ticket: emailTicket,
@@ -954,156 +938,6 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-            })
-
-            it('should send typing event when the user is typing', () => {
-                store = mockStore({
-                    newMessage: initialState.setIn(
-                        ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.Chat,
-                    ),
-                    ticket: fromJS({ id: 1 }),
-                    agents: fromJS({
-                        all: [
-                            {
-                                id: 1,
-                            },
-                        ],
-                    }),
-                })
-
-                store.dispatch(
-                    actions.setResponseText(
-                        fromJS({
-                            contentState: ContentState.createFromText('foo'),
-                        }),
-                    ),
-                )
-
-                expect(store.getActions()).toMatchSnapshot()
-                expect(
-                    (socketManager.send as jest.Mock).mock.calls.length,
-                ).toBe(1)
-            })
-
-            it('should not send a typing event when the user is typing in an internal note', () => {
-                store = mockStore({
-                    newMessage: initialState.setIn(
-                        ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.InternalNote,
-                    ),
-                    ticket: fromJS({ id: 1 }),
-                })
-
-                store.dispatch(
-                    actions.setResponseText(
-                        fromJS({
-                            contentState: ContentState.createFromText('foo'),
-                        }),
-                    ),
-                )
-
-                expect(store.getActions()).toMatchSnapshot()
-                expect(
-                    (socketManager.send as jest.Mock).mock.calls.length,
-                ).toBe(0)
-            })
-
-            it('should not send a typing event when the reply area only contains a signature', () => {
-                store = mockStore({
-                    newMessage: initialState,
-                    ticket: fromJS({ id: 1 }),
-                    agents: fromJS({
-                        all: [
-                            {
-                                id: 1,
-                            },
-                        ],
-                    }),
-                })
-
-                store.dispatch(
-                    actions.setResponseText(
-                        fromJS({
-                            contentState:
-                                ContentState.createFromText('\n\nsignature'),
-                        }),
-                    ),
-                )
-
-                expect(store.getActions()).toMatchSnapshot()
-                expect(
-                    (socketManager.send as jest.Mock).mock.calls.length,
-                ).toBe(0)
-            })
-
-            it('should send an end typing event on ticket when the user is not typing but is in the room', () => {
-                store = mockStore({
-                    newMessage: initialState,
-                    ticket: fromJS({ id: 1 }),
-                    agents: fromJS({
-                        typingStatuses: {
-                            '1': {
-                                Ticket: [1],
-                            },
-                        },
-                        all: [
-                            {
-                                id: 1,
-                            },
-                        ],
-                    }),
-                    currentUser: fromJS({
-                        id: 1,
-                    }),
-                })
-
-                store.dispatch(
-                    actions.setResponseText(
-                        fromJS({
-                            contentState: ContentState.createFromText(''),
-                        }),
-                    ),
-                )
-
-                expect(store.getActions()).toMatchSnapshot()
-                expect(
-                    (socketManager.join as jest.Mock).mock.calls.length,
-                ).toBe(0)
-                expect(
-                    (socketManager.send as jest.Mock).mock.calls.length,
-                ).toBe(1)
-            })
-
-            it('should not send an end typing event when the user is not typing and not in ticket', () => {
-                store = mockStore({
-                    newMessage: initialState,
-                    ticket: fromJS({ id: 1 }),
-                    agents: fromJS({
-                        typingStatuses: {},
-                        all: [
-                            {
-                                id: 1,
-                            },
-                        ],
-                    }),
-                    currentUser: fromJS({
-                        id: 1,
-                    }),
-                })
-
-                store.dispatch(
-                    actions.setResponseText(
-                        fromJS({
-                            contentState: ContentState.createFromText(''),
-                        }),
-                    ),
-                )
-
-                expect(store.getActions()).toMatchSnapshot()
-                expect(
-                    (socketManager.send as jest.Mock).mock.calls.length,
-                ).toBe(0)
             })
         })
 

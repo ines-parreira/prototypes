@@ -46,30 +46,6 @@ describe('agents reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set agents location', () => {
-        expect(
-            reducer(initialState, {
-                type: constants.SET_AGENTS_LOCATIONS,
-                data: [
-                    { customers: ['1', '2'], ticket: '1' },
-                    { customers: ['1'], ticket: '2' },
-                ],
-            }).toJS(),
-        ).toMatchSnapshot()
-    })
-
-    it('set agents typing status', () => {
-        expect(
-            reducer(initialState, {
-                type: constants.SET_AGENTS_TYPING_STATUSES,
-                data: [
-                    { users: ['1', '2'], ticket: '1' },
-                    { users: ['1'], ticket: '2' },
-                ],
-            }).toJS(),
-        ).toMatchSnapshot()
-    })
-
     it('create agent', () => {
         // success
         expect(

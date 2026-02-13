@@ -42,8 +42,6 @@ import type {
     TicketMessageFailedEvent,
     TicketTypingActivityShopperStartedEvent,
     TicketUpdatedEvent,
-    UserLocationUpdatedEvent,
-    UserTypingStatusUpdatedEvent,
     ViewCountUpdatedEvent,
     ViewCreatedEvent,
     ViewDeactivated,
@@ -59,7 +57,6 @@ import type {
     WhatsAppOnboardingSucceededEvent,
 } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
-import * as agentsActions from 'state/agents/actions'
 import * as currentBillingSelectors from 'state/billing/selectors'
 import * as chatsActions from 'state/chats/actions'
 import * as currentAccountConstants from 'state/currentAccount/constants'
@@ -123,26 +120,6 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerExternalData(
                     customerExternalDataUpdatedEvent.customer_id,
                     customerExternalDataUpdatedEvent.external_data,
-                ),
-            )
-        },
-    },
-    {
-        name: 'user-location-updated',
-        onReceive: function (json) {
-            reduxStore.dispatch(
-                agentsActions.setAgentsLocations(
-                    (json as UserLocationUpdatedEvent).locations,
-                ),
-            )
-        },
-    },
-    {
-        name: 'user-typing-status-updated',
-        onReceive: function (json) {
-            reduxStore.dispatch(
-                agentsActions.setAgentsTypingStatuses(
-                    (json as UserTypingStatusUpdatedEvent).locations,
                 ),
             )
         },

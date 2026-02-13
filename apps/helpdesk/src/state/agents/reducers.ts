@@ -22,8 +22,6 @@ export type MessageFeedbackStatusAction = {
 export const initialState: AgentsState = fromJS({
     all: [],
     pagination: [],
-    locations: {},
-    typingStatuses: {},
     messageFeedbackStatus: {} as Record<ResourceSection, FeedbackStatus>,
 })
 
@@ -73,14 +71,6 @@ export default function reducer(
                         String(user.get('id')) !== String(action.id),
                 ),
             )
-        }
-
-        case agentsConstants.SET_AGENTS_LOCATIONS: {
-            return state.set('locations', fromJS(action.data))
-        }
-
-        case agentsConstants.SET_AGENTS_TYPING_STATUSES: {
-            return state.set('typingStatuses', fromJS(action.data))
         }
 
         case currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS: {

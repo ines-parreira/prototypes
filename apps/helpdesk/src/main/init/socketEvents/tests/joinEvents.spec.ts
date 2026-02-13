@@ -1,8 +1,5 @@
-import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
-
-import { SocketEventType } from 'services/socketManager/types'
 
 import joinEvents from '../joinEvents'
 
@@ -25,28 +22,5 @@ describe('joinEvents', () => {
             expect(dataToSend).toHaveProperty('dataType')
             expect(dataToSend).toHaveProperty('data')
         })
-    })
-
-    it('Should stop typing when leaving ticket room', () => {
-        const ticketJoinEvent = _find(joinEvents, { name: 'ticket' })
-
-        class MockSocketManager {
-            ticketOnLeaveJoinEvent = ticketJoinEvent
-                ? ticketJoinEvent.onLeave
-                : null
-            send = jest.fn()
-        }
-
-        const mockSocketManager = new MockSocketManager()
-        const ticketId = '1234'
-
-        if (mockSocketManager.ticketOnLeaveJoinEvent) {
-            mockSocketManager.ticketOnLeaveJoinEvent(ticketId)
-        }
-
-        expect(mockSocketManager.send).toHaveBeenCalledWith(
-            SocketEventType.AgentTypingStopped,
-            ticketId,
-        )
     })
 })

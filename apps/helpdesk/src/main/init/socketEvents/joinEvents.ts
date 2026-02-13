@@ -1,6 +1,5 @@
-import type { SocketManager } from 'services/socketManager/socketManager'
 import type { SendEvent } from 'services/socketManager/types'
-import { JoinEventType, SocketEventType } from 'services/socketManager/types'
+import { JoinEventType } from 'services/socketManager/types'
 
 /**
  * Events describing a room to join on server via socket
@@ -14,12 +13,6 @@ const joinEvents: SendEvent[] = [
                 dataType: 'Ticket',
                 data: parseInt(id as string),
             }
-        },
-        onLeave: function (id) {
-            return (this as unknown as SocketManager).send(
-                SocketEventType.AgentTypingStopped,
-                id,
-            )
         },
     },
     {

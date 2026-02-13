@@ -64,8 +64,6 @@ export enum SocketEventType {
     TicketViewed = 'ticket-viewed',
     RoomJoined = 'room-joined',
     RoomLeft = 'room-left',
-    AgentTypingStarted = 'agent-typing-started',
-    AgentTypingStopped = 'agent-typing-stopped',
     ViewsCountExpired = 'views-counts-expired',
     SidUpdated = 'sid-updated',
     TicketMessageChatCreated = 'ticket-message-chat-created',
@@ -121,20 +119,6 @@ export type CustomerExternalDataUpdatedEvent = {
     }
     external_data: CustomerExternalData
     customer_id: number
-}
-
-export type UserLocationUpdatedEvent = {
-    event: {
-        type: 'user-location-updated'
-    }
-    locations: Record<string, unknown>
-}
-
-export type UserTypingStatusUpdatedEvent = {
-    event: {
-        type: 'user-typing-status-updated'
-    }
-    locations: Record<string, unknown>
 }
 
 export type TicketUpdatedEvent = {
@@ -429,8 +413,6 @@ export type OrderEvent = {
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
-    | UserLocationUpdatedEvent
-    | UserTypingStatusUpdatedEvent
     | TicketUpdatedEvent
     | TicketAssignedEvent
     | TicketMessageCreatedEvent

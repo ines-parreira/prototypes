@@ -8,10 +8,8 @@ exports[`agents reducers create agent 1`] = `
       "name": "Romain",
     },
   ],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
 
@@ -28,10 +26,8 @@ exports[`agents reducers delete agent 1`] = `
     },
   ],
   "all": [],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
 
@@ -39,8 +35,6 @@ exports[`agents reducers fetch users (agents) 1`] = `
 Immutable.Map {
   "all": Immutable.List [],
   "pagination": Immutable.List [],
-  "locations": Immutable.Map {},
-  "typingStatuses": Immutable.Map {},
   "messageFeedbackStatus": Immutable.Map {},
 }
 `;
@@ -49,8 +43,6 @@ exports[`agents reducers fetch users (agents) 2`] = `
 Immutable.Map {
   "all": Immutable.List [],
   "pagination": Immutable.List [],
-  "locations": Immutable.Map {},
-  "typingStatuses": Immutable.Map {},
   "messageFeedbackStatus": Immutable.Map {},
 }
 `;
@@ -66,57 +58,7 @@ Immutable.Map {
     },
   ],
   "pagination": Immutable.List [],
-  "locations": Immutable.Map {},
-  "typingStatuses": Immutable.Map {},
   "messageFeedbackStatus": Immutable.Map {},
-}
-`;
-
-exports[`agents reducers set agents location 1`] = `
-{
-  "all": [],
-  "locations": [
-    {
-      "customers": [
-        "1",
-        "2",
-      ],
-      "ticket": "1",
-    },
-    {
-      "customers": [
-        "1",
-      ],
-      "ticket": "2",
-    },
-  ],
-  "messageFeedbackStatus": {},
-  "pagination": [],
-  "typingStatuses": {},
-}
-`;
-
-exports[`agents reducers set agents typing status 1`] = `
-{
-  "all": [],
-  "locations": {},
-  "messageFeedbackStatus": {},
-  "pagination": [],
-  "typingStatuses": [
-    {
-      "ticket": "1",
-      "users": [
-        "1",
-        "2",
-      ],
-    },
-    {
-      "ticket": "2",
-      "users": [
-        "1",
-      ],
-    },
-  ],
 }
 `;
 
@@ -132,10 +74,8 @@ exports[`agents reducers should update the matching row in the list of agents wh
       "name": "John",
     },
   ],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
 
@@ -151,10 +91,8 @@ exports[`agents reducers should update the matching row in the list of agents wh
       "name": "John",
     },
   ],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
 
@@ -170,10 +108,8 @@ exports[`agents reducers update agent 1`] = `
       "name": "John",
     },
   ],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
 
@@ -189,9 +125,7 @@ exports[`agents reducers update agent 2`] = `
       "name": "John",
     },
   ],
-  "locations": {},
   "messageFeedbackStatus": {},
   "pagination": [],
-  "typingStatuses": {},
 }
 `;
