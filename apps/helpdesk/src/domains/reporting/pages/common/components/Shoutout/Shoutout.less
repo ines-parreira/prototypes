@@ -97,6 +97,14 @@
         box-shadow: var(--effects-shadow-container) !important;
     }
 
+    [data-drag-enabled='true'] {
+        :global(.react-grid-item:hover) .card,
+        :global(.react-grid-item.react-dragging) .card,
+        :global(.react-grid-item.react-resizing) .card {
+            border: 1px solid transparent;
+        }
+    }
+
     .avatarPlaceholder {
         background-color: var(--elevation-neutral-default);
         color: var(--content-neutral-secondary);

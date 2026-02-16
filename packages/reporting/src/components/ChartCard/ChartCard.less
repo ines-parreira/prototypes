@@ -39,4 +39,12 @@
         background-color: var(--elevation-neutral-mid);
         box-shadow: var(--effects-shadow-container);
     }
+
+    [data-drag-enabled='true'] {
+        :global(.react-grid-item:hover) .cardContainer,
+        :global(.react-grid-item.react-dragging) .cardContainer,
+        :global(.react-grid-item.react-resizing) .cardContainer {
+            border: 1px solid transparent;
+        }
+    }
 }

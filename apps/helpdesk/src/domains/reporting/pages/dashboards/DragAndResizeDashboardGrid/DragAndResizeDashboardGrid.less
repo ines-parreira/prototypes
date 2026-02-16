@@ -7,12 +7,10 @@
 
 [data-drag-enabled='true'] {
     .react-grid-item {
-        transition: border 150ms ease-in-out;
-
         &:hover,
         &.react-dragging,
         &.react-resizing {
-            border: 2px solid var(--border-accent-default);
+            box-shadow: 0 0 0 2px var(--border-accent-default);
             border-radius: var(--spacing-sm);
         }
     }
