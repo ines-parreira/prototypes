@@ -148,7 +148,7 @@ describe('TopOpportunityCard', () => {
 
             expect(screen.getByText(/5 tickets/i)).toBeInTheDocument()
             expect(
-                screen.getByText(/This conflict is impacting/i),
+                screen.getByText(/AI Agent could not resolve/i),
             ).toBeInTheDocument()
         })
 

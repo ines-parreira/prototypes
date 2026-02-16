@@ -49,24 +49,6 @@ export const TopOpportunityCard = ({
     const isKnowledgeGap =
         opportunity.type === OpportunityType.FILL_KNOWLEDGE_GAP
 
-    const getCardDetail = () => {
-        switch (opportunity.type) {
-            case OpportunityType.RESOLVE_CONFLICT:
-                return {
-                    title: `Resolve conflicting knowledge: "${resources[0]?.insight}" and "${resources[1]?.insight}"`,
-                    buttonText: 'Resolve conflict',
-                }
-            case OpportunityType.FILL_KNOWLEDGE_GAP:
-            default:
-                return {
-                    title: `Review AI-generated guidance:  "${opportunity.insight}"`,
-                    buttonText: 'Review guidance',
-                }
-        }
-    }
-
-    const cardDetail = getCardDetail()
-
     const handleCardClick = () => {
         history.push(routes.opportunitiesWithId(opportunity.id))
     }
@@ -90,18 +72,48 @@ export const TopOpportunityCard = ({
         setIsTicketDrillDownModalOpen(false)
     }, [])
 
-    const ticketCountDescription = (
-        <Text variant="regular" size="sm">
-            This conflict is impacting{' '}
-            <span
-                className={css.handoverTickets}
-                onClick={handleTicketCountClick}
-            >
-                {ticketCount}
-                {ticketCount === 1 ? ' ticket' : ' tickets'}
-            </span>
-        </Text>
-    )
+    const getCardDetail = () => {
+        switch (opportunity.type) {
+            case OpportunityType.RESOLVE_CONFLICT:
+                return {
+                    title: `Resolve conflicting knowledge: "${resources[0]?.insight}" and "${resources[1]?.insight}"`,
+                    buttonText: 'Resolve conflict',
+                    ticketCountText: (
+                        <Text variant="regular" size="sm">
+                            This conflict is impacting{' '}
+                            <span
+                                className={css.handoverTickets}
+                                onClick={handleTicketCountClick}
+                            >
+                                {ticketCount}
+                                {ticketCount === 1 ? ' ticket' : ' tickets'}
+                            </span>
+                        </Text>
+                    ),
+                }
+            case OpportunityType.FILL_KNOWLEDGE_GAP:
+            default:
+                return {
+                    title: `Review AI-generated guidance:  "${opportunity.insight}"`,
+                    buttonText: 'Review guidance',
+                    ticketCountText: (
+                        <Text variant="regular" size="sm">
+                            Based on{' '}
+                            <span
+                                className={css.handoverTickets}
+                                onClick={handleTicketCountClick}
+                            >
+                                {ticketCount}
+                                {ticketCount === 1 ? ' ticket' : ' tickets'}
+                            </span>{' '}
+                            AI Agent could not resolve
+                        </Text>
+                    ),
+                }
+        }
+    }
+
+    const cardDetail = getCardDetail()
 
     return (
         <>
@@ -140,7 +152,7 @@ export const TopOpportunityCard = ({
                         <Text variant="bold" size="sm">
                             {cardDetail.title}
                         </Text>
-                        {ticketCountDescription}
+                        {cardDetail.ticketCountText}
                     </Box>
 
                     <Button size="sm" onClick={handleCardClick}>
