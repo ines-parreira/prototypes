@@ -136,6 +136,7 @@ export async function metricExecutionHandler<
         } catch (e) {
             const isAxiosError = e instanceof AxiosError
             const statusCode = isAxiosError ? e?.response?.status : undefined
+            const reason = isAxiosError ? e?.response?.data : e
             const errorMessage = (e as Error).message
 
             // Skip Sentry reporting for transient errors to avoid noise
@@ -156,7 +157,7 @@ export async function metricExecutionHandler<
                     tags: { team: SentryTeam.CRM_REPORTING },
                     extra: {
                         metricName: config.metricName,
-                        reason: JSON.stringify(e),
+                        reason: JSON.stringify(reason),
                         payload: JSON.stringify(config.newPayload),
                     },
                 },

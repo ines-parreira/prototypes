@@ -235,6 +235,43 @@ describe('metricExecutionHandler', () => {
             )
         })
 
+        it('should return old result when new API fails and log reason correctly', async () => {
+            const axiosError = new AxiosError('New API failed')
+            axiosError.response = {
+                status: 400,
+                data: { error: 'invalid dimension' },
+                statusText: 'Accepted',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            postReportingV2QueryMock.mockRejectedValue(axiosError)
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            const result = await metricExecutionHandler(config)
+
+            expect((result.data as any).data[0]).toBe(42)
+            expect(reportErrorMock).toHaveBeenCalledWith(
+                new Error(
+                    'Next function failed in shadow mode for test-metric: New API failed',
+                ),
+                {
+                    extra: {
+                        metricName: 'test-metric',
+                        reason: JSON.stringify({ error: 'invalid dimension' }),
+                        payload: JSON.stringify(mockNewPayload),
+                    },
+                    tags: { team: 'crm-reporting' },
+                },
+                ['next_failed_shadow', 'test-metric', 'New API failed'],
+            )
+        })
+
         it('should fallback to off mode when new payload is missing', async () => {
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())
 
