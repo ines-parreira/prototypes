@@ -52,6 +52,7 @@ import { linkify } from 'utils/linkify'
 import type { notify } from '../../../../state/notifications/actions'
 import type { ConnectedAction } from '../../../../state/types'
 import {
+    containsMarkdownSyntax,
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
     focusToTheEndOfContent,
@@ -1005,7 +1006,12 @@ export class RichFieldEditor extends Component<Props, State> {
         }
 
         const resolvedHtml =
-            html || (text ? (marked.parse(text) as string) : undefined)
+            html ||
+            (text && containsMarkdownSyntax(text)
+                ? (marked.parse(text) as string)
+                : text
+                  ? `<div>${text.replace(/\n/g, '<br>')}</div>`
+                  : undefined)
 
         // manually convert pasted text/html with draft-convert to preserve newlines and empty blocks.
         // by default draft-js's convertFromHTML tries to clean-up the html, and remove extra newlines.

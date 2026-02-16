@@ -592,6 +592,37 @@ export function contentStateFromTextOrHTML(
     return contentState
 }
 
+export function containsMarkdownSyntax(text: string): boolean {
+    if (!text || text.trim().length === 0) {
+        return false
+    }
+
+    const patterns = [
+        // Headers: # Heading, ## Heading, etc. (must start line)
+        /^#{1,6}\s+/m,
+        // Bold: **text** or __text__ (double delimiters)
+        /(\*\*|__).+?\1/,
+        // Italic: *text* or _text_ (single delimiters, not mid-word)
+        /(?<!\w)(\*|_)(?!\s).+?(?<!\s)\1(?!\w)/,
+        // Unordered lists: * item or - item (must start line with space after)
+        /^[\*\-]\s+/m,
+        // Ordered lists: 1. item, 2. item, etc. (must start line with space after)
+        /^\d+\.\s+/m,
+        // Links: [text](url) or images: ![alt](url)
+        /!?\[.+?\]\(.+?\)/,
+        // Code blocks: ```code```
+        /```[\s\S]*?```/,
+        // Inline code: `code`
+        /`[^`]+`/,
+        // Blockquotes: > quote (must start line)
+        /^>\s+/m,
+        // Horizontal rules: ---, ***, or ___ (3 or more, must be on own line)
+        /^(\*{3,}|-{3,}|_{3,})$/m,
+    ]
+
+    return patterns.some((pattern) => pattern.test(text))
+}
+
 export function editorStateWithReplacedText(
     editorState: EditorState,
     text: string,

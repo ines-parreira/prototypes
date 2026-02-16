@@ -588,6 +588,69 @@ describe('RichFieldEditor', () => {
             expect(blocks[0].getType()).toBe('unstyled')
             expect(blocks[0].getText()).toBe('just some plain text')
         })
+
+        it('should preserve line breaks when pasting plain text without markdown', () => {
+            const onChangeSpy = jest.fn()
+            contentState = convertFromHTML('<p></p>')
+            editorState = EditorState.createWithContent(contentState)
+            editorState = EditorState.moveFocusToEnd(editorState)
+            const instanceRef: LegacyRef<InstanceType<typeof RichFieldEditor>> =
+                { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
+            )
+
+            instanceRef.current?._handlePastedText(
+                'Line 1\nLine 2\nLine 3',
+                undefined,
+                editorState,
+            )
+            const [newEditorState]: EditorState[] =
+                onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
+            const blocks = newEditorState.getCurrentContent().getBlocksAsArray()
+
+            expect(blocks.length).toBe(1)
+            expect(blocks[0].getType()).toBe('unstyled')
+            expect(blocks[0].getText()).toBe('Line 1\nLine 2\nLine 3')
+        })
+
+        it('should NOT treat asterisks in sentences as markdown', () => {
+            const onChangeSpy = jest.fn()
+            contentState = convertFromHTML('<p></p>')
+            editorState = EditorState.createWithContent(contentState)
+            editorState = EditorState.moveFocusToEnd(editorState)
+            const instanceRef: LegacyRef<InstanceType<typeof RichFieldEditor>> =
+                { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
+            )
+
+            instanceRef.current?._handlePastedText(
+                'Price is $10 * quantity',
+                undefined,
+                editorState,
+            )
+            const [newEditorState]: EditorState[] =
+                onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
+            const blocks = newEditorState.getCurrentContent().getBlocksAsArray()
+
+            expect(blocks[0].getType()).toBe('unstyled')
+            expect(blocks[0].getText()).toBe('Price is $10 * quantity')
+        })
     })
 
     it('should open link modal when Cmd+K is pressed', () => {

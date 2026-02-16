@@ -14,6 +14,7 @@ import { fromJS } from 'immutable'
 
 import { setQuoteDepth } from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
+    containsMarkdownSyntax,
     ContentStateCounter,
     contentStateFromTextOrHTML,
     convertFromHTML,
@@ -1213,6 +1214,48 @@ describe('editor utils', () => {
             expect(selection.getAnchorOffset()).toBe(5) // "Third".length
             expect(selection.getFocusKey()).toBe(lastBlock.getKey())
             expect(selection.getFocusOffset()).toBe(5)
+        })
+    })
+
+    describe('containsMarkdownSyntax', () => {
+        it('should return false for plain text', () => {
+            expect(containsMarkdownSyntax('just some plain text')).toBe(false)
+            expect(containsMarkdownSyntax('Line 1\nLine 2\nLine 3')).toBe(false)
+        })
+
+        it('should return false for empty or whitespace-only text', () => {
+            expect(containsMarkdownSyntax('')).toBe(false)
+            expect(containsMarkdownSyntax('   ')).toBe(false)
+        })
+
+        it('should detect headers', () => {
+            expect(containsMarkdownSyntax('# Heading 1')).toBe(true)
+            expect(containsMarkdownSyntax('## Heading 2')).toBe(true)
+        })
+
+        it('should detect bold text', () => {
+            expect(containsMarkdownSyntax('**bold text**')).toBe(true)
+            expect(containsMarkdownSyntax('__bold text__')).toBe(true)
+        })
+
+        it('should detect lists', () => {
+            expect(containsMarkdownSyntax('* Item 1')).toBe(true)
+            expect(containsMarkdownSyntax('1. First item')).toBe(true)
+        })
+
+        it('should detect links', () => {
+            expect(containsMarkdownSyntax('[link](http://example.com)')).toBe(
+                true,
+            )
+        })
+
+        it('should NOT detect false positives', () => {
+            expect(containsMarkdownSyntax('Price is $10 * quantity')).toBe(
+                false,
+            )
+            expect(containsMarkdownSyntax('Use #hashtag for social')).toBe(
+                false,
+            )
         })
     })
 })
