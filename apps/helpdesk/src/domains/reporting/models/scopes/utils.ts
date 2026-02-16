@@ -185,6 +185,21 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
+            case 'storeIntegrationId':
+                if (
+                    statFilters.storeIntegrations &&
+                    hasFilter(statFilters.storeIntegrations)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'integrationId',
+                            statFilters.storeIntegrations.operator,
+                            statFilters.storeIntegrations.values,
+                        ),
+                    )
+                }
+                break
+
             case 'storeId':
                 if (statFilters.stores && hasFilter(statFilters.stores)) {
                     filters.push(
@@ -266,6 +281,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'helpCenterEventType':
             case 'isSearchRequestWithClick':
             case 'searchResultCount':
+            case 'isInfluenced':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {

@@ -3,7 +3,9 @@ import { useMemo } from 'react'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
 import {
     fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentConversationsDimension,
@@ -23,6 +25,7 @@ import {
     productRecommendationsQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { isFilterWithLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { AISalesAgentProductBoughtQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
@@ -53,8 +56,9 @@ const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     )
 
     // Get product bought
-    const boughtTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
+    const boughtTotalData = useMetricPerDimensionV2(
         productBoughtQueryFactory(filters, timezone),
+        AISalesAgentProductBoughtQueryFactoryV2({ filters, timezone }),
     )
 
     // Get product details
@@ -169,8 +173,12 @@ const fetchProductRecommendations = async (
                 fetchMetricPerDimension<StringWhichShouldBeNumber>(
                     productClicksQueryFactory(filters, timezone),
                 ),
-                fetchMetricPerDimension<StringWhichShouldBeNumber>(
+                fetchMetricPerDimensionV2<StringWhichShouldBeNumber>(
                     productBoughtQueryFactory(filters, timezone),
+                    AISalesAgentProductBoughtQueryFactoryV2({
+                        filters,
+                        timezone,
+                    }),
                 ),
             ])
 

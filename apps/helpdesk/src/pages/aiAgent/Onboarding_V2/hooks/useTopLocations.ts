@@ -12,6 +12,7 @@ import {
     topLocationsRecommendationsQueryFactory,
     totalNumberOfOrderQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentTotalNumberOfOrderQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
@@ -74,6 +75,13 @@ export const useTopLocations = ({
 
     const totalOrdersMetric = useMetric(
         totalNumberOfOrderQueryFactory(filters, timezone ?? '', false),
+        AISalesAgentTotalNumberOfOrderQueryFactoryV2(
+            {
+                filters,
+                timezone: timezone ?? '',
+            },
+            false,
+        ),
     )
 
     const totalCount = Number(totalOrdersMetric.data?.value ?? 0)

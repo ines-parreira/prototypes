@@ -5,7 +5,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentOrdersDimension,
@@ -29,6 +32,7 @@ jest.mock('utils/errors')
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 const fetchIntegrationProductsMock = assumeMock(fetchIntegrationProducts)
 const reportErrorMock = assumeMock(reportError)
 
@@ -67,10 +71,11 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        jest.resetAllMocks()
 
         useStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         useMetricPerDimensionMock.mockReturnValue(defaultMetricPerDimension)
+        useMetricPerDimensionV2Mock.mockReturnValue(defaultMetricPerDimension)
         fetchIntegrationProductsMock.mockResolvedValue([])
     })
 
@@ -134,7 +139,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -148,7 +153,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return boughtData
             }
             return defaultMetricPerDimension
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const mockProducts = [
             {
@@ -204,7 +211,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -212,7 +219,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockResolvedValue([])
 
@@ -252,7 +261,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -260,7 +269,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const mockProducts456 = [
             {
@@ -344,7 +355,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -352,7 +363,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockResolvedValue([
             {
@@ -416,7 +429,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -424,7 +437,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockResolvedValue([
             {
@@ -461,14 +476,21 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isFetching true when recommendations data is fetching', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: true,
-                isError: false,
-            })
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce(defaultMetricPerDimension)
+        const mockImplementation = (query: any) => {
+            if (
+                query.metricName ===
+                'ai-sales-agent-shopping-assistant-top-products'
+            ) {
+                return {
+                    data: null,
+                    isFetching: true,
+                    isError: false,
+                }
+            }
+            return defaultMetricPerDimension
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -481,14 +503,18 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isFetching true when clicks data is fetching', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: true,
-                isError: false,
-            })
-            .mockReturnValueOnce(defaultMetricPerDimension)
+        const mockImplementation = (query: any) => {
+            if (query.metricName === 'ai-sales-agent-product-clicks') {
+                return {
+                    data: null,
+                    isFetching: true,
+                    isError: false,
+                }
+            }
+            return defaultMetricPerDimension
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -501,14 +527,12 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isFetching true when bought data is fetching', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: true,
-                isError: false,
-            })
+        useMetricPerDimensionMock.mockReturnValue(defaultMetricPerDimension)
+        useMetricPerDimensionV2Mock.mockReturnValue({
+            data: null,
+            isFetching: true,
+            isError: false,
+        })
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -521,14 +545,21 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isError true when recommendations data has error', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: true,
-            })
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce(defaultMetricPerDimension)
+        const mockImplementation = (query: any) => {
+            if (
+                query.metricName ===
+                'ai-sales-agent-shopping-assistant-top-products'
+            ) {
+                return {
+                    data: null,
+                    isFetching: false,
+                    isError: true,
+                }
+            }
+            return defaultMetricPerDimension
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -541,14 +572,18 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isError true when clicks data has error', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: true,
-            })
-            .mockReturnValueOnce(defaultMetricPerDimension)
+        const mockImplementation = (query: any) => {
+            if (query.metricName === 'ai-sales-agent-product-clicks') {
+                return {
+                    data: null,
+                    isFetching: false,
+                    isError: true,
+                }
+            }
+            return defaultMetricPerDimension
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -561,14 +596,12 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
     })
 
     it('should return isError true when bought data has error', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce(defaultMetricPerDimension)
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: true,
-            })
+        useMetricPerDimensionMock.mockReturnValue(defaultMetricPerDimension)
+        useMetricPerDimensionV2Mock.mockReturnValue({
+            data: null,
+            isFetching: false,
+            isError: true,
+        })
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -596,7 +629,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -604,7 +637,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockRejectedValue(
             new Error('Network error'),
@@ -639,7 +674,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -647,7 +682,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockRejectedValue(
             new Error('Network error'),
@@ -678,7 +715,8 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             wrapper: createWrapper(),
         })
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledTimes(3)
+        expect(useMetricPerDimensionMock).toHaveBeenCalledTimes(2)
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledTimes(1)
     })
 
     it('should handle empty allData array', async () => {
@@ -693,11 +731,11 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 isFetching: false,
                 isError: false,
             })
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: false,
-            })
+        useMetricPerDimensionV2Mock.mockReturnValueOnce({
+            data: null,
+            isFetching: false,
+            isError: false,
+        })
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -737,7 +775,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -745,49 +783,59 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return recommendationsData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
-        fetchIntegrationProductsMock
-            .mockResolvedValueOnce([
-                {
-                    toJS: () => ({
-                        id: 101,
-                        title: 'Product 1A',
-                        handle: 'product-1a',
-                        images: [],
-                        options: [],
-                        variants: [],
-                        image: null,
-                        created_at: '2024-01-01',
-                    }),
-                } as any,
-                {
-                    toJS: () => ({
-                        id: 102,
-                        title: 'Product 1B',
-                        handle: 'product-1b',
-                        images: [],
-                        options: [],
-                        variants: [],
-                        image: null,
-                        created_at: '2024-01-01',
-                    }),
-                } as any,
-            ])
-            .mockResolvedValueOnce([
-                {
-                    toJS: () => ({
-                        id: 201,
-                        title: 'Product 2A',
-                        handle: 'product-2a',
-                        images: [],
-                        options: [],
-                        variants: [],
-                        image: null,
-                        created_at: '2024-01-01',
-                    }),
-                } as any,
-            ])
+        fetchIntegrationProductsMock.mockImplementation(
+            async (integrationId: number) => {
+                if (integrationId === 1) {
+                    return [
+                        {
+                            toJS: () => ({
+                                id: 101,
+                                title: 'Product 1A',
+                                handle: 'product-1a',
+                                images: [],
+                                options: [],
+                                variants: [],
+                                image: null,
+                                created_at: '2024-01-01',
+                            }),
+                        } as any,
+                        {
+                            toJS: () => ({
+                                id: 102,
+                                title: 'Product 1B',
+                                handle: 'product-1b',
+                                images: [],
+                                options: [],
+                                variants: [],
+                                image: null,
+                                created_at: '2024-01-01',
+                            }),
+                        } as any,
+                    ]
+                }
+                if (integrationId === 2) {
+                    return [
+                        {
+                            toJS: () => ({
+                                id: 201,
+                                title: 'Product 2A',
+                                handle: 'product-2a',
+                                images: [],
+                                options: [],
+                                variants: [],
+                                image: null,
+                                created_at: '2024-01-01',
+                            }),
+                        } as any,
+                    ]
+                }
+                return []
+            },
+        )
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),
@@ -850,7 +898,7 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             isError: false,
         } as any
 
-        useMetricPerDimensionMock.mockImplementation((query: any) => {
+        const mockImplementation = (query: any) => {
             if (
                 query.metricName ===
                 'ai-sales-agent-shopping-assistant-top-products'
@@ -864,7 +912,9 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
                 return boughtData
             }
             return { data: null, isFetching: false, isError: false }
-        })
+        }
+        useMetricPerDimensionMock.mockImplementation(mockImplementation)
+        useMetricPerDimensionV2Mock.mockImplementation(mockImplementation)
 
         fetchIntegrationProductsMock.mockResolvedValue([
             {

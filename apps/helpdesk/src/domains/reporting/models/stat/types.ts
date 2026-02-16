@@ -54,6 +54,7 @@ export enum APIOnlyFilterKey {
     HelpCenterEventType = 'helpCenterEventType',
     IsSearchRequestedWithClick = 'isSearchRequestWithClick',
     SearchResultCount = 'searchResultCount',
+    IsInfluenced = 'isInfluenced',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -302,6 +303,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.HelpCenterEventType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.IsSearchRequestedWithClick]?: WithLogicalOperator<boolean>
     [APIOnlyFilterKey.SearchResultCount]?: WithLogicalOperator<number>
+    [APIOnlyFilterKey.IsInfluenced]?: WithLogicalOperator<boolean>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

@@ -5,7 +5,7 @@ import moment from 'moment'
 import { shallowEqual } from 'react-redux'
 
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
-import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { fetchMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
@@ -14,6 +14,10 @@ import {
     gmvInfluencedQueryFactory,
     gmvQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import {
+    AISalesAgentGMVInfluencedQueryFactoryV2,
+    AISalesAgentGMVQueryFactoryV2,
+} from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { calculateRate } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/utils'
 import useAppSelector from 'hooks/useAppSelector'
@@ -89,7 +93,13 @@ export const useTrialMetrics = (
                     filters,
                     timezone,
                 )
-                return await fetchMetricPerDimension(currentPeriodQuery)
+                return await fetchMetricPerDimensionV2(
+                    currentPeriodQuery,
+                    AISalesAgentGMVInfluencedQueryFactoryV2({
+                        filters,
+                        timezone,
+                    }),
+                )
             },
             enabled: hasStores,
             refetchInterval: REFETCH_INTERVAL_MS,
@@ -110,8 +120,9 @@ export const useTrialMetrics = (
         queryFn: async () => {
             const { filters } = getTimeFilters(storeIds)
 
-            return await fetchMetricPerDimension(
+            return await fetchMetricPerDimensionV2(
                 gmvQueryFactory(filters, timezone),
+                AISalesAgentGMVQueryFactoryV2({ filters, timezone }),
             )
         },
         enabled: hasStores,

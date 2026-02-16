@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { discountCodesAverageQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentDiscountCodesAverageQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchGenericTrend,
@@ -24,6 +25,17 @@ const useDiscountCodesAverageValueTrend = (
                     },
                     timezone,
                 ),
+                AISalesAgentDiscountCodesAverageQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
+                AISalesAgentDiscountCodesAverageQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
         },
         ({ discountCodesAverage }) => discountCodesAverage || 0,
@@ -44,6 +56,17 @@ const fetchDiscountCodesAverageValueTrend = (
                     },
                     timezone,
                 ),
+                AISalesAgentDiscountCodesAverageQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
+                AISalesAgentDiscountCodesAverageQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
         },
         ({ discountCodesAverage }) => discountCodesAverage || 0,

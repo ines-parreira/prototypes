@@ -9,7 +9,9 @@ import { Provider } from 'react-redux'
 import type { Product } from 'constants/integrations/types/shopify'
 import {
     fetchMetricPerDimension,
+    fetchMetricPerDimensionV2,
     useMetricPerDimension,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentConversationsDimension,
@@ -57,7 +59,9 @@ const queryClient = mockQueryClient()
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 jest.mock('models/integration/queries')
 const useGetProductsByIdsFromIntegrationMock = assumeMock(
@@ -120,6 +124,12 @@ describe('productRecommendations', () => {
     describe('useProductRecommendations', () => {
         beforeEach(() => {
             useMetricPerDimensionMock.mockReturnValue({
+                ...defaultReporting,
+                data: {
+                    ...exampleMetricData,
+                },
+            })
+            useMetricPerDimensionV2Mock.mockReturnValue({
                 ...defaultReporting,
                 data: {
                     ...exampleMetricData,
@@ -279,21 +289,21 @@ describe('productRecommendations', () => {
                         ],
                     },
                 })
-                .mockResolvedValueOnce({
-                    isFetching: false,
-                    isError: false,
-                    data: {
-                        value: 0,
-                        decile: 0,
-                        allData: [
-                            {
-                                [AiSalesAgentOrdersDimension.InfluencedProductId]:
-                                    '1',
-                                [AiSalesAgentOrdersMeasure.UniqCount]: '10',
-                            },
-                        ],
-                    },
-                })
+            fetchMetricPerDimensionV2Mock.mockResolvedValueOnce({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 0,
+                    decile: 0,
+                    allData: [
+                        {
+                            [AiSalesAgentOrdersDimension.InfluencedProductId]:
+                                '1',
+                            [AiSalesAgentOrdersMeasure.UniqCount]: '10',
+                        },
+                    ],
+                },
+            })
 
             mockFetchIntegrationProductsByIds.mockResolvedValue([
                 fromJS({
@@ -341,6 +351,11 @@ describe('productRecommendations', () => {
 
         it('should return empty data when no products are found', async () => {
             fetchMetricPerDimensionMock.mockResolvedValue({
+                isFetching: false,
+                isError: false,
+                data: { value: 0, decile: 0, allData: [] },
+            })
+            fetchMetricPerDimensionV2Mock.mockResolvedValue({
                 isFetching: false,
                 isError: false,
                 data: { value: 0, decile: 0, allData: [] },

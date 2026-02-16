@@ -6,6 +6,7 @@ import {
     useTimeSeries,
 } from 'domains/reporting/hooks/useTimeSeries'
 import { influencedGmvTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/timeseries'
+import { AISalesAgentInfluencedUsdTimeSeriesQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 
@@ -24,6 +25,11 @@ const useGmvInfluenceOverTimeSeries = (
         isError,
     } = useTimeSeries(
         influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
+        AISalesAgentInfluencedUsdTimeSeriesQueryFactoryV2({
+            filters,
+            timezone,
+            granularity,
+        }),
     )
 
     return useMemo(
@@ -43,6 +49,11 @@ const fetchGmvInflueceOverTimeSeries = async (
 ): Promise<TimeSeriesDataItem[][]> => {
     const influencedGmvTimeSeriesData = await fetchTimeSeries(
         influencedGmvTimeSeriesQueryFactory(filters, timezone, granularity),
+        AISalesAgentInfluencedUsdTimeSeriesQueryFactoryV2({
+            filters,
+            timezone,
+            granularity,
+        }),
     )
 
     return influencedGmvTimeSeriesData

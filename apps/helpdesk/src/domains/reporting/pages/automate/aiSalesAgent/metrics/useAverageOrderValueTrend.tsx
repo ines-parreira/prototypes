@@ -9,6 +9,7 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { averageOrderValueQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentAverageOrderValueQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -23,6 +24,14 @@ const useAverageOrderValueTrend = (filters: StatsFilters, timezone: string) => {
             },
             timezone,
         ),
+        AISalesAgentAverageOrderValueQueryFactoryV2({ filters, timezone }),
+        AISalesAgentAverageOrderValueQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
     const data = useMemo(() => {
@@ -66,6 +75,14 @@ const fetchAverageOrderValueTrend = (
             },
             timezone,
         ),
+        AISalesAgentAverageOrderValueQueryFactoryV2({ filters, timezone }),
+        AISalesAgentAverageOrderValueQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
         .then((trendData) => {
             const value = safeDivide(

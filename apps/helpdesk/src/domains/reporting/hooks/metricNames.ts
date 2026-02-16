@@ -84,7 +84,9 @@ export const METRIC_NAMES = {
         'ai-sales-agent-discount-codes-offered-drilldown',
     AI_SALES_AGENT_GMV: 'ai-sales-agent-gmv',
     AI_SALES_AGENT_GMV_INFLUENCED: 'ai-sales-agent-gmv-influenced',
-    AI_SALES_AGENT_GMV_TIME_SERIES: 'ai-sales-agent-gmv-time-series',
+    AI_SALES_AGENT_GMV_USD_TIME_SERIES: 'ai-sales-agent-gmv-usd-time-series',
+    AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES:
+        'ai-sales-agent-influenced-gmv-time-series',
     AI_SALES_AGENT_GMV_USD: 'ai-sales-agent-gmv-usd',
     AI_SALES_AGENT_GMV_USD_INFLUENCED: 'ai-sales-agent-gmv-usd-influenced',
     AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY:
@@ -794,7 +796,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_BOUGHT,
         METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_APPLIED,
         METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_AVERAGE,
-        METRIC_NAMES.AI_SALES_AGENT_GMV_TIME_SERIES,
+        METRIC_NAMES.AI_SALES_AGENT_GMV_USD_TIME_SERIES,
+        METRIC_NAMES.AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES,
     ],
     [MetricScope.AISalesAgentConversations]: [
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_SALES_CONVERSATIONS_PER_CHANNEL,

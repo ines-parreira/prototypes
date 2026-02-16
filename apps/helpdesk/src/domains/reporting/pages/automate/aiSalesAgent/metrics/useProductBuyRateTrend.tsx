@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalProductBoughtQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentTotalProductBoughtQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchGenericTrend,
@@ -26,6 +27,17 @@ const useProductBuyRateTrend = (filters: StatsFilters, timezone: string) =>
                     },
                     timezone,
                 ),
+                AISalesAgentTotalProductBoughtQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
+                AISalesAgentTotalProductBoughtQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
             totalRecommendations: useTotalProductRecommendations(
                 filters,
@@ -48,6 +60,17 @@ const fetchProductBuyRateTrend = (filters: StatsFilters, timezone: string) =>
                     },
                     timezone,
                 ),
+                AISalesAgentTotalProductBoughtQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
+                AISalesAgentTotalProductBoughtQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
             totalRecommendations: fetchTotalProductRecommendations(
                 filters,

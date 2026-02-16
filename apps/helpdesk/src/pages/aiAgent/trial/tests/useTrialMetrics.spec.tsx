@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
-import { fetchMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { fetchMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
@@ -34,7 +34,7 @@ jest.mock(
 jest.mock('pages/aiAgent/Overview/hooks/useCurrency')
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentAutomationRate')
 
-const mockFetchMetricPerDimension = assumeMock(fetchMetricPerDimension)
+const mockFetchMetricPerDimension = assumeMock(fetchMetricPerDimensionV2)
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseStoreActivations = assumeMock(useStoreActivations)
@@ -100,6 +100,9 @@ const gmvReportingDataWithNulls = {
 }
 
 beforeEach(() => {
+    jest.resetAllMocks()
+    jest.clearAllMocks()
+
     mockFetchMetricPerDimension.mockResolvedValue(gmvReportingData)
     mockedUseCurrency.mockReturnValue({
         currency: 'USD',
@@ -396,7 +399,7 @@ describe('useTrialMetrics', () => {
             })
         })
 
-        it('should return gmvInfluencedRate correctly', async () => {
+        it('should return gmvInfluencedRate correctly for empty data', async () => {
             mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             appQueryClient.clear()
             const { result } = renderHookWithWrapper()

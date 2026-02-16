@@ -3,9 +3,12 @@ import { useMemo } from 'react'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
-import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StringWhichShouldBeNumber } from 'domains/reporting/hooks/types'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentConversationsDimension,
     AiSalesAgentConversationsMeasure,
@@ -23,6 +26,7 @@ import {
     productClicksQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { shoppingAssistantTopProductsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/shoppingAssistantChannelMetrics'
+import { AISalesAgentProductBoughtQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
@@ -43,24 +47,27 @@ type UseShoppingAssistantTopProductsMetricsResult = {
 
 export const useShoppingAssistantTopProductsMetrics =
     (): UseShoppingAssistantTopProductsMetricsResult => {
-        const { statsFilters, userTimezone } = useAutomateFilters()
+        const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
         const recommendationsTotalData =
             useMetricPerDimension<StringWhichShouldBeNumber>(
                 shoppingAssistantTopProductsQueryFactory(
-                    statsFilters,
+                    cleanStatsFilters,
                     userTimezone,
                 ),
             )
 
         const clickTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
-            productClicksQueryFactory(statsFilters, userTimezone),
+            productClicksQueryFactory(cleanStatsFilters, userTimezone),
         )
 
-        const boughtTotalData =
-            useMetricPerDimension<StringWhichShouldBeNumber>(
-                productBoughtQueryFactory(statsFilters, userTimezone),
-            )
+        const boughtTotalData = useMetricPerDimensionV2(
+            productBoughtQueryFactory(cleanStatsFilters, userTimezone),
+            AISalesAgentProductBoughtQueryFactoryV2({
+                filters: cleanStatsFilters,
+                timezone: userTimezone,
+            }),
+        )
 
         const productsByIntegration = useMemo((): ProductsByIntegration[] => {
             if (!recommendationsTotalData.data?.allData) {

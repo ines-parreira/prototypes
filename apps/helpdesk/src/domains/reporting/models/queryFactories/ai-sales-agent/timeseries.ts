@@ -27,6 +27,9 @@ const createGmvTimeSeriesQuery = (
         | AiSalesAgentOrdersMeasure.Gmv
         | AiSalesAgentOrdersMeasure.GmvUsd = AiSalesAgentOrdersMeasure.Gmv,
     dimensions: AiSalesAgentOrdersDimension[] = [],
+    metricName:
+        | typeof METRIC_NAMES.AI_SALES_AGENT_GMV_USD_TIME_SERIES
+        | typeof METRIC_NAMES.AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES,
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     const baseFilters = statsFiltersToReportingFilters(
         aiSalesAgentOrdersDefaultFiltersMembers,
@@ -44,7 +47,7 @@ const createGmvTimeSeriesQuery = (
             },
         ],
         timezone,
-        metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_TIME_SERIES,
+        metricName,
         filters: [...baseFilters, ...additionalFilters],
     }
 }
@@ -98,26 +101,7 @@ export const influencedGmvTimeSeriesQueryFactory = (
         ],
         AiSalesAgentOrdersMeasure.Gmv,
         [AiSalesAgentOrdersDimension.Currency],
-    )
-
-export const gmvTimeSeriesQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity,
-): TimeSeriesQuery<AiSalesAgentOrdersCube> =>
-    createGmvTimeSeriesQuery(
-        filters,
-        timezone,
-        granularity,
-        [
-            {
-                member: AiSalesAgentOrdersDimension.IsInfluenced,
-                operator: ReportingFilterOperator.Equals,
-                values: ['0'],
-            },
-        ],
-        AiSalesAgentOrdersMeasure.Gmv,
-        [AiSalesAgentOrdersDimension.Currency],
+        METRIC_NAMES.AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES,
     )
 
 export const gmvUsdTimeSeriesQueryFactory = (
@@ -137,4 +121,6 @@ export const gmvUsdTimeSeriesQueryFactory = (
             },
         ],
         AiSalesAgentOrdersMeasure.GmvUsd,
+        [],
+        METRIC_NAMES.AI_SALES_AGENT_GMV_USD_TIME_SERIES,
     )

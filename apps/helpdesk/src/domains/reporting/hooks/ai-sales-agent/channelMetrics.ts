@@ -1,4 +1,7 @@
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     automatedSalesConversationsPerChannelQueryFactory,
     gmvInfluencedPerChannelQueryFactory,
@@ -6,6 +9,7 @@ import {
     snoozedInteractionsPerChannelQueryFactory,
     totalSalesConversationsPerChannelQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/channelMetrics'
+import { AISalesAgentGMVInfluencedPerChannelQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 export const useHandoverInteractionsPerChannel = (
@@ -45,8 +49,12 @@ export const useGmvInfluencedPerChannel = (
     timezone: string,
     channel?: string,
 ) => {
-    return useMetricPerDimension(
+    return useMetricPerDimensionV2(
         gmvInfluencedPerChannelQueryFactory(filters, timezone),
+        AISalesAgentGMVInfluencedPerChannelQueryFactoryV2({
+            filters,
+            timezone,
+        }),
         channel,
     )
 }

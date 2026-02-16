@@ -8,7 +8,10 @@ import {
     useTotalSalesConversationsPerChannel,
 } from 'domains/reporting/hooks/ai-sales-agent/channelMetrics'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     automatedSalesConversationsPerChannelQueryFactory,
     gmvInfluencedPerChannelQueryFactory,
@@ -16,10 +19,12 @@ import {
     snoozedInteractionsPerChannelQueryFactory,
     totalSalesConversationsPerChannelQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/channelMetrics'
+import { AISalesAgentGMVInfluencedPerChannelQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 
 describe('Channel Metrics Hooks', () => {
     const timezone = 'UTC'
@@ -172,8 +177,12 @@ describe('Channel Metrics Hooks', () => {
         it('should call useMetricPerDimension with correct query', () => {
             renderHook(() => useGmvInfluencedPerChannel(filters, timezone), {})
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 gmvInfluencedPerChannelQueryFactory(filters, timezone),
+                AISalesAgentGMVInfluencedPerChannelQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
                 undefined,
             )
         })
@@ -184,8 +193,12 @@ describe('Channel Metrics Hooks', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 gmvInfluencedPerChannelQueryFactory(filters, timezone),
+                AISalesAgentGMVInfluencedPerChannelQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
                 channel,
             )
         })
@@ -195,8 +208,8 @@ describe('Channel Metrics Hooks', () => {
                 data: { allData: [] },
                 isFetching: false,
                 isError: false,
-            } as unknown as MetricWithDecile
-            useMetricPerDimensionMock.mockReturnValue(mockResult)
+            } as unknown as MetricWithDecile<string, any>
+            useMetricPerDimensionV2Mock.mockReturnValue(mockResult)
 
             const { result } = renderHook(
                 () => useGmvInfluencedPerChannel(filters, timezone),

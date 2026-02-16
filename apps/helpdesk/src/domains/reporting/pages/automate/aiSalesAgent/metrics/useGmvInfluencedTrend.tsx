@@ -5,8 +5,8 @@ import type {
     StringWhichShouldBeNumber,
 } from 'domains/reporting/hooks/types'
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { MetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import useMetricTrend, {
@@ -20,6 +20,10 @@ import {
     gmvInfluencedQueryFactory,
     gmvUSDInfluencedQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import {
+    AISalesAgentGMVInfluencedQueryFactoryV2,
+    AISalesAgentGMVUsdInfluencedQueryFactoryV2,
+} from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -54,14 +58,28 @@ const useGmvInfluencedTrend = (
         timezone,
     )
 
-    const { data, isError, isFetching } =
-        useMetricPerDimension<StringWhichShouldBeNumber>(currentPeriodQuery)
+    const { data, isError, isFetching } = useMetricPerDimensionV2(
+        currentPeriodQuery,
+        AISalesAgentGMVInfluencedQueryFactoryV2({
+            filters,
+            timezone,
+        }),
+    )
 
     const {
         data: previousPeriodData,
         isError: isPreviousPeriodError,
         isFetching: isPreviousPeriodFetching,
-    } = useMetricPerDimension<StringWhichShouldBeNumber>(previousPeriodQuery)
+    } = useMetricPerDimensionV2(
+        previousPeriodQuery,
+        AISalesAgentGMVInfluencedQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+    )
 
     const formattedData = useMemo(
         () => formatGmvInfluencedData(data, previousPeriodData),
@@ -85,6 +103,14 @@ const useGmvInfluencedTrendInUSD = (filters: StatsFilters, timezone: string) =>
             },
             timezone,
         ),
+        AISalesAgentGMVUsdInfluencedQueryFactoryV2({ filters, timezone }),
+        AISalesAgentGMVUsdInfluencedQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 const fetchGmvInfluencedTrend = async (
@@ -102,11 +128,22 @@ const fetchGmvInfluencedTrend = async (
 
     try {
         const [currentPeriodResult, previousPeriodResult] = await Promise.all([
-            fetchMetricPerDimension<StringWhichShouldBeNumber>(
+            fetchMetricPerDimensionV2<StringWhichShouldBeNumber>(
                 currentPeriodQuery,
+                AISalesAgentGMVInfluencedQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
             ),
-            fetchMetricPerDimension<StringWhichShouldBeNumber>(
+            fetchMetricPerDimensionV2<StringWhichShouldBeNumber>(
                 previousPeriodQuery,
+                AISalesAgentGMVInfluencedQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
         ])
 
@@ -147,6 +184,14 @@ const fetchGmvInfluencedTrendInUSD = (
             },
             timezone,
         ),
+        AISalesAgentGMVUsdInfluencedQueryFactoryV2({ filters, timezone }),
+        AISalesAgentGMVUsdInfluencedQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 export {

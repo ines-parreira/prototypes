@@ -2,8 +2,10 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { AISalesAgentGMVInfluencedQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { formatGmvInfluencedData } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -47,10 +49,33 @@ export const useGmvInfluenced = ({
     )
 
     const { data: currentPeriodData, isFetching: isCurrentPeriodFetching } =
-        useMetricPerDimension<string>(currentPeriodQuery)
+        useMetricPerDimensionV2(
+            currentPeriodQuery,
+            AISalesAgentGMVInfluencedQueryFactoryV2({
+                filters: {
+                    ...filters,
+                    storeIntegrations: integrationIds
+                        ? withLogicalOperator(integrationIds)
+                        : undefined,
+                },
+                timezone,
+            }),
+        )
 
     const { data: previousPeriodData, isFetching: isPreviousPeriodFetching } =
-        useMetricPerDimension<string>(previousPeriodQuery)
+        useMetricPerDimensionV2(
+            previousPeriodQuery,
+            AISalesAgentGMVInfluencedQueryFactoryV2({
+                filters: {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                    storeIntegrations: integrationIds
+                        ? withLogicalOperator(integrationIds)
+                        : undefined,
+                },
+                timezone,
+            }),
+        )
 
     const formattedData = useMemo(
         () => formatGmvInfluencedData(currentPeriodData, previousPeriodData),

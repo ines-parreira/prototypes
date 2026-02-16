@@ -105,6 +105,8 @@ export type DimensionName =
     | 'articleSlug'
     | 'searchQuery'
     | 'searchResultRange'
+    | 'currency'
+    | 'influencedProductId'
 
 export type MeasureName =
     | 'ticketCount'
@@ -153,6 +155,11 @@ export type MeasureName =
     | 'searchArticlesClickedCount'
     | 'uniqueSearchArticlesClickedCount'
     | 'uniqueSearchQueryCount'
+    | 'gmv'
+    | 'gmvUsd'
+    | 'count'
+    | 'uniqCount'
+    | 'averageDiscountUsd'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -163,6 +170,7 @@ export type TimeDimensionName =
     | 'anchorDatetime'
     | 'queuedDate'
     | 'timestamp'
+    | 'periodStart'
 
 export type StringFilterName =
     | 'periodStart'
@@ -207,6 +215,9 @@ export type StringFilterName =
     | 'isSearchRequestWithClick'
     | 'helpCenterEventType'
     | 'searchResultCount'
+    | 'influencedBy'
+    | 'source'
+    | 'storeIntegrationId'
 
 export type NumberFilterName =
     | 'agentId'
@@ -216,6 +227,9 @@ export type NumberFilterName =
     | 'customFieldId'
     | 'queueId'
 
-export type BooleanFilterName = 'isAnsweredByAgent' | 'isDuringBusinessHours'
+export type BooleanFilterName =
+    | 'isAnsweredByAgent'
+    | 'isDuringBusinessHours'
+    | 'isInfluenced'
 
 export type FilterName = StringFilterName | NumberFilterName | BooleanFilterName

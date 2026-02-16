@@ -10,7 +10,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
@@ -26,7 +26,7 @@ import { useGmvInfluencedCtaButton } from 'pages/aiAgent/Overview/hooks/kpis/use
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimensionV2)
 
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend',
@@ -82,6 +82,8 @@ const defaultState = {
 
 describe('useGmvInfluenced', () => {
     beforeEach(() => {
+        jest.resetAllMocks()
+
         mockUseFlag.mockImplementation(
             (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
         )

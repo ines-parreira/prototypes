@@ -4,8 +4,8 @@ import { act, waitFor } from '@testing-library/react'
 import moment from 'moment'
 
 import {
-    fetchMetricPerDimension,
-    useMetricPerDimension,
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     AiSalesAgentOrdersDimension,
@@ -34,8 +34,8 @@ const statsFilters: StatsFilters = {
 const queryClient = mockQueryClient()
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
+const useMetricPerDimensionMock = assumeMock(useMetricPerDimensionV2)
+const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimensionV2)
 
 jest.useFakeTimers()
 
