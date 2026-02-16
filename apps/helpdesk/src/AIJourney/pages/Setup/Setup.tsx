@@ -24,10 +24,12 @@ import {
     MessageWithDiscountCodeField,
     PhoneNumberField,
     TargetOrderStatusField,
+    UploadImageField,
     WaitTimeField,
 } from './fields'
 import { AudienceSelect } from './fields/AudienceSelect/AudienceSelect'
 import { CampaignTitle } from './fields/CampaignTitle/CampaignTitle'
+import type { UploadedImageAttachment } from './fields/UploadImage/UploadImage'
 import { WinbackReengagementRulesField } from './fields/WinbackReengagementRules/WinbackReengagementRules'
 
 import css from './Setup.less'
@@ -36,6 +38,7 @@ const Fields = {
     CampaignTitle: 'campaign_title',
     FollowUps: 'followups',
     SendImage: 'send_image',
+    UploadImage: 'upload_image',
     IncludeAudience: 'include_audience',
     ExcludeAudience: 'exclude_audience',
     InactiveDays: 'inactive_days',
@@ -60,6 +63,7 @@ export const JOURNEY_TYPES_TO_FIELDS: Record<JOURNEY_TYPES, Fields[]> = {
         Fields.CampaignTitle,
         Fields.IncludeAudience,
         Fields.ExcludeAudience,
+        Fields.UploadImage,
     ],
     [JOURNEY_TYPES.WELCOME]: [Fields.FollowUps, Fields.WaitTime],
     [JOURNEY_TYPES.POST_PURCHASE]: [
@@ -78,6 +82,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
     const history = useHistory()
     const [isVisible, setIsVisible] = useState(true)
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
+    const campaignImageEnabled = useFlag(
+        FeatureFlagKey.AiJourneyCampaignImageEnabled,
+    )
 
     const {
         campaigns,
@@ -128,6 +135,9 @@ export const Setup = ({ journeyType }: SetupProps) => {
     const [isImageEnabled, setIsImageEnabled] = useState(
         journeyParams?.include_image || false,
     )
+    const [uploadedImageAttachment, setUploadedImageAttachment] = useState<
+        UploadedImageAttachment | undefined
+    >(undefined)
 
     const [includedAudienceListIds, setIncludedAudienceListIds] = useState<
         string[] | undefined
@@ -137,15 +147,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
     >()
     const [inactiveDays, setInactiveDays] = useState<number>()
     const [cooldownDays, setCooldownDays] = useState<number | null>()
-    const [waitTimeMinutes, setWaitTimeMinutes] = useState<number | undefined>(
-        0,
-    )
+    const [waitTimeMinutes, setWaitTimeMinutes] = useState<number | undefined>()
     const [targetOrderStatus, setTargetOrderStatus] = useState<
         'order_placed' | 'order_fulfilled'
     >()
     const [postPurchaseWaitMinutes, setPostPurchaseWaitMinutes] = useState<
         number | undefined
-    >(0)
+    >()
     const [showValidationErrors, setShowValidationErrors] = useState(false)
 
     useEffect(() => {
@@ -161,6 +169,17 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 journeyParams.discount_code_message_threshold ?? 1,
             )
             setIsImageEnabled(journeyParams.include_image || false)
+
+            if ('media_urls' in journeyParams && journeyParams.media_urls) {
+                const firstMedia = journeyParams.media_urls[0]
+                if (firstMedia) {
+                    setUploadedImageAttachment({
+                        url: firstMedia.url,
+                        name: firstMedia.name,
+                        content_type: firstMedia.content_type,
+                    })
+                }
+            }
 
             if ('cooldown_days' in journeyParams) {
                 setCooldownDays(journeyParams.cooldown_days ?? 30)
@@ -227,6 +246,12 @@ export const Setup = ({ journeyType }: SetupProps) => {
 
     const handleImageToggle = () => {
         setIsImageEnabled((prev: boolean) => !prev)
+    }
+
+    const handleUploadedImageChange = (
+        attachment: UploadedImageAttachment | undefined,
+    ) => {
+        setUploadedImageAttachment(attachment)
     }
 
     const handleIncludedAudienceListIds = (newValue: string[]) => {
@@ -384,6 +409,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     waitTimeMinutes,
                     targetOrderStatus,
                     postPurchaseWaitMinutes,
+                    uploadedImageAttachment,
                 })
                 setIsVisible(false)
                 history.push(
@@ -407,6 +433,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     waitTimeMinutes,
                     targetOrderStatus,
                     postPurchaseWaitMinutes,
+                    uploadedImageAttachment,
                 })
                 setIsVisible(false)
                 history.push(
@@ -414,7 +441,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
                 )
             }
         } catch {
-            return // Error handling is done in the handleUpdate and handleCreate functions
+            return
         }
     }, [
         campaignTitleValue,
@@ -440,6 +467,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         waitTimeMinutes,
         targetOrderStatus,
         postPurchaseWaitMinutes,
+        uploadedImageAttachment,
     ])
 
     const getRedirectLinkOnCancel = () => {
@@ -484,6 +512,12 @@ export const Setup = ({ journeyType }: SetupProps) => {
                     isEnabled={isImageEnabled}
                     journeyType={journeyType}
                     onChange={handleImageToggle}
+                />
+            )}
+            {fields.includes(Fields.UploadImage) && campaignImageEnabled && (
+                <UploadImageField
+                    imageUrl={uploadedImageAttachment?.url}
+                    onChange={handleUploadedImageChange}
                 />
             )}
             <EnableDiscountField

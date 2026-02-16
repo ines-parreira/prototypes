@@ -4,6 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 
 import type { JOURNEY_TYPES } from 'AIJourney/constants'
 import { JOURNEY_TYPE_MAP_FROM_URL } from 'AIJourney/constants'
+import type { UploadedImageAttachment } from 'AIJourney/pages/Setup/fields/UploadImage/UploadImage'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -32,6 +33,7 @@ type HandleCreateParams = {
     waitTimeMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
+    uploadedImageAttachment?: UploadedImageAttachment
 }
 
 export const useJourneyCreateHandler = ({
@@ -59,12 +61,51 @@ export const useJourneyCreateHandler = ({
             waitTimeMinutes,
             targetOrderStatus,
             postPurchaseWaitMinutes,
+            uploadedImageAttachment,
         }: HandleCreateParams) => {
             try {
                 if (!integrationId || !integrationName) {
                     throw new Error(
                         `Missing integration information: ID: ${integrationId}, name: ${integrationName}`,
                     )
+                }
+
+                const baseJourneyConfigs = {
+                    max_follow_up_messages: followUpValue,
+                    offer_discount: isDiscountEnabled,
+                    max_discount_percent: discountValue
+                        ? Number(discountValue)
+                        : undefined,
+                    sms_sender_integration_id:
+                        phoneNumberValue?.integrations.find(
+                            (integration) => integration.type === 'sms',
+                        )?.id,
+                    sms_sender_number: phoneNumberValue?.phone_number,
+                    discount_code_message_threshold: isDiscountEnabled
+                        ? discountCodeThresholdValue
+                        : undefined,
+                    include_image: includeImage,
+                }
+
+                const optionalConfigs = {
+                    ...(inactiveDays !== undefined && {
+                        inactive_days: inactiveDays,
+                    }),
+                    ...(cooldownDays !== undefined && {
+                        cooldown_days: cooldownDays,
+                    }),
+                    ...(waitTimeMinutes !== undefined && {
+                        wait_time_minutes: waitTimeMinutes,
+                    }),
+                    ...(postPurchaseWaitMinutes !== undefined && {
+                        post_purchase_wait_minutes: postPurchaseWaitMinutes,
+                    }),
+                    ...(targetOrderStatus && {
+                        target_order_status: targetOrderStatus,
+                    }),
+                    media_urls: uploadedImageAttachment
+                        ? [uploadedImageAttachment]
+                        : [],
                 }
 
                 const result = await createNewJourney.mutateAsync({
@@ -81,25 +122,8 @@ export const useJourneyCreateHandler = ({
                         excluded_audience_list_ids: excludedAudienceListIds,
                     },
                     journeyConfigs: {
-                        max_follow_up_messages: followUpValue,
-                        offer_discount: isDiscountEnabled,
-                        max_discount_percent: discountValue
-                            ? Number(discountValue)
-                            : undefined,
-                        sms_sender_integration_id:
-                            phoneNumberValue?.integrations.find(
-                                (integration) => integration.type === 'sms',
-                            )?.id,
-                        sms_sender_number: phoneNumberValue?.phone_number,
-                        discount_code_message_threshold: isDiscountEnabled
-                            ? discountCodeThresholdValue
-                            : undefined,
-                        include_image: includeImage,
-                        inactive_days: inactiveDays,
-                        cooldown_days: cooldownDays,
-                        wait_time_minutes: waitTimeMinutes,
-                        post_purchase_wait_minutes: postPurchaseWaitMinutes,
-                        target_order_status: targetOrderStatus,
+                        ...baseJourneyConfigs,
+                        ...optionalConfigs,
                     },
                 })
 

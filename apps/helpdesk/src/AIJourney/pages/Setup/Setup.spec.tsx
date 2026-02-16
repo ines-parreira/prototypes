@@ -591,11 +591,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                             },
                         ],
                     },
-                    inactiveDays: undefined,
-                    cooldownDays: undefined,
-                    waitTimeMinutes: 0,
-                    targetOrderStatus: undefined,
-                    postPurchaseWaitMinutes: 0,
                 })
             })
         })
@@ -726,11 +721,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         sms_sender_integration_id: 1,
                         sms_sender_number: '+15551234567',
                         include_image: false,
-                        inactive_days: undefined,
-                        cooldown_days: undefined,
-                        wait_time_minutes: 0,
-                        post_purchase_wait_minutes: 0,
-                        target_order_status: undefined,
+                        media_urls: [],
                     },
                 })
             })
@@ -932,8 +923,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     discount_code_message_threshold: 2,
                     sms_sender_number: '+15551234567',
                     include_image: false,
-                    inactive_days: undefined,
-                    cooldown_days: undefined,
                 }),
             })
 
@@ -1069,8 +1058,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_number: '+15551234567',
                     discount_code_message_threshold: 2,
                     include_image: false,
-                    inactive_days: undefined,
-                    cooldown_days: undefined,
                 }),
             })
         })
@@ -1147,8 +1134,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                     sms_sender_integration_id: 1,
                     sms_sender_number: '+15551234567',
                     include_image: false,
-                    inactive_days: undefined,
-                    cooldown_days: undefined,
                 }),
             })
         })
@@ -1862,7 +1847,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
                 excluded_audience_list_ids: undefined,
                 included_audience_list_ids: undefined,
             },
-            journeyConfigs: expect.objectContaining({
+            journeyConfigs: {
                 max_follow_up_messages: 3,
                 offer_discount: false,
                 max_discount_percent: undefined,
@@ -1870,12 +1855,10 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
                 sms_sender_number: '+15551234567',
                 discount_code_message_threshold: undefined,
                 include_image: false,
-                inactive_days: undefined,
-                cooldown_days: undefined,
-                wait_time_minutes: 0,
                 post_purchase_wait_minutes: 2880,
                 target_order_status: undefined,
-            }),
+                media_urls: [],
+            },
         })
     })
 
@@ -2144,32 +2127,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         expect(waitTimeInput).toBeInTheDocument()
     })
 
-    it('should default wait_time_minutes to 0 when not set', () => {
-        mockUseJourneyContext.mockReturnValue({
-            journeyData: undefined,
-            currentIntegration: { id: 1, name: 'shopify-store' },
-            shopName: 'shopify-store',
-            isLoading: false,
-            journeyType: 'welcome',
-            storeConfiguration: {
-                monitoredSmsIntegrations: [1, 2],
-            },
-        })
-
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
-                </QueryClientProvider>
-            </Provider>,
-        )
-
-        const waitTimeInput = screen.getByDisplayValue('0')
-        expect(waitTimeInput).toBeInTheDocument()
-    })
-
     it('should call handleCreate with wait_time_minutes when creating welcome journey', async () => {
         mockUseJourneyContext.mockReturnValue({
             journeyData: undefined,
@@ -2210,7 +2167,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
             await user.click(screen.getByText('+1 555-123-4567'))
         })
 
-        const waitTimeInput = screen.getByDisplayValue('0')
+        const waitTimeInput = screen.getByRole('spinbutton')
         await act(async () => {
             await user.clear(waitTimeInput)
             await user.type(waitTimeInput, '30')
@@ -2242,8 +2199,6 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
                 sms_sender_number: '+15551234567',
                 discount_code_message_threshold: undefined,
                 include_image: false,
-                inactive_days: undefined,
-                cooldown_days: undefined,
                 wait_time_minutes: 30,
             }),
         })
@@ -2273,7 +2228,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
 
         const user = userEvent.setup()
 
-        const waitTimeInput = screen.getByDisplayValue('0')
+        const waitTimeInput = screen.getByRole('spinbutton')
         await act(async () => {
             await user.clear(waitTimeInput)
             await user.type(waitTimeInput, '10081')
@@ -2319,7 +2274,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
             await user.click(screen.getByText('+1 555-123-4567'))
         })
 
-        const waitTimeInput = screen.getByDisplayValue('0')
+        const waitTimeInput = screen.getByRole('spinbutton')
         await act(async () => {
             await user.clear(waitTimeInput)
         })

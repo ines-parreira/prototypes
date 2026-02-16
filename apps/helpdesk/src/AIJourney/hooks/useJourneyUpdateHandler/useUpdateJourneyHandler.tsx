@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import type {
+    CampaignJourneyConfigurationApiDTO,
     JourneyConfigurationApiDTO,
     JourneyStatusEnum,
     PatchJourneyBody,
@@ -12,6 +13,7 @@ import type {
 } from '@gorgias/convert-client'
 
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
+import type { UploadedImageAttachment } from 'AIJourney/pages/Setup/fields/UploadImage/UploadImage'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -43,6 +45,7 @@ type HandleUpdateParams = {
     waitTimeMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
+    uploadedImageAttachment?: UploadedImageAttachment
 }
 
 export const useJourneyUpdateHandler = ({
@@ -73,6 +76,7 @@ export const useJourneyUpdateHandler = ({
             waitTimeMinutes,
             targetOrderStatus,
             postPurchaseWaitMinutes,
+            uploadedImageAttachment,
         }: HandleUpdateParams) => {
             try {
                 const entityId = id || journeyId
@@ -89,11 +93,7 @@ export const useJourneyUpdateHandler = ({
                     (integration) => integration.type === 'sms',
                 )?.id
 
-                const journeyConfigs:
-                    | JourneyConfigurationApiDTO
-                    | WinbackJourneyConfigurationApiDTO
-                    | WelcomeFlowConfigurationApiDTO
-                    | PostPurchaseJourneyConfigurationApiDTO = {
+                const baseJourneyConfigs = {
                     max_follow_up_messages: followUpValue,
                     offer_discount: isDiscountEnabled,
                     max_discount_percent: discountValue
@@ -103,13 +103,37 @@ export const useJourneyUpdateHandler = ({
                     sms_sender_number: phoneNumberValue?.phone_number,
                     discount_code_message_threshold: discountCodeThresholdValue,
                     include_image: includeImage,
-                    inactive_days: inactiveDays,
-                    cooldown_days: cooldownDays,
+                }
 
-                    wait_time_minutes: waitTimeMinutes,
+                const optionalConfigs = {
+                    ...(inactiveDays !== undefined && {
+                        inactive_days: inactiveDays,
+                    }),
+                    ...(cooldownDays !== undefined && {
+                        cooldown_days: cooldownDays,
+                    }),
+                    ...(waitTimeMinutes !== undefined && {
+                        wait_time_minutes: waitTimeMinutes,
+                    }),
+                    ...(postPurchaseWaitMinutes !== undefined && {
+                        post_purchase_wait_minutes: postPurchaseWaitMinutes,
+                    }),
+                    ...(targetOrderStatus && {
+                        target_order_status: targetOrderStatus,
+                    }),
+                    media_urls: uploadedImageAttachment
+                        ? [uploadedImageAttachment]
+                        : [],
+                }
 
-                    post_purchase_wait_minutes: postPurchaseWaitMinutes,
-                    target_order_status: targetOrderStatus,
+                const journeyConfigs:
+                    | JourneyConfigurationApiDTO
+                    | WinbackJourneyConfigurationApiDTO
+                    | CampaignJourneyConfigurationApiDTO
+                    | WelcomeFlowConfigurationApiDTO
+                    | PostPurchaseJourneyConfigurationApiDTO = {
+                    ...baseJourneyConfigs,
+                    ...optionalConfigs,
                 }
 
                 const shouldUpdateConfigs = Object.values(journeyConfigs).some(

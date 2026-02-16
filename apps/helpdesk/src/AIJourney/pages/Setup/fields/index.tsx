@@ -6,4 +6,5 @@ export { MessagesToSendField } from 'AIJourney/pages/Setup/fields/MessagesToSend
 export { MessageWithDiscountCodeField } from './MessageWithDiscountCode/MessageWithDiscountCode'
 export { PhoneNumberField } from './PhoneNumber/PhoneNumber'
 export { TargetOrderStatusField } from './TargetOrderStatus/TargetOrderStatus'
+export { UploadImageField } from './UploadImage/UploadImage'
 export { WaitTimeField } from './WaitTime/WaitTime'

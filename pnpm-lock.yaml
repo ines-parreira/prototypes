@@ -181,14 +181,14 @@ catalogs:
       version: 3.6.0
   rest-api-sdk:
     '@gorgias/convert-client':
-      specifier: ^0.3.26
-      version: 0.3.26
+      specifier: ^0.3.27
+      version: 0.3.27
     '@gorgias/convert-mocks':
-      specifier: ^0.2.40
-      version: 0.2.40
+      specifier: ^0.2.44
+      version: 0.2.44
     '@gorgias/convert-queries':
-      specifier: ^0.2.41
-      version: 0.2.41
+      specifier: ^0.2.45
+      version: 0.2.45
     '@gorgias/ecommerce-storage-client':
       specifier: ^0.2.11
       version: 0.2.11
@@ -469,13 +469,13 @@ importers:
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.3.26
+        version: 0.3.27
       '@gorgias/convert-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.40(@types/node@22.13.13)(typescript@5.3.3)
+        version: 0.2.44(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/convert-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.41(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.45(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -4284,26 +4284,20 @@ packages:
       eslint-plugin-react-hooks: ^4.6.2
       oxlint: ^1
 
-  '@gorgias/convert-client@0.3.23':
-    resolution: {integrity: sha512-kz11IjzGvItUSxZ0X5V6DBfvwiRV7vsRPIk/Jqn8D9wL2BaD45aWjCAJEwuzC1yFBi9+1eoABWr6DRyY93es5A==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.23/a57737fd0938a066dc8d58e128956ac987f0619e}
+  '@gorgias/convert-client@0.3.27':
+    resolution: {integrity: sha512-27qOOCoRHpsLUt86lL3FKikUAgIW5juR/do98Ot8Z/rMKE3eaNQkaxqvLWPEJpCBh4FgsVVLqUfLOjZMpMzAGA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.27/7e38acc8650df021fd108f0f27dd906845f2be07}
 
-  '@gorgias/convert-client@0.3.26':
-    resolution: {integrity: sha512-R4WMpA0YEjTojXPwKXnU1B0zCTzvMnV92HMwrYZSun/D3RrOnWe501JIJZWeHuW3vUyEr9GXMzY8ldMcJrYb6A==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.26/b36e8d89d8f415395aa8c85231b047965db23fb6}
+  '@gorgias/convert-mocks@0.2.44':
+    resolution: {integrity: sha512-m+fUtQcPE+KeA9CurSbagPyok4dSkQgHZoKcrUi+GpWdFBclWZy2o4ZjTg7AgudZMr5F1L/TiOjkxTpL9YkStg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-mocks/0.2.44/6d8ea7a68e2034fdaca8b75868b7dda5d6a8ef52}
 
-  '@gorgias/convert-mocks@0.2.40':
-    resolution: {integrity: sha512-S+V9WazYXq+iT6B9ZEO3fEkzlY7cOkKHSsTEcnKtSerJgVczuz0PGSkgKWY1gBepR6borakEqhlWFo85eLM+YA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-mocks/0.2.40/62438996d3732c3ff97308e58751a4317c512179}
+  '@gorgias/convert-queries@0.2.45':
+    resolution: {integrity: sha512-bck55U5mhVAvjYh1o6X0k1mNaMSrF6B1OE0g8igEbMsxLhJJdFhqwb0fRd+OVfqCuiBXeifpccxyqaPA/o9Sow==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.45/0d50cbc16f70dda810924a7d49350ef459da1f4f}
 
-  '@gorgias/convert-queries@0.2.41':
-    resolution: {integrity: sha512-uLoHxHfKdQqLUfG25dtsmB29lj2MtMUH4PlRWC7vVJgTHas5WRjb02bzNiJ2ind2eVXec1IDBNImveAfL87ulA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.41/27b41d88e8813d6a79c4c0710e1ed53b6fa3fc28}
+  '@gorgias/convert-spec@0.2.35':
+    resolution: {integrity: sha512-arsijWTnw8yRg6BWhsDZau3N4L6YOiEl9M34UXzgqbGptNtNFeX5pJWee//ZECb3ZMOwHo9Q1KSV+YInQ4xOkg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-spec/0.2.35/70b2d76d2812d505255511b02fb96fab706570cc}
 
-  '@gorgias/convert-spec@0.2.32':
-    resolution: {integrity: sha512-Yi/cPLB2+tQkyyPncnFBqWZK1hcW1mPOtzBzR8Zac1E7ZRGzZ+g0Z3+1r+t8mDBDyyGVlu3RyEzxT0lkmxys9g==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-spec/0.2.32/7a429c65cccb920ba175935a547b932a0c331266}
-
-  '@gorgias/convert-types@0.4.17':
-    resolution: {integrity: sha512-ocw02tn9zSt+KqRkqwiqJ38yQ6xrNksiIkImmvglkEnPGCTU3TQql4atPnw2BFAGfAfwtpUC5ZtwQg+hB1Djaw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.17/472482acaaf48917bfd86580e4343a67d1a48f9e}
-
-  '@gorgias/convert-types@0.4.19':
-    resolution: {integrity: sha512-H613T4jozBrBYH9mkQYoh1IUW8q4xYwxMukFoBLwuMy9YnsyvicJ2SRCgF7WmfYeTlP5lJ7NjUUvEbccGG6dDw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.19/46ecfb8d20e9602e5531d7125adabffdc46b0375}
+  '@gorgias/convert-types@0.4.20':
+    resolution: {integrity: sha512-xqCFeR7TV0uprfwhOY9Q524pHPJmLne1EZE5GPL7aJB/OYTudsddEyBLdkzeS4WN+ae/dMrCyvQFsM9jgHMzRA==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.20/f85924f57475a18ba641b3c0d89edab6eb960232}
 
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
@@ -4415,9 +4409,6 @@ packages:
 
   '@gorgias/sdk-client@0.9.12':
     resolution: {integrity: sha512-MBOoJN4vqpXsj1QbPFRUfK0nKuR0wZ3e6xtd8R4CZO1Sr00SFF5MpYDnl9Jli+0nAgRiYf4J6Ndv9Y51zidkLQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.12/d2b09942d1f8efef49dcc014354ecf9b08b4f341}
-
-  '@gorgias/sdk-mocks@0.13.5':
-    resolution: {integrity: sha512-D5gIfr8LakVo2kf5vfssOIxbGFh3wD5JJREzRb+ejVgNXd8Z10w/jxTTvYu+GI6FujHC3JZJMriCaL2EoB0yeg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.13.5/2e9728d7853c2e4459e014374a490686ec792722}
 
   '@gorgias/sdk-mocks@0.14.0':
     resolution: {integrity: sha512-IfzkQ9ydCgG36zCZcxDDhsPiwdewzsQ8iE0oEg6sPl+d8PyCG/W7K8QapzEbOmJeGaN6Hag/BwopGBobz6R7uQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.0/20d87b7a4f4e10eaadb988c5a75e93892950c157}
@@ -16214,27 +16205,19 @@ snapshots:
       eslint-plugin-react-hooks: 4.3.0(eslint@8.1.0)
       oxlint: 1.39.0
 
-  '@gorgias/convert-client@0.3.23':
+  '@gorgias/convert-client@0.3.27':
     dependencies:
-      '@gorgias/convert-types': 0.4.17
-      '@gorgias/sdk-client': 0.9.11
-      axios: 1.13.5
-    transitivePeerDependencies:
-      - debug
-
-  '@gorgias/convert-client@0.3.26':
-    dependencies:
-      '@gorgias/convert-types': 0.4.19
+      '@gorgias/convert-types': 0.4.20
       '@gorgias/sdk-client': 0.9.12
       axios: 1.13.5
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/convert-mocks@0.2.40(@types/node@22.13.13)(typescript@5.3.3)':
+  '@gorgias/convert-mocks@0.2.44(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:
-      '@gorgias/convert-spec': 0.2.32
-      '@gorgias/convert-types': 0.4.17
-      '@gorgias/sdk-mocks': 0.13.5(@types/node@22.13.13)(typescript@5.3.3)
+      '@gorgias/convert-spec': 0.2.35
+      '@gorgias/convert-types': 0.4.20
+      '@gorgias/sdk-mocks': 0.14.0(@types/node@22.13.13)(typescript@5.3.3)
       '@gorgias/sdk-spec-utils': 0.10.4
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
@@ -16242,10 +16225,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/convert-queries@0.2.41(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/convert-queries@0.2.45(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/convert-client': 0.3.23
-      '@gorgias/convert-types': 0.4.17
+      '@gorgias/convert-client': 0.3.27
+      '@gorgias/convert-types': 0.4.20
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -16253,11 +16236,9 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/convert-spec@0.2.32': {}
+  '@gorgias/convert-spec@0.2.35': {}
 
-  '@gorgias/convert-types@0.4.17': {}
-
-  '@gorgias/convert-types@0.4.19': {}
+  '@gorgias/convert-types@0.4.20': {}
 
   '@gorgias/design-tokens@0.11.4': {}
 
@@ -16505,17 +16486,6 @@ snapshots:
       axios: 1.13.5
     transitivePeerDependencies:
       - debug
-
-  '@gorgias/sdk-mocks@0.13.5(@types/node@22.13.13)(typescript@5.3.3)':
-    dependencies:
-      '@faker-js/faker': 9.8.0
-      '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
-      msw: 2.9.0(@types/node@22.13.13)(typescript@5.3.3)
-      randexp: 0.5.3
-    transitivePeerDependencies:
-      - '@types/node'
-      - typescript
 
   '@gorgias/sdk-mocks@0.14.0(@types/node@22.13.13)(typescript@5.3.3)':
     dependencies:

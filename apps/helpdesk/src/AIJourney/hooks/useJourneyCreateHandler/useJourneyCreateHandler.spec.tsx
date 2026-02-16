@@ -126,6 +126,7 @@ describe('useJourneyCreateHandler', () => {
                     sms_sender_number: '+1234567890',
                     discount_code_message_threshold: 2,
                     include_image: true,
+                    media_urls: [],
                 },
             })
 
@@ -174,6 +175,7 @@ describe('useJourneyCreateHandler', () => {
                     sms_sender_number: '+1234567890',
                     discount_code_message_threshold: undefined,
                     include_image: undefined,
+                    media_urls: [],
                 },
             })
         })
@@ -497,6 +499,413 @@ describe('useJourneyCreateHandler', () => {
 
             expect(result.current.isLoading).toBe(false)
             expect(result.current.isSuccess).toBe(true)
+        })
+    })
+
+    describe('winback journey configurations', () => {
+        it('should create winback journey with inactiveDays and cooldownDays', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.WIN_BACK,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    inactiveDays: 30,
+                    cooldownDays: 7,
+                    followUpValue: 3,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                params: {
+                    store_integration_id: 100,
+                    store_name: 'Test Store',
+                    type: 'win_back',
+                    campaign: undefined,
+                    included_audience_list_ids: undefined,
+                    excluded_audience_list_ids: undefined,
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 3,
+                    offer_discount: undefined,
+                    max_discount_percent: undefined,
+                    sms_sender_integration_id: 123,
+                    sms_sender_number: '+1234567890',
+                    discount_code_message_threshold: undefined,
+                    include_image: undefined,
+                    inactive_days: 30,
+                    cooldown_days: 7,
+                    media_urls: [],
+                },
+            })
+        })
+
+        it('should handle zero values for inactiveDays and cooldownDays', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.WIN_BACK,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    inactiveDays: 0,
+                    cooldownDays: 0,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        inactive_days: 0,
+                        cooldown_days: 0,
+                    }),
+                }),
+            )
+        })
+
+        it('should handle null values for inactiveDays and cooldownDays', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.WIN_BACK,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    inactiveDays: null,
+                    cooldownDays: null,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        inactive_days: null,
+                        cooldown_days: null,
+                    }),
+                }),
+            )
+        })
+    })
+
+    describe('welcome flow configurations', () => {
+        it('should create welcome flow with waitTimeMinutes', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.WELCOME,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    waitTimeMinutes: 15,
+                    followUpValue: 2,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                params: {
+                    store_integration_id: 100,
+                    store_name: 'Test Store',
+                    type: 'welcome',
+                    campaign: undefined,
+                    included_audience_list_ids: undefined,
+                    excluded_audience_list_ids: undefined,
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 2,
+                    offer_discount: undefined,
+                    max_discount_percent: undefined,
+                    sms_sender_integration_id: 123,
+                    sms_sender_number: '+1234567890',
+                    discount_code_message_threshold: undefined,
+                    include_image: undefined,
+                    wait_time_minutes: 15,
+                    media_urls: [],
+                },
+            })
+        })
+
+        it('should handle zero waitTimeMinutes', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.WELCOME,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    waitTimeMinutes: 0,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        wait_time_minutes: 0,
+                    }),
+                }),
+            )
+        })
+    })
+
+    describe('post-purchase journey configurations', () => {
+        it('should create post-purchase journey with postPurchaseWaitMinutes and order_placed status', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.POST_PURCHASE,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    postPurchaseWaitMinutes: 60,
+                    targetOrderStatus: 'order_placed',
+                    followUpValue: 3,
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith({
+                params: {
+                    store_integration_id: 100,
+                    store_name: 'Test Store',
+                    type: 'post_purchase',
+                    campaign: undefined,
+                    included_audience_list_ids: undefined,
+                    excluded_audience_list_ids: undefined,
+                },
+                journeyConfigs: {
+                    max_follow_up_messages: 3,
+                    offer_discount: undefined,
+                    max_discount_percent: undefined,
+                    sms_sender_integration_id: 123,
+                    sms_sender_number: '+1234567890',
+                    discount_code_message_threshold: undefined,
+                    include_image: undefined,
+                    post_purchase_wait_minutes: 60,
+                    target_order_status: 'order_placed',
+                    media_urls: [],
+                },
+            })
+        })
+
+        it('should create post-purchase journey with order_fulfilled status', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.POST_PURCHASE,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    postPurchaseWaitMinutes: 120,
+                    targetOrderStatus: 'order_fulfilled',
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        post_purchase_wait_minutes: 120,
+                        target_order_status: 'order_fulfilled',
+                    }),
+                }),
+            )
+        })
+
+        it('should handle zero postPurchaseWaitMinutes', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.POST_PURCHASE,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    postPurchaseWaitMinutes: 0,
+                    targetOrderStatus: 'order_placed',
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        post_purchase_wait_minutes: 0,
+                    }),
+                }),
+            )
+        })
+    })
+
+    describe('campaign journey with media', () => {
+        it('should create campaign journey with uploaded image attachment', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.CAMPAIGN,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    campaignTitle: 'Summer Sale',
+                    uploadedImageAttachment: {
+                        url: 'https://example.com/image.png',
+                        name: 'image.png',
+                        content_type: 'image/png',
+                    },
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        media_urls: [
+                            {
+                                url: 'https://example.com/image.png',
+                                name: 'image.png',
+                                content_type: 'image/png',
+                            },
+                        ],
+                    }),
+                }),
+            )
+        })
+
+        it('should create campaign journey with empty media_urls when no image attachment is provided', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.CAMPAIGN,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    campaignTitle: 'Summer Sale',
+                    phoneNumberValue: mockPhoneNumber,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        media_urls: [],
+                    }),
+                }),
+            )
+        })
+    })
+
+    describe('phone number edge cases', () => {
+        it('should handle undefined phoneNumberValue', async () => {
+            const mockResponse = { id: 'journey-123', created: true }
+            mockMutateAsync.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () =>
+                    useJourneyCreateHandler({
+                        integrationId: 100,
+                        integrationName: 'Test Store',
+                        journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                    }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleCreate({
+                    followUpValue: 2,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        sms_sender_integration_id: undefined,
+                        sms_sender_number: undefined,
+                    }),
+                }),
+            )
         })
     })
 

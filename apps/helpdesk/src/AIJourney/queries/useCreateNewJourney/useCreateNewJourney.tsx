@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import type {
+    CampaignJourneyConfigurationApiDTO,
     CreateJourneyBody,
     JourneyConfigurationApiDTO,
     PostPurchaseJourneyConfigurationApiDTO,
@@ -50,6 +51,7 @@ export const useCreateNewJourney = () => {
                 | WelcomeFlowConfigurationApiDTO
                 | WinbackJourneyConfigurationApiDTO
                 | PostPurchaseJourneyConfigurationApiDTO
+                | CampaignJourneyConfigurationApiDTO
         }) => {
             return createNewJourney(
                 { ...params, store_type: 'shopify' },

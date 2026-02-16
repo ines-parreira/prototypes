@@ -52,6 +52,7 @@ export enum FeatureFlagKey {
     AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',
     AiJourneyWinBackEnabled = 'ai-journey-win-back-enabled',
     AiJourneySmsImagesEnabled = 'ai-journey-sms-images-enabled',
+    AiJourneyCampaignImageEnabled = 'ai-journey-campaign-image-enabled',
     AiJourneyAnalyticsEnabled = 'ai-journey-analytics-enabled',
     AiJourneyPostPurchaseEnabled = 'ai-journey-post-purchase-enabled',
     AiJourneyWelcomeFlowEnabled = 'ai-journey-welcome-flow-enabled',
