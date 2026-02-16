@@ -1,0 +1,7 @@
+export { InboxSidebar } from './InboxSidebar'
+export { AiAgentSidebar } from './AiAgentSidebar'
+export { MarketingSidebar } from './MarketingSidebar'
+export { AnalyticsSidebar } from './AnalyticsSidebar'
+export { WorkflowsSidebar } from './WorkflowsSidebar'
+export { CustomersSidebar } from './CustomersSidebar'
+export { SettingsSidebar } from './SettingsSidebar'

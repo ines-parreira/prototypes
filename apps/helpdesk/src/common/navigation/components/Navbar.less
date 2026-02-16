@@ -88,7 +88,10 @@
         width: inherit;
         min-width: 200px;
         max-width: 350px;
-        background: var(--navigation-background); // legacy
+
+        &.legacy {
+            background: var(--navigation-background); // legacy
+        }
     }
 
     .nav-dropdown-wrapper {
@@ -144,7 +147,9 @@
 :global(.globalNav) :local {
     .sidebar {
         border-right: 0;
-        border-left: 1px solid var(--navigation-border); // legacy
+        &.legacy {
+            border-left: 1px solid var(--navigation-border); // legacy
+        }
 
         .sidebar-resizer {
             right: -4px;
@@ -178,9 +183,11 @@
 
 .axiom :local {
     .sidebar {
-        border-right: 1px solid var(--border-neutral-default);
-        border-left: 1px solid var(--border-neutral-default);
-        background: var(--elevation-neutral-default);
+        &.legacy {
+            border-right: 1px solid var(--border-neutral-default);
+            border-left: 1px solid var(--border-neutral-default);
+            background: var(--elevation-neutral-default);
+        }
         color: var(--content-neutral-default);
     }
 
@@ -193,7 +200,7 @@
         }
     }
 
-    .nav-primary {
+    .nav-primary.legacy {
         background: var(--elevation-neutral-default);
     }
 
@@ -227,7 +234,7 @@
 }
 
 .axiom :global(.globalNav) :local {
-    .sidebar {
+    .sidebar.legacy {
         border-left: 1px solid var(--border-neutral-default);
     }
 }

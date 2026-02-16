@@ -19,6 +19,9 @@ jest.mock('../PanelRoutes', () => ({
     default: () => <div>PanelRoutes</div>,
 }))
 jest.mock('../Routes', () => () => <div>Routes</div>)
+jest.mock('../layout/NavigationSidebar', () => ({
+    NavigationSidebar: () => <div>Sidebar</div>,
+}))
 
 describe('RoutesWrapper', () => {
     describe('when wayfinding flag is disabled', () => {

@@ -2,6 +2,10 @@ import { render, screen } from '@testing-library/react'
 
 import { AppLayout } from '../AppLayout'
 
+jest.mock('routes/layout/NavigationSidebar', () => ({
+    NavigationSidebar: () => <div>Sidebar</div>,
+}))
+
 describe('AppLayout', () => {
     it('should render sidebar and children when hasPanel is false', () => {
         render(

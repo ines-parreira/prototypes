@@ -3,11 +3,11 @@
 exports[`<AutomateNavbar /> render() should render automate navbar for admin with Automate 1`] = `
 <div>
   <div
-    class="sidebar"
+    class="sidebar legacy"
     style="width: 238px;"
   >
     <div
-      class="nav-primary hidden-panel"
+      class="nav-primary hidden-panel legacy"
     >
       <div
         class="nav-dropdown-wrapper"
@@ -253,11 +253,11 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
 exports[`<AutomateNavbar /> render() should render automate navbar for admin without AI Agent and without legacy automate features 1`] = `
 <div>
   <div
-    class="sidebar"
+    class="sidebar legacy"
     style="width: 238px;"
   >
     <div
-      class="nav-primary hidden-panel"
+      class="nav-primary hidden-panel legacy"
     >
       <div
         class="nav-dropdown-wrapper"
@@ -285,11 +285,11 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
 exports[`<AutomateNavbar /> render() should render automate navbar for agent with Automate 1`] = `
 <div>
   <div
-    class="sidebar"
+    class="sidebar legacy"
     style="width: 238px;"
   >
     <div
-      class="nav-primary hidden-panel"
+      class="nav-primary hidden-panel legacy"
     >
       <div
         class="nav-dropdown-wrapper"
@@ -535,11 +535,11 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
 exports[`<AutomateNavbar /> render() should render automate navbar for agent without AI Agent and without legacy automate features 1`] = `
 <div>
   <div
-    class="sidebar"
+    class="sidebar legacy"
     style="width: 238px;"
   >
     <div
-      class="nav-primary hidden-panel"
+      class="nav-primary hidden-panel legacy"
     >
       <div
         class="nav-dropdown-wrapper"
