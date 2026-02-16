@@ -3,13 +3,27 @@
         width: 100%;
         height: 100%;
         overflow-x: auto;
+        display: flex;
+        flex-direction: column;
 
         @media (min-width: 841px) {
             max-width: 790px; // minimum width for editor toolbar
         }
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+        }
     }
 
     .editor {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+
         :global {
             .fr-toolbar {
                 border: none;
@@ -46,6 +60,20 @@
 
             .fr-more-toolbar {
                 display: none !important;
+            }
+
+            .fr-box {
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 !important;
+                min-height: 0 !important;
+            }
+
+            .fr-code {
+                flex: 1 !important;
+                min-height: 0 !important;
+                height: 100% !important;
+                resize: none !important;
             }
         }
     }
