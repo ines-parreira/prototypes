@@ -2,11 +2,11 @@ import type { PropsWithChildren } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { HINT_TOOLTIP_DELAY } from '@repo/reporting'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger.less'
 import type { SidePanelProduct } from 'domains/reporting/state/ui/stats/sidePanelSlice'
 import { setSidePanelData } from 'domains/reporting/state/ui/stats/sidePanelSlice'
@@ -51,7 +51,7 @@ export const VoCSidePanelTrigger = ({
                     onClick={handleClick}
                 >
                     {tooltipText && (
-                        <Tooltip delay={hintTooltipDelay} target={targetId}>
+                        <Tooltip delay={HINT_TOOLTIP_DELAY} target={targetId}>
                             {tooltipText}
                         </Tooltip>
                     )}

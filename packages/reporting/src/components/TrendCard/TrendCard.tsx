@@ -6,6 +6,7 @@ import { Box, Skeleton } from '@gorgias/axiom'
 import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
 import type { MetricTrend, MetricTrendFormat, TooltipData } from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
+import { DrillDownModalTrigger } from '../DrillDownModal/DrillDownModalTrigger'
 import { MetricCard } from '../MetricCard/MetricCard'
 import { MetricCardHeader } from '../MetricCardHeader/MetricCardHeader'
 import type { TrendBadgeProps } from '../TrendBadge/TrendBadge'
@@ -24,6 +25,7 @@ export type TrendCardProps = {
     withBorder?: boolean
     withFixedWidth?: boolean
     trendBadgeTooltipData?: TrendBadgeProps['tooltipData']
+    drillDown?: { tooltipText: string; openDrillDownModal: () => void }
 }
 
 export const TrendCard = memo<TrendCardProps>(
@@ -38,6 +40,7 @@ export const TrendCard = memo<TrendCardProps>(
         withBorder,
         withFixedWidth,
         trendBadgeTooltipData,
+        drillDown,
     }) => {
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
@@ -47,6 +50,10 @@ export const TrendCard = memo<TrendCardProps>(
             data?.value !== null &&
             data?.value !== undefined &&
             data?.value !== 0
+
+        const formattedMetricValue = hasData
+            ? formatMetricValue(data?.value, metricFormat, currency)
+            : NOT_AVAILABLE_PLACEHOLDER
 
         return (
             <div
@@ -66,7 +73,7 @@ export const TrendCard = memo<TrendCardProps>(
                     <div className={css.dataContent}>
                         <div className={css.trendData}>
                             <span className={css.metricData}>
-                                {isLoading ? (
+                                {!hasData ? (
                                     <Skeleton
                                         height={36}
                                         width={
@@ -75,17 +82,21 @@ export const TrendCard = memo<TrendCardProps>(
                                                 : 52
                                         }
                                     />
-                                ) : hasData ? (
-                                    formatMetricValue(
-                                        data?.value,
-                                        metricFormat,
-                                        currency,
-                                    )
+                                ) : drillDown && hasData ? (
+                                    <DrillDownModalTrigger
+                                        enabled={hasData}
+                                        tooltipText={drillDown.tooltipText}
+                                        openDrillDownModal={
+                                            drillDown.openDrillDownModal
+                                        }
+                                    >
+                                        {formattedMetricValue}
+                                    </DrillDownModalTrigger>
                                 ) : (
-                                    NOT_AVAILABLE_PLACEHOLDER
+                                    formattedMetricValue
                                 )}
                             </span>
-                            {isLoading && (
+                            {!hasData && (
                                 <Box
                                     display="flex"
                                     alignItems="center"

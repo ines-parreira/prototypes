@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react'
 
+import { DrillDownModalTrigger } from '@repo/reporting'
+
+import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { isMetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
@@ -7,7 +10,6 @@ import type { TrendMetric } from 'domains/reporting/pages/automate/aiSalesAgent/
 import BigNumberMetric from 'domains/reporting/pages/common/components/BigNumberMetric'
 import MetricCard from 'domains/reporting/pages/common/components/MetricCard'
 import TrendBadge from 'domains/reporting/pages/common/components/TrendBadge'
-import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import type { MetricTrendFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
@@ -61,6 +63,10 @@ export const TrendCard = ({
         NOT_AVAILABLE_PLACEHOLDER,
         isMetricTrendWithCurrency(trend) ? trend?.data?.currency : undefined,
     )
+    const drillDown = useDrillDownModalTrigger({
+        title,
+        metricName: drillDownMetric as DrillDownMetric['metricName'],
+    })
 
     return (
         <MetricCard
@@ -92,12 +98,7 @@ export const TrendCard = ({
                 {drillDownMetric ? (
                     <DrillDownModalTrigger
                         enabled={!!trend.data?.value}
-                        metricData={
-                            {
-                                title,
-                                metricName: drillDownMetric,
-                            } as DrillDownMetric
-                        }
+                        {...drillDown}
                     >
                         {formattedMetric}
                     </DrillDownModalTrigger>

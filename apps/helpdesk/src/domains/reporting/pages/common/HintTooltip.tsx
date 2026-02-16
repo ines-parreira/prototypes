@@ -1,8 +1,8 @@
 import type { ReactElement, ReactNode } from 'react'
 
+import { HINT_TOOLTIP_DELAY } from '@repo/reporting'
 import classnames from 'classnames'
 
-import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/common/HintTooltip.less'
 import type { TooltipData } from 'domains/reporting/pages/types'
 import { DOCUMENTATION_LINK_TEXT } from 'domains/reporting/services/constants'
@@ -36,7 +36,7 @@ const tooltipProps: IconTooltipProps['tooltipProps'] = {
         innerClassName: css.innerTooltip,
         boundariesElement: 'window',
     },
-    delay: hintTooltipDelay,
+    delay: HINT_TOOLTIP_DELAY,
     autohide: false,
     placement: 'top-start',
 }

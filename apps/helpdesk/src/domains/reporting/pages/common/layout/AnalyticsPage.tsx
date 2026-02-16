@@ -124,7 +124,7 @@ export const AnalyticsPage = forwardRef<HTMLDivElement, AnalyticsPageProps>(
                     className={css.content}
                 >
                     {children}
-                    <DrillDownModal />
+                    <DrillDownModal isLegacy={false} />
                 </Box>
             </Box>
         )

@@ -3,11 +3,11 @@ import { useCallback } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { HINT_TOOLTIP_DELAY } from '@repo/reporting'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { hintTooltipDelay } from 'domains/reporting/pages/common/constants'
 import css from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger.less'
 import {
     DomainsConfig,
@@ -52,6 +52,33 @@ export const useOpenDrillDownModal = (metricData: DrillDownMetric) => {
     })
 }
 
+/**
+ * @deprecated This component is deprecated. Use DrillDownModalTrigger from @repo/reporting instead.
+ *
+ * Migration guide:
+ * 1. Import DrillDownModalTrigger from @repo/reporting
+ * 2. Use useDrillDownModalTrigger hook from domains/reporting/hooks/drill-down/useDrillDownModalTrigger
+ * 3. Pass onClick and tooltipText props instead of metricData
+ *
+ * Before:
+ * ```tsx
+ * <DrillDownModalTrigger metricData={metricData}>
+ *   {children}
+ * </DrillDownModalTrigger>
+ * ```
+ *
+ * After:
+ * ```tsx
+ * const { openDrillDownModal, tooltipText } = useDrillDownModalTrigger({
+ *   metricName: 'ai_agent_conversation_count',
+ *   segmentEventName: SegmentEvent.StatClicked,
+ * })
+ *
+ * <DrillDownModalTrigger onClick={openDrillDownModal} tooltipText={tooltipText}>
+ *   {children}
+ * </DrillDownModalTrigger>
+ * ```
+ */
 export const DrillDownModalTrigger = ({
     children,
     metricData,
@@ -78,7 +105,7 @@ export const DrillDownModalTrigger = ({
             onClick={openDrillDownModal}
         >
             <Tooltip
-                delay={hintTooltipDelay}
+                delay={HINT_TOOLTIP_DELAY}
                 target={targetId}
                 innerProps={{ boundariesElement: 'window' }}
                 container={window.document.body}

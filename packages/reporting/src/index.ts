@@ -31,8 +31,13 @@ export {
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export { formatMetricTrend, formatMetricValue } from './utils/helpers'
-export { NOT_AVAILABLE_TEXT, NOT_AVAILABLE_PLACEHOLDER } from './constants'
+export {
+    NOT_AVAILABLE_TEXT,
+    NOT_AVAILABLE_PLACEHOLDER,
+    HINT_TOOLTIP_DELAY,
+} from './constants'
 export {
     type MetricConfigItem,
     ConfigureMetricsModal,
 } from './components/ConfigureMetricsModal'
+export { DrillDownModalTrigger } from './components/DrillDownModal/DrillDownModalTrigger'
