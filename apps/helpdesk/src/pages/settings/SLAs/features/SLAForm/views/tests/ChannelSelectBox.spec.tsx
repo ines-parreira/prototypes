@@ -110,7 +110,7 @@ describe('ChannelSelectBox', () => {
         server.use(
             mockListSlaPoliciesHandler(async () =>
                 HttpResponse.json({
-                    data: [{ id: 1, target_channel: 'phone' }],
+                    data: [],
                     meta: { next_cursor: null },
                 } as any),
             ).handler,
@@ -177,7 +177,7 @@ describe('ChannelSelectBox', () => {
         server.use(
             mockListSlaPoliciesHandler(async () =>
                 HttpResponse.json({
-                    data: [{ id: 1, target_channel: 'phone' }],
+                    data: [],
                     meta: { next_cursor: null },
                 } as any),
             ).handler,
@@ -421,6 +421,164 @@ describe('ChannelSelectBox', () => {
             expect(
                 screen.getByText('A Voice SLA has already been created.'),
             ).toBeInTheDocument()
+        })
+    })
+
+    it('should enable voice channel when no channels are selected and no voice policy exists', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await act(() => user.click(screen.getByText('Select')))
+
+        await waitFor(() => {
+            const voiceOption = screen
+                .getAllByText('Voice')
+                .find((el) => el.closest('[role="option"]'))
+                ?.closest('[role="option"]')
+
+            expect(voiceOption).not.toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    it('should disable voice channel when a non-voice channel is selected', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [TicketChannel.Email],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /email/i })),
+        )
+
+        await waitFor(() => {
+            const voiceOption = screen
+                .getAllByText('Voice')
+                .find((el) => el.closest('[role="option"]'))
+                ?.closest('[role="option"]')
+
+            expect(voiceOption).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    it('should disable voice channel when a voice SLA policy already exists', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [{ id: 1, target_channel: 'phone' }],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await act(() => user.click(screen.getByText('Select')))
+
+        await waitFor(() => {
+            const voiceOption = screen
+                .getAllByText('Voice')
+                .find((el) => el.closest('[role="option"]'))
+                ?.closest('[role="option"]')
+
+            expect(voiceOption).toHaveAttribute('aria-disabled', 'true')
+        })
+    })
+
+    it('should disable non-voice channels when voice is selected', async () => {
+        const user = userEvent.setup()
+
+        server.use(
+            mockListSlaPoliciesHandler(async () =>
+                HttpResponse.json({
+                    data: [],
+                    meta: { next_cursor: null },
+                } as any),
+            ).handler,
+        )
+
+        renderWithStoreAndQueryClientProvider(
+            <Form
+                defaultValues={
+                    {
+                        target_channels: [TicketChannel.Phone],
+                        metrics: [],
+                    } as any
+                }
+                onValidSubmit={jest.fn()}
+            >
+                <ChannelSelectBox />
+            </Form>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /voice/i }),
+            ).toBeInTheDocument()
+        })
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /voice/i })),
+        )
+
+        await waitFor(() => {
+            const emailOption = screen.getByRole('option', { name: 'Email' })
+            expect(emailOption).toHaveAttribute('aria-disabled', 'true')
         })
     })
 

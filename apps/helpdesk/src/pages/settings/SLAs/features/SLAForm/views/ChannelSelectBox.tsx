@@ -42,7 +42,7 @@ export function ChannelSelectBox() {
     const isNonVoiceChannelSelected = hasSelection && !isVoiceChannelSelected
     const hasExistingVoicePolicy = !!voicePolicies?.data.data.length
     const isVoiceChannelDisabled =
-        !hasExistingVoicePolicy || isNonVoiceChannelSelected
+        hasExistingVoicePolicy || isNonVoiceChannelSelected
 
     const handleChannelChange = (newValue: Option[]) => {
         const isNewChannelVoice = newValue.find(
