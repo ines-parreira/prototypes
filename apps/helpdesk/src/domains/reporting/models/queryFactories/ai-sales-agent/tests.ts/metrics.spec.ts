@@ -1,9 +1,16 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { aiSalesAgentConversationsDefaultFiltersMembers } from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
+import {
+    AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import {
+    aiSalesAgentConversationsDefaultFiltersMembers,
+    aiSalesAgentOrdersDefaultFiltersMembers,
+} from 'domains/reporting/models/queryFactories/ai-sales-agent/filters'
 import {
     discountCodesOfferedDrillDownQueryFactory,
+    gmvInfluencedQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
@@ -596,6 +603,181 @@ describe('totalNumberProductRecommendationsDrillDownQueryFactory', () => {
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
             order: [],
+            timezone: 'UTC',
+        })
+    })
+})
+
+describe('gmvInfluencedQueryFactory', () => {
+    it('should build a query without integrationIds', () => {
+        expect(
+            gmvInfluencedQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+            ),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentOrdersDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with single integrationId', () => {
+        expect(
+            gmvInfluencedQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                ['integration-123'],
+            ),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.IntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['integration-123'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentOrdersDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with multiple integrationIds', () => {
+        expect(
+            gmvInfluencedQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                ['integration-123', 'integration-456'],
+            ),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.IntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['integration-123', 'integration-456'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentOrdersDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
+            timezone: 'UTC',
+        })
+    })
+
+    it('should build a query with empty integrationIds array', () => {
+        expect(
+            gmvInfluencedQueryFactory(
+                {
+                    period: {
+                        start_datetime: '2021-01-01T00:00:00Z',
+                        end_datetime: '2021-01-02T00:00:00Z',
+                    },
+                },
+                'UTC',
+                [],
+            ),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_INFLUENCED,
+            measures: [AiSalesAgentOrdersMeasure.Gmv],
+            dimensions: [AiSalesAgentOrdersDimension.Currency],
+            filters: [
+                {
+                    member: AiSalesAgentOrdersDimension.IsInfluenced,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: AiSalesAgentOrdersDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['shopping-assistant'],
+                },
+                ...statsFiltersToReportingFilters(
+                    aiSalesAgentOrdersDefaultFiltersMembers,
+                    {
+                        period: {
+                            start_datetime: '2021-01-01T00:00:00Z',
+                            end_datetime: '2021-01-02T00:00:00Z',
+                        },
+                    },
+                ),
+            ],
             timezone: 'UTC',
         })
     })

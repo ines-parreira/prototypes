@@ -155,7 +155,7 @@ export const gmvInfluencedQueryFactory = (
             ? [
                   {
                       member: AiSalesAgentOrdersDimension.IntegrationId,
-                      operator: ReportingFilterOperator.In,
+                      operator: ReportingFilterOperator.Equals,
                       values: integrationIds,
                   },
               ]
