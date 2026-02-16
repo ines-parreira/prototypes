@@ -20,6 +20,8 @@ export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'
 export const REPORTING_STATS_QUERY_ENDPOINT = '/api/reporting/stats/query'
 export const REPORTING_ENRICHED_ENDPOINT = '/api/reporting-enriched'
 export const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
+export const HTTP_STATUS_UNAUTHORIZED = 401
+export const HTTP_STATUS_419 = 419
 export const HTTP_STATUS_TOO_MANY_REQUESTS = 429
 export const HTTP_STATUS_INTERNAL_SERVER_ERROR = 500
 
@@ -28,6 +30,8 @@ export const isTransientErrorStatus = (status: number | undefined): boolean => {
 
     return (
         status === QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS ||
+        status === HTTP_STATUS_UNAUTHORIZED ||
+        status === HTTP_STATUS_419 ||
         status === HTTP_STATUS_TOO_MANY_REQUESTS ||
         (status >= HTTP_STATUS_INTERNAL_SERVER_ERROR && status < 600)
     )

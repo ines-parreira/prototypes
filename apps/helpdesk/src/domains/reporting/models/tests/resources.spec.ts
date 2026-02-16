@@ -523,6 +523,14 @@ describe('Reporting resources', () => {
             expect(isTransientErrorStatus(429)).toBe(true)
         })
 
+        it('should return true for 401 status', () => {
+            expect(isTransientErrorStatus(401)).toBe(true)
+        })
+
+        it('should return true for 419 status', () => {
+            expect(isTransientErrorStatus(419)).toBe(true)
+        })
+
         it.each([
             { status: 500, description: '500 Internal Server Error' },
             { status: 502, description: '502 Bad Gateway' },

@@ -394,6 +394,60 @@ describe('metricExecutionHandler', () => {
             expect(reportErrorMock).not.toHaveBeenCalled()
         })
 
+        it('should propagate 401 errors without reporting to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Unauthorized')
+            axiosError.response = {
+                status: 401,
+                data: { error: { msg: 'Authentication required' } },
+                statusText: 'Unauthorized',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
+        it('should propagate 419 errors without reporting to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('Authentication Timeout')
+            axiosError.response = {
+                status: 419,
+                data: { error: { msg: 'Session expired' } },
+                statusText: 'Authentication Timeout',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
         it('should still report 4xx errors (except 429) to Sentry', async () => {
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())
             const axiosError = new AxiosError('Bad request')
