@@ -74,7 +74,7 @@ describe('QueueName', () => {
             expect(screen.getByText(mockQueue.name)).toBeInTheDocument()
         })
 
-        const queueContainer = container.querySelector('span')
+        const queueContainer = container.querySelector('[data-color="green"]')
         expect(queueContainer).toBeInTheDocument()
     })
 

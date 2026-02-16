@@ -49,7 +49,10 @@ function QueueName({ queueId, primary }: Props) {
     }
 
     return (
-        <Tag leadingSlot={<Icon name={'users'} />}>
+        <Tag
+            leadingSlot={<Icon name={'users'} />}
+            {...(primary ? { color: 'green' } : {})}
+        >
             {queue.name || `Queue #${queue.id}`}
         </Tag>
     )

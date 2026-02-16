@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -65,5 +63,17 @@ describe('<PhoneIntegrationName/>', () => {
 
         const element = container.querySelector('[data-name="tag"]')
         expect(element).not.toBeInTheDocument()
+    })
+
+    it('should render with primary true', () => {
+        const { container } = render(
+            <Provider store={store}>
+                <PhoneIntegrationName integrationId={integrationId} primary />
+            </Provider>,
+        )
+
+        expect(
+            container.querySelector('[data-color="green"]'),
+        ).toBeInTheDocument()
     })
 })

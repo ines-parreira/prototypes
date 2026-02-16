@@ -49,7 +49,7 @@ function PhoneIntegrationName({
         ? `${integrationEmoji} ${integrationName}`
         : integrationName
 
-    return <Tag>{displayName}</Tag>
+    return <Tag {...(primary ? { color: 'green' } : {})}>{displayName}</Tag>
 }
 
 const connector = connect((state: RootState, ownProps: OwnProps) => {
