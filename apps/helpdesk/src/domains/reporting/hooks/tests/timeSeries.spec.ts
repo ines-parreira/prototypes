@@ -822,8 +822,8 @@ describe('time series', () => {
                     ...v1QueryTmp.filters,
                     {
                         member: TicketProductsEnrichedDimension.ProductId,
-                        operator: ReportingFilterOperator.NotEquals,
-                        values: ['null'],
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
                     },
                 ],
             }

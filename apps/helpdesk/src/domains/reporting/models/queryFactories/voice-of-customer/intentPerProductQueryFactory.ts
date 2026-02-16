@@ -80,8 +80,8 @@ export const intentsWithProductsTicketCountTimeseriesQueryFactory = (
             ...baseQuery.filters,
             {
                 member: TicketProductsEnrichedDimension.ProductId,
-                operator: ReportingFilterOperator.NotEquals,
-                values: ['null'],
+                operator: ReportingFilterOperator.Set,
+                values: [],
             },
         ],
     }

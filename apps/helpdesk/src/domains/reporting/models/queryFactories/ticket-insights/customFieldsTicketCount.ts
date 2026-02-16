@@ -132,8 +132,8 @@ export const customFieldsTicketCountWithSortQueryFactory = (
             ...baseQueryFilters,
             {
                 member: TicketProductsEnrichedMember.ProductId,
-                operator: ReportingFilterOperator.NotEquals,
-                values: ['null', 'undefined'],
+                operator: ReportingFilterOperator.Set,
+                values: [],
             },
         ],
         order: [[sortingValue, sortingDirection]],
