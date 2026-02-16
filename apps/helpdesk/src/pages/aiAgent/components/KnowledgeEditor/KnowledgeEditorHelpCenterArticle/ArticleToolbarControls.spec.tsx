@@ -45,7 +45,6 @@ describe('ArticleToolbarControls', () => {
             canEdit: boolean
             editDisabledReason: string | undefined
             isPlaygroundOpen: boolean
-            isVersionHistoryEnabled: boolean
         }> = {},
     ) => ({
         state: overrides.state ?? { type: 'draft-edit' },
@@ -61,7 +60,6 @@ describe('ArticleToolbarControls', () => {
         editDisabledReason: overrides.editDisabledReason,
         onTest: mockOnTest,
         isPlaygroundOpen: overrides.isPlaygroundOpen ?? false,
-        isVersionHistoryEnabled: overrides.isVersionHistoryEnabled ?? false,
     })
 
     beforeEach(() => {
@@ -530,7 +528,6 @@ describe('ArticleToolbarControls', () => {
             mockUseArticleToolbar.mockReturnValue(
                 createMockToolbar({
                     state: { type: 'viewing-historical-version' },
-                    isVersionHistoryEnabled: true,
                 }),
             )
             mockUseVersionHistory.mockReturnValue({
@@ -618,7 +615,6 @@ describe('ArticleToolbarControls', () => {
             mockUseArticleToolbar.mockReturnValue(
                 createMockToolbar({
                     state: { type: 'viewing-historical-version' },
-                    isVersionHistoryEnabled: true,
                     isPlaygroundOpen: true,
                 }),
             )
@@ -671,12 +667,11 @@ describe('ArticleToolbarControls', () => {
             'published-without-draft-edit',
             'draft-edit',
         ] as const)(
-            'should render version history button in %s state when enabled',
+            'should render version history button in %s state',
             (stateType) => {
                 mockUseArticleToolbar.mockReturnValue(
                     createMockToolbar({
                         state: { type: stateType },
-                        isVersionHistoryEnabled: true,
                     }),
                 )
                 render(<ArticleToolbarControls />)
@@ -687,35 +682,10 @@ describe('ArticleToolbarControls', () => {
             },
         )
 
-        it.each([
-            'published-with-draft',
-            'published-without-draft',
-            'draft-view',
-            'published-without-draft-edit',
-            'draft-edit',
-            'create',
-        ] as const)(
-            'should not render version history button in %s state when disabled',
-            (stateType) => {
-                mockUseArticleToolbar.mockReturnValue(
-                    createMockToolbar({
-                        state: { type: stateType },
-                        isVersionHistoryEnabled: false,
-                    }),
-                )
-                render(<ArticleToolbarControls />)
-
-                expect(
-                    screen.queryByRole('button', { name: /version history/i }),
-                ).not.toBeInTheDocument()
-            },
-        )
-
-        it('should not render version history button in create state even when enabled', () => {
+        it('should not render version history button in create state', () => {
             mockUseArticleToolbar.mockReturnValue(
                 createMockToolbar({
                     state: { type: 'create' },
-                    isVersionHistoryEnabled: true,
                 }),
             )
             render(<ArticleToolbarControls />)

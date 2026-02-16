@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@repo/testing'
 
@@ -16,15 +15,6 @@ import type {
     VersionHistoryBaseParams,
 } from './useVersionHistoryBase'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    FeatureFlagKey: {
-        AddVersionHistoryForArticlesAndGuidances:
-            'add-version-history-for-articles-and-guidances',
-    },
-    useFlag: jest.fn(),
-}))
-
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationVersion: jest.fn(),
     useInfiniteGetArticleTranslationVersions: jest.fn(),
@@ -32,7 +22,6 @@ jest.mock('models/helpCenter/queries', () => ({
 
 jest.mock('@repo/logging')
 
-const mockUseFlag = useFlag as jest.Mock
 const mockUseGetVersion = useGetArticleTranslationVersion as jest.Mock
 const mockUseInfiniteGetVersions =
     useInfiniteGetArticleTranslationVersions as jest.Mock
@@ -87,8 +76,6 @@ describe('useVersionHistoryBase', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(true)
-
         mockUseGetVersion.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -113,30 +100,6 @@ describe('useVersionHistoryBase', () => {
             isFetchingNextPage: false,
             hasNextPage: false,
             fetchNextPage: mockFetchNextPage,
-        })
-    })
-
-    describe('feature flag disabled', () => {
-        it('should return empty versions when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-            mockUseInfiniteGetVersions.mockReturnValue({
-                data: undefined,
-                isLoading: false,
-                isFetchingNextPage: false,
-                hasNextPage: false,
-                fetchNextPage: mockFetchNextPage,
-            })
-
-            const { result } = renderHook(() =>
-                useVersionHistoryBase(defaultParams),
-            )
-
-            expect(mockUseInfiniteGetVersions).toHaveBeenCalledWith(
-                expect.any(Object),
-                expect.any(Object),
-                expect.objectContaining({ enabled: false }),
-            )
-            expect(result.current.versions).toEqual([])
         })
     })
 
@@ -689,14 +652,6 @@ describe('useVersionHistoryBase', () => {
     })
 
     describe('query parameters', () => {
-        it('should call useFlag with the correct feature flag key', () => {
-            renderHook(() => useVersionHistoryBase(defaultParams))
-
-            expect(mockUseFlag).toHaveBeenCalledWith(
-                FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-            )
-        })
-
         it('should pass correct params to the query', () => {
             renderHook(() => useVersionHistoryBase(defaultParams))
 

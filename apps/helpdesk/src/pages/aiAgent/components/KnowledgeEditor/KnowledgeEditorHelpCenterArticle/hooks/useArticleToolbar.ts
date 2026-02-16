@@ -1,10 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
-import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
-
 import { useArticleContext } from '../context'
 import type { ArticleModeType } from '../context/types'
 
@@ -33,15 +28,9 @@ export type ArticleToolbarData = {
     editDisabledReason: string | undefined
     onTest: () => void
     isPlaygroundOpen: boolean
-    isVersionHistoryEnabled: boolean
 }
 
 export const useArticleToolbar = (): ArticleToolbarData => {
-    const isPublishModalEnabled = useFlag(
-        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-    )
-    const { error: notifyError, success: notifySuccess } = useNotify()
-
     const {
         state,
         dispatch,
@@ -52,10 +41,6 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         playground,
     } = useArticleContext()
 
-    const { helpCenter, onUpdatedFn } = config
-
-    const updateTranslationMutation = useUpdateArticleTranslation(helpCenter.id)
-
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
     }, [dispatch])
@@ -63,58 +48,6 @@ export const useArticleToolbar = (): ArticleToolbarData => {
     const onOpenPublishModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'publish' })
     }, [dispatch])
-
-    const onClickPublishLegacy = useCallback(async () => {
-        if (!state.article?.id) return
-
-        dispatch({ type: 'SET_UPDATING', payload: true })
-        try {
-            const response = await updateTranslationMutation.mutateAsync([
-                undefined,
-                {
-                    help_center_id: helpCenter.id,
-                    article_id: state.article.id,
-                    locale: state.currentLocale,
-                },
-                {
-                    is_current: true,
-                },
-            ])
-
-            if (response?.data) {
-                dispatch({
-                    type: 'MARK_CONTENT_AS_SAVED',
-                    payload: {
-                        title: response.data.title,
-                        content: response.data.content,
-                        article: {
-                            ...state.article,
-                            translation: {
-                                ...state.article.translation,
-                                ...response.data,
-                            },
-                        },
-                    },
-                })
-                dispatch({ type: 'SET_MODE', payload: 'read' })
-                notifySuccess('Article published successfully.')
-                onUpdatedFn?.()
-            }
-        } catch {
-            notifyError('An error occurred while publishing the article.')
-        } finally {
-            dispatch({ type: 'SET_UPDATING', payload: false })
-        }
-    }, [
-        helpCenter.id,
-        state.article,
-        state.currentLocale,
-        updateTranslationMutation,
-        dispatch,
-        notifySuccess,
-        notifyError,
-        onUpdatedFn,
-    ])
 
     const onOpenDeleteModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'delete-article' })
@@ -150,9 +83,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         state: toolbarState,
         actions: {
             onClickEdit,
-            onClickPublish: isPublishModalEnabled
-                ? onOpenPublishModal
-                : onClickPublishLegacy,
+            onClickPublish: onOpenPublishModal,
             onOpenDeleteModal,
             onDiscard,
         },
@@ -162,7 +93,6 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         editDisabledReason,
         onTest: playground.onTest,
         isPlaygroundOpen: playground.isOpen,
-        isVersionHistoryEnabled: isPublishModalEnabled,
     }
 }
 

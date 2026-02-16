@@ -99,7 +99,6 @@ const defaultToolbarData = {
     editDisabledReason: undefined,
     onTest: mockOnTest,
     isPlaygroundOpen: false,
-    isVersionHistoryEnabled: false,
 }
 
 const defaultContextData = {
@@ -156,7 +155,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'viewing-historical-version',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
             mockUseGuidanceContext.mockReturnValue({
                 ...defaultContextData,
@@ -217,7 +215,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'viewing-historical-version',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
                 isPlaygroundOpen: true,
             })
 
@@ -234,30 +231,15 @@ describe('GuidanceToolbarControls', () => {
             mockUseGuidanceToolbar.mockReturnValue({
                 ...defaultToolbarData,
                 state: { type: 'published-with-draft' } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
-        it('renders version history button when enabled', () => {
+        it('renders version history button', () => {
             renderComponent()
 
             expect(
                 screen.getByRole('button', { name: /version history/i }),
             ).toBeInTheDocument()
-        })
-
-        it('does not render version history button when disabled', () => {
-            mockUseGuidanceToolbar.mockReturnValue({
-                ...defaultToolbarData,
-                state: { type: 'published-with-draft' } as GuidanceToolbarState,
-                isVersionHistoryEnabled: false,
-            })
-
-            renderComponent()
-
-            expect(
-                screen.queryByRole('button', { name: /version history/i }),
-            ).not.toBeInTheDocument()
         })
 
         it('renders edit button', () => {
@@ -289,7 +271,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'published-without-draft',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
@@ -332,7 +313,6 @@ describe('GuidanceToolbarControls', () => {
             mockUseGuidanceToolbar.mockReturnValue({
                 ...defaultToolbarData,
                 state: { type: 'draft-view' } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
@@ -357,7 +337,6 @@ describe('GuidanceToolbarControls', () => {
                 ...defaultToolbarData,
                 state: { type: 'draft-view' } as GuidanceToolbarState,
                 isFormValid: false,
-                isVersionHistoryEnabled: true,
             })
 
             renderComponent()
@@ -375,7 +354,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'published-without-draft-edit',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
@@ -409,7 +387,6 @@ describe('GuidanceToolbarControls', () => {
             mockUseGuidanceToolbar.mockReturnValue({
                 ...defaultToolbarData,
                 state: { type: 'draft-edit' } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
@@ -446,7 +423,6 @@ describe('GuidanceToolbarControls', () => {
             mockUseGuidanceToolbar.mockReturnValue({
                 ...defaultToolbarData,
                 state: { type: 'create' } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
         })
 
@@ -494,7 +470,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'published-without-draft',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
 
             mockUseVersionHistory.mockReturnValue({
@@ -519,7 +494,6 @@ describe('GuidanceToolbarControls', () => {
                 state: {
                     type: 'published-without-draft',
                 } as GuidanceToolbarState,
-                isVersionHistoryEnabled: true,
             })
 
             mockUseVersionHistory.mockReturnValue({

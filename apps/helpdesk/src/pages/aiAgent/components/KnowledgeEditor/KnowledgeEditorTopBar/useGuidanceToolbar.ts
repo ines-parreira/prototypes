@@ -1,14 +1,6 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
-import { useNotify } from 'hooks/useNotify'
-import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
-
-import {
-    fromArticleTranslationResponse,
-    useGuidanceContext,
-} from '../KnowledgeEditorGuidance/context'
+import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
 import type { GuidanceModeType } from '../KnowledgeEditorGuidance/context/types'
 
 export type GuidanceToolbarState =
@@ -38,15 +30,9 @@ export type GuidanceToolbarData = {
     editDisabledReason: string | undefined
     onTest: () => void
     isPlaygroundOpen: boolean
-    isVersionHistoryEnabled: boolean
 }
 
 export const useGuidanceToolbar = (): GuidanceToolbarData => {
-    const isVersionHistoryEnabled = useFlag(
-        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-    )
-    const { error: notifyError, success: notifySuccess } = useNotify()
-
     const {
         state,
         dispatch,
@@ -57,15 +43,6 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         playground,
     } = useGuidanceContext()
 
-    const { guidanceHelpCenter } = config
-
-    const { onUpdateFn } = config
-
-    const { updateGuidanceArticle, isGuidanceArticleUpdating } =
-        useGuidanceArticleMutation({
-            guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
-        })
-
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
     }, [dispatch])
@@ -73,52 +50,6 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     const onOpenPublishModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'publish' })
     }, [dispatch])
-
-    const onClickPublishLegacy = useCallback(async () => {
-        if (!state.guidance?.id || !guidanceHelpCenter.default_locale) return
-
-        dispatch({ type: 'SET_UPDATING', payload: true })
-        try {
-            const response = await updateGuidanceArticle(
-                {
-                    isCurrent: true,
-                },
-                {
-                    articleId: state.guidance.id,
-                    locale: guidanceHelpCenter.default_locale,
-                },
-            )
-
-            if (response) {
-                dispatch({
-                    type: 'MARK_AS_SAVED',
-                    payload: {
-                        title: response.title,
-                        content: response.content,
-                        guidance: fromArticleTranslationResponse(response, {
-                            id: state.guidance.id,
-                            templateKey: state.guidance?.templateKey ?? null,
-                        }),
-                    },
-                })
-                dispatch({ type: 'SET_MODE', payload: 'read' })
-                notifySuccess('Guidance published successfully.')
-                onUpdateFn?.()
-            }
-        } catch {
-            notifyError('An error occurred while publishing guidance.')
-        } finally {
-            dispatch({ type: 'SET_UPDATING', payload: false })
-        }
-    }, [
-        guidanceHelpCenter.default_locale,
-        dispatch,
-        updateGuidanceArticle,
-        notifySuccess,
-        notifyError,
-        onUpdateFn,
-        state.guidance,
-    ])
 
     const onOpenDiscardModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'discard' })
@@ -148,8 +79,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         state.historicalVersion !== null,
     )
 
-    const isDisabled =
-        state.isUpdating || state.isAutoSaving || isGuidanceArticleUpdating
+    const isDisabled = state.isUpdating || state.isAutoSaving
 
     const editDisabledReason = !canEdit
         ? 'This version is read-only. View the version with draft edits to make changes.'
@@ -159,9 +89,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         state: toolbarState,
         actions: {
             onClickEdit,
-            onClickPublish: isVersionHistoryEnabled
-                ? onOpenPublishModal
-                : onClickPublishLegacy,
+            onClickPublish: onOpenPublishModal,
             onOpenDiscardModal,
             onOpenDeleteModal,
             onOpenDuplicateModal,
@@ -173,7 +101,6 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         editDisabledReason,
         onTest: playground.onTest,
         isPlaygroundOpen: playground.isOpen,
-        isVersionHistoryEnabled,
     }
 }
 

@@ -1,25 +1,14 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
-import { useNotify } from 'hooks/useNotify'
-import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
 import type { ArticleContextValue } from '../context/types'
 import { useArticleToolbar } from './useArticleToolbar'
 
-jest.mock('@repo/feature-flags')
-jest.mock('hooks/useNotify')
-jest.mock('models/helpCenter/mutations')
 jest.mock('../context/ArticleContext', () => ({
     useArticleContext: jest.fn(),
 }))
-
-const mockUseFlag = jest.mocked(useFlag)
-const mockNotifyError = jest.fn()
-const mockNotifySuccess = jest.fn()
-const mockMutateAsync = jest.fn()
 
 const mockUseArticleContext = useArticleContext as jest.Mock
 
@@ -126,17 +115,6 @@ describe('useArticleToolbar', () => {
         mockDispatch = jest.fn()
         mockOnClose = jest.fn()
         mockOnTest = jest.fn()
-
-        mockUseFlag.mockReturnValue(false)
-
-        jest.mocked(useNotify).mockReturnValue({
-            error: mockNotifyError,
-            success: mockNotifySuccess,
-        } as any)
-
-        jest.mocked(useUpdateArticleTranslation).mockReturnValue({
-            mutateAsync: mockMutateAsync,
-        } as any)
 
         mockUseArticleContext.mockReturnValue(createMockContext())
     })
@@ -431,166 +409,16 @@ describe('useArticleToolbar', () => {
     })
 
     describe('onClickPublish', () => {
-        describe('when feature flag is enabled', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key ===
-                        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-                )
+        it('should dispatch SET_MODAL with "publish" payload', () => {
+            const { result } = renderHook(() => useArticleToolbar())
+
+            act(() => {
+                result.current.actions.onClickPublish()
             })
 
-            it('should dispatch SET_MODAL with "publish" payload', () => {
-                const { result } = renderHook(() => useArticleToolbar())
-
-                act(() => {
-                    result.current.actions.onClickPublish()
-                })
-
-                expect(mockDispatch).toHaveBeenCalledWith({
-                    type: 'SET_MODAL',
-                    payload: 'publish',
-                })
-            })
-
-            it('should not call mutateAsync', () => {
-                const { result } = renderHook(() => useArticleToolbar())
-
-                act(() => {
-                    result.current.actions.onClickPublish()
-                })
-
-                expect(mockMutateAsync).not.toHaveBeenCalled()
-            })
-        })
-
-        describe('when feature flag is disabled', () => {
-            beforeEach(() => {
-                mockUseFlag.mockReturnValue(false)
-            })
-
-            it('should publish directly and call mutateAsync', async () => {
-                mockMutateAsync.mockResolvedValue({
-                    data: {
-                        title: 'Updated Title',
-                        content: 'Updated Content',
-                    },
-                })
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockMutateAsync).toHaveBeenCalledWith([
-                    undefined,
-                    {
-                        help_center_id: 1,
-                        article_id: 123,
-                        locale: 'en-US',
-                    },
-                    { is_current: true },
-                ])
-            })
-
-            it('should dispatch SET_UPDATING true, then MARK_CONTENT_AS_SAVED, then SET_MODE, then SET_UPDATING false', async () => {
-                mockMutateAsync.mockResolvedValue({
-                    data: {
-                        title: 'Updated Title',
-                        content: 'Updated Content',
-                    },
-                })
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockDispatch).toHaveBeenNthCalledWith(1, {
-                    type: 'SET_UPDATING',
-                    payload: true,
-                })
-                expect(mockDispatch).toHaveBeenNthCalledWith(2, {
-                    type: 'MARK_CONTENT_AS_SAVED',
-                    payload: expect.objectContaining({
-                        title: 'Updated Title',
-                        content: 'Updated Content',
-                    }),
-                })
-                expect(mockDispatch).toHaveBeenNthCalledWith(3, {
-                    type: 'SET_MODE',
-                    payload: 'read',
-                })
-                expect(mockDispatch).toHaveBeenNthCalledWith(4, {
-                    type: 'SET_UPDATING',
-                    payload: false,
-                })
-            })
-
-            it('should call notifySuccess on successful publish', async () => {
-                mockMutateAsync.mockResolvedValue({
-                    data: {
-                        title: 'Updated Title',
-                        content: 'Updated Content',
-                    },
-                })
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockNotifySuccess).toHaveBeenCalledWith(
-                    'Article published successfully.',
-                )
-            })
-
-            it('should call notifyError on failed publish', async () => {
-                mockMutateAsync.mockRejectedValue(new Error('Publish failed'))
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockNotifyError).toHaveBeenCalledWith(
-                    'An error occurred while publishing the article.',
-                )
-            })
-
-            it('should always reset updating state even on error', async () => {
-                mockMutateAsync.mockRejectedValue(new Error('Publish failed'))
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockDispatch).toHaveBeenLastCalledWith({
-                    type: 'SET_UPDATING',
-                    payload: false,
-                })
-            })
-
-            it('should not publish when article id is missing', async () => {
-                mockUseArticleContext.mockReturnValue(
-                    createMockContext({
-                        state: { articleMode: 'edit', article: undefined },
-                    }),
-                )
-
-                const { result } = renderHook(() => useArticleToolbar())
-
-                await act(async () => {
-                    await result.current.actions.onClickPublish()
-                })
-
-                expect(mockMutateAsync).not.toHaveBeenCalled()
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_MODAL',
+                payload: 'publish',
             })
         })
     })
@@ -731,29 +559,6 @@ describe('useArticleToolbar', () => {
             expect(result.current).toHaveProperty('editDisabledReason')
             expect(result.current).toHaveProperty('onTest')
             expect(result.current).toHaveProperty('isPlaygroundOpen')
-            expect(result.current).toHaveProperty('isVersionHistoryEnabled')
-        })
-    })
-
-    describe('isVersionHistoryEnabled', () => {
-        it('should return true when feature flag is enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key ===
-                    FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-            )
-
-            const { result } = renderHook(() => useArticleToolbar())
-
-            expect(result.current.isVersionHistoryEnabled).toBe(true)
-        })
-
-        it('should return false when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { result } = renderHook(() => useArticleToolbar())
-
-            expect(result.current.isVersionHistoryEnabled).toBe(false)
         })
     })
 

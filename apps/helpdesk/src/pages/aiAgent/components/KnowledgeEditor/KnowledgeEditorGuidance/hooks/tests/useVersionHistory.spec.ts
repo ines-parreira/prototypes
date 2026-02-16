@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@repo/testing'
 
 import {
@@ -14,11 +13,6 @@ import type {
 } from '../../context/types'
 import { useVersionHistory } from '../useVersionHistory'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationVersion: jest.fn(),
     useInfiniteGetArticleTranslationVersions: jest.fn(),
@@ -33,7 +27,6 @@ jest.mock('../useSwitchVersion', () => ({
     useSwitchVersion: () => ({ switchToVersion: mockSwitchToVersion }),
 }))
 
-const mockUseFlag = useFlag as jest.Mock
 const mockUseInfiniteGetVersions =
     useInfiniteGetArticleTranslationVersions as jest.Mock
 const mockUseGuidanceContext = useGuidanceContext as jest.Mock
@@ -115,7 +108,6 @@ describe('useVersionHistory', () => {
         jest.clearAllMocks()
 
         mockSwitchToVersion.mockResolvedValue(undefined)
-        mockUseFlag.mockReturnValue(true)
         ;(useGetVersion as jest.Mock).mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -149,28 +141,8 @@ describe('useVersionHistory', () => {
         })
     })
 
-    describe('feature flag', () => {
-        it('should call useFlag with the correct feature flag key', () => {
-            renderHook(() => useVersionHistory())
-
-            expect(mockUseFlag).toHaveBeenCalledWith(
-                FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-            )
-        })
-
-        it('should pass enabled: false to the query when feature flag is off', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            renderHook(() => useVersionHistory())
-
-            expect(mockUseInfiniteGetVersions).toHaveBeenCalledWith(
-                expect.any(Object),
-                expect.any(Object),
-                expect.objectContaining({ enabled: false }),
-            )
-        })
-
-        it('should pass enabled: true to the query when feature flag is on and conditions are met', () => {
+    describe('query enablement', () => {
+        it('should pass enabled: true to the query when required params are set', () => {
             renderHook(() => useVersionHistory())
 
             expect(mockUseInfiniteGetVersions).toHaveBeenCalledWith(

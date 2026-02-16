@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import {
     act,
@@ -149,12 +148,6 @@ const mockedUseRecentTicketsWithDrilldown = jest.mocked(
 )
 
 const mockUseStoresWithCompletedSetup = jest.mocked(useStoresWithCompletedSetup)
-const mockUseFlag = jest.mocked(useFlag)
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(() => false),
-}))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/shared/DuplicateGuidance/useStoresWithCompletedSetup',
@@ -276,12 +269,6 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     it('renders in edit mode and allows publishing when viewing draft', async () => {
-        // Enable the publish modal feature flag for this test
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key === FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-        )
-
         // Set up a draft article (isCurrent: false) with published version to enable publish button
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
@@ -552,12 +539,6 @@ describe('KnowledgeEditorGuidance', () => {
     })
 
     it('calls onUpdate callback after successful article publish', async () => {
-        // Enable the publish modal feature flag for this test
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key === FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-        )
-
         const onUpdate = jest.fn()
         const updatedArticle = {
             ...guidanceArticle,

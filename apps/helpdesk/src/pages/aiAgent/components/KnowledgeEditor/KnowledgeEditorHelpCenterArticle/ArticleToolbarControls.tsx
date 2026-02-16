@@ -21,7 +21,6 @@ export const ArticleToolbarControls = () => {
         editDisabledReason,
         onTest,
         isPlaygroundOpen,
-        isVersionHistoryEnabled,
     } = useArticleToolbar()
 
     const versionHistory = useVersionHistory()
@@ -34,21 +33,17 @@ export const ArticleToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <Button
                         variant="primary"
                         onClick={() =>
@@ -73,21 +68,17 @@ export const ArticleToolbarControls = () => {
                         disabled={isDisabled}
                         disabledReason={editDisabledReason}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -105,21 +96,17 @@ export const ArticleToolbarControls = () => {
                         onEdit={canEdit ? onClickEdit : undefined}
                         disabled={isDisabled}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -137,21 +124,17 @@ export const ArticleToolbarControls = () => {
                         onEdit={onClickEdit}
                         disabled={isDisabled}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <DeleteButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -172,21 +155,17 @@ export const ArticleToolbarControls = () => {
         case 'published-without-draft-edit':
             return (
                 <>
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <DeleteDraftButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -210,7 +189,7 @@ export const ArticleToolbarControls = () => {
             const isPublishDisabled = isCreateMode || !isFormValid || isDisabled
             return (
                 <>
-                    {isVersionHistoryEnabled && !isCreateMode && (
+                    {!isCreateMode && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
                             isLoading={versionHistory.isLoading}

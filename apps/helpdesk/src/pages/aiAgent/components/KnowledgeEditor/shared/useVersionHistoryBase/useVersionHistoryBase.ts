@@ -1,7 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import {
     useGetArticleTranslationVersion,
@@ -158,12 +156,7 @@ export function useVersionHistoryBase({
         helpCenterId,
         locale,
     })
-    const isVersionHistoryEnabled = useFlag(
-        FeatureFlagKey.AddVersionHistoryForArticlesAndGuidances,
-    )
-
-    const isEnabled =
-        isVersionHistoryEnabled && !!helpCenterId && !!articleId && !!locale
+    const isEnabled = !!helpCenterId && !!articleId && !!locale
 
     const hasDraft =
         draftVersionId != null &&

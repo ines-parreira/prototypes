@@ -73,7 +73,6 @@ export const GuidanceToolbarControls = () => {
         editDisabledReason,
         onTest,
         isPlaygroundOpen,
-        isVersionHistoryEnabled,
     } = useGuidanceToolbar()
 
     const {
@@ -95,21 +94,17 @@ export const GuidanceToolbarControls = () => {
         case 'viewing-historical-version':
             return (
                 <>
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <Button
                         variant="primary"
                         onClick={() =>
@@ -134,21 +129,17 @@ export const GuidanceToolbarControls = () => {
                         disabled={isDisabled}
                         disabledReason={editDisabledReason}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <MoreActionsMenu
                         allDisabled={isDisabled}
                         isDisabled={isDisabled}
@@ -169,21 +160,17 @@ export const GuidanceToolbarControls = () => {
                         onEdit={canEdit ? onClickEdit : undefined}
                         disabled={isDisabled}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <MoreActionsMenu
                         allDisabled={isDisabled}
                         isDisabled={isDisabled}
@@ -204,21 +191,17 @@ export const GuidanceToolbarControls = () => {
                         onEdit={onClickEdit}
                         disabled={isDisabled}
                     />
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <MoreActionsMenu
                         allDisabled={isDisabled}
                         isDisabled={isDisabled}
@@ -242,21 +225,17 @@ export const GuidanceToolbarControls = () => {
         case 'published-without-draft-edit':
             return (
                 <>
-                    {isVersionHistoryEnabled && (
-                        <VersionHistoryButton
-                            versions={versionHistory.versions}
-                            isLoading={versionHistory.isLoading}
-                            currentVersionId={versionHistory.currentVersionId}
-                            selectedVersionId={versionHistory.selectedVersionId}
-                            onSelectVersion={versionHistory.onSelectVersion}
-                            isDisabled={versionHistory.isDisabled}
-                            isFetchingNextPage={
-                                versionHistory.isFetchingNextPage
-                            }
-                            onLoadMore={versionHistory.onLoadMore}
-                            shouldLoadMore={versionHistory.shouldLoadMore}
-                        />
-                    )}
+                    <VersionHistoryButton
+                        versions={versionHistory.versions}
+                        isLoading={versionHistory.isLoading}
+                        currentVersionId={versionHistory.currentVersionId}
+                        selectedVersionId={versionHistory.selectedVersionId}
+                        onSelectVersion={versionHistory.onSelectVersion}
+                        isDisabled={versionHistory.isDisabled}
+                        isFetchingNextPage={versionHistory.isFetchingNextPage}
+                        onLoadMore={versionHistory.onLoadMore}
+                        shouldLoadMore={versionHistory.shouldLoadMore}
+                    />
                     <DeleteDraftButton
                         onDelete={onOpenDeleteModal}
                         disabled={isDisabled}
@@ -280,7 +259,7 @@ export const GuidanceToolbarControls = () => {
             const isPublishDisabled = isCreateMode || !isFormValid || isDisabled
             return (
                 <>
-                    {isVersionHistoryEnabled && !isCreateMode && (
+                    {!isCreateMode && (
                         <VersionHistoryButton
                             versions={versionHistory.versions}
                             isLoading={versionHistory.isLoading}
