@@ -1,0 +1,288 @@
+name: Preview Deploy
+# Builds and uploads preview assets for every PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  NODE_VERSION: "22.22.0"
+  BUILD_DIR: apps/helpdesk/build
+
+jobs:
+  workspace-setup:
+    name: Workspace setup
+    if: github.event.action != 'closed'
+    runs-on: gh-actions-large-runner-set
+    outputs:
+      cache-key: ${{ env.CACHE_KEY }}
+      preview-path: ${{ steps.sanitize.outputs.preview-path }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+      - name: Sanitize branch name
+        id: sanitize
+        env:
+          OWNER: ${{ github.event.pull_request.user.login }}
+          BRANCH: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          SANITIZED=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-63)
+          echo "preview-path=preview/${OWNER}/${SANITIZED}" >> "$GITHUB_OUTPUT"
+
+  build-preview:
+    name: Build preview
+    needs: workspace-setup
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+      node-version: "22.22.0"
+      assets-url: https://gorgias-assets.gorgias.io/web-app
+      release: preview-${{ github.event.pull_request.number }}-${{ github.sha }}
+      build-dir: apps/helpdesk/build
+      artifact: preview-build
+      no-content-hash: true
+
+  upload-preview:
+    name: Upload preview
+    needs:
+      - workspace-setup
+      - build-preview
+    runs-on: gh-actions-default-runner-set
+    container:
+      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
+      credentials:
+        username: _json_key
+        password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: build
+          name: preview-build
+
+      - name: Prepare service account
+        shell: bash
+        run: |
+          cat <<EOF > key.json
+            ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} --key-file=key.json --project=gorgias-helpdesk-development
+
+      - name: Compress and upload to GCS
+        shell: bash
+        env:
+          PREVIEW_PATH: ${{ needs.workspace-setup.outputs.preview-path }}
+        run: |
+          mkdir -p compressed
+          for f in build/helpdesk.app.js build/helpdesk.app.css; do
+            if [ -f "$f" ]; then
+              gzip -9 -c "$f" > "compressed/$(basename "$f")"
+            fi
+          done
+
+          gsutil \
+            -h "Content-Encoding:gzip" \
+            -h "Cache-Control:no-cache" \
+            -m -q rsync -R \
+            compressed/ \
+            "gs://gorgias-assets-development/${PREVIEW_PATH}/web-app/build/"
+
+  comment-on-pr:
+    name: Comment on PR
+    needs:
+      - workspace-setup
+      - upload-preview
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Generate Requestly rule JSON
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_PATH: ${{ needs.workspace-setup.outputs.preview-path }}
+        with:
+          script: |
+            const fs = require('fs');
+            const previewPath = process.env.PREVIEW_PATH;
+            const baseUrl = `https://gorgias-assets.gorgi.us/${previewPath}/web-app/build`;
+            const redirectUrl = `${baseUrl}/helpdesk.app.$1`;
+            const now = Date.now();
+
+            const requestlyRule = [
+              {
+                createdBy: 'browserstack-9171336',
+                creationDate: now,
+                currentOwner: 'browserstack-9171336',
+                description: '',
+                extensionRules: [
+                  {
+                    action: {
+                      redirect: {
+                        url: redirectUrl,
+                      },
+                      type: 'redirect',
+                    },
+                    condition: {
+                      excludedInitiatorDomains: ['requestly.io'],
+                      excludedRequestDomains: ['requestly.io'],
+                      isUrlFilterCaseSensitive: true,
+                      regexFilter: '.*?helpdesk\\.app\\.[a-zA-Z0-9]+\\.(js|css)$.*',
+                    },
+                  },
+                ],
+                groupId: '',
+                id: 'Redirect_helpdeskPreviewAssets',
+                isSample: false,
+                lastModifiedBy: 'browserstack-9171336',
+                modificationDate: now,
+                name: 'HelpDesk Asset Rule',
+                objectType: 'rule',
+                pairs: [
+                  {
+                    destination: redirectUrl,
+                    destinationType: 'url',
+                    id: 'preview-rule-pair',
+                    source: {
+                      key: 'Url',
+                      operator: 'Matches',
+                      value: '/helpdesk\\.app\\.[a-zA-Z0-9]+\\.(js|css)$/',
+                    },
+                  },
+                ],
+                preserveCookie: false,
+                ruleType: 'Redirect',
+                schemaVersion: '3.0.0',
+                status: 'Inactive',
+              },
+            ];
+
+            fs.writeFileSync(
+              'requestly-helpdesk-preview-rule.json',
+              JSON.stringify(requestlyRule, null, 2),
+            );
+
+      - name: Upload Requestly rule artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: preview-requestly-rule
+          path: requestly-helpdesk-preview-rule.json
+
+      - name: Create or update PR comment
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_PATH: ${{ needs.workspace-setup.outputs.preview-path }}
+        with:
+          script: |
+            const marker = '<!-- pr-preview-deploy -->';
+            const previewPath = process.env.PREVIEW_PATH;
+            const baseUrl = `https://gorgias-assets.gorgi.us/${previewPath}/web-app/build`;
+            const jsUrl = `${baseUrl}/helpdesk.app.js`;
+            const cssUrl = `${baseUrl}/helpdesk.app.css`;
+            const regex = '/helpdesk\\.app\\.[a-zA-Z0-9]+\\.(js|css)$/';
+            const destinationTemplate = `${baseUrl}/helpdesk.app.$1`;
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const { data: artifactsData } = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId,
+            });
+            const requestlyArtifact = artifactsData.artifacts.find(
+              (artifact) => artifact.name === 'preview-requestly-rule',
+            );
+            const artifactUrl = requestlyArtifact
+              ? `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}/artifacts/${requestlyArtifact.id}`
+              : runUrl;
+
+            const body = [
+              marker,
+              '## Preview Deployment',
+              '',
+              `- JS: \`${jsUrl}\``,
+              `- CSS: \`${cssUrl}\``,
+              `- Requestly JSON: [preview-requestly-rule](${artifactUrl})`,
+              '',
+              `Rule: \`${regex}\` → \`${destinationTemplate}\``,
+              '',
+              'QA:',
+              '1. Import `requestly-helpdesk-preview-rule.json` from the artifact and enable it.',
+              '2. Hard refresh Helpdesk (`Cmd/Ctrl + Shift + R`).',
+              '3. Verify `helpdesk.app` JS and CSS requests redirect to preview URLs.',
+              '',
+              `_Last updated: ${new Date().toISOString()} (commit: ${context.payload.pull_request.head.sha.substring(0, 7)})_`,
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+  cleanup-preview:
+    name: Cleanup preview
+    if: github.event.action == 'closed'
+    runs-on: gh-actions-default-runner-set
+    container:
+      image: us-central1-docker.pkg.dev/gorgias-ops-production/container-images/toolbox:latest
+      credentials:
+        username: _json_key
+        password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+    steps:
+      - name: Sanitize branch name
+        id: sanitize
+        env:
+          OWNER: ${{ github.event.pull_request.user.login }}
+          BRANCH: ${{ github.head_ref }}
+        shell: bash
+        run: |
+          SANITIZED=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | tr '[:upper:]' '[:lower:]' | cut -c1-63)
+          echo "preview-path=preview/${OWNER}/${SANITIZED}" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare service account
+        shell: bash
+        run: |
+          cat <<EOF > key.json
+            ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} --key-file=key.json --project=gorgias-helpdesk-development
+
+      - name: Remove preview assets from GCS
+        shell: bash
+        env:
+          PREVIEW_PATH: ${{ steps.sanitize.outputs.preview-path }}
+        run: |
+          gsutil -m -q rm -r "gs://gorgias-assets-development/${PREVIEW_PATH}/" || true

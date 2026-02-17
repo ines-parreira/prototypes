@@ -27,6 +27,11 @@ on:
         description: Build artifact name
         required: true
         type: string
+      no-content-hash:
+        description: Disable content hash in bundle filenames for predictable URLs
+        type: boolean
+        required: false
+        default: false
       force-deploy-commit:
         description: Force deploy commit
         type: string
@@ -57,6 +62,7 @@ jobs:
         env:
           GORGIAS_ASSETS_URL: ${{ inputs.assets-url }}
           WEB_APP_RELEASE: ${{ inputs.release }}
+          NO_CONTENT_HASH: ${{ inputs.no-content-hash && '1' || '' }}
         run: pnpm build
 
       - name: Upload artifacts
