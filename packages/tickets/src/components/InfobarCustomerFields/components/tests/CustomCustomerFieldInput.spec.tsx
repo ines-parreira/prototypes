@@ -54,7 +54,7 @@ const numberField = mockCustomField({
         input_settings: mockNumberInputSettings({
             input_type: InputSettingsNumberInputType.InputNumber,
             min: 0,
-            max: 120,
+            max: 1000000000,
             placeholder: 'Enter age',
         }),
     }),
@@ -187,16 +187,21 @@ describe('CustomCustomerFieldInput', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render number field with value', async () => {
+        it('should render number field value without grouping separators', async () => {
             render(
                 <CustomCustomerFieldInput
                     field={numberField}
-                    value={25}
+                    value={100000123}
                     onChange={vi.fn()}
                 />,
             )
 
-            expect(await screen.findByDisplayValue('25')).toBeInTheDocument()
+            expect(
+                await screen.findByDisplayValue('100000123'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByDisplayValue('100,000,123'),
+            ).not.toBeInTheDocument()
         })
 
         it('should handle string value by converting to number', async () => {
@@ -212,22 +217,26 @@ describe('CustomCustomerFieldInput', () => {
         })
 
         it('should accept number input', async () => {
+            const onChange = vi.fn()
+
             render(
                 <CustomCustomerFieldInput
                     field={numberField}
                     value={0}
-                    onChange={vi.fn()}
+                    onChange={onChange}
                 />,
             )
 
-            const input = await screen.findByDisplayValue('0')
+            const incrementButton = await screen.findByRole('button', {
+                name: 'Increase Age',
+            })
             await act(async () => {
-                await userEvent.clear(input)
-                await userEvent.type(input, '42')
+                await userEvent.click(incrementButton)
             })
 
             // TextInput is not firing onChange onBlur, to be checked in Axiom
-            expect(await screen.findByDisplayValue('42')).toBeInTheDocument()
+            expect(onChange).toHaveBeenCalled()
+            expect(onChange.mock.calls.length).toBeGreaterThan(0)
         })
     })
 

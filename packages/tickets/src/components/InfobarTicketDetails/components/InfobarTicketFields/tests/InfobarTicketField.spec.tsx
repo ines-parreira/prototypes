@@ -141,7 +141,7 @@ describe('InfobarTicketField', () => {
                     input_settings: {
                         input_type: InputSettingsNumberInputType.InputNumber,
                         min: 1,
-                        max: 10,
+                        max: 1000000000,
                         placeholder: 'Enter priority',
                     },
                 },
@@ -163,15 +163,18 @@ describe('InfobarTicketField', () => {
             ).toBeInTheDocument()
         })
 
-        it('should display existing numeric value from store', () => {
-            useTicketFieldsStore.getState().updateFieldValue(2, 5)
+        it('should display existing numeric value from store without grouping separators', () => {
+            useTicketFieldsStore.getState().updateFieldValue(2, 100000123)
 
             renderWithOverflowList(numberField)
 
             const input = screen.getByPlaceholderText(
                 'Enter priority',
             ) as HTMLInputElement
-            expect(input.value).toBe('5')
+            expect(input.value).toBe('100000123')
+            expect(
+                screen.queryByDisplayValue('100,000,123'),
+            ).not.toBeInTheDocument()
         })
 
         it('should update store on change (number fields save immediately)', async () => {

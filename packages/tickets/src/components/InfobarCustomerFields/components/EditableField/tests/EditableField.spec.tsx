@@ -396,6 +396,24 @@ describe('EditableField', () => {
         })
     })
 
+    describe('NumberField', () => {
+        it('should render large numbers without grouping separators', () => {
+            const onValueChange = vi.fn()
+
+            const { getByDisplayValue, queryByDisplayValue } = render(
+                <EditableField
+                    type="number"
+                    value={100000123}
+                    onValueChange={onValueChange}
+                    placeholder="+ Add number"
+                />,
+            )
+
+            expect(getByDisplayValue('100000123')).toBeInTheDocument()
+            expect(queryByDisplayValue('100,000,123')).not.toBeInTheDocument()
+        })
+    })
+
     describe('Tooltip', () => {
         describe('TextField', () => {
             it('should not show tooltip when showTooltip is false', async () => {

@@ -180,6 +180,7 @@ export function EditableField<T extends string | number = string | number>(
                     id={id}
                     className={className}
                     value={value as number}
+                    formatOptions={{ useGrouping: false }}
                     onChange={(value) => handleChange(value as T)}
                     placeholder={placeholder}
                     size="sm"
