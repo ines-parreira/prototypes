@@ -32,11 +32,6 @@ jest.mock('../GlobalNavigationSpotlight', () => ({
 }))
 jest.mock('../NotificationsItem', () => () => <div>NotificationsItem</div>)
 jest.mock('../UserItem', () => () => <div>UserItem</div>)
-jest.mock('@repo/agent-status', () => ({
-    UserRealtimeAvailabilityUpdates: () => (
-        <div>UserRealtimeAvailabilityUpdates</div>
-    ),
-}))
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -203,35 +198,5 @@ describe('GlobalNavigation', () => {
     it('should not render AI Journey icon if isAiJourneyEnabled feature flag is disabled', () => {
         const { queryByText } = renderWithContext()
         expect(queryByText('route')).not.toBeInTheDocument()
-    })
-
-    describe('UserRealtimeAvailabilityUpdates', () => {
-        it('should render UserRealtimeAvailabilityUpdates when feature flag is enabled and user has id', () => {
-            getCurrentUserMock.mockReturnValue(
-                fromJS({ id: 12345, role: { name: UserRole.BasicAgent } }),
-            )
-            mockUseFlag.mockImplementation((flag) =>
-                flag === FeatureFlagKey.CustomAgentUnavailableStatuses
-                    ? true
-                    : false,
-            )
-
-            const { getByText } = renderWithContext()
-            expect(
-                getByText('UserRealtimeAvailabilityUpdates'),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render UserRealtimeAvailabilityUpdates when feature flag is disabled', () => {
-            getCurrentUserMock.mockReturnValue(
-                fromJS({ id: 12345, role: { name: UserRole.BasicAgent } }),
-            )
-            mockUseFlag.mockImplementation(() => false)
-
-            const { queryByText } = renderWithContext()
-            expect(
-                queryByText('UserRealtimeAvailabilityUpdates'),
-            ).not.toBeInTheDocument()
-        })
     })
 })

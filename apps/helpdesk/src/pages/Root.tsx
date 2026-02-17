@@ -16,6 +16,7 @@ import type { Store } from 'redux'
 
 import { appQueryClient } from 'api/queryClient'
 import { Main } from 'main/app'
+import { CurrentUserRealtimeAvailabilityUpdates } from 'pages/common/components/CurrentUserRealtimeAvailabilityUpdates'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RoutesWrapper from 'routes'
@@ -59,6 +60,7 @@ const Root = ({ store }: Props) => {
                                 <Router history={history}>
                                     <CompatRouter>
                                         <Main>
+                                            <CurrentUserRealtimeAvailabilityUpdates />
                                             <RoutesWrapper />
                                         </Main>
                                     </CompatRouter>
