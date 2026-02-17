@@ -1,12 +1,12 @@
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
+import { saveZippedFiles } from '@repo/utils'
 import { fireEvent, render } from '@testing-library/react'
 
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { DownloadOverviewData } from 'domains/reporting/pages/support-performance/overview/DownloadOverviewData'
-import { saveZippedFiles } from 'utils/file'
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
@@ -18,7 +18,16 @@ jest.mock(
     'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData',
 )
 const useDownloadOverViewDataMock = assumeMock(useDownloadOverViewData)
-jest.mock('utils/file')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    saveZippedFiles: jest.fn(),
+    saveFileAsDownloaded: jest.fn(),
+    saveBlobAsDownloaded: jest.fn(),
+    createCsv: jest.fn(),
+    getText: jest.fn(),
+    getBase64: jest.fn(),
+    getFileTooLargeError: jest.fn(),
+}))
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 describe('DownloadOverviewData', () => {

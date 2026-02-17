@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { createCsv } from '@repo/utils'
 import moment from 'moment/moment'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
@@ -40,7 +41,6 @@ import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
 } from 'pages/automate/automate-metrics/constants'
-import { createCsv } from 'utils/file'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'

@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { saveZippedFiles } from '@repo/utils'
 
 import { useDownloadVoiceCallsSLAsData } from 'domains/reporting/hooks/sla/useDownloadVoiceCallsSLAsData'
 import { DownloadSLAsDataButton } from 'domains/reporting/pages/sla/components/DownloadSLAsDataButton'
 import { DOWNLOAD_VOICE_CALLS_DATA_BUTTON_LABEL } from 'domains/reporting/pages/sla/constants'
-import { saveZippedFiles } from 'utils/file'
 
 export const DownloadVoiceCallsSLAsData = () => {
     const { files, fileName, isLoading } = useDownloadVoiceCallsSLAsData()

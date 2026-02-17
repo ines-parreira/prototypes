@@ -1,26 +1,22 @@
-import { act } from '@testing-library/react'
-
 import {
     createCsv,
     EOL,
     getFileTooLargeError,
     getText,
     saveZippedFiles,
-} from 'utils/file'
+} from '../file'
 
 const mockedBlob = new Blob()
-const mockFile = jest.fn()
-const mockGenerateAsync = jest.fn().mockResolvedValue(mockedBlob)
-jest.mock('jszip', () => {
-    return jest.fn().mockImplementation(() => {
-        return {
-            file: mockFile,
-            generateAsync: mockGenerateAsync,
-        }
-    })
-})
-const createObjectURLMock = jest.fn()
-const revokeObjectURLMock = jest.fn()
+const mockFile = vi.fn()
+const mockGenerateAsync = vi.fn().mockResolvedValue(mockedBlob)
+vi.mock('jszip', () => ({
+    default: vi.fn().mockImplementation(() => ({
+        file: mockFile,
+        generateAsync: mockGenerateAsync,
+    })),
+}))
+const createObjectURLMock = vi.fn()
+const revokeObjectURLMock = vi.fn()
 global.URL.createObjectURL = createObjectURLMock
 global.URL.revokeObjectURL = revokeObjectURLMock
 
@@ -70,10 +66,8 @@ describe('file util', () => {
             const fileName = 'someFileName.extension'
             const fileContent = 'someFileContent'
 
-            await act(async () => {
-                await saveZippedFiles({
-                    [fileName]: fileContent,
-                })
+            await saveZippedFiles({
+                [fileName]: fileContent,
             })
 
             expect(mockFile).toHaveBeenCalledWith(fileName, fileContent)

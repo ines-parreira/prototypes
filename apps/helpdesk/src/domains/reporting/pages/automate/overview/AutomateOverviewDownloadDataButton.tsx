@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { saveZippedFiles } from '@repo/utils'
 
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { useAutomateOverviewReportData } from 'domains/reporting/services/automateOverviewReportingService'
-import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_AUTOMATE_DATA_BUTTON_TITLE = 'Download data'
 

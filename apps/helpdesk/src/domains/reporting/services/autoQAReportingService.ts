@@ -1,3 +1,4 @@
+import { createCsv } from '@repo/utils'
 import moment from 'moment/moment'
 
 import type { User } from 'config/types/user'
@@ -37,7 +38,6 @@ import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticke
 import { AutoQAMetric } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
-import { createCsv } from 'utils/file'
 
 export type AutoQAReportMetrics =
     | TicketQAScoreCubeWithJoins['dimensions']

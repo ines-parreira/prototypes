@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 import { useAsyncFn, useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getText, saveFileAsDownloaded } from '@repo/utils'
 import { CsvError, parse } from 'csv-parse/sync'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
@@ -25,7 +26,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { getText, saveFileAsDownloaded } from 'utils/file'
 
 import { DropdownCSVImportDropZone } from './DropdownCSVImportDropZone'
 

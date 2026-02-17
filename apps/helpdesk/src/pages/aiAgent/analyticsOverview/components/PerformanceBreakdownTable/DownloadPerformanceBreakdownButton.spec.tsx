@@ -1,16 +1,16 @@
+import * as fileUtils from '@repo/utils'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import * as downloadHook from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
-import * as fileUtils from 'utils/file'
 
 import { DownloadPerformanceBreakdownButton } from './DownloadPerformanceBreakdownButton'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData',
 )
-jest.mock('utils/file', () => ({
-    ...jest.requireActual('utils/file'),
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     saveFileAsDownloaded: jest.fn(),
 }))
 

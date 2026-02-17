@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
+import { createCsv } from '@repo/utils'
+
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { formatPercentage } from 'pages/common/utils/numbers'
-import { createCsv } from 'utils/file'
 
 import { useShoppingAssistantTopProductsMetrics } from './useShoppingAssistantTopProductsMetrics'
 

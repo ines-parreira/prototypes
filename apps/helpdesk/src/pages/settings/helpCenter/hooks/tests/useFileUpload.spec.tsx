@@ -9,7 +9,8 @@ import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useFileUpload } from '../useFileUpload'
 
-jest.mock('utils/file', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     getBase64: jest.fn().mockResolvedValue('base64String'),
 }))
 

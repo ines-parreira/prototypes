@@ -1,3 +1,5 @@
+import { createCsv } from '@repo/utils'
+
 import type { User } from 'config/types/user'
 import type { Metric } from 'domains/reporting/hooks/metrics'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
@@ -13,7 +15,6 @@ import {
     AgentsTableColumn,
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
-import { createCsv } from 'utils/file'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 export const TOTAL_ROW_AGENT_COLUMN_LABEL = 'Total'

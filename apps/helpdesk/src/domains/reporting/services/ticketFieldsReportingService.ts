@@ -1,4 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { createCsv, saveZippedFiles } from '@repo/utils'
 import _flatten from 'lodash/flatten'
 import _orderBy from 'lodash/orderBy'
 
@@ -26,7 +27,6 @@ import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketIns
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
 import type { OrderDirection } from 'models/api/types'
-import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const TICKET_FIELDS_DOWNLOAD_FILE_NAME = 'ticket-fields'
 export const LEVEL_LABELS = [

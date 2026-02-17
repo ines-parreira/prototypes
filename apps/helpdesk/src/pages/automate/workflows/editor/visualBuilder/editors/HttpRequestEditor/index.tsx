@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useId } from '@repo/hooks'
+import { saveFileAsDownloaded } from '@repo/utils'
 import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
 
@@ -30,7 +31,6 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { saveFileAsDownloaded } from 'utils/file'
 
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'

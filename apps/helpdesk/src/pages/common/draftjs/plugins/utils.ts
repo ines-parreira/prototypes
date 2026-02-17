@@ -1,3 +1,4 @@
+import { getFileTooLargeError } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import type { EditorChangeType, SelectionState } from 'draft-js'
 import { AtomicBlockUtils, EditorState, Modifier, RichUtils } from 'draft-js'
@@ -13,7 +14,7 @@ import type { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { ConnectedAction } from 'state/types'
 import { getEntitySelectionState } from 'utils/editor'
-import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
+import { getMaxAttachmentSize } from 'utils/file'
 import { linkify } from 'utils/linkify'
 
 import type { PluginMethods } from './types'

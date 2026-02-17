@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { createCsv, saveZippedFiles } from '@repo/utils'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
 
@@ -41,7 +42,6 @@ import {
     getFilterDateRange,
     getPreviousPeriod,
 } from 'domains/reporting/utils/reporting'
-import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const TAGS_REPORT_FILE_NAME = 'all-used-tags'
 

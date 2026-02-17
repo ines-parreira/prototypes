@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { saveFileAsDownloaded } from '@repo/utils'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
@@ -22,7 +23,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './MacrosCSVImportPopover.less'
 

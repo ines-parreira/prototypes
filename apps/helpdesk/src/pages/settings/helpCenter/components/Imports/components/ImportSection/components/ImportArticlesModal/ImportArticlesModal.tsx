@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useRef } from 'react'
 
+import { saveFileAsDownloaded } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -20,7 +21,6 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { saveFileAsDownloaded } from 'utils/file'
 
 import type {
     FetchedProvidersState,

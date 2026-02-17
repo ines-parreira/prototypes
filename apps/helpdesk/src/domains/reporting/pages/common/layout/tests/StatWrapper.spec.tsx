@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { logEvent } from '@repo/logging'
+import { saveFileAsDownloaded } from '@repo/utils'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
@@ -19,9 +20,17 @@ import { firstResponseTime } from 'fixtures/stats'
 import { user } from 'fixtures/users'
 import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
-import { saveFileAsDownloaded } from 'utils/file'
 
-jest.mock('utils/file')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    saveZippedFiles: jest.fn(),
+    saveFileAsDownloaded: jest.fn(),
+    saveBlobAsDownloaded: jest.fn(),
+    createCsv: jest.fn(),
+    getText: jest.fn(),
+    getBase64: jest.fn(),
+    getFileTooLargeError: jest.fn(),
+}))
 jest.mock('state/notifications/actions')
 jest.mock('domains/reporting/models/stat/resources')
 jest.mock('@repo/logging')

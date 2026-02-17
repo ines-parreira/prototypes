@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { assumeMock, flushPromises } from '@repo/testing'
+import { saveZippedFiles } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -16,7 +17,6 @@ import { campaign } from 'fixtures/campaign'
 import { shopifyIntegration } from 'fixtures/integrations'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { saveZippedFiles } from 'utils/file'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
@@ -27,8 +27,8 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 jest.mock('domains/reporting/pages/convert/hooks/stats/useGetTableStat')
 const useGetTableStatMock = assumeMock(useGetTableStat)
 
-jest.mock('utils/file', () => ({
-    ...jest.requireActual<Record<string, unknown>>('utils/file'),
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual<Record<string, unknown>>('@repo/utils'),
     saveZippedFiles: jest.fn(),
 }))
 const mockSavezippedFiles = assumeMock(saveZippedFiles)

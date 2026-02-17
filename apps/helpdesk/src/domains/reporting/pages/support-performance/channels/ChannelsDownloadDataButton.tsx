@@ -1,10 +1,10 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { saveZippedFiles } from '@repo/utils'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useChannelsReportMetrics } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
-import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Channels Report Data'
 

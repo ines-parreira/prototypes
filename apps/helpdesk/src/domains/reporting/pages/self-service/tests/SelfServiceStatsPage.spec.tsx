@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { flushPromises } from '@repo/testing'
+import { saveFileAsDownloaded } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -44,7 +45,6 @@ import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import { AccountFeature } from 'state/currentAccount/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { saveFileAsDownloaded } from 'utils/file'
 import { renderWithRouter } from 'utils/testing'
 
 const mockSelfServiceConfigurations = [
@@ -130,7 +130,8 @@ const downloadData = {
 jest.mock('domains/reporting/models/stat/resources', () => ({
     downloadStat: jest.fn(() => downloadData),
 }))
-jest.mock('utils/file', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     saveFileAsDownloaded: jest.fn(),
 }))
 

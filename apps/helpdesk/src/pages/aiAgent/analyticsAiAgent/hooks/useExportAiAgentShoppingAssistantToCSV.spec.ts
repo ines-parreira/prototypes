@@ -1,7 +1,7 @@
+import * as fileUtils from '@repo/utils'
 import { act, renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import * as fileUtils from 'utils/file'
 
 import { useDownloadGmvInfluenceTimeSeriesData } from './useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from './useDownloadShoppingAssistantChannelPerformanceData'
@@ -22,8 +22,8 @@ jest.mock('./useDownloadTotalSalesByProductData')
 jest.mock('./useDownloadGmvInfluenceTimeSeriesData')
 jest.mock('./useDownloadShoppingAssistantChannelPerformanceData')
 jest.mock('./useDownloadShoppingAssistantTopProductsData')
-jest.mock('utils/file', () => ({
-    ...jest.requireActual('utils/file'),
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     saveZippedFiles: jest.fn(),
 }))
 

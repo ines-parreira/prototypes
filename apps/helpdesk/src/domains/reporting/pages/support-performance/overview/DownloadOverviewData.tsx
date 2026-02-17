@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { saveZippedFiles } from '@repo/utils'
 
 import { useDownloadOverViewData } from 'domains/reporting/hooks/support-performance/overview/useDownloadOverviewData'
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
-import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Performance Overview Data'
 

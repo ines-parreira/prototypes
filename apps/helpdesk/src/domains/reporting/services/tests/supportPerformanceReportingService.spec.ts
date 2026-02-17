@@ -1,3 +1,4 @@
+import * as files from '@repo/utils'
 import moment from 'moment'
 
 import type { Period } from 'domains/reporting/models/stat/types'
@@ -14,9 +15,17 @@ import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
-import * as files from 'utils/file'
 
-jest.mock('utils/file')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    saveZippedFiles: jest.fn(),
+    saveFileAsDownloaded: jest.fn(),
+    saveBlobAsDownloaded: jest.fn(),
+    createCsv: jest.fn(),
+    getText: jest.fn(),
+    getBase64: jest.fn(),
+    getFileTooLargeError: jest.fn(),
+}))
 
 type TrendReportData = {
     prevValue: number

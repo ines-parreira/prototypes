@@ -1,11 +1,20 @@
 import { assumeMock, userEvent } from '@repo/testing'
+import { saveZippedFiles } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 
 import { VoiceOverviewDownloadDataButton } from 'domains/reporting/pages/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import { useVoiceOverviewReportData } from 'domains/reporting/services/voiceOverviewReportingService'
-import { saveZippedFiles } from 'utils/file'
 
-jest.mock('utils/file')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    saveZippedFiles: jest.fn(),
+    saveFileAsDownloaded: jest.fn(),
+    saveBlobAsDownloaded: jest.fn(),
+    createCsv: jest.fn(),
+    getText: jest.fn(),
+    getBase64: jest.fn(),
+    getFileTooLargeError: jest.fn(),
+}))
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 jest.mock('domains/reporting/services/voiceOverviewReportingService')

@@ -1,6 +1,7 @@
+import { createCsv } from '@repo/utils'
+
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { Period } from 'domains/reporting/models/stat/types'
-import { createCsv } from 'utils/file'
 
 export const createTimeSeriesPerDimensionReport = (
     data: {

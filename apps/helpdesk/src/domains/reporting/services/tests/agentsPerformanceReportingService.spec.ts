@@ -1,3 +1,5 @@
+import * as files from '@repo/utils'
+
 import type { User } from 'config/types/user'
 import { UserRole, UserSettingType } from 'config/types/user'
 import type { Metric } from 'domains/reporting/hooks/metrics'
@@ -20,9 +22,17 @@ import {
     AgentsTableColumn,
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
-import * as files from 'utils/file'
 
-jest.mock('utils/file')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    saveZippedFiles: jest.fn(),
+    saveFileAsDownloaded: jest.fn(),
+    saveBlobAsDownloaded: jest.fn(),
+    createCsv: jest.fn(),
+    getText: jest.fn(),
+    getBase64: jest.fn(),
+    getFileTooLargeError: jest.fn(),
+}))
 jest.mock('@repo/feature-flags')
 
 const emptyReportData = {
