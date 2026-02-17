@@ -11,6 +11,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
+    basicYearlyInvoicedBiannuallyHelpdeskPlan,
     basicYearlyInvoicedMonthlyHelpdeskPlan,
     basicYearlyInvoicedQuarterlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -338,4 +339,175 @@ describe('PaymentInformationView', () => {
             )
         },
     )
+
+    it('should display "Annual plan (billed monthly)" for yearly contract plan with monthly invoice cadence', () => {
+        const helpdeskProductIndex = billingState.products.findIndex(
+            (product) => product.type === HELPDESK_PRODUCT_ID,
+        )
+        const updatedProducts = [...billingState.products]
+        updatedProducts[helpdeskProductIndex] = {
+            ...updatedProducts[helpdeskProductIndex],
+            prices: [
+                ...updatedProducts[helpdeskProductIndex].prices,
+                basicYearlyInvoicedMonthlyHelpdeskPlan,
+            ],
+        }
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS({
+                    ...billingState,
+                    products: updatedProducts,
+                }),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(screen.getByText(/Annual plan \(billed/))
+        expect(screen.getByText(/monthly/))
+    })
+
+    it('should display "Annual plan (billed quarterly)" for yearly contract plan with quarterly invoice cadence', () => {
+        const helpdeskProductIndex = billingState.products.findIndex(
+            (product) => product.type === HELPDESK_PRODUCT_ID,
+        )
+        const updatedProducts = [...billingState.products]
+        updatedProducts[helpdeskProductIndex] = {
+            ...updatedProducts[helpdeskProductIndex],
+            prices: [
+                ...updatedProducts[helpdeskProductIndex].prices,
+                basicYearlyInvoicedQuarterlyHelpdeskPlan,
+            ],
+        }
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS({
+                    ...billingState,
+                    products: updatedProducts,
+                }),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedQuarterlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(screen.getByText(/Annual plan \(billed/))
+        expect(screen.getByText(/quarterly/))
+    })
+
+    it('should display "Annual plan (billed biannually)" for yearly contract plan with biannually invoice cadence', () => {
+        const helpdeskProductIndex = billingState.products.findIndex(
+            (product) => product.type === HELPDESK_PRODUCT_ID,
+        )
+        const updatedProducts = [...billingState.products]
+        updatedProducts[helpdeskProductIndex] = {
+            ...updatedProducts[helpdeskProductIndex],
+            prices: [
+                ...updatedProducts[helpdeskProductIndex].prices,
+                basicYearlyInvoicedBiannuallyHelpdeskPlan,
+            ],
+        }
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS({
+                    ...billingState,
+                    products: updatedProducts,
+                }),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedBiannuallyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(screen.getByText(/Annual plan \(billed/))
+        expect(screen.getByText(/biannually/))
+    })
+
+    it('should display "All plans are billed yearly" for standard yearly plan', () => {
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(
+            screen.queryByText(/Annual plan \(billed/),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('All plans are billed'))
+        expect(screen.getByText('yearly'))
+    })
+
+    it('should not display "Annual plan" text for monthly plans', () => {
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <PaymentInformationView {...defaultProps} />
+            </MemoryRouter>,
+            {
+                billing: fromJS(billingState),
+                currentAccount: fromJS({
+                    ...account,
+                    current_subscription: {
+                        ...account.current_subscription,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPlan.plan_id,
+                        },
+                    },
+                }),
+            },
+        )
+
+        expect(
+            screen.queryByText('Annual plan (billed'),
+        ).not.toBeInTheDocument()
+        expect(screen.getByText('All plans are billed'))
+        expect(screen.getByText('monthly'))
+    })
 })

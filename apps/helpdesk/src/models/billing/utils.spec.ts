@@ -1,3 +1,5 @@
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import type { HelpdeskPlan } from './types'
 import { Cadence, ProductType } from './types'
 import {
@@ -29,19 +31,46 @@ describe('getProductTrackingName', () => {
 })
 
 describe('isYearlyContractPlan', () => {
-    it('should return true when cadence differs from invoice_cadence', () => {
+    it('should return true when cadence differs from invoice_cadence (yearly, biannually)', () => {
         const plan = {
             cadence: Cadence.Year,
-            invoice_cadence: 'quarter',
+            invoice_cadence: InvoiceCadence.Biannual,
         } as HelpdeskPlan
 
         expect(isYearlyContractPlan(plan)).toBe(true)
     })
 
-    it('should return false when cadence equals invoice_cadence', () => {
+    it('should return true when cadence differs from invoice_cadence (yearly, quarterly)', () => {
+        const plan = {
+            cadence: Cadence.Year,
+            invoice_cadence: InvoiceCadence.Quarter,
+        } as HelpdeskPlan
+
+        expect(isYearlyContractPlan(plan)).toBe(true)
+    })
+
+    it('should return true when cadence differs from invoice_cadence (yearly, monthly)', () => {
+        const plan = {
+            cadence: Cadence.Year,
+            invoice_cadence: InvoiceCadence.Month,
+        } as HelpdeskPlan
+
+        expect(isYearlyContractPlan(plan)).toBe(true)
+    })
+
+    it('should return false when cadence equals invoice_cadence (yearly)', () => {
+        const plan = {
+            cadence: Cadence.Year,
+            invoice_cadence: InvoiceCadence.Year,
+        } as HelpdeskPlan
+
+        expect(isYearlyContractPlan(plan)).toBe(false)
+    })
+
+    it('should return false when cadence equals invoice_cadence (monthly)', () => {
         const plan = {
             cadence: Cadence.Month,
-            invoice_cadence: 'month',
+            invoice_cadence: InvoiceCadence.Month,
         } as HelpdeskPlan
 
         expect(isYearlyContractPlan(plan)).toBe(false)
@@ -50,15 +79,6 @@ describe('isYearlyContractPlan', () => {
     it('should return false when plan is undefined', () => {
         expect(isYearlyContractPlan(undefined)).toBe(false)
     })
-
-    it('should return true for quarterly plan billed monthly', () => {
-        const plan = {
-            cadence: Cadence.Quarter,
-            invoice_cadence: 'month',
-        } as HelpdeskPlan
-
-        expect(isYearlyContractPlan(plan)).toBe(true)
-    })
 })
 
 describe('generatePaymentPlanLabel', () => {
@@ -66,7 +86,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Billed Monthly" for standard monthly plan', () => {
             const plan = {
                 cadence: Cadence.Month,
-                invoice_cadence: 'month',
+                invoice_cadence: InvoiceCadence.Month,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe('Billed Monthly')
@@ -75,7 +95,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Billed Quarterly" for standard quarterly plan', () => {
             const plan = {
                 cadence: Cadence.Quarter,
-                invoice_cadence: 'quarter',
+                invoice_cadence: InvoiceCadence.Quarter,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe('Billed Quarterly')
@@ -84,7 +104,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Billed Yearly" for standard yearly plan', () => {
             const plan = {
                 cadence: Cadence.Year,
-                invoice_cadence: 'year',
+                invoice_cadence: InvoiceCadence.Year,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe('Billed Yearly')
@@ -95,7 +115,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Annual plan (billed quarterly)" for annual plan billed quarterly', () => {
             const plan = {
                 cadence: Cadence.Year,
-                invoice_cadence: 'quarter',
+                invoice_cadence: InvoiceCadence.Quarter,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe(
@@ -106,7 +126,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Annual plan (billed monthly)" for annual plan billed monthly', () => {
             const plan = {
                 cadence: Cadence.Year,
-                invoice_cadence: 'month',
+                invoice_cadence: InvoiceCadence.Month,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe(
@@ -117,7 +137,7 @@ describe('generatePaymentPlanLabel', () => {
         it('should return "Annual plan (billed monthly)" for quarterly plan billed monthly', () => {
             const plan = {
                 cadence: Cadence.Quarter,
-                invoice_cadence: 'month',
+                invoice_cadence: InvoiceCadence.Month,
             } as HelpdeskPlan
 
             expect(generatePaymentPlanLabel(plan)).toBe(

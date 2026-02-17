@@ -1533,20 +1533,13 @@ describe('UsageAndPlansView', () => {
 
     describe('CustomPlanBanner', () => {
         it('should render CustomPlanBanner for custom yearly plan', async () => {
-            const customYearlyPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'custom-year-quarter-plan',
-                cadence: Cadence.Year,
-                invoice_cadence: Cadence.Quarter,
-            } as HelpdeskPlan
-
             const alteredBilling = {
                 ...mockedBilling,
                 products: [
                     {
                         id: HELPDESK_PRODUCT_ID,
                         type: ProductType.Helpdesk,
-                        prices: [customYearlyPlan],
+                        prices: [basicYearlyInvoicedQuarterlyHelpdeskPlan],
                     },
                     ...products.slice(1),
                 ],
@@ -1560,7 +1553,8 @@ describe('UsageAndPlansView', () => {
                     current_subscription: {
                         ...mockedAccount.current_subscription,
                         products: {
-                            [HELPDESK_PRODUCT_ID]: customYearlyPlan.plan_id,
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedQuarterlyHelpdeskPlan.plan_id,
                         },
                     },
                 }),
@@ -1599,20 +1593,13 @@ describe('UsageAndPlansView', () => {
         })
 
         it('should not render CustomPlanBanner when subscription is canceled', () => {
-            const yearlyPlan = {
-                ...basicMonthlyHelpdeskPlan,
-                plan_id: 'pro-year-plan',
-                cadence: Cadence.Year,
-                invoice_cadence: 'year',
-            } as HelpdeskPlan
-
             const alteredBilling = {
                 ...mockedBilling,
                 products: [
                     {
                         id: HELPDESK_PRODUCT_ID,
                         type: ProductType.Helpdesk,
-                        prices: [yearlyPlan],
+                        prices: [basicYearlyInvoicedMonthlyHelpdeskPlan],
                     },
                     ...products.slice(1),
                 ],

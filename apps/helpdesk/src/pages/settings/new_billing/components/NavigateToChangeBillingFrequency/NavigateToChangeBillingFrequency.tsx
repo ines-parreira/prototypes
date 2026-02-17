@@ -8,7 +8,11 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import type { PlanId } from 'models/billing/types'
-import { isLegacyAutomate, isOtherCadenceUpgrade } from 'models/billing/utils'
+import {
+    isLegacyAutomate,
+    isOtherCadenceUpgrade,
+    isYearlyContractPlan,
+} from 'models/billing/utils'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -51,7 +55,6 @@ export default function NavigateToChangeBillingFrequency({
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
 
     const cadence = currentHelpdeskPlan?.cadence ?? Cadence.Year
-    const invoice_cadence = currentHelpdeskPlan?.invoice_cadence ?? Cadence.Year
     const isCadenceUpgradable =
         Object.values(Cadence).find((other) =>
             isOtherCadenceUpgrade(cadence, other),
@@ -118,7 +121,7 @@ export default function NavigateToChangeBillingFrequency({
                 with our team.
             </>
         )
-    } else if (cadence !== invoice_cadence) {
+    } else if (isYearlyContractPlan(currentHelpdeskPlan)) {
         toolTipContent = (
             <>
                 Because you&apos;re on a custom plan, please{' '}

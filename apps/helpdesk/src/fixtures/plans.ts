@@ -494,6 +494,21 @@ export const basicYearlyAutomationPlan: AutomatePlan = {
     product: ProductType.Automation,
 }
 
+export const basicYearlyInvoicedMonthlyAutomationPlan: AutomatePlan = {
+    custom: false,
+    public: true,
+    amount: 3000,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Month,
+    extra_ticket_cost: 0.2,
+    num_quota_tickets: 360,
+    currency: 'usd',
+    features: automatePlanFeatures,
+    plan_id: 'aut-addon-basic-full-price-yearly-invoiced-monthly-usd-4',
+    name: 'Basic (Invoiced Monthly)',
+    product: ProductType.Automation,
+}
+
 export const proMonthlyAutomationPlan: AutomatePlan = {
     custom: false,
     public: true,
@@ -734,6 +749,24 @@ export const basicYearlyInvoicedQuarterlyHelpdeskPlan: HelpdeskPlan = {
     integrations: 150,
     is_legacy: false,
     plan_id: 'basic-yearly-invoiced-quarterly-usd',
+    name: 'Basic',
+    product: ProductType.Helpdesk,
+    public: false,
+    tier: HelpdeskPlanTier.BASIC,
+}
+
+export const basicYearlyInvoicedBiannuallyHelpdeskPlan: HelpdeskPlan = {
+    custom: true,
+    amount: 30000,
+    cadence: Cadence.Year,
+    invoice_cadence: InvoiceCadence.Biannual,
+    currency: 'usd',
+    extra_ticket_cost: 0.4,
+    features: basicHelpdeskPlanFeatures,
+    num_quota_tickets: 3600,
+    integrations: 150,
+    is_legacy: false,
+    plan_id: 'basic-yearly-invoiced-biannually-usd',
     name: 'Basic',
     product: ProductType.Helpdesk,
     public: false,

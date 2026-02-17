@@ -2,6 +2,7 @@ import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
 import type {
     AutomatePlan,
@@ -253,6 +254,22 @@ export function getCadenceName(cadence: Cadence): string {
     }
 }
 
+export function getInvoiceCadenceName(invoice_cadence: InvoiceCadence): string {
+    switch (invoice_cadence) {
+        case InvoiceCadence.Month:
+            return 'Monthly'
+        case InvoiceCadence.Quarter:
+            return 'Quarterly'
+        case InvoiceCadence.Biannual:
+            return 'Biannually'
+        case InvoiceCadence.Year:
+            return 'Yearly'
+        default:
+            const __: never = invoice_cadence
+            throw new Error('Invalid invoice cadence value')
+    }
+}
+
 /**
  * @description
  * Returns the number of months in a cadence, e.g. Cadence.Year = 12
@@ -354,8 +371,8 @@ export function generatePaymentPlanLabel(
     currentHelpdeskPlan: HelpdeskPlan | undefined,
 ): string {
     if (isYearlyContractPlan(currentHelpdeskPlan)) {
-        return `Annual plan (billed ${getCadenceName(
-            (currentHelpdeskPlan?.invoice_cadence as Cadence) ?? Cadence.Month,
+        return `Annual plan (billed ${getInvoiceCadenceName(
+            currentHelpdeskPlan?.invoice_cadence ?? InvoiceCadence.Month,
         ).toLowerCase()})`
     }
 
@@ -375,12 +392,12 @@ export function generatePaymentPlanLabel(
  *
  * @example
  * // Annual plan billed quarterly
- * isYearlyContractPlan({ cadence: Cadence.Year, invoice_cadence: Cadence.Quarter }) // true
+ * isYearlyContractPlan({ cadence: Cadence.Year, invoice_cadence: InvoiceCadence.Quarter }) // true
  *
  * @example
  * // Standard monthly plan
- * isYearlyContractPlan({ cadence: Cadence.Month, invoice_cadence: Cadence.Month }) // false
+ * isYearlyContractPlan({ cadence: Cadence.Month, invoice_cadence: InvoiceCadence.Month }) // false
  */
 export function isYearlyContractPlan(plan: Plan | undefined) {
-    return plan?.cadence !== plan?.invoice_cadence
+    return (plan?.cadence as string) !== (plan?.invoice_cadence as string)
 }

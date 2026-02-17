@@ -4,7 +4,11 @@ import { useLocation } from 'react-router'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
-import { getCadenceName, isYearlyContractPlan } from 'models/billing/utils'
+import {
+    getCadenceName,
+    getInvoiceCadenceName,
+    isYearlyContractPlan,
+} from 'models/billing/utils'
 import { ShopifyBillingInactiveBanner } from 'pages/settings/new_billing/components/ShopifyBillingInactiveBanner'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
@@ -39,6 +43,7 @@ const PaymentInformationView = ({
     const cancellationsByPlanId = productCancellationsQuery.data ?? new Map()
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
+    const invoice_cadence = currentHelpdeskPlan?.invoice_cadence ?? cadence
 
     useEffectOnce(() => {
         logEvent(SegmentEvent.BillingPaymentInformationTabVisited, {
@@ -64,8 +69,24 @@ const PaymentInformationView = ({
             </Section>
             <Section icon="history" title="Billing frequency">
                 <Description>
-                    All plans are billed{' '}
-                    <strong>{getCadenceName(cadence).toLowerCase()}</strong>
+                    {isYearlyPlan ? (
+                        <>
+                            Annual plan (billed{' '}
+                            <strong>
+                                {getInvoiceCadenceName(
+                                    invoice_cadence,
+                                ).toLowerCase()}
+                            </strong>
+                            )
+                        </>
+                    ) : (
+                        <>
+                            All plans are billed{' '}
+                            <strong>
+                                {getCadenceName(cadence).toLowerCase()}
+                            </strong>
+                        </>
+                    )}
                 </Description>
                 <NavigateToChangeBillingFrequency
                     buttonText="Change Frequency"

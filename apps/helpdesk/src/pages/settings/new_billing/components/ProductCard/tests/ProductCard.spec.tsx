@@ -10,13 +10,14 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
+    basicYearlyInvoicedMonthlyAutomationPlan,
     convertPlan0,
     HELPDESK_PRODUCT_ID,
     products,
     smsPlan1,
     voicePlan0,
 } from 'fixtures/plans'
-import { Cadence, ProductType } from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -171,17 +172,12 @@ describe('ProductCard', () => {
     )
 
     describe('Yearly contract plan behavior', () => {
-        const yearlyContractPlan = {
-            ...basicYearlyAutomationPlan,
-            invoice_cadence: Cadence.Month,
-        } as typeof basicYearlyAutomationPlan
-
         it('should disable Manage button for yearly contract plans', () => {
             render(
                 <Provider store={store}>
                     <ProductCard
                         type={ProductType.Automation}
-                        plan={yearlyContractPlan}
+                        plan={basicYearlyInvoicedMonthlyAutomationPlan}
                         isDisabled={false}
                         tooltipDisabledCTACallback={jest.fn()}
                     />
@@ -232,7 +228,7 @@ describe('ProductCard', () => {
                 <Provider store={store}>
                     <ProductCard
                         type={ProductType.Automation}
-                        plan={yearlyContractPlan}
+                        plan={basicYearlyInvoicedMonthlyAutomationPlan}
                         isDisabled={false}
                         tooltipDisabledCTACallback={jest.fn()}
                     />

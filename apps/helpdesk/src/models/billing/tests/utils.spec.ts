@@ -1,3 +1,5 @@
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
@@ -15,6 +17,7 @@ import {
     getCadenceName,
     getCheapestPlan,
     getFormattedAmount,
+    getInvoiceCadenceName,
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
@@ -139,6 +142,41 @@ describe('getCadenceName', () => {
         expect(() => getCadenceName('not a cadence' as Cadence)).toThrow(
             'Invalid cadence value',
         )
+    })
+})
+
+describe('getInvoiceCadenceName', () => {
+    it('should return "Monthly" for InvoiceCadence.Month', () => {
+        expect(getInvoiceCadenceName(InvoiceCadence.Month)).toBe('Monthly')
+    })
+
+    it('should return "Quarterly" for InvoiceCadence.Quarter', () => {
+        expect(getInvoiceCadenceName(InvoiceCadence.Quarter)).toBe('Quarterly')
+    })
+
+    it('should return "Biannually" for InvoiceCadence.Biannual', () => {
+        expect(getInvoiceCadenceName(InvoiceCadence.Biannual)).toBe(
+            'Biannually',
+        )
+    })
+
+    it('should return "Yearly" for InvoiceCadence.Year', () => {
+        expect(getInvoiceCadenceName(InvoiceCadence.Year)).toBe('Yearly')
+    })
+
+    it.each(Object.values(InvoiceCadence))(
+        'should return a valid name for %s',
+        (invoiceCadence: InvoiceCadence) => {
+            const result = getInvoiceCadenceName(invoiceCadence)
+            expect(result).toBeTruthy()
+            expect(typeof result).toBe('string')
+        },
+    )
+
+    it('should throw an error if given an invalid invoice cadence', () => {
+        expect(() =>
+            getInvoiceCadenceName('not a cadence' as InvoiceCadence),
+        ).toThrow('Invalid invoice cadence value')
     })
 })
 
