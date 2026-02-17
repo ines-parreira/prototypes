@@ -32,6 +32,32 @@ type VersionOption<V extends VersionItem> = {
     version: V
 }
 
+type LoadingOption = {
+    id: string
+    value: string
+    isLoadingOption: true
+}
+
+type SelectOption<V extends VersionItem> = VersionOption<V> | LoadingOption
+
+const LOADING_OPTIONS: LoadingOption[] = [
+    {
+        id: 'loading-option-1',
+        value: 'loading-option-1',
+        isLoadingOption: true,
+    },
+    {
+        id: 'loading-option-2',
+        value: 'loading-option-2',
+        isLoadingOption: true,
+    },
+    {
+        id: 'loading-option-3',
+        value: 'loading-option-3',
+        isLoadingOption: true,
+    },
+]
+
 function buildVersionLabel(
     version: VersionItem,
     isCurrent: boolean,
@@ -109,6 +135,7 @@ export function VersionHistoryButton<V extends VersionItem>({
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
     const { userNames, isLoading: isLoadingUsers } = useVersionUsers(versions)
+    const isSelectLoading = isLoading || isLoadingUsers
 
     const formatDate = useCallback(
         (dateString: string) =>
@@ -120,7 +147,7 @@ export function VersionHistoryButton<V extends VersionItem>({
         [dateAndTimeFormatter, timezone],
     )
 
-    const items: VersionOption<V>[] = useMemo(
+    const versionItems: VersionOption<V>[] = useMemo(
         () =>
             versions.map((version) => ({
                 id: String(version.id),
@@ -130,20 +157,38 @@ export function VersionHistoryButton<V extends VersionItem>({
         [versions],
     )
 
+    const items: SelectOption<V>[] = useMemo(
+        () => (isSelectLoading ? LOADING_OPTIONS : versionItems),
+        [isSelectLoading, versionItems],
+    )
+
     const currentlySelectedVersionId =
         selectedVersionId ?? currentVersionId ?? null
 
-    const selectedItem = useMemo(
-        () =>
-            items.find(
+    const hasOnlyUnpublishedDraft =
+        versions.length === 1 &&
+        versions[0].published_datetime === null &&
+        currentVersionId === null
+
+    const selectedItem = useMemo(() => {
+        if (isSelectLoading) {
+            return null
+        }
+
+        return (
+            versionItems.find(
                 (item) => item.id === String(currentlySelectedVersionId),
-            ) ?? null,
-        [items, currentlySelectedVersionId],
-    )
+            ) ?? null
+        )
+    }, [isSelectLoading, versionItems, currentlySelectedVersionId])
 
     const handleSelect = useCallback(
-        (option: VersionOption<V>) => {
-            const selectedItem = items.find(
+        (option: SelectOption<V>) => {
+            if (!('version' in option)) {
+                return
+            }
+
+            const selectedItem = versionItems.find(
                 (item) => item.id.toString() === option?.id.toString(),
             )
 
@@ -151,7 +196,7 @@ export function VersionHistoryButton<V extends VersionItem>({
                 onSelectVersion(selectedItem.version)
             }
         },
-        [onSelectVersion, items],
+        [onSelectVersion, versionItems],
     )
 
     const trigger = ({ ref }: { ref: React.Ref<HTMLButtonElement> }) => {
@@ -161,7 +206,7 @@ export function VersionHistoryButton<V extends VersionItem>({
                 slot="button"
                 variant="secondary"
                 icon="history"
-                isDisabled={isDisabled || versions.length === 0}
+                isDisabled={isDisabled}
                 aria-label="Version history"
             />
         )
@@ -178,16 +223,15 @@ export function VersionHistoryButton<V extends VersionItem>({
         )
     }
 
-    if (isLoading || isLoadingUsers) {
-        return <Skeleton width={36} height={36} />
-    }
-
-    if (versions.length === 0) {
+    if (
+        !isSelectLoading &&
+        (versions.length === 0 || hasOnlyUnpublishedDraft)
+    ) {
         return null
     }
 
     return (
-        <Select<VersionOption<V>>
+        <Select<SelectOption<V>>
             // we need to remount the list whenever we change our currentVersionId because we are statically rendering the items
             // on component mount
             key={currentlySelectedVersionId}
@@ -200,8 +244,10 @@ export function VersionHistoryButton<V extends VersionItem>({
             maxWidth={340}
             minWidth={340}
             maxHeight={400}
-            onLoadMore={shouldLoadMore ? onLoadMore : undefined}
-            isLoading={isFetchingNextPage}
+            onLoadMore={
+                !isSelectLoading && shouldLoadMore ? onLoadMore : undefined
+            }
+            isLoading={isSelectLoading || isFetchingNextPage}
             header={
                 <Box
                     flexDirection="column"
@@ -215,7 +261,18 @@ export function VersionHistoryButton<V extends VersionItem>({
                 </Box>
             }
         >
-            {(option: VersionOption<V>) => {
+            {(option: SelectOption<V>) => {
+                if (!('version' in option)) {
+                    return (
+                        <ListItem
+                            isDisabled
+                            label={<Skeleton width={180} height={16} />}
+                            caption={<Skeleton width={220} height={12} />}
+                            textValue="Loading version"
+                        />
+                    )
+                }
+
                 const { version } = option
                 const isCurrent = version.id === currentVersionId
                 const userName = version.publisher_user_id

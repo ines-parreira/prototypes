@@ -84,15 +84,35 @@ describe('VersionHistoryButton', () => {
         })
     })
 
-    it('renders a skeleton when loading', () => {
-        const { container } = renderComponent({ isLoading: true })
+    it('keeps the trigger visible and renders loading items inside the select', async () => {
+        const user = userEvent.setup()
+        renderComponent({ isLoading: true })
+        expect(getTriggerButton()).toBeInTheDocument()
 
-        expect(screen.queryByRole('button')).not.toBeInTheDocument()
-        expect(container.firstChild).toBeInTheDocument()
+        await user.click(getTriggerButton())
+
+        expect(screen.getAllByRole('option')).toHaveLength(3)
     })
 
     it('renders nothing when versions list is empty', () => {
         const { container } = renderComponent({ versions: [] })
+
+        expect(container.firstChild).toBeNull()
+    })
+
+    it('renders nothing when there is only a draft and no current version', () => {
+        const { container } = renderComponent({
+            versions: [
+                {
+                    id: 5,
+                    version: 5,
+                    published_datetime: null,
+                    created_datetime: '2025-03-15T10:00:00Z',
+                    commit_message: 'Draft changes',
+                },
+            ],
+            currentVersionId: null,
+        })
 
         expect(container.firstChild).toBeNull()
     })
