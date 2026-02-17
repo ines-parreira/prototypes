@@ -58,6 +58,7 @@ type OwnProps = {
     urlViewId: Maybe<string>
     ActionsComponent: Maybe<ComponentType>
     viewButtons: ReactNode
+    hideHeader?: boolean
 }
 
 type Props = OwnProps &
@@ -392,7 +393,8 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     render() {
-        const { activeView, isSearch, isUpdate, type, className } = this.props
+        const { activeView, isSearch, isUpdate, type, className, hideHeader } =
+            this.props
         const hasFilters = type === EntityType.Ticket
 
         if (activeView.isEmpty()) {
@@ -401,14 +403,16 @@ export class ViewTableContainer extends Component<Props> {
 
         return (
             <div className={classnames(css.page, className)}>
-                <ViewTableHeaderContainer>
-                    <Header
-                        isSearch={isSearch}
-                        isUpdate={isUpdate}
-                        type={type}
-                        viewButtons={this.props.viewButtons}
-                    />
-                </ViewTableHeaderContainer>
+                {!hideHeader && (
+                    <ViewTableHeaderContainer>
+                        <Header
+                            isSearch={isSearch}
+                            isUpdate={isUpdate}
+                            type={type}
+                            viewButtons={this.props.viewButtons}
+                        />
+                    </ViewTableHeaderContainer>
+                )}
                 {hasFilters && (activeView.get('editMode') || isSearch) && (
                     <>
                         <Separator />

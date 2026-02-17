@@ -9,7 +9,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
-import { Button, LegacyLabel as Label } from '@gorgias/axiom'
+import { Box, Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'
@@ -681,9 +681,9 @@ export class Integration extends Component<Props, State> {
                             </>
                         )}
 
-                        <div>
+                        <Box justifyContent="space-between">
                             {!isIncomplete && (
-                                <>
+                                <Box gap="sm">
                                     <Button
                                         type="submit"
                                         className="mr-2"
@@ -720,7 +720,7 @@ export class Integration extends Component<Props, State> {
                                             Re-activate HTTP integration
                                         </Button>
                                     )}
-                                </>
+                                </Box>
                             )}
                             {isUpdate && (
                                 <ConfirmButton
@@ -737,7 +737,7 @@ export class Integration extends Component<Props, State> {
                                     Delete HTTP integration
                                 </ConfirmButton>
                             )}
-                        </div>
+                        </Box>
                     </Form>
                 </Container>
             </div>
