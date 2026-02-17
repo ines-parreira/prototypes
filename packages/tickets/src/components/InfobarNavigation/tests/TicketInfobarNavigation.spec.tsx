@@ -136,6 +136,38 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Timeline)
     })
 
+    describe('Tab click when collapsed', () => {
+        it('should expand the infobar when a tab icon is clicked while collapsed', async () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                isExpanded: false,
+                onChangeTab,
+                onToggle,
+            })
+            const { user } = render(<TicketInfobarNavigation />)
+
+            const button = screen
+                .getByLabelText('customer-info')
+                .closest('button')
+            await act(() => user.click(button!))
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
+            expect(onToggle).toHaveBeenCalled()
+        })
+
+        it('should not call onToggle when a tab icon is clicked while already expanded', async () => {
+            const { user } = render(<TicketInfobarNavigation />)
+
+            const button = screen
+                .getByLabelText('customer-info')
+                .closest('button')
+            await act(() => user.click(button!))
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
+            expect(onToggle).not.toHaveBeenCalled()
+        })
+    })
+
     describe('Expand/Collapse button', () => {
         it('should display the expand button when the infobar is collapsed', () => {
             useTicketInfobarNavigationMock.mockReturnValue({

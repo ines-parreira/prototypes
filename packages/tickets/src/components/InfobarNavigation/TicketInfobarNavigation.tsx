@@ -8,12 +8,15 @@ import { InfobarNavigationContainer } from './components/InfobarNavigationContai
 import { InfobarNavigationItem } from './components/InfobarNavigationItem'
 import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
 
-type Props = {
+type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
     hasTimeline?: boolean
 }
 
-export function TicketInfobarNavigation({ hasAIFeedback, hasTimeline }: Props) {
+export function TicketInfobarNavigation({
+    hasAIFeedback,
+    hasTimeline,
+}: TicketInfobarNavigationProps) {
     const { activeTab, isExpanded, onChangeTab, onToggle } =
         useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
@@ -29,6 +32,9 @@ export function TicketInfobarNavigation({ hasAIFeedback, hasTimeline }: Props) {
                 selectedKey={activeTab}
                 onSelectionChange={(selectedKey: string) => {
                     onChangeTab(selectedKey as TicketInfobarTab)
+                    if (!isExpanded) {
+                        onToggle()
+                    }
                 }}
             >
                 <InfobarNavigationItem
