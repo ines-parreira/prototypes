@@ -87,6 +87,7 @@ const renderComponent = (props = {}) => {
     ```
 
 5. **getByTestId** - Last resort only
+
     ```tsx
     // ❌ Avoid
     screen.getByTestId('submit-button')
@@ -96,7 +97,7 @@ const renderComponent = (props = {}) => {
 
 ### User Interactions
 
-Await userEvent methods interactions
+Await `userEvent` methods interactions.
 
 ```typescript
 const { user } = renderComponent()
@@ -248,6 +249,120 @@ it('should submit form', async () => {
 })
 ```
 
+## Test Value Rules (Required)
+
+These rules exist to prevent low-signal, redundant tests. If a test violates any rule below, delete it or rewrite it.
+
+### One Test = One Behavior
+
+✅ Each test must prove **one meaningful behavior** (a user-visible outcome or a critical contract like a callback payload).
+
+❌ Avoid “padding tests” that don’t prove anything new:
+- “renders successfully”
+- “container is in the document”
+- “rerender works”
+- “buttons length > 0”
+- “hook is called” without asserting an outcome
+
+**Rule of thumb:** if a regression could happen and the test would still pass, the test is not useful.
+
+---
+
+### No Duplicate Tests
+
+❌ Don't write two tests that assert the same thing with different names.
+
+✅ If two tests share the same setup and the same key expectations, merge or delete one.
+
+**BEFORE adding ANY test, you MUST:**
+1. Read the entire existing test file
+2. Search for tests that exercise the same user interaction (click, type, etc.) on the same element
+3. If the interaction is already tested (even in a different scenario/context), DO NOT add it again
+
+**Same behavior in different contexts is usually still a duplicate:**
+
+```ts
+// ❌ BAD: Toggle already tested in auto-expand scenario
+describe('auto-expand', () => {
+  it('allows user to collapse after auto-expansion', async () => {
+    // ... setup with errors ...
+    await user.click(screen.getByText('Show less'))
+    expect(screen.getByText('Show more')).toBeInTheDocument()
+  })
+})
+
+describe('basic toggle', () => {
+  it('should collapse when clicking Show less', async () => {
+    // ❌ DUPLICATE - toggle already proven above
+    await user.click(screen.getByText('Show less'))
+    expect(screen.getByText('Show more')).toBeInTheDocument()
+  })
+})
+```
+
+✅ One test proving the toggle works is enough, regardless of scenario.
+
+---
+
+### Test Name Must Match Assertions
+
+✅ The test title must describe the **primary asserted outcome**.
+
+❌ If assertions don’t match the name, fix the name or fix the assertions.
+
+---
+
+### Don’t Claim You Test Something Without Directly Asserting It
+
+If the test name mentions any of the following, you must include a **direct assertion** for it:
+
+- **Props / attributes / aria** → `toHaveAttribute`, or query by role+name that depends on the attribute
+- **Order / sorting** → assert DOM order (not just presence)
+- **Integration** with a dependency → assert arguments, calls, or a user-visible effect caused by it
+- **Search results / fetched data** → assert results appear/are selectable, not just that a hook ran
+
+Examples:
+
+```ts
+// ✅ aria / attribute is directly asserted
+expect(screen.getByRole('combobox')).toHaveAttribute('aria-label', 'Tags')
+
+// ✅ order is directly asserted
+const items = screen.getAllByRole('option')
+expect(items.map((x) => x.textContent)).toEqual(['A', 'B', 'C'])
+```
+
+---
+
+### Don’t Test “Integration” When Everything Is Mocked
+
+If a dependency is mocked, don’t claim you tested integration unless you assert:
+- the dependency is called with the correct arguments, **or**
+- the component changes behavior based on the dependency output.
+
+---
+
+### Reuse Fixtures Unless Variation Is Required
+
+✅ Reuse existing mock fixtures by default.
+
+✅ Only introduce new mock data when it proves a different behavior (edge case, missing fields, special decorations, etc).
+
+---
+
+### “Search Results” Tests Must Assert Results Usage
+
+If testing that results from a hook/API are used:
+
+✅ Must include a user action (typing, opening dropdown, clicking a result) and an assertion that:
+- results appear in the UI, and/or
+- selecting a result updates UI/calls `onChange`, and/or
+- the correct request is sent (via MSW `waitForRequest`)
+
+❌ Must not only assert rerender/call counts.
+
+---
+
 ## Anti-Patterns
 
 ❌ **Don't use snapshots** - Use explicit assertions
@@ -299,4 +414,36 @@ user.click(button) // missing await
 
 // Good
 await user.click(button)
+```
+
+❌ **Don't test framework mechanics ("testing React")**
+
+```ts
+// Bad: proves nothing about our behavior
+const { container, rerender } = renderComponent()
+expect(container).toBeInTheDocument()
+rerender(<YourComponent />)
+expect(container).toBeInTheDocument()
+```
+
+✅ Replace with assertions that would fail on a real regression:
+
+```ts
+// Good: proves a user-visible contract
+expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
+```
+
+❌ **Don't assert “presence only” when the requirement is stronger (e.g., ordering)**
+
+```ts
+// Bad: says order but checks only presence
+expect(screen.getByText('A')).toBeInTheDocument()
+expect(screen.getByText('B')).toBeInTheDocument()
+```
+
+✅ Assert the actual requirement:
+
+```ts
+const items = screen.getAllByRole('listitem')
+expect(items.map((x) => x.textContent)).toEqual(['A', 'B'])
 ```
