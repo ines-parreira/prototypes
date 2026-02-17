@@ -147,7 +147,8 @@ export function TagsMultiSelect({
 
     const actions = {
         OPEN_TAGS: {
-            action: () => {
+            action: (e: Event) => {
+                e.preventDefault()
                 setIsTagMenuOpen((s) => !s)
             },
         },
@@ -184,7 +185,10 @@ export function TagsMultiSelect({
                             </>
                         )}
                         isOpen={isTagMenuOpen}
-                        onOpenChange={setIsTagMenuOpen}
+                        onOpenChange={(open) => {
+                            setIsTagMenuOpen(open)
+                            if (!open) setSearch('')
+                        }}
                         isSearchable={true}
                         searchValue={search}
                         onSearchChange={setSearch}

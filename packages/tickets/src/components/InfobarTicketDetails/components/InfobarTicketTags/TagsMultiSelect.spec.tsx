@@ -265,6 +265,43 @@ describe('TagsMultiSelect', () => {
         })
     })
 
+    it('should clear search field when menu is closed and reopened', async () => {
+        server.use(mockListTagsSearchAware.handler)
+
+        const { user } = render(
+            <TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />,
+        )
+
+        await waitForQueriesSettled()
+
+        const addButton = screen.getByRole('button', {
+            name: /add-plus/i,
+        })
+        await user.click(addButton)
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toBeInTheDocument()
+        })
+
+        await user.type(screen.getByRole('searchbox'), 'NewTag')
+
+        expect(screen.getByRole('searchbox')).toHaveValue('NewTag')
+
+        await user.click(addButton)
+
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
+
+        await user.click(addButton)
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toHaveValue('')
+        })
+
+        await waitForQueriesSettled()
+    })
+
     it('allows selecting a tag from the dropdown and removing it', async () => {
         const onChange = vi.fn()
 
