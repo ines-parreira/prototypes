@@ -1,6 +1,5 @@
+import { AnalyticsAiAgentSupportAgentChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-
-import { AnalyticsAiAgentSupportAgentChart } from '../AnalyticsAiAgentSupportAgentReportConfig'
 
 export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig = {
     sections: [
@@ -11,20 +10,24 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsAiAgentSupportAgentChart.TimeSavedCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsAiAgentSupportAgentChart.CostSavedCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId:
                         AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId:
                         AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard,
                     gridSize: 3,
+                    visibility: true,
                 },
             ],
         },
@@ -36,11 +39,13 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig = {
                     chartId:
                         AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,
                     gridSize: 6,
+                    visibility: true,
                 },
                 {
                     chartId:
                         AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart,
                     gridSize: 6,
+                    visibility: true,
                 },
             ],
         },
@@ -51,6 +56,7 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsAiAgentSupportAgentChart.PerformanceTable,
                     gridSize: 12,
+                    visibility: true,
                 },
             ],
         },

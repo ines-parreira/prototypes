@@ -47,6 +47,7 @@ export enum FeatureFlagKey {
     AiAgentUsesStoreConfigurationCustomFields = 'ai-agent-uses-store-configuration-custom-fields',
     AiAgentSmsChannel = 'ai-agent-sms-channel',
     AiAgentAnalyticsDashboardsNewScreens = 'linear.project_revamp-ai-agent-analytics-dashboards.show-new-screens',
+    AiAgentAnalyticsDashboardsTrendCards = 'linear.project_revamp-ai-agent-analytics-dashboards.trendcards-and-preferences',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',

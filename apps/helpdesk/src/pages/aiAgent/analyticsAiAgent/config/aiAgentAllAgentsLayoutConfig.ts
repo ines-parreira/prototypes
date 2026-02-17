@@ -1,6 +1,5 @@
+import { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-
-import { AnalyticsAiAgentAllAgentsChart } from '../AnalyticsAiAgentAllAgentsReportConfig'
 
 export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig = {
     sections: [
@@ -11,19 +10,23 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsAiAgentAllAgentsChart.AutomationRateCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId:
                         AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsAiAgentAllAgentsChart.TotalSalesCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsAiAgentAllAgentsChart.TimeSavedCard,
                     gridSize: 3,
+                    visibility: true,
                 },
             ],
         },
@@ -35,11 +38,13 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig = {
                     chartId:
                         AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart,
                     gridSize: 6,
+                    visibility: true,
                 },
                 {
                     chartId:
                         AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart,
                     gridSize: 6,
+                    visibility: true,
                 },
             ],
         },
@@ -50,6 +55,7 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsAiAgentAllAgentsChart.PerformanceTable,
                     gridSize: 12,
+                    visibility: true,
                 },
             ],
         },

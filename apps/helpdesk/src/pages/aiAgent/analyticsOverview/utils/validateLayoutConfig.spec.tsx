@@ -29,6 +29,7 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
                             gridSize: 3,
+                            visibility: true,
                         },
                     ],
                 },
@@ -232,6 +233,7 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
                             gridSize: 5 as 3,
+                            visibility: true,
                         },
                     ],
                 },
@@ -257,6 +259,7 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
                             gridSize: 3,
+                            visibility: true,
                         },
                     ],
                 },
@@ -282,6 +285,7 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationLineChart,
                             gridSize: 6,
+                            visibility: true,
                         },
                     ],
                 },
@@ -307,6 +311,7 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.PerformanceTable,
                             gridSize: 12,
+                            visibility: true,
                         },
                     ],
                 },
@@ -332,11 +337,13 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
                             gridSize: 3,
+                            visibility: true,
                         },
                         {
                             chartId:
                                 AnalyticsOverviewChart.AutomatedInteractionsCard,
                             gridSize: 3,
+                            visibility: true,
                         },
                     ],
                 },
@@ -347,11 +354,13 @@ describe('validateLayoutConfig', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationLineChart,
                             gridSize: 6,
+                            visibility: true,
                         },
                         {
                             chartId:
                                 AnalyticsOverviewChart.AutomationRateComboChart,
                             gridSize: 6,
+                            visibility: true,
                         },
                     ],
                 },

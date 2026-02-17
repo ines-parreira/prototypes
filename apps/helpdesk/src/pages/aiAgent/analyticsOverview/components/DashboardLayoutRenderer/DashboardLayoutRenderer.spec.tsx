@@ -3,20 +3,36 @@ import userEventLib from '@testing-library/user-event'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
-
-import { AnalyticsOverviewChart } from '../../AnalyticsOverviewReportConfig'
-import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../../config/defaultLayoutConfig'
-import type { DashboardLayoutConfig } from '../../types/layoutConfig'
-import { DashboardLayoutRenderer } from './DashboardLayoutRenderer'
+import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
+import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 import css from './DashboardLayoutRenderer.less'
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     DashboardComponent: ({ chart }: { chart: string }) => (
-        <div data-testid={`chart-${chart}`} data-chart-id={chart}>
-            Chart: {chart}
-        </div>
+        <div data-chart-id={chart}>Chart: {chart}</div>
     ),
+}))
+
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator',
+    () => ({
+        MetricsConfigurator: ({
+            metrics,
+        }: {
+            metrics: Array<{ id: string; label: string; visibility: boolean }>
+        }) => <div>MetricsConfigurator with {metrics.length} metrics</div>,
+    }),
+)
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiAgentAnalyticsDashboardsTrendCards:
+            'ai-agent-analytics-dashboards-trend-cards',
+    },
+    useFlag: jest.fn(),
 }))
 
 jest.mock('framer-motion', () => ({
@@ -58,7 +74,11 @@ const createKpisLayoutConfig = (
             {
                 id: 'kpis',
                 type: 'kpis',
-                items: chartIds.map((chartId) => ({ chartId, gridSize: 3 })),
+                items: chartIds.map((chartId) => ({
+                    chartId,
+                    gridSize: 3,
+                    visibility: true,
+                })),
             },
         ],
     }) as unknown as DashboardLayoutConfig
@@ -70,8 +90,8 @@ const createChartsLayoutConfig = () =>
                 id: 'charts',
                 type: 'charts',
                 items: [
-                    { chartId: 'chart1', gridSize: 6 },
-                    { chartId: 'chart2', gridSize: 6 },
+                    { chartId: 'chart1', gridSize: 6, visibility: true },
+                    { chartId: 'chart2', gridSize: 6, visibility: true },
                 ],
             },
         ],
@@ -83,7 +103,7 @@ const createTableLayoutConfig = () =>
             {
                 id: 'table',
                 type: 'table',
-                items: [{ chartId: 'table1', gridSize: 12 }],
+                items: [{ chartId: 'table1', gridSize: 12, visibility: true }],
             },
         ],
     }) as unknown as DashboardLayoutConfig
@@ -95,22 +115,22 @@ const createMixedLayoutConfig = () =>
                 id: 'kpis',
                 type: 'kpis',
                 items: [
-                    { chartId: 'kpi1', gridSize: 3 },
-                    { chartId: 'kpi2', gridSize: 3 },
+                    { chartId: 'kpi1', gridSize: 3, visibility: true },
+                    { chartId: 'kpi2', gridSize: 3, visibility: true },
                 ],
             },
             {
                 id: 'charts',
                 type: 'charts',
                 items: [
-                    { chartId: 'chart1', gridSize: 6 },
-                    { chartId: 'chart2', gridSize: 6 },
+                    { chartId: 'chart1', gridSize: 6, visibility: true },
+                    { chartId: 'chart2', gridSize: 6, visibility: true },
                 ],
             },
             {
                 id: 'table',
                 type: 'table',
-                items: [{ chartId: 'table1', gridSize: 12 }],
+                items: [{ chartId: 'table1', gridSize: 12, visibility: true }],
             },
         ],
     }) as unknown as DashboardLayoutConfig
@@ -125,14 +145,42 @@ describe('DashboardLayoutRenderer', () => {
                 description: 'Description for chart 1',
                 chartType: ChartType.Card,
             },
-            kpi1: { chartComponent: () => null },
-            kpi2: { chartComponent: () => null },
-            kpi3: { chartComponent: () => null },
-            kpi4: { chartComponent: () => null },
-            kpi5: { chartComponent: () => null },
-            chart1: { chartComponent: () => null },
-            chart2: { chartComponent: () => null },
-            table1: { chartComponent: () => null },
+            kpi1: { chartComponent: () => null, label: 'KPI 1' },
+            kpi2: { chartComponent: () => null, label: 'KPI 2' },
+            kpi3: { chartComponent: () => null, label: 'KPI 3' },
+            kpi4: { chartComponent: () => null, label: 'KPI 4' },
+            kpi5: { chartComponent: () => null, label: 'KPI 5' },
+            chart1: { chartComponent: () => null, label: 'Chart 1' },
+            chart2: { chartComponent: () => null, label: 'Chart 2' },
+            table1: { chartComponent: () => null, label: 'Table 1' },
+            [AnalyticsOverviewChart.AutomationRateCard]: {
+                chartComponent: () => null,
+                label: 'Automation Rate',
+            },
+            [AnalyticsOverviewChart.AutomatedInteractionsCard]: {
+                chartComponent: () => null,
+                label: 'Automated Interactions',
+            },
+            [AnalyticsOverviewChart.TimeSavedCard]: {
+                chartComponent: () => null,
+                label: 'Time Saved',
+            },
+            [AnalyticsOverviewChart.CostSavedCard]: {
+                chartComponent: () => null,
+                label: 'Cost Saved',
+            },
+            [AnalyticsOverviewChart.AutomationRateComboChart]: {
+                chartComponent: () => null,
+                label: 'Automation Rate Chart',
+            },
+            [AnalyticsOverviewChart.AutomationLineChart]: {
+                chartComponent: () => null,
+                label: 'Automation Line Chart',
+            },
+            [AnalyticsOverviewChart.PerformanceTable]: {
+                chartComponent: () => null,
+                label: 'Performance Table',
+            },
         },
     } as unknown as ReportConfig<string>
 
@@ -145,34 +193,34 @@ describe('DashboardLayoutRenderer', () => {
         )
 
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationRateCard}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomationRateCard}`,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomatedInteractionsCard}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomatedInteractionsCard}`,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(`chart-${AnalyticsOverviewChart.TimeSavedCard}`),
+            screen.getByText(`Chart: ${AnalyticsOverviewChart.TimeSavedCard}`),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(`chart-${AnalyticsOverviewChart.CostSavedCard}`),
+            screen.getByText(`Chart: ${AnalyticsOverviewChart.CostSavedCard}`),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationRateComboChart}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomationRateComboChart}`,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationLineChart}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomationLineChart}`,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.PerformanceTable}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.PerformanceTable}`,
             ),
         ).toBeInTheDocument()
     })
@@ -196,8 +244,8 @@ describe('DashboardLayoutRenderer', () => {
         )
 
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationRateCard}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomationRateCard}`,
             ),
         ).toBeInTheDocument()
     })
@@ -212,10 +260,12 @@ describe('DashboardLayoutRenderer', () => {
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
                             gridSize: 6,
+                            visibility: true,
                         },
                         {
                             chartId: AnalyticsOverviewChart.TimeSavedCard,
                             gridSize: 6,
+                            visibility: true,
                         },
                     ],
                 },
@@ -230,12 +280,12 @@ describe('DashboardLayoutRenderer', () => {
         )
 
         expect(
-            screen.getByTestId(
-                `chart-${AnalyticsOverviewChart.AutomationRateCard}`,
+            screen.getByText(
+                `Chart: ${AnalyticsOverviewChart.AutomationRateCard}`,
             ),
         ).toBeInTheDocument()
         expect(
-            screen.getByTestId(`chart-${AnalyticsOverviewChart.TimeSavedCard}`),
+            screen.getByText(`Chart: ${AnalyticsOverviewChart.TimeSavedCard}`),
         ).toBeInTheDocument()
     })
 
@@ -267,6 +317,64 @@ describe('DashboardLayoutRenderer', () => {
             expect(screen.getByText('Chart: kpi2')).toBeInTheDocument()
             expect(screen.getByText('Chart: kpi3')).toBeInTheDocument()
             expect(screen.getByText('Chart: kpi4')).toBeInTheDocument()
+        })
+
+        it('should only render KPI items with visibility true', () => {
+            const configWithHiddenItems: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.AutomationRateCard,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                            {
+                                chartId: AnalyticsOverviewChart.TimeSavedCard,
+                                gridSize: 3,
+                                visibility: false,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.AutomatedInteractionsCard,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={configWithHiddenItems}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByText(
+                    `Chart: ${AnalyticsOverviewChart.AutomationRateCard}`,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    `Chart: ${AnalyticsOverviewChart.TimeSavedCard}`,
+                ),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    `Chart: ${AnalyticsOverviewChart.AutomatedInteractionsCard}`,
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    `Chart: ${AnalyticsOverviewChart.AutomationRateComboChart}`,
+                ),
+            ).not.toBeInTheDocument()
         })
 
         it('should toggle wrapped state when scrollable section is clicked', async () => {
@@ -612,6 +720,61 @@ describe('DashboardLayoutRenderer', () => {
             expect(disconnectSpy).toHaveBeenCalled()
 
             disconnectSpy.mockRestore()
+        })
+    })
+
+    describe('MetricsConfigurator integration', () => {
+        const { useFlag } = require('@repo/feature-flags')
+
+        beforeEach(() => {
+            useFlag.mockReset()
+        })
+
+        it('should render MetricsConfigurator when feature flag is enabled', () => {
+            useFlag.mockReturnValue(true)
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={createKpisLayoutConfig()}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByText(/MetricsConfigurator with \d+ metrics/),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render MetricsConfigurator when feature flag is disabled', () => {
+            useFlag.mockReturnValue(false)
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={createKpisLayoutConfig()}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.queryByText(/MetricsConfigurator with \d+ metrics/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should pass correct metrics to MetricsConfigurator', () => {
+            useFlag.mockReturnValue(true)
+
+            const kpisConfig = createKpisLayoutConfig(['kpi1', 'kpi2', 'kpi3'])
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={kpisConfig}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByText('MetricsConfigurator with 3 metrics'),
+            ).toBeInTheDocument()
         })
     })
 })

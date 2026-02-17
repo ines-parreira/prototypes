@@ -1,5 +1,5 @@
-import { AnalyticsOverviewChart } from '../AnalyticsOverviewReportConfig'
-import type { DashboardLayoutConfig } from '../types/layoutConfig'
+import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
     sections: [
@@ -10,18 +10,22 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsOverviewChart.AutomationRateCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsOverviewChart.AutomatedInteractionsCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsOverviewChart.TimeSavedCard,
                     gridSize: 3,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsOverviewChart.CostSavedCard,
                     gridSize: 3,
+                    visibility: true,
                 },
             ],
         },
@@ -32,10 +36,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsOverviewChart.AutomationRateComboChart,
                     gridSize: 6,
+                    visibility: true,
                 },
                 {
                     chartId: AnalyticsOverviewChart.AutomationLineChart,
                     gridSize: 6,
+                    visibility: true,
                 },
             ],
         },
@@ -46,6 +52,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig = {
                 {
                     chartId: AnalyticsOverviewChart.PerformanceTable,
                     gridSize: 12,
+                    visibility: true,
                 },
             ],
         },

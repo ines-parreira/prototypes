@@ -1,6 +1,5 @@
+import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-
-import { AnalyticsAiAgentShoppingAssistantChart } from '../AnalyticsAiAgentShoppingAssistantReportConfig'
 
 export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig =
     {
@@ -13,21 +12,25 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
                         gridSize: 3,
+                        visibility: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
                         gridSize: 3,
+                        visibility: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
                         gridSize: 3,
+                        visibility: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
                         gridSize: 3,
+                        visibility: true,
                     },
                 ],
             },
@@ -39,11 +42,13 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
                         gridSize: 6,
+                        visibility: true,
                     },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
                         gridSize: 6,
+                        visibility: true,
                     },
                 ],
             },
@@ -55,6 +60,7 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,
                         gridSize: 12,
+                        visibility: true,
                     },
                 ],
             },
