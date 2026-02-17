@@ -14,8 +14,10 @@ import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -114,8 +116,17 @@ jest.mock('@repo/feature-flags', () => ({
     },
 }))
 
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId',
+    () => ({
+        useFindTopOpportunityByTicketId: jest.fn(),
+    }),
+)
+
 const useFlagMock = useFlag as jest.Mock
 const useShopIntegrationIdMock = useShopIntegrationId as jest.Mock
+const useFindTopOpportunityByTicketIdMock =
+    useFindTopOpportunityByTicketId as jest.Mock
 
 const initialFeedbackData = {
     isLoading: true,
@@ -3096,6 +3107,209 @@ describe('AIAgentSimplifiedFeedback', () => {
                     helpCenterId: 456,
                 },
             })
+        })
+    })
+
+    describe('DetectedOpportunitiesBanner', () => {
+        const mockFeedbackWithExecutions = {
+            executions: [
+                {
+                    executionId: 'exec-123',
+                    storeConfiguration: {
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                        helpCenterId: 456,
+                        guidanceHelpCenterId: 123,
+                    },
+                    resources: [],
+                    feedback: [],
+                },
+            ],
+        }
+
+        beforeEach(() => {
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return new Map([
+                        ['id', 123],
+                        ['tags', []],
+                    ] as any)
+                }
+                if (selector === getCurrentAccountState) {
+                    return new Map([
+                        ['id', 456],
+                        ['domain', 'test.myshopify.com'],
+                    ] as any)
+                }
+                if (selector === getAIAgentMessages) {
+                    return [
+                        {
+                            id: '1',
+                            created_datetime: new Date().toISOString(),
+                        },
+                    ]
+                }
+                if (selector === getDateAndTimeFormatter) {
+                    return () => 'MMMM DD, YYYY'
+                }
+                if (selector === getSectionIdByName) {
+                    return { 'AI Agent': 789 }
+                }
+                if (selector === getViewsState) {
+                    return {
+                        getIn: jest.fn((path) => {
+                            if (
+                                path[0] === 'active' &&
+                                path[1] === 'section_id'
+                            ) {
+                                return 789
+                            }
+                            return null
+                        }),
+                    }
+                }
+                if (
+                    typeof selector === 'function' &&
+                    selector.toString().includes('currentUser')
+                ) {
+                    return new Map([['id', 789]])
+                }
+                if (selector === getCurrentPlansByProduct) {
+                    return {
+                        automation: {
+                            plan_id: 'some-plan-usd-6',
+                        },
+                    }
+                }
+                return null
+            })
+
+            useGetFeedbackMock.mockReturnValue({
+                data: mockFeedbackWithExecutions,
+            })
+
+            useEnrichFeedbackDataMock.mockReturnValue({
+                ...initialFeedbackData,
+                isLoading: false,
+            })
+
+            useShopIntegrationIdMock.mockReturnValue(789)
+
+            useGetAiAgentFeedbackMock.mockReturnValue({
+                data: undefined,
+            } as any)
+
+            useGetAllRelatedResourceDataMock.mockReturnValue({
+                actions: [],
+                articles: [],
+                guidanceArticles: [],
+                sourceItems: [],
+                ingestedFiles: [],
+                storeWebsiteQuestions: [],
+                products: [],
+                isLoading: false,
+            })
+
+            useFindTopOpportunityByTicketIdMock.mockReturnValue({
+                topOpportunity: {
+                    id: '789',
+                    key: 'opp_789',
+                    type: 'FILL_KNOWLEDGE_GAP',
+                    ticketCount: 5,
+                    insight: 'Test opportunity insight',
+                    resources: [],
+                },
+                isLoading: false,
+                isError: false,
+            })
+        })
+
+        it('should render DetectedOpportunitiesBanner when feature flag is enabled and user has full access', () => {
+            useFlagMock.mockReturnValue(true)
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            // Verify banner is rendered by checking for the "Review guidance" button
+            expect(
+                screen.getByRole('button', { name: /review guidance/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render DetectedOpportunitiesBanner when feature flag is disabled', () => {
+            useFlagMock.mockReturnValue(false)
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByRole('button', { name: /review guidance/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render DetectedOpportunitiesBanner when user does not have full access', () => {
+            useFlagMock.mockReturnValue(true)
+
+            // Mock user without full access (plan_id doesn't include 'usd-6')
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return new Map([
+                        ['id', 123],
+                        ['tags', []],
+                    ] as any)
+                }
+                if (selector === getCurrentAccountState) {
+                    return new Map([
+                        ['id', 456],
+                        ['domain', 'test.myshopify.com'],
+                    ] as any)
+                }
+                if (selector === getAIAgentMessages) {
+                    return [
+                        {
+                            id: '1',
+                            created_datetime: new Date().toISOString(),
+                        },
+                    ]
+                }
+                if (selector === getDateAndTimeFormatter) {
+                    return () => 'MMMM DD, YYYY'
+                }
+                if (selector === getSectionIdByName) {
+                    return { 'AI Agent': 789 }
+                }
+                if (selector === getViewsState) {
+                    return {
+                        getIn: jest.fn((path) => {
+                            if (
+                                path[0] === 'active' &&
+                                path[1] === 'section_id'
+                            ) {
+                                return 789
+                            }
+                            return null
+                        }),
+                    }
+                }
+                if (
+                    typeof selector === 'function' &&
+                    selector.toString().includes('currentUser')
+                ) {
+                    return new Map([['id', 789]])
+                }
+                if (selector === getCurrentPlansByProduct) {
+                    return {
+                        automation: {
+                            plan_id: 'plan-usd-5', // No 'usd-6' in plan_id
+                        },
+                    }
+                }
+                return null
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByRole('button', { name: /review guidance/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

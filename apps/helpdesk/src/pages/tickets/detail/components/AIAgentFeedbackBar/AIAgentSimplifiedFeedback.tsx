@@ -30,6 +30,7 @@ import {
     AutoSaveState,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getAIAgentMessages, getTicketState } from 'state/ticket/selectors'
@@ -55,7 +56,10 @@ const AIAgentSimplifiedFeedback = () => {
     const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
+    const currentPlansByProduct = useAppSelector(getCurrentPlansByProduct)
 
+    const hasFullAccess =
+        currentPlansByProduct?.automation?.plan_id.includes('usd-6')
     const ticketId: number = ticket.get('id')
     const accountId: number = account.get('id')
     const userId: number = currentUser.get('id')
@@ -465,7 +469,7 @@ const AIAgentSimplifiedFeedback = () => {
                                         onKnowledgeResourceCreateClick
                                     }
                                 />
-                                {isTopOpportunitiesEnabled && (
+                                {isTopOpportunitiesEnabled && hasFullAccess && (
                                     <DetectedOpportunitiesBanner
                                         shopName={shopName}
                                         shopIntegrationId={shopIntegrationId}
