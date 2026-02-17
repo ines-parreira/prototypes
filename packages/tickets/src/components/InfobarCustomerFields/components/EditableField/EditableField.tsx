@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from 'react'
+import type { ClipboardEvent, KeyboardEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
 import { isMacOs } from '@repo/utils'
@@ -134,6 +134,39 @@ export function EditableField<T extends string | number = string | number>(
         [type, handleValue],
     )
 
+    const handleNumberPaste = useCallback(
+        (event: ClipboardEvent<HTMLInputElement>) => {
+            if (type !== 'number') {
+                return
+            }
+
+            if (typeof event.clipboardData?.getData !== 'function') {
+                return
+            }
+
+            const pastedText = event.clipboardData.getData('text/plain').trim()
+            if (!pastedText.startsWith('#')) {
+                return
+            }
+
+            // Remove the leading hash and any whitespace.
+            // Enable users to copy/paste customer IDs (#12345 format) in number fields easily
+            const normalizedValue = pastedText.replace(/^#\s*/, '')
+            if (!normalizedValue) {
+                return
+            }
+
+            const parsedValue = Number(normalizedValue)
+            if (Number.isNaN(parsedValue)) {
+                return
+            }
+
+            event.preventDefault()
+            handleChange(parsedValue as T)
+        },
+        [handleChange, type],
+    )
+
     const tooltipContent = useMemo(() => value?.toString(), [value])
 
     if (type === 'number') {
@@ -154,6 +187,7 @@ export function EditableField<T extends string | number = string | number>(
                     autoFocus={autoFocus}
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
+                    onPaste={handleNumberPaste}
                     error={error}
                     minValue={minValue}
                     maxValue={maxValue}

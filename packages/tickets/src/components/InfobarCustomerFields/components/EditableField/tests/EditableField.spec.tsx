@@ -490,6 +490,105 @@ describe('EditableField', () => {
         })
 
         describe('NumberField', () => {
+            it('should strip leading hash from pasted numeric value', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await act(() => user.click(input))
+                await act(() => user.paste('#12345'))
+
+                expect(onValueChange).toHaveBeenCalledWith(12345)
+            })
+
+            it('should strip leading hash and whitespace from pasted numeric value', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await act(() => user.click(input))
+                await act(() => user.paste('#   12345'))
+
+                expect(onValueChange).toHaveBeenCalledWith(12345)
+            })
+
+            it('should not normalize pasted value when it does not start with hash', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await act(() => user.click(input))
+                await act(() => user.paste('order-12345'))
+
+                expect(onValueChange).not.toHaveBeenCalled()
+            })
+
+            it('should not normalize pasted value when hash has no numeric content', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await act(() => user.click(input))
+                await act(() => user.paste('#'))
+
+                expect(onValueChange).not.toHaveBeenCalled()
+            })
+
+            it('should not normalize pasted value when hash value is non numeric', async () => {
+                const onValueChange = vi.fn()
+
+                const { user, getByPlaceholderText } = render(
+                    <EditableField
+                        type="number"
+                        value={undefined}
+                        onValueChange={onValueChange}
+                        placeholder="+ Add number"
+                    />,
+                )
+
+                const input = getByPlaceholderText('+ Add number')
+
+                await act(() => user.click(input))
+                await act(() => user.paste('#abc'))
+
+                expect(onValueChange).not.toHaveBeenCalled()
+            })
             it('should not show tooltip when showTooltip is false', async () => {
                 const onValueChange = vi.fn()
 
