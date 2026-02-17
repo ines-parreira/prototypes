@@ -16,6 +16,7 @@ import { DiffReadOnlyEditor } from './DiffReadOnlyEditor'
 import { addDiffEntities } from './diffUtils'
 
 let capturedEditorProps: Record<string, unknown> | null = null
+const mockReplaceAttachmentURL = jest.fn((url: string) => `proxied:${url}`)
 
 jest.mock('draft-js-plugins-editor', () => ({
     __esModule: true,
@@ -89,6 +90,10 @@ jest.mock('./diffUtils', () => ({
     addDiffEntities: jest.fn((cs: ContentState) => cs),
 }))
 
+jest.mock('utils', () => ({
+    replaceAttachmentURL: (url: string) => mockReplaceAttachmentURL(url),
+}))
+
 function createContentState(text: string): ContentState {
     const block = new ContentBlock({
         key: genKey(),
@@ -102,9 +107,39 @@ function createContentState(text: string): ContentState {
     return ContentState.createFromBlockArray([block])
 }
 
+function createAtomicImageContentState(
+    src?: string,
+    type = 'img',
+    diffStatus: 'added' | 'removed' | null = null,
+): ContentState {
+    let contentState = ContentState.createFromText('')
+    contentState = contentState.createEntity(type, 'MUTABLE', {
+        src,
+        diffStatus,
+    })
+    const entityKey = contentState.getLastCreatedEntityKey()
+    const block = new ContentBlock({
+        key: genKey(),
+        type: 'atomic',
+        text: ' ',
+        characterList: List([
+            CharacterMetadata.create({
+                entity: entityKey,
+            }),
+        ]),
+        depth: 0,
+    })
+
+    return ContentState.createFromBlockArray(
+        [block],
+        contentState.getEntityMap(),
+    )
+}
+
 beforeEach(() => {
     capturedEditorProps = null
     jest.clearAllMocks()
+    mockReplaceAttachmentURL.mockClear()
 })
 
 describe('DiffReadOnlyEditor', () => {
@@ -196,7 +231,7 @@ describe('DiffReadOnlyEditor', () => {
         )
     })
 
-    it('passes two plugins with decorator strategies', () => {
+    it('passes plugins with decorators and block renderer', () => {
         const contentState = createContentState('Hello')
 
         render(<DiffReadOnlyEditor contentState={contentState} />)
@@ -206,10 +241,138 @@ describe('DiffReadOnlyEditor', () => {
                 strategy: Function
                 component: Function
             }>
+            blockRendererFn?: Function
         }>
-        expect(plugins).toHaveLength(2)
+        expect(plugins).toHaveLength(3)
         expect(plugins[0].decorators).toHaveLength(1)
         expect(plugins[1].decorators).toHaveLength(1)
+        expect(typeof plugins[2].blockRendererFn).toBe('function')
+    })
+})
+
+describe('image block renderer plugin', () => {
+    function getImageBlockRendererFn(contentState: ContentState) {
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+        const plugins = capturedEditorProps!.plugins as Array<{
+            blockRendererFn?: (
+                block: ContentBlock,
+                options: {
+                    getEditorState: () => EditorState
+                },
+            ) => {
+                component: React.ComponentType<{
+                    block: ContentBlock
+                    contentState: ContentState
+                }>
+                editable: boolean
+            } | null
+        }>
+
+        return plugins[2].blockRendererFn!
+    }
+
+    it('returns a renderer for atomic image blocks', () => {
+        const contentState = createAtomicImageContentState(
+            'https://example.com/image.png',
+            'img',
+            'removed',
+        )
+        const blockRendererFn = getImageBlockRendererFn(contentState)
+        const editorState = EditorState.createWithContent(contentState)
+        const imageBlock = contentState.getFirstBlock()
+
+        const rendered = blockRendererFn(imageBlock, {
+            getEditorState: () => editorState,
+        })
+
+        expect(rendered).not.toBeNull()
+        expect(rendered?.editable).toBe(false)
+
+        const ImageComponent = rendered!.component
+        const { container } = render(
+            <ImageComponent block={imageBlock} contentState={contentState} />,
+        )
+
+        expect(screen.getByText('Removed image')).toBeInTheDocument()
+        expect(mockReplaceAttachmentURL).toHaveBeenCalledWith(
+            'https://example.com/image.png',
+        )
+        expect(container.querySelector('img')).toHaveAttribute(
+            'src',
+            'proxied:https://example.com/image.png',
+        )
+    })
+
+    it('supports legacy IMAGE entity types', () => {
+        const contentState = createAtomicImageContentState(
+            'https://example.com/legacy.png',
+            'IMAGE',
+            'added',
+        )
+        const blockRendererFn = getImageBlockRendererFn(contentState)
+        const editorState = EditorState.createWithContent(contentState)
+        const imageBlock = contentState.getFirstBlock()
+
+        const rendered = blockRendererFn(imageBlock, {
+            getEditorState: () => editorState,
+        })
+
+        expect(rendered).not.toBeNull()
+
+        const ImageComponent = rendered!.component
+        render(
+            <ImageComponent block={imageBlock} contentState={contentState} />,
+        )
+        expect(screen.getByText('Added image')).toBeInTheDocument()
+    })
+
+    it('returns null for atomic blocks with non-image entities', () => {
+        let contentState = ContentState.createFromText('')
+        contentState = contentState.createEntity('guidance_action', 'MUTABLE', {
+            value: '$$$action$$$',
+        })
+        const entityKey = contentState.getLastCreatedEntityKey()
+        const block = new ContentBlock({
+            key: genKey(),
+            type: 'atomic',
+            text: ' ',
+            characterList: List([
+                CharacterMetadata.create({
+                    entity: entityKey,
+                }),
+            ]),
+            depth: 0,
+        })
+        const atomicContentState = ContentState.createFromBlockArray(
+            [block],
+            contentState.getEntityMap(),
+        )
+
+        const blockRendererFn = getImageBlockRendererFn(atomicContentState)
+        const editorState = EditorState.createWithContent(atomicContentState)
+        const rendered = blockRendererFn(block, {
+            getEditorState: () => editorState,
+        })
+
+        expect(rendered).toBeNull()
+    })
+
+    it('renders placeholder when image entity has no source URL', () => {
+        const contentState = createAtomicImageContentState(undefined, 'img')
+        const blockRendererFn = getImageBlockRendererFn(contentState)
+        const editorState = EditorState.createWithContent(contentState)
+        const imageBlock = contentState.getFirstBlock()
+        const rendered = blockRendererFn(imageBlock, {
+            getEditorState: () => editorState,
+        })
+
+        expect(rendered).not.toBeNull()
+        const ImageComponent = rendered!.component
+        render(
+            <ImageComponent block={imageBlock} contentState={contentState} />,
+        )
+
+        expect(screen.getByText('Image unavailable')).toBeInTheDocument()
     })
 })
 

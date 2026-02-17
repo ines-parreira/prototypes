@@ -5,6 +5,7 @@ import type { ContentBlock, ContentState as ContentStateType } from 'draft-js'
 import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
 
+import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import GuidanceVariableTag from 'pages/common/draftjs/plugins/guidance-variables/GuidanceVariableTag'
 import GuidanceActionTag from 'pages/common/draftjs/plugins/guidanceActions/GuidanceActionTag'
@@ -14,6 +15,7 @@ import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
+import { replaceAttachmentURL } from 'utils'
 
 import type { DiffStatus } from './diffUtils'
 import { addDiffEntities } from './diffUtils'
@@ -35,6 +37,70 @@ const DIFF_STYLE_MAP: Record<string, React.CSSProperties> = {
         color: 'var(--content-error-primary)',
         textDecoration: 'line-through',
     },
+}
+
+type DiffImageBlockProps = {
+    block: ContentBlock
+    contentState: ContentStateType
+}
+const IMAGE_ENTITY_TYPES = new Set([
+    draftjsGorgiasCustomBlockRenderers.Img,
+    'image',
+    'IMAGE',
+])
+
+function isImageEntityType(type: string): boolean {
+    return IMAGE_ENTITY_TYPES.has(type)
+}
+
+function getDiffStatusFromBlock(block: ContentBlock): DiffStatus {
+    const style = block.getInlineStyleAt(0)
+    if (style.has('DIFF_ADDED')) return 'added'
+    if (style.has('DIFF_REMOVED')) return 'removed'
+    return null
+}
+
+function DiffImageBlock({ block, contentState }: DiffImageBlockProps) {
+    const entityKey = block.getEntityAt(0)
+    if (!entityKey) return null
+
+    const entity = contentState.getEntity(entityKey)
+    const data = entity.getData() as {
+        src?: string
+        url?: string
+        diffStatus?: DiffStatus
+    }
+    const diffStatus = data.diffStatus ?? getDiffStatusFromBlock(block)
+    const imageSrc = data.src ?? data.url ?? ''
+    const label =
+        diffStatus === 'added'
+            ? 'Added image'
+            : diffStatus === 'removed'
+              ? 'Removed image'
+              : null
+
+    return (
+        <figure
+            className={classNames(css.imageWrapper, {
+                [css.imageWrapperAdded]: diffStatus === 'added',
+                [css.imageWrapperRemoved]: diffStatus === 'removed',
+            })}
+        >
+            {imageSrc ? (
+                <img
+                    src={replaceAttachmentURL(imageSrc)}
+                    alt=""
+                    role="presentation"
+                    className={css.image}
+                />
+            ) : (
+                <div className={css.imagePlaceholder}>Image unavailable</div>
+            )}
+            {label ? (
+                <figcaption className={css.imageDiffLabel}>{label}</figcaption>
+            ) : null}
+        </figure>
+    )
 }
 
 // Decorator components wrap guidance tokens in a span with diff styling.
@@ -122,6 +188,31 @@ function createDiffPlugins() {
                     component: DiffVariableDecorator,
                 },
             ],
+        },
+        {
+            blockRendererFn: (
+                block: ContentBlock,
+                {
+                    getEditorState,
+                }: {
+                    getEditorState: () => EditorState
+                },
+            ) => {
+                if (block.getType() !== 'atomic') return null
+                const entityKey = block.getEntityAt(0)
+                if (!entityKey) return null
+
+                const contentState = getEditorState().getCurrentContent()
+                const entity = contentState.getEntity(entityKey)
+                if (!isImageEntityType(entity.getType())) {
+                    return null
+                }
+
+                return {
+                    component: DiffImageBlock,
+                    editable: false,
+                }
+            },
         },
     ]
 }

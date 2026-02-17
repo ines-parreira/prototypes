@@ -1,6 +1,6 @@
 import type { Change } from 'diff'
 import { diffWords } from 'diff'
-import type { ContentState } from 'draft-js'
+import type { ContentState, DraftEntityMutability } from 'draft-js'
 import {
     CharacterMetadata,
     ContentBlock,
@@ -11,6 +11,7 @@ import {
 } from 'draft-js'
 import { List } from 'immutable'
 
+import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 import { guidanceVariableRegex } from 'pages/common/draftjs/plugins/guidance-variables/constants'
 import { guidanceActionRegex } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
@@ -20,6 +21,16 @@ const guidanceTokenRegex = /\$\$\$[^$]*\$\$\$|&&&[^&]*&&&/g
 // so that diffWords treats each guidance token as a separate, atomic unit
 const BOUNDARY = String.fromCharCode(1)
 const boundaryCleanupRegex = new RegExp(BOUNDARY, 'g')
+const FIRST_IMAGE_PLACEHOLDER_CODEPOINT = 0xe000
+const IMAGE_ENTITY_TYPES = new Set([
+    draftjsGorgiasCustomBlockRenderers.Img,
+    'image',
+    'IMAGE',
+])
+
+function isImageEntityType(type: string): boolean {
+    return IMAGE_ENTITY_TYPES.has(type)
+}
 
 /**
  * Wraps diffWords to treat guidance tokens ($$$...$$$, &&&...&&&) as atomic units.
@@ -79,12 +90,19 @@ function diffWordsWithGuidanceTokens(
     return diffs
 }
 
+type ImageEntitySnapshot = {
+    type: string
+    mutability: DraftEntityMutability
+    data: Record<string, unknown>
+}
+
 type CharInfo =
     | {
           isBlockBoundary: false
           style: ReturnType<ContentBlock['getInlineStyleAt']>
           blockType: string
           blockDepth: number
+          imageEntity?: ImageEntitySnapshot
       }
     | {
           isBlockBoundary: true
@@ -93,17 +111,19 @@ type CharInfo =
       }
 
 /**
- * Builds a flat array that maps each character position in the plain text
- * to its original inline styles, block type, and depth. Block boundaries
- * (the '\n' between blocks in getPlainText output) are represented as
- * special markers carrying the next block's type/depth.
+ * Builds a flat charInfo array together with a diff input text.
  *
- * This array is consumed by computeUnifiedDiff to preserve original
- * formatting when building the merged ContentState.
+ * Image atomic entities are converted to unique one-char placeholders so they
+ * can participate in textual diffing while preserving 1:1 positional mapping
+ * with charInfos.
  */
-function buildCharInfos(contentState: ContentState): CharInfo[] {
+function buildDiffInput(
+    contentState: ContentState,
+    imagePlaceholderBySignature: Map<string, string>,
+): { diffText: string; charInfos: CharInfo[] } {
     const blocks = contentState.getBlocksAsArray()
-    const infos: CharInfo[] = []
+    const charInfos: CharInfo[] = []
+    let diffText = ''
 
     for (let b = 0; b < blocks.length; b++) {
         const block = blocks[b]
@@ -112,16 +132,49 @@ function buildCharInfos(contentState: ContentState): CharInfo[] {
         const depth = block.getDepth()
 
         for (let i = 0; i < text.length; i++) {
-            infos.push({
+            let outputChar = text[i]
+            const entityKey = block.getEntityAt(i)
+            let imageEntity: ImageEntitySnapshot | undefined
+
+            if (entityKey) {
+                const entity = contentState.getEntity(entityKey)
+                if (isImageEntityType(entity.getType())) {
+                    const snapshot: ImageEntitySnapshot = {
+                        type: entity.getType(),
+                        mutability: entity.getMutability(),
+                        data: entity.getData() as Record<string, unknown>,
+                    }
+                    imageEntity = snapshot
+
+                    const signature = JSON.stringify([
+                        snapshot.type,
+                        snapshot.data,
+                    ])
+                    let placeholder = imagePlaceholderBySignature.get(signature)
+                    if (!placeholder) {
+                        placeholder = String.fromCharCode(
+                            FIRST_IMAGE_PLACEHOLDER_CODEPOINT +
+                                imagePlaceholderBySignature.size,
+                        )
+                        imagePlaceholderBySignature.set(signature, placeholder)
+                    }
+                    outputChar = placeholder
+                }
+            }
+
+            diffText += outputChar
+            charInfos.push({
                 isBlockBoundary: false,
                 style: block.getInlineStyleAt(i),
                 blockType: type,
                 blockDepth: depth,
+                imageEntity,
             })
         }
 
         if (b < blocks.length - 1) {
-            infos.push({
+            diffText += '\n'
+            charInfos.push({
                 isBlockBoundary: true,
                 nextBlockType: blocks[b + 1].getType(),
                 nextBlockDepth: blocks[b + 1].getDepth(),
@@ -129,7 +182,7 @@ function buildCharInfos(contentState: ContentState): CharInfo[] {
         }
     }
 
-    return infos
+    return { diffText, charInfos }
 }
 
 /**
@@ -137,13 +190,15 @@ function buildCharInfos(contentState: ContentState): CharInfo[] {
  * and tagged with DIFF_ADDED / DIFF_REMOVED inline styles.
  *
  * How it works:
- * 1. Extract plain text and diff it (treating guidance tokens as atomic units)
+ * 1. Build diff input text for both versions (including image placeholders)
+ *    and diff it (word-level with token protection)
  * 2. Build parallel charInfo arrays from both ContentStates to preserve original
  *    inline styles, block types, and depths
  * 3. Walk the diff output char-by-char, pulling style info from the correct
  *    source (oldCharInfos for removed, newCharInfos for added/unchanged)
  *    and overlaying DIFF_ADDED/DIFF_REMOVED styles
  * 4. On '\n' chars, flush the current block and pick up the next block's type/depth
+ * 5. Reapply image entities to merged content so atomic image blocks render
  *
  * The charInfo positions stay in sync with the diff output because
  * diffWordsWithGuidanceTokens restores original tokens (same length as input)
@@ -155,13 +210,16 @@ export function computeUnifiedDiff(
 ): {
     mergedContentState: ContentState
 } {
-    const oldPlainText = oldContentState.getPlainText('\n')
-    const newPlainText = newContentState.getPlainText('\n')
-
-    const diffs = diffWordsWithGuidanceTokens(oldPlainText, newPlainText)
-
-    const oldCharInfos = buildCharInfos(oldContentState)
-    const newCharInfos = buildCharInfos(newContentState)
+    const imagePlaceholderBySignature = new Map<string, string>()
+    const { diffText: oldDiffText, charInfos: oldCharInfos } = buildDiffInput(
+        oldContentState,
+        imagePlaceholderBySignature,
+    )
+    const { diffText: newDiffText, charInfos: newCharInfos } = buildDiffInput(
+        newContentState,
+        imagePlaceholderBySignature,
+    )
+    const diffs = diffWordsWithGuidanceTokens(oldDiffText, newDiffText)
 
     let oldPos = 0
     let newPos = 0
@@ -172,28 +230,42 @@ export function computeUnifiedDiff(
         type: string
         depth: number
     }
+    type PendingImageEntity = {
+        blockIndex: number
+        start: number
+        end: number
+        imageEntity: ImageEntitySnapshot
+        diffStatus: DiffStatus
+    }
 
     const mergedBlocks: MergedBlock[] = []
+    const pendingImageEntities: PendingImageEntity[] = []
     let currentBlockText = ''
     let currentBlockChars: CharacterMetadata[] = []
 
     const firstNewBlock = newContentState.getBlocksAsArray()[0]
-    let currentBlockType = firstNewBlock?.getType() ?? 'unstyled'
-    let currentBlockDepth = firstNewBlock?.getDepth() ?? 0
+    const firstOldBlock = oldContentState.getBlocksAsArray()[0]
+    const firstBlock = firstNewBlock ?? firstOldBlock
+    let currentBlockType = firstBlock?.getType() ?? 'unstyled'
+    let currentBlockDepth = firstBlock?.getDepth() ?? 0
+
+    function flushCurrentBlock() {
+        mergedBlocks.push({
+            text: currentBlockText,
+            charList: currentBlockChars,
+            type: currentBlockType,
+            depth: currentBlockDepth,
+        })
+        currentBlockText = ''
+        currentBlockChars = []
+    }
 
     for (const part of diffs) {
         for (let i = 0; i < part.value.length; i++) {
             const ch = part.value[i]
 
             if (ch === '\n') {
-                mergedBlocks.push({
-                    text: currentBlockText,
-                    charList: currentBlockChars,
-                    type: currentBlockType,
-                    depth: currentBlockDepth,
-                })
-                currentBlockText = ''
-                currentBlockChars = []
+                flushCurrentBlock()
 
                 let sourceInfo: CharInfo | undefined
                 if (part.removed) {
@@ -238,6 +310,17 @@ export function computeUnifiedDiff(
                 currentBlockDepth = info.blockDepth
             }
 
+            if (
+                info &&
+                !info.isBlockBoundary &&
+                info.blockType === 'atomic' &&
+                currentBlockChars.length > 0
+            ) {
+                flushCurrentBlock()
+                currentBlockType = info.blockType
+                currentBlockDepth = info.blockDepth
+            }
+
             let charMeta: CharacterMetadata
             if (info && !info.isBlockBoundary) {
                 charMeta = CharacterMetadata.create({ style: info.style })
@@ -254,17 +337,37 @@ export function computeUnifiedDiff(
                 )
             }
 
-            currentBlockText += ch
+            const isImagePlaceholder = !!(
+                info &&
+                !info.isBlockBoundary &&
+                info.imageEntity
+            )
+            const charOffset = currentBlockChars.length
+            currentBlockText += isImagePlaceholder ? ' ' : ch
             currentBlockChars.push(charMeta)
+
+            if (
+                isImagePlaceholder &&
+                info &&
+                !info.isBlockBoundary &&
+                info.imageEntity
+            ) {
+                pendingImageEntities.push({
+                    blockIndex: mergedBlocks.length,
+                    start: charOffset,
+                    end: charOffset + 1,
+                    imageEntity: info.imageEntity,
+                    diffStatus: part.added
+                        ? 'added'
+                        : part.removed
+                          ? 'removed'
+                          : null,
+                })
+            }
         }
     }
 
-    mergedBlocks.push({
-        text: currentBlockText,
-        charList: currentBlockChars,
-        type: currentBlockType,
-        depth: currentBlockDepth,
-    })
+    flushCurrentBlock()
 
     const contentBlocks = mergedBlocks.map(
         (block) =>
@@ -277,8 +380,36 @@ export function computeUnifiedDiff(
             }),
     )
 
-    const mergedContentState =
+    let mergedContentState =
         ContentStateClass.createFromBlockArray(contentBlocks)
+
+    const mergedBlockKeys = mergedContentState
+        .getBlocksAsArray()
+        .map((block) => block.getKey())
+
+    for (const pendingEntity of pendingImageEntities) {
+        mergedContentState = mergedContentState.createEntity(
+            pendingEntity.imageEntity.type,
+            pendingEntity.imageEntity.mutability,
+            {
+                ...pendingEntity.imageEntity.data,
+                diffStatus: pendingEntity.diffStatus,
+            },
+        )
+        const entityKey = mergedContentState.getLastCreatedEntityKey()
+        const selection = SelectionState.createEmpty(
+            mergedBlockKeys[pendingEntity.blockIndex],
+        ).merge({
+            anchorOffset: pendingEntity.start,
+            focusOffset: pendingEntity.end,
+        }) as SelectionState
+
+        mergedContentState = Modifier.applyEntity(
+            mergedContentState,
+            selection,
+            entityKey,
+        )
+    }
 
     return { mergedContentState }
 }

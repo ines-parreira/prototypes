@@ -44,6 +44,32 @@ function getDiffStyles(
     return result
 }
 
+function createImageContentState(src: string, type = 'img'): ContentState {
+    let contentState = ContentState.createFromText('')
+    contentState = contentState.createEntity(type, 'MUTABLE', {
+        src,
+        width: 320,
+    })
+    const entityKey = contentState.getLastCreatedEntityKey()
+
+    const block = new ContentBlock({
+        key: genKey(),
+        type: 'atomic',
+        text: ' ',
+        characterList: List([
+            CharacterMetadata.create({
+                entity: entityKey,
+            }),
+        ]),
+        depth: 0,
+    })
+
+    return ContentState.createFromBlockArray(
+        [block],
+        contentState.getEntityMap(),
+    )
+}
+
 describe('computeUnifiedDiff', () => {
     it('returns identical content with no diff styles when texts match', () => {
         const old = createContentState([{ text: 'Hello world' }])
@@ -245,6 +271,80 @@ describe('computeUnifiedDiff', () => {
         const unchangedText = unchangedChars.map((s) => s.text).join('')
         expect(unchangedText).toContain('The ')
         expect(unchangedText).toContain(' brown fox')
+    })
+
+    it('preserves image entities and marks added images', () => {
+        const old = createContentState([{ text: '' }])
+        const new_ = createImageContentState('https://example.com/new.png')
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const imageBlock = mergedContentState.getBlocksAsArray()[0]
+
+        expect(imageBlock.getType()).toBe('atomic')
+        expect(imageBlock.getInlineStyleAt(0).has('DIFF_ADDED')).toBe(true)
+
+        const entityKey = imageBlock.getEntityAt(0)
+        expect(entityKey).not.toBeNull()
+        const entity = mergedContentState.getEntity(entityKey)
+        expect(entity.getType()).toBe('img')
+        expect(entity.getData()).toMatchObject({
+            src: 'https://example.com/new.png',
+            diffStatus: 'added',
+        })
+    })
+
+    it('preserves image entities and marks removed images', () => {
+        const old = createImageContentState('https://example.com/old.png')
+        const new_ = createContentState([{ text: '' }])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const imageBlock = mergedContentState.getBlocksAsArray()[0]
+
+        expect(imageBlock.getType()).toBe('atomic')
+        expect(imageBlock.getInlineStyleAt(0).has('DIFF_REMOVED')).toBe(true)
+
+        const entityKey = imageBlock.getEntityAt(0)
+        expect(entityKey).not.toBeNull()
+        const entity = mergedContentState.getEntity(entityKey)
+        expect(entity.getType()).toBe('img')
+        expect(entity.getData()).toMatchObject({
+            src: 'https://example.com/old.png',
+            diffStatus: 'removed',
+        })
+    })
+
+    it('renders changed images as separate removed and added atomic blocks', () => {
+        const old = createImageContentState('https://example.com/old.png')
+        const new_ = createImageContentState('https://example.com/new.png')
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(2)
+        expect(blocks[0].getType()).toBe('atomic')
+        expect(blocks[1].getType()).toBe('atomic')
+        expect(blocks[0].getInlineStyleAt(0).has('DIFF_REMOVED')).toBe(true)
+        expect(blocks[1].getInlineStyleAt(0).has('DIFF_ADDED')).toBe(true)
+    })
+
+    it('treats legacy image entity types as images in diffing', () => {
+        const old = createImageContentState(
+            'https://example.com/old.png',
+            'IMAGE',
+        )
+        const new_ = createContentState([{ text: '' }])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const imageBlock = mergedContentState.getBlocksAsArray()[0]
+        const entityKey = imageBlock.getEntityAt(0)
+
+        expect(entityKey).not.toBeNull()
+        const entity = mergedContentState.getEntity(entityKey)
+        expect(entity.getType()).toBe('IMAGE')
+        expect(entity.getData()).toMatchObject({
+            src: 'https://example.com/old.png',
+            diffStatus: 'removed',
+        })
     })
 })
 

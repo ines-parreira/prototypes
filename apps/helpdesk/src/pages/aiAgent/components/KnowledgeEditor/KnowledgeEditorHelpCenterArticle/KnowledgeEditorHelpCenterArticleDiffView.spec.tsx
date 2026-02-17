@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react'
+import HtmlDiff from 'htmldiff-js'
 
 import { KnowledgeEditorHelpCenterArticleDiffView } from './KnowledgeEditorHelpCenterArticleDiffView'
 
@@ -13,6 +14,10 @@ jest.mock('htmldiff-js', () => ({
 }))
 
 describe('KnowledgeEditorHelpCenterArticleDiffView', () => {
+    beforeEach(() => {
+        jest.mocked(HtmlDiff.execute).mockClear()
+    })
+
     it('renders unchanged title when titles are identical', () => {
         render(
             <KnowledgeEditorHelpCenterArticleDiffView
@@ -117,5 +122,26 @@ describe('KnowledgeEditorHelpCenterArticleDiffView', () => {
 
         const spans = heading?.querySelectorAll('span') ?? []
         expect(spans.length).toBeGreaterThanOrEqual(3)
+    })
+
+    it('renders removed images when diff HTML wraps images in del tags', () => {
+        const executeMock = jest.mocked(HtmlDiff.execute)
+        executeMock.mockReturnValueOnce(
+            '<p><del><img src="https://example.com/removed.png" alt="Removed guide image" /></del></p>',
+        )
+
+        const { container } = render(
+            <KnowledgeEditorHelpCenterArticleDiffView
+                oldTitle="Title"
+                newTitle="Title"
+                oldContent="<p>old with image</p>"
+                newContent="<p>new without image</p>"
+            />,
+        )
+
+        const removedImage = container.querySelector(
+            'del img[src="https://example.com/removed.png"]',
+        )
+        expect(removedImage).toBeInTheDocument()
     })
 })

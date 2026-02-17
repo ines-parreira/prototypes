@@ -11,4 +11,65 @@
             opacity: 0.6;
         }
     }
+
+    .imageWrapper {
+        display: inline-flex;
+        flex-direction: column;
+        margin: var(--spacing-xs) 0;
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xxs);
+        padding: var(--spacing-xxs);
+        background-color: var(--surface-neutral-primary);
+        max-width: 100%;
+    }
+
+    .imageWrapperAdded {
+        border-color: var(--content-success-primary);
+        background-color: var(--surface-success-primary);
+    }
+
+    .imageWrapperRemoved {
+        border-color: var(--content-error-primary);
+        background-color: var(--surface-error-secondary);
+    }
+
+    .image {
+        display: block;
+        max-width: min(100%, 560px);
+        height: auto;
+        border-radius: var(--spacing-xxxs);
+    }
+
+    .imagePlaceholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 220px;
+        min-height: 120px;
+        border: 1px dashed var(--border-neutral-default);
+        border-radius: var(--spacing-xxxs);
+        color: var(--content-neutral-secondary);
+        background-color: var(--surface-neutral-secondary);
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    .imageWrapperRemoved .image {
+        opacity: 0.65;
+    }
+
+    .imageDiffLabel {
+        margin-top: var(--spacing-xxxs);
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--content-neutral-secondary);
+    }
+
+    .imageWrapperAdded .imageDiffLabel {
+        color: var(--content-success-primary);
+    }
+
+    .imageWrapperRemoved .imageDiffLabel {
+        color: var(--content-error-primary);
+    }
 }
