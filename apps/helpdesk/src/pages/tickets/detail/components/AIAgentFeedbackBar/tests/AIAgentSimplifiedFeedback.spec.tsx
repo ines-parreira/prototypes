@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, render, screen } from '@testing-library/react'
@@ -11,6 +12,7 @@ import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
@@ -100,6 +102,20 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
 
 jest.mock('models/aiAgentFeedback/queries')
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
+
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
+    useShopIntegrationId: jest.fn(),
+}))
+
+jest.mock('@repo/feature-flags', () => ({
+    useFlag: jest.fn(),
+    FeatureFlagKey: {
+        IncreaseVisibilityOfOpportunity: 'increase-visibility-of-opportunity',
+    },
+}))
+
+const useFlagMock = useFlag as jest.Mock
+const useShopIntegrationIdMock = useShopIntegrationId as jest.Mock
 
 const initialFeedbackData = {
     isLoading: true,
@@ -196,6 +212,10 @@ describe('AIAgentSimplifiedFeedback', () => {
             onFeedbackTabOpened: jest.fn(),
             onFeedbackGiven: jest.fn(),
         })
+
+        useShopIntegrationIdMock.mockReturnValue(123)
+        useFlagMock.mockReturnValue(false)
+
         useGetAiAgentFeedbackMock.mockReturnValue({ data: undefined } as any)
     })
 

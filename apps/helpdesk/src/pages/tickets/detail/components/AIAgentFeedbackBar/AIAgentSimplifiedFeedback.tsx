@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab } from '@repo/navigation'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -8,7 +9,9 @@ import { LegacyButton as Button, Separator } from '@gorgias/axiom'
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { DetectedOpportunitiesBanner } from 'pages/aiAgent/opportunities/components/DetectedOpportunitiesBanner/DetectedOpportunitiesBanner'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimplifiedFeedback.less'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
@@ -117,6 +120,13 @@ const AIAgentSimplifiedFeedback = () => {
 
     const shopName =
         feedback?.executions?.[0]?.storeConfiguration?.shopName ?? ''
+
+    const shopIntegrationId = useShopIntegrationId(shopName)
+
+    const isTopOpportunitiesEnabled = useFlag(
+        FeatureFlagKey.IncreaseVisibilityOfOpportunity,
+        false,
+    )
 
     const { storeConfiguration } = useStoreConfiguration({
         shopName,
@@ -455,6 +465,16 @@ const AIAgentSimplifiedFeedback = () => {
                                         onKnowledgeResourceCreateClick
                                     }
                                 />
+                                {isTopOpportunitiesEnabled && (
+                                    <DetectedOpportunitiesBanner
+                                        shopName={shopName}
+                                        shopIntegrationId={shopIntegrationId}
+                                        ticketId={ticketId}
+                                        isTopOpportunitiesEnabled={
+                                            isTopOpportunitiesEnabled
+                                        }
+                                    />
+                                )}
                             </>
                         ) : (
                             <>
