@@ -485,6 +485,37 @@ describe('metricExecutionHandler', () => {
             expect(reportErrorMock).not.toHaveBeenCalled()
         })
 
+        it('should propagate CSRF errors without reporting to Sentry', async () => {
+            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+            const axiosError = new AxiosError('CSRF Token Error')
+            axiosError.response = {
+                status: 403,
+                data: {
+                    error: {
+                        msg: 'Something went wrong. Please reload this page.',
+                    },
+                },
+                statusText: 'Forbidden',
+                headers: {},
+                config: {} as any,
+            }
+            postReportingV2Mock.mockRejectedValue(axiosError)
+            postReportingV2QueryMock.mockResolvedValue(
+                createMockNextQueryResponse() as any,
+            )
+
+            const config: ExecuteMetricConfig = {
+                metricName: 'test-metric',
+                oldPayload: mockOldPayload,
+                newPayload: mockNewPayload,
+            }
+
+            await expect(metricExecutionHandler(config)).rejects.toThrow(
+                axiosError,
+            )
+            expect(reportErrorMock).not.toHaveBeenCalled()
+        })
+
         it('should still report 4xx errors (except 429) to Sentry', async () => {
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())
             const axiosError = new AxiosError('Bad request')
