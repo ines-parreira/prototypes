@@ -175,6 +175,7 @@ export enum FeatureFlagKey {
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
+    RulesAddInstagramProfileIntegration = 'rules-add-instagram-profile-integration',
     SendCallsToVoicemailPreference = 'send-calls-to-voicemail-preference',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     SmartFollowUps = 'linear.task_AIEXP-7399.smart-follow-ups-on-helpdesk',

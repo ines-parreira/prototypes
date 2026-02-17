@@ -426,6 +426,49 @@ describe('<MemberExpression/>', () => {
         expect(screen.queryByText('Self Service')).toBeInTheDocument()
     })
 
+    it('should display instagram profile with facebook in integrations list if feature flag enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        renderComponent(
+            {},
+            {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            type: 'facebook',
+                        },
+                    ],
+                }),
+            },
+        )
+
+        expect(screen.queryByText('Instagram Profile')).toBeInTheDocument()
+    })
+
+    it('should not display instagram profile with facebook in integrations list if feature flag disabled', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        renderComponent(
+            {},
+            {
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            type: 'facebook',
+                        },
+                    ],
+                }),
+            },
+        )
+
+        expect(screen.queryByText('Instagram Profile')).not.toBeInTheDocument()
+    })
+
     it('should render integration icons', () => {
         const { container } = renderComponent(
             {

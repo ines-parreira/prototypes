@@ -84,6 +84,8 @@ export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
         return IdentifierCategoryKey.BigCommerceCustomer
     } else if (jointPath.includes('integrations.smile.customer')) {
         return IdentifierCategoryKey.SmileCustomer
+    } else if (jointPath.includes('instagram.profile')) {
+        return IdentifierCategoryKey.InstagramProfile
     } else if (jointPath.includes('ticket.customer')) {
         return IdentifierCategoryKey.Customer
     } else if (path.includes('self_service_flow')) {

@@ -27,6 +27,7 @@ export enum IdentifierCategoryKey {
     SelfServiceFlow = 'selfServiceFlow',
     BigCommerceCustomer = 'bigcommerceCustomer',
     BigCommerceLastOrder = 'bigcommerceLastOrder',
+    InstagramProfile = 'instagramProfile',
 }
 
 export enum IdentifierCategoryValue {
@@ -46,6 +47,7 @@ export enum IdentifierCategoryValue {
     SelfServiceFlow = 'Self Service',
     BigCommerceCustomer = 'BigCommerce Customer',
     BigCommerceLastOrder = 'BigCommerce Last Order',
+    InstagramProfile = 'Instagram Profile',
 }
 
 export enum IdentifierSubCategoryValue {

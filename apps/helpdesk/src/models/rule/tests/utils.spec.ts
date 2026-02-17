@@ -112,6 +112,29 @@ describe('rule utils', () => {
                 ],
             ],
             [
+                IdentifierCategoryKey.InstagramProfile,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'facebook',
+                    'instagram',
+                    'profile',
+                    'business_follows_customer',
+                ],
+            ],
+            [
+                IdentifierCategoryKey.SmileCustomer,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'smile',
+                    'customer',
+                    'state',
+                ],
+            ],
+            [
                 IdentifierCategoryKey.Customer,
                 ['ticket', 'customer', 'created_at'],
             ],

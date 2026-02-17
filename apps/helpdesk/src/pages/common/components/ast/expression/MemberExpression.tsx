@@ -272,6 +272,11 @@ export function MemberExpression({
         [customerCustomFields],
     )
 
+    const isInstagramProfileInRulesEnabled = useFlag(
+        FeatureFlagKey.RulesAddInstagramProfileIntegration,
+        false,
+    )
+
     const filteredCategories = useMemo(() => {
         return IDENTIFIER_CATEGORIES.filter((category) => {
             switch (category.value) {
@@ -296,13 +301,23 @@ export function MemberExpression({
                 case IdentifierCategoryKey.BigCommerceCustomer:
                 case IdentifierCategoryKey.BigCommerceLastOrder:
                     return hasIntegrationType(IntegrationType.BigCommerce)
+                case IdentifierCategoryKey.InstagramProfile:
+                    return (
+                        isInstagramProfileInRulesEnabled &&
+                        hasIntegrationType(IntegrationType.Facebook)
+                    )
                 case IdentifierCategoryKey.SelfServiceFlow:
                     return hasAccess
                 default:
                     return true
             }
         })
-    }, [hasIntegrationType, hasAccess, enableShopifyMetafieldsInRules])
+    }, [
+        hasIntegrationType,
+        hasAccess,
+        enableShopifyMetafieldsInRules,
+        isInstagramProfileInRulesEnabled,
+    ])
 
     const handleSelect = (value: string) => {
         setSelectedCategory(null)

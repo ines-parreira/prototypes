@@ -76,6 +76,10 @@ export const IDENTIFIER_CATEGORIES: {
         label: IdentifierCategoryValue.SelfServiceFlow,
         value: IdentifierCategoryKey.SelfServiceFlow,
     },
+    {
+        label: IdentifierCategoryValue.InstagramProfile,
+        value: IdentifierCategoryKey.InstagramProfile,
+    },
 ]
 
 export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
@@ -535,6 +539,33 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             label: 'Self-service store',
             text: 'self-service store',
             value: 'message.self_service_flow.store_integration_id',
+        },
+    ],
+    [IdentifierCategoryKey.InstagramProfile]: [
+        {
+            label: 'Business follows customer',
+            text: 'business follows customer',
+            value: 'ticket.customer.integrations.facebook.instagram.profile.business_follows_customer',
+        },
+        {
+            label: 'Customer follows business',
+            text: 'customer follows business',
+            value: 'ticket.customer.integrations.facebook.instagram.profile.customer_follows_business',
+        },
+        {
+            label: 'Followers count',
+            text: 'followers count',
+            value: 'ticket.customer.integrations.facebook.instagram.profile.total_followers',
+        },
+        {
+            label: 'Username',
+            text: 'username',
+            value: 'ticket.customer.integrations.facebook.instagram.profile.username',
+        },
+        {
+            label: 'Verified',
+            text: 'verified',
+            value: 'ticket.customer.integrations.facebook.instagram.profile.is_verified',
         },
     ],
 }
