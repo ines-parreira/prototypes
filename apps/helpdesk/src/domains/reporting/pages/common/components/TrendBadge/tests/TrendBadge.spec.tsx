@@ -30,7 +30,7 @@ describe('<TrendBadge />', () => {
         expect(getAllByTestId('skeleton')).toHaveLength(1)
     })
 
-    it('should render when prev value is zero and the format is percent', () => {
+    it('should render undefined variation text when prev value is zero and current value is non-zero', () => {
         const value = 2.3
         const prevValue = 0
 
@@ -39,7 +39,20 @@ describe('<TrendBadge />', () => {
         )
 
         expect(container.firstChild).not.toBe(null)
-        expect(container.firstChild?.textContent).toEqual(DEFAULT_BADGE_TEXT)
+        expect(container.firstChild?.textContent).toEqual('-%')
+    })
+
+    it('should render 0% when both values are zero', () => {
+        const { container } = render(<TrendBadge value={0} prevValue={0} />)
+
+        expect(container.firstChild?.textContent).toEqual('0%')
+    })
+
+    it('should render unchanged color when showing undefined variation', () => {
+        const { container } = render(<TrendBadge value={50} prevValue={0} />)
+
+        expect(container.firstChild?.textContent).toEqual('-%')
+        expect(container.firstChild).toHaveClass('unchanged')
     })
 
     it('should render with positive color when more-is-better', () => {

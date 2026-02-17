@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { UNDEFINED_VARIATION_TEXT } from '@repo/reporting'
 import { renderHook } from '@repo/testing'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import _keyBy from 'lodash/keyBy'
@@ -392,9 +393,9 @@ describe('stats components utils', () => {
             })
         })
 
-        it('should return null when current value is non-zero and prev value is zero and the format is percent', () => {
+        it('should return undefined variation text when current value is non-zero and prev value is zero and the format is percent', () => {
             expect(formatMetricTrend(2.3, 0, 'percent')).toMatchObject({
-                formattedTrend: null,
+                formattedTrend: UNDEFINED_VARIATION_TEXT,
                 sign: 0,
             })
         })
@@ -402,6 +403,38 @@ describe('stats components utils', () => {
         it('should format trend as 0 when current value is zero and prev value is zero and the format is percent', () => {
             expect(formatMetricTrend(0, 0, 'percent')).toMatchObject({
                 formattedTrend: '0%',
+            })
+        })
+
+        describe('division by zero edge cases', () => {
+            it('should return undefined variation text when prevValue is 0 and value is positive', () => {
+                expect(formatMetricTrend(10, 0, 'percent')).toMatchObject({
+                    formattedTrend: UNDEFINED_VARIATION_TEXT,
+                    sign: 0,
+                })
+            })
+
+            it('should return undefined variation text when prevValue is 0 and value is negative', () => {
+                expect(formatMetricTrend(-5, 0, 'percent')).toMatchObject({
+                    formattedTrend: UNDEFINED_VARIATION_TEXT,
+                    sign: 0,
+                })
+            })
+
+            it('should return 0% when both values are 0', () => {
+                expect(formatMetricTrend(0, 0, 'percent')).toMatchObject({
+                    formattedTrend: '0%',
+                    sign: 0,
+                })
+            })
+
+            it('should return undefined variation text for decimal-to-percent format when prevValue is 0', () => {
+                expect(
+                    formatMetricTrend(1.5, 0, 'decimal-to-percent'),
+                ).toMatchObject({
+                    formattedTrend: UNDEFINED_VARIATION_TEXT,
+                    sign: 0,
+                })
             })
         })
         it('should not return +0% when the result is to the degree of thousands and the format is percent', () => {
@@ -940,7 +973,7 @@ describe('stats components utils', () => {
         })
 
         it('should handle single value with default previousValue', () => {
-            expect(getFormattedDelta(20)).toBe(NOT_AVAILABLE_PLACEHOLDER)
+            expect(getFormattedDelta(20)).toBe(UNDEFINED_VARIATION_TEXT)
         })
     })
 })

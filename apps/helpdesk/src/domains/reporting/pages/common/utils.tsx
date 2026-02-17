@@ -1,5 +1,6 @@
 import { useContext, useMemo } from 'react'
 
+import { UNDEFINED_VARIATION_TEXT } from '@repo/reporting'
 import type { DateTimeResultFormatType } from '@repo/utils'
 import { formatDatetime } from '@repo/utils'
 import _isNumber from 'lodash/isNumber'
@@ -365,6 +366,20 @@ export type MetricTrendFormat =
  * @type reporting-ui-kit
  */
 const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
+    // When both values are 0, there's no change
+    if (prevValue === 0 && absDiff === 0) {
+        return new Intl.NumberFormat(DEFAULT_LOCALE, {
+            style: 'percent',
+            maximumFractionDigits: 0,
+        }).format(0)
+    }
+
+    // When prevValue is 0 but there is a difference,
+    // we cannot calculate a percentage
+    if (prevValue === 0) {
+        return UNDEFINED_VARIATION_TEXT
+    }
+
     const value = absDiff / prevValue || 0
     return Number.isFinite(value)
         ? new Intl.NumberFormat(DEFAULT_LOCALE, {
@@ -400,7 +415,11 @@ export const formatMetricTrend = (
         }).format(absDiff)
     }
 
-    if (formattedDiff === null || parseFloat(formattedDiff) === 0) {
+    if (
+        formattedDiff === null ||
+        parseFloat(formattedDiff) === 0 ||
+        formattedDiff === UNDEFINED_VARIATION_TEXT // If the formatted diff is the undefined variation text, return it with sign 0
+    ) {
         return {
             formattedTrend: formattedDiff,
             sign: 0,

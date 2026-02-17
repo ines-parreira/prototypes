@@ -7,6 +7,7 @@ import {
     DEFAULT_LOCALE,
     NOT_AVAILABLE_PLACEHOLDER,
     NOT_AVAILABLE_TEXT,
+    UNDEFINED_VARIATION_TEXT,
 } from '../constants'
 import type {
     MetricTrendFormat,
@@ -61,6 +62,20 @@ const formatTrendAsPercent = (
     prevValue: number,
     absDiff: number,
 ): string | null => {
+    // When both values are 0, there's no change - return "0%"
+    if (prevValue === 0 && absDiff === 0) {
+        return new Intl.NumberFormat(DEFAULT_LOCALE, {
+            style: 'percent',
+            maximumFractionDigits: 0,
+        }).format(0)
+    }
+
+    // When prevValue is 0 but there is a difference,
+    // we cannot calculate a percentage - return undefined variation text
+    if (prevValue === 0) {
+        return UNDEFINED_VARIATION_TEXT
+    }
+
     const value = absDiff / prevValue || 0
     return Number.isFinite(value)
         ? new Intl.NumberFormat(DEFAULT_LOCALE, {
@@ -115,6 +130,14 @@ const formatMetricTrend = (
         formattedDiff = Intl.NumberFormat(DEFAULT_LOCALE, {
             maximumFractionDigits: 1,
         }).format(absDiff)
+    }
+
+    // If the formatted diff is the undefined variation text, return it with sign 0
+    if (formattedDiff === UNDEFINED_VARIATION_TEXT) {
+        return {
+            formattedTrend: formattedDiff,
+            sign: 0,
+        }
     }
 
     if (formattedDiff === null || parseFloat(formattedDiff) === 0) {

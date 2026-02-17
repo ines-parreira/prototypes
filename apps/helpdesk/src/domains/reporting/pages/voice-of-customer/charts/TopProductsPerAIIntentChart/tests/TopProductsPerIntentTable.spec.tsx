@@ -8,7 +8,6 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useIntentTicketCountsAndDelta } from 'domains/reporting/hooks/voice-of-customer/useIntentTicketCountsAndDelta'
 import { useProductsTicketCountsPerIntentDistribution } from 'domains/reporting/hooks/voice-of-customer/useProductsTicketCountsPerIntentDistribution'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { DEFAULT_BADGE_TEXT } from 'domains/reporting/pages/common/components/TrendBadge'
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
 import {
     TopIntentsColumns,
@@ -199,8 +198,8 @@ describe('TopProductsPerIntentTable', () => {
 
         render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
-        const trendPlaceholder = screen.getByText(DEFAULT_BADGE_TEXT)
-        expect(trendPlaceholder).toBeInTheDocument()
+        const undefinedVariationText = screen.getByText('-%')
+        expect(undefinedVariationText).toBeInTheDocument()
     })
 
     it('should render product delta fallback', () => {
@@ -221,8 +220,8 @@ describe('TopProductsPerIntentTable', () => {
 
         render(<TopProductsPerIntentTable intentCustomFieldId={123} />)
 
-        const trendPlaceholder = screen.getByText(DEFAULT_BADGE_TEXT)
-        expect(trendPlaceholder).toBeInTheDocument()
+        const undefinedVariationText = screen.getByText('-%')
+        expect(undefinedVariationText).toBeInTheDocument()
     })
 
     it('should check the expanded row data', async () => {

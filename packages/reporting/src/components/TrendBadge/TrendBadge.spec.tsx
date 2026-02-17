@@ -4,7 +4,11 @@ import { vi } from 'vitest'
 
 import { IconName } from '@gorgias/axiom'
 
-import { DEFAULT_BADGE_TEXT, TREND_BADGE_FORMAT } from '../../constants'
+import {
+    DEFAULT_BADGE_TEXT,
+    TREND_BADGE_FORMAT,
+    UNDEFINED_VARIATION_TEXT,
+} from '../../constants'
 import { formatMetricTrend, formatMetricValue } from '../../utils/helpers'
 import { TrendBadge } from './TrendBadge'
 
@@ -35,13 +39,26 @@ describe('<TrendBadge />', () => {
         expect(screen.getByRole('progressbar')).toBeInTheDocument()
     })
 
-    it('should render when prev value is zero and the format is percent', () => {
+    it('should render undefined variation text when prev value is zero and current value is non-zero', () => {
         const value = 2.3
         const prevValue = 0
 
         render(<TrendBadge value={value} prevValue={prevValue} />)
 
-        expect(screen.getByText(DEFAULT_BADGE_TEXT)).toBeInTheDocument()
+        expect(screen.getByText(UNDEFINED_VARIATION_TEXT)).toBeInTheDocument()
+    })
+
+    it('should render 0% when both values are zero', () => {
+        render(<TrendBadge value={0} prevValue={0} />)
+
+        expect(screen.getByText('0%')).toBeInTheDocument()
+    })
+
+    it('should not display trend icon when showing undefined variation', () => {
+        render(<TrendBadge value={50} prevValue={0} />)
+
+        expect(screen.getByText(UNDEFINED_VARIATION_TEXT)).toBeInTheDocument()
+        expect(screen.queryByRole('img')).not.toBeInTheDocument()
     })
 
     it('should render Badge tooltip', async () => {

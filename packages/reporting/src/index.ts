@@ -35,6 +35,7 @@ export {
     NOT_AVAILABLE_TEXT,
     NOT_AVAILABLE_PLACEHOLDER,
     HINT_TOOLTIP_DELAY,
+    UNDEFINED_VARIATION_TEXT,
 } from './constants'
 export {
     type MetricConfigItem,
