@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+import { getFileTooLargeError } from '@repo/utils'
+
 import { Skeleton } from '@gorgias/axiom'
 
 import { FieldPresentation } from 'AIJourney/components'
@@ -14,7 +16,6 @@ import {
 import { MAX_IMAGE_SIZE } from 'pages/settings/helpCenter/constants'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { getFileTooLargeError } from 'utils/file'
 
 import css from './UploadImage.less'
 
