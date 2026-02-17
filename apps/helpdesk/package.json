@@ -93,7 +93,7 @@
         "@gorgias/knowledge-service-queries": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-validators": "catalog:rest-api-sdk",
-        "@gorgias/realtime-ably": "^0.2.20",
+        "@gorgias/realtime-ably": "catalog:realtime-ably",
         "@hookform/resolvers": "^3.10.0",
         "@internationalized/date": "catalog:axiom",
         "@knocklabs/client": "^0.16.3",
@@ -420,6 +420,7 @@
         "typescript": "5.3.3",
         "url-loader": "1.1.2",
         "validator": "13.7.0",
+        "vitest": "catalog:test",
         "webpack-merge": "^6.0.1"
     },
     "peerDependenciesMeta": {

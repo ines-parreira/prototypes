@@ -66,6 +66,11 @@ jest.mock('@repo/agent-status', () => ({
         isError: false,
         error: null,
     })),
+    LiveAgentsRealtimeListener: ({ userIds }: { userIds: number[] }) => (
+        <div data-testid="live-agents-realtime-listener">
+            LiveAgentsRealtimeListener: {userIds.join(',')}
+        </div>
+    ),
 }))
 jest.mock(
     'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities',
@@ -108,12 +113,16 @@ describe('LiveAgents', () => {
             all: teams,
         }),
         entities: {
+            stats: {
+                'live-agents-stat/users-performance-overview':
+                    userPerformanceOverview,
+            },
             tags: {},
         },
         ui: {
             stats: { filters: uiFiltersInitialState },
         },
-    } as RootState
+    } as unknown as RootState
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
@@ -273,5 +282,55 @@ describe('LiveAgents', () => {
         expect(usePerformancePageAgentAvailabilitiesMock).toHaveBeenCalledWith({
             enabled: false,
         })
+    })
+
+    it('should render LiveAgentsRealtimeListener when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByTestId('live-agents-realtime-listener'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render LiveAgentsRealtimeListener when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(
+            screen.queryByTestId('live-agents-realtime-listener'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should pass correct userIds to LiveAgentsRealtimeListener', () => {
+        useFlagMock.mockReturnValue(true)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        const listener = screen.getByTestId('live-agents-realtime-listener')
+        expect(listener).toHaveTextContent('LiveAgentsRealtimeListener: 1')
     })
 })

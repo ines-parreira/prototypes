@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { LiveAgentsRealtimeListener } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { produce } from 'immer'
 import moment from 'moment-timezone'
@@ -33,6 +34,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
+import { getUserIdsFromLiveAgentsPerformance } from 'state/entities/stats/selectors'
 
 export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
@@ -90,12 +92,17 @@ function LiveAgents() {
         )
     }, [userPerformance, isAgentAvailabilityEnabled])
 
+    const userIds = useAppSelector(getUserIdsFromLiveAgentsPerformance)
+
     usePerformancePageAgentAvailabilities({
         enabled: isAgentAvailabilityEnabled,
     })
 
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
+            {isAgentAvailabilityEnabled && (
+                <LiveAgentsRealtimeListener userIds={userIds} />
+            )}
             <StatsPage
                 title="Live agents"
                 description="Live Agents will show you the work agents have accomplished over the day."
