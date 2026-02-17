@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { DurationInMs } from '@repo/utils'
 
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
@@ -7,6 +9,7 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import {
+    useAgentStatus,
     useAvailabilityStatusColor,
     useUserAvailabilityExpirationTime,
 } from '../../hooks'
@@ -28,14 +31,46 @@ export function UserInfoHeaderContainer({
 
     const userAvailability = data?.data as unknown as UserAvailability
 
-    const statusText = useUserAvailabilityExpirationTime(
+    const statusExpirationTime = useUserAvailabilityExpirationTime(
         userAvailability?.custom_user_availability_status_expires_datetime,
+    )
+
+    const customUserStatus = useAgentStatus(
+        userAvailability?.custom_user_availability_status_id,
     )
 
     const indicatorColor = useAvailabilityStatusColor(
         userAvailability?.user_status,
         agentPhoneUnavailabilityStatus?.id,
     )
+
+    const displayStatusText = useMemo(() => {
+        if (agentPhoneUnavailabilityStatus) {
+            return agentPhoneUnavailabilityStatus.name
+        }
+
+        if (customUserStatus) {
+            return statusExpirationTime
+                ? `${customUserStatus.name} until ${statusExpirationTime}`
+                : customUserStatus.name
+        }
+
+        if (userAvailability) {
+            switch (userAvailability.user_status) {
+                case 'available':
+                    return 'Available'
+                case 'unavailable':
+                    return 'Unavailable'
+                default:
+                    return undefined
+            }
+        }
+    }, [
+        agentPhoneUnavailabilityStatus,
+        statusExpirationTime,
+        customUserStatus,
+        userAvailability,
+    ])
 
     if (isLoading || !currentUser) {
         return null
@@ -53,11 +88,7 @@ export function UserInfoHeaderContainer({
         <UserInfoHeader
             userName={userName || email || ''}
             avatarUrl={avatarUrl ?? undefined}
-            statusText={
-                agentPhoneUnavailabilityStatus
-                    ? agentPhoneUnavailabilityStatus.name
-                    : statusText
-            }
+            statusText={displayStatusText}
             isOffline={false}
             indicatorColor={indicatorColor}
         />

@@ -26,6 +26,7 @@ vi.mock('../../hooks', async () => {
         ...actual,
         useUserAvailabilityExpirationTime: vi.fn(),
         useAvailabilityStatusColor: vi.fn(),
+        useAgentStatus: vi.fn(),
     }
 })
 
@@ -54,6 +55,7 @@ describe('UserInfoHeaderContainer', () => {
             undefined,
         )
         vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(undefined)
+        vi.mocked(hooks.useAgentStatus).mockReturnValue(undefined)
     })
 
     describe('Loading states', () => {
@@ -287,7 +289,7 @@ describe('UserInfoHeaderContainer', () => {
             )
         })
 
-        it('should display expiration time when no phone unavailability status', () => {
+        it('should display custom status name with expiration time when no phone unavailability status', () => {
             vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
                 data: {
                     data: {
@@ -297,6 +299,11 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
+            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+                id: 'custom',
+                name: 'In a meeting',
+                is_system: false,
+            } as any)
             vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
                 '2:30pm',
             )
@@ -304,18 +311,94 @@ describe('UserInfoHeaderContainer', () => {
             render(<UserInfoHeaderContainer />)
 
             expect(screen.getByTestId('status-text')).toHaveTextContent(
-                '2:30pm',
+                'In a meeting until 2:30pm',
             )
         })
 
-        it('should display undefined when no expiration time and no phone status', () => {
+        it('should display "Available" when user is available and no phone status', () => {
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'available',
+                    },
+                },
+            } as any)
+
+            render(<UserInfoHeaderContainer />)
+
+            expect(screen.getByTestId('status-text')).toHaveTextContent(
+                'Available',
+            )
+        })
+
+        it('should display "Unavailable" when user is unavailable and no phone status', () => {
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'unavailable',
+                    },
+                },
+            } as any)
+
+            render(<UserInfoHeaderContainer />)
+
+            expect(screen.getByTestId('status-text')).toHaveTextContent(
+                'Unavailable',
+            )
+        })
+
+        it('should display custom status name without expiration time when no expires datetime', () => {
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'custom',
+                    },
+                },
+            } as any)
+            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+                id: 'custom',
+                name: 'In a meeting',
+                is_system: false,
+            } as any)
             vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
                 undefined,
             )
 
             render(<UserInfoHeaderContainer />)
 
-            expect(screen.getByTestId('status-text')).toHaveTextContent('')
+            expect(screen.getByTestId('status-text')).toHaveTextContent(
+                'In a meeting',
+            )
+        })
+
+        it('should prioritize phone status over user availability status text', () => {
+            vi.mocked(helpdeskQueries.useGetUserAvailability).mockReturnValue({
+                data: {
+                    data: {
+                        user_status: 'custom',
+                        custom_user_availability_status_expires_datetime:
+                            '2026-01-30T14:30:00Z',
+                    },
+                },
+            } as any)
+            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+                id: 'custom',
+                name: 'In a meeting',
+                is_system: false,
+            } as any)
+            vi.mocked(hooks.useUserAvailabilityExpirationTime).mockReturnValue(
+                '2:30pm',
+            )
+
+            render(
+                <UserInfoHeaderContainer
+                    agentPhoneUnavailabilityStatus={ON_A_CALL_STATUS}
+                />,
+            )
+
+            expect(screen.getByTestId('status-text')).toHaveTextContent(
+                'On a call',
+            )
         })
 
         it('should call useUserAvailabilityExpirationTime with expires datetime', () => {
