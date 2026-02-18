@@ -6,11 +6,15 @@ import { Provider } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
+    AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
     basicYearlyInvoicedMonthlyAutomationPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
     convertPlan0,
     HELPDESK_PRODUCT_ID,
     products,
@@ -20,6 +24,7 @@ import {
 import { ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 import type { RootState, StoreDispatch } from 'state/types'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { ProductCardProps } from '../ProductCard'
 import ProductCard from '../ProductCard'
@@ -172,16 +177,44 @@ describe('ProductCard', () => {
     )
 
     describe('Yearly contract plan behavior', () => {
+        const yearlyProducts = products.map((product) => {
+            if (product.type === ProductType.Helpdesk) {
+                return {
+                    ...product,
+                    prices: [
+                        ...product.prices,
+                        basicYearlyInvoicedMonthlyHelpdeskPlan,
+                    ],
+                }
+            }
+            return product
+        })
         it('should disable Manage button for yearly contract plans', () => {
-            render(
-                <Provider store={store}>
-                    <ProductCard
-                        type={ProductType.Automation}
-                        plan={basicYearlyInvoicedMonthlyAutomationPlan}
-                        isDisabled={false}
-                        tooltipDisabledCTACallback={jest.fn()}
-                    />
-                </Provider>,
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    plan={basicYearlyInvoicedMonthlyAutomationPlan}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                />,
+                {
+                    billing: fromJS({
+                        ...billingState,
+                        products: yearlyProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                                [AUTOMATION_PRODUCT_ID]:
+                                    basicYearlyInvoicedMonthlyAutomationPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
             )
 
             expect(
@@ -190,32 +223,94 @@ describe('ProductCard', () => {
         })
 
         it('should disable Subscribe button for yearly contract plans without active plan', () => {
-            render(
-                <Provider store={store}>
-                    <ProductCard
-                        type={ProductType.Automation}
-                        isDisabled={false}
-                        tooltipDisabledCTACallback={jest.fn()}
-                        plan={undefined}
-                    />
-                </Provider>,
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                    plan={undefined}
+                />,
+                {
+                    billing: fromJS({
+                        ...billingState,
+                        products: yearlyProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
             )
 
             expect(
                 screen.getByRole('button', { name: /subscribe/i }),
-            ).not.toBeAriaDisabled()
+            ).toBeAriaDisabled()
+        })
+
+        it('should hide "Starting at" pricing for yearly contract plans when product is inactive', () => {
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                    plan={undefined}
+                />,
+                {
+                    billing: fromJS({
+                        ...billingState,
+                        products: yearlyProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
+            )
+
+            expect(screen.queryByText(/starting at/i)).not.toBeInTheDocument()
+        })
+
+        it('should show "Starting at" pricing for non-yearly plans when product is inactive', () => {
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                    plan={undefined}
+                />,
+                {
+                    billing: fromJS(billingState),
+                    currentAccount: fromJS(account),
+                },
+            )
+
+            expect(screen.getByText(/starting at/i)).toBeInTheDocument()
         })
 
         it('should not disable Manage button when cadence matches invoice_cadence', () => {
-            render(
-                <Provider store={store}>
-                    <ProductCard
-                        type={ProductType.Automation}
-                        plan={basicMonthlyAutomationPlan}
-                        isDisabled={false}
-                        tooltipDisabledCTACallback={jest.fn()}
-                    />
-                </Provider>,
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    plan={basicMonthlyAutomationPlan}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                />,
+                {
+                    billing: fromJS(billingState),
+                    currentAccount: fromJS(account),
+                },
             )
 
             expect(
@@ -224,15 +319,42 @@ describe('ProductCard', () => {
         })
 
         it('should show contact us tooltip for yearly contract plans', async () => {
-            render(
-                <Provider store={store}>
-                    <ProductCard
-                        type={ProductType.Automation}
-                        plan={basicYearlyInvoicedMonthlyAutomationPlan}
-                        isDisabled={false}
-                        tooltipDisabledCTACallback={jest.fn()}
-                    />
-                </Provider>,
+            const yearlyProducts = products.map((product) => {
+                if (product.type === ProductType.Helpdesk) {
+                    return {
+                        ...product,
+                        prices: [
+                            ...product.prices,
+                            basicYearlyInvoicedMonthlyHelpdeskPlan,
+                        ],
+                    }
+                }
+                return product
+            })
+
+            renderWithStoreAndQueryClientProvider(
+                <ProductCard
+                    type={ProductType.Automation}
+                    plan={basicYearlyInvoicedMonthlyAutomationPlan}
+                    isDisabled={false}
+                    tooltipDisabledCTACallback={jest.fn()}
+                />,
+                {
+                    billing: fromJS({
+                        ...billingState,
+                        products: yearlyProducts,
+                    }),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                            },
+                        },
+                    }),
+                },
             )
 
             const manageButton = screen.getByRole('button', { name: /manage/i })

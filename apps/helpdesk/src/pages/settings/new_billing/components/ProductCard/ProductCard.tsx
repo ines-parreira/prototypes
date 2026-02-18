@@ -27,6 +27,7 @@ import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
     getCheapestProductPlans,
     getCurrentHelpdeskCadence,
+    getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 import { TicketPurpose } from 'state/billing/types'
@@ -89,7 +90,8 @@ const ProductCard = ({
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
     const productInfo = getProductInfo(type, plan)
-    const isYearlyPlan = isYearlyContractPlan(plan)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
 
     const { className, canduOverageStatus } = useMemo(() => {
         if (
@@ -141,7 +143,7 @@ const ProductCard = ({
     const subscribeContainer = useMemo(() => {
         return (
             <div className={css.subscribeContainer}>
-                {cadence && (
+                {cadence && !isYearlyPlan && (
                     <div>
                         Starting at{' '}
                         <b>
@@ -168,7 +170,7 @@ const ProductCard = ({
 
                 <Button
                     intent="primary"
-                    isDisabled={isDisabled}
+                    isDisabled={isDisabled || isYearlyPlan}
                     onClick={() => {
                         const url = `${BILLING_PROCESS_PATH}/${type}`
                         logEvent(
