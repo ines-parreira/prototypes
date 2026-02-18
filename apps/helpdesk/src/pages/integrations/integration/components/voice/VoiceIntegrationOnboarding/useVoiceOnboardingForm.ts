@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 
 import type {
     CreateIntegrationBody,
+    HttpResponse,
     PhoneIntegration,
 } from '@gorgias/helpdesk-queries'
 import { useCreateIntegration } from '@gorgias/helpdesk-queries'
@@ -10,6 +11,7 @@ import { validatePhoneIntegrationMeta } from '@gorgias/helpdesk-validators'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useNotify } from 'hooks/useNotify'
+import { isGorgiasApiError } from 'models/api/types'
 import { fetchIntegrations } from 'state/integrations/actions'
 
 import { PHONE_INTEGRATION_BASE_URL } from '../constants'
@@ -49,10 +51,12 @@ export const useOnboardingForm = () => {
                     search: params?.toString(),
                 })
             },
-            onError: () => {
-                notify.error(
-                    "We couldn't save your preferences. Please try again.",
-                )
+            onError: (error: HttpResponse<unknown>) => {
+                const message = isGorgiasApiError(error)
+                    ? error.response.data.error.msg
+                    : "We couldn't save your preferences. Please try again."
+
+                notify.error(message)
             },
         },
     })

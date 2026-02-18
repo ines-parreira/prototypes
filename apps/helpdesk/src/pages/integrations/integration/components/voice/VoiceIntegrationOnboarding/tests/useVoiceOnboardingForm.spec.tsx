@@ -156,7 +156,37 @@ describe('useOnboardingForm', () => {
         )
     })
 
-    it('should show error notification on createIntegration error', async () => {
+    it('should show backend error message on API error', async () => {
+        createIntegrationMock.mockRejectedValue({
+            isAxiosError: true,
+            response: {
+                data: {
+                    error: {
+                        msg: 'Your subscription does not include the Voice product. Please contact support.',
+                    },
+                },
+            },
+        })
+
+        const { result } = renderUseOnboardingForm()
+        const data = {
+            name: 'Test Integration',
+            meta: {
+                phone_number_id: 1,
+                function: PhoneFunction.Standard,
+            },
+        } as any
+
+        await act(async () => {
+            result.current.onSubmit(data)
+        })
+
+        expect(mockNotify.error).toHaveBeenCalledWith(
+            'Your subscription does not include the Voice product. Please contact support.',
+        )
+    })
+
+    it('should show generic error on non-API error', async () => {
         createIntegrationMock.mockRejectedValue({})
 
         const { result } = renderUseOnboardingForm()
