@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
+import { useShortcuts } from '@repo/utils'
 import { Emoji } from 'emoji-mart'
 import { isNumber } from 'lodash'
 
@@ -32,6 +33,7 @@ export function TeamAssigneeSelect({
     onChange,
     isDisabled = false,
 }: TeamAssigneeSelectProps) {
+    const [isTeamAssigneeOpen, setIsTeamAssigneeOpen] = useState(false)
     const {
         teamsMap,
         teamSections,
@@ -57,14 +59,26 @@ export function TeamAssigneeSelect({
         [teamsMap, onChange],
     )
 
-    const clearSearch = useCallback(
+    const handleOpenChange = useCallback(
         (isOpen: boolean) => {
+            setIsTeamAssigneeOpen(isOpen)
             if (!isOpen) {
                 setSearch('')
             }
         },
-        [setSearch],
+        [setIsTeamAssigneeOpen, setSearch],
     )
+
+    const actions = {
+        OPEN_TEAM_ASSIGNEE: {
+            action: (event: Event) => {
+                event.preventDefault()
+                handleOpenChange(!isTeamAssigneeOpen)
+            },
+        },
+    }
+
+    useShortcuts('TicketHeader', actions)
 
     return (
         <Select
@@ -83,7 +97,8 @@ export function TeamAssigneeSelect({
             maxWidth={SELECT_WIDTH}
             maxHeight={220}
             onLoadMore={() => shouldLoadMore && onLoad()}
-            onOpenChange={clearSearch}
+            isOpen={isTeamAssigneeOpen}
+            onOpenChange={handleOpenChange}
             aria-label="Team selection"
             size="sm"
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {

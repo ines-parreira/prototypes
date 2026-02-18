@@ -267,6 +267,19 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    TicketHeader: {
+        description: 'Ticket header shortcuts',
+        actions: {
+            OPEN_USER_ASSIGNEE: {
+                key: 'a',
+                description: 'Open the user assignee dropdown.',
+            },
+            OPEN_TEAM_ASSIGNEE: {
+                key: 'shift+a',
+                description: 'Open the team assignee dropdown.',
+            },
+        },
+    },
     TimelineModal: {
         description: 'Timeline ticket modal',
         actions: {

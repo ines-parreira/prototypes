@@ -1,5 +1,6 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
+import { useShortcuts } from '@repo/utils'
 import { isNumber } from 'lodash'
 
 import {
@@ -31,6 +32,7 @@ export function UserAssigneeSelect({
     onChange,
     isDisabled = false,
 }: UserAssigneeSelectProps) {
+    const [isUserAssigneeOpen, setIsUserAssigneeOpen] = useState(false)
     const {
         usersMap,
         userSections,
@@ -56,14 +58,26 @@ export function UserAssigneeSelect({
         [usersMap, onChange],
     )
 
-    const clearSearch = useCallback(
+    const handleOpenChange = useCallback(
         (isOpen: boolean) => {
+            setIsUserAssigneeOpen(isOpen)
             if (!isOpen) {
                 setSearch('')
             }
         },
-        [setSearch],
+        [setIsUserAssigneeOpen, setSearch],
     )
+
+    const actions = {
+        OPEN_USER_ASSIGNEE: {
+            action: (event: Event) => {
+                event.preventDefault()
+                handleOpenChange(!isUserAssigneeOpen)
+            },
+        },
+    }
+
+    useShortcuts('TicketHeader', actions)
 
     return (
         <Select
@@ -82,7 +96,8 @@ export function UserAssigneeSelect({
             maxWidth={SELECT_WIDTH}
             maxHeight={306}
             onLoadMore={() => shouldLoadMore && onLoad()}
-            onOpenChange={clearSearch}
+            isOpen={isUserAssigneeOpen}
+            onOpenChange={handleOpenChange}
             aria-label="User selection"
             size="sm"
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {

@@ -13,6 +13,29 @@ import {
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { TeamAssignee } from '../TeamAssignee'
 
+let capturedActions: Record<string, { action: (event: Event) => void }> = {}
+
+vi.mock('@repo/utils', async () => {
+    const actual = await vi.importActual('@repo/utils')
+    return {
+        ...actual,
+        useShortcuts: (
+            _component: string,
+            actions: Record<string, { action: (event: Event) => void }>,
+        ) => {
+            capturedActions = actions
+        },
+    }
+})
+
+const mockEvent = { preventDefault: vi.fn() } as unknown as Event
+
+const triggerShortcut = (actionName: string) => {
+    act(() => {
+        capturedActions[actionName]?.action(mockEvent)
+    })
+}
+
 const ticketId = 123
 
 const team1 = mockTeam({ id: 1, name: 'Support', decoration: { emoji: '🛠️' } })
@@ -172,6 +195,63 @@ describe('TeamAssignee', () => {
                 assignee_team: null,
             })
         })
+    })
+
+    it('should open dropdown when OPEN_TEAM_ASSIGNEE shortcut is triggered', async () => {
+        render(<TeamAssignee ticketId={ticketId} currentTeam={null} />)
+
+        await waitUntilLoaded()
+
+        triggerShortcut('OPEN_TEAM_ASSIGNEE')
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toBeInTheDocument()
+        })
+    })
+
+    it('should close dropdown when OPEN_TEAM_ASSIGNEE shortcut is triggered while open', async () => {
+        const { user } = render(
+            <TeamAssignee ticketId={ticketId} currentTeam={null} />,
+        )
+
+        const select = await waitUntilLoaded()
+        await act(() => user.click(select))
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toBeInTheDocument()
+        })
+
+        triggerShortcut('OPEN_TEAM_ASSIGNEE')
+
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+    })
+
+    it('should clear search when dropdown is closed via shortcut', async () => {
+        const { user } = render(
+            <TeamAssignee ticketId={ticketId} currentTeam={null} />,
+        )
+
+        await waitUntilLoaded()
+
+        triggerShortcut('OPEN_TEAM_ASSIGNEE')
+
+        const searchInput = await screen.findByRole('searchbox')
+        await act(() => user.type(searchInput, 'test search'))
+
+        expect(searchInput).toHaveValue('test search')
+
+        triggerShortcut('OPEN_TEAM_ASSIGNEE')
+
+        await waitFor(() => {
+            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        })
+
+        triggerShortcut('OPEN_TEAM_ASSIGNEE')
+
+        const searchInputAfterReopen = await screen.findByRole('searchbox')
+        expect(searchInputAfterReopen).toHaveValue('')
     })
 
     it('should clear search when dropdown is closed', async () => {
