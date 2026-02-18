@@ -1,7 +1,15 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
-import { ButtonGroup } from '@gorgias/axiom'
+import {
+    Button,
+    ButtonGroup,
+    Menu,
+    MenuItem,
+    MenuSection,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { useTicketInfobarNavigationShortcuts } from '../../hooks/useTicketInfobarNavigationShortcuts'
 import { InfobarNavigationContainer } from './components/InfobarNavigationContainer'
@@ -79,6 +87,46 @@ export function TicketInfobarNavigation({
                     }}
                 />
             </ButtonGroup>
+            {hasUIVisionMilestone2 && (
+                <Menu
+                    aria-label="Edit widget data"
+                    placement="bottom left"
+                    trigger={
+                        <Tooltip placement="left">
+                            <Button
+                                slot="button"
+                                variant="tertiary"
+                                icon="settings"
+                                aria-label="Edit Widget data"
+                            />
+                            <TooltipContent title="Edit Widget data" />
+                        </Tooltip>
+                    }
+                >
+                    <MenuSection id="edit-widget-data" name="Edit widget data">
+                        <MenuItem
+                            label="Shopify"
+                            leadingSlot="vendor-shopify-colored"
+                            onAction={() => {}}
+                        />
+                        <MenuItem
+                            label="Yotpo"
+                            leadingSlot="channel-yotpo"
+                            onAction={() => {}}
+                        />
+                        <MenuItem
+                            label="Custom integrations"
+                            leadingSlot="webhook"
+                            onAction={() => {}}
+                        />
+                        <MenuItem
+                            label="Add new app"
+                            leadingSlot="add-plus"
+                            onAction={() => {}}
+                        />
+                    </MenuSection>
+                </Menu>
+            )}
         </InfobarNavigationContainer>
     )
 }
