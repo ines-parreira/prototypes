@@ -9,6 +9,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
     convertPlan1,
     currentProductsUsage,
@@ -62,10 +63,14 @@ const mockPendingChangesModal = jest.mocked(
     require('pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'),
 )
 
+const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn().mockReturnValue({
         selectedProduct: 'helpdesk',
+    }),
+    useHistory: () => ({
+        push: mockHistoryPush,
     }),
 }))
 
@@ -109,6 +114,7 @@ describe('BillingProcessView', () => {
         } as any)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
+        mockHistoryPush.mockClear()
     })
 
     afterEach(() => {
@@ -1226,5 +1232,101 @@ describe('BillingProcessView', () => {
             },
             {},
         )
+    })
+
+    describe('Yearly contract plan redirect', () => {
+        it('should redirect to billing homepage when current helpdesk plan is a yearly contract plan', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            const yearlyContractProduct = {
+                type: ProductType.Helpdesk,
+                prices: [basicYearlyInvoicedMonthlyHelpdeskPlan],
+            }
+
+            const storeWithYearlyContract = {
+                ...storeInitialState,
+                billing: fromJS({
+                    invoices: [],
+                    products: [yearlyContractProduct, ...products.slice(1)],
+                    currentProductsUsage: {
+                        helpdesk: {
+                            data: {
+                                extra_tickets_cost_in_cents: 0,
+                                num_extra_tickets: 0,
+                                num_tickets: 0,
+                            },
+                            meta: {
+                                subscription_start_datetime:
+                                    '2021-01-01T00:00:00Z',
+                                subscription_end_datetime:
+                                    '2021-02-01T00:00:00Z',
+                            },
+                        },
+                        automation: null,
+                        voice: null,
+                        sms: null,
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                        },
+                        scheduled_to_cancel_at: null,
+                    },
+                }),
+            } as Partial<RootState>
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeWithYearlyContract,
+            )
+
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/billing',
+                )
+            })
+        })
+
+        it('should not redirect when current helpdesk plan is not a yearly contract plan', async () => {
+            mockedServer
+                .onGet('/billing/state')
+                .reply(200, payingWithCreditCard)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('See Plans Details'),
+                ).toBeInTheDocument()
+            })
+
+            expect(mockHistoryPush).not.toHaveBeenCalled()
+        })
     })
 })

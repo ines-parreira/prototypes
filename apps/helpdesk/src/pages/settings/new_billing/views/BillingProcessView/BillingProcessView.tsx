@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import _capitalize from 'lodash/capitalize'
-import { useLocation, useParams } from 'react-router-dom'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -20,7 +20,11 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import { getProductInfo, isEnterprise } from 'models/billing/utils'
+import {
+    getProductInfo,
+    isEnterprise,
+    isYearlyContractPlan,
+} from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
@@ -42,7 +46,7 @@ import SummaryFooter from '../../components/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
-import { PRICING_DETAILS_URL } from '../../constants'
+import { BILLING_BASE_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
 import useProductCancellations from '../../hooks/useProductCancellations'
 import { formatNumTickets } from '../../utils/formatAmount'
@@ -155,6 +159,12 @@ const BillingProcessView = ({
         selectedProduct,
         filterByCadence: true,
     })
+    const history = useHistory()
+    useEffect(() => {
+        if (isYearlyContractPlan(currentHelpdeskPlan)) {
+            history.push(BILLING_BASE_PATH)
+        }
+    }, [currentHelpdeskPlan, history])
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
