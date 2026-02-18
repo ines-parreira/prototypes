@@ -13,6 +13,7 @@ import type { Integration } from 'models/integration/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import { getIntegrations } from 'state/integrations/selectors'
 import { getMessages } from 'state/ticket/selectors'
+import lastNonSystemTypeMessage from 'tickets/common/utils/lastNonSystemTypeMessage'
 import { getFormattedDate } from 'utils/date'
 
 import css from './InfobarCustomerInfo.less'
@@ -58,7 +59,7 @@ export const InstagramSection = ({
 }) => {
     const [showDetails, setShowDetails] = useState(false)
     const messages = useAppSelector(getMessages)
-    const lastMessage = messages.last()
+    const lastMessage = lastNonSystemTypeMessage(messages.toJS()) || null
     const messageIntegrationId = lastMessage?.get('integration_id')
     const allIntegrations = useAppSelector(getIntegrations)
 

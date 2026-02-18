@@ -544,4 +544,165 @@ describe('InstagramSection', () => {
             },
         )
     })
+
+    describe('message filtering (system messages and internal notes)', () => {
+        it('should use the last Instagram message when the most recent message is an internal note', async () => {
+            const storeWithInternalNote = createMockStore({
+                integrations: [
+                    {
+                        id: 456,
+                        type: 'facebook',
+                        meta: {
+                            instagram: {
+                                id: 'ig_business_456',
+                            },
+                        },
+                    },
+                ],
+                messages: [
+                    {
+                        id: 1,
+                        integration_id: 456,
+                        sender: {
+                            name: 'customer',
+                        },
+                        source: {
+                            type: 'instagram-direct-message',
+                        },
+                        created_datetime: '2024-01-01T10:00:00Z',
+                    },
+                    {
+                        id: 2,
+                        integration_id: null,
+                        sender: {
+                            name: 'agent',
+                        },
+                        source: {
+                            type: 'internal-note',
+                        },
+                        created_datetime: '2024-01-01T11:00:00Z',
+                    },
+                ],
+            })
+
+            const mockListInstagramProfiles = createInstagramProfilesHandler()
+            server.use(mockListInstagramProfiles.handler)
+
+            renderComponent(storeWithInternalNote)
+
+            // Verify the component still fetches and renders Instagram profile data
+            // using the Instagram message's integration (456), not the internal note
+            await waitFor(() => {
+                expect(screen.getByText(/14.7k followers/)).toBeInTheDocument()
+            })
+
+            const igLink = screen.getByRole('link', { name: /@test_user/ })
+            expect(igLink).toBeInTheDocument()
+        })
+
+        it('should use the last Instagram message when there are multiple internal notes and system messages', async () => {
+            const storeWithMultipleSystemMessages = createMockStore({
+                integrations: [
+                    {
+                        id: 789,
+                        type: 'facebook',
+                        meta: {
+                            instagram: {
+                                id: 'ig_business_789',
+                            },
+                        },
+                    },
+                ],
+                messages: [
+                    {
+                        id: 1,
+                        integration_id: 789,
+                        sender: {
+                            name: 'customer',
+                        },
+                        source: {
+                            type: 'instagram-direct-message',
+                        },
+                        created_datetime: '2024-01-01T09:00:00Z',
+                    },
+                    {
+                        id: 2,
+                        integration_id: null,
+                        sender: {
+                            name: 'agent',
+                        },
+                        source: {
+                            type: 'internal-note',
+                        },
+                        created_datetime: '2024-01-01T10:00:00Z',
+                    },
+                    {
+                        id: 3,
+                        integration_id: null,
+                        sender: {
+                            name: 'system',
+                        },
+                        source: {
+                            type: 'system-message',
+                        },
+                        created_datetime: '2024-01-01T11:00:00Z',
+                    },
+                    {
+                        id: 4,
+                        integration_id: null,
+                        sender: {
+                            name: 'agent',
+                        },
+                        source: {
+                            type: 'internal-note',
+                        },
+                        created_datetime: '2024-01-01T12:00:00Z',
+                    },
+                ],
+            })
+
+            const mockListInstagramProfiles = createInstagramProfilesHandler({
+                total_followers: 25000,
+            })
+            server.use(mockListInstagramProfiles.handler)
+
+            renderComponent(storeWithMultipleSystemMessages)
+
+            // Verify the component uses the Instagram message (id: 1, integration_id: 789)
+            // despite multiple internal notes and system messages after it
+            await waitFor(() => {
+                expect(screen.getByText(/25k followers/)).toBeInTheDocument()
+            })
+
+            const igLink = screen.getByRole('link', { name: /@test_user/ })
+            expect(igLink).toBeInTheDocument()
+        })
+
+        it('should handle the case when only internal notes exist', async () => {
+            const storeWithOnlyInternalNotes = createMockStore({
+                messages: [
+                    {
+                        id: 1,
+                        integration_id: null,
+                        sender: {
+                            name: 'agent',
+                        },
+                        source: {
+                            type: 'internal-note',
+                        },
+                        created_datetime: '2024-01-01T10:00:00Z',
+                    },
+                ],
+            })
+
+            renderComponent(storeWithOnlyInternalNotes)
+
+            // Should still render the basic Instagram link without profile data
+            const igLink = await screen.findByRole('link', {
+                name: /@test_user/,
+            })
+            expect(igLink).toBeInTheDocument()
+            expect(screen.queryByText(/Following:/)).not.toBeInTheDocument()
+        })
+    })
 })
