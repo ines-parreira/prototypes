@@ -14,6 +14,7 @@ export {
 } from './access-control/roles'
 export { sleep } from './misc/sleep'
 export { getMoneySymbol } from './misc/getMoneySymbol'
+export { isTimedelta } from './misc/ast'
 export { isCallActive, registerCallStateCallback } from './misc/reloadCallGuard'
 export { getSortByName } from './misc/getSortByName'
 export { IntlDisplayNames } from './language/language'

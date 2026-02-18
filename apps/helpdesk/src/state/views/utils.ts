@@ -1,3 +1,4 @@
+import { isTimedelta } from '@repo/utils'
 import { Syntax } from 'esprima'
 import type { BaseCallExpression, BaseNode } from 'estree'
 import type { List, Map, Seq } from 'immutable'
@@ -25,7 +26,6 @@ import {
     hasRole,
     toJS,
 } from '../../utils'
-import { isTimedelta } from '../../utils/ast'
 import type { Agents } from '../agents/types'
 import {
     CollectionOperator,

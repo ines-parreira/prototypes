@@ -1,3 +1,4 @@
+import { isTimedelta } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import drop from 'lodash/drop'
@@ -10,7 +11,6 @@ import moment from 'moment-timezone'
 import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
 import type { Schemas } from '../../types'
 import { getAST, getFirstExpressionOfAST } from '../../utils'
-import { isTimedelta } from '../../utils/ast'
 import { OBJECT_DEFINITIONS } from './constants'
 import type {
     ObjectExpression,
