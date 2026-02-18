@@ -312,6 +312,37 @@ describe('MultiLevelSelect', () => {
         })
     })
 
+    it('should allow navigating into the same section after closing and reopening', async () => {
+        const { user } = render(
+            <MultiLevelSelect
+                choices={choices}
+                placeholder="Select option"
+                ariaLabel="Select field"
+                onSelect={vi.fn()}
+            />,
+        )
+
+        const trigger = screen.getByLabelText('Select field')
+        await act(() => user.click(trigger))
+
+        const listbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(listbox).getByText('Status')))
+
+        await screen.findAllByText('Open')
+
+        await act(() => user.click(document.body))
+
+        await act(() => user.click(trigger))
+
+        const reopenedListbox = await screen.findByRole('listbox')
+        await act(() => user.click(within(reopenedListbox).getByText('Status')))
+
+        await waitFor(() => {
+            expect(screen.getAllByText('Open').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Closed').length).toBeGreaterThan(0)
+        })
+    })
+
     it('should not show tooltip when there is no selected value', async () => {
         const { user } = render(
             <MultiLevelSelect

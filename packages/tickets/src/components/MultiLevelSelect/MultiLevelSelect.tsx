@@ -170,7 +170,7 @@ export function MultiLevelSelect(props: Props) {
                 onOpenChange={handleOpenChange}
                 trigger={trigger}
                 keyName="id"
-                selectedItem={selectedOption}
+                selectedItem={selectedOption ?? null}
                 onSelect={handleSelect}
                 minWidth={139}
                 maxWidth={139}
