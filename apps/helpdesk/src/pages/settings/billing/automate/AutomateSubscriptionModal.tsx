@@ -18,7 +18,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
-import { isEnterprise } from 'models/billing/utils'
+import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {
     BILLING_BASE_PATH,
@@ -124,6 +124,7 @@ const AutomateSubscriptionModal = ({
     const helpdeskAvailablePlansIds = helpdeskAvailablePlans
         .filter((plan) => plan.cadence === cadence)
         .map((plan) => plan.plan_id)
+    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
@@ -265,17 +266,22 @@ const AutomateSubscriptionModal = ({
                         onConfirm={onConfirm}
                         confirmLabel={confirmLabel}
                         isSubscriptionEnabled={isSubscriptionEnabled}
+                        isYearlyPlan={isYearlyPlan}
                     />
                 )}
             </Modal>
-            {isEnterprisePlan && (
+            {(isEnterprisePlan || isYearlyPlan) && (
                 <ContactSupportModal
                     isOpen={showContactSupportModal}
                     handleOnClose={onCloseEnterprise}
                     domain={domain}
                     from={from}
                     to={BILLING_SUPPORT_EMAIL}
-                    subject={`New Enterprise plan request - ${domain}}`}
+                    subject={
+                        isEnterprisePlan
+                            ? `New Enterprise plan request - ${domain}`
+                            : `New custom plan request for yearly contract subscription - ${domain}`
+                    }
                     zapierHook={ZAPIER_BILLING_HOOK}
                 />
             )}

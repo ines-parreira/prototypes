@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
 import type { Plan, ProductType } from 'models/billing/types'
-import { isEnterprise } from 'models/billing/utils'
+import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
@@ -17,7 +17,10 @@ import {
 } from 'pages/settings/new_billing/constants'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
-import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
+import {
+    getCurrentHelpdeskCadence,
+    getCurrentHelpdeskPlan,
+} from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
@@ -70,6 +73,8 @@ const SubscriptionModal = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isYearlyPlan = isYearlyContractPlan(currentHelpdeskPlan)
     const appNode = useAppNode()
 
     const from: string = currentUser.get('email')
@@ -102,8 +107,11 @@ const SubscriptionModal = ({
     ])
 
     const confirmButtonLabel = useMemo(
-        () => (isEnterprisePlan ? confirmEnterpriseLabel : confirmLabel),
-        [isEnterprisePlan, confirmEnterpriseLabel, confirmLabel],
+        () =>
+            isEnterprisePlan || isYearlyPlan
+                ? confirmEnterpriseLabel
+                : confirmLabel,
+        [isEnterprisePlan, isYearlyPlan, confirmEnterpriseLabel, confirmLabel],
     )
 
     const onConfirmEnterprise = useCallback(() => {
@@ -116,13 +124,14 @@ const SubscriptionModal = ({
     }
 
     const onConfirmCallback = useMemo(
-        () => (isEnterprisePlan ? onConfirmEnterprise : onConfirm),
-        [isEnterprisePlan, onConfirmEnterprise, onConfirm],
+        () =>
+            isEnterprisePlan || isYearlyPlan ? onConfirmEnterprise : onConfirm,
+        [isEnterprisePlan, isYearlyPlan, onConfirmEnterprise, onConfirm],
     )
 
     const isDisabled = useMemo(() => {
-        return !isEnterprisePlan && !isSubscriptionEnabled
-    }, [isEnterprisePlan, isSubscriptionEnabled])
+        return !isEnterprisePlan && !isSubscriptionEnabled && !isYearlyPlan
+    }, [isEnterprisePlan, isSubscriptionEnabled, isYearlyPlan])
 
     return (
         <>
@@ -148,6 +157,7 @@ const SubscriptionModal = ({
                         setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                         trackingSource={trackingSource}
+                        isYearlyPlan={isYearlyPlan}
                     />
                 </ModalBody>
                 <SubscriptionModalFooter
@@ -158,14 +168,18 @@ const SubscriptionModal = ({
                     onConfirm={onConfirmCallback}
                 />
             </Modal>
-            {isEnterprisePlan && (
+            {(isEnterprisePlan || isYearlyPlan) && (
                 <ContactSupportModal
                     isOpen={showContactSupportModal}
                     handleOnClose={onCloseEnterprise}
                     domain={domain}
                     from={from}
                     to={BILLING_SUPPORT_EMAIL}
-                    subject={`New Enterprise plan request - ${domain}}`}
+                    subject={
+                        isEnterprisePlan
+                            ? `New Enterprise plan request - ${domain}`
+                            : `New custom plan request for yearly contract subscription - ${domain}`
+                    }
                     zapierHook={ZAPIER_BILLING_HOOK}
                 />
             )}

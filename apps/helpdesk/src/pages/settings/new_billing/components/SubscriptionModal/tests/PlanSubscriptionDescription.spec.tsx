@@ -30,6 +30,7 @@ describe('PlanSubscriptionDescription', () => {
         setSelectedPlan: setSelectedPlanMock,
         setIsSubscriptionEnabled: setIsSubscriptionEnabledMock,
         trackingSource: 'test',
+        isYearlyPlan: false,
     } as PlanSubscriptionDescriptionProps
 
     it('should render correctly', () => {
@@ -116,4 +117,25 @@ describe('PlanSubscriptionDescription', () => {
             expect(tooltip).toBeInTheDocument()
         },
     )
+
+    it('should render correctly for yearly plan', () => {
+        renderWithStoreAndQueryClientProvider(
+            <PlanSubscriptionDescription {...props} isYearlyPlan={true} />,
+        )
+
+        expect(
+            screen.getByText('Contact our team to subscribe to a custom plan.'),
+        ).toBeInTheDocument()
+
+        PRODUCT_SUBSCRIPTION_DESCRIPTION[ProductType.Convert].features?.forEach(
+            (feature) => {
+                expect(screen.getByText(feature)).toBeInTheDocument()
+            },
+        )
+
+        expect(screen.queryByLabelText('Plan')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(`$30/${Cadence.Month}`, { exact: false }),
+        ).not.toBeInTheDocument()
+    })
 })

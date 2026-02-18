@@ -37,6 +37,7 @@ export type PlanSubscriptionDescriptionProps = {
     setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
     trackingSource: string
+    isYearlyPlan: boolean
 }
 
 const PlanSubscriptionDescription = ({
@@ -50,6 +51,7 @@ const PlanSubscriptionDescription = ({
     setSelectedPlan,
     setIsSubscriptionEnabled,
     trackingSource,
+    isYearlyPlan,
 }: PlanSubscriptionDescriptionProps) => {
     const ref = useRef(null)
     const isPaymentEnabled = !!useIsPaymentEnabled()
@@ -113,8 +115,13 @@ const PlanSubscriptionDescription = ({
     }, [isTrialing, isTermsChecked, isPaymentEnabled, setIsSubscriptionEnabled])
 
     const isSummaryFooterVisible = useMemo(() => {
-        return !isEnterprisePlan && !isTrialing && isPaymentEnabled
-    }, [isEnterprisePlan, isTrialing, isPaymentEnabled])
+        return (
+            !isEnterprisePlan &&
+            !isTrialing &&
+            !isYearlyPlan &&
+            isPaymentEnabled
+        )
+    }, [isEnterprisePlan, isTrialing, isPaymentEnabled, isYearlyPlan])
 
     return (
         <div className={css.container}>
@@ -155,52 +162,62 @@ const PlanSubscriptionDescription = ({
                         </a>
                     )}
                 </div>
-                <div className={css.selectedPlan}>
-                    <div className={css.selector}>
-                        <SelectField
-                            options={options}
-                            id={`priceSelect_${productType}`}
-                            aria-label="Plan"
-                            placeholder="Select a plan"
-                            value={selectedPlan?.plan_id}
-                            fullWidth
-                            onChange={handleSelectProductPlan}
-                            showSelectedOption
-                        />
-                        <div className={css.counter} ref={ref}>
-                            <div>
-                                <CounterText
-                                    plan={selectedPlan}
-                                    type={productType}
-                                    cadence={cadence}
-                                />
+                {isYearlyPlan ? (
+                    <div className={css.enterpriseDescription}>
+                        Contact our team to subscribe to a custom plan.
+                    </div>
+                ) : (
+                    <div className={css.selectedPlan}>
+                        <div className={css.selector}>
+                            <SelectField
+                                options={options}
+                                id={`priceSelect_${productType}`}
+                                aria-label="Plan"
+                                placeholder="Select a plan"
+                                value={selectedPlan?.plan_id}
+                                fullWidth
+                                onChange={handleSelectProductPlan}
+                                showSelectedOption
+                            />
+                            <div className={css.counter} ref={ref}>
+                                <div>
+                                    <CounterText
+                                        plan={selectedPlan}
+                                        type={productType}
+                                        cadence={cadence}
+                                    />
+                                </div>
+                                <i
+                                    id="priceSelectInfo"
+                                    className="material-icons"
+                                >
+                                    info_outlined
+                                </i>
+                                <Tooltip
+                                    placement="top-start"
+                                    target="priceSelectInfo"
+                                    className={css.tooltip}
+                                    container={ref}
+                                >
+                                    {productInfo.tooltip}
+                                </Tooltip>
                             </div>
-                            <i id="priceSelectInfo" className="material-icons">
-                                info_outlined
-                            </i>
-                            <Tooltip
-                                placement="top-start"
-                                target="priceSelectInfo"
-                                className={css.tooltip}
-                                container={ref}
-                            >
-                                {productInfo.tooltip}
-                            </Tooltip>
+                        </div>
+                        <div className={css.planPrice}>
+                            {isEnterprisePlan ? (
+                                <div className={css.enterprisePrice}>
+                                    Enterprise
+                                </div>
+                            ) : (
+                                <strong>
+                                    {getPlanPriceFormatted(selectedPlan)}/
+                                    {cadence}
+                                </strong>
+                            )}
                         </div>
                     </div>
-                    <div className={css.planPrice}>
-                        {isEnterprisePlan ? (
-                            <div className={css.enterprisePrice}>
-                                Enterprise
-                            </div>
-                        ) : (
-                            <strong>
-                                {getPlanPriceFormatted(selectedPlan)}/{cadence}
-                            </strong>
-                        )}
-                    </div>
-                </div>
-                {isEnterprisePlan && (
+                )}
+                {isEnterprisePlan && !isYearlyPlan && (
                     <div className={css.enterpriseDescription}>
                         Contact our team to subscribe to an Enterprise plan.
                     </div>

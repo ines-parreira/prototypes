@@ -30,6 +30,7 @@ type Props = {
     onConfirm: () => void
     confirmLabel: string
     isSubscriptionEnabled: boolean
+    isYearlyPlan: boolean
 }
 
 const AutomateModalStep = ({
@@ -53,6 +54,7 @@ const AutomateModalStep = ({
     onConfirm,
     confirmLabel,
     isSubscriptionEnabled,
+    isYearlyPlan,
 }: Props) => (
     <>
         <ModalHeader toggle={handleOnClose}>{header}</ModalHeader>
@@ -74,6 +76,7 @@ const AutomateModalStep = ({
                 setSelectedPlan={setSelectedPlan}
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                 trackingSource="subscription_modal_ai_agent"
+                isYearlyPlan={isYearlyPlan}
             />
             {!!image && (
                 <img
@@ -98,7 +101,7 @@ const AutomateModalStep = ({
                     OK
                 </Button>
             </ModalFooter>
-        ) : isEnterprisePlan ? (
+        ) : isEnterprisePlan || isYearlyPlan ? (
             <Footer
                 confirmLabel="Contact Us"
                 isUpdating={isSubscriptionUpdating}

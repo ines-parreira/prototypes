@@ -8,6 +8,10 @@ import { fromJS } from 'immutable'
 import { UserRole } from 'config/types/user'
 import { account, automationSubscriptionProductPrices } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
+import {
+    basicYearlyInvoicedMonthlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/plans'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -194,5 +198,53 @@ describe('<AutomateSubscriptionModal />', () => {
                 screen.getByRole('heading', { name: customHeader }),
             ).toBeInTheDocument()
         })
+    })
+
+    it('should show custom plan message and Contact Us button for yearly contract plans', async () => {
+        const yearlyPlanState: Partial<RootState> = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicYearlyInvoicedMonthlyHelpdeskPlan.plan_id,
+                    },
+                    status: 'active',
+                },
+            }),
+            billing: fromJS({
+                ...billingState,
+                products: billingState.products.map((product) =>
+                    product.type === 'helpdesk'
+                        ? {
+                              ...product,
+                              prices: [
+                                  ...product.prices,
+                                  basicYearlyInvoicedMonthlyHelpdeskPlan,
+                              ],
+                          }
+                        : product,
+                ),
+            }),
+        }
+
+        renderWithStoreAndQueryClientProvider(
+            <AutomateSubscriptionModal {...minProps} isOpen />,
+            yearlyPlanState,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    'Contact our team to subscribe to a custom plan.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByRole('button', { name: /contact us/i }),
+        ).toBeInTheDocument()
     })
 })
