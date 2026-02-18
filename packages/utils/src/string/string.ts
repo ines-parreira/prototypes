@@ -2,7 +2,9 @@ import _isString from 'lodash/isString'
 import _words from 'lodash/words'
 
 /**
- * Remove a suffix from a string
+ * Remove a suffix from a string.
+ *
+ * Migrated from: apps/helpdesk/src/utils/string.ts
  */
 export const removeSuffix = (data: string, suffix: string): string => {
     if (typeof data === 'string' && data.endsWith(suffix)) {
@@ -13,7 +15,7 @@ export const removeSuffix = (data: string, suffix: string): string => {
 }
 
 /**
- * Count lines of a text
+ * Count lines of a text.
  */
 export const countLines = (text: string): number => {
     if (!_isString(text)) {

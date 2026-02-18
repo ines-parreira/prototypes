@@ -3,6 +3,7 @@ export * from './environment'
 export * from './datetime'
 export * from './currency'
 export * from './html'
+export * from './string'
 export {
     UserRole,
     USER_ROLES,

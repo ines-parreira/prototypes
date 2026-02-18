@@ -1,7 +1,11 @@
 import type { ComponentProps } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    removeSuffix,
+} from '@repo/utils'
 import type { DateTimeResultFormatType } from '@repo/utils'
 import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -38,7 +42,6 @@ import { humanizeChannel } from 'state/ticket/utils'
 import { getLanguageDisplayName, humanizeString } from 'utils'
 import { stringToDatetime } from 'utils/date'
 import { convertToHTML, getPlainText } from 'utils/editor'
-import { removeSuffix } from 'utils/string'
 
 import {
     getCustomFieldOperators,

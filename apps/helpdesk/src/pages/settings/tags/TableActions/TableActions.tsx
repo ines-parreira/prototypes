@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
+import { humanizeArray } from '@repo/utils'
 import type { List } from 'immutable'
 
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getTags } from 'state/tags/selectors'
-import { humanizeArray } from 'utils/string'
 
 import BulkDeleteButton from './BulkDeleteButton'
 import MergeButton from './MergeButton'

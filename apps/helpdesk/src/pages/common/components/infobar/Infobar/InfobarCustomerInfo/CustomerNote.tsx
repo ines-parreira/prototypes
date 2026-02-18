@@ -2,6 +2,7 @@ import type { ChangeEvent } from 'react'
 import { useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { countLines } from '@repo/utils'
 import classnames from 'classnames'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
@@ -9,7 +10,6 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { CustomerDraft } from 'models/customer/types'
 import { submitCustomer } from 'state/customers/actions'
-import { countLines } from 'utils/string'
 
 import css from './CustomerNote.less'
 

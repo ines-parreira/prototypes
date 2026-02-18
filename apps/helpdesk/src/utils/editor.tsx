@@ -1,5 +1,6 @@
 import { cloneElement } from 'react'
 
+import { countWords, truncateWords } from '@repo/utils'
 import type { IConvertFromHTMLConfig } from 'draft-convert'
 import {
     convertFromHTML as _convertFromHTML,
@@ -30,7 +31,6 @@ import { availableVariables } from '../config/rules'
 import { parseHtml } from './html'
 import { linkify } from './linkify'
 import { ComposedElements } from './react'
-import { countWords, truncateWords } from './string'
 
 const QUOTE_CLASS_NAME = 'gorgias_quote'
 const QUOTE_DEPTH_DATASET_KEY = 'gorgiasQuoteDepth'
