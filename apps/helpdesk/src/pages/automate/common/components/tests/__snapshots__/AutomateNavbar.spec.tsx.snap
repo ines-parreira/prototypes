@@ -19,7 +19,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         </div>
       </div>
       <div
-        class="navbar-content noHeader"
+        class="navbar-content legacy noHeader"
       >
         <div
           class="link-wrapper automate"
@@ -269,7 +269,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         </div>
       </div>
       <div
-        class="navbar-content noHeader"
+        class="navbar-content legacy noHeader"
       />
       <div
         data-candu-id="navbar-menu-spacer"
@@ -301,7 +301,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         </div>
       </div>
       <div
-        class="navbar-content noHeader"
+        class="navbar-content legacy noHeader"
       >
         <div
           class="link-wrapper automate"
@@ -551,7 +551,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         </div>
       </div>
       <div
-        class="navbar-content noHeader"
+        class="navbar-content legacy noHeader"
       />
       <div
         data-candu-id="navbar-menu-spacer"

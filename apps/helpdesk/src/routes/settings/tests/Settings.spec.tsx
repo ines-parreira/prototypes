@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Route, useRouteMatch } from 'react-router-dom'
@@ -21,6 +22,8 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
+import { Product, productConfig } from 'routes/layout/productConfig'
 
 import { Billing } from '../Billing'
 import { Channels } from '../Channels'
@@ -88,10 +91,23 @@ jest.mock('../helpers/settingsRenderer', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(),
+}))
+
+jest.mock('routes/hooks/useCurrentRouteProduct', () => ({
+    useCurrentRouteProduct: jest.fn(),
+}))
+
+jest.mock('routes/settings/Workflows', () => ({
+    WorkflowsRoutes: () => <div>WorkflowsRoutes</div>,
 }))
 
 const mockedRoute = Route as jest.Mock
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
+const mockedUseHelpdeskV2WayfindingMS1Flag = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
+const mockedUseCurrentRouteProduct = assumeMock(useCurrentRouteProduct)
 
 const basePath = 'settings'
 
@@ -307,6 +323,10 @@ describe('Settings', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockedUseCurrentRouteProduct.mockReturnValue(
+            productConfig[Product.Settings],
+        )
     })
 
     it('should call HelpCenterApiClientProvider', () => {
@@ -350,5 +370,37 @@ describe('Settings', () => {
         render(<PaywalledOrderManagement />)
         expect(screen.getByText('AutomatePaywall')).toBeInTheDocument()
         expect(screen.getByText('OrderManagementSettings')).toBeInTheDocument()
+    })
+
+    it('should render WorkflowsRoutes when wayfinding flag is enabled and current product is Workflows', () => {
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockedUseCurrentRouteProduct.mockReturnValue(
+            productConfig[Product.Workflows],
+        )
+
+        render(<SettingRoutes />)
+        expect(screen.getByText('WorkflowsRoutes')).toBeInTheDocument()
+    })
+
+    it('should render regular settings routes when wayfinding flag is disabled', () => {
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockedUseCurrentRouteProduct.mockReturnValue(
+            productConfig[Product.Workflows],
+        )
+
+        render(<SettingRoutes />)
+        expect(screen.queryByText('WorkflowsRoutes')).not.toBeInTheDocument()
+        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
+    })
+
+    it('should render regular settings routes when current product is not Workflows', () => {
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockedUseCurrentRouteProduct.mockReturnValue(
+            productConfig[Product.Settings],
+        )
+
+        render(<SettingRoutes />)
+        expect(screen.queryByText('WorkflowsRoutes')).not.toBeInTheDocument()
+        expect(HelpCenterApiClientProvider).toHaveBeenCalled()
     })
 })

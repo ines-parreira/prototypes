@@ -19,7 +19,7 @@ import { hasRole } from 'utils'
 
 import css from './Item.less'
 
-const rootPath = '/app/settings/'
+const SETTINGS_ROOT_PATH = '/app/settings/'
 
 const Item = ({
     to,
@@ -28,6 +28,7 @@ const Item = ({
     shouldRender,
     extra,
     exact,
+    rootPath = SETTINGS_ROOT_PATH,
     onClick,
 }: {
     to: string
@@ -36,6 +37,7 @@ const Item = ({
     shouldRender?: boolean
     exact?: boolean
     extra?: ReactNode
+    rootPath?: string
     onClick?: () => void
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
@@ -55,9 +57,11 @@ const Item = ({
         }
         return (
             pathname.startsWith(`${rootPath}${to}`) ||
+            /* some workflows routes still redirect to settings */
+            pathname.startsWith(`${SETTINGS_ROOT_PATH}${to}`) ||
             (/settings\/?$/.test(pathname) && to === 'macros')
         )
-    }, [pathname, to])
+    }, [pathname, to, rootPath])
 
     useScrollActiveItemIntoView(linkRef, isActive, true)
 

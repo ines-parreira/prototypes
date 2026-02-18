@@ -208,4 +208,52 @@ describe('Item', () => {
             'false',
         )
     })
+
+    it('uses default rootPath when not provided', () => {
+        ;(useLocation as jest.Mock).mockReturnValue({
+            pathname: '/app/settings/macros',
+        })
+        renderComponent()
+
+        expect(screen.getByText('Macros')).toHaveAttribute(
+            'data-selected',
+            'true',
+        )
+    })
+
+    it('uses custom rootPath when provided', () => {
+        ;(useLocation as jest.Mock).mockReturnValue({
+            pathname: '/app/workflows/macros',
+        })
+        renderComponent(undefined, { rootPath: '/app/workflows/' })
+
+        expect(screen.getByText('Macros')).toHaveAttribute(
+            'data-selected',
+            'true',
+        )
+    })
+
+    it('renders with correct active state when rootPath does not match but location pathname is settings', () => {
+        ;(useLocation as jest.Mock).mockReturnValue({
+            pathname: '/app/settings/macros',
+        })
+        renderComponent(undefined, { rootPath: '/app/workflows/' })
+
+        expect(screen.getByText('Macros')).toHaveAttribute(
+            'data-selected',
+            'true',
+        )
+    })
+
+    it('renders with correct inactive state when custom rootPath does not match', () => {
+        ;(useLocation as jest.Mock).mockReturnValue({
+            pathname: '/app/something-else/macros',
+        })
+        renderComponent(undefined, { rootPath: '/app/workflows/' })
+
+        expect(screen.getByText('Macros')).toHaveAttribute(
+            'data-selected',
+            'false',
+        )
+    })
 })

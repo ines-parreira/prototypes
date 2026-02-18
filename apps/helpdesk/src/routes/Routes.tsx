@@ -131,6 +131,7 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
+import { WorkflowsRoutes } from 'routes/settings/Workflows'
 import { useTicketLegacyBridgeFunctions } from 'tickets/core/hooks/legacyBridge/useTicketLegacyBridgeFunctions'
 
 // Create wrapped components outside of render to prevent re-creation on every render
@@ -200,6 +201,9 @@ export function AppRoutes() {
             </Route>
             <Route path={`${path}/settings`}>
                 <SettingsRoutes />
+            </Route>
+            <Route path={`${path}/workflows`}>
+                <WorkflowsRoutes />
             </Route>
             <Route path={`${path}/home`} render={HomepageRoutes} />
             <Route

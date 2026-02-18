@@ -73,7 +73,10 @@ const App = ({
     const { isCollapsibleColumnOpen } = useCollapsibleColumn()
 
     return (
-        <div id="app-root" className={css.app}>
+        <div
+            id="app-root"
+            className={cn(css.app, { [css.legacy]: !hasWayfindingMS1Flag })}
+        >
             {!hasWayfindingMS1Flag && (
                 <>
                     {showGlobalNav && <GlobalNavigation />}

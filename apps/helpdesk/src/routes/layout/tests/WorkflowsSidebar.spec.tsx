@@ -1,11 +1,221 @@
-import { render, screen } from '@testing-library/react'
+import { assumeMock } from '@repo/testing'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { WorkflowsSidebar } from '../sidebars/WorkflowsSidebar'
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(),
+}))
+
+jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    () => ({
+        useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
+    }),
+)
+
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
+    logEvent: jest.fn(),
+}))
+
+jest.mock('common/navigation', () => ({
+    ...jest.requireActual('common/navigation'),
+    Navbar: jest.fn(({ children }) => <div>{children}</div>),
+}))
+
+const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
+const mockUseStoreIntegrations = assumeMock(useStoreIntegrations)
+const mockUseIsArticleRecommendationsEnabledWhileSunset = assumeMock(
+    useIsArticleRecommendationsEnabledWhileSunset,
+)
+
 describe('WorkflowsSidebar', () => {
-    it('should display Workflows text', () => {
-        render(<WorkflowsSidebar />)
-        const workflowsText = screen.getByText('Workflows')
-        expect(workflowsText).toBeInTheDocument()
+    const defaultState = {
+        currentUser: fromJS({
+            has_password: true,
+            role: { name: 'admin' },
+        }),
+        currentAccount: fromJS({
+            domain: 'test-domain',
+        }),
+    }
+
+    beforeEach(() => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseStoreIntegrations.mockReturnValue([
+            { id: 1, type: 'shopify', name: 'test-store' } as any,
+        ])
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInSettings: false,
+        } as any)
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should render Tools section with workflow items', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+        expect(screen.getByText('Flows')).toBeInTheDocument()
+        expect(screen.getByText('Order Management')).toBeInTheDocument()
+        expect(screen.getByText('Rules')).toBeInTheDocument()
+        expect(screen.getByText('Macros')).toBeInTheDocument()
+        expect(screen.getByText('Ticket Assignment')).toBeInTheDocument()
+        expect(screen.getByText('Auto-merge')).toBeInTheDocument()
+        expect(screen.getByText('CSAT')).toBeInTheDocument()
+        expect(screen.getByText('SLAs')).toBeInTheDocument()
+    })
+
+    it('should render Fields and Tags section', () => {
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+        expect(screen.getByText('Ticket Fields')).toBeInTheDocument()
+        expect(screen.getByText('Customer Fields')).toBeInTheDocument()
+        expect(screen.getByText('Field Conditions')).toBeInTheDocument()
+        expect(screen.getByText('Tags')).toBeInTheDocument()
+    })
+
+    it('should render AI Agent related items when hasAccess is true and integrations exist', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseStoreIntegrations.mockReturnValue([
+            { id: 1, type: 'shopify', name: 'test-store' } as any,
+        ])
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(screen.getByText('Flows')).toBeInTheDocument()
+        expect(screen.getByText('Order Management')).toBeInTheDocument()
+    })
+
+    it('should not render AI Agent related items when hasAccess is false', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+        mockUseStoreIntegrations.mockReturnValue([
+            { id: 1, type: 'shopify', name: 'test-store' } as any,
+        ])
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+    })
+
+    it('should not render AI Agent related items when no integrations exist', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseStoreIntegrations.mockReturnValue([])
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+    })
+
+    it('should not render AI Agent related items when isLoading is true', () => {
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: true,
+        })
+        mockUseStoreIntegrations.mockReturnValue([
+            { id: 1, type: 'shopify', name: 'test-store' } as any,
+        ])
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+    })
+
+    it('should render Article Recommendations when enabled in settings and AI agent access is available', () => {
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInSettings: true,
+        } as any)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseStoreIntegrations.mockReturnValue([
+            { id: 1, type: 'shopify', name: 'test-store' } as any,
+        ])
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(screen.getByText('Article Recommendations')).toBeInTheDocument()
+    })
+
+    it('should not render Article Recommendations when not enabled in settings', () => {
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInSettings: false,
+        } as any)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(
+            screen.queryByText('Article Recommendations'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not render Article Recommendations when AI agent access is not available', () => {
+        mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
+            enabledInSettings: true,
+        } as any)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: false,
+            isLoading: false,
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <WorkflowsSidebar />,
+            defaultState,
+        )
+
+        expect(
+            screen.queryByText('Article Recommendations'),
+        ).not.toBeInTheDocument()
     })
 })

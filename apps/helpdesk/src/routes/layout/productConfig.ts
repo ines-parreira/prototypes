@@ -2,6 +2,8 @@ import type { ComponentType } from 'react'
 
 import type { IconName } from '@gorgias/axiom'
 
+import { WORKFLOWS_DEFAULT_PATH } from 'routes/layout/products/workflows'
+
 import {
     AiAgentSidebar,
     AnalyticsSidebar,
@@ -90,7 +92,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: WorkflowsSidebar,
         urlPatterns: ['workflows'],
         icon: 'route',
-        defaultPath: '/app/workflows',
+        defaultPath: WORKFLOWS_DEFAULT_PATH,
     },
     [Product.Customers]: {
         id: Product.Customers,

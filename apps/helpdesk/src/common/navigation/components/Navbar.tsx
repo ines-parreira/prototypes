@@ -23,7 +23,7 @@ import css from './Navbar.less'
 
 type Props = {
     activeContent: ActiveContent
-    title: string
+    title?: string
     children?: ReactNode
     disableResize?: boolean
     headerContent?: ReactNode
@@ -55,12 +55,16 @@ export default function Navbar({
             return false
         }
 
+        if (hasWayfindingMS1Flag) {
+            return false
+        }
+
         if (showGlobalNav) {
             return navBarDisplay === NavBarDisplayMode.Open
         }
 
         return true
-    }, [disableResize, navBarDisplay, showGlobalNav])
+    }, [disableResize, navBarDisplay, showGlobalNav, hasWayfindingMS1Flag])
 
     const hasHeaderContent = !showGlobalNav || !!headerContent
 
@@ -106,6 +110,7 @@ export default function Navbar({
                 <div
                     ref={navbarContentRef}
                     className={cn(css['navbar-content'], {
+                        [css.legacy]: !hasWayfindingMS1Flag,
                         [css.noHeader]: !hasHeaderContent,
                     })}
                 >

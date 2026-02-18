@@ -1,3 +1,4 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { NotificationsSettings } from 'common/notifications'
@@ -23,6 +24,9 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
+import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
+import { Product } from 'routes/layout/productConfig'
+import { WorkflowsRoutes } from 'routes/settings/Workflows'
 import { AutomatePaywall } from 'settings/automate'
 import {
     ArticleRecommendationsSettings,
@@ -79,6 +83,12 @@ export const PaywalledOrderManagement = () => (
 
 export function SettingRoutes() {
     const { path } = useRouteMatch()
+    const currentProduct = useCurrentRouteProduct()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+
+    if (hasWayfindingMS1Flag && currentProduct.id === Product.Workflows) {
+        return <WorkflowsRoutes />
+    }
 
     return (
         <HelpCenterApiClientProvider>
@@ -86,7 +96,15 @@ export function SettingRoutes() {
                 <Route
                     path={`${path}/`}
                     exact
-                    component={() => <Redirect to={`${path}/macros`} />}
+                    component={() => (
+                        <Redirect
+                            to={
+                                hasWayfindingMS1Flag
+                                    ? `${path}/integrations/mine`
+                                    : `${path}/macros`
+                            }
+                        />
+                    )}
                 />
 
                 <Route path={`${path}/billing`}>
