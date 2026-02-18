@@ -2,8 +2,16 @@
 
 :local {
     .card {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm);
         background-color: var(--surface-warning-default);
         border: 0.5px solid var(--border-warning-default);
+        border-radius: var(--spacing-sm);
     }
 
     .knowledgeGap {
@@ -14,5 +22,10 @@
     .handoverTickets {
         color: var(--content-accent-default);
         cursor: pointer;
+    }
+
+    .restricted {
+        color: var(--content-neutral-tertiary);
+        cursor: not-allowed;
     }
 }

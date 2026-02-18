@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -12,7 +12,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
+import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
@@ -24,6 +26,7 @@ import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanne
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     getShopifyIntegrationByShopName,
@@ -33,6 +36,9 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
+
+const TOP_OPPORTUNITIES_LIMIT = 3
+const TOP_OPPORTUNITIES_RESTRICTED_LIMIT = 15
 
 export const AiAgentOverview = () => {
     const { shopName, shopType } = useParams<{
@@ -48,6 +54,9 @@ export const AiAgentOverview = () => {
     const shopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || ''),
     )
+    const currentPlansByProduct = useAppSelector(getCurrentPlansByProduct)
+    const hasFullAccess =
+        currentPlansByProduct?.automation?.plan_id.includes('usd-6')
 
     const hasResourceSection = useFlag(
         FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection,
@@ -65,6 +74,35 @@ export const AiAgentOverview = () => {
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,
         false,
     )
+
+    const isKnowledgeServiceEnabled = useFlag(
+        FeatureFlagKey.OpportunitiesMilestone2,
+        false,
+    )
+
+    const shopIntegrationId = useShopIntegrationId(shopName)
+    const {
+        opportunities,
+        isLoading: isOpportunitiesLoading,
+        allowedOpportunityIds,
+        totalPending,
+    } = useKnowledgeServiceOpportunities(
+        shopIntegrationId ?? 0,
+        !!shopIntegrationId &&
+            !!isTopOpportunitiesEnabled &&
+            !!isKnowledgeServiceEnabled,
+        TOP_OPPORTUNITIES_LIMIT,
+    )
+
+    const displayTopOpportunitiesSection = useMemo(() => {
+        if (hasFullAccess) return isTopOpportunitiesEnabled
+
+        return (
+            isTopOpportunitiesEnabled &&
+            !!opportunities &&
+            totalPending >= TOP_OPPORTUNITIES_RESTRICTED_LIMIT
+        )
+    }, [hasFullAccess, isTopOpportunitiesEnabled, opportunities, totalPending])
 
     const {
         activationModal,
@@ -231,8 +269,15 @@ export const AiAgentOverview = () => {
                 />
             )}
 
-            {isTopOpportunitiesEnabled && (
-                <TopOpportunitiesSection shopName={shopName} />
+            {displayTopOpportunitiesSection && (
+                <TopOpportunitiesSection
+                    shopName={shopName}
+                    shopIntegrationId={shopIntegrationId}
+                    opportunities={opportunities}
+                    isLoading={isOpportunitiesLoading}
+                    totalCount={totalPending}
+                    allowedOpportunityIds={allowedOpportunityIds}
+                />
             )}
 
             <AiAgentTaskSection

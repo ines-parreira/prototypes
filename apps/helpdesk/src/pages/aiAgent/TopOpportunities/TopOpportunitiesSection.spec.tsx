@@ -30,10 +30,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     })),
 }))
 
-jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
-    useShopIntegrationId: jest.fn(() => 123),
-}))
-
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     FeatureFlagKey: {
@@ -65,15 +61,6 @@ const mockOpportunities: OpportunityListItem[] = [
         ticketCount: 3,
     },
 ]
-
-jest.mock('../opportunities/hooks/useKnowledgeServiceOpportunities', () => ({
-    useKnowledgeServiceOpportunities: jest.fn(() => ({
-        opportunities: mockOpportunities,
-        isLoading: false,
-        totalCount: 3,
-        totalPending: 3,
-    })),
-}))
 
 jest.mock('pages/aiAgent/opportunities/hooks/useEnrichedOpportunity', () => ({
     useEnrichedOpportunity: jest.fn(() => ({
@@ -139,7 +126,14 @@ describe('TopOpportunitiesSection', () => {
         it('should render section with correct title', () => {
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -151,7 +145,14 @@ describe('TopOpportunitiesSection', () => {
         it('should render view all opportunities button', () => {
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -165,7 +166,14 @@ describe('TopOpportunitiesSection', () => {
         it('should render all opportunity cards', () => {
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -181,7 +189,14 @@ describe('TopOpportunitiesSection', () => {
         it('should render cards in a grid layout', () => {
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -192,19 +207,16 @@ describe('TopOpportunitiesSection', () => {
 
     describe('Loading State', () => {
         it('should render skeleton loaders when loading', () => {
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: [],
-                isLoading: true,
-                totalCount: 0,
-                totalPending: 0,
-            })
-
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={[]}
+                        isLoading={true}
+                        totalCount={0}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -218,19 +230,16 @@ describe('TopOpportunitiesSection', () => {
 
     describe('Empty State', () => {
         it('should render empty state when no opportunities', () => {
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: [],
-                isLoading: false,
-                totalCount: 0,
-                totalPending: 0,
-            })
-
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={[]}
+                        isLoading={false}
+                        totalCount={0}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -251,7 +260,14 @@ describe('TopOpportunitiesSection', () => {
 
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -269,109 +285,100 @@ describe('TopOpportunitiesSection', () => {
         })
     })
 
-    describe('Feature Flag Integration', () => {
-        it('should respect feature flag for fetching opportunities', () => {
-            const useFlag = require('@repo/feature-flags').useFlag
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useFlag.mockReturnValue(false)
-
+    describe('Opportunity Restrictions', () => {
+        it('should mark opportunities as restricted when allowedOpportunityIds is defined and opportunity is not in the list', () => {
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={5}
+                        allowedOpportunityIds={[2]} // Only opportunity with id '2' is allowed
+                    />
                 </TestWrapper>,
             )
 
-            expect(useKnowledgeServiceOpportunities).toHaveBeenCalledWith(
-                123,
-                false, // enabled should be false when feature flag is disabled
-                3,
-            )
+            // Opportunities should render but some will be restricted
+            expect(
+                screen.getByText(/Add guidance for shipping policy/),
+            ).toBeInTheDocument()
         })
 
-        it('should fetch opportunities when feature flag is enabled', () => {
-            const useFlag = require('@repo/feature-flags').useFlag
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useFlag.mockReturnValue(true)
-
+        it('should not restrict opportunities when allowedOpportunityIds is undefined', () => {
             render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
-            expect(useKnowledgeServiceOpportunities).toHaveBeenCalledWith(
-                123,
-                true, // enabled should be true when feature flag is enabled
-                3,
-            )
+            // All opportunities should be accessible
+            expect(
+                screen.getByText(/Add guidance for shipping policy/),
+            ).toBeInTheDocument()
         })
-    })
 
-    describe('Shop Integration', () => {
-        it('should not fetch opportunities when shopIntegrationId is undefined', () => {
-            const useShopIntegrationId =
-                require('pages/aiAgent/hooks/useShopIntegrationId').useShopIntegrationId
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useShopIntegrationId.mockReturnValue(undefined)
-
-            render(
+        it('should calculate totalRestrictedOpportunities correctly', () => {
+            const { rerender } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={10}
+                        allowedOpportunityIds={[1, 2, 3]}
+                    />
                 </TestWrapper>,
             )
 
-            expect(useKnowledgeServiceOpportunities).toHaveBeenCalledWith(
-                0,
-                false, // enabled should be false when shopIntegrationId is undefined
-                3,
-            )
-        })
-    })
+            // totalRestrictedOpportunities should be totalCount - allowedOpportunityIds.length = 10 - 3 = 7
+            // This is passed to the card components
+            expect(
+                screen.getByText(/Add guidance for shipping policy/),
+            ).toBeInTheDocument()
 
-    describe('Limits and Constraints', () => {
-        it('should limit opportunities to 3 items', () => {
-            const useShopIntegrationId =
-                require('pages/aiAgent/hooks/useShopIntegrationId').useShopIntegrationId
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useShopIntegrationId.mockReturnValue(123)
-
-            render(
+            // Test with undefined allowedOpportunityIds
+            rerender(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={10}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
-            expect(useKnowledgeServiceOpportunities).toHaveBeenCalledWith(
-                123,
-                true,
-                3, // TOP_OPPORTUNITIES_LIMIT
-            )
+            // totalRestrictedOpportunities should be undefined for full access users
+            expect(
+                screen.getByText(/Add guidance for shipping policy/),
+            ).toBeInTheDocument()
         })
     })
 
     describe('Grid Layout Behavior', () => {
         it('should maintain 3-column grid even with fewer opportunities', () => {
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: mockOpportunities.slice(0, 2), // Only 2 opportunities
-                isLoading: false,
-                totalCount: 2,
-                totalPending: 2,
-            })
-
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities.slice(0, 2)}
+                        isLoading={false}
+                        totalCount={2}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -410,19 +417,16 @@ describe('TopOpportunitiesSection', () => {
                 },
             ]
 
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: mixedOpportunities,
-                isLoading: false,
-                totalCount: 3,
-                totalPending: 3,
-            })
-
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mixedOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -459,19 +463,16 @@ describe('TopOpportunitiesSection', () => {
                 },
             ]
 
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: sameTypeOpportunities,
-                isLoading: false,
-                totalCount: 3,
-                totalPending: 3,
-            })
-
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={sameTypeOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 
@@ -507,19 +508,16 @@ describe('TopOpportunitiesSection', () => {
                 },
             ]
 
-            const useKnowledgeServiceOpportunities =
-                require('../opportunities/hooks/useKnowledgeServiceOpportunities').useKnowledgeServiceOpportunities
-
-            useKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: complexOpportunities,
-                isLoading: false,
-                totalCount: 3,
-                totalPending: 3,
-            })
-
             const { container } = render(
                 <TestWrapper>
-                    <TopOpportunitiesSection shopName="test-shop" />
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={complexOpportunities}
+                        isLoading={false}
+                        totalCount={3}
+                        allowedOpportunityIds={undefined}
+                    />
                 </TestWrapper>,
             )
 

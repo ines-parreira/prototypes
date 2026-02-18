@@ -122,6 +122,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -142,6 +144,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -160,6 +164,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -177,6 +183,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -196,6 +204,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -213,6 +223,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -231,6 +243,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -248,6 +262,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -268,6 +284,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -297,12 +315,184 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
 
             expect(screen.getByText(/1 ticket/i)).toBeInTheDocument()
             expect(screen.queryByText(/1 tickets/i)).not.toBeInTheDocument()
+        })
+
+        it('should open ticket drill down modal when ticket count is clicked', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            const ticketCountSpan = screen.getByText(/5 tickets/i)
+            await user.click(ticketCountSpan)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Mock Ticket Modal'),
+                ).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Restricted Opportunities', () => {
+        it('should disable button when opportunity is restricted', () => {
+            render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={true}
+                        totalRestrictedOpportunities={5}
+                    />
+                </TestWrapper>,
+            )
+
+            const button = screen.getByRole('button', {
+                name: /review guidance/i,
+            })
+            expect(button).toBeDisabled()
+        })
+
+        it('should show tooltip content with totalRestrictedOpportunities when restricted', async () => {
+            const user = userEvent.setup()
+
+            const { container } = render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={true}
+                        totalRestrictedOpportunities={7}
+                    />
+                </TestWrapper>,
+            )
+
+            // Find the card div and hover over it
+            const cardDiv = container.querySelector('.card')
+            expect(cardDiv).toBeInTheDocument()
+
+            // Simulate hover
+            if (cardDiv) {
+                await user.hover(cardDiv)
+            }
+
+            // The tooltip should show the number of restricted opportunities
+            await waitFor(() => {
+                expect(
+                    screen.getByText(/Upgrade to access 7 more/),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not show tooltip when not restricted', async () => {
+            const user = userEvent.setup()
+
+            const { container } = render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            const cardDiv = container.querySelector('.card')
+            if (cardDiv) {
+                await user.hover(cardDiv)
+            }
+
+            // Should not show restricted tooltip
+            expect(
+                screen.queryByText(/Upgrade to access/),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should apply restricted CSS class when isRestricted is true', () => {
+            const { container } = render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={true}
+                        totalRestrictedOpportunities={5}
+                    />
+                </TestWrapper>,
+            )
+
+            const cardDiv = container.querySelector('.card.restricted')
+            expect(cardDiv).toBeInTheDocument()
+        })
+    })
+
+    describe('Hover State', () => {
+        it('should manage hover state correctly', async () => {
+            const user = userEvent.setup()
+
+            const { container } = render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={true}
+                        totalRestrictedOpportunities={5}
+                    />
+                </TestWrapper>,
+            )
+
+            const cardDiv = container.querySelector('.card')
+            expect(cardDiv).toBeInTheDocument()
+
+            if (cardDiv) {
+                // Hover over the card
+                await user.hover(cardDiv)
+
+                // Tooltip should be visible
+                await waitFor(() => {
+                    expect(
+                        screen.getByText(/Upgrade to access 5 more/),
+                    ).toBeInTheDocument()
+                })
+
+                // Unhover
+                await user.unhover(cardDiv)
+
+                // Tooltip should disappear
+                await waitFor(() => {
+                    expect(
+                        screen.queryByText(/Upgrade to access 5 more/),
+                    ).not.toBeInTheDocument()
+                })
+            }
         })
     })
 
@@ -320,6 +510,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -338,6 +530,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={false}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )
@@ -371,6 +565,8 @@ describe('TopOpportunityCard', () => {
                         shopName="test-shop"
                         shopIntegrationId={123}
                         isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
                     />
                 </TestWrapper>,
             )

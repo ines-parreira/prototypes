@@ -21,6 +21,8 @@ import { useBillingState } from 'models/billing/queries'
 import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
@@ -72,6 +74,12 @@ jest.mock('pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled')
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
+jest.mock('pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities')
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId')
+jest.mock('pages/aiAgent/TopOpportunities/TopOpportunitiesSection', () => ({
+    TopOpportunitiesSection: () => <div>Top Opportunities Section</div>,
+}))
+
 const logEventMock = jest.spyOn(segment, 'logEvent').mockImplementation(jest.fn)
 
 const defaultLocation = {
@@ -101,6 +109,10 @@ const mockUseTrialAccess = useTrialAccess as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
+const mockUseKnowledgeServiceOpportunities = assumeMock(
+    useKnowledgeServiceOpportunities,
+)
+const mockUseShopIntegrationId = assumeMock(useShopIntegrationId)
 const useLocationMock = assumeMock(useLocation)
 const useParamsMock = assumeMock(useParams)
 useLocationMock.mockReturnValue(defaultLocation)
@@ -114,6 +126,14 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultStore = {
     ...rootState,
+    currentAccount: fromJS({
+        ...rootState.currentAccount?.toJS(),
+        current_subscription: {
+            products: {
+                automation: 'aut-01-monthly-usd-6',
+            },
+        },
+    }),
     ui: {
         stats: { filters: initialState },
     },
@@ -148,6 +168,15 @@ describe('AiAgentOverview', () => {
         )
 
         mockUseHasNoOnboardedStores.mockReturnValue(false)
+
+        mockUseKnowledgeServiceOpportunities.mockReturnValue({
+            opportunities: [],
+            isLoading: false,
+            allowedOpportunityIds: undefined,
+            totalPending: 0,
+        } as any)
+
+        mockUseShopIntegrationId.mockReturnValue(123)
 
         // Default mock for useAiAgentOverviewModeEnabled
         jest.mocked(useAiAgentOverviewModeEnabled).mockReturnValue({
@@ -944,6 +973,205 @@ describe('AiAgentOverview', () => {
             )
 
             expect(notifyAction).toBeUndefined()
+        })
+    })
+
+    describe('TopOpportunitiesSection', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.IncreaseVisibilityOfOpportunity) {
+                    return true
+                }
+                if (key === FeatureFlagKey.OpportunitiesMilestone2) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should render TopOpportunitiesSection when user has full access and feature flag is enabled', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [
+                    {
+                        id: '1',
+                        key: 'opp-1',
+                        type: 'FILL_KNOWLEDGE_GAP',
+                        insight: 'Test insight',
+                        ticketCount: 5,
+                    },
+                ],
+                isLoading: false,
+                allowedOpportunityIds: undefined,
+                totalPending: 10,
+            } as any)
+
+            const { getByText } = renderComponent()
+
+            expect(getByText('Top Opportunities Section')).toBeInTheDocument()
+        })
+
+        it('should render TopOpportunitiesSection for non-full access users when totalPending > 15', () => {
+            const storeWithoutFullAccess = {
+                ...defaultStore,
+                currentAccount: fromJS({
+                    ...defaultStore.currentAccount?.toJS(),
+                    current_subscription: {
+                        products: {
+                            automation:
+                                'aut-addon-basic-full-price-monthly-usd-4', // No 'usd-6' in plan_id
+                        },
+                    },
+                }),
+            }
+
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [
+                    {
+                        id: '1',
+                        key: 'opp-1',
+                        type: 'FILL_KNOWLEDGE_GAP',
+                        insight: 'Test insight',
+                        ticketCount: 5,
+                    },
+                ],
+                isLoading: false,
+                allowedOpportunityIds: [1, 2, 3],
+                totalPending: 20,
+            } as any)
+
+            const { getByText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(storeWithoutFullAccess)}>
+                        <QueryClientProvider client={queryClient}>
+                            <AiAgentOverview />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(getByText('Top Opportunities Section')).toBeInTheDocument()
+        })
+
+        it('should not render TopOpportunitiesSection for non-full access users when totalPending < 15', () => {
+            const storeWithoutFullAccess = {
+                ...defaultStore,
+                currentAccount: fromJS({
+                    ...defaultStore.currentAccount?.toJS(),
+                    current_subscription: {
+                        products: {
+                            automation:
+                                'aut-addon-basic-full-price-monthly-usd-4',
+                        },
+                    },
+                }),
+            }
+
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [
+                    {
+                        id: '1',
+                        key: 'opp-1',
+                        type: 'FILL_KNOWLEDGE_GAP',
+                        insight: 'Test insight',
+                        ticketCount: 5,
+                    },
+                ],
+                isLoading: false,
+                allowedOpportunityIds: [1, 2, 3],
+                totalPending: 10,
+            } as any)
+
+            const { queryByText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(storeWithoutFullAccess)}>
+                        <QueryClientProvider client={queryClient}>
+                            <AiAgentOverview />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            expect(
+                queryByText('Top Opportunities Section'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render TopOpportunitiesSection when IncreaseVisibilityOfOpportunity feature flag is disabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.OpportunitiesMilestone2) {
+                    return true
+                }
+                return false
+            })
+
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [
+                    {
+                        id: '1',
+                        key: 'opp-1',
+                        type: 'FILL_KNOWLEDGE_GAP',
+                        insight: 'Test insight',
+                        ticketCount: 5,
+                    },
+                ],
+                isLoading: false,
+                allowedOpportunityIds: undefined,
+                totalPending: 20,
+            } as any)
+
+            const { queryByText } = renderComponent()
+
+            expect(
+                queryByText('Top Opportunities Section'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not fetch opportunities when OpportunitiesMilestone2 feature flag is disabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.IncreaseVisibilityOfOpportunity) {
+                    return true
+                }
+                return false
+            })
+
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [],
+                isLoading: false,
+                allowedOpportunityIds: undefined,
+                totalPending: 0,
+            } as any)
+
+            renderComponent()
+
+            expect(mockUseKnowledgeServiceOpportunities).toHaveBeenCalledWith(
+                expect.any(Number),
+                false, // enabled should be false when OpportunitiesMilestone2 is disabled
+                expect.any(Number),
+            )
+        })
+
+        it('should not fetch opportunities when shopIntegrationId is undefined', () => {
+            mockUseShopIntegrationId.mockReturnValue(undefined)
+
+            renderComponent()
+
+            expect(mockUseKnowledgeServiceOpportunities).toHaveBeenCalledWith(
+                0,
+                false,
+                3,
+            )
+        })
+
+        it('should fetch opportunities with correct parameters when enabled', () => {
+            mockUseShopIntegrationId.mockReturnValue(123)
+
+            renderComponent()
+
+            expect(mockUseKnowledgeServiceOpportunities).toHaveBeenCalledWith(
+                123,
+                true,
+                3,
+            )
         })
     })
 })

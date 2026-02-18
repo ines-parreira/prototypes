@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router'
@@ -6,18 +6,20 @@ import { useHistory } from 'react-router'
 import { Box, Button, Card, Heading, Skeleton, Text } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import type { OpportunityListItem } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunityType } from '../opportunities/enums'
-import { useKnowledgeServiceOpportunities } from '../opportunities/hooks/useKnowledgeServiceOpportunities'
 import { TopOpportunityCard } from './TopOpportunitiesCard'
 
 import css from './TopOpportunitiesSection.less'
 
-const TOP_OPPORTUNITIES_LIMIT = 3
-
 interface TopOpportunitiesSectionProps {
     shopName: string
+    shopIntegrationId?: number
+    opportunities: OpportunityListItem[]
+    isLoading: boolean
+    totalCount: number
+    allowedOpportunityIds?: number[]
 }
 
 const TopOpportunitiesCardSkeleton = () => {
@@ -65,19 +67,17 @@ const TopOpportunitiesEmptyState = () => {
 
 export const TopOpportunitiesSection = ({
     shopName,
+    shopIntegrationId,
+    opportunities,
+    isLoading,
+    totalCount,
+    allowedOpportunityIds,
 }: TopOpportunitiesSectionProps) => {
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
-
     const isTopOpportunitiesEnabled = useFlag(
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,
         false,
-    )
-    const shopIntegrationId = useShopIntegrationId(shopName)
-    const { opportunities, isLoading } = useKnowledgeServiceOpportunities(
-        shopIntegrationId ?? 0,
-        !!shopIntegrationId && !!isTopOpportunitiesEnabled,
-        TOP_OPPORTUNITIES_LIMIT,
     )
 
     // Sort opportunities: RESOLVE_CONFLICT first, then by ticket count (descending)
@@ -102,6 +102,22 @@ export const TopOpportunitiesSection = ({
     }, [opportunities])
 
     const hasOpportunities = sortedOpportunities.length > 0
+
+    const isOpportunityRestricted = useCallback(
+        (opportunityId: string) => {
+            if (allowedOpportunityIds === undefined) {
+                return false
+            }
+            return !allowedOpportunityIds.includes(Number(opportunityId))
+        },
+        [allowedOpportunityIds],
+    )
+
+    const totalRestrictedOpportunities = useMemo(() => {
+        if (allowedOpportunityIds === undefined) return
+
+        return totalCount - allowedOpportunityIds.length
+    }, [totalCount, allowedOpportunityIds])
 
     return (
         <Card
@@ -143,6 +159,12 @@ export const TopOpportunitiesSection = ({
                             shopIntegrationId={shopIntegrationId}
                             isTopOpportunitiesEnabled={
                                 isTopOpportunitiesEnabled
+                            }
+                            isRestricted={isOpportunityRestricted(
+                                opportunity.id,
+                            )}
+                            totalRestrictedOpportunities={
+                                totalRestrictedOpportunities
                             }
                         />
                     ))}
