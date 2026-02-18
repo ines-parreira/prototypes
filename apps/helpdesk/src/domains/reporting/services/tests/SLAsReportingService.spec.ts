@@ -1,7 +1,6 @@
-import { createCsv } from '@repo/utils'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { createTimeSeriesPerDimensionReport } from 'domains/reporting/services/SLAsReportingService'
+import { createCsv } from 'utils/file'
 
 const period = {
     start_datetime: '2023-06-07',

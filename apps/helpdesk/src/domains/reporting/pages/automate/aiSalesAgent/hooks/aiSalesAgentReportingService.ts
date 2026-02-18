@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { createCsv } from '@repo/utils'
-
 import {
     fetchTableReportData,
     useTableReportData,
@@ -36,6 +34,7 @@ import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
+import { createCsv } from 'utils/file'
 
 export const AI_SALES_AGENT_OVERVIEW_FILENAME = 'ai-sales-agent-overview'
 export const AI_SALES_AGENT_METRIC_FILE_NAME = 'metrics'

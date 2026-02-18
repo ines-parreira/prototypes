@@ -1,5 +1,4 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveFileAsDownloaded } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -7,6 +6,7 @@ import {
     ExportFormat,
     useAiAgentAnalyticsDashboardTracking,
 } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import { DownloadTableButton } from './DownloadTableButton'
 
@@ -17,8 +17,7 @@ jest.mock('@repo/logging', () => ({
     },
 }))
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('utils/file', () => ({
     saveFileAsDownloaded: jest.fn(),
 }))
 

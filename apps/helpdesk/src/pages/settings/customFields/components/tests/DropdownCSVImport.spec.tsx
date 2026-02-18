@@ -1,5 +1,4 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import * as fileUtils from '@repo/utils'
 import { fireEvent, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,6 +6,7 @@ import thunk from 'redux-thunk'
 
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import * as notificationActions from 'state/notifications/actions'
+import * as fileUtils from 'utils/file'
 import { renderWithRouter } from 'utils/testing'
 
 import { DropdownCSVImport } from '../DropdownCSVImport'

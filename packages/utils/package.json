@@ -18,7 +18,6 @@
     "peerDependencies": {
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/routing": "workspace:*",
-        "jszip": "catalog:jszip",
         "lodash": "catalog:lodash",
         "moment": "catalog:moment",
         "moment-timezone": "catalog:moment",
@@ -48,7 +47,6 @@
         "@types/react-router-dom": "catalog:react-router",
         "@types/sanitize-html": "catalog:sanitize-html",
         "@vitest/coverage-v8": "catalog:test",
-        "jszip": "catalog:jszip",
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",

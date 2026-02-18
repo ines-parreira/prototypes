@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
-import { createCsv } from '@repo/utils'
 import moment from 'moment'
 
 import { useAIAgentAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTimeSeriesData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { createCsv } from 'utils/file'
 
 import { DATE_FORMAT } from '../../analyticsOverview/constants'
 

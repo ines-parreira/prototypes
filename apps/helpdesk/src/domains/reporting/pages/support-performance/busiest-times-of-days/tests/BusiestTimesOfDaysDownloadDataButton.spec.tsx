@@ -2,23 +2,14 @@ import React from 'react'
 
 import * as segment from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import { act, render, screen } from '@testing-library/react'
 
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import { BusiestTimesOfDaysDownloadDataButton } from 'domains/reporting/pages/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import { useAggregatedBusiestTimesOfDayReportData } from 'domains/reporting/services/busiestTimesOfDaysReportingService'
+import { saveZippedFiles } from 'utils/file'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('domains/reporting/services/busiestTimesOfDaysReportingService')
 const useAggregatedBusiestTimesOfDayReportDataMock = assumeMock(

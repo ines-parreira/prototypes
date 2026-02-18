@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { getFileTooLargeError } from '@repo/utils'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -9,6 +8,7 @@ import uploadFiles from 'common/utils/uploadFiles'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { getFileTooLargeError } from 'utils/file'
 
 import type { UploadedImageAttachment } from './UploadImage'
 import { UploadImageField } from './UploadImage'
@@ -16,10 +16,7 @@ import { UploadImageField } from './UploadImage'
 jest.mock('common/utils/uploadFiles')
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 
 const mockUploadFiles = uploadFiles as jest.MockedFunction<typeof uploadFiles>
 const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<

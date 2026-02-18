@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 
-import { createCsv } from '@repo/utils'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { createCsv } from 'utils/file'
 
 import { useAutomationRateByFeature } from './useAutomationRateByFeature'
 

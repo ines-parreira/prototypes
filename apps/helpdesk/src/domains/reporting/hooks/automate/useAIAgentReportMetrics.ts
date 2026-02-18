@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { createCsv } from '@repo/utils'
 import moment from 'moment'
 
 import type { User } from 'config/types/user'
@@ -28,6 +27,7 @@ import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketIns
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
 import { isAiAgentCustomField } from 'pages/aiAgent/util'
+import { createCsv } from 'utils/file'
 
 export const AI_AGENT_REPORT_FILE_NAME = 'ai-agent-metrics'
 

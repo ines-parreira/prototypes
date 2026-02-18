@@ -1,4 +1,3 @@
-import { createCsv, saveZippedFiles } from '@repo/utils'
 import moment from 'moment/moment'
 
 import type { User } from 'config/types/user'
@@ -16,6 +15,7 @@ import type {
     AgentsTableRow,
 } from 'domains/reporting/state/ui/stats/types'
 import type { OrderDirection } from 'models/api/types'
+import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const AI_AGENT_PERFORMANCE_FILENAME = 'ai-agent-performance'
 export const AI_AGENT_TICKET_INSIGHTS_FILENAME = 'ai-agent-ticket-insights'

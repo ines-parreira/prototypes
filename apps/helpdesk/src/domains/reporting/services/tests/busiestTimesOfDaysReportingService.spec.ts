@@ -1,6 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import * as files from '@repo/utils'
-import { createCsv } from '@repo/utils'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -23,17 +21,10 @@ import {
     fetchAggregatedBusiestTimesOfDayReportData,
     useAggregatedBusiestTimesOfDayReportData,
 } from 'domains/reporting/services/busiestTimesOfDaysReportingService'
+import * as files from 'utils/file'
+import { createCsv } from 'utils/file'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 jest.mock('domains/reporting/hooks/timeSeries')
 const fetchTicketsClosedTimeSeriesMock = assumeMock(
     fetchTicketsClosedTimeSeries,

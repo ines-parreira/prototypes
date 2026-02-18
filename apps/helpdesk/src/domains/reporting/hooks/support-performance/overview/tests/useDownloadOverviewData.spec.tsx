@@ -35,16 +35,7 @@ import { integrationsState } from 'fixtures/integrations'
 jest.mock('domains/reporting/hooks/useIsHrtAiEnabled')
 const useIsHrtAiEnabledMock = assumeMock(useIsHrtAiEnabled)
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 jest.mock('domains/reporting/services/supportPerformanceReportingService')
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')

@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveZippedFiles } from '@repo/utils'
 
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { useAutoQAReportData } from 'domains/reporting/services/autoQAReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'AutoQA Report Data'
 

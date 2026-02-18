@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveZippedFiles } from '@repo/utils'
 
 import { DownloadDataButton } from 'domains/reporting/pages/support-performance/components/DownloadDataButton'
 import { DOWNLOAD_BUTTON_TITLE } from 'domains/reporting/pages/voice/constants/voiceOverview'
 import { useVoiceOverviewReportData } from 'domains/reporting/services/voiceOverviewReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 export const VoiceOverviewDownloadDataButton = () => {
     const { files, fileName, isLoading } = useVoiceOverviewReportData()

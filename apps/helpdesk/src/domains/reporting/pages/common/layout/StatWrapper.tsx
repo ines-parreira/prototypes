@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveFileAsDownloaded } from '@repo/utils'
 import type { AxiosError, CancelToken } from 'axios'
 import axios from 'axios'
 import classnames from 'classnames'
@@ -29,6 +28,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { saveFileAsDownloaded } from 'utils/file'
 
 type Props = {
     stat: Stat<TwoDimensionalChart> | null

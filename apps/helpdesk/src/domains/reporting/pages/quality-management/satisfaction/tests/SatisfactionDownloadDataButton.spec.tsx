@@ -2,7 +2,6 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -11,19 +10,11 @@ import {
     SATISFACTION_METRICS_FILE_NAME,
     useSatisfactionReportData,
 } from 'domains/reporting/services/satisfactionReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/services/satisfactionReportingService')
 const useSatisfactionReportDataMock = assumeMock(useSatisfactionReportData)
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)

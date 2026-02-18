@@ -1,7 +1,6 @@
 import type { RefObject } from 'react'
 import { createRef } from 'react'
 
-import { getFileTooLargeError } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -20,6 +19,7 @@ import { uploadFiles } from 'common/utils'
 import IconButton from 'pages/common/components/button/IconButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { getFileTooLargeError } from 'utils/file'
 
 import type { InputFieldProps } from './DEPRECATED_InputField'
 import DEPRECATED_InputField from './DEPRECATED_InputField'

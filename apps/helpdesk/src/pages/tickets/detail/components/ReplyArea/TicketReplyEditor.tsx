@@ -3,7 +3,6 @@ import { Component } from 'react'
 
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
-import { getFileTooLargeError } from '@repo/utils'
 import classnames from 'classnames'
 import { ContentState, EditorState } from 'draft-js'
 import { fromJS, Map } from 'immutable'
@@ -38,7 +37,7 @@ import { NotificationStatus } from 'state/notifications/types'
 import { getContext } from 'state/prediction/selectors'
 import type { RootState } from 'state/types'
 import { isInternalNote, isRichType } from 'tickets/common/utils'
-import { getMaxAttachmentSize } from 'utils/file'
+import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 
 import { MacrosQuickReply } from './MacrosQuickReply/MacrosQuickReply'
 

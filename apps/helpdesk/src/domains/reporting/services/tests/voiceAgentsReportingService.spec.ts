@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import * as files from '@repo/utils'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -24,6 +23,7 @@ import {
 } from 'domains/reporting/services/voiceAgentsReportingService'
 import { agents } from 'fixtures/agents'
 import useAppSelector from 'hooks/useAppSelector'
+import * as files from 'utils/file'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)

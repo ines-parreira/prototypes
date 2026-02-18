@@ -1,4 +1,3 @@
-import { getBase64 } from '@repo/utils'
 import _pick from 'lodash/pick'
 
 import {
@@ -18,6 +17,7 @@ import type {
 import { IvrMenuActionType, VoiceMessageType } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { getBase64 } from 'utils/file'
 
 import { getAudioFileDuration } from '../utils'
 

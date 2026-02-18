@@ -1,6 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import { createCsv, saveZippedFiles } from '@repo/utils'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -33,6 +32,7 @@ import {
 import type { TagsTableOrder } from 'domains/reporting/state/ui/stats/tagsReportSlice'
 import { tags } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'
+import { createCsv, saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const fetchTagsTicketCountTimeSeriesMock = assumeMock(
@@ -55,8 +55,8 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 
 jest.mock('@repo/logging')
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('utils/file', () => ({
+    ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
 }))
 

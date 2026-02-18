@@ -162,7 +162,5 @@ catalogs:
   sanitize-html:
     '@types/sanitize-html': '1.27.0'
     'sanitize-html': '2.12.1'
-  jszip:
-    'jszip': '3.10.1'
   react-json-pretty:
     'react-json-pretty': '2.2.0'

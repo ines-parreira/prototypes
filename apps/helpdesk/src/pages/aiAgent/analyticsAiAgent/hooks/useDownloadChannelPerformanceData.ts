@@ -1,10 +1,10 @@
 import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
-import { createCsv } from '@repo/utils'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { createCsv } from 'utils/file'
 
 import { useChannelPerformanceMetrics } from './useChannelPerformanceMetrics'
 

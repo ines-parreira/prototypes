@@ -1,5 +1,3 @@
-import { createCsv } from '@repo/utils'
-
 import type { ChannelsReportData } from 'domains/reporting/hooks/support-performance/channels/useChannelsReportMetrics'
 import { nonEmptyChannels } from 'domains/reporting/hooks/support-performance/nonEmptyChannel'
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
@@ -19,6 +17,7 @@ import {
 } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 import type { Channel } from 'models/channel/types'
+import { createCsv } from 'utils/file'
 
 export type ChannelsReportMetrics =
     | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins['measures']

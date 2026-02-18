@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { saveFileAsDownloaded } from '@repo/utils'
 import type { AxiosError } from 'axios'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -17,6 +16,7 @@ import { notify as notifyAction } from 'state/notifications/actions'
 import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 import { hasRole, replaceAttachmentURL } from 'utils'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './DownloadableDeletableRecording.less'
 

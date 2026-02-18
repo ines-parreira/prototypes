@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
-import { createCsv } from '@repo/utils'
 import moment from 'moment'
 
 import { useAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { createCsv } from 'utils/file'
 
 const FILE_NAME = 'support-interactions-timeseries'
 

@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveZippedFiles } from '@repo/utils'
 
 import { useDownloadSLAsData } from 'domains/reporting/hooks/sla/useDownloadSLAsData'
 import { DownloadSLAsDataButton } from 'domains/reporting/pages/sla/components/DownloadSLAsDataButton'
 import { DOWNLOAD_TICKET_DATA_BUTTON_LABEL } from 'domains/reporting/pages/sla/constants'
+import { saveZippedFiles } from 'utils/file'
 
 export const DownloadTicketsSLAsData = () => {
     const { files, fileName, isLoading } = useDownloadSLAsData()

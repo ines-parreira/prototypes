@@ -2,7 +2,6 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { useAIAgentReportMetrics } from 'domains/reporting/hooks/automate/useAIAgentReportMetrics'
@@ -11,6 +10,7 @@ import { AiAgentStatsDownloadButton } from 'domains/reporting/pages/automate/ai-
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { DOWNLOAD_DATA_BUTTON_LABEL } from 'domains/reporting/pages/constants'
 import useAppSelector from 'hooks/useAppSelector'
+import { saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentReportMetrics')
 const useAIAgentReportMetricsMock = assumeMock(useAIAgentReportMetrics)
@@ -18,16 +18,7 @@ const useAIAgentReportMetricsMock = assumeMock(useAIAgentReportMetrics)
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 jest.mock('@repo/logging')

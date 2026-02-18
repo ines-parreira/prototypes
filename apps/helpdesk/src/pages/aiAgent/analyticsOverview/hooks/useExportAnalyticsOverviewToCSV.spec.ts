@@ -1,7 +1,7 @@
-import * as fileUtils from '@repo/utils'
 import { act, renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import * as fileUtils from 'utils/file'
 
 import { useAutomatedInteractionsMetric } from './useAutomatedInteractionsMetric'
 import { useAutomationRateMetric } from './useAutomationRateMetric'
@@ -20,8 +20,8 @@ jest.mock('./useCostSavedMetric')
 jest.mock('./useDownloadPerformanceBreakdownData')
 jest.mock('./useDownloadAutomationRateByFeatureData')
 jest.mock('./useDownloadAutomationRateTimeSeriesData')
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('utils/file', () => ({
+    ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
 }))
 

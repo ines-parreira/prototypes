@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveZippedFiles } from '@repo/utils'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAiSalesAgentOverviewReportData from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download Data'
 

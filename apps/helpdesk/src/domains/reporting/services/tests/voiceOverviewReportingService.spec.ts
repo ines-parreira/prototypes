@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import * as files from '@repo/utils'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -13,6 +12,7 @@ import { useVoiceCallCountTrend } from 'domains/reporting/pages/voice/hooks/useV
 import { VoiceCallAverageTimeMetric } from 'domains/reporting/pages/voice/models/types'
 import { useVoiceOverviewReportData } from 'domains/reporting/services/voiceOverviewReportingService'
 import { agents } from 'fixtures/agents'
+import * as files from 'utils/file'
 
 jest.mock('domains/reporting/pages/voice/hooks/useVoiceCallCountTrend')
 const useVoiceCallCountTrendMock = assumeMock(useVoiceCallCountTrend)

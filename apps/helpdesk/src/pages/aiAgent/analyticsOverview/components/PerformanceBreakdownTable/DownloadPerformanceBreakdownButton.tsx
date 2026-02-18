@@ -1,9 +1,9 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveFileAsDownloaded } from '@repo/utils'
 
 import { Box, Button } from '@gorgias/axiom'
 
 import { useDownloadPerformanceBreakdownData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './DownloadPerformanceBreakdownButton.less'
 

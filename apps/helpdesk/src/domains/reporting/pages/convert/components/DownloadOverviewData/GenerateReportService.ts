@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { createCsv } from '@repo/utils'
 import _get from 'lodash/get'
 import moment from 'moment'
 
@@ -24,6 +23,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { CampaignPreview } from 'models/convert/campaign/types'
 import { formatPercentage } from 'pages/common/utils/numbers'
 import { getTimezone } from 'state/currentUser/selectors'
+import { createCsv } from 'utils/file'
 
 export interface CampaignPerformanceReportData {
     campaign: CampaignPreview

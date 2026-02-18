@@ -1,13 +1,13 @@
 import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
-import { createCsv } from '@repo/utils'
 import moment from 'moment'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { createCsv } from 'utils/file'
 
 const FILE_NAME = 'total-sales-timeseries'
 

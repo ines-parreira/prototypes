@@ -1,5 +1,4 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { saveFileAsDownloaded } from '@repo/utils'
 
 import { Box, Button } from '@gorgias/axiom'
 
@@ -7,6 +6,7 @@ import {
     ExportFormat,
     useAiAgentAnalyticsDashboardTracking,
 } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './DownloadTableButton.less'
 

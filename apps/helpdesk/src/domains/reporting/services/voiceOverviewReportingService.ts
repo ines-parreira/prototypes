@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { createCsv } from '@repo/utils'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
@@ -30,6 +28,7 @@ import {
     NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'domains/reporting/services/constants'
+import { createCsv } from 'utils/file'
 
 interface VoiceReportData {
     totalCallsCountTrend: MetricTrend

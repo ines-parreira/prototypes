@@ -1,5 +1,3 @@
-import { createCsv } from '@repo/utils'
-
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import {
     CURRENT_PERIOD_LABEL,
@@ -7,6 +5,7 @@ import {
     NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'domains/reporting/services/constants'
+import { createCsv } from 'utils/file'
 
 export type FormattedTrendDataWithLabel = {
     label: string

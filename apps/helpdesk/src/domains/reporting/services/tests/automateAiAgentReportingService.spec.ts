@@ -1,5 +1,4 @@
 import { assumeMock } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import moment from 'moment'
 
 import { AutomateStatsMeasureLabelMap } from 'domains/reporting/hooks/automate/automateStatsMeasureLabelMap'
@@ -11,9 +10,9 @@ import { formatData as getTicketInsightsData } from 'domains/reporting/services/
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import { OrderDirection } from 'models/api/types'
+import { saveZippedFiles } from 'utils/file'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('utils/file', () => ({
     createCsv: (value: string) => `${value}-csv`,
     saveZippedFiles: jest.fn(),
 }))

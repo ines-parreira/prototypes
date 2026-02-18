@@ -1,9 +1,8 @@
 import { useState } from 'react'
 
-import { getBase64 } from '@repo/utils'
-
 import type { GenericAttachment } from 'common/types'
 import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+import { getBase64 } from 'utils/file'
 
 import useCurrentHelpCenter from './useCurrentHelpCenter'
 

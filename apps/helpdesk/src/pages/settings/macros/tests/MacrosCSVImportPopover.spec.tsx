@@ -1,4 +1,3 @@
-import { saveFileAsDownloaded } from '@repo/utils'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
@@ -8,20 +7,12 @@ import thunk from 'redux-thunk'
 import { uploadFiles } from 'common/utils'
 import client from 'models/api/resources'
 import { createJob } from 'models/job/resources'
+import { saveFileAsDownloaded } from 'utils/file'
 import { renderWithRouter } from 'utils/testing'
 
 import { MacrosCSVImportPopover } from '../MacrosCSVImportPopover'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 
 jest.mock('common/utils', () => {
     const original: Record<string, unknown> = jest.requireActual('common/utils')

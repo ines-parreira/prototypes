@@ -1,8 +1,8 @@
-import * as fileUtils from '@repo/utils'
 import { act, renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useCostSavedMetric } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedMetric'
+import * as fileUtils from 'utils/file'
 
 import { useAiAgentSupportInteractionsMetric } from './useAiAgentSupportInteractionsMetric'
 import { useAiAgentTimeSavedMetric } from './useAiAgentTimeSavedMetric'
@@ -22,8 +22,8 @@ jest.mock('./useDownloadSupportInteractionsByIntentData')
 jest.mock('./useDownloadSupportInteractionsTimeSeriesData')
 jest.mock('./useDownloadSupportAgentChannelPerformanceData')
 jest.mock('./useDownloadIntentPerformanceData')
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('utils/file', () => ({
+    ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
 }))
 

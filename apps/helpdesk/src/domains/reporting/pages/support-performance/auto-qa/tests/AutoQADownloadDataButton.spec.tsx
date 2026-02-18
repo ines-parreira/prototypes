@@ -2,25 +2,16 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 
 import { AutoQADownloadDataButton } from 'domains/reporting/pages/support-performance/auto-qa/AutoQADownloadDataButton'
 import { useAutoQAReportData } from 'domains/reporting/services/autoQAReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/services/autoQAReportingService')
 const useAutoQAReportDataMock = assumeMock(useAutoQAReportData)
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 jest.mock('@repo/logging')

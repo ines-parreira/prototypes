@@ -1,4 +1,3 @@
-import { createCsv } from '@repo/utils'
 import moment from 'moment/moment'
 
 import { useTables } from 'domains/reporting/hooks/common/useTableReportData'
@@ -27,6 +26,7 @@ import { SCORED_SURVEYS_TABLE_COLUMNS } from 'domains/reporting/pages/quality-ma
 import { DATE_TIME_FORMAT } from 'domains/reporting/services/constants'
 import { SatisfactionMetric } from 'domains/reporting/state/ui/stats/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
+import { createCsv } from 'utils/file'
 
 export interface SatisfactionReportData {
     satisfactionScoreTrend: MetricTrend

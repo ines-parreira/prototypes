@@ -2,13 +2,13 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { saveZippedFiles } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import AiSalesAgentOverviewDownloadButton, {
     DOWNLOAD_DATA_BUTTON_LABEL,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
 import useAiSalesAgentOverviewReportData from 'domains/reporting/pages/automate/aiSalesAgent/hooks/aiSalesAgentReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 jest.mock('@repo/logging')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -20,16 +20,7 @@ const useAiSalesAgentOverviewReportDataMock = assumeMock(
     useAiSalesAgentOverviewReportData,
 )
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 
 describe('<AiSalesAgentOverviewDownloadButton />', () => {

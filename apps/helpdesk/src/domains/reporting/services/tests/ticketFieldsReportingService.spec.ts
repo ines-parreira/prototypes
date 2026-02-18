@@ -1,7 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
-import * as files from '@repo/utils'
-import { saveZippedFiles } from '@repo/utils'
 import type { UseQueryResult } from '@tanstack/react-query'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
@@ -25,6 +23,8 @@ import {
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
+import * as files from 'utils/file'
+import { saveZippedFiles } from 'utils/file'
 
 jest.mock('domains/reporting/hooks/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
@@ -37,16 +37,7 @@ jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 jest.mock('@repo/logging')
 
 describe('ticketFieldsReportingService', () => {

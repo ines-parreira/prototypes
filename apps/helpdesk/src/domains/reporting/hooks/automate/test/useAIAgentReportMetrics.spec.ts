@@ -1,5 +1,4 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import { createCsv } from '@repo/utils'
 import moment from 'moment'
 
 import { OrderDirection } from '@gorgias/helpdesk-queries'
@@ -36,6 +35,7 @@ import { formatData as getTicketInsightsData } from 'domains/reporting/services/
 import { AgentsTableColumn } from 'domains/reporting/state/ui/stats/types'
 import { agents } from 'fixtures/agents'
 import useAppSelector from 'hooks/useAppSelector'
+import { createCsv } from 'utils/file'
 
 const timeSeriesMock = [
     [

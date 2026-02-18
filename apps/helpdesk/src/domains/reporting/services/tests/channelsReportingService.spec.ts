@@ -1,5 +1,3 @@
-import * as files from '@repo/utils'
-
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { HandleTimeMeasure } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
 import { HelpdeskCustomerMessagesReceivedEnrichedMeasure } from 'domains/reporting/models/cubes/HelpdeskCustomerMessagesReceivedEnrichedCube'
@@ -22,17 +20,9 @@ import {
 } from 'domains/reporting/services/channelsReportingService'
 import { channels } from 'fixtures/channels'
 import type { Channel } from 'models/channel/types'
+import * as files from 'utils/file'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
-    saveZippedFiles: jest.fn(),
-    saveFileAsDownloaded: jest.fn(),
-    saveBlobAsDownloaded: jest.fn(),
-    createCsv: jest.fn(),
-    getText: jest.fn(),
-    getBase64: jest.fn(),
-    getFileTooLargeError: jest.fn(),
-}))
+jest.mock('utils/file')
 
 describe('channelsReportingService', () => {
     const channelA = channels[0]
