@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 import authClient from 'models/api/resources'
 
 import { apiClient as aiAgentApiClient } from '../message-processing'
-import { createTestSession } from '../playground'
+import { createTestSession, submitTestSessionMessage } from '../playground'
 
 describe('aiAgent/resources/test/playground', () => {
     let authServer: MockAdapter
@@ -16,6 +16,10 @@ describe('aiAgent/resources/test/playground', () => {
         })
 
         aiAgentServer = new MockAdapter(aiAgentApiClient)
+    })
+
+    beforeEach(() => {
+        aiAgentServer.resetHistory()
     })
 
     afterAll(() => {
@@ -43,6 +47,52 @@ describe('aiAgent/resources/test/playground', () => {
             expect(aiAgentServer.history.post.length).toBe(1)
             expect(aiAgentServer.history.post[0].url).toBe(
                 '/api/test-mode-session',
+            )
+            expect(response).toEqual(expectedResponse)
+        })
+    })
+
+    describe('submitTestSessionMessage', () => {
+        it('should make a POST request to /api/test-mode-session/message with payload', async () => {
+            const payload = {
+                sessionId: 'session-123',
+                userMessage: {
+                    type: 'message' as const,
+                    role: 'user' as const,
+                    content: [{ type: 'text' as const, text: 'Hello' }],
+                },
+                isDirectModelCall: false,
+            }
+            const expectedResponse = { success: true }
+
+            aiAgentServer
+                .onPost('/api/test-mode-session/message')
+                .reply(200, expectedResponse)
+
+            const response = await submitTestSessionMessage(undefined, payload)
+
+            expect(aiAgentServer.history.post.length).toBe(1)
+            expect(aiAgentServer.history.post[0].url).toBe(
+                '/api/test-mode-session/message',
+            )
+            expect(JSON.parse(aiAgentServer.history.post[0].data)).toEqual(
+                payload,
+            )
+            expect(response).toEqual(expectedResponse)
+        })
+
+        it('should make a POST request with empty payload when no arguments are provided', async () => {
+            const expectedResponse = { success: true }
+
+            aiAgentServer
+                .onPost('/api/test-mode-session/message')
+                .reply(200, expectedResponse)
+
+            const response = await submitTestSessionMessage()
+
+            expect(aiAgentServer.history.post.length).toBe(1)
+            expect(aiAgentServer.history.post[0].url).toBe(
+                '/api/test-mode-session/message',
             )
             expect(response).toEqual(expectedResponse)
         })

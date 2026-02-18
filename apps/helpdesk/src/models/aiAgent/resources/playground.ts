@@ -4,6 +4,7 @@ import type {
     AiAgentPlaygroundOptions,
     CreateTestSessionResponse,
     PlaygroundExecutions,
+    TestModeSessionMessagePayload,
 } from '../types'
 import { apiClient as configurationApiClient } from './configuration'
 import {
@@ -33,6 +34,18 @@ export const createTestSession = async (
         payload,
     )
 
+    return response.data
+}
+
+export const submitTestSessionMessage = async (
+    baseUrl?: string,
+    payload: TestModeSessionMessagePayload | {} = {},
+) => {
+    const client = baseUrl ? createApiClient(baseUrl) : aiAgentApiClient
+    const response = await client.post(
+        '/api/test-mode-session/message',
+        payload,
+    )
     return response.data
 }
 

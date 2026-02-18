@@ -7,6 +7,7 @@ import { waitFor } from '@testing-library/react'
 import {
     useCreateTestSessionMutation,
     useGetTestSessionLogs,
+    useSubmitTestModeMessageMutation,
     useTriggerAIJourney,
 } from 'models/aiAgent/queries'
 import type {
@@ -56,7 +57,11 @@ import {
 } from '../resources/configuration'
 import * as guidanceResources from '../resources/guidances'
 import { createContextAndGenerateCustomToneOfVoicePreview } from '../resources/message-processing'
-import { createTestSession, getTestSessionLogs } from '../resources/playground'
+import {
+    createTestSession,
+    getTestSessionLogs,
+    submitTestSessionMessage,
+} from '../resources/playground'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -124,10 +129,12 @@ const mockedAIGuidances = [
 jest.mock('models/aiAgent/resources/playground', () => ({
     createTestSession: jest.fn(),
     getTestSessionLogs: jest.fn(),
+    submitTestSessionMessage: jest.fn(),
 }))
 
 const mockCreateTestSession = jest.mocked(createTestSession)
 const mockGetTestSessionLogs = jest.mocked(getTestSessionLogs)
+const mockSubmitTestSessionMessage = jest.mocked(submitTestSessionMessage)
 
 describe('queries', () => {
     beforeEach(() => {
@@ -729,6 +736,79 @@ describe('queries', () => {
             ).mutationFn
 
             await expect(mutationFn([])).rejects.toThrow('Test error')
+        })
+    })
+
+    describe('useSubmitTestModeMessageMutation', () => {
+        it('should call useMutation with the correct parameters', async () => {
+            const payload = {
+                sessionId: 'session-123',
+                userMessage: {
+                    type: 'message' as const,
+                    role: 'user' as const,
+                    content: [{ type: 'text' as const, text: 'Hello' }],
+                },
+                isDirectModelCall: false,
+            }
+            const mockResponse = { success: true }
+            mockSubmitTestSessionMessage.mockResolvedValue(mockResponse as any)
+
+            renderHook(() => useSubmitTestModeMessageMutation(), { wrapper })
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+            })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (params: any[]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([undefined, payload])).resolves.toEqual(
+                mockResponse,
+            )
+            expect(mockSubmitTestSessionMessage).toHaveBeenCalledWith(
+                undefined,
+                payload,
+            )
+        })
+
+        it('should handle errors correctly', async () => {
+            const mockError = new Error('Failed to submit message')
+            mockSubmitTestSessionMessage.mockRejectedValue(mockError)
+
+            renderHook(() => useSubmitTestModeMessageMutation(), { wrapper })
+
+            const mutationFn = (
+                useMutationSpy.mock.calls[0][0] as unknown as {
+                    mutationFn: (params: any[]) => any
+                }
+            ).mutationFn
+
+            await expect(mutationFn([])).rejects.toThrow(
+                'Failed to submit message',
+            )
+        })
+
+        it('should support overrides', async () => {
+            const onSuccessMock = jest.fn()
+            mockSubmitTestSessionMessage.mockResolvedValue({} as any)
+
+            renderHook(
+                () =>
+                    useSubmitTestModeMessageMutation({
+                        onSuccess: onSuccessMock,
+                        retry: false,
+                    }),
+                { wrapper },
+            )
+
+            expect(useMutationSpy).toHaveBeenCalledWith({
+                mutationFn: expect.any(Function),
+                onSuccess: onSuccessMock,
+                retry: false,
+            })
         })
     })
 

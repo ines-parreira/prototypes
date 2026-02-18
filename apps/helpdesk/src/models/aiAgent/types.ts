@@ -477,3 +477,28 @@ export type TriggerAIJourneyResponse = {
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
 }
+
+export type TestModeSessionUserMessageContent = {
+    type: 'text'
+    text: string
+}
+
+export type TestModeSessionUserMessage = {
+    type: 'message'
+    role: 'user'
+    content: TestModeSessionUserMessageContent[]
+}
+
+export type TestModeSessionMessagePayload = {
+    sessionId: string
+    userMessage: TestModeSessionUserMessage
+    isDirectModelCall: boolean
+}
+
+export type TestModeSessionMessageResponse = {
+    sessionId: string
+    workflow: {
+        workflowId: string
+        runId: string
+    }
+}

@@ -53,6 +53,7 @@ import {
     createTestSession,
     getPlaygroundExecutions,
     getTestSessionLogs,
+    submitTestSessionMessage,
 } from './resources/playground'
 import type {
     GetOnboardingNotificationStateParams,
@@ -265,6 +266,15 @@ export const useCreateTestSessionMutation = (
 ) => {
     return useMutation({
         mutationFn: (params) => createTestSession(...params),
+        ...overrides,
+    })
+}
+
+export const useSubmitTestModeMessageMutation = (
+    overrides?: MutationOverrides<typeof submitTestSessionMessage>,
+) => {
+    return useMutation({
+        mutationFn: (params) => submitTestSessionMessage(...params),
         ...overrides,
     })
 }
