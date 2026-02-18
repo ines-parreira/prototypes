@@ -232,8 +232,8 @@ export const AIJourneySettings: React.FC = () => {
                 }
             >
                 <strong>No journeys configured.</strong> You need to configure
-                at least one journey (Cart Abandoned or Browse Abandoned) before
-                you can test outbound messages.
+                at least one flow or campaign before you can test outbound
+                messages.
             </Banner>
         )
     }

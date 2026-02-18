@@ -720,7 +720,9 @@ describe('AIJourneySettings', () => {
                 screen.getByText('No journeys configured.'),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(/You need to configure at least one journey/i),
+                screen.getByText(
+                    /You need to configure at least one flow or campaign/i,
+                ),
             ).toBeInTheDocument()
         })
 
