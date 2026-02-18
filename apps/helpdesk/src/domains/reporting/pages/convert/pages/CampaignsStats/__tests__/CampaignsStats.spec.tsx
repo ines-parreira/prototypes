@@ -76,7 +76,12 @@ jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',
     () => ({
         useStatsFilters: () => ({
-            cleanStatsFilters: {},
+            cleanStatsFilters: {
+                period: {
+                    start_datetime: '2021-01-01T00:00:00Z',
+                    end_datetime: '2021-01-02T00:00:00Z',
+                },
+            },
             userTimezone: 'UTC',
             granularity: 'day',
         }),

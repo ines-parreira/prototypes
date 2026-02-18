@@ -681,6 +681,7 @@ export const discountCodesAverageQueryFactory = (
 })
 
 export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
+    filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AiSalesAgentConversationsCube> => ({
     measures: [AiSalesAgentConversationsMeasure.Count],
@@ -692,6 +693,10 @@ export const totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory = (
             values: ['1'],
         },
         ...baseAISalesAgentConversationsFilters,
+        ...statsFiltersToReportingFilters(
+            aiSalesAgentConversationsDefaultFiltersMembers,
+            filters,
+        ),
     ],
     timezone,
     metricName: METRIC_NAMES.AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY,

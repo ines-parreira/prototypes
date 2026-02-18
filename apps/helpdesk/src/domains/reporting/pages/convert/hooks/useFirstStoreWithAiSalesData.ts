@@ -11,10 +11,11 @@ export const useFirstStoreWithAiSalesData = ({
     storeId: number | null
     isLoading: boolean
 } => {
-    const { userTimezone } = useStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
     const { data, isFetching } = useMetricPerDimension(
         totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory(
+            cleanStatsFilters,
             userTimezone,
         ),
         undefined,

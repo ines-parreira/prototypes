@@ -25,7 +25,15 @@ const mockUseMetricPerDimension = jest.requireMock(
 describe('useFirstStoreWithAiSalesData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseStatsFilters.mockReturnValue({ userTimezone: 'UTC' })
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    start_datetime: '2021-01-01T00:00:00Z',
+                    end_datetime: '2021-01-02T00:00:00Z',
+                },
+            },
+            userTimezone: 'UTC',
+        })
     })
 
     it('returns storeId as number when data is available', () => {
