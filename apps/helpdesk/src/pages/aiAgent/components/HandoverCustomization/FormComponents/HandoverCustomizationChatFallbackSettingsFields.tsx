@@ -145,10 +145,11 @@ export const HandoverCustomizationChatFallbackSettingsFields = ({
                 />
 
                 <Caption className="caption-regular mt-1">
-                    AI Agent will send the exact text if it encounters an
-                    unexpected error handing over. By default, it sends the
-                    following message: “We&apos;re experiencing a temporary
-                    issue. Please leave your email for assistance.”
+                    AI Agent will only send this error message when it cannot
+                    request handover confirmation due to a temporary issue. By
+                    default, it sends the following message: “We&apos;re
+                    experiencing a temporary issue. Please leave your email for
+                    assistance.”
                 </Caption>
             </div>
         </>

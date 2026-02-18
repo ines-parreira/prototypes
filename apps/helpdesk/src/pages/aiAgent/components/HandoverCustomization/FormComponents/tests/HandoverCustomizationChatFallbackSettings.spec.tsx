@@ -113,7 +113,7 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
         // Check the caption is rendered
         expect(
             screen.getByText(
-                /AI Agent will send the exact text if it encounters an unexpected error handing over./i,
+                /AI Agent will only send this error message when it cannot request handover confirmation due to a temporary issue./i,
             ),
         ).toBeInTheDocument()
         expect(
