@@ -126,7 +126,7 @@ describe('useJourneyCreateHandler', () => {
                     sms_sender_number: '+1234567890',
                     discount_code_message_threshold: 2,
                     include_image: true,
-                    media_urls: [],
+                    media_urls: undefined,
                 },
             })
 
@@ -175,7 +175,7 @@ describe('useJourneyCreateHandler', () => {
                     sms_sender_number: '+1234567890',
                     discount_code_message_threshold: undefined,
                     include_image: undefined,
-                    media_urls: [],
+                    media_urls: undefined,
                 },
             })
         })
@@ -545,7 +545,7 @@ describe('useJourneyCreateHandler', () => {
                     include_image: undefined,
                     inactive_days: 30,
                     cooldown_days: 7,
-                    media_urls: [],
+                    media_urls: undefined,
                 },
             })
         })
@@ -656,7 +656,7 @@ describe('useJourneyCreateHandler', () => {
                     discount_code_message_threshold: undefined,
                     include_image: undefined,
                     wait_time_minutes: 15,
-                    media_urls: [],
+                    media_urls: undefined,
                 },
             })
         })
@@ -735,7 +735,7 @@ describe('useJourneyCreateHandler', () => {
                     include_image: undefined,
                     post_purchase_wait_minutes: 60,
                     target_order_status: 'order_placed',
-                    media_urls: [],
+                    media_urls: undefined,
                 },
             })
         })
@@ -822,11 +822,13 @@ describe('useJourneyCreateHandler', () => {
             await act(async () => {
                 await result.current.handleCreate({
                     campaignTitle: 'Summer Sale',
-                    uploadedImageAttachment: {
-                        url: 'https://example.com/image.png',
-                        name: 'image.png',
-                        content_type: 'image/png',
-                    },
+                    uploadedImageAttachment: [
+                        {
+                            url: 'https://example.com/image.png',
+                            name: 'image.png',
+                            content_type: 'image/png',
+                        },
+                    ],
                     phoneNumberValue: mockPhoneNumber,
                 })
             })
@@ -841,36 +843,6 @@ describe('useJourneyCreateHandler', () => {
                                 content_type: 'image/png',
                             },
                         ],
-                    }),
-                }),
-            )
-        })
-
-        it('should create campaign journey with empty media_urls when no image attachment is provided', async () => {
-            const mockResponse = { id: 'journey-123', created: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyCreateHandler({
-                        integrationId: 100,
-                        integrationName: 'Test Store',
-                        journeyType: JOURNEY_TYPES.CAMPAIGN,
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await result.current.handleCreate({
-                    campaignTitle: 'Summer Sale',
-                    phoneNumberValue: mockPhoneNumber,
-                })
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    journeyConfigs: expect.objectContaining({
-                        media_urls: [],
                     }),
                 }),
             )

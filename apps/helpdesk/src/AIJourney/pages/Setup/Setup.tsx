@@ -136,7 +136,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
         journeyParams?.include_image || false,
     )
     const [uploadedImageAttachment, setUploadedImageAttachment] = useState<
-        UploadedImageAttachment | undefined
+        UploadedImageAttachment[] | undefined
     >(undefined)
 
     const [includedAudienceListIds, setIncludedAudienceListIds] = useState<
@@ -171,14 +171,13 @@ export const Setup = ({ journeyType }: SetupProps) => {
             setIsImageEnabled(journeyParams.include_image || false)
 
             if ('media_urls' in journeyParams && journeyParams.media_urls) {
-                const firstMedia = journeyParams.media_urls[0]
-                if (firstMedia) {
-                    setUploadedImageAttachment({
-                        url: firstMedia.url,
-                        name: firstMedia.name,
-                        content_type: firstMedia.content_type,
-                    })
-                }
+                setUploadedImageAttachment([
+                    {
+                        url: journeyParams.media_urls[0].url,
+                        name: journeyParams.media_urls[0].name,
+                        content_type: journeyParams.media_urls[0].content_type,
+                    },
+                ])
             }
 
             if ('cooldown_days' in journeyParams) {
@@ -249,7 +248,7 @@ export const Setup = ({ journeyType }: SetupProps) => {
     }
 
     const handleUploadedImageChange = (
-        attachment: UploadedImageAttachment | undefined,
+        attachment: UploadedImageAttachment[] | undefined,
     ) => {
         setUploadedImageAttachment(attachment)
     }
@@ -516,7 +515,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
             )}
             {fields.includes(Fields.UploadImage) && campaignImageEnabled && (
                 <UploadImageField
-                    imageUrl={uploadedImageAttachment?.url}
+                    imageUrl={
+                        uploadedImageAttachment
+                            ? uploadedImageAttachment[0]?.url
+                            : undefined
+                    }
                     onChange={handleUploadedImageChange}
                 />
             )}

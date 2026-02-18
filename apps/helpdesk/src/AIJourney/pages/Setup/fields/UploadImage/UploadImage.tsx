@@ -25,7 +25,7 @@ export type UploadedImageAttachment = Pick<
 
 interface UploadImageFieldProps {
     imageUrl?: string
-    onChange?: (attachment: UploadedImageAttachment | undefined) => void
+    onChange?: (attachment: UploadedImageAttachment[] | undefined) => void
 }
 
 export const UploadImageField = ({
@@ -52,7 +52,7 @@ export const UploadImageField = ({
                 const uploadedFiles = await uploadFiles([file])
                 if (uploadedFiles && uploadedFiles[0]) {
                     const { url, name, content_type } = uploadedFiles[0]
-                    onChange?.({ url, name, content_type })
+                    onChange?.([{ url, name, content_type }])
                 }
             } catch (error) {
                 void dispatch(
@@ -92,17 +92,13 @@ export const UploadImageField = ({
         (event: React.MouseEvent) => {
             event.stopPropagation()
             event.preventDefault()
-            onChange?.(undefined)
+            onChange?.([])
         },
         [onChange],
     )
 
     const closeSpan = (
-        <span
-            className={css.close}
-            onClick={handleOnRemoveFile}
-            data-testid="image-upload-remove"
-        >
+        <span className={css.close} onClick={handleOnRemoveFile}>
             <i className="material-icons-outlined">close</i>
         </span>
     )

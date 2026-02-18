@@ -45,7 +45,7 @@ type HandleUpdateParams = {
     waitTimeMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
-    uploadedImageAttachment?: UploadedImageAttachment
+    uploadedImageAttachment?: UploadedImageAttachment[]
 }
 
 export const useJourneyUpdateHandler = ({
@@ -121,9 +121,7 @@ export const useJourneyUpdateHandler = ({
                     ...(targetOrderStatus && {
                         target_order_status: targetOrderStatus,
                     }),
-                    media_urls: uploadedImageAttachment
-                        ? [uploadedImageAttachment]
-                        : [],
+                    media_urls: uploadedImageAttachment,
                 }
 
                 const journeyConfigs:

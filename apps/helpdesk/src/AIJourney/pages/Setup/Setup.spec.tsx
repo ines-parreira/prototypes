@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -30,6 +31,12 @@ jest.mock('react-router-dom', () => ({
     }),
 }))
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+    useFlag: jest.fn(),
+}))
+
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
         'AIJourney/providers/JourneyProvider/JourneyProvider',
@@ -59,6 +66,8 @@ jest.mock('AIJourney/queries/useAudienceLists/useAudienceLists', () => ({
 jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
     useAudienceSegments: jest.fn(),
 }))
+
+const mockUseFlag = useFlag as jest.Mock
 
 const mockUseSmsIntegrations = require('AIJourney/queries')
     .useSmsIntegrations as jest.Mock
@@ -721,7 +730,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
                         sms_sender_integration_id: 1,
                         sms_sender_number: '+15551234567',
                         include_image: false,
-                        media_urls: [],
+                        media_urls: undefined,
                     },
                 })
             })
@@ -1294,6 +1303,151 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             })
         })
     })
+
+    describe('UploadImage field', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyCampaignImageEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should render existing image when media_urls is present in journeyParams', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-with-image-123',
+                    type: 'campaign',
+                    campaign: { title: 'Image Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                        media_urls: [
+                            {
+                                url: 'https://example.com/campaign-image.jpg',
+                                name: 'campaign-image.jpg',
+                                content_type: 'image/jpeg',
+                            },
+                        ],
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                const previewImage = screen.getByAltText('Uploaded image')
+                expect(previewImage).toBeInTheDocument()
+                expect(previewImage).toHaveAttribute(
+                    'src',
+                    'https://example.com/campaign-image.jpg',
+                )
+            })
+        })
+
+        it('should render upload drop zone when no media_urls in journeyParams', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.getByText('Upload custom image')).toBeInTheDocument()
+            expect(
+                screen.queryByAltText('Uploaded image'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should clear uploaded image when remove button is clicked', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-with-image-123',
+                    type: 'campaign',
+                    campaign: { title: 'Image Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                        media_urls: [
+                            {
+                                url: 'https://example.com/campaign-image.jpg',
+                                name: 'campaign-image.jpg',
+                                content_type: 'image/jpeg',
+                            },
+                        ],
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const user = userEvent.setup()
+
+            await waitFor(() => {
+                expect(
+                    screen.getByAltText('Uploaded image'),
+                ).toBeInTheDocument()
+            })
+
+            const removeButton = screen.getByText('close')
+            await act(async () => {
+                await user.click(removeButton)
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByAltText('Uploaded image'),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
 })
 
 describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
@@ -1857,7 +2011,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
                 include_image: false,
                 post_purchase_wait_minutes: 2880,
                 target_order_status: undefined,
-                media_urls: [],
+                media_urls: undefined,
             },
         })
     })

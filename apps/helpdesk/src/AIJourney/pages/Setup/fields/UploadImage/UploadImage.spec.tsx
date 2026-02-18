@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { GenericAttachment } from 'common/types'
@@ -65,7 +65,7 @@ describe('UploadImageField', () => {
 
     const renderComponent = (props: {
         imageUrl?: string
-        onChange?: (attachment: UploadedImageAttachment | undefined) => void
+        onChange?: (attachment: UploadedImageAttachment[] | undefined) => void
     }) => {
         return render(<UploadImageField {...props} />)
     }
@@ -102,17 +102,13 @@ describe('UploadImageField', () => {
         it('should render remove button when image is uploaded', () => {
             renderComponent({ imageUrl: 'https://example.com/test-image.png' })
 
-            expect(
-                screen.getByTestId('image-upload-remove'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('close')).toBeInTheDocument()
         })
 
         it('should not render remove button when no image is uploaded', () => {
             renderComponent({})
 
-            expect(
-                screen.queryByTestId('image-upload-remove'),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByText('close')).not.toBeInTheDocument()
         })
     })
 
@@ -126,18 +122,22 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, file)
+            await act(async () => {
+                await userEvent.upload(input, file)
+            })
 
             await waitFor(() => {
                 expect(mockUploadFiles).toHaveBeenCalledWith([file])
             })
 
             await waitFor(() => {
-                expect(onChange).toHaveBeenCalledWith({
-                    url: mockUploadedAttachment.url,
-                    name: mockUploadedAttachment.name,
-                    content_type: mockUploadedAttachment.content_type,
-                })
+                expect(onChange).toHaveBeenCalledWith([
+                    {
+                        url: mockUploadedAttachment.url,
+                        name: mockUploadedAttachment.name,
+                        content_type: mockUploadedAttachment.content_type,
+                    },
+                ])
             })
 
             expect(mockDispatch).not.toHaveBeenCalled()
@@ -155,7 +155,9 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, largeFile)
+            await act(async () => {
+                await userEvent.upload(input, largeFile)
+            })
 
             await waitFor(() => {
                 expect(mockGetFileTooLargeError).toHaveBeenCalledWith(
@@ -186,7 +188,9 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, file)
+            await act(async () => {
+                await userEvent.upload(input, file)
+            })
 
             await waitFor(() => {
                 expect(mockUploadFiles).toHaveBeenCalledWith([file])
@@ -215,7 +219,9 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, file)
+            await act(async () => {
+                await userEvent.upload(input, file)
+            })
 
             await waitFor(() => {
                 expect(mockUploadFiles).toHaveBeenCalledWith([file])
@@ -232,7 +238,9 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, file)
+            await act(async () => {
+                await userEvent.upload(input, file)
+            })
 
             await waitFor(() => {
                 expect(mockUploadFiles).toHaveBeenCalledWith([file])
@@ -256,7 +264,9 @@ describe('UploadImageField', () => {
                 'Drop zone files input',
             ) as HTMLInputElement
 
-            await userEvent.upload(input, file)
+            await act(async () => {
+                await userEvent.upload(input, file)
+            })
 
             await waitFor(() => {
                 expect(screen.getByLabelText('Loading')).toBeInTheDocument()
@@ -299,11 +309,13 @@ describe('UploadImageField', () => {
             })
 
             await waitFor(() => {
-                expect(onChange).toHaveBeenCalledWith({
-                    url: mockUploadedAttachment.url,
-                    name: mockUploadedAttachment.name,
-                    content_type: mockUploadedAttachment.content_type,
-                })
+                expect(onChange).toHaveBeenCalledWith([
+                    {
+                        url: mockUploadedAttachment.url,
+                        name: mockUploadedAttachment.name,
+                        content_type: mockUploadedAttachment.content_type,
+                    },
+                ])
             })
         })
 
@@ -360,11 +372,11 @@ describe('UploadImageField', () => {
                 onChange,
             })
 
-            const removeButton = screen.getByTestId('image-upload-remove')
+            const removeButton = screen.getByText('close')
 
             await user.click(removeButton)
 
-            expect(onChange).toHaveBeenCalledWith(undefined)
+            expect(onChange).toHaveBeenCalledWith([])
         })
 
         it('should prevent default behavior when remove button is clicked', async () => {
@@ -376,11 +388,11 @@ describe('UploadImageField', () => {
                 onChange,
             })
 
-            const removeButton = screen.getByTestId('image-upload-remove')
+            const removeButton = screen.getByText('close')
 
             await user.click(removeButton)
 
-            expect(onChange).toHaveBeenCalledWith(undefined)
+            expect(onChange).toHaveBeenCalledWith([])
             expect(onChange).toHaveBeenCalledTimes(1)
         })
 
@@ -390,7 +402,7 @@ describe('UploadImageField', () => {
                 imageUrl: 'https://example.com/test-image.png',
             })
 
-            const removeButton = screen.getByTestId('image-upload-remove')
+            const removeButton = screen.getByText('close')
 
             await user.click(removeButton)
         })

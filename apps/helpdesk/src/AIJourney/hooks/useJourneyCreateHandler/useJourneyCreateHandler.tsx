@@ -33,7 +33,7 @@ type HandleCreateParams = {
     waitTimeMinutes?: number
     targetOrderStatus?: 'order_placed' | 'order_fulfilled'
     postPurchaseWaitMinutes?: number
-    uploadedImageAttachment?: UploadedImageAttachment
+    uploadedImageAttachment?: UploadedImageAttachment[]
 }
 
 export const useJourneyCreateHandler = ({
@@ -103,9 +103,7 @@ export const useJourneyCreateHandler = ({
                     ...(targetOrderStatus && {
                         target_order_status: targetOrderStatus,
                     }),
-                    media_urls: uploadedImageAttachment
-                        ? [uploadedImageAttachment]
-                        : [],
+                    media_urls: uploadedImageAttachment,
                 }
 
                 const result = await createNewJourney.mutateAsync({

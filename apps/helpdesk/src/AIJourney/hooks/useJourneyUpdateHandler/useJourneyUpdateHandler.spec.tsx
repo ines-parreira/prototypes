@@ -103,11 +103,13 @@ describe('useJourneyUpdateHandler', () => {
                     journeyMessageInstructions: 'Custom instructions',
                     journeyState: JourneyStatusEnum.Active,
                     phoneNumberValue: mockPhoneNumber,
-                    uploadedImageAttachment: {
-                        url: 'image_url',
-                        name: 'image_name',
-                        content_type: 'content_type',
-                    },
+                    uploadedImageAttachment: [
+                        {
+                            url: 'image_url',
+                            name: 'image_name',
+                            content_type: 'content_type',
+                        },
+                    ],
                 })
             })
 
@@ -172,9 +174,6 @@ describe('useJourneyUpdateHandler', () => {
                     excluded_audience_list_ids: undefined,
                     campaign: undefined,
                 },
-                journeyConfigs: expect.objectContaining({
-                    media_urls: [],
-                }),
             })
         })
 
@@ -309,10 +308,6 @@ describe('useJourneyUpdateHandler', () => {
                     excluded_audience_list_ids: undefined,
                     campaign: undefined,
                 },
-                journeyConfigs: expect.objectContaining({
-                    max_discount_percent: undefined,
-                    media_urls: [],
-                }),
             })
         })
 
@@ -502,38 +497,6 @@ describe('useJourneyUpdateHandler', () => {
 
             expect(result.current.isLoading).toBe(false)
             expect(result.current.isSuccess).toBe(true)
-        })
-    })
-
-    describe('journey with media', () => {
-        it('should update journey with empty media_urls when no image attachment is provided', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await result.current.handleUpdate({
-                    followUpValue: 3,
-                    isDiscountEnabled: true,
-                    journeyState: JourneyStatusEnum.Active,
-                })
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    journeyConfigs: expect.objectContaining({
-                        media_urls: [],
-                    }),
-                }),
-            )
         })
     })
 })
