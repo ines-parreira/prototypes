@@ -33,23 +33,24 @@
 .axiom :local {
     .badge {
         &.success {
-            background-color: var(--surface-success-primary);
-            color: var(--content-success-primary);
+            background-color: var(--surface-success-default);
+            color: var(--content-success-default);
         }
 
         &.warning {
-            background-color: var(--surface-warning-primary);
-            color: var(--content-warning-primary);
+            background-color: var(--surface-warning-default);
+            color: var(--content-warning-default);
         }
 
         &.error {
-            background-color: var(--surface-error-primary);
-            color: var(--content-error-primary);
+            background-color: var(--surface-error-default);
+            color: var(--content-error-default);
         }
 
         &.info {
-            background-color: var(--surface-neutral-primary);
-            color: var(--content-neutral-tertiary);
+            color: var(--content-neutral-default);
+            box-shadow: inset 0 0 0 1px var(--border-neutral-tertiary);
+            background-color: transparent;
         }
     }
 }
