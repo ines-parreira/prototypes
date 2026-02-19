@@ -9,6 +9,7 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { OpportunityListItem } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunityType } from '../opportunities/enums'
+import { TOP_OPPORTUNITIES_LIMIT } from './constants'
 import { TopOpportunityCard } from './TopOpportunitiesCard'
 
 import css from './TopOpportunitiesSection.less'
@@ -119,6 +120,10 @@ export const TopOpportunitiesSection = ({
         return totalCount - allowedOpportunityIds.length
     }, [totalCount, allowedOpportunityIds])
 
+    const displayViewAllOpportunitiesButton = useMemo(() => {
+        return totalCount > TOP_OPPORTUNITIES_LIMIT
+    }, [totalCount])
+
     return (
         <Card
             width="100%"
@@ -133,15 +138,17 @@ export const TopOpportunitiesSection = ({
                 alignItems="center"
             >
                 <Heading size="md">Top opportunities</Heading>
-                <Button
-                    variant="secondary"
-                    size="md"
-                    onClick={() => {
-                        history.push(routes.opportunities)
-                    }}
-                >
-                    View all opportunities
-                </Button>
+                {displayViewAllOpportunitiesButton && (
+                    <Button
+                        variant="secondary"
+                        size="md"
+                        onClick={() => {
+                            history.push(routes.opportunities)
+                        }}
+                    >
+                        View all opportunities
+                    </Button>
+                )}
             </Box>
             {isLoading ? (
                 <Box display="flex" flexDirection="row" gap="md" width="100%">

@@ -6,8 +6,6 @@ import { useHistory } from 'react-router'
 import {
     Box,
     Button,
-    Card,
-    Skeleton,
     Text,
     Tooltip,
     TooltipContent,
@@ -46,25 +44,27 @@ export const TopOpportunityCard = ({
     const [isTicketDrillDownModalOpen, setIsTicketDrillDownModalOpen] =
         useState(false)
 
-    const { data: opportunityDetails, isLoading: isDetailLoading } =
-        useEnrichedOpportunity(
-            shopIntegrationId ?? 0,
-            parseInt(opportunity.id, 10),
-            {
-                query: {
-                    enabled: !!shopIntegrationId && !!isTopOpportunitiesEnabled,
-                    refetchOnWindowFocus: false,
-                },
+    const { data: opportunityDetails } = useEnrichedOpportunity(
+        shopIntegrationId ?? 0,
+        parseInt(opportunity.id, 10),
+        {
+            query: {
+                enabled: !!shopIntegrationId && !!isTopOpportunitiesEnabled,
+                refetchOnWindowFocus: false,
             },
-        )
+        },
+    )
 
     const ticketCount = opportunity.ticketCount ?? 0
-    const resources = opportunityDetails?.resources ?? []
     const isKnowledgeGap =
         opportunity.type === OpportunityType.FILL_KNOWLEDGE_GAP
 
     const handleCardClick = () => {
-        history.push(routes.opportunitiesWithId(opportunity.id))
+        history.push(
+            !!opportunity.id
+                ? routes.opportunitiesWithId(opportunity.id)
+                : routes.opportunities,
+        )
     }
 
     const handleTicketCountClick = (e: React.MouseEvent) => {
@@ -90,7 +90,7 @@ export const TopOpportunityCard = ({
         switch (opportunity.type) {
             case OpportunityType.RESOLVE_CONFLICT:
                 return {
-                    title: `Resolve conflicting knowledge: "${resources[0]?.insight}" and "${resources[1]?.insight}"`,
+                    title: `Resolve conflicting knowledge: "${opportunity.insight}"`,
                     buttonText: 'Resolve conflict',
                     ticketCountText: (
                         <Text variant="regular" size="sm">
@@ -149,38 +149,15 @@ export const TopOpportunityCard = ({
                 {cardDetail.ticketCountText}
             </Box>
 
-            <Button
-                size="sm"
-                onClick={handleCardClick}
-                isDisabled={isRestricted}
-            >
-                {cardDetail.buttonText}
+            <Button size="sm" onClick={handleCardClick}>
+                {isRestricted ? 'Upgrade plan' : cardDetail.buttonText}
             </Button>
         </div>
     )
 
     return (
         <>
-            {!isKnowledgeGap && isDetailLoading ? (
-                <Card
-                    display="flex"
-                    justifyContent="space-between"
-                    alignItems="flex-start"
-                    width="100%"
-                >
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        gap="xxs"
-                        flex={1}
-                        width="100%"
-                    >
-                        <Skeleton width="100%" height="16px" />
-                        <Skeleton width="100%" height="16px" />
-                        <Skeleton width="115px" height="24px" />
-                    </Box>
-                </Card>
-            ) : isRestricted ? (
+            {isRestricted ? (
                 <Tooltip placement="top" isOpen={isHovered}>
                     <TooltipTrigger>{cardContent}</TooltipTrigger>
                     <TooltipContent>

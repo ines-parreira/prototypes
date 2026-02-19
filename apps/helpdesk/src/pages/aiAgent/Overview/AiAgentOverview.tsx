@@ -20,6 +20,10 @@ import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSect
 import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
 import { useThankYouModal } from 'pages/aiAgent/Overview/hooks/useThankYouModal'
 import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
+import {
+    TOP_OPPORTUNITIES_LIMIT,
+    TOP_OPPORTUNITIES_RESTRICTED_LIMIT,
+} from 'pages/aiAgent/TopOpportunities/constants'
 import { TopOpportunitiesSection } from 'pages/aiAgent/TopOpportunities/TopOpportunitiesSection'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
@@ -36,9 +40,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStyle } from 'state/notifications/types'
 
 import { useTrialAccess } from '../trial/hooks/useTrialAccess'
-
-const TOP_OPPORTUNITIES_LIMIT = 3
-const TOP_OPPORTUNITIES_RESTRICTED_LIMIT = 15
 
 export const AiAgentOverview = () => {
     const { shopName, shopType } = useParams<{

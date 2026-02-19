@@ -65,7 +65,7 @@ const mockOpportunities: OpportunityListItem[] = [
 jest.mock('pages/aiAgent/opportunities/hooks/useEnrichedOpportunity', () => ({
     useEnrichedOpportunity: jest.fn(() => ({
         data: {
-            resources: [{ insight: 'Mock insight' }],
+            resources: [{ insight: 'Insight 1' }, { insight: 'Insight 2' }],
         },
         isLoading: false,
     })),
@@ -142,7 +142,39 @@ describe('TopOpportunitiesSection', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render view all opportunities button', () => {
+        it('should render view all opportunities button when opportunities exceed limit', () => {
+            const manyOpportunities: OpportunityListItem[] = [
+                ...mockOpportunities,
+                {
+                    id: '4',
+                    key: 'opp-4',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Add guidance for warranty policy',
+                    ticketCount: 7,
+                },
+            ]
+
+            render(
+                <TestWrapper>
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={manyOpportunities}
+                        isLoading={false}
+                        totalCount={4}
+                        allowedOpportunityIds={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            expect(
+                screen.getByRole('button', {
+                    name: /view all opportunities/i,
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render view all opportunities button when opportunities equal or below limit', () => {
             render(
                 <TestWrapper>
                     <TopOpportunitiesSection
@@ -157,10 +189,31 @@ describe('TopOpportunitiesSection', () => {
             )
 
             expect(
-                screen.getByRole('button', {
+                screen.queryByRole('button', {
                     name: /view all opportunities/i,
                 }),
-            ).toBeInTheDocument()
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render view all opportunities button with fewer than 3 opportunities', () => {
+            render(
+                <TestWrapper>
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities.slice(0, 2)}
+                        isLoading={false}
+                        totalCount={2}
+                        allowedOpportunityIds={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            expect(
+                screen.queryByRole('button', {
+                    name: /view all opportunities/i,
+                }),
+            ).not.toBeInTheDocument()
         })
 
         it('should render all opportunity cards', () => {
@@ -180,7 +233,11 @@ describe('TopOpportunitiesSection', () => {
             expect(
                 screen.getByText(/Add guidance for shipping policy/),
             ).toBeInTheDocument()
-            expect(screen.getByText(/Mock insight/)).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Resolve conflicting return policy information/,
+                ),
+            ).toBeInTheDocument()
             expect(
                 screen.getByText(/Add guidance for refund process/),
             ).toBeInTheDocument()
@@ -258,14 +315,25 @@ describe('TopOpportunitiesSection', () => {
         it('should navigate to opportunities page when view all button is clicked', async () => {
             const user = userEvent.setup()
 
+            const manyOpportunities: OpportunityListItem[] = [
+                ...mockOpportunities,
+                {
+                    id: '4',
+                    key: 'opp-4',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    insight: 'Add guidance for warranty policy',
+                    ticketCount: 7,
+                },
+            ]
+
             render(
                 <TestWrapper>
                     <TopOpportunitiesSection
                         shopName="test-shop"
                         shopIntegrationId={123}
-                        opportunities={mockOpportunities}
+                        opportunities={manyOpportunities}
                         isLoading={false}
-                        totalCount={3}
+                        totalCount={4}
                         allowedOpportunityIds={undefined}
                     />
                 </TestWrapper>,

@@ -254,7 +254,7 @@ describe('TopOpportunityCard', () => {
             ).toBeInTheDocument()
         })
 
-        it('should display conflict insights in title', () => {
+        it('should display conflict insight in title', () => {
             render(
                 <TestWrapper>
                     <TopOpportunityCard
@@ -268,8 +268,11 @@ describe('TopOpportunityCard', () => {
                 </TestWrapper>,
             )
 
-            expect(screen.getByText(/Insight 1/)).toBeInTheDocument()
-            expect(screen.getByText(/Insight 2/)).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /Resolve conflicting return policy information/,
+                ),
+            ).toBeInTheDocument()
         })
     })
 
@@ -353,7 +356,7 @@ describe('TopOpportunityCard', () => {
     })
 
     describe('Restricted Opportunities', () => {
-        it('should disable button when opportunity is restricted', () => {
+        it('should show "Upgrade plan" button when opportunity is restricted', () => {
             render(
                 <TestWrapper>
                     <TopOpportunityCard
@@ -368,9 +371,10 @@ describe('TopOpportunityCard', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /review guidance/i,
+                name: /upgrade plan/i,
             })
-            expect(button).toBeDisabled()
+            expect(button).toBeInTheDocument()
+            expect(button).not.toBeDisabled()
         })
 
         it('should show tooltip content with totalRestrictedOpportunities when restricted', async () => {
@@ -545,36 +549,6 @@ describe('TopOpportunityCard', () => {
                     }),
                 }),
             )
-        })
-    })
-
-    describe('Loading State', () => {
-        it('should render skeleton when loading enriched opportunity', () => {
-            const useEnrichedOpportunity =
-                require('pages/aiAgent/opportunities/hooks/useEnrichedOpportunity').useEnrichedOpportunity
-
-            useEnrichedOpportunity.mockReturnValue({
-                data: undefined,
-                isLoading: true,
-            })
-
-            const { container } = render(
-                <TestWrapper>
-                    <TopOpportunityCard
-                        opportunity={mockConflictOpportunity}
-                        shopName="test-shop"
-                        shopIntegrationId={123}
-                        isTopOpportunitiesEnabled={true}
-                        isRestricted={false}
-                        totalRestrictedOpportunities={undefined}
-                    />
-                </TestWrapper>,
-            )
-
-            const skeletons = container.querySelectorAll(
-                '[data-name="skeleton"]',
-            )
-            expect(skeletons.length).toBeGreaterThan(0)
         })
     })
 })
