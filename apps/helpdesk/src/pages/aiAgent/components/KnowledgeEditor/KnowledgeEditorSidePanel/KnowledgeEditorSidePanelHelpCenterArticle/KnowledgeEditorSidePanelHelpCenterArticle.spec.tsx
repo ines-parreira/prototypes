@@ -9,6 +9,27 @@ import {
 import { KnowledgeEditorSidePanelHelpCenterArticle } from './KnowledgeEditorSidePanelHelpCenterArticle'
 
 jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context',
+    () => ({
+        useArticleContext: jest.fn(() => ({
+            state: {
+                article: {
+                    id: 123,
+                    translation: {
+                        published_version_id: 789,
+                        draft_version_id: 790,
+                    },
+                },
+                currentLocale: 'en',
+            },
+            config: {
+                helpCenter: { id: 456 },
+            },
+        })),
+    }),
+)
+
+jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks',
     () => ({
         useArticleImpactFromContext: jest.fn(),

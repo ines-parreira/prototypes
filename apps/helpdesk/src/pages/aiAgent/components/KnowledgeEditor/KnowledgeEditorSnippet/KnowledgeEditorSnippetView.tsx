@@ -57,6 +57,8 @@ type Props = {
     shouldHideFullscreenButton: boolean
     impact?: Omit<ImpactProps, 'sectionId'>
     recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
+    helpCenterId?: number
+    locale?: string
 }
 
 export const KnowledgeEditorSnippetView = ({
@@ -72,6 +74,8 @@ export const KnowledgeEditorSnippetView = ({
     shouldHideFullscreenButton,
     impact,
     recentTickets,
+    helpCenterId,
+    locale,
 }: Props) => {
     const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
@@ -113,6 +117,9 @@ export const KnowledgeEditorSnippetView = ({
                         }}
                         impact={impact}
                         recentTickets={recentTickets}
+                        snippetId={snippet.id}
+                        helpCenterId={helpCenterId}
+                        locale={locale}
                     />
                 )
             case SnippetType.Document:
@@ -125,6 +132,9 @@ export const KnowledgeEditorSnippetView = ({
                         }}
                         impact={impact}
                         recentTickets={recentTickets}
+                        snippetId={snippet.id}
+                        helpCenterId={helpCenterId}
+                        locale={locale}
                     />
                 )
             case SnippetType.Store:
@@ -136,6 +146,9 @@ export const KnowledgeEditorSnippetView = ({
                         }}
                         impact={impact}
                         recentTickets={recentTickets}
+                        snippetId={snippet.id}
+                        helpCenterId={helpCenterId}
+                        locale={locale}
                     />
                 )
         }

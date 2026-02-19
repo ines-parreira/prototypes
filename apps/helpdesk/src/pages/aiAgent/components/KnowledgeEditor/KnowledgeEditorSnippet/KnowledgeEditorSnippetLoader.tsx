@@ -315,6 +315,8 @@ export const KnowledgeEditorSnippetLoader = ({
                 isLoading: resourceImpact.isLoading,
             }}
             recentTickets={recentTickets}
+            helpCenterId={helpCenterId}
+            locale={locale}
         />
     )
 }

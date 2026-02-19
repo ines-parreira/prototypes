@@ -1,3 +1,4 @@
+import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import {
     useArticleEngagementFromContext,
     useArticleImpactFromContext,
@@ -5,6 +6,7 @@ import {
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
+import { KnowledgeEditorSidePanelBackendIds } from '../KnowledgeEditorSidePanelBackendIds'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
@@ -15,6 +17,7 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
     const impact = useArticleImpactFromContext()
     const engagement = useArticleEngagementFromContext()
     const recentTickets = useArticleRecentTicketsFromContext()
+    const { state, config } = useArticleContext()
 
     const initialExpandedSections: string[] = [
         'details',
@@ -24,9 +27,29 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
         'settings',
     ]
 
+    const backendIds: Record<string, string | number> = {}
+    if (state.article?.id) {
+        backendIds['Article ID (SourceId)'] = state.article.id
+    }
+    if (config.helpCenter?.id) {
+        backendIds['Help Center ID (SourceSetId)'] = config.helpCenter.id
+    }
+    if (state.currentLocale) {
+        backendIds['Locale'] = state.currentLocale
+    }
+    if (state.article?.translation?.published_version_id) {
+        backendIds['Published Version ID'] =
+            state.article.translation.published_version_id
+    }
+    if (state.article?.translation?.draft_version_id) {
+        backendIds['Draft Version ID'] =
+            state.article.translation.draft_version_id
+    }
+
     return (
         <KnowledgeEditorSidePanel
             initialExpandedSections={initialExpandedSections}
+            footer={<KnowledgeEditorSidePanelBackendIds ids={backendIds} />}
         >
             <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
 

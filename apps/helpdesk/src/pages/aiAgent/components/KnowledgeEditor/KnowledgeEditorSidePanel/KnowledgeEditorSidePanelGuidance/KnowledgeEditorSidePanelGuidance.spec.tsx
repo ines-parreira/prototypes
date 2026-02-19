@@ -8,6 +8,24 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 const mockToggleVisibility = jest.fn()
 
 jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
+    () => ({
+        useGuidanceContext: jest.fn(() => ({
+            guidanceArticle: { id: 123, locale: 'en' },
+            config: {
+                guidanceHelpCenter: { id: 456 },
+            },
+            state: {
+                guidance: {
+                    publishedVersionId: 789,
+                    draftVersionId: 790,
+                },
+            },
+        })),
+    }),
+)
+
+jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks',
     () => ({
         useGuidanceImpactFromContext: jest.fn(

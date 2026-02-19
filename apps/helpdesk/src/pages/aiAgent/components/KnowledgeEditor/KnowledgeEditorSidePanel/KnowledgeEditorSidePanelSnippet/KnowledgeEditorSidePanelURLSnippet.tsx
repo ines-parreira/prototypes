@@ -1,6 +1,7 @@
 import type { JSX } from 'react'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
+import { KnowledgeEditorSidePanelBackendIds } from '../KnowledgeEditorSidePanelBackendIds'
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanelSectionImpact'
 import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePanelSectionImpact'
 import type { Props as RecentTicketsProps } from '../KnowledgeEditorSidePanelSectionRecentTickets'
@@ -12,12 +13,18 @@ type Props = {
     details: Omit<URLSnippetDetailsProps, 'sectionId'>
     impact?: Omit<ImpactProps, 'sectionId'>
     recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
+    snippetId?: number
+    helpCenterId?: number
+    locale?: string
 }
 
 export const KnowledgeEditorSidePanelURLSnippet = ({
     details,
     impact,
     recentTickets,
+    snippetId,
+    helpCenterId,
+    locale,
 }: Props): JSX.Element => {
     const initialExpandedSections: string[] = [
         'details',
@@ -25,9 +32,21 @@ export const KnowledgeEditorSidePanelURLSnippet = ({
         'related-tickets',
     ]
 
+    const backendIds: Record<string, string | number> = {}
+    if (snippetId) {
+        backendIds['Snippet ID (SourceId)'] = snippetId
+    }
+    if (helpCenterId) {
+        backendIds['Help Center ID (SourceSetId)'] = helpCenterId
+    }
+    if (locale) {
+        backendIds['Locale'] = locale
+    }
+
     return (
         <KnowledgeEditorSidePanel
             initialExpandedSections={initialExpandedSections}
+            footer={<KnowledgeEditorSidePanelBackendIds ids={backendIds} />}
         >
             <KnowledgeEditorSidePanelSectionURLSnippetDetails
                 {...details}
