@@ -367,6 +367,7 @@ export const startSalesTrial = async (
 ) => {
     const response = await apiClient.post(
         `/config/accounts/${gorgiasDomain}/sales/${storeType}/${storeName}/start-trial`,
+        { optedInForUpgrade: true },
     )
     return response.data
 }
