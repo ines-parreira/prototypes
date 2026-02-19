@@ -6,10 +6,10 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     DisplayedContent,
     useCurrentUserLanguagePreferences,
-    useHelpdeskV2MS1Flag,
     useTicketMessageTranslationDisplay,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { useShortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'

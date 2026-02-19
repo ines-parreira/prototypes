@@ -63,9 +63,12 @@ jest.mock('@repo/tickets', () => ({
         updateTicketTranslatedSubject: jest.fn(),
         isInitialLoading: false,
     }),
-    useHelpdeskV2MS1Flag: () => false,
 }))
 
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: () => false,
+}))
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const view = {

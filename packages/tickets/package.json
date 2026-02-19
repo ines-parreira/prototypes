@@ -4,7 +4,9 @@
     "description": "Tickets domain",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./feature-flags": "./src/feature-flags/index.ts",
+        "./ticket-thread": "./src/ticket-thread/index.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",

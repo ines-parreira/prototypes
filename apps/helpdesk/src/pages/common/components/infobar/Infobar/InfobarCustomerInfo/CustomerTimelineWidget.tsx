@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { history } from '@repo/routing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { useParams } from 'react-router-dom'
 
 import {

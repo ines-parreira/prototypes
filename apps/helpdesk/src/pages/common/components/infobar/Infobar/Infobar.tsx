@@ -7,8 +7,8 @@ import { history } from '@repo/routing'
 import {
     InfobarTicketCustomerInstagramSection,
     InfobarTicketDetails,
-    useHelpdeskV2MS1Flag,
 } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'

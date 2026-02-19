@@ -1,7 +1,7 @@
 import { useFlag } from '@repo/feature-flags'
 import { Handle } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { useLocation, useParams } from 'react-router-dom'
 
@@ -29,6 +29,10 @@ const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
 jest.mock('@repo/tickets', () => ({
     TicketHeader: () => <div>TicketHeader</div>,
+    useHelpdeskV2MS1Flag: jest.fn(),
+}))
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn(),
 }))
 const useHelpdeskV2MS1FlagMock = jest.mocked(useHelpdeskV2MS1Flag)

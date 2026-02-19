@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { shortcuts } from '@repo/utils'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
@@ -7,7 +7,7 @@ import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 const badgeContentMock = 'badgeContentMock'

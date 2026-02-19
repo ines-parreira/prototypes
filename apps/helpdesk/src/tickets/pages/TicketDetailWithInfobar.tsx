@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 
 import { Handle, Panel } from '@repo/layout'
 import { useTicketInfobarNavigation } from '@repo/navigation'
-import { TicketHeader, useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { TicketHeader } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'

@@ -3,7 +3,7 @@ import type { ComponentProps } from 'react'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -46,7 +46,10 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = jest.mocked(useFlag)
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: jest.fn(),
+}))
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('@gorgias/helpdesk-queries')

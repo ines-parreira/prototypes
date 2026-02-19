@@ -4,7 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import '@repo/routing/urlTracking'
 
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
 

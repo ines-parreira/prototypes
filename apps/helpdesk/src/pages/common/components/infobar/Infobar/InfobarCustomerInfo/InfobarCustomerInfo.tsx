@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import Clipboard from 'clipboard'
 import type { List, Map } from 'immutable'

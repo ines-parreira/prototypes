@@ -38,11 +38,15 @@ const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
-    useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
     useTicketFieldsValidation: () => ({
         validateTicketFields: mockValidateTicketFields,
         isValidating: false,
     }),
+}))
+
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
 }))
 
 jest.mock(

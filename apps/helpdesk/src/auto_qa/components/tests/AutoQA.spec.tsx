@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -25,7 +25,7 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
 )
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('../AutoQASkeleton', () => () => <div>Loading...</div>)

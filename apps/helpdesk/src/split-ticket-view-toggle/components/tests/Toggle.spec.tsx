@@ -16,7 +16,7 @@ jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag', () => ({
 }))
 
 const mockUseHelpdeskV2MS1Flag = jest.fn()
-jest.mock('@repo/tickets', () => ({
+jest.mock('@repo/tickets/feature-flags', () => ({
     useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
 }))
 

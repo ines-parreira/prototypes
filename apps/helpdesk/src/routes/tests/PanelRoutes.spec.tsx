@@ -27,8 +27,8 @@ const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
     useHelpdeskV2WayfindingMS1Flag,
 )
 
-jest.mock('@repo/tickets', () => ({
-    ...jest.requireActual('@repo/tickets'),
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
     useHelpdeskV2MS1Dot5Flag: jest.fn().mockReturnValue(false),
 }))

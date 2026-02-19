@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { Nav, Navbar, NavItem, NavLink } from 'reactstrap'

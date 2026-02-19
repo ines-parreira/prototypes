@@ -102,6 +102,9 @@ jest.mock('../components/TicketView', () => {
         </div>
     )
 })
+jest.mock('pages/tickets/detail/components/TicketThread/TicketThread', () => ({
+    TicketThread: jest.fn(() => <div>TicketThread mock</div>),
+}))
 
 jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     sendMessage: jest.fn(),
@@ -215,9 +218,13 @@ jest.mock(
 const mockUseKnowledgeSourceSideBar =
     require('pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar')
         .useKnowledgeSourceSideBar as jest.Mock
+const mockTicketThread =
+    require('pages/tickets/detail/components/TicketThread/TicketThread')
+        .TicketThread as jest.Mock
 
 const mockValidateTicketFields = jest.fn()
 const mockUseHelpdeskV2MS1Flag = jest.fn(() => false)
+const mockUseHelpdeskV2MS3Flag = jest.fn(() => false)
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
@@ -227,6 +234,12 @@ jest.mock('@repo/tickets', () => ({
         validateTicketFields: mockValidateTicketFields,
         isValidating: false,
     }),
+}))
+
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: () => mockUseHelpdeskV2MS1Flag(),
+    useHelpdeskV2MS3Flag: () => mockUseHelpdeskV2MS3Flag(),
 }))
 
 const mockUseLiveTicketTranslationsUpdates =
@@ -358,10 +371,13 @@ describe('TicketDetailContainer component', () => {
         })
         mockJoinTicket.mockClear()
         mockUseFlag.mockReturnValue(false)
+        mockUseHelpdeskV2MS1Flag.mockReturnValue(false)
+        mockUseHelpdeskV2MS3Flag.mockReturnValue(false)
         mockValidateTicketFields.mockReturnValue({
             hasErrors: false,
             invalidFieldIds: [],
         })
+        mockTicketThread.mockClear()
     })
 
     it('should render container for new ticket', () => {
@@ -1983,6 +1999,60 @@ describe('TicketDetailContainer component', () => {
         expect(mockHandleTicketMessageTranslationEvents).toHaveBeenCalledWith(
             mockDomainEvent,
         )
+    })
+
+    describe('TicketThread rendering', () => {
+        it('should render TicketThread on desktop when hasUIVisionMS3 is enabled', () => {
+            mockUseIsMobileResolution.mockReturnValue(false)
+            mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
+
+            const { getByText, queryByTestId } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(getByText('TicketThread mock')).toBeInTheDocument()
+            expect(queryByTestId('TicketView-submit')).not.toBeInTheDocument()
+            expect(mockTicketThread).toHaveBeenCalledWith(
+                { submit: expect.any(Function) },
+                expect.objectContaining({}),
+            )
+        })
+
+        it('should keep rendering the mobile TicketView when hasUIVisionMS3 is enabled', () => {
+            mockUseIsMobileResolution.mockReturnValue(true)
+            mockUseHelpdeskV2MS3Flag.mockReturnValue(true)
+
+            const { getByTestId, queryByText } = renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockedStore}>
+                        <TicketDetailContainer
+                            {...minProps}
+                            ticket={existingTicket}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+                {
+                    path: '/foo/:ticketId',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(getByTestId('knowledge-source-provider')).toBeInTheDocument()
+            expect(getByTestId('TicketView-submit')).toBeInTheDocument()
+            expect(queryByText('TicketThread mock')).not.toBeInTheDocument()
+            expect(mockTicketThread).not.toHaveBeenCalled()
+        })
     })
 
     describe('Mobile view functionality', () => {

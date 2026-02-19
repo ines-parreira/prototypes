@@ -6,11 +6,11 @@ import {
 } from '@repo/feature-flags'
 import { useIsMobileResolution, useWindowSize } from '@repo/hooks'
 import { Handle, PanelGroup, Panels } from '@repo/layout'
+import { TicketsLegacyBridgeProvider } from '@repo/tickets'
 import {
-    TicketsLegacyBridgeProvider,
     useHelpdeskV2MS1Dot5Flag,
     useHelpdeskV2MS1Flag,
-} from '@repo/tickets'
+} from '@repo/tickets/feature-flags'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { GlobalNavigationPanel } from 'core/navigation'

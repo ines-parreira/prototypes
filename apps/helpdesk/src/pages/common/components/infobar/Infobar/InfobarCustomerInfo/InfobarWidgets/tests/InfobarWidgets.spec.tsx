@@ -32,8 +32,8 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const queryClient = mockQueryClient()
 
-jest.mock('@repo/tickets', () => ({
-    ...jest.requireActual('@repo/tickets'),
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn().mockReturnValue(false),
 }))
 

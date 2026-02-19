@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'

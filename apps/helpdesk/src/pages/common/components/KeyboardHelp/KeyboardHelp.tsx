@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import {
     shortcuts as allShortcuts,
     shortcutManager,

@@ -3,7 +3,7 @@ import { useState as mockUseState } from 'react'
 
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -168,7 +168,10 @@ jest.mock(
 jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
+    useHelpdeskV2MS1Flag: jest.fn(),
+}))
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('utils', () => ({

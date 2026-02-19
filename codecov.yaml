@@ -33,7 +33,7 @@ ignore:
   - src/routes/Routes.tsx
   - src/pages/automate/workflows/utils/testVisualBuilderScaffolding.tsx
   - src/tests/mockedReactFlow.ts
-  - domains/**/index.ts
+  - /**/index.ts
 
 coverage:
   status:

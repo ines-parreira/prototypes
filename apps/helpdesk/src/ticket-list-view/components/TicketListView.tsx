@@ -12,9 +12,9 @@ import {
 
 import {
     useCurrentUserLanguagePreferences,
-    useHelpdeskV2MS1Flag,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import { fromJS } from 'immutable'
 import type { CSSTransition } from 'react-transition-group'

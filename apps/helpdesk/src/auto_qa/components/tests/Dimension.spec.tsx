@@ -2,7 +2,7 @@ import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import type { TicketQAScoreDimension } from '@gorgias/helpdesk-queries'
@@ -16,7 +16,7 @@ jest.mock('@repo/logging', () => ({
     SegmentEvent: { AutoQATicketInteraction: 'auto-qa-ticket-interaction' },
 }))
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags')
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 describe('Dimension', () => {

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -30,7 +30,7 @@ jest.mock(
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
 
-jest.mock('@repo/tickets')
+jest.mock('@repo/tickets/feature-flags')
 const mockUseHelpdeskV2MS1Flag = useHelpdeskV2MS1Flag as jest.Mock
 
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock

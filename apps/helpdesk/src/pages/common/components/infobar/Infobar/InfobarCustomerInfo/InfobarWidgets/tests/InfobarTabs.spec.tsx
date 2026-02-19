@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useHelpdeskV2MS1Flag } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
@@ -18,8 +18,8 @@ const useParamsMock = useParams as jest.Mock
 const useHistoryMock = useHistory as jest.Mock
 const useLocationMock = useLocation as jest.Mock
 
-jest.mock('@repo/tickets', () => ({
-    ...jest.requireActual('@repo/tickets'),
+jest.mock('@repo/tickets/feature-flags', () => ({
+    ...jest.requireActual('@repo/tickets/feature-flags'),
     useHelpdeskV2MS1Flag: jest.fn(),
 }))
 const useHelpdeskV2MS1FlagMock = useHelpdeskV2MS1Flag as jest.Mock

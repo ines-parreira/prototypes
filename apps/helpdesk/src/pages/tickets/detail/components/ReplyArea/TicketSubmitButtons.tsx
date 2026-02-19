@@ -4,9 +4,9 @@ import { useCallback, useMemo } from 'react'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
     getMacroTicketFieldValues,
-    useHelpdeskV2MS1Flag,
     useTicketFieldsValidation,
 } from '@repo/tickets'
+import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { shortcutManager, shortcuts } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'

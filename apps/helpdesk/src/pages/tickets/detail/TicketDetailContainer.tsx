@@ -11,10 +11,13 @@ import {
 } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
-    useHelpdeskV2MS1Flag,
     useLiveTicketTranslationsUpdates,
     useTicketFieldsValidation,
 } from '@repo/tickets'
+import {
+    useHelpdeskV2MS1Flag,
+    useHelpdeskV2MS3Flag,
+} from '@repo/tickets/feature-flags'
 import { shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -47,6 +50,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
+import { TicketThread } from 'pages/tickets/detail/components/TicketThread/TicketThread'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import socketManager from 'services/socketManager/socketManager'
@@ -135,6 +139,7 @@ export const TicketDetailContainer = ({
     const dispatch = useAppDispatch()
     const appliedMacro = useAppSelector(getAppliedMacro)
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMS3 = useHelpdeskV2MS3Flag()
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const { customer: customerId } = useSearch<{ customer?: string }>()
     const ticketIdParamRef = useRef(ticketIdParam)
@@ -736,6 +741,10 @@ export const TicketDetailContainer = ({
                 <MobileViewWithSidebar ticketView={ticketView} />
             </KnowledgeSourceSideBarProvider>
         )
+    }
+
+    if (hasUIVisionMS3) {
+        return <TicketThread submit={submit} />
     }
 
     return ticketView
