@@ -52,6 +52,7 @@ import {
     ZAPIER_BILLING_HOOK,
 } from '../../constants'
 import useDispatchBillingError from '../../hooks/useDispatchBillingError'
+import { useUrlNotification } from '../../hooks/useUrlNotification'
 import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'
@@ -129,6 +130,8 @@ const BillingStartView = () => {
     const [convertBanner, setConvertBanner] = useState<BillingBanner>()
 
     const { addBanner, removeBanner } = useBanners()
+
+    useUrlNotification()
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
