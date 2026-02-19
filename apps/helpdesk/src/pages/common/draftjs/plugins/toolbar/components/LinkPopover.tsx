@@ -70,6 +70,7 @@ export default function LinkPopover({
     const handleClickEdit = useCallback(
         (e: MouseEvent) => {
             e.preventDefault()
+            e.stopPropagation()
             if (onEdit) onEdit()
             setIsOpen(false)
         },
@@ -79,6 +80,7 @@ export default function LinkPopover({
     const handleClickDelete = useCallback(
         (e: MouseEvent) => {
             e.preventDefault()
+            e.stopPropagation()
             if (onDelete) onDelete()
         },
         [onDelete],
