@@ -70,6 +70,11 @@ jest.mock('tickets/ticket-timeline', () => ({
     TimelineContent: () => <div>TimelineContent Component</div>,
 }))
 
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm',
+    () => () => <div>CustomerSyncForm Component</div>,
+)
+
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
 

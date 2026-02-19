@@ -15,7 +15,11 @@ type CustomerIntegrationData = {
     }
 }
 
-export function ShopifyCustomer() {
+type Props = {
+    onSyncProfile?: () => void
+}
+
+export function ShopifyCustomer({ onSyncProfile }: Props) {
     const { ticketId } = useParams<{ ticketId: string }>()
     const { data: ticket, isLoading: isLoadingTicket } = useGetTicket(
         Number(ticketId),
@@ -50,6 +54,7 @@ export function ShopifyCustomer() {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 isLoadingTicket={isLoadingTicket}
+                onSyncProfile={onSyncProfile}
                 ticketId={ticketId}
                 customerId={customerId}
             />

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { ShopifyCustomer } from '@repo/customer'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
@@ -20,6 +20,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useSearchParam } from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
+import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
@@ -136,6 +137,12 @@ export const TicketInfobarContainer = ({
         () => sources.getIn(['ticket', 'customer']) || fromJS({}),
         [sources],
     )
+
+    const [isCustomerSyncFormOpen, setIsCustomerSyncFormOpen] = useState(false)
+
+    const handleSyncProfile = useCallback(() => {
+        setIsCustomerSyncFormOpen(true)
+    }, [])
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) =>
@@ -286,7 +293,12 @@ export const TicketInfobarContainer = ({
                 </div>
             ) : activeTab === TicketInfobarTab.Shopify ? (
                 <div className={css.shopifyContainer}>
-                    <ShopifyCustomer />
+                    <ShopifyCustomer onSyncProfile={handleSyncProfile} />
+                    <CustomerSyncForm
+                        isCustomerSyncFormOpen={isCustomerSyncFormOpen}
+                        activeCustomer={customer}
+                        setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
+                    />
                 </div>
             ) : (
                 <div

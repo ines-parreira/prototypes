@@ -247,4 +247,112 @@ describe('CustomerInfo', () => {
             )
         })
     })
+
+    it('renders empty state when no integrations match', async () => {
+        const onSyncProfile = vi.fn()
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={new Set()}
+                externalIdMap={new Map()}
+                onSyncProfile={onSyncProfile}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /no matching profile found\. do you want to sync this customer to shopify\?/i,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByRole('button', { name: /sync profile/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('calls onSyncProfile when clicking sync profile button in empty state', async () => {
+        const onSyncProfile = vi.fn()
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={new Set()}
+                externalIdMap={new Map()}
+                onSyncProfile={onSyncProfile}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /sync profile/i }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: /sync profile/i }))
+
+        expect(onSyncProfile).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders sync action in store picker when onSyncProfile is provided', async () => {
+        const onSyncProfile = vi.fn()
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                onSyncProfile={onSyncProfile}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toHaveValue(
+                mockShopifyIntegration.name,
+            )
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: /test shopify store/i }),
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /sync to other stores/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('calls onSyncProfile when clicking sync action in store picker', async () => {
+        const onSyncProfile = vi.fn()
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                onSyncProfile={onSyncProfile}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toHaveValue(
+                mockShopifyIntegration.name,
+            )
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: /test shopify store/i }),
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /sync to other stores/i }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: /sync to other stores/i }),
+        )
+
+        expect(onSyncProfile).toHaveBeenCalledTimes(1)
+    })
 })

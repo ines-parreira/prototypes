@@ -13,6 +13,7 @@ import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
+import { NoShopifyProfile } from './NoShopifyProfile'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
 import { ShopifyTags } from './ShopifyTags'
@@ -24,6 +25,7 @@ type Props = {
     externalIdMap: Map<number, string>
     isLoadingTicket?: boolean
     onStoreChange?: (integrationId: number) => void
+    onSyncProfile?: () => void
     ticketId?: string
     customerId?: number
 }
@@ -33,6 +35,7 @@ export function CustomerInfo({
     externalIdMap,
     isLoadingTicket,
     onStoreChange,
+    onSyncProfile,
     ticketId,
     customerId,
 }: Props) {
@@ -119,6 +122,18 @@ export function CustomerInfo({
         [],
     )
 
+    if (
+        filteredIntegrations.length === 0 &&
+        !isLoadingIntegrations &&
+        !isLoadingTicket
+    ) {
+        return (
+            <Box flexDirection="column" gap="sm" padding="sm">
+                <NoShopifyProfile onSyncProfile={onSyncProfile ?? (() => {})} />
+            </Box>
+        )
+    }
+
     return (
         <>
             <Box flexDirection="column" gap="sm" padding="md">
@@ -127,6 +142,7 @@ export function CustomerInfo({
                     selectedIntegrationId={selectedIntegration?.id}
                     onChange={handleStoreChange}
                     isLoading={isLoadingIntegrations || isLoadingTicket}
+                    onSyncProfile={onSyncProfile}
                 />
 
                 <CustomerLink

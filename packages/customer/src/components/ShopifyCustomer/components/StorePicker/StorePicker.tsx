@@ -1,6 +1,15 @@
-import { useMemo } from 'react'
+import type { RefObject } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { ListItem, SelectField } from '@gorgias/axiom'
+import {
+    Button,
+    ListFooter,
+    ListItem,
+    Select,
+    SelectTrigger,
+    Text,
+    TextField,
+} from '@gorgias/axiom'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 type Props = {
@@ -10,6 +19,7 @@ type Props = {
     isLoading?: boolean
     isDisabled?: boolean
     placeholder?: string
+    onSyncProfile?: () => void
 }
 
 export function StorePicker({
@@ -17,7 +27,26 @@ export function StorePicker({
     selectedIntegrationId,
     onChange,
     isLoading = false,
+    onSyncProfile,
 }: Props) {
+    const [isOpen, setIsOpen] = useState(false)
+
+    const handleOpenChange = useCallback((newIsOpen: boolean) => {
+        setIsOpen(newIsOpen)
+    }, [])
+
+    const handleSyncClick = useCallback(() => {
+        setIsOpen(false)
+        onSyncProfile?.()
+    }, [onSyncProfile])
+
+    const handleSelect = useCallback(
+        (store: Integration) => {
+            onChange(store)
+        },
+        [onChange],
+    )
+
     const selectedIntegration = useMemo(
         () =>
             integrations.find(
@@ -26,16 +55,60 @@ export function StorePicker({
         [integrations, selectedIntegrationId],
     )
 
+    const trigger = useCallback(
+        ({
+            isOpen,
+            ref,
+            selectedText,
+        }: {
+            isOpen: boolean
+            ref: RefObject<HTMLButtonElement>
+            selectedText: string
+        }) => (
+            <SelectTrigger>
+                <TextField
+                    aria-label="Select a store"
+                    inputRef={ref as RefObject<HTMLInputElement>}
+                    isFocused={isOpen}
+                    trailingSlot={
+                        isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'
+                    }
+                    value={selectedText}
+                    leadingSlot={
+                        selectedIntegrationId
+                            ? 'vendor-shopify-colored'
+                            : undefined
+                    }
+                />
+            </SelectTrigger>
+        ),
+        [selectedIntegrationId],
+    )
+
     return (
-        <SelectField<Integration>
+        <Select<Integration>
+            isOpen={isOpen}
+            onOpenChange={handleOpenChange}
             items={integrations}
-            value={selectedIntegration}
-            onChange={(store) => onChange(store)}
+            selectedItem={selectedIntegration}
+            onSelect={handleSelect}
             aria-label="Select a store"
             isDisabled={isLoading}
             isSearchable
-            leadingSlot={
-                selectedIntegrationId ? 'vendor-shopify-colored' : undefined
+            trigger={trigger}
+            footer={
+                onSyncProfile && (
+                    <ListFooter>
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            leadingSlot="add-plus"
+                            onClick={handleSyncClick}
+                        >
+                            <Text variant="bold">Sync to other stores</Text>
+                        </Button>
+                    </ListFooter>
+                )
             }
         >
             {(store) => (
@@ -46,6 +119,6 @@ export function StorePicker({
                     textValue={store.name}
                 />
             )}
-        </SelectField>
+        </Select>
     )
 }
