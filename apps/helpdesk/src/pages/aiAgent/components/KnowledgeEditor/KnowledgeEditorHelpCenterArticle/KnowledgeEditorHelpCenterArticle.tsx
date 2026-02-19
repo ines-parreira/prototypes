@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import cn from 'classnames'
 
-import { Card, SidePanel } from '@gorgias/axiom'
+import { Card } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
@@ -17,6 +17,7 @@ import type {
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
+import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { ArticleEditorContent } from './ArticleEditorContent'
 import type { ArticleContextConfig, ArticleModeType } from './context'
 import { ArticleContextProvider, useArticleContext } from './context'
@@ -51,51 +52,61 @@ type Props = {
         onUpdated?: () => void
         onDeleted?: () => void
     }
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
 }
 
-const ArticleEditorInner = ({ isLoading }: { isLoading: boolean }) => {
+const ArticleEditorInner = ({
+    isLoading,
+    onSharedPanelStateChange,
+}: {
+    isLoading: boolean
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
+}) => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
     const { playground, config } = useArticleContext()
+    const { onClose } = config
+
+    const onRequestClose = useCallback(() => {
+        if (closeHandlerRef.current) {
+            closeHandlerRef.current()
+            return
+        }
+
+        onClose()
+    }, [onClose])
+
+    useEffect(() => {
+        if (!onSharedPanelStateChange) {
+            return
+        }
+
+        onSharedPanelStateChange({
+            width: playground.sidePanelWidth,
+            onRequestClose,
+        })
+    }, [onSharedPanelStateChange, playground.sidePanelWidth, onRequestClose])
+
+    if (isLoading) {
+        return <KnowledgeEditorLoadingShell />
+    }
 
     return (
-        <SidePanel
-            isOpen={true}
-            onOpenChange={(open) => {
-                if (!open) {
-                    if (closeHandlerRef.current) {
-                        closeHandlerRef.current()
-                    } else {
-                        config.onClose()
-                    }
-                }
-            }}
-            isDismissable
-            withoutPadding
-            width={playground.sidePanelWidth}
-        >
-            {isLoading ? (
-                <KnowledgeEditorLoadingShell />
-            ) : (
-                <div className={css.splitView}>
-                    <Card elevation="mid" className={css.editor} padding={0}>
-                        <ArticleEditorContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </Card>
-                    <div
-                        className={cn(
-                            css.playground,
-                            playground.isOpen
-                                ? css['playground-open']
-                                : css['playground-closed'],
-                        )}
-                    >
-                        <PlaygroundPanel onClose={playground.onClose} />
-                    </div>
-                </div>
-            )}
-        </SidePanel>
+        <div className={css.splitView}>
+            <Card elevation="mid" className={css.editor} padding={0}>
+                <ArticleEditorContent closeHandlerRef={closeHandlerRef} />
+            </Card>
+            <div
+                className={cn(
+                    css.playground,
+                    playground.isOpen
+                        ? css['playground-open']
+                        : css['playground-closed'],
+                )}
+            >
+                <PlaygroundPanel onClose={playground.onClose} />
+            </div>
+        </div>
     )
 }
 
@@ -163,6 +174,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         <ArticleContextProvider config={config}>
             <ArticleEditorInner
                 isLoading={!!articleId && getArticle.isLoading}
+                onSharedPanelStateChange={props.onSharedPanelStateChange}
             />
         </ArticleContextProvider>
     )

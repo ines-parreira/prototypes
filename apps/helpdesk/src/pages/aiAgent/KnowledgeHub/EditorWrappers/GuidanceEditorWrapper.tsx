@@ -42,6 +42,7 @@ export const GuidanceEditorWrapper = ({
 
     return (
         <KnowledgeEditor
+            variant="guidance"
             shopName={shopName}
             shopType={shopType}
             guidanceArticleId={guidanceArticleId}

@@ -1,18 +1,19 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import cn from 'classnames'
 
-import { Card, SidePanel } from '@gorgias/axiom'
+import { Card } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
-import { useAiAgentHelpCenter } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
+import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
+import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorGuidanceProvider, useGuidanceContext } from './context'
 import type { GuidanceContextConfig, GuidanceModeType } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
@@ -35,12 +36,15 @@ type Props = {
     guidanceMode: GuidanceModeType
     isOpen: boolean
     handleVisibilityUpdate?: (visibility: string) => void
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
 }
 
 const KnowledgeEditorGuidanceInner = ({
     isLoading,
+    onSharedPanelStateChange,
 }: {
     isLoading: boolean
+    onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
 }) => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
@@ -58,47 +62,53 @@ const KnowledgeEditorGuidanceInner = ({
               }
             : undefined
 
+    const { onClose } = config
+
+    const onRequestClose = useCallback(() => {
+        if (closeHandlerRef.current) {
+            closeHandlerRef.current()
+            return
+        }
+
+        onClose()
+    }, [onClose])
+
+    useEffect(() => {
+        if (!onSharedPanelStateChange) {
+            return
+        }
+
+        onSharedPanelStateChange({
+            width: playground.sidePanelWidth,
+            onRequestClose,
+        })
+    }, [onSharedPanelStateChange, playground.sidePanelWidth, onRequestClose])
+
+    if (isLoading) {
+        return <KnowledgeEditorLoadingShell />
+    }
+
     return (
-        <SidePanel
-            isOpen={true}
-            onOpenChange={(open) => {
-                if (!open) {
-                    if (closeHandlerRef.current) {
-                        closeHandlerRef.current()
-                    } else {
-                        config.onClose()
-                    }
-                }
-            }}
-            isDismissable
-            withoutPadding
-            width={playground.sidePanelWidth}
-        >
-            {isLoading ? (
-                <KnowledgeEditorLoadingShell />
-            ) : (
-                <div className={css.splitView}>
-                    <Card elevation="mid" className={css.editor} padding={0}>
-                        <KnowledgeEditorGuidanceContent
-                            closeHandlerRef={closeHandlerRef}
-                        />
-                    </Card>
-                    <div
-                        className={cn(
-                            css.playground,
-                            playground.isOpen
-                                ? css['playground-open']
-                                : css['playground-closed'],
-                        )}
-                    >
-                        <PlaygroundPanel
-                            onClose={playground.onClose}
-                            draftKnowledge={draftKnowledgeForPlayground}
-                        />
-                    </div>
-                </div>
-            )}
-        </SidePanel>
+        <div className={css.splitView}>
+            <Card elevation="mid" className={css.editor} padding={0}>
+                <KnowledgeEditorGuidanceContent
+                    closeHandlerRef={closeHandlerRef}
+                />
+            </Card>
+            <div
+                className={cn(
+                    css.playground,
+                    playground.isOpen
+                        ? css['playground-open']
+                        : css['playground-closed'],
+                )}
+            >
+                <PlaygroundPanel
+                    onClose={playground.onClose}
+                    draftKnowledge={draftKnowledgeForPlayground}
+                />
+            </div>
+        </div>
     )
 }
 
@@ -118,8 +128,12 @@ export const KnowledgeEditorGuidance = ({
     onCopy,
     isOpen,
     handleVisibilityUpdate,
+    onSharedPanelStateChange,
 }: Props) => {
-    const guidanceHelpCenter = useAiAgentHelpCenter({
+    const {
+        helpCenter: guidanceHelpCenter,
+        isLoading: isGuidanceHelpCenterLoading,
+    } = useAiAgentHelpCenterState({
         shopName: shopName,
         helpCenterType: 'guidance',
     })
@@ -157,6 +171,10 @@ export const KnowledgeEditorGuidance = ({
         return null
     }
 
+    if (isGuidanceHelpCenterLoading) {
+        return <KnowledgeEditorLoadingShell />
+    }
+
     if (!guidanceHelpCenter) {
         return null
     }
@@ -183,6 +201,7 @@ export const KnowledgeEditorGuidance = ({
         <KnowledgeEditorGuidanceProvider config={config}>
             <KnowledgeEditorGuidanceInner
                 isLoading={!!guidanceArticleId && isGuidanceArticleLoading}
+                onSharedPanelStateChange={onSharedPanelStateChange}
             />
         </KnowledgeEditorGuidanceProvider>
     )

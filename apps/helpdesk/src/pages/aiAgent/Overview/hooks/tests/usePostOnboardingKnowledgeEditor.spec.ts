@@ -227,6 +227,7 @@ describe('usePostOnboardingKnowledgeEditor', () => {
 
         expect(knowledgeEditorProps.shopName).toBe(mockShopName)
         expect(knowledgeEditorProps.shopType).toBe(mockShopType)
+        expect(knowledgeEditorProps.variant).toBe('guidance')
         expect(knowledgeEditorProps.isOpen).toBe(false)
         expect(knowledgeEditorProps.guidanceMode).toBe('create')
         expect(typeof knowledgeEditorProps.onClose).toBe('function')

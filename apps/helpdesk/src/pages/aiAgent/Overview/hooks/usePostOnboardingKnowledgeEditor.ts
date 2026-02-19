@@ -150,6 +150,7 @@ export const usePostOnboardingKnowledgeEditor = ({
     // Derived props for KnowledgeEditor component
     // -------------------------
     const knowledgeEditorProps = {
+        variant: 'guidance' as const,
         shopName,
         shopType,
         guidanceArticleId: currentGuidanceArticleId,

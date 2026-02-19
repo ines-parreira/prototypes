@@ -1,4 +1,4 @@
-import { KnowledgeEditorSnippet } from '../../components/KnowledgeEditor/KnowledgeEditorSnippet/KnowledgeEditorSnippet'
+import { KnowledgeEditor } from '../../components/KnowledgeEditor/KnowledgeEditor'
 import type { SnippetType } from '../types'
 
 type SnippetEditorWrapperProps = {
@@ -29,7 +29,8 @@ export const SnippetEditorWrapper = ({
     }
 
     return (
-        <KnowledgeEditorSnippet
+        <KnowledgeEditor
+            variant="snippet"
             shopName={shopName}
             snippetId={currentArticleId}
             snippetType={snippetType}

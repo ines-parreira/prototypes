@@ -5,15 +5,22 @@ import { reportError } from 'utils/errors'
 
 const FIVE_MINUTES = 1000 * 60 * 5
 
-export const useAiAgentHelpCenter = ({
+type HelpCenterType = 'guidance' | 'snippet' | 'faq'
+
+type UseAiAgentHelpCenterParams = {
+    shopName: string
+    helpCenterType: HelpCenterType
+}
+
+export const useAiAgentHelpCenterState = ({
     shopName,
     helpCenterType,
-}: {
-    shopName: string
-    helpCenterType: 'guidance' | 'snippet' | 'faq'
-}): HelpCenter | undefined => {
+}: UseAiAgentHelpCenterParams): {
+    helpCenter: HelpCenter | undefined
+    isLoading: boolean
+} => {
     // We expect to handle only 1 guidance help center
-    const { data } = useGetHelpCenterList(
+    const { data, isLoading, isFetching } = useGetHelpCenterList(
         { type: helpCenterType, per_page: 1, shop_name: shopName },
         {
             // Guidance Help Center is not expected to change frequently
@@ -40,6 +47,21 @@ export const useAiAgentHelpCenter = ({
         },
     )
     const helpCenter = data?.data.data[0]
+
+    return {
+        helpCenter,
+        isLoading: !helpCenter && (isLoading || isFetching),
+    }
+}
+
+export const useAiAgentHelpCenter = ({
+    shopName,
+    helpCenterType,
+}: UseAiAgentHelpCenterParams): HelpCenter | undefined => {
+    const { helpCenter } = useAiAgentHelpCenterState({
+        shopName,
+        helpCenterType,
+    })
 
     return helpCenter
 }

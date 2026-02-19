@@ -49,6 +49,7 @@ jest.mock('../../../hooks/usePostOnboardingKnowledgeEditor', () => ({
         openEditorForEdit: jest.fn(),
         closeEditor: jest.fn(),
         knowledgeEditorProps: {
+            variant: 'guidance',
             shopName: 'test-shop',
             shopType: 'shopify',
             guidanceArticleId: undefined,

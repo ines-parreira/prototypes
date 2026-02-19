@@ -69,12 +69,18 @@ const mockGuidanceTemplate: GuidanceTemplate = {
 }
 
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
-    useAiAgentHelpCenter: jest.fn(() => ({
-        id: 1,
-        name: 'FAQ Help Center',
-        default_locale: 'en-US',
+    useAiAgentHelpCenterState: jest.fn(() => ({
+        helpCenter: {
+            id: 1,
+            name: 'FAQ Help Center',
+            default_locale: 'en-US',
+        },
+        isLoading: false,
     })),
 }))
+const { useAiAgentHelpCenterState } = jest.requireMock(
+    'pages/aiAgent/hooks/useAiAgentHelpCenter',
+)
 
 const guidanceArticle = getGuidanceArticleFixture(1)
 const guidanceArticle2 = getGuidanceArticleFixture(2)
@@ -217,6 +223,14 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => (
 describe('KnowledgeEditorGuidance', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        useAiAgentHelpCenterState.mockReturnValue({
+            helpCenter: {
+                id: 1,
+                name: 'FAQ Help Center',
+                default_locale: 'en-US',
+            },
+            isLoading: false,
+        })
         queryClient.clear()
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle,
@@ -1179,10 +1193,10 @@ describe('KnowledgeEditorGuidance', () => {
         })
     })
 
-    describe('SidePanel onOpenChange', () => {
-        it('calls onClose when SidePanel onOpenChange is triggered with false', async () => {
-            const user = userEvent.setup()
+    describe('Shared panel state', () => {
+        it('calls onClose when shared panel onRequestClose is triggered', async () => {
             const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -1197,17 +1211,26 @@ describe('KnowledgeEditorGuidance', () => {
                         isOpen
                         onDelete={jest.fn()}
                         guidanceArticles={[]}
+                        onSharedPanelStateChange={onSharedPanelStateChange}
                     />
                 </Provider>,
             )
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })
 
-        it('does not call onClose when SidePanel onOpenChange is triggered with true', () => {
+        it('does not call onClose by default when shared close is not triggered', () => {
             const onClose = jest.fn()
 
             render(
@@ -1228,6 +1251,74 @@ describe('KnowledgeEditorGuidance', () => {
             )
 
             expect(onClose).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Shared panel mode', () => {
+        it('renders without SidePanel and syncs shared panel state', async () => {
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={onClose}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                        guidanceArticles={[]}
+                        onSharedPanelStateChange={onSharedPanelStateChange}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+
+            expect(latestSharedPanelState).toEqual(
+                expect.objectContaining({
+                    width: expect.any(String),
+                    onRequestClose: expect.any(Function),
+                }),
+            )
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('can render in shared panel mode without callback', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="read"
+                        isOpen
+                        onDelete={jest.fn()}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
         })
     })
 
@@ -1341,11 +1432,41 @@ describe('KnowledgeEditorGuidance', () => {
                 </Provider>,
             )
 
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+            expect(screen.getByText(guidanceArticle.title)).toBeInTheDocument()
         })
     })
 
     describe('loading states', () => {
+        it('shows loading shell while help center is loading', () => {
+            useAiAgentHelpCenterState.mockReturnValue({
+                helpCenter: undefined,
+                isLoading: true,
+            })
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen={true}
+                        guidanceArticles={[]}
+                    />
+                </Provider>,
+            )
+
+            expect(
+                document.querySelector(
+                    '[data-name=\"knowledge-editor-top-bar-container\"]',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText(guidanceArticle.title),
+            ).not.toBeInTheDocument()
+        })
+
         it('shows loading skeleton when guidance article is loading', () => {
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: undefined,
@@ -1367,7 +1488,11 @@ describe('KnowledgeEditorGuidance', () => {
                 </Provider>,
             )
 
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+            expect(
+                document.querySelector(
+                    '[data-name=\"knowledge-editor-top-bar-container\"]',
+                ),
+            ).toBeInTheDocument()
         })
 
         it('does not show loading spinner in create mode even without article', () => {
@@ -1391,7 +1516,7 @@ describe('KnowledgeEditorGuidance', () => {
             )
 
             expect(screen.queryByRole('status')).not.toBeInTheDocument()
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+            expect(screen.getAllByText('Guidance').length).toBeGreaterThan(0)
         })
     })
 
@@ -1565,6 +1690,7 @@ describe('KnowledgeEditorGuidance', () => {
         it('prevents closing during autosave', async () => {
             const user = userEvent.setup()
             const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: {
@@ -1585,6 +1711,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="edit"
                         isOpen={true}
                         guidanceArticles={[]}
+                        onSharedPanelStateChange={onSharedPanelStateChange}
                     />
                 </Provider>,
             )
@@ -1601,8 +1728,16 @@ describe('KnowledgeEditorGuidance', () => {
                 expect(screen.getByText(/Saving/i)).toBeInTheDocument()
             })
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
 
             expect(onClose).not.toHaveBeenCalled()
             expect(
@@ -1613,6 +1748,7 @@ describe('KnowledgeEditorGuidance', () => {
         it('allows closing after autosave completes with no pending changes', async () => {
             const user = userEvent.setup()
             const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
             mockUseGuidanceArticle.mockReturnValue({
                 guidanceArticle: {
@@ -1633,6 +1769,7 @@ describe('KnowledgeEditorGuidance', () => {
                         guidanceMode="edit"
                         isOpen={true}
                         guidanceArticles={[]}
+                        onSharedPanelStateChange={onSharedPanelStateChange}
                     />
                 </Provider>,
             )
@@ -1654,8 +1791,15 @@ describe('KnowledgeEditorGuidance', () => {
                 { timeout: 3000 },
             )
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
 
             expect(onClose).toHaveBeenCalled()
             expect(

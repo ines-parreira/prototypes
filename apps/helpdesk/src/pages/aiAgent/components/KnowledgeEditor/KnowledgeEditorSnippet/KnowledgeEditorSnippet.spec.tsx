@@ -1,11 +1,11 @@
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { SnippetType } from '../../../KnowledgeHub/types'
 import { KnowledgeEditorSnippet } from './KnowledgeEditorSnippet'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
-    useAiAgentHelpCenter: jest.fn(),
+    useAiAgentHelpCenterState: jest.fn(),
 }))
 
 jest.mock('./KnowledgeEditorSnippetLoader', () => ({
@@ -34,6 +34,10 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    Card: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="axiom-card">{children}</div>
+    ),
+    Skeleton: () => <div data-testid="axiom-skeleton" />,
     SidePanel: ({
         isOpen,
         onOpenChange,
@@ -56,7 +60,7 @@ jest.mock('@gorgias/axiom', () => ({
         ) : null,
 }))
 
-const { useAiAgentHelpCenter } = jest.requireMock(
+const { useAiAgentHelpCenterState } = jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentHelpCenter',
 )
 
@@ -79,7 +83,10 @@ describe('KnowledgeEditorSnippet', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useAiAgentHelpCenter.mockReturnValue(mockHelpCenter)
+        useAiAgentHelpCenterState.mockReturnValue({
+            helpCenter: mockHelpCenter,
+            isLoading: false,
+        })
     })
 
     describe('URL Snippet', () => {
@@ -159,7 +166,10 @@ describe('KnowledgeEditorSnippet', () => {
 
     describe('Help Center Context', () => {
         it('returns null when help center is not available', () => {
-            useAiAgentHelpCenter.mockReturnValue(null)
+            useAiAgentHelpCenterState.mockReturnValue({
+                helpCenter: undefined,
+                isLoading: false,
+            })
 
             const { container } = render(
                 <KnowledgeEditorSnippet
@@ -179,10 +189,33 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(useAiAgentHelpCenter).toHaveBeenCalledWith({
+            expect(useAiAgentHelpCenterState).toHaveBeenCalledWith({
                 shopName: 'test-shop',
                 helpCenterType: 'snippet',
             })
+        })
+
+        it('renders loading shell while help center is loading', () => {
+            useAiAgentHelpCenterState.mockReturnValue({
+                helpCenter: undefined,
+                isLoading: true,
+            })
+
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            expect(
+                document.querySelector(
+                    '[data-name=\"knowledge-editor-top-bar-container\"]',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('snippet-loader'),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -450,26 +483,34 @@ describe('KnowledgeEditorSnippet', () => {
         })
     })
 
-    describe('SidePanel onOpenChange', () => {
-        it('calls onClose when SidePanel onOpenChange is triggered with false', async () => {
-            const user = userEvent.setup()
+    describe('Shared panel state', () => {
+        it('calls onClose when shared panel onRequestClose is invoked', async () => {
             const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
             render(
                 <KnowledgeEditorSnippet
                     {...baseProps}
                     snippetType={SnippetType.URL}
                     onClose={onClose}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
                 />,
             )
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })
 
-        it('does not call onClose when SidePanel onOpenChange is triggered with true', () => {
+        it('does not call onClose by default when shared close is not triggered', () => {
             const onClose = jest.fn()
 
             render(
@@ -481,6 +522,62 @@ describe('KnowledgeEditorSnippet', () => {
             )
 
             expect(onClose).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Shared panel mode', () => {
+        it('renders editor content without SidePanel and syncs shared panel state', async () => {
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
+
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onClose={onClose}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+            expect(screen.getByTestId('snippet-loader')).toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+            expect(latestSharedPanelState).toEqual(
+                expect.objectContaining({
+                    width: expect.any(String),
+                    onRequestClose: expect.any(Function),
+                }),
+            )
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('does not sync shared panel state when help center is missing', () => {
+            const onSharedPanelStateChange = jest.fn()
+            useAiAgentHelpCenterState.mockReturnValue({
+                helpCenter: undefined,
+                isLoading: false,
+            })
+
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    snippetType={SnippetType.URL}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            expect(onSharedPanelStateChange).not.toHaveBeenCalled()
         })
     })
 })

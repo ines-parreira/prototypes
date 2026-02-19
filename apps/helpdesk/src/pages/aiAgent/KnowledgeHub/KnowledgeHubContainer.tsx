@@ -376,30 +376,35 @@ export const KnowledgeHubContainer = () => {
         [history, routes, snippetEditor, buildUrlWithParams, snippetArticles],
     )
 
+    const { onClose: closeGuidanceEditor, onDelete: deleteGuidanceEditor } =
+        knowledgeEditorProps
+    const { closeEditor: closeFaqEditor, handleDelete: deleteFaq } = faqEditor
+    const { closeEditor: closeSnippetEditor } = snippetEditor
+
     const handleCloseGuidanceEditor = useCallback(() => {
         handleCloseEditorPath()
-        knowledgeEditorProps.onClose()
-    }, [knowledgeEditorProps, handleCloseEditorPath])
+        closeGuidanceEditor()
+    }, [closeGuidanceEditor, handleCloseEditorPath])
 
     const handleCloseFaqEditor = useCallback(() => {
         handleCloseEditorPath()
-        faqEditor.closeEditor()
-    }, [faqEditor, handleCloseEditorPath])
+        closeFaqEditor()
+    }, [closeFaqEditor, handleCloseEditorPath])
 
     const handleDeleteFaqEditor = useCallback(() => {
         handleCloseEditorPath()
-        faqEditor.handleDelete()
-    }, [faqEditor, handleCloseEditorPath])
+        deleteFaq()
+    }, [deleteFaq, handleCloseEditorPath])
 
     const handleDeleteGuidanceEditor = useCallback(() => {
         handleCloseEditorPath()
-        knowledgeEditorProps.onDelete()
-    }, [knowledgeEditorProps, handleCloseEditorPath])
+        deleteGuidanceEditor()
+    }, [deleteGuidanceEditor, handleCloseEditorPath])
 
     const snippetEditorClose = useCallback(() => {
         handleCloseEditorPath()
-        snippetEditor.closeEditor()
-    }, [snippetEditor, handleCloseEditorPath])
+        closeSnippetEditor()
+    }, [closeSnippetEditor, handleCloseEditorPath])
 
     const { openPlayground, isPlaygroundOpen } = usePlaygroundPanel()
 

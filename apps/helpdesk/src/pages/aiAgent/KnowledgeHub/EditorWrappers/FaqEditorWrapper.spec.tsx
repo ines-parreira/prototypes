@@ -19,54 +19,51 @@ jest.mock('models/helpCenter/queries', () => ({
     useGetHelpCenterCategoryTree: jest.fn(),
 }))
 
-jest.mock(
-    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle',
-    () => ({
-        KnowledgeEditorHelpCenterArticle: ({
-            helpCenter,
-            locales,
-            categories,
-            article,
-            onClose,
-            onClickPrevious,
-            onClickNext,
-        }: any) => (
-            <div data-testid="faq-editor">
-                <span data-testid="help-center-id">{helpCenter.id}</span>
-                <span data-testid="help-center-locale">
-                    {helpCenter.default_locale}
-                </span>
-                <span data-testid="locales-count">{locales.length}</span>
-                <span data-testid="categories-count">{categories.length}</span>
-                <span data-testid="article-type">{article.type}</span>
-                {article.type === 'existing' && (
-                    <>
-                        <span data-testid="article-id">
-                            {article.articleId}
+jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
+    KnowledgeEditor: ({
+        variant,
+        helpCenter,
+        locales,
+        categories,
+        article,
+        onClose,
+        onClickPrevious,
+        onClickNext,
+    }: any) => (
+        <div data-testid="faq-editor">
+            <span data-testid="editor-variant">{variant}</span>
+            <span data-testid="help-center-id">{helpCenter.id}</span>
+            <span data-testid="help-center-locale">
+                {helpCenter.default_locale}
+            </span>
+            <span data-testid="locales-count">{locales.length}</span>
+            <span data-testid="categories-count">{categories.length}</span>
+            <span data-testid="article-type">{article.type}</span>
+            {article.type === 'existing' && (
+                <>
+                    <span data-testid="article-id">{article.articleId}</span>
+                    {article.versionStatus && (
+                        <span data-testid="version-status">
+                            {article.versionStatus}
                         </span>
-                        {article.versionStatus && (
-                            <span data-testid="version-status">
-                                {article.versionStatus}
-                            </span>
-                        )}
-                    </>
-                )}
-                <button onClick={onClose}>Close</button>
-                <button onClick={onClickPrevious}>Previous</button>
-                <button onClick={onClickNext}>Next</button>
-                {article.type === 'new' && (
-                    <button onClick={article.onCreated}>Create</button>
-                )}
-                {article.type === 'existing' && (
-                    <>
-                        <button onClick={article.onUpdated}>Update</button>
-                        <button onClick={article.onDeleted}>Delete</button>
-                    </>
-                )}
-            </div>
-        ),
-    }),
-)
+                    )}
+                </>
+            )}
+            <button onClick={onClose}>Close</button>
+            <button onClick={onClickPrevious}>Previous</button>
+            <button onClick={onClickNext}>Next</button>
+            {article.type === 'new' && (
+                <button onClick={article.onCreated}>Create</button>
+            )}
+            {article.type === 'existing' && (
+                <>
+                    <button onClick={article.onUpdated}>Update</button>
+                    <button onClick={article.onDeleted}>Delete</button>
+                </>
+            )}
+        </div>
+    ),
+}))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     SupportedLocalesProvider: ({ children }: any) => <>{children}</>,
@@ -173,6 +170,9 @@ describe('FaqEditorWrapper', () => {
             renderComponent()
 
             expect(screen.getByTestId('faq-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('editor-variant')).toHaveTextContent(
+                'article',
+            )
         })
 
         it('does not render when isOpen is false', () => {

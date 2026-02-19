@@ -10,8 +10,8 @@ import type {
     CategoryWithLocalTranslation,
     Locale,
 } from 'models/helpCenter/types'
+import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import type { InitialArticleModeValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
-import { KnowledgeEditorHelpCenterArticle } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/KnowledgeEditorHelpCenterArticle'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
@@ -95,7 +95,8 @@ export const FaqEditorWrapper = ({
     return (
         <SupportedLocalesProvider>
             <CurrentHelpCenterContext.Provider value={faqHelpCenter}>
-                <KnowledgeEditorHelpCenterArticle
+                <KnowledgeEditor
+                    variant="article"
                     helpCenter={faqHelpCenter}
                     locales={faqLocales}
                     categories={faqCategories}

@@ -1,5 +1,4 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
@@ -11,6 +10,7 @@ import type { InitialArticleModeValue } from './context'
 import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArticle'
 
 const mockNotifyError = jest.fn()
+let articleEditorCloseHandler: (() => void) | null = null
 
 jest.mock('@gorgias/axiom', () => ({
     SidePanel: ({
@@ -90,6 +90,10 @@ jest.mock('./ArticleEditorContent', () => ({
     }: {
         closeHandlerRef: React.MutableRefObject<(() => void) | null>
     }) => {
+        if (articleEditorCloseHandler) {
+            closeHandlerRef.current = articleEditorCloseHandler
+        }
+
         return (
             <div data-testid="article-editor-content">
                 <button
@@ -186,6 +190,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         lastConfig = null
+        articleEditorCloseHandler = null
         mockNotifyError.mockClear()
     })
 
@@ -235,9 +240,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 articleId: 1,
             })
 
-            // Verify side panel is rendered
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
-
             // Verify KnowledgeEditorLoadingShell is shown (line 73)
             expect(screen.getByTestId('loading-shell')).toBeInTheDocument()
 
@@ -286,39 +288,150 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         })
     })
 
-    describe('SidePanel onOpenChange', () => {
+    describe('onRequestClose callback', () => {
         it('can close panel for existing article', async () => {
-            const user = userEvent.setup()
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
-            renderComponent({
-                type: 'existing',
-                initialArticleMode: 'read' as InitialArticleModeValue,
-                articleId: 1,
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    onClose={onClose}
+                    article={{
+                        type: 'existing',
+                        initialArticleMode: 'read' as InitialArticleModeValue,
+                        articleId: 1,
+                    }}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
             })
 
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
         })
 
         it('can close panel for new article', async () => {
-            const user = userEvent.setup()
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
 
-            renderComponent({
-                type: 'new',
-                template: {
-                    title: 'Test Article',
-                    content: 'Test Content',
-                    key: 'test-template',
-                },
-                onCreated: () => {},
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    onClose={onClose}
+                    article={{
+                        type: 'new',
+                        template: {
+                            title: 'Test Article',
+                            content: 'Test Content',
+                            key: 'test-template',
+                        },
+                        onCreated: () => {},
+                    }}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
             })
 
-            expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
 
-            const closeButton = screen.getByTestId('close-panel-button')
-            await act(() => user.click(closeButton))
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('Shared panel mode', () => {
+        it('renders content without SidePanel and syncs shared panel state', async () => {
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
+
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    onClose={onClose}
+                    article={{
+                        type: 'existing',
+                        initialArticleMode: 'read' as InitialArticleModeValue,
+                        articleId: 1,
+                    }}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+            expect(
+                screen.getByTestId('article-editor-content'),
+            ).toBeInTheDocument()
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+
+            expect(latestSharedPanelState).toEqual(
+                expect.objectContaining({
+                    width: '60vw',
+                    onRequestClose: expect.any(Function),
+                }),
+            )
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('uses editor close handler when shared panel requests close', async () => {
+            const onClose = jest.fn()
+            const onSharedPanelStateChange = jest.fn()
+            const customCloseHandler = jest.fn()
+            articleEditorCloseHandler = customCloseHandler
+
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    onClose={onClose}
+                    article={{
+                        type: 'existing',
+                        initialArticleMode: 'read' as InitialArticleModeValue,
+                        articleId: 1,
+                    }}
+                    onSharedPanelStateChange={onSharedPanelStateChange}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(onSharedPanelStateChange).toHaveBeenCalled()
+            })
+
+            const latestSharedPanelState =
+                onSharedPanelStateChange.mock.calls.at(-1)?.[0]
+
+            act(() => {
+                latestSharedPanelState.onRequestClose()
+            })
+
+            expect(customCloseHandler).toHaveBeenCalledTimes(1)
+            expect(onClose).not.toHaveBeenCalled()
         })
     })
 
