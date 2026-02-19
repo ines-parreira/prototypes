@@ -294,7 +294,7 @@ describe('getColumns - Metrics Columns', () => {
         })
     })
 
-    describe('Avg CSAT Column', () => {
+    describe('CSAT Column', () => {
         const AVG_CSAT_COLUMN_INDEX = 4
 
         it('should display CSAT formatted to 1 decimal place', () => {

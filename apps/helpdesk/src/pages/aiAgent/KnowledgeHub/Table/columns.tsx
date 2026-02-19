@@ -320,7 +320,7 @@ export const getColumns = (
                   accessorKey: COLUMN_IDS.METRICS_CSAT,
                   header: () => (
                       <SortableHeader
-                          label="Avg CSAT"
+                          label="CSAT"
                           columnId={COLUMN_IDS.METRICS_CSAT}
                           sortState={sortState}
                           onSort={onColumnSort}
