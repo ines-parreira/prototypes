@@ -1956,4 +1956,208 @@ Status: [[objects.order.status | default: "pending"]]`,
             },
         })
     })
+
+    it('should transform config with service_connection_settings into graph', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: 'internal1',
+            id: 'id1',
+            name: 'Service connection flow',
+            is_draft: true,
+            initial_step_id: 'http_request1',
+            entrypoint: null,
+            available_languages: [],
+            steps: [
+                {
+                    id: 'http_request1',
+                    kind: 'http-request',
+                    settings: {
+                        headers: {},
+                        method: 'GET',
+                        name: 'Shopify orders',
+                        url: '',
+                        variables: [],
+                        service_connection_settings: {
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            path: '/admin/api/2025-01/orders.json',
+                        },
+                    },
+                },
+                {
+                    id: 'end1',
+                    kind: 'end',
+                    settings: {
+                        success: true,
+                    },
+                },
+                {
+                    id: 'end2',
+                    kind: 'end',
+                    settings: {
+                        success: false,
+                    },
+                },
+            ],
+            transitions: [
+                {
+                    id: 't1',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end1',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: 't2',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end2',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2026-02-17T00:00:00.000Z',
+            triggers: [
+                {
+                    kind: 'reusable-llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'reusable-llm-prompt-call-step',
+                    trigger: 'reusable-llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        conditions: null,
+                    },
+                },
+            ],
+        }
+
+        const visualBuilderGraph =
+            transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+
+        const httpNode = visualBuilderGraph.nodes.find(
+            (n) => n.type === 'http_request',
+        )
+        expect(httpNode).toBeDefined()
+        expect(httpNode).toEqual(
+            expect.objectContaining({
+                type: 'http_request',
+                data: expect.objectContaining({
+                    name: 'Shopify orders',
+                    url: '',
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/2025-01/orders.json',
+                    },
+                }),
+            }),
+        )
+    })
+
+    it('should round-trip service_connection_settings through graph transformations', () => {
+        const c: WorkflowConfiguration = {
+            internal_id: 'internal1',
+            id: 'id1',
+            name: 'Service connection round trip',
+            is_draft: true,
+            initial_step_id: 'http_request1',
+            entrypoint: null,
+            available_languages: [],
+            steps: [
+                {
+                    id: 'http_request1',
+                    kind: 'http-request',
+                    settings: {
+                        headers: {},
+                        method: 'POST',
+                        name: 'Recharge request',
+                        url: '',
+                        variables: [],
+                        service_connection_settings: {
+                            integration_id: '{{apps.recharge.integration_id}}',
+                            path: '/subscriptions',
+                        },
+                    },
+                },
+                {
+                    id: 'end1',
+                    kind: 'end',
+                    settings: {
+                        success: true,
+                    },
+                },
+                {
+                    id: 'end2',
+                    kind: 'end',
+                    settings: {
+                        success: false,
+                    },
+                },
+            ],
+            transitions: [
+                {
+                    id: 't1',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end1',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+                {
+                    id: 't2',
+                    from_step_id: 'http_request1',
+                    to_step_id: 'end2',
+                    name: undefined,
+                    event: undefined,
+                    conditions: undefined,
+                },
+            ],
+            updated_datetime: '2026-02-17T00:00:00.000Z',
+            triggers: [
+                {
+                    kind: 'reusable-llm-prompt',
+                    settings: {
+                        custom_inputs: [],
+                        object_inputs: [],
+                        outputs: [],
+                    },
+                },
+            ],
+            entrypoints: [
+                {
+                    kind: 'reusable-llm-prompt-call-step',
+                    trigger: 'reusable-llm-prompt',
+                    settings: {
+                        requires_confirmation: false,
+                        conditions: null,
+                    },
+                },
+            ],
+        }
+
+        const graph = transformWorkflowConfigurationIntoVisualBuilderGraph(c)
+        const roundTripped = transformVisualBuilderGraphIntoWfConfiguration(
+            graph,
+            true,
+            [],
+        )
+
+        const httpStep = roundTripped.steps.find(
+            (s) => s.kind === 'http-request',
+        )
+        expect(httpStep).toBeDefined()
+        if (httpStep && httpStep.kind === 'http-request') {
+            expect(httpStep.settings.service_connection_settings).toEqual({
+                integration_id: '{{apps.recharge.integration_id}}',
+                path: '/subscriptions',
+            })
+            expect(httpStep.settings.url).toBe('')
+        }
+    })
 })

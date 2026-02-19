@@ -85,6 +85,10 @@ export default function HttpRequestEditor({
         }
     }, [actionsApps, visualBuilderGraph.apps])
 
+    const appType = visualBuilderGraph.apps?.[0]?.type
+    const isNativeApp = appType === 'shopify' || appType === 'recharge'
+    const useServiceConnection = !!nodeInEdition.data.serviceConnectionSettings
+
     const { mutateAsync: downloadEventLogs, isLoading: isDownloadPending } =
         useDownloadWorkflowConfigurationStepLogs()
     const handleDownloadHttpRequestEventLogs = useCallback(async () => {
@@ -268,17 +272,45 @@ export default function HttpRequestEditor({
                             hasError={!!nodeInEdition.data.errors?.name}
                         />
                     </div>
+                    {isNativeApp && visualBuilderGraph.isTemplate && (
+                        <ToggleField
+                            onChange={() => {
+                                dispatch({
+                                    type: 'TOGGLE_SERVICE_CONNECTION_SETTINGS',
+                                    httpRequestNodeId: nodeInEdition.id,
+                                })
+                            }}
+                            value={useServiceConnection}
+                            label="Use service connection"
+                        />
+                    )}
                     <div className={css.urlMethodFormFieldGroup}>
                         <div className={css.formField}>
-                            <Label isRequired>URL</Label>
+                            <Label isRequired>
+                                {useServiceConnection ? 'Path' : 'URL'}
+                            </Label>
                             <TextInputWithVariables
-                                value={nodeInEdition.data.url}
-                                onChange={(url: string) => {
-                                    dispatch({
-                                        type: 'SET_HTTP_REQUEST_URL',
-                                        httpRequestNodeId: nodeInEdition.id,
-                                        url,
-                                    })
+                                value={
+                                    useServiceConnection
+                                        ? (nodeInEdition.data
+                                              .serviceConnectionSettings
+                                              ?.path ?? '')
+                                        : nodeInEdition.data.url
+                                }
+                                onChange={(value: string) => {
+                                    if (useServiceConnection) {
+                                        dispatch({
+                                            type: 'SET_HTTP_REQUEST_SERVICE_CONNECTION_PATH',
+                                            httpRequestNodeId: nodeInEdition.id,
+                                            path: value,
+                                        })
+                                    } else {
+                                        dispatch({
+                                            type: 'SET_HTTP_REQUEST_URL',
+                                            httpRequestNodeId: nodeInEdition.id,
+                                            url: value,
+                                        })
+                                    }
                                 }}
                                 variables={workflowVariables}
                                 error={nodeInEdition.data.errors?.url}

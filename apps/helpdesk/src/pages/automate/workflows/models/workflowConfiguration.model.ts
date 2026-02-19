@@ -437,6 +437,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                     oauth2TokenSettings: step.settings.oauth2_token_settings,
                     trackstar_integration_name:
                         step.settings.trackstar_integration_name,
+                    serviceConnectionSettings:
+                        step.settings.service_connection_settings,
                     headers: Object.entries(
                         _omit(step.settings.headers ?? {}, 'content-type'),
                     ).map(([name, value]) => ({ name, value })),

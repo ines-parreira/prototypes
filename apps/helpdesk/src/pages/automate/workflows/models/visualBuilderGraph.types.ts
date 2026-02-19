@@ -280,6 +280,10 @@ export type HttpRequestNodeType = Node<
             refresh_token_url: string
         } | null
         trackstar_integration_name?: string | null
+        serviceConnectionSettings?: {
+            integration_id: string
+            path: string
+        } | null
         errors?: {
             name?: string
             url?: string

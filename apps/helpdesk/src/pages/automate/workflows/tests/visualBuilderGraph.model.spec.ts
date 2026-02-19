@@ -1,4 +1,7 @@
-import { SHIPMONK_APPLICATION_ID } from '../models/variables.types'
+import {
+    SHIPMONK_APPLICATION_ID,
+    type WorkflowVariableList,
+} from '../models/variables.types'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -271,6 +274,171 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 }),
             ]),
         )
+    })
+
+    it('should transform http request step with service connection settings', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'name',
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger_button1',
+                        type: 'channel_trigger',
+                        data: {
+                            label: 'entrypoint',
+                            label_tkey: 'entrypoint_tkey',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: 'Shopify request',
+                            url: '',
+                            method: 'GET',
+                            headers: [],
+                            variables: [],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                            serviceConnectionSettings: {
+                                integration_id:
+                                    '{{store.helpdesk_integration_id}}',
+                                path: '/admin/api/2025-01/orders.json',
+                            },
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end1',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'trigger_button1_http_request1',
+                        source: 'trigger_button1',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'http_request1_end1',
+                        source: 'http_request1',
+                        target: 'end1',
+                    },
+                ],
+                available_languages: [],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+                apps: [{ type: 'shopify' }],
+            },
+            true,
+            [],
+        )
+
+        expect(configuration.steps).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    id: 'http_request1',
+                    kind: 'http-request',
+                    settings: expect.objectContaining({
+                        url: '',
+                        service_connection_settings: {
+                            integration_id: '{{store.helpdesk_integration_id}}',
+                            path: '/admin/api/2025-01/orders.json',
+                        },
+                    }),
+                }),
+            ]),
+        )
+    })
+
+    it('should not include service_connection_settings when not set on node', () => {
+        const configuration = transformVisualBuilderGraphIntoWfConfiguration(
+            {
+                id: '',
+                internal_id: '',
+                is_draft: false,
+                isTemplate: false,
+                name: 'name',
+                nodes: [
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'trigger_button1',
+                        type: 'channel_trigger',
+                        data: {
+                            label: 'entrypoint',
+                            label_tkey: 'entrypoint_tkey',
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'http_request1',
+                        type: 'http_request',
+                        data: {
+                            name: '',
+                            url: 'https://example.com',
+                            method: 'GET',
+                            headers: [],
+                            variables: [],
+                            json: null,
+                            formUrlencoded: null,
+                            bodyContentType: null,
+                        },
+                    },
+                    {
+                        ...buildNodeCommonProperties(),
+                        id: 'end1',
+                        type: 'end',
+                        data: {
+                            action: 'end',
+                        },
+                    },
+                ],
+                edges: [
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'trigger_button1_http_request1',
+                        source: 'trigger_button1',
+                        target: 'http_request1',
+                    },
+                    {
+                        ...buildEdgeCommonProperties(),
+                        id: 'http_request1_end1',
+                        source: 'http_request1',
+                        target: 'end1',
+                    },
+                ],
+                available_languages: [],
+                nodeEditingId: null,
+                choiceEventIdEditing: null,
+                branchIdsEditing: [],
+            },
+            true,
+            [],
+        )
+
+        const httpStep = configuration.steps.find(
+            (s) => s.kind === 'http-request',
+        )
+        expect(httpStep).toBeDefined()
+        if (httpStep && httpStep.kind === 'http-request') {
+            expect(httpStep.settings.url).toBe('https://example.com')
+            expect(
+                httpStep.settings.service_connection_settings,
+            ).toBeUndefined()
+        }
     })
 
     it('should transform graph with a edit order note step', () => {
@@ -2920,6 +3088,190 @@ describe('errors', () => {
                     },
                 },
             })
+        })
+
+        it('should return "Path is required" when service connection path is empty and touched', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                url: 'Path is required',
+            })
+        })
+
+        it('should return no error for a valid service connection path', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                        name: true,
+                    },
+                    name: 'Some name',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/2025-01/orders.json',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should not validate URL format for service connection path', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/orders.json',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual(null)
+        })
+
+        it('should return "Invalid variables" when service connection path has invalid variables', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/{{nonexistent_variable}}/orders.json',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                url: 'Invalid variables',
+            })
+        })
+
+        it('should return "Invalid variables syntax" when service connection path has invalid liquid syntax', () => {
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/{{ invalid/orders.json',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, [])
+
+            expect(errors).toEqual({
+                url: 'Invalid variables syntax',
+            })
+        })
+
+        it('should return no error when service connection path has valid variables', () => {
+            const variables: WorkflowVariableList = [
+                {
+                    name: 'order_id',
+                    value: 'order_id',
+                    nodeType: 'text_reply',
+                    type: 'string',
+                },
+            ]
+
+            const node: HttpRequestNodeType = {
+                ...buildNodeCommonProperties(),
+                type: 'http_request',
+                data: {
+                    touched: {
+                        url: true,
+                    },
+                    name: '',
+                    method: 'GET',
+                    url: '',
+                    headers: [],
+                    bodyContentType: null,
+                    json: null,
+                    formUrlencoded: [],
+                    variables: [],
+                    serviceConnectionSettings: {
+                        integration_id: '{{store.helpdesk_integration_id}}',
+                        path: '/admin/api/orders/{{order_id}}.json',
+                    },
+                },
+            }
+
+            const errors = getHTTPRequestNodeErrors(node, variables)
+
+            expect(errors).toEqual(null)
         })
     })
 

@@ -143,6 +143,15 @@ export type VisualBuilderHttpRequestAction =
           httpRequestNodeId: string
           index: number
       }
+    | {
+          type: 'TOGGLE_SERVICE_CONNECTION_SETTINGS'
+          httpRequestNodeId: string
+      }
+    | {
+          type: 'SET_HTTP_REQUEST_SERVICE_CONNECTION_PATH'
+          httpRequestNodeId: string
+          path: string
+      }
 
 // bridge between type system and runtime
 // allow to keep a type safe list of all action types for this reducer
@@ -173,6 +182,8 @@ const visualBuilderHttpRequestActionTypes: ActionTypes = {
     DELETE_HTTP_REQUEST_OUTPUT: true,
     TOGGLE_OAUTH2_SETTINGS: true,
     TOGGLE_TRACKSTAR_AUTH_SETTINGS: true,
+    TOGGLE_SERVICE_CONNECTION_SETTINGS: true,
+    SET_HTTP_REQUEST_SERVICE_CONNECTION_PATH: true,
 }
 
 export function isVisualBuilderHttpRequestAction(action: {
@@ -523,6 +534,44 @@ export function httpRequestReducer(
 
                 if (node) {
                     node.data.outputs?.splice(action.index, 1)
+                }
+            })
+        case 'TOGGLE_SERVICE_CONNECTION_SETTINGS':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request',
+                )
+                if (!node) return
+
+                const appType = graph.apps?.[0]?.type
+
+                if (node.data.serviceConnectionSettings) {
+                    node.data.serviceConnectionSettings = null
+                } else if (appType === 'shopify' || appType === 'recharge') {
+                    const integrationId =
+                        appType === 'shopify'
+                            ? '{{store.helpdesk_integration_id}}'
+                            : '{{apps.recharge.integration_id}}'
+
+                    node.data.url = ''
+                    node.data.serviceConnectionSettings = {
+                        integration_id: integrationId,
+                        path: '',
+                    }
+                }
+            })
+        case 'SET_HTTP_REQUEST_SERVICE_CONNECTION_PATH':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is HttpRequestNodeType =>
+                        n.id === action.httpRequestNodeId &&
+                        n.type === 'http_request',
+                )
+
+                if (node?.data.serviceConnectionSettings) {
+                    node.data.serviceConnectionSettings.path = action.path
                 }
             })
     }

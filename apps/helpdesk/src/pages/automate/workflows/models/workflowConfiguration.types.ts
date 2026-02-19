@@ -109,6 +109,10 @@ export type WorkflowStepHttpRequest = {
             refresh_token_url: string
         } | null
         trackstar_integration_name?: string | null
+        service_connection_settings?: {
+            integration_id: string
+            path: string
+        } | null
         variables: {
             id: string
             name: string

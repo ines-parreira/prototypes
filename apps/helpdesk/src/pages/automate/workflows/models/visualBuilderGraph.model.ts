@@ -935,6 +935,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         oauth2_token_settings: node.data.oauth2TokenSettings,
                         trackstar_integration_name:
                             node.data.trackstar_integration_name,
+                        service_connection_settings:
+                            node.data.serviceConnectionSettings,
                         variables: node.data.variables.map((variable) => ({
                             ...variable,
                             data_type:
@@ -2022,9 +2024,18 @@ export function getHTTPRequestNodeErrors(
     }
 
     if (node.data.touched?.url) {
-        if (!node.data.url.trim()) {
-            errors = mergeErrors(errors, 'url', 'URL is required')
-        } else {
+        const isServiceConnection = !!node.data.serviceConnectionSettings
+        const urlOrPath = isServiceConnection
+            ? (node.data.serviceConnectionSettings?.path ?? '')
+            : node.data.url
+
+        if (!urlOrPath.trim()) {
+            errors = mergeErrors(
+                errors,
+                'url',
+                isServiceConnection ? 'Path is required' : 'URL is required',
+            )
+        } else if (!isServiceConnection) {
             const error = validateWebhookURL(node.data.url)
 
             if (error) {
@@ -2032,6 +2043,12 @@ export function getHTTPRequestNodeErrors(
             } else if (hasInvalidVariables(node.data.url, variables)) {
                 errors = mergeErrors(errors, 'url', 'Invalid variables')
             } else if (!isValidLiquidSyntax(node.data.url)) {
+                errors = mergeErrors(errors, 'url', 'Invalid variables syntax')
+            }
+        } else {
+            if (hasInvalidVariables(urlOrPath, variables)) {
+                errors = mergeErrors(errors, 'url', 'Invalid variables')
+            } else if (!isValidLiquidSyntax(urlOrPath)) {
                 errors = mergeErrors(errors, 'url', 'Invalid variables syntax')
             }
         }
