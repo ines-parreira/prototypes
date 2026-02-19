@@ -217,6 +217,7 @@ jobs:
               `- JS: \`${jsUrl}\``,
               `- CSS: \`${cssUrl}\``,
               `- Requestly JSON: [preview-requestly-rule](${artifactUrl})`,
+              '- Quick start: [Helpdesk PR Preview - Simple & Quick Guide](https://www.notion.so/gorgias/Helpdesk-PR-Preview-Simple-Quick-Guide-30a1ae2178f580acbf91e05b1310189f) (refer here for an easy start)',
               '',
               `Rule: \`${regex}\` → \`${destinationTemplate}\``,
               '',
