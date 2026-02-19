@@ -11,10 +11,15 @@ export function useVersionHistory(): VersionHistoryData {
 
     const { guidanceHelpCenter } = config
 
-    const isViewingDraft =
-        state.guidance?.isCurrent === undefined
-            ? false
-            : !state.guidance?.isCurrent
+    const isViewingHistoricalVersion =
+        state.historicalVersion !== null &&
+        state.historicalVersion.publishedDatetime !== null
+
+    const isViewingDraft = isViewingHistoricalVersion
+        ? false
+        : state.guidance?.isCurrent === undefined
+          ? false
+          : !state.guidance?.isCurrent
 
     const { switchToVersion } = useSwitchVersion()
 

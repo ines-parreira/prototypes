@@ -64,6 +64,7 @@ const defaultState: GuidanceState = {
     historicalVersion: null,
     activeModal: null,
     isUpdating: false,
+    comparisonVersion: null,
 }
 
 const defaultConfig = {
@@ -378,7 +379,33 @@ describe('useVersionHistory', () => {
     })
 
     describe('onGoToLatest', () => {
-        it('should call switchToVersion with latest_draft and dispatch CLEAR_HISTORICAL_VERSION after resolution', async () => {
+        it('should call switchToVersion with current when no draft exists', async () => {
+            const { result } = renderHook(() => useVersionHistory())
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'CLEAR_HISTORICAL_VERSION',
+            })
+        })
+
+        it('should call switchToVersion with latest_draft when draft exists', async () => {
+            mockUseGuidanceContext.mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: {
+                        ...mockGuidance,
+                        draftVersionId: 6,
+                        publishedVersionId: 5,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
             const { result } = renderHook(() => useVersionHistory())
 
             await act(async () => {

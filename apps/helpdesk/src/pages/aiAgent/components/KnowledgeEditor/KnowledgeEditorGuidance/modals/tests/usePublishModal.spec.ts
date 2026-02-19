@@ -62,6 +62,7 @@ describe('usePublishModal', () => {
         activeModal: 'publish',
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {

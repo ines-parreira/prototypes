@@ -108,15 +108,33 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                     )}
 
                     {state.articleMode === 'diff' &&
-                        state.historicalVersion && (
+                        (state.historicalVersion ||
+                            state.comparisonVersion) && (
                             <KnowledgeEditorHelpCenterArticleDiffView
-                                oldTitle={state.title}
-                                oldContent={state.content}
+                                oldTitle={
+                                    state.historicalVersion
+                                        ? state.historicalVersion.title
+                                        : (state.comparisonVersion?.title ?? '')
+                                }
+                                oldContent={
+                                    state.historicalVersion
+                                        ? state.historicalVersion.content
+                                        : (state.comparisonVersion?.content ??
+                                          '')
+                                }
                                 newTitle={
-                                    state.article?.translation.title ?? ''
+                                    state.historicalVersion
+                                        ? (state.comparisonVersion?.title ??
+                                          state.article?.translation.title ??
+                                          '')
+                                        : state.title
                                 }
                                 newContent={
-                                    state.article?.translation.content ?? ''
+                                    state.historicalVersion
+                                        ? (state.comparisonVersion?.content ??
+                                          state.article?.translation.content ??
+                                          '')
+                                        : state.content
                                 }
                             />
                         )}

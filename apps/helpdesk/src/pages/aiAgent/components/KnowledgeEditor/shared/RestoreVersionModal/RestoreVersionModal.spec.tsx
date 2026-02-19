@@ -45,7 +45,7 @@ describe('RestoreVersionModal', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Cancel and Restore version buttons', () => {
+    it('renders Cancel and Restore as draft buttons', () => {
         render(<RestoreVersionModal {...defaultProps} />)
 
         const modal = screen.getByRole('dialog')
@@ -53,7 +53,7 @@ describe('RestoreVersionModal', () => {
             within(modal).getByRole('button', { name: 'Cancel' }),
         ).toBeInTheDocument()
         expect(
-            within(modal).getByRole('button', { name: 'Restore version' }),
+            within(modal).getByRole('button', { name: 'Restore as draft' }),
         ).toBeInTheDocument()
     })
 
@@ -68,14 +68,14 @@ describe('RestoreVersionModal', () => {
         expect(onClose).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onRestore when Restore version button is clicked', async () => {
+    it('calls onRestore when Restore as draft button is clicked', async () => {
         const user = userEvent.setup()
         const onRestore = jest.fn()
         render(<RestoreVersionModal {...defaultProps} onRestore={onRestore} />)
 
         const modal = screen.getByRole('dialog')
         await user.click(
-            within(modal).getByRole('button', { name: 'Restore version' }),
+            within(modal).getByRole('button', { name: 'Restore as draft' }),
         )
 
         expect(onRestore).toHaveBeenCalledTimes(1)
@@ -90,12 +90,12 @@ describe('RestoreVersionModal', () => {
         ).toBeDisabled()
     })
 
-    it('shows loading state on Restore version button when isRestoring is true', () => {
+    it('shows loading state on Restore as draft button when isRestoring is true', () => {
         render(<RestoreVersionModal {...defaultProps} isRestoring={true} />)
 
         const modal = screen.getByRole('dialog')
         const restoreButton = within(modal).getByRole('button', {
-            name: /Restore version/,
+            name: /Restore as draft/,
         })
 
         expect(restoreButton).toHaveAttribute('data-pending', 'true')

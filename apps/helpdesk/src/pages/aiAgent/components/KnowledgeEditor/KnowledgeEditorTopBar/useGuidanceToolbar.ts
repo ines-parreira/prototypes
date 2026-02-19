@@ -76,7 +76,8 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         state.guidanceMode,
         state.guidance?.isCurrent,
         hasDraft,
-        state.historicalVersion !== null,
+        state.historicalVersion !== null &&
+            state.historicalVersion.publishedDatetime !== null,
     )
 
     const isDisabled = state.isUpdating || state.isAutoSaving

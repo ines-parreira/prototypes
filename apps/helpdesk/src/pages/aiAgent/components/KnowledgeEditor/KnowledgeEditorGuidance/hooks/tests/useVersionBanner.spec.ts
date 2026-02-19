@@ -49,6 +49,7 @@ describe('useVersionBanner', () => {
         activeModal: null,
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {
@@ -118,6 +119,29 @@ describe('useVersionBanner', () => {
                 dispatch: mockDispatch,
                 config: defaultConfig,
                 hasDraft: false,
+            })
+
+            const { result } = renderHook(() => useVersionBanner())
+
+            expect(result.current.isViewingDraft).toBe(false)
+        })
+
+        it('should return false when viewing a historical version even if guidance is a draft', () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidance: { ...mockGuidance, isCurrent: false },
+                    historicalVersion: {
+                        versionId: 10,
+                        version: 5,
+                        title: 'Historical Title',
+                        content: 'Historical Content',
+                        publishedDatetime: '2024-01-01T00:00:00Z',
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+                hasDraft: true,
             })
 
             const { result } = renderHook(() => useVersionBanner())

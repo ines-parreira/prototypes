@@ -85,6 +85,7 @@ describe('useToggleVisibility', () => {
         activeModal: null,
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     beforeEach(() => {

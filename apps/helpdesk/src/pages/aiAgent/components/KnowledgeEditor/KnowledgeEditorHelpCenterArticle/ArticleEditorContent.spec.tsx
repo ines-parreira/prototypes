@@ -91,6 +91,7 @@ const createMockContextValue = (
         pendingSettingsChanges: {} as SettingsChanges,
         versionStatus: 'latest_draft' as const,
         historicalVersion: null,
+        comparisonVersion: null,
         activeModal: null,
         isUpdating: false,
         templateKey: undefined,

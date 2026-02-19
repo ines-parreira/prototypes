@@ -46,7 +46,11 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
         state.guidance?.isCurrent === undefined
             ? false
             : !state.guidance?.isCurrent
-    const isViewingHistoricalVersion = state.historicalVersion !== null
+    // Consider it a historical version if historicalVersion exists with a published date
+    // (not when comparing draft to published, which has publishedDatetime = null)
+    const isViewingHistoricalVersion =
+        state.historicalVersion !== null &&
+        state.historicalVersion.publishedDatetime !== null
 
     return useMemo(
         () => ({

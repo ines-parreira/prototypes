@@ -114,7 +114,7 @@ export const GuidanceToolbarControls = () => {
                             })
                         }
                     >
-                        Restore
+                        Restore as draft
                     </Button>
                     {!isPlaygroundOpen && (
                         <TestButton onTest={onTest} disabled={true} />

@@ -156,6 +156,38 @@ describe('useVersionBanner', () => {
 
             expect(result.current.isViewingDraft).toBe(false)
         })
+
+        it('should return false when viewing a historical version even if article is a draft', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    state: {
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                is_current: false,
+                            },
+                        },
+                        historicalVersion: {
+                            versionId: 10,
+                            version: 5,
+                            title: 'Historical Title',
+                            content: 'Historical Content',
+                            publishedDatetime: '2024-01-01T00:00:00Z',
+                            impactDateRange: {
+                                start_datetime: '2024-01-01T00:00:00Z',
+                                end_datetime: '2024-02-01T00:00:00Z',
+                            },
+                        },
+                    },
+                    hasDraft: true,
+                }),
+            )
+
+            const { result } = renderHook(() => useVersionBanner())
+
+            expect(result.current.isViewingDraft).toBe(false)
+        })
     })
 
     describe('hasDraftVersion', () => {

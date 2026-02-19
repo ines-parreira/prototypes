@@ -14,6 +14,8 @@ export function articleReducer(
                     action.payload === 'read' || action.payload === 'diff'
                         ? false
                         : state.hasAutoSavedInSession,
+                comparisonVersion:
+                    action.payload === 'diff' ? state.comparisonVersion : null,
             }
 
         case 'SET_FULLSCREEN':
@@ -192,9 +194,20 @@ export function articleReducer(
             return {
                 ...state,
                 historicalVersion: null,
+                comparisonVersion: null,
                 title: originalTitle,
                 content: originalContent,
                 articleMode: 'read',
+            }
+        }
+
+        case 'SET_COMPARISON_VERSION': {
+            return {
+                ...state,
+                comparisonVersion: {
+                    title: action.payload.title,
+                    content: action.payload.content,
+                },
             }
         }
 

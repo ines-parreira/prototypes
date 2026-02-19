@@ -14,6 +14,8 @@ export function guidanceReducer(
                     action.payload === 'read' || action.payload === 'diff'
                         ? false
                         : state.hasAutoSavedInSession,
+                comparisonVersion:
+                    action.payload === 'diff' ? state.comparisonVersion : null,
             }
 
         case 'SET_FULLSCREEN':
@@ -79,6 +81,8 @@ export function guidanceReducer(
             const newGuidance = action.payload?.guidance ?? state.guidance
             return {
                 ...state,
+                title: newTitle,
+                content: newContent,
                 savedSnapshot: {
                     title: newTitle,
                     content: newContent,
@@ -116,6 +120,7 @@ export function guidanceReducer(
                         ? 'read'
                         : state.guidanceMode,
                 hasAutoSavedInSession: false,
+                historicalVersion: null,
             }
         }
 
@@ -168,9 +173,20 @@ export function guidanceReducer(
             return {
                 ...state,
                 historicalVersion: null,
+                comparisonVersion: null,
                 title: originalTitle,
                 content: originalContent,
                 guidanceMode: 'read',
+            }
+        }
+
+        case 'SET_COMPARISON_VERSION': {
+            return {
+                ...state,
+                comparisonVersion: {
+                    title: action.payload.title,
+                    content: action.payload.content,
+                },
             }
         }
 

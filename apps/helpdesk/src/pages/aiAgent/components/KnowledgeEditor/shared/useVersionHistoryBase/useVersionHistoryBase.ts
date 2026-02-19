@@ -277,7 +277,8 @@ export function useVersionHistoryBase({
             })
         }
         if (switchToVersion) {
-            switchToVersion('latest_draft').then(() =>
+            const targetVersion = hasDraft ? 'latest_draft' : 'current'
+            switchToVersion(targetVersion).then(() =>
                 dispatch({ type: 'CLEAR_HISTORICAL_VERSION' }),
             )
         }
@@ -287,6 +288,7 @@ export function useVersionHistoryBase({
         historicalVersion,
         onBackToCurrent,
         switchToVersion,
+        hasDraft,
     ])
 
     return {

@@ -381,10 +381,28 @@ describe('useVersionHistoryBase', () => {
             mockSwitchToVersion.mockResolvedValue(undefined)
         })
 
-        it('should call switchToVersion with latest_draft when provided', async () => {
+        it('should call switchToVersion with current when no draft exists', async () => {
             const { result } = renderHook(() =>
                 useVersionHistoryBase({
                     ...defaultParams,
+                    draftVersionId: null,
+                    switchToVersion: mockSwitchToVersion,
+                }),
+            )
+
+            await act(async () => {
+                result.current.onGoToLatest()
+            })
+
+            expect(mockSwitchToVersion).toHaveBeenCalledWith('current')
+        })
+
+        it('should call switchToVersion with latest_draft when draft exists', async () => {
+            const { result } = renderHook(() =>
+                useVersionHistoryBase({
+                    ...defaultParams,
+                    currentVersionId: 5,
+                    draftVersionId: 6,
                     switchToVersion: mockSwitchToVersion,
                 }),
             )

@@ -14,7 +14,13 @@ export type VersionBannerState = {
 export function useVersionBanner(): VersionBannerState {
     const { state, hasDraft } = useArticleContext()
 
-    const isViewingDraft = state.article?.translation.is_current === false
+    const isViewingHistoricalVersion =
+        state.historicalVersion != null &&
+        state.historicalVersion.publishedDatetime != null
+
+    const isViewingDraft = isViewingHistoricalVersion
+        ? false
+        : state.article?.translation.is_current === false
 
     const hasPublishedVersion =
         !!state.article?.translation.published_version_id

@@ -47,7 +47,7 @@ export const RestoreVersionModal = ({
                         onClick={onRestore}
                         isLoading={isRestoring}
                     >
-                        Restore version
+                        Restore as draft
                     </Button>
                 </Box>
             </OverlayFooter>

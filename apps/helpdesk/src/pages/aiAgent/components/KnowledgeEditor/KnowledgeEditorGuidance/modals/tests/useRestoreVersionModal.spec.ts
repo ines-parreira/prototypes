@@ -81,6 +81,7 @@ describe('useRestoreVersionModal', () => {
         activeModal: 'restore',
         isUpdating: false,
         historicalVersion: mockHistoricalVersion,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {

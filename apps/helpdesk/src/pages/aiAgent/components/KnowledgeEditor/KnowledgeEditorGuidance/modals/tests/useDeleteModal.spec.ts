@@ -58,6 +58,7 @@ describe('useDeleteModal', () => {
         activeModal: 'delete',
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {

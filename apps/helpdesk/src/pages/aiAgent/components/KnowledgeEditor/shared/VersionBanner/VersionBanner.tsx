@@ -56,7 +56,8 @@ export function VersionBanner({
     )
     const publisherName = publisherData?.data?.name
 
-    if (isViewingHistoricalVersion) {
+    // Show historical version banner only when viewing a historical version (not when comparing draft to published)
+    if (isViewingHistoricalVersion && !isViewingDraft) {
         const formattedDate = historicalVersion?.publishedDatetime
             ? formatDatetime(
                   historicalVersion.publishedDatetime,
@@ -163,7 +164,38 @@ export function VersionBanner({
                             .
                         </>
                     }
-                    description="Edit, test, and publish your draft to update the published version."
+                    description={
+                        <>
+                            <div>
+                                Edit, test, and publish your draft to update the
+                                published version.
+                            </div>
+                            {isDiffingEnabled && onToggleDiff && (
+                                <Box
+                                    flexDirection="row"
+                                    justifyContent="flex-end"
+                                    alignItems="center"
+                                    marginTop="xs"
+                                    width="100%"
+                                >
+                                    <Box
+                                        flexDirection="row"
+                                        alignItems="center"
+                                        gap="xs"
+                                    >
+                                        <ToggleField
+                                            value={!!isDiffMode}
+                                            onChange={() => onToggleDiff()}
+                                            isDisabled={isDisabled}
+                                        />
+                                        <Text size="sm" variant="medium">
+                                            Compare to current
+                                        </Text>
+                                    </Box>
+                                </Box>
+                            )}
+                        </>
+                    }
                 />
             </div>
         )

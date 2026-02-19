@@ -231,6 +231,7 @@ describe('VersionBanner', () => {
 
     describe('when viewing historical version', () => {
         const historicalVersionProps = {
+            isViewingDraft: false,
             isViewingHistoricalVersion: true,
             historicalVersion: {
                 publishedDatetime: '2024-01-01T12:00:00Z',
@@ -264,6 +265,7 @@ describe('VersionBanner', () => {
             })
 
             renderComponent({
+                isViewingDraft: false,
                 isViewingHistoricalVersion: true,
                 historicalVersion: {
                     publishedDatetime: '2024-01-01T12:00:00Z',
@@ -280,6 +282,7 @@ describe('VersionBanner', () => {
             })
 
             renderComponent({
+                isViewingDraft: false,
                 isViewingHistoricalVersion: true,
                 historicalVersion: {
                     publishedDatetime: '2024-01-01T12:00:00Z',
@@ -297,6 +300,7 @@ describe('VersionBanner', () => {
 
         it('does not show description when neither commit message nor author is provided', () => {
             renderComponent({
+                isViewingDraft: false,
                 isViewingHistoricalVersion: true,
                 historicalVersion: {
                     publishedDatetime: '2024-01-01T12:00:00Z',
@@ -311,6 +315,7 @@ describe('VersionBanner', () => {
 
         it('shows "unknown date" when publishedDatetime is null', () => {
             renderComponent({
+                isViewingDraft: false,
                 isViewingHistoricalVersion: true,
                 historicalVersion: {
                     publishedDatetime: null,

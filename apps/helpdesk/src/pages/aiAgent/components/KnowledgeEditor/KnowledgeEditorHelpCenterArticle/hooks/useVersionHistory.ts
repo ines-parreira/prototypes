@@ -11,7 +11,13 @@ export function useVersionHistory(): VersionHistoryData {
 
     const { helpCenter } = config
 
-    const isViewingDraft = state.article?.translation.is_current === false
+    const isViewingHistoricalVersion =
+        state.historicalVersion != null &&
+        state.historicalVersion.publishedDatetime != null
+
+    const isViewingDraft = isViewingHistoricalVersion
+        ? false
+        : state.article?.translation.is_current === false
 
     const { switchToVersion } = useSwitchVersion()
 

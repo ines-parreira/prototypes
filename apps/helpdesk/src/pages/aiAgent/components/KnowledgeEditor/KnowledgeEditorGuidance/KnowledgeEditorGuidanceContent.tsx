@@ -110,17 +110,34 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                             />
                         )}
 
-                        {state.guidanceMode === 'diff' &&
-                            state.historicalVersion && (
-                                <KnowledgeEditorGuidanceDiffView
-                                    oldTitle={state.title}
-                                    oldContent={state.content}
-                                    newTitle={state.guidance?.title ?? ''}
-                                    newContent={state.guidance?.content ?? ''}
-                                    availableVariables={guidanceVariables}
-                                    availableActions={guidanceActions}
-                                />
-                            )}
+                        {state.guidanceMode === 'diff' && (
+                            <KnowledgeEditorGuidanceDiffView
+                                oldTitle={
+                                    state.historicalVersion
+                                        ? state.historicalVersion.title
+                                        : (state.comparisonVersion?.title ?? '')
+                                }
+                                oldContent={
+                                    state.historicalVersion
+                                        ? state.historicalVersion.content
+                                        : (state.comparisonVersion?.content ??
+                                          '')
+                                }
+                                newTitle={
+                                    state.historicalVersion
+                                        ? (state.comparisonVersion?.title ?? '')
+                                        : state.title
+                                }
+                                newContent={
+                                    state.historicalVersion
+                                        ? (state.comparisonVersion?.content ??
+                                          '')
+                                        : state.content
+                                }
+                                availableVariables={guidanceVariables}
+                                availableActions={guidanceActions}
+                            />
+                        )}
 
                         {(state.guidanceMode === 'edit' ||
                             state.guidanceMode === 'create') && (

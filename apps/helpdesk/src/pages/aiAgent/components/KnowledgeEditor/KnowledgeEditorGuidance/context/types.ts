@@ -30,7 +30,7 @@ export type HistoricalVersionState = {
     publishedDatetime: string | null
     publisherUserId?: number
     commitMessage?: string
-    impactDateRange: ImpactDateRange
+    impactDateRange?: ImpactDateRange
 } | null
 
 export type ArticleTranslationVersion =
@@ -62,6 +62,9 @@ export type GuidanceState = {
 
     // Historical version (read only mode - viewing old published versions)
     historicalVersion: HistoricalVersionState
+
+    // Comparison version (used when comparing draft or historical to published)
+    comparisonVersion: { title: string; content: string } | null
 
     // Modal state
     activeModal: ModalType
@@ -111,6 +114,13 @@ export type GuidanceReducerAction =
           }
       }
     | { type: 'CLEAR_HISTORICAL_VERSION' }
+    | {
+          type: 'SET_COMPARISON_VERSION'
+          payload: {
+              title: string
+              content: string
+          }
+      }
 
 export type GuidanceContextConfig = {
     shopName: string
@@ -191,6 +201,7 @@ export const createInitialState = (
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',
         historicalVersion: null,
+        comparisonVersion: null,
         activeModal: null,
         isUpdating: false,
     }

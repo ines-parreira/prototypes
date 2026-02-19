@@ -14,10 +14,15 @@ export type VersionBannerState = {
 export function useVersionBanner(): VersionBannerState {
     const { state, hasDraft } = useGuidanceContext()
 
-    const isViewingDraft =
-        state.guidance?.isCurrent === undefined
-            ? false
-            : !state.guidance?.isCurrent
+    const isViewingHistoricalVersion =
+        state.historicalVersion !== null &&
+        state.historicalVersion.publishedDatetime !== null
+
+    const isViewingDraft = isViewingHistoricalVersion
+        ? false
+        : state.guidance?.isCurrent === undefined
+          ? false
+          : !state.guidance?.isCurrent
 
     const hasPublishedVersion = !!state.guidance?.publishedVersionId
 

@@ -37,6 +37,11 @@ jest.mock('./hooks/useVersionHistory', () => ({
 
 jest.mock('./context', () => ({
     useGuidanceContext: () => mockUseGuidanceContext(),
+    fromArticleTranslation: (article: any) => ({
+        title: article.translation?.title ?? article.title,
+        content: article.translation?.content ?? article.content,
+        id: article.id,
+    }),
 }))
 
 jest.mock('hooks/useAppSelector', () => (fn: () => unknown) => fn())
@@ -50,6 +55,14 @@ jest.mock('state/currentUser/selectors', () => ({
     getDateAndTimeFormatter: jest.fn(() => () => {}),
 }))
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useHelpCenterApi: () => ({ client: {} }),
+}))
+
+jest.mock('models/helpCenter/resources', () => ({
+    getHelpCenterArticle: jest.fn(),
+}))
+
 const defaultMockState: VersionBannerState = {
     isViewingDraft: true,
     hasDraftVersion: true,
@@ -61,8 +74,13 @@ const defaultMockState: VersionBannerState = {
 const defaultContextValue = {
     state: {
         historicalVersion: null,
+        guidanceMode: 'read' as const,
+        guidance: { id: 1 },
     },
     dispatch: mockDispatch,
+    config: {
+        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+    },
 }
 
 const renderComponent = () => {
@@ -206,6 +224,10 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
     describe('when viewing historical version', () => {
         beforeEach(() => {
+            mockUseVersionBanner.mockReturnValue({
+                ...defaultMockState,
+                isViewingDraft: false,
+            })
             mockUseVersionHistory.mockReturnValue({
                 versions: [],
                 isLoading: false,
@@ -230,8 +252,13 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         publishedDatetime: '2025-03-15T14:30:00Z',
                         commitMessage: 'Fixed typo in greeting',
                     },
+                    guidanceMode: 'read' as const,
+                    guidance: { id: 1 },
                 },
                 dispatch: mockDispatch,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
             })
         })
 
@@ -256,8 +283,13 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         content: 'Old content',
                         publishedDatetime: '2025-03-15T14:30:00Z',
                     },
+                    guidanceMode: 'read' as const,
+                    guidance: { id: 1 },
                 },
                 dispatch: mockDispatch,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
             })
 
             renderComponent()
@@ -292,6 +324,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
         it('back to latest button is disabled when isDisabled is true', () => {
             mockUseVersionBanner.mockReturnValue({
                 ...defaultMockState,
+                isViewingDraft: false,
                 isDisabled: true,
             })
 
@@ -322,8 +355,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -346,8 +383,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -371,8 +412,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -382,6 +427,61 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 expect(mockDispatch).toHaveBeenCalledWith({
                     type: 'SET_MODE',
                     payload: 'diff',
+                })
+            })
+
+            it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode on historical version', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                mockGetArticle.mockResolvedValue({
+                    id: 1,
+                    translation: {
+                        title: 'Current Published Title',
+                        content: 'Current Published Content',
+                    },
+                } as any)
+
+                const user = userEvent.setup()
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        guidanceMode: 'read',
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                            commitMessage: 'Fixed typo in greeting',
+                        },
+                        guidance: { id: 1 },
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
+                })
+
+                renderComponent()
+
+                await user.click(screen.getByRole('switch'))
+
+                expect(mockGetArticle).toHaveBeenCalledWith(
+                    {},
+                    { help_center_id: 1, id: 1 },
+                    { locale: 'en-US', version_status: 'current' },
+                )
+
+                await screen.findByRole('switch')
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_COMPARISON_VERSION',
+                    payload: {
+                        title: 'Current Published Title',
+                        content: 'Current Published Content',
+                    },
                 })
             })
 
@@ -398,8 +498,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -428,8 +532,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -450,8 +558,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             publishedDatetime: '2025-03-15T14:30:00Z',
                             commitMessage: 'Fixed typo in greeting',
                         },
+                        guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                    },
                 })
 
                 renderComponent()
@@ -460,6 +572,297 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     screen.queryByText('Compare to current'),
                 ).not.toBeInTheDocument()
                 expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+            })
+
+            describe('when viewing draft version', () => {
+                beforeEach(() => {
+                    mockUseVersionBanner.mockReturnValue({
+                        ...defaultMockState,
+                        isViewingDraft: true,
+                        hasDraftVersion: true,
+                        hasPublishedVersion: true,
+                    })
+                    mockUseVersionHistory.mockReturnValue({
+                        versions: [],
+                        isLoading: false,
+                        isViewingHistoricalVersion: false,
+                        currentVersionId: null,
+                        selectedVersionId: null,
+                        onSelectVersion: mockOnSelectVersion,
+                        onGoToLatest: mockOnGoToLatest,
+                        isDisabled: false,
+                        hasNextPage: false,
+                        isFetchingNextPage: false,
+                        onLoadMore: jest.fn(),
+                        shouldLoadMore: false,
+                    })
+                })
+
+                it('renders diff toggle when viewing draft with published version', () => {
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    expect(
+                        screen.getByText('Compare to current'),
+                    ).toBeInTheDocument()
+                    expect(screen.getByRole('switch')).not.toBeChecked()
+                })
+
+                it('renders checked toggle when in diff mode on draft', () => {
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'diff',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    expect(
+                        screen.getByText('Compare to current'),
+                    ).toBeInTheDocument()
+                    expect(screen.getByRole('switch')).toBeChecked()
+                })
+
+                it('dispatches SET_MODE when toggle is clicked on draft', async () => {
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+
+                    expect(mockDispatch).toHaveBeenCalledWith({
+                        type: 'SET_MODE',
+                        payload: 'diff',
+                    })
+                })
+
+                it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode on draft', async () => {
+                    const { getHelpCenterArticle } = await import(
+                        'models/helpCenter/resources'
+                    )
+                    const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                    mockGetArticle.mockResolvedValue({
+                        id: 1,
+                        translation: {
+                            title: 'Published Title',
+                            content: 'Published Content',
+                        },
+                    } as any)
+
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+
+                    expect(mockGetArticle).toHaveBeenCalledWith(
+                        {},
+                        { help_center_id: 1, id: 1 },
+                        { locale: 'en-US', version_status: 'current' },
+                    )
+
+                    await screen.findByRole('switch')
+
+                    expect(mockDispatch).toHaveBeenCalledWith({
+                        type: 'SET_COMPARISON_VERSION',
+                        payload: {
+                            title: 'Published Title',
+                            content: 'Published Content',
+                        },
+                    })
+                })
+
+                it('handles error when fetching published version fails', async () => {
+                    const { getHelpCenterArticle } = await import(
+                        'models/helpCenter/resources'
+                    )
+                    const mockGetArticle = jest.mocked(getHelpCenterArticle)
+                    const consoleErrorSpy = jest
+                        .spyOn(console, 'error')
+                        .mockImplementation()
+
+                    mockGetArticle.mockRejectedValue(
+                        new Error('Failed to fetch'),
+                    )
+
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+
+                    await screen.findByRole('switch')
+
+                    expect(consoleErrorSpy).toHaveBeenCalledWith(
+                        'Failed to fetch published version:',
+                        expect.any(Error),
+                    )
+
+                    consoleErrorSpy.mockRestore()
+                })
+
+                it('does not dispatch SET_COMPARISON_VERSION when published version is null', async () => {
+                    const { getHelpCenterArticle } = await import(
+                        'models/helpCenter/resources'
+                    )
+                    const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                    mockGetArticle.mockResolvedValue(null)
+
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+
+                    await screen.findByRole('switch')
+
+                    expect(mockDispatch).not.toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            type: 'SET_COMPARISON_VERSION',
+                        }),
+                    )
+                })
+
+                it('dispatches CLEAR_HISTORICAL_VERSION when toggling off from draft', async () => {
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'diff',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+
+                    expect(mockDispatch).toHaveBeenCalledWith({
+                        type: 'SET_MODE',
+                        payload: 'read',
+                    })
+                    expect(mockDispatch).toHaveBeenCalledWith({
+                        type: 'CLEAR_HISTORICAL_VERSION',
+                    })
+                })
+
+                it('does not render diff toggle when viewing draft without published version', () => {
+                    mockUseVersionBanner.mockReturnValue({
+                        ...defaultMockState,
+                        isViewingDraft: true,
+                        hasDraftVersion: true,
+                        hasPublishedVersion: false,
+                    })
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    expect(
+                        screen.queryByText('Compare to current'),
+                    ).not.toBeInTheDocument()
+                    expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+                })
             })
         })
     })
@@ -470,8 +873,12 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 state: {
                     guidanceMode: 'read',
                     historicalVersion: null,
+                    guidance: { id: 1 },
                 },
                 dispatch: mockDispatch,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
             })
 
             renderComponent()

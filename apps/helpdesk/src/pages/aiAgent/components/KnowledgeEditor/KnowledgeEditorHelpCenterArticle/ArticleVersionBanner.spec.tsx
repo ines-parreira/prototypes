@@ -17,6 +17,8 @@ jest.mock('@repo/feature-flags', () => ({
 jest.mock('@repo/utils', () => ({
     DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
     formatDatetime: jest.fn(() => 'Jan 1, 2024 12:00 PM'),
+    isProduction: jest.fn(),
+    isStaging: jest.fn(),
 }))
 
 jest.mock('hooks/useAppSelector', () => ({
@@ -43,6 +45,16 @@ jest.mock('./hooks/useVersionHistory', () => ({
 
 jest.mock('./context', () => ({
     useArticleContext: jest.fn(),
+}))
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useHelpCenterApi: () => ({
+        client: {} as any,
+    }),
+}))
+
+jest.mock('models/helpCenter/resources', () => ({
+    getHelpCenterArticle: jest.fn(),
 }))
 
 const mockUseVersionBanner = useVersionBanner as jest.Mock
@@ -77,8 +89,16 @@ describe('ArticleVersionBanner', () => {
             onGoToLatest: jest.fn(),
         })
         mockUseArticleContext.mockReturnValue({
-            state: { historicalVersion: null },
+            state: {
+                historicalVersion: null,
+                articleMode: 'read',
+                currentLocale: 'en',
+                article: { id: 123 } as any,
+            },
             dispatch: jest.fn(),
+            config: {
+                helpCenter: { id: 1 },
+            } as any,
         })
     })
 
@@ -196,6 +216,147 @@ describe('ArticleVersionBanner', () => {
 
             expect(mockSwitchVersion).not.toHaveBeenCalled()
         })
+
+        describe('diff toggle when viewing draft', () => {
+            beforeEach(() => {
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === FeatureFlagKey.AddDiffingForVersionHistory,
+                )
+                mockUseVersionHistory.mockReturnValue({
+                    isViewingHistoricalVersion: false,
+                    onGoToLatest: jest.fn(),
+                })
+            })
+
+            it('renders diff toggle when viewing draft with published version', () => {
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.getByText('Compare to current'),
+                ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).not.toBeChecked()
+            })
+
+            it('renders checked toggle when in diff mode on draft', () => {
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'diff',
+                        historicalVersion: null,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
+                    },
+                    dispatch: jest.fn(),
+                    config: {
+                        helpCenter: { id: 1 },
+                    } as any,
+                })
+
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.getByText('Compare to current'),
+                ).toBeInTheDocument()
+                expect(screen.getByRole('switch')).toBeChecked()
+            })
+
+            it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode on draft', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+                const mockDispatch = jest.fn()
+
+                mockGetArticle.mockResolvedValue({
+                    id: 123,
+                    translation: {
+                        title: 'Published Title',
+                        content: 'Published Content',
+                    },
+                } as any)
+
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'read',
+                        historicalVersion: null,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                    } as any,
+                })
+
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(screen.getByRole('switch'))
+
+                expect(mockGetArticle).toHaveBeenCalledWith(
+                    {} as any,
+                    { help_center_id: 1, id: 123 },
+                    { locale: 'en', version_status: 'current' },
+                )
+
+                await screen.findByRole('switch')
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_COMPARISON_VERSION',
+                    payload: {
+                        title: 'Published Title',
+                        content: 'Published Content',
+                    },
+                })
+            })
+
+            it('dispatches CLEAR_HISTORICAL_VERSION when toggling off from draft', async () => {
+                const mockDispatch = jest.fn()
+
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'diff',
+                        historicalVersion: null,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                    } as any,
+                })
+
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(screen.getByRole('switch'))
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_MODE',
+                    payload: 'read',
+                })
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'CLEAR_HISTORICAL_VERSION',
+                })
+            })
+
+            it('does not render diff toggle when viewing draft without published version', () => {
+                mockUseVersionBanner.mockReturnValue(
+                    createMockVersionBanner({
+                        isViewingDraft: true,
+                        hasDraftVersion: true,
+                        hasPublishedVersion: false,
+                    }),
+                )
+
+                render(<ArticleVersionBanner />)
+
+                expect(
+                    screen.queryByText('Compare to current'),
+                ).not.toBeInTheDocument()
+                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
+            })
+        })
     })
 
     describe('viewing published version', () => {
@@ -280,8 +441,13 @@ describe('ArticleVersionBanner', () => {
                 state: {
                     articleMode: 'read',
                     historicalVersion,
+                    currentLocale: 'en',
+                    article: { id: 123 } as any,
                 },
                 dispatch: mockDispatch,
+                config: {
+                    helpCenter: { id: 1 },
+                } as any,
             })
         })
 
@@ -309,8 +475,13 @@ describe('ArticleVersionBanner', () => {
                         ...historicalVersion,
                         commitMessage: undefined,
                     },
+                    currentLocale: 'en',
+                    article: { id: 123 } as any,
                 },
                 dispatch: mockDispatch,
+                config: {
+                    helpCenter: { id: 1 },
+                } as any,
             })
 
             render(<ArticleVersionBanner />)
@@ -375,8 +546,13 @@ describe('ArticleVersionBanner', () => {
                     state: {
                         articleMode: 'diff',
                         historicalVersion,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                    } as any,
                 })
 
                 render(<ArticleVersionBanner />)
@@ -399,13 +575,102 @@ describe('ArticleVersionBanner', () => {
                 })
             })
 
+            it('fetches and dispatches SET_COMPARISON_VERSION when toggling to diff mode', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                mockGetArticle.mockResolvedValue({
+                    id: 123,
+                    translation: {
+                        title: 'Current Published Title',
+                        content: 'Current Published Content',
+                    },
+                } as any)
+
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(screen.getByRole('switch'))
+
+                expect(mockGetArticle).toHaveBeenCalledWith(
+                    {} as any,
+                    { help_center_id: 1, id: 123 },
+                    { locale: 'en', version_status: 'current' },
+                )
+
+                await screen.findByRole('switch')
+
+                expect(mockDispatch).toHaveBeenCalledWith({
+                    type: 'SET_COMPARISON_VERSION',
+                    payload: {
+                        title: 'Current Published Title',
+                        content: 'Current Published Content',
+                    },
+                })
+            })
+
+            it('handles error when fetching published version fails', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+                const consoleErrorSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                mockGetArticle.mockRejectedValue(new Error('Failed to fetch'))
+
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(screen.getByRole('switch'))
+
+                await screen.findByRole('switch')
+
+                expect(consoleErrorSpy).toHaveBeenCalledWith(
+                    'Failed to fetch published version:',
+                    expect.any(Error),
+                )
+
+                consoleErrorSpy.mockRestore()
+            })
+
+            it('does not dispatch SET_COMPARISON_VERSION when published version is null', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                mockGetArticle.mockResolvedValue(null)
+
+                const user = userEvent.setup()
+                render(<ArticleVersionBanner />)
+
+                await user.click(screen.getByRole('switch'))
+
+                await screen.findByRole('switch')
+
+                expect(mockDispatch).not.toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        type: 'SET_COMPARISON_VERSION',
+                    }),
+                )
+            })
+
             it('should dispatch SET_MODE with "read" when toggle is clicked off', async () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
                         articleMode: 'diff',
                         historicalVersion,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
                     },
                     dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                    } as any,
                 })
                 const user = userEvent.setup()
                 render(<ArticleVersionBanner />)
@@ -447,8 +712,13 @@ describe('ArticleVersionBanner', () => {
                 state: {
                     articleMode: 'read',
                     historicalVersion: null,
+                    currentLocale: 'en',
+                    article: { id: 123 } as any,
                 },
                 dispatch: jest.fn(),
+                config: {
+                    helpCenter: { id: 1 },
+                } as any,
             })
 
             render(<ArticleVersionBanner />)

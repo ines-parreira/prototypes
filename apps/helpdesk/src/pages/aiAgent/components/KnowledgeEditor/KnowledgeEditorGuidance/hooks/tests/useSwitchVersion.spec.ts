@@ -62,6 +62,7 @@ describe('useSwitchVersion (Guidance)', () => {
         activeModal: null,
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {

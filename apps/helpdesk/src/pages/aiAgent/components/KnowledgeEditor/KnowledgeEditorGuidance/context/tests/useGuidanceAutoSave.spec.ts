@@ -72,6 +72,7 @@ describe('useGuidanceAutoSave', () => {
         activeModal: null,
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     const defaultConfig = {

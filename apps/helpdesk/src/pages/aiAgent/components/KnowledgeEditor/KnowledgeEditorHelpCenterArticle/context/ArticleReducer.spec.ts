@@ -94,6 +94,7 @@ const createInitialState = (
     isUpdating: false,
     templateKey: undefined,
     historicalVersion: null,
+    comparisonVersion: null,
     ...overrides,
 })
 

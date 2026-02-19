@@ -35,6 +35,7 @@ describe('guidanceReducer', () => {
         activeModal: null,
         isUpdating: false,
         historicalVersion: null,
+        comparisonVersion: null,
     }
 
     describe('SET_MODE', () => {
@@ -444,6 +445,8 @@ describe('guidanceReducer', () => {
                 },
             })
 
+            expect(result.title).toBe('Saved Title')
+            expect(result.content).toBe('Saved Content')
             expect(result.guidance).toEqual(newGuidance)
             expect(result.savedSnapshot).toEqual({
                 title: 'Saved Title',
@@ -1152,6 +1155,97 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.guidanceMode).toBe('read')
+        })
+    })
+
+    describe('SET_COMPARISON_VERSION', () => {
+        it('should set comparisonVersion with provided title and content', () => {
+            const result = guidanceReducer(initialState, {
+                type: 'SET_COMPARISON_VERSION',
+                payload: {
+                    title: 'Published Version Title',
+                    content: 'Published Version Content',
+                },
+            })
+
+            expect(result.comparisonVersion).toEqual({
+                title: 'Published Version Title',
+                content: 'Published Version Content',
+            })
+        })
+
+        it('should not change title and content in state', () => {
+            const stateWithContent = {
+                ...initialState,
+                title: 'Draft Title',
+                content: 'Draft Content',
+            }
+
+            const result = guidanceReducer(stateWithContent, {
+                type: 'SET_COMPARISON_VERSION',
+                payload: {
+                    title: 'Published Version Title',
+                    content: 'Published Version Content',
+                },
+            })
+
+            expect(result.title).toBe('Draft Title')
+            expect(result.content).toBe('Draft Content')
+        })
+
+        it('should preserve other state properties', () => {
+            const stateWithOtherProps: GuidanceState = {
+                ...initialState,
+                guidanceMode: 'diff',
+                isFullscreen: true,
+                isDetailsView: false,
+            }
+
+            const result = guidanceReducer(stateWithOtherProps, {
+                type: 'SET_COMPARISON_VERSION',
+                payload: {
+                    title: 'Published Title',
+                    content: 'Published Content',
+                },
+            })
+
+            expect(result.guidanceMode).toBe('diff')
+            expect(result.isFullscreen).toBe(true)
+            expect(result.isDetailsView).toBe(false)
+        })
+
+        it('should set comparisonVersion without replacing historicalVersion', () => {
+            const stateWithHistoricalVersion: GuidanceState = {
+                ...initialState,
+                historicalVersion: {
+                    versionId: 42,
+                    version: 3,
+                    title: 'Old Historical Title',
+                    content: 'Old Historical Content',
+                    publishedDatetime: '2025-03-15T14:30:00Z',
+                    commitMessage: 'Previous version',
+                    impactDateRange: {
+                        start_datetime: '2025-03-15T00:00:00Z',
+                        end_datetime: '2025-03-16T00:00:00Z',
+                    },
+                },
+            }
+
+            const result = guidanceReducer(stateWithHistoricalVersion, {
+                type: 'SET_COMPARISON_VERSION',
+                payload: {
+                    title: 'New Published Title',
+                    content: 'New Published Content',
+                },
+            })
+
+            expect(result.comparisonVersion).toEqual({
+                title: 'New Published Title',
+                content: 'New Published Content',
+            })
+            expect(result.historicalVersion).toEqual(
+                stateWithHistoricalVersion.historicalVersion,
+            )
         })
     })
 
