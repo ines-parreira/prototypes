@@ -32,7 +32,7 @@ export const PublishConfirmationModal = ({
     }
 
     const handlePublish = () => {
-        onPublish(commitMessage).then(() => setCommitMessage(''))
+        onPublish(commitMessage.trim()).then(() => setCommitMessage(''))
     }
 
     const handleClose = () => {

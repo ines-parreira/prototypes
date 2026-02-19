@@ -170,4 +170,38 @@ describe('PublishConfirmationModal', () => {
 
         expect(textField).toHaveValue('')
     })
+
+    it('trims whitespace from commit message before publishing', async () => {
+        const user = userEvent.setup()
+        const onPublish = jest.fn().mockResolvedValue(undefined)
+        render(
+            <PublishConfirmationModal
+                {...defaultProps}
+                onPublish={onPublish}
+            />,
+        )
+
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
+        await user.type(textField, '  Fixed typo  ')
+        await user.click(screen.getByRole('button', { name: 'Publish' }))
+
+        expect(onPublish).toHaveBeenCalledWith('Fixed typo')
+    })
+
+    it('trims commit message with only whitespace to empty string', async () => {
+        const user = userEvent.setup()
+        const onPublish = jest.fn().mockResolvedValue(undefined)
+        render(
+            <PublishConfirmationModal
+                {...defaultProps}
+                onPublish={onPublish}
+            />,
+        )
+
+        const textField = screen.getByLabelText(/change summary \(optional\)/i)
+        await user.type(textField, '    ')
+        await user.click(screen.getByRole('button', { name: 'Publish' }))
+
+        expect(onPublish).toHaveBeenCalledWith('')
+    })
 })

@@ -273,7 +273,9 @@ describe('VersionBanner', () => {
                 },
             })
 
-            expect(screen.getByText('Changes by John Doe')).toBeInTheDocument()
+            expect(
+                screen.getByText('Last published by John Doe'),
+            ).toBeInTheDocument()
         })
 
         it('shows commit message with author name when both are available', () => {
@@ -310,7 +312,9 @@ describe('VersionBanner', () => {
             expect(
                 screen.queryByText(/Changes in this version/i),
             ).not.toBeInTheDocument()
-            expect(screen.queryByText(/^Changes by /)).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(/^Last published by /),
+            ).not.toBeInTheDocument()
         })
 
         it('shows "unknown date" when publishedDatetime is null', () => {

@@ -77,7 +77,7 @@ export function VersionBanner({
                 return `Changes in this version: ${commitMessage}`
             }
             if (publisherName) {
-                return `Changes by ${publisherName}`
+                return `Last published by ${publisherName}`
             }
             return null
         }
