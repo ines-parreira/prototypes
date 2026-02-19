@@ -34,6 +34,7 @@ const helpCenterScope = defineScope({
         'localeCodes',
         'isSearchRequestWithClick',
         'searchResultCount',
+        'articleId',
     ],
     timeDimensions: ['timestamp'],
     order: ['articleViewCount', 'timestamp', 'searchRequestedQueryCount'],

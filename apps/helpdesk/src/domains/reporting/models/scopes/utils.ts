@@ -282,6 +282,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'isSearchRequestWithClick':
             case 'searchResultCount':
             case 'isInfluenced':
+            case 'articleId':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {

@@ -218,6 +218,7 @@ export type StringFilterName =
     | 'influencedBy'
     | 'source'
     | 'storeIntegrationId'
+    | 'articleId'
 
 export type NumberFilterName =
     | 'agentId'

@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -19,7 +19,7 @@ import type { ArticleContextValue } from 'pages/aiAgent/components/KnowledgeEdit
 import { useArticleEngagementFromContext } from './useArticleEngagementFromContext'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
-    useMetricPerDimension: jest.fn(),
+    useMetricPerDimensionV2: jest.fn(),
 }))
 
 jest.mock('models/helpCenter/queries', () => ({
@@ -42,7 +42,7 @@ jest.mock(
     }),
 )
 
-const mockUseMetricPerDimension = useMetricPerDimension as jest.Mock
+const mockUseMetricPerDimension = useMetricPerDimensionV2 as jest.Mock
 const mockUseGetHelpCenterStatistics = useGetHelpCenterStatistics as jest.Mock
 const mockPerformanceByArticleQueryFactory =
     performanceByArticleQueryFactory as jest.Mock
@@ -540,6 +540,15 @@ describe('useArticleEngagementFromContext', () => {
                         },
                     ],
                 }),
+                expect.objectContaining({
+                    filters: expect.arrayContaining([
+                        {
+                            member: 'articleId',
+                            operator: 'one-of',
+                            values: ['456'],
+                        },
+                    ]),
+                }),
                 undefined,
                 true,
             )
@@ -643,6 +652,15 @@ describe('useArticleEngagementFromContext', () => {
                         {
                             member: HelpCenterTrackingEventDimensions.ArticleId,
                             operator: ReportingFilterOperator.Equals,
+                            values: ['456'],
+                        },
+                    ]),
+                }),
+                expect.objectContaining({
+                    filters: expect.arrayContaining([
+                        {
+                            member: 'articleId',
+                            operator: LogicalOperatorEnum.ONE_OF,
                             values: ['456'],
                         },
                     ]),

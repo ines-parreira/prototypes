@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'domains/reporting/models/cubes/HelpCenterTrackingEventCube'
 import { performanceByArticleQueryFactory } from 'domains/reporting/models/queryFactories/help-center/performanceByArticle'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { helpCenterPerformancePerArticleQueryFactoryV2 } from 'domains/reporting/models/scopes/helpCenter'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import useAppSelector from 'hooks/useAppSelector'
@@ -115,8 +117,15 @@ export const useArticleEngagementFromContext = (): ArticleEngagementData => {
         }
     }, [statsFilters, timezone, articleId])
 
-    const articleViewData = useMetricPerDimension<string>(
+    const articleViewData = useMetricPerDimensionV2(
         query,
+        helpCenterPerformancePerArticleQueryFactoryV2({
+            filters: {
+                ...statsFilters,
+                articleId: withLogicalOperator([String(articleId)]),
+            },
+            timezone: timezone ?? 'UTC',
+        }),
         undefined,
         !!articleId,
     )
