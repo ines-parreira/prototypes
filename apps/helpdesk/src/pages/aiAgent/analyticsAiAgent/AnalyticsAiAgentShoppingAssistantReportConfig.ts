@@ -9,15 +9,14 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsShoppingAssistantComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
+import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
+import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
+import { AnalyticsShoppingAssistantPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsShoppingAssistantPerformanceTable'
+import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
+import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
+import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { STATS_ROUTES } from 'routes/constants'
-
-import { AnalyticsShoppingAssistantComboChart } from './charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
-import { AnalyticsShoppingAssistantLineChart } from './charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
-import { AnalyticsAiAgentOrdersInfluencedCard } from './charts/AnalyticsAiAgentOrdersInfluencedCard'
-import { AnalyticsShoppingAssistantPerformanceTable } from './charts/AnalyticsAiAgentPerformanceTable/AnalyticsShoppingAssistantPerformanceTable'
-import { AnalyticsAiAgentResolvedInteractionsCard } from './charts/AnalyticsAiAgentResolvedInteractionsCard'
-import { AnalyticsAiAgentRevenuePerInteractionCard } from './charts/AnalyticsAiAgentRevenuePerInteractionCard'
-import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSalesCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchShoppingAssistantTrendBreakdown = async () =>
@@ -65,8 +64,11 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                         metricFormat: 'decimal',
                     },
                 ],
-                description: '',
+                description:
+                    'The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction',
                 chartType: ChartType.Card,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard]: {
                 chartComponent: AnalyticsAiAgentOrdersInfluencedCard,
@@ -78,8 +80,11 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                         metricFormat: 'integer',
                     },
                 ],
-                description: '',
+                description:
+                    'The number of orders placed within 3 days of a Shopping Assistant conversation without a direct handover.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentResolvedInteractionsCard,
@@ -91,13 +96,16 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                         metricFormat: 'integer',
                     },
                 ],
-                description: '',
+                description:
+                    'The number of interactions handled by Shopping Assistant in which the customer left without asking to talk to a human agent.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard]:
                 {
                     chartComponent: AnalyticsAiAgentRevenuePerInteractionCard,
-                    label: 'Revenue per interaction',
+                    label: 'Total sale per interaction',
                     csvProducer: [
                         {
                             type: DataExportFormat.Trend,
@@ -105,34 +113,41 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                             metricFormat: 'decimal',
                         },
                     ],
-                    description: '',
+                    description:
+                        'The average total sale generated from each Shopping Assistant interaction.',
                     chartType: ChartType.Card,
+                    metricFormat: 'currency-precision-1',
+                    interpretAs: 'more-is-better',
                 },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
                 {
                     chartComponent: AnalyticsShoppingAssistantComboChart,
-                    label: '',
+                    label: 'Total sales',
                     csvProducer: [
                         {
                             type: DataExportFormat.Table,
                             fetch: fetchShoppingAssistantTrendBreakdown,
                         },
                     ],
-                    description: '',
+                    description: 'Breakdown of total sales by product',
                     chartType: ChartType.Graph,
+                    metricFormat: 'currency-precision-1',
+                    interpretAs: 'more-is-better',
                 },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart]:
                 {
                     chartComponent: AnalyticsShoppingAssistantLineChart,
-                    label: '',
+                    label: 'Total sales',
                     csvProducer: [
                         {
                             type: DataExportFormat.Table,
                             fetch: fetchShoppingAssistantTrendData,
                         },
                     ],
-                    description: '',
+                    description: 'Total sales trend over time',
                     chartType: ChartType.Graph,
+                    metricFormat: 'currency-precision-1',
+                    interpretAs: 'more-is-better',
                 },
             [AnalyticsAiAgentShoppingAssistantChart.PerformanceTable]: {
                 chartComponent: AnalyticsShoppingAssistantPerformanceTable,
@@ -143,8 +158,8 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                         fetch: fetchPerformanceBreakdown,
                     },
                 ],
-                description: '',
-                chartType: ChartType.Graph,
+                description: 'Performance breakdown by Shopping Assistant',
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

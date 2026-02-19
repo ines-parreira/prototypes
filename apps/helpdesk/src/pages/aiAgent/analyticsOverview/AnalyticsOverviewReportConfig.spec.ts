@@ -40,7 +40,7 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.label).toBe('Overall automation rate')
         expect(config.chartType).toBe(ChartType.Card)
         expect(config.description).toBe(
-            'Percentage of interactions that were automated by AI Agent',
+            'The number of interactions automated by all automation features as a % of total customer interactions.',
         )
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -105,7 +105,7 @@ describe('AnalyticsOverviewReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Automation trend over time')
+        expect(config.label).toBe('Overall automation rate')
         expect(config.chartType).toBe(ChartType.Graph)
         expect(config.csvProducer).toBeNull()
     })
@@ -118,7 +118,7 @@ describe('AnalyticsOverviewReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
-        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.chartType).toBe(ChartType.Table)
         expect(config.csvProducer).toBeNull()
     })
 

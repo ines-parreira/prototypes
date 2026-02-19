@@ -114,7 +114,11 @@ describe('<DashboardComponent />', () => {
         expect(screen.queryByText(chart)).toBeInTheDocument()
         expect(screen.queryByText(dashboard.id)).toBeInTheDocument()
         expect(chartComponentMock).toHaveBeenCalledWith(
-            { chartId: chart, dashboard },
+            {
+                chartId: chart,
+                dashboard,
+                chartConfig: { chartComponent: chartComponentMock },
+            },
             {},
         )
     })

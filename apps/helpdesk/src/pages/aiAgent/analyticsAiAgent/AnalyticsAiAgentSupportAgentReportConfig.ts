@@ -9,16 +9,15 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsSupportAgentComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsSupportAgentComboChart'
+import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
+import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
+import { AnalyticsSupportAgentPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
+import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
+import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
+import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
+import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { STATS_ROUTES } from 'routes/constants'
-
-import { AnalyticsOverviewCostSavedCard } from '../analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
-import { AnalyticsSupportAgentComboChart } from './charts/AnalyticsAiAgentComboChart/AnalyticsSupportAgentComboChart'
-import { AnalyticsAiAgentDecreaseinFRTCard } from './charts/AnalyticsAiAgentDecreaseinFRTCard'
-import { AnalyticsSupportAgentLineChart } from './charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
-import { AnalyticsSupportAgentPerformanceTable } from './charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
-import { AnalyticsAiAgentSupportInteractionsCard } from './charts/AnalyticsAiAgentSupportInteractionsCard'
-import { AnalyticsAiAgentTimeSavedCard } from './charts/AnalyticsAiAgentTimeSavedCard'
-import { SupportInteractionsComboChart } from './components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchCostSavedTrend = async () => ({ value: 2800, trend: 0.02 }) as any
@@ -62,8 +61,11 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'duration',
                     },
                 ],
-                description: '',
+                description:
+                    'The time agent would have spent resolving customer inquiries without AI Agent.',
                 chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.CostSavedCard]: {
                 chartComponent: AnalyticsOverviewCostSavedCard,
@@ -75,12 +77,15 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'decimal',
                     },
                 ],
-                description: '',
+                description:
+                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
                 chartType: ChartType.Card,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentSupportInteractionsCard,
-                label: 'Automated interactions',
+                label: 'Support tickets',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -88,8 +93,11 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'integer',
                     },
                 ],
-                description: '',
+                description:
+                    'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard]: {
                 chartComponent: AnalyticsAiAgentDecreaseinFRTCard,
@@ -101,12 +109,15 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         metricFormat: 'duration',
                     },
                 ],
-                description: '',
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
                 chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart]: {
                 chartComponent: AnalyticsSupportAgentComboChart,
-                label: '',
+                label: 'Overall automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
@@ -115,10 +126,12 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 ],
                 description: '',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart]: {
                 chartComponent: SupportInteractionsComboChart,
-                label: 'Support interactions breakdown',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
@@ -131,6 +144,8 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 ],
                 description: 'Support interactions by intent',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart]: {
                 chartComponent: AnalyticsSupportAgentLineChart,
@@ -141,8 +156,10 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         fetch: fetchAiAgentSupportInteractionsTimeSeriesData,
                     },
                 ],
-                description: '',
+                description: 'Automated interactions trend over time',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.PerformanceTable]: {
                 chartComponent: AnalyticsSupportAgentPerformanceTable,
@@ -153,8 +170,8 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                         fetch: fetchPerformanceBreakdown,
                     },
                 ],
-                description: '',
-                chartType: ChartType.Graph,
+                description: 'Performance breakdown by Support Agent',
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

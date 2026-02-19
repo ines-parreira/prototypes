@@ -63,7 +63,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Automated interactions')
+        expect(config.label).toBe('Support tickets')
         expect(config.chartType).toBe(ChartType.Card)
     })
 
@@ -106,7 +106,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
-        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.chartType).toBe(ChartType.Table)
     })
 
     it('should have correct report filters', () => {
@@ -279,7 +279,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Support interactions breakdown')
+        expect(config.label).toBe('Automated interactions')
         expect(config.description).toBe('Support interactions by intent')
         expect(config.chartType).toBe(ChartType.Graph)
     })

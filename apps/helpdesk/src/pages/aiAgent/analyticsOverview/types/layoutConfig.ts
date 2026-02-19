@@ -3,28 +3,33 @@ import type { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analy
 import type { AnalyticsAiAgentSupportAgentChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import type { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 
-export type SectionType = 'kpis' | 'charts' | 'table'
-
-export type GridSize = 3 | 6 | 12
-
-export type AnalyticsAIAgentCharts =
+export type AnalyticsChartType =
     | AnalyticsOverviewChart
     | AnalyticsAiAgentAllAgentsChart
     | AnalyticsAiAgentSupportAgentChart
     | AnalyticsAiAgentShoppingAssistantChart
 
-export type LayoutItem = {
-    chartId: AnalyticsAIAgentCharts
-    gridSize: GridSize
-    visibility: boolean
-}
+export type SectionType = 'kpis' | 'charts' | 'table'
 
-export type LayoutSection = {
+export type GridSize = 3 | 6 | 12
+
+export type LayoutItem<TChart extends AnalyticsChartType = AnalyticsChartType> =
+    {
+        chartId: TChart
+        gridSize: GridSize
+        visibility: boolean
+    }
+
+export type LayoutSection<
+    TChart extends AnalyticsChartType = AnalyticsChartType,
+> = {
     id: string
     type: SectionType
-    items: LayoutItem[]
+    items: LayoutItem<TChart>[]
 }
 
-export type DashboardLayoutConfig = {
-    sections: LayoutSection[]
+export type DashboardLayoutConfig<
+    TChart extends AnalyticsChartType = AnalyticsChartType,
+> = {
+    sections: LayoutSection<TChart>[]
 }

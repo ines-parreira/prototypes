@@ -106,7 +106,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
-        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.chartType).toBe(ChartType.Table)
     })
 
     it('should have correct report filters', () => {

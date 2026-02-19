@@ -9,16 +9,15 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
+import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
+import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
+import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
+import { AnalyticsOverviewLineChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewLineChart'
+import { AnalyticsOverviewPerformanceTable } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewPerformanceTable'
+import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
 import { STATS_ROUTES } from 'routes/constants'
-
-import { AnalyticsOverviewAutomatedInteractionsCard } from './charts/AnalyticsOverviewAutomatedInteractionsCard'
-import { AnalyticsOverviewAutomatedInteractionsComboChart } from './charts/AnalyticsOverviewAutomatedInteractionsComboChart'
-import { AnalyticsOverviewAutomationRateCard } from './charts/AnalyticsOverviewAutomationRateCard'
-import { AnalyticsOverviewCostSavedCard } from './charts/AnalyticsOverviewCostSavedCard'
-import { AnalyticsOverviewLineChart } from './charts/AnalyticsOverviewLineChart'
-import { AnalyticsOverviewPerformanceTable } from './charts/AnalyticsOverviewPerformanceTable'
-import { AnalyticsOverviewTimeSavedCard } from './charts/AnalyticsOverviewTimeSavedCard'
-import { AutomationRateComboChart } from './components/AutomationRateComboChart/AutomationRateComboChart'
 
 export enum AnalyticsOverviewChart {
     AutomationRateCard = 'automation_rate_card',
@@ -48,8 +47,10 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description:
-                    'Percentage of interactions that were automated by AI Agent',
+                    'The number of interactions automated by all automation features as a % of total customer interactions.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomatedInteractionsCard]: {
                 chartComponent: AnalyticsOverviewAutomatedInteractionsCard,
@@ -62,8 +63,10 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description:
-                    'Total number of interactions automated by AI Agent',
+                    'The number of fully automated interactions solved without any human agent intervention.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.TimeSavedCard]: {
                 chartComponent: AnalyticsOverviewTimeSavedCard,
@@ -75,8 +78,11 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'duration',
                     },
                 ],
-                description: 'Time saved by agents through automation',
+                description:
+                    'The time agent would have spent resolving customer inquiries without all automation features.',
                 chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.CostSavedCard]: {
                 chartComponent: AnalyticsOverviewCostSavedCard,
@@ -88,8 +94,11 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                         metricFormat: 'currency',
                     },
                 ],
-                description: 'Cost savings from automation',
+                description:
+                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
                 chartType: ChartType.Card,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomationRateComboChart]: {
                 chartComponent: AutomationRateComboChart,
@@ -97,6 +106,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 csvProducer: null,
                 description: 'Breakdown of automation rate by feature',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomatedInteractionsComboChart]: {
                 chartComponent:
@@ -105,20 +116,24 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 csvProducer: null,
                 description: 'Breakdown of automated interactions by skill',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomationLineChart]: {
                 chartComponent: AnalyticsOverviewLineChart,
-                label: 'Automation trend over time',
+                label: 'Overall automation rate',
                 csvProducer: null,
                 description: 'Automation metrics trend over time',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
                 chartComponent: AnalyticsOverviewPerformanceTable,
                 label: 'Performance breakdown',
                 csvProducer: null,
-                description: 'Performance breakdown by feature',
-                chartType: ChartType.Graph,
+                description: '',
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

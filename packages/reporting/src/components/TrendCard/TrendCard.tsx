@@ -4,7 +4,12 @@ import { memo, useState } from 'react'
 import { Box, Skeleton } from '@gorgias/axiom'
 
 import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
-import type { MetricTrend, MetricTrendFormat, TooltipData } from '../../types'
+import type {
+    MetricTrend,
+    MetricTrendFormat,
+    TooltipData,
+    TrendDirection,
+} from '../../types'
 import { formatMetricValue } from '../../utils/helpers'
 import { DrillDownModalTrigger } from '../DrillDownModal/DrillDownModalTrigger'
 import { MetricCard } from '../MetricCard/MetricCard'
@@ -18,7 +23,7 @@ export type TrendCardProps = {
     actionMenu?: ReactNode
     currency?: string
     hint?: TooltipData
-    interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
+    interpretAs: TrendDirection
     isLoading?: boolean
     metricFormat?: MetricTrendFormat
     trend: MetricTrend
@@ -46,10 +51,7 @@ export const TrendCard = memo<TrendCardProps>(
         const [isHovered, setIsHovered] = useState(false)
 
         const hasData =
-            !isLoading &&
-            data?.value !== null &&
-            data?.value !== undefined &&
-            data?.value !== 0
+            !isLoading && data?.value !== null && data?.value !== undefined
 
         const formattedMetricValue = hasData
             ? formatMetricValue(data?.value, metricFormat, currency)

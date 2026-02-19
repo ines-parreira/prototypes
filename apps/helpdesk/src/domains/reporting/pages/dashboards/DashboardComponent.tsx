@@ -30,6 +30,7 @@ export const DashboardComponent = memo(
             ? {
                   chartId: chart,
                   dashboard,
+                  chartConfig: config.charts[chart],
               }
             : {}
         return createElement(config.charts[chart].chartComponent, props)

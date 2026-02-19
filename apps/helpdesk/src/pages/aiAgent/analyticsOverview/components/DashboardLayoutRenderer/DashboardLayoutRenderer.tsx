@@ -12,7 +12,7 @@ import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRende
 import { MetricsConfigurator } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import type {
-    AnalyticsAIAgentCharts,
+    AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutSection,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
@@ -40,7 +40,7 @@ const KpisSection = ({
     tabKey,
 }: {
     section: LayoutSection
-    reportConfig: ReportConfig<AnalyticsAIAgentCharts>
+    reportConfig: ReportConfig<AnalyticsChartType>
     tabKey?: string
 }) => {
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
@@ -179,7 +179,7 @@ const KpisSection = ({
 }
 
 const renderSection =
-    (reportConfig: ReportConfig<AnalyticsAIAgentCharts>, tabKey?: string) =>
+    (reportConfig: ReportConfig<AnalyticsChartType>, tabKey?: string) =>
     (section: LayoutSection) => {
         const isChartsSection = section.type === 'charts'
         const isKpisSection = section.type === 'kpis'

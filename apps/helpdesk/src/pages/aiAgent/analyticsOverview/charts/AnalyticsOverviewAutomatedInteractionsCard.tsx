@@ -1,44 +1,23 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-
-import { useAutomatedInteractionsMetric } from '../hooks/useAutomatedInteractionsMetric'
-import { formatPreviousPeriod } from '../utils/formatPreviousPeriod'
+import { useAutomatedInteractionsMetric } from 'pages/aiAgent/analyticsOverview/hooks/useAutomatedInteractionsMetric'
 
 export const AnalyticsOverviewAutomatedInteractionsCard = ({
     chartId,
     dashboard,
+    chartConfig,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters } = useStatsFilters()
-    const trend = useAutomatedInteractionsMetric()
+    const trendCardProps = useReportingTrendCardProps({
+        useTrend: useAutomatedInteractionsMetric,
+        // The chartConfig and chartId are optional in the hook, but we know they will be provided in this context(DashboardLayoutRenderer)
+        // so we can assert them as non-null with the ! operator.
+        chartConfig: chartConfig!,
+        chartId,
+        isAiAgentTrendCard: true,
+        dashboard,
+    })
 
-    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
-
-    return (
-        <TrendCard
-            trend={trend}
-            metricFormat="decimal"
-            interpretAs="more-is-better"
-            isLoading={trend.isFetching}
-            withBorder
-            withFixedWidth={false}
-            hint={{
-                title: 'Automated interactions',
-                caption:
-                    'The number of fully automated interactions solved without any human agent intervention.',
-            }}
-            trendBadgeTooltipData={{ period: trendTooltipData }}
-            actionMenu={
-                chartId ? (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        dashboard={dashboard}
-                        chartName={trend.data?.label}
-                    />
-                ) : undefined
-            }
-        />
-    )
+    return <TrendCard {...trendCardProps} />
 }

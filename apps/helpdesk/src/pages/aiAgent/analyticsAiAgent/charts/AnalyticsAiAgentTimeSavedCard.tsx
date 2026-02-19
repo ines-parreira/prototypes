@@ -27,7 +27,7 @@ export const AnalyticsAiAgentTimeSavedCard = ({
             hint={{
                 title: 'Time saved by agents',
                 caption:
-                    'The time agent would have spent resolver customer inquiries without AI Agent.',
+                    'The time agent would have spent resolving customer inquiries without AI Agent.',
             }}
             actionMenu={
                 chartId ? (

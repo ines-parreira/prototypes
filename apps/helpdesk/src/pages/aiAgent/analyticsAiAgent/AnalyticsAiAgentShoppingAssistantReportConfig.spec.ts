@@ -74,7 +74,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Revenue per interaction')
+        expect(config.label).toBe('Total sale per interaction')
         expect(config.chartType).toBe(ChartType.Card)
     })
 
@@ -108,7 +108,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
-        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.chartType).toBe(ChartType.Table)
     })
 
     it('should have correct report filters', () => {

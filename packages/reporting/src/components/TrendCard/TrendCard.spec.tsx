@@ -219,7 +219,10 @@ describe('TrendCard', () => {
             )
 
             expect(screen.getByText('Test Metric')).toBeInTheDocument()
-            expect(screen.queryByText('0')).not.toBeInTheDocument()
+            expect(screen.getByText('0')).toBeInTheDocument()
+            expect(
+                screen.getByText('0').closest('button'),
+            ).not.toBeInTheDocument()
         })
 
         it('should not render DrillDownModalTrigger when data value is null', () => {

@@ -9,15 +9,14 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
+import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
+import { AnalyticsAllAgentsComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsAllAgentsComboChart'
+import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
+import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
+import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
+import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { STATS_ROUTES } from 'routes/constants'
-
-import { AnalyticsAiAgentAutomatedInteractionsCard } from './charts/AnalyticsAiAgentAutomatedInteractionCard'
-import { AnalyticsAiAgentAutomationRateCard } from './charts/AnalyticsAiAgentAutomationRateCard'
-import { AnalyticsAllAgentsComboChart } from './charts/AnalyticsAiAgentComboChart/AnalyticsAllAgentsComboChart'
-import { AnalyticsAllAgentsLineChart } from './charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
-import { AnalyticsAllAgentsPerformanceTable } from './charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
-import { AnalyticsAiAgentTimeSavedCard } from './charts/AnalyticsAiAgentTimeSavedCard'
-import { AnalyticsAiAgentTotalSalesCard } from './charts/AnalyticsAiAgentTotalSalesCard'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
 const fetchAllAgentsTrendBreakdown = async () =>
@@ -65,8 +64,11 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description: '',
+                description:
+                    'The percentage of customer interactions fully handled by the AI Agent.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentAutomatedInteractionsCard,
@@ -78,8 +80,11 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'integer',
                     },
                 ],
-                description: '',
+                description:
+                    'The number of fully automated interactions solved without any human agent intervention.',
                 chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.TotalSalesCard]: {
                 chartComponent: AnalyticsAiAgentTotalSalesCard,
@@ -91,8 +96,11 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'decimal',
                     },
                 ],
-                description: '',
+                description:
+                    'The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction',
                 chartType: ChartType.Card,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.TimeSavedCard]: {
                 chartComponent: AnalyticsAiAgentTimeSavedCard,
@@ -104,32 +112,39 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         metricFormat: 'duration',
                     },
                 ],
-                description: '',
+                description:
+                    'The time agent would have spent resolving customer inquiries without AI Agent.',
                 chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {
                 chartComponent: AnalyticsAllAgentsComboChart,
-                label: '',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
                         fetch: fetchAllAgentsTrendBreakdown,
                     },
                 ],
-                description: '',
+                description: 'Breakdown of automated interactions by skill',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart]: {
                 chartComponent: AnalyticsAllAgentsLineChart,
-                label: '',
+                label: 'Automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
                         fetch: fetchAllAgentsTrendData,
                     },
                 ],
-                description: '',
+                description: 'Automation rate trend over time',
                 chartType: ChartType.Graph,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.PerformanceTable]: {
                 chartComponent: AnalyticsAllAgentsPerformanceTable,
@@ -140,8 +155,8 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                         fetch: fetchPerformanceBreakdown,
                     },
                 ],
-                description: '',
-                chartType: ChartType.Graph,
+                description: 'Performance breakdown by agent',
+                chartType: ChartType.Table,
             },
         },
         reportFilters: {

@@ -1,3 +1,5 @@
+import type { MetricTrendFormat, TrendDirection } from '@repo/reporting'
+
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import type { User } from 'config/types/user'
@@ -183,6 +185,7 @@ export type DataExportFetch =
 export interface DashboardChartProps {
     chartId?: string
     dashboard?: DashboardSchema
+    chartConfig?: ChartConfig
     additionalProps?: any
 }
 
@@ -192,6 +195,8 @@ export type ChartConfig = {
     csvProducer: DataExportFetch[] | null
     description: string
     chartType: ChartType
+    metricFormat?: MetricTrendFormat
+    interpretAs?: TrendDirection
 }
 
 export type ReportConfig<T extends string> = {
