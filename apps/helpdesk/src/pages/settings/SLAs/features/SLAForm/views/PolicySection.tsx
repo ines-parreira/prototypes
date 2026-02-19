@@ -25,7 +25,7 @@ export function PolicySection() {
                 <Heading size="lg">Policy</Heading>
                 <Text className={css.sectionDescription}>
                     {isVoiceChannelSelected
-                        ? 'Set the percentage of calls that should be answered within a specific time'
+                        ? 'Set the percentage of calls that must be answered within the time threshold. The SLA calculation starts when the call enters the queue and excludes time spent in the IVR menu and the greeting message.'
                         : 'Define the first response time and / or resolution times to be set as goals by your team(s).'}
                 </Text>
             </div>

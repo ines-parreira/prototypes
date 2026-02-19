@@ -86,7 +86,7 @@ describe('<PolicySection />', () => {
             expect(screen.getByText('Policy')).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Set the percentage of calls that should be answered within a specific time',
+                    'Set the percentage of calls that must be answered within the time threshold. The SLA calculation starts when the call enters the queue and excludes time spent in the IVR menu and the greeting message.',
                 ),
             ).toBeInTheDocument()
             expect(
