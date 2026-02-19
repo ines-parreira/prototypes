@@ -233,11 +233,10 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge or switch customer profiles',
-        })
-
-        await act(() => user.click(mergeButton))
+        await act(() => user.click(screen.getByLabelText('Customer menu')))
+        await act(() =>
+            user.click(screen.getByText('Merge or switch customer')),
+        )
 
         await waitFor(() => {
             expect(screen.getByText('Search customers')).toBeInTheDocument()
@@ -277,11 +276,10 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge or switch customer profiles',
-        })
-
-        await act(() => user.click(mergeButton))
+        await act(() => user.click(screen.getByLabelText('Customer menu')))
+        await act(() =>
+            user.click(screen.getByText('Merge or switch customer')),
+        )
 
         await waitFor(() => {
             expect(screen.getByText('Search customers')).toBeInTheDocument()
@@ -349,11 +347,10 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge or switch customer profiles',
-        })
-
-        await act(() => user.click(mergeButton))
+        await act(() => user.click(screen.getByLabelText('Customer menu')))
+        await act(() =>
+            user.click(screen.getByText('Merge or switch customer')),
+        )
 
         const searchInput = screen.getByPlaceholderText(
             'Search by name, email or order no.',
@@ -421,11 +418,10 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        const mergeButton = screen.getByRole('button', {
-            name: 'Merge or switch customer profiles',
-        })
-
-        await act(() => user.click(mergeButton))
+        await act(() => user.click(screen.getByLabelText('Customer menu')))
+        await act(() =>
+            user.click(screen.getByText('Merge or switch customer')),
+        )
 
         const searchInput = screen.getByPlaceholderText(
             'Search by name, email or order no.',

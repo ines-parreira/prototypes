@@ -36,9 +36,8 @@ const defaultProps = {
     customer: mockCustomer,
     onEditCustomer: vi.fn(),
     onSyncToShopify: vi.fn(),
+    onOpenMergePanel: vi.fn(),
     hasShopifyIntegration: false,
-    showMergeButton: false,
-    onMergeClick: vi.fn(),
 }
 
 const waitUntilLoaded = async () => {
@@ -135,14 +134,39 @@ describe('InfobarTicketCustomerHeader', () => {
         expect(screen.getByText('Sync profile to Shopify')).toBeInTheDocument()
     })
 
-    it('should call onEditCustomer and onSyncToShopify', async () => {
-        const onEditCustomer = vi.fn()
-        const onSyncToShopify = vi.fn()
+    it('should show merge or switch customer option in dropdown and call onOpenMergePanel when clicked', async () => {
+        const mockOnOpenMergePanel = vi.fn()
         const { user } = render(
             <InfobarTicketCustomerHeader
                 {...defaultProps}
-                onEditCustomer={onEditCustomer}
-                onSyncToShopify={onSyncToShopify}
+                onOpenMergePanel={mockOnOpenMergePanel}
+            />,
+            {
+                path: '/ticket/:ticketId',
+                initialEntries: [`/ticket/${ticketId}`],
+            },
+        )
+
+        await waitUntilLoaded()
+
+        const menuButton = screen.getByLabelText('Customer menu')
+        await act(() => user.click(menuButton))
+
+        const mergeOptions = screen.getAllByText('Merge or switch customer')
+        expect(mergeOptions[mergeOptions.length - 1]).toBeInTheDocument()
+
+        await act(() => user.click(mergeOptions[mergeOptions.length - 1]))
+        expect(mockOnOpenMergePanel).toHaveBeenCalledTimes(1)
+    })
+
+    it('should call onEditCustomer and onSyncToShopify', async () => {
+        const mockOnEditCustomer = vi.fn()
+        const mockOnSyncToShopify = vi.fn()
+        const { user } = render(
+            <InfobarTicketCustomerHeader
+                {...defaultProps}
+                onEditCustomer={mockOnEditCustomer}
+                onSyncToShopify={mockOnSyncToShopify}
                 hasShopifyIntegration={true}
             />,
             {
@@ -159,7 +183,7 @@ describe('InfobarTicketCustomerHeader', () => {
         const editOptions = screen.getAllByText('Edit Customer')
         await act(() => user.click(editOptions[editOptions.length - 1]))
 
-        expect(onEditCustomer).toHaveBeenCalledWith(
+        expect(mockOnEditCustomer).toHaveBeenCalledWith(
             expect.objectContaining({
                 id: mockCustomer.id,
                 name: mockCustomer.name,
@@ -172,7 +196,7 @@ describe('InfobarTicketCustomerHeader', () => {
         const syncButtons = screen.getAllByText('Sync profile to Shopify')
         await act(() => user.click(syncButtons[syncButtons.length - 1]))
 
-        expect(onSyncToShopify).toHaveBeenCalledWith(
+        expect(mockOnSyncToShopify).toHaveBeenCalledWith(
             expect.objectContaining({
                 id: mockCustomer.id,
                 name: mockCustomer.name,

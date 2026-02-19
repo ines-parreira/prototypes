@@ -11,9 +11,7 @@ import {
     IconName,
     Menu,
     MenuItem,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
+    MenuSection,
 } from '@gorgias/axiom'
 import type { TicketCustomer } from '@gorgias/helpdesk-types'
 
@@ -65,36 +63,20 @@ export function InfobarTicketCustomerHeader({
             <Link to={`/app/customer/${customer.id}`}>
                 <Heading size="sm">{customerDisplayName}</Heading>
             </Link>
-            <Box>
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Button
-                            variant={ButtonVariant.Tertiary}
-                            size={ButtonSize.Sm}
-                            aria-label="Merge or switch customer profiles"
-                            icon={IconName.ArrowMerging}
-                            onClick={onOpenMergePanel}
-                        />
-                    </TooltipTrigger>
-                    <TooltipContent
-                        title=" Search for customers to merge or to switch the
-                                ticket customer"
-                        maxWidth={147}
+            <Menu
+                aria-label="Customer actions"
+                trigger={
+                    <Button
+                        slot="button"
+                        variant={ButtonVariant.Tertiary}
+                        size={ButtonSize.Sm}
+                        aria-label="Customer menu"
+                        icon={IconName.DotsMeatballsHorizontal}
                     />
-                </Tooltip>
-                <Menu
-                    aria-label="Customer actions"
-                    trigger={
-                        <Button
-                            slot="button"
-                            variant={ButtonVariant.Tertiary}
-                            size={ButtonSize.Sm}
-                            aria-label="Customer menu"
-                            icon={IconName.DotsMeatballsHorizontal}
-                        />
-                    }
-                    placement="bottom right"
-                >
+                }
+                placement="bottom right"
+            >
+                <MenuSection id="customer-profile-actions">
                     <MenuItem
                         label="Edit Customer"
                         leadingSlot={IconName.EditPencil}
@@ -111,8 +93,15 @@ export function InfobarTicketCustomerHeader({
                             }}
                         />
                     )}
-                </Menu>
-            </Box>
+                </MenuSection>
+                <MenuSection id="customer-actions">
+                    <MenuItem
+                        label="Merge or switch customer"
+                        leadingSlot={IconName.UserArrow}
+                        onAction={onOpenMergePanel}
+                    />
+                </MenuSection>
+            </Menu>
         </Box>
     )
 }
