@@ -18,7 +18,6 @@ import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import { getCurrentUserId } from 'state/currentUser/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
@@ -65,7 +64,6 @@ export const OpportunitiesLayout = () => {
 
     const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const accountId = useAppSelector(getCurrentAccountId)
-    const userId = useAppSelector(getCurrentUserId)
 
     const {
         articles: aiArticles,
@@ -138,10 +136,7 @@ export const OpportunitiesLayout = () => {
         onOpportunityViewed,
         onOpportunityAccepted,
         onOpportunityDismissed,
-    } = useOpportunitiesTracking({
-        accountId,
-        userId,
-    })
+    } = useOpportunitiesTracking()
 
     const selectNextOpportunity = (articleKey: string) => {
         if (selectedOpportunity?.key === articleKey) {

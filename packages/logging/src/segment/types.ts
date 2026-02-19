@@ -356,6 +356,7 @@ export enum SegmentEvent {
     RechargeOrderClicked = 'widget/recharge-order-link/link-clicked',
     RechargeProfileClicked = 'widget/recharge-profile-link/link-clicked',
     RechargeSubscriptionClicked = 'widget/recharge-subscription-link/link-clicked',
+    RedirectToOpportunityPage = 'redirect-to-opportunity-page',
     RuleAcademyVisited = 'rule-academy-visited',
     RuleAutomationAddOnSubscription = 'rule-automation-add-on/subscription',
     RuleAutomationAddOnUpsell = 'rule-automation-add-on/upsell',

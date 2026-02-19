@@ -2,18 +2,20 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import type { OpportunityOperation } from 'pages/aiAgent/opportunities/types'
-
-interface UseOpportunitiesTrackingProps {
-    accountId: number
-    userId: number
-}
+import useAppSelector from 'hooks/useAppSelector'
+import type {
+    OpportunityOperation,
+    OpportunityPageReferrer,
+} from 'pages/aiAgent/opportunities/types'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 
 interface OpportunitiesTrackingCallbacks {
     onOpportunityPageVisited: () => void
     onOpportunityViewed: (context: OpportunityContext) => void
     onOpportunityAccepted: (context: OpportunityContext) => void
     onOpportunityDismissed: (context: OpportunityContext) => void
+    onRedirectToOpportunityPage: (context: RedirectContext) => void
 }
 
 interface OpportunityContext {
@@ -22,10 +24,13 @@ interface OpportunityContext {
     operations?: OpportunityOperation[]
 }
 
-export const useOpportunitiesTracking = ({
-    accountId,
-    userId,
-}: UseOpportunitiesTrackingProps): OpportunitiesTrackingCallbacks => {
+interface RedirectContext {
+    referrer: OpportunityPageReferrer
+}
+
+export const useOpportunitiesTracking = (): OpportunitiesTrackingCallbacks => {
+    const accountId = useAppSelector(getCurrentAccountId)
+    const userId = useAppSelector(getCurrentUserId)
     const eventContext = useMemo(() => {
         return {
             accountId,
@@ -67,10 +72,21 @@ export const useOpportunitiesTracking = ({
         [eventContext],
     )
 
+    const onRedirectToOpportunityPage = useCallback(
+        (context: RedirectContext) => {
+            logEvent(SegmentEvent.RedirectToOpportunityPage, {
+                ...eventContext,
+                ...context,
+            })
+        },
+        [eventContext],
+    )
+
     return {
         onOpportunityPageVisited,
         onOpportunityViewed,
         onOpportunityAccepted,
         onOpportunityDismissed,
+        onRedirectToOpportunityPage,
     }
 }

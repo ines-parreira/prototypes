@@ -8,6 +8,8 @@ import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OpportunityTicketDrillDownModal } from 'pages/aiAgent/opportunities/components/OpportunityTicketDrillDownModal'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
+import { useOpportunitiesTracking } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesTracking'
+import { OpportunityPageReferrer } from 'pages/aiAgent/opportunities/types'
 
 import css from './DetectedOpportunitiesBanner.less'
 
@@ -42,6 +44,8 @@ export const DetectedOpportunitiesBanner = ({
         },
     )
 
+    const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
+
     const ticketCount = topOpportunity?.ticketCount ?? 0
     const resources = topOpportunity?.resources ?? []
     const isKnowledgeGap =
@@ -50,6 +54,10 @@ export const DetectedOpportunitiesBanner = ({
     const handleCardClick = () => {
         const url = routes.opportunitiesWithId(topOpportunity?.id)
         window.open(url, '_blank', 'noopener,noreferrer')
+
+        onRedirectToOpportunityPage({
+            referrer: OpportunityPageReferrer.IN_TICKET_FEEDBACK_TAB,
+        })
     }
 
     const handleTicketCountClick = (e: React.MouseEvent) => {

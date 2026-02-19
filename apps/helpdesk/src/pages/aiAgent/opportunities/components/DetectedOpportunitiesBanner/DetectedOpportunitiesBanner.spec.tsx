@@ -7,6 +7,8 @@ import { ResourceType } from '../../types'
 import { DetectedOpportunitiesBanner } from './DetectedOpportunitiesBanner'
 
 // Mock dependencies
+const mockOnRedirectToOpportunityPage = jest.fn()
+
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(),
 }))
@@ -17,6 +19,16 @@ jest.mock(
         useFindTopOpportunityByTicketId: jest.fn(),
     }),
 )
+
+jest.mock('pages/aiAgent/opportunities/hooks/useOpportunitiesTracking', () => ({
+    useOpportunitiesTracking: jest.fn(() => ({
+        onRedirectToOpportunityPage: mockOnRedirectToOpportunityPage,
+        onOpportunityPageVisited: jest.fn(),
+        onOpportunityViewed: jest.fn(),
+        onOpportunityAccepted: jest.fn(),
+        onOpportunityDismissed: jest.fn(),
+    })),
+}))
 
 jest.mock(
     'pages/aiAgent/opportunities/components/OpportunityTicketDrillDownModal',
@@ -312,6 +324,25 @@ describe('DetectedOpportunitiesBanner', () => {
                     '_blank',
                     'noopener,noreferrer',
                 )
+            })
+
+            it('should track redirect to opportunity page when button is clicked', async () => {
+                const user = userEvent.setup()
+                useFindTopOpportunityByTicketId.mockReturnValue({
+                    topOpportunity: mockKnowledgeGapOpportunity,
+                    isLoading: false,
+                })
+
+                render(<DetectedOpportunitiesBanner {...defaultProps} />)
+
+                const button = screen.getByRole('button', {
+                    name: /review guidance/i,
+                })
+                await user.click(button)
+
+                expect(mockOnRedirectToOpportunityPage).toHaveBeenCalledWith({
+                    referrer: 'in-ticket-feedback-tab',
+                })
             })
 
             it('should open in new tab for conflict opportunity', async () => {

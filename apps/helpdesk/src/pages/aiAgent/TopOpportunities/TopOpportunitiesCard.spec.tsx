@@ -46,6 +46,18 @@ jest.mock(
     }),
 )
 
+const mockOnRedirectToOpportunityPage = jest.fn()
+
+jest.mock('pages/aiAgent/opportunities/hooks/useOpportunitiesTracking', () => ({
+    useOpportunitiesTracking: jest.fn(() => ({
+        onRedirectToOpportunityPage: mockOnRedirectToOpportunityPage,
+        onOpportunityPageVisited: jest.fn(),
+        onOpportunityViewed: jest.fn(),
+        onOpportunityAccepted: jest.fn(),
+        onOpportunityDismissed: jest.fn(),
+    })),
+}))
+
 const createMockStore = (initialState = {}) => {
     return mockStore({
         notifications: [],
@@ -351,6 +363,34 @@ describe('TopOpportunityCard', () => {
                 expect(
                     screen.getByText('Mock Ticket Modal'),
                 ).toBeInTheDocument()
+            })
+        })
+
+        it('should track redirect to opportunity page when button is clicked', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            const button = screen.getByRole('button', {
+                name: /review guidance/i,
+            })
+            await user.click(button)
+
+            await waitFor(() => {
+                expect(mockOnRedirectToOpportunityPage).toHaveBeenCalledWith({
+                    referrer: 'overview-page',
+                })
             })
         })
     })

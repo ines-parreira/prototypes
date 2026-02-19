@@ -12,6 +12,7 @@ import { TopOpportunitiesSection } from './TopOpportunitiesSection'
 
 const mockStore = configureStore([])
 const mockPush = jest.fn()
+const mockOnRedirectToOpportunityPage = jest.fn()
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -36,6 +37,16 @@ jest.mock('@repo/feature-flags', () => ({
         IncreaseVisibilityOfOpportunity: 'increase-visibility-of-opportunity',
     },
     useFlag: jest.fn(() => true),
+}))
+
+jest.mock('pages/aiAgent/opportunities/hooks/useOpportunitiesTracking', () => ({
+    useOpportunitiesTracking: jest.fn(() => ({
+        onRedirectToOpportunityPage: mockOnRedirectToOpportunityPage,
+        onOpportunityPageVisited: jest.fn(),
+        onOpportunityViewed: jest.fn(),
+        onOpportunityAccepted: jest.fn(),
+        onOpportunityDismissed: jest.fn(),
+    })),
 }))
 
 const mockOpportunities: OpportunityListItem[] = [
@@ -349,6 +360,35 @@ describe('TopOpportunitiesSection', () => {
                 expect(mockPush).toHaveBeenCalledWith(
                     '/ai-agent/shopify/test-shop/opportunities',
                 )
+            })
+        })
+
+        it('should track redirect to opportunity page when view all button is clicked', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <TestWrapper>
+                    <TopOpportunitiesSection
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        opportunities={mockOpportunities}
+                        isLoading={false}
+                        totalCount={4}
+                        allowedOpportunityIds={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            const viewAllButton = screen.getByRole('button', {
+                name: /view all opportunities/i,
+            })
+
+            await user.click(viewAllButton)
+
+            await waitFor(() => {
+                expect(mockOnRedirectToOpportunityPage).toHaveBeenCalledWith({
+                    referrer: 'overview-page',
+                })
             })
         })
     })

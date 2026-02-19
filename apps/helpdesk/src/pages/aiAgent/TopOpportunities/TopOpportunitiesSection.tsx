@@ -6,6 +6,8 @@ import { useHistory } from 'react-router'
 import { Box, Button, Card, Heading, Skeleton, Text } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useOpportunitiesTracking } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesTracking'
+import { OpportunityPageReferrer } from 'pages/aiAgent/opportunities/types'
 import type { OpportunityListItem } from 'pages/aiAgent/opportunities/types'
 
 import { OpportunityType } from '../opportunities/enums'
@@ -81,6 +83,8 @@ export const TopOpportunitiesSection = ({
         false,
     )
 
+    const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
+
     // Sort opportunities: RESOLVE_CONFLICT first, then by ticket count (descending)
     const sortedOpportunities = useMemo(() => {
         return [...opportunities].sort((a, b) => {
@@ -124,6 +128,14 @@ export const TopOpportunitiesSection = ({
         return totalCount > TOP_OPPORTUNITIES_LIMIT
     }, [totalCount])
 
+    const handleViewAllButtonClick = () => {
+        history.push(routes.opportunities)
+
+        onRedirectToOpportunityPage({
+            referrer: OpportunityPageReferrer.OVERVIEW_PAGE,
+        })
+    }
+
     return (
         <Card
             width="100%"
@@ -142,9 +154,7 @@ export const TopOpportunitiesSection = ({
                     <Button
                         variant="secondary"
                         size="md"
-                        onClick={() => {
-                            history.push(routes.opportunities)
-                        }}
+                        onClick={handleViewAllButtonClick}
                     >
                         View all opportunities
                     </Button>

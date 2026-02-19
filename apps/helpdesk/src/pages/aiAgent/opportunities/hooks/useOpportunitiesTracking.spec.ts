@@ -1,11 +1,35 @@
+import React from 'react'
+
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureStore from 'redux-mock-store'
+
+import { OpportunityPageReferrer } from 'pages/aiAgent/opportunities/types'
 
 import { useOpportunitiesTracking } from './useOpportunitiesTracking'
 
 jest.mock('@repo/logging')
 
 const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+const mockStore = configureStore([])
+
+const createMockStore = (accountId: number, userId: number) => {
+    return mockStore({
+        currentAccount: fromJS({
+            id: accountId,
+        }),
+        currentUser: fromJS({
+            id: userId,
+        }),
+    })
+}
+
+const createWrapper = (store: any) => {
+    return ({ children }: { children: React.ReactNode }) =>
+        React.createElement(Provider, { store }, children)
+}
 
 describe('useOpportunitiesTracking', () => {
     beforeEach(() => {
@@ -15,25 +39,28 @@ describe('useOpportunitiesTracking', () => {
     it('should return all tracking callbacks', () => {
         const accountId = 123
         const userId = 456
+        const store = createMockStore(accountId, userId)
 
-        const { result } = renderHook(() =>
-            useOpportunitiesTracking({ accountId, userId }),
-        )
+        const { result } = renderHook(() => useOpportunitiesTracking(), {
+            wrapper: createWrapper(store),
+        })
 
         expect(result.current.onOpportunityPageVisited).toBeDefined()
         expect(result.current.onOpportunityViewed).toBeDefined()
         expect(result.current.onOpportunityAccepted).toBeDefined()
         expect(result.current.onOpportunityDismissed).toBeDefined()
+        expect(result.current.onRedirectToOpportunityPage).toBeDefined()
     })
 
     describe('onOpportunityPageVisited', () => {
         it('should log page visited event with account and user context', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityPageVisited()
 
@@ -49,14 +76,15 @@ describe('useOpportunitiesTracking', () => {
         it('should log opportunity viewed event with full context', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
             const opportunityContext = {
                 opportunityId: 'opp-123',
                 opportunityType: 'FILL_KNOWLEDGE_GAP',
             }
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityViewed(opportunityContext)
 
@@ -75,14 +103,15 @@ describe('useOpportunitiesTracking', () => {
         it('should handle different opportunity types', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
             const opportunityContext = {
                 opportunityId: 'opp-456',
                 opportunityType: 'RESOLVE_CONFLICT',
             }
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityViewed(opportunityContext)
 
@@ -102,14 +131,15 @@ describe('useOpportunitiesTracking', () => {
         it('should log opportunity accepted event for FILL_KNOWLEDGE_GAP without operations', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
             const opportunityContext = {
                 opportunityId: 'opp-789',
                 opportunityType: 'FILL_KNOWLEDGE_GAP',
             }
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityAccepted(opportunityContext)
 
@@ -128,6 +158,7 @@ describe('useOpportunitiesTracking', () => {
         it('should log opportunity accepted event for RESOLVE_CONFLICT with operations', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
             const opportunityContext = {
                 opportunityId: 'opp-999',
                 opportunityType: 'RESOLVE_CONFLICT',
@@ -156,9 +187,9 @@ describe('useOpportunitiesTracking', () => {
                 ],
             }
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityAccepted(opportunityContext)
 
@@ -202,14 +233,15 @@ describe('useOpportunitiesTracking', () => {
         it('should log opportunity dismissed event with full context', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
             const opportunityContext = {
                 opportunityId: 'opp-999',
                 opportunityType: 'RESOLVE_CONFLICT',
             }
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityDismissed(opportunityContext)
 
@@ -226,13 +258,44 @@ describe('useOpportunitiesTracking', () => {
         })
     })
 
-    describe('callback stability', () => {
-        it('should maintain stable callback references when props do not change', () => {
+    describe('onRedirectToOpportunityPage', () => {
+        it('should log redirect event with referrer context', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
+            const redirectContext = {
+                referrer: OpportunityPageReferrer.OVERVIEW_PAGE,
+            }
 
-            const { result, rerender } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
+
+            result.current.onRedirectToOpportunityPage(redirectContext)
+
+            expect(mockLogEvent).toHaveBeenCalledTimes(1)
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.RedirectToOpportunityPage,
+                {
+                    accountId,
+                    userId,
+                    referrer: 'overview-page',
+                },
+            )
+        })
+    })
+
+    describe('callback stability', () => {
+        it('should maintain stable callback references when context does not change', () => {
+            const accountId = 123
+            const userId = 456
+            const store = createMockStore(accountId, userId)
+
+            const { result, rerender } = renderHook(
+                () => useOpportunitiesTracking(),
+                {
+                    wrapper: createWrapper(store),
+                },
             )
 
             const callbacks1 = { ...result.current }
@@ -253,48 +316,9 @@ describe('useOpportunitiesTracking', () => {
             expect(callbacks1.onOpportunityDismissed).toBe(
                 callbacks2.onOpportunityDismissed,
             )
-        })
-
-        it('should update callbacks when accountId changes', () => {
-            let accountId = 123
-            const userId = 456
-
-            const { result, rerender } = renderHook(
-                () => useOpportunitiesTracking({ accountId, userId }),
-                {
-                    initialProps: { accountId, userId },
-                },
+            expect(callbacks1.onRedirectToOpportunityPage).toBe(
+                callbacks2.onRedirectToOpportunityPage,
             )
-
-            const callback1 = result.current.onOpportunityPageVisited
-
-            accountId = 789
-            rerender()
-
-            const callback2 = result.current.onOpportunityPageVisited
-
-            expect(callback1).not.toBe(callback2)
-        })
-
-        it('should update callbacks when userId changes', () => {
-            const accountId = 123
-            let userId = 456
-
-            const { result, rerender } = renderHook(
-                () => useOpportunitiesTracking({ accountId, userId }),
-                {
-                    initialProps: { accountId, userId },
-                },
-            )
-
-            const callback1 = result.current.onOpportunityPageVisited
-
-            userId = 789
-            rerender()
-
-            const callback2 = result.current.onOpportunityPageVisited
-
-            expect(callback1).not.toBe(callback2)
         })
     })
 
@@ -302,10 +326,11 @@ describe('useOpportunitiesTracking', () => {
         it('should handle multiple event calls in sequence', () => {
             const accountId = 123
             const userId = 456
+            const store = createMockStore(accountId, userId)
 
-            const { result } = renderHook(() =>
-                useOpportunitiesTracking({ accountId, userId }),
-            )
+            const { result } = renderHook(() => useOpportunitiesTracking(), {
+                wrapper: createWrapper(store),
+            })
 
             result.current.onOpportunityPageVisited()
             result.current.onOpportunityViewed({

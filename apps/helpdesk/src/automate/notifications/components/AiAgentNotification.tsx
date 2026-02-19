@@ -6,12 +6,12 @@ import { Content, Excerpt, Subtitle } from 'common/notifications'
 import type { ContentProps, Notification } from 'common/notifications'
 import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useOpportunitiesTracking } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesTracking'
+import { OpportunityPageReferrer } from 'pages/aiAgent/opportunities/types'
 import { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'
 
-import {
-    type AiAgentNotificationPayload,
-    AiAgentNotificationType,
-} from '../types'
+import { AiAgentNotificationType } from '../types'
+import type { AiAgentNotificationPayload } from '../types'
 import {
     getNotificationParams,
     getNotificationReceivedDatetimePayload,
@@ -32,6 +32,8 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
         useAiAgentOnboardingNotification({
             shopName: payload.shop_name,
         })
+
+    const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
 
     useEffect(() => {
         if (
@@ -82,9 +84,18 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
             props.onClick()
         }
 
-        logEvent(SegmentEvent.AiAgentOnboardingNotificationClicked, {
-            type: payload.ai_agent_notification_type,
-        })
+        if (
+            payload.ai_agent_notification_type ===
+            AiAgentNotificationType.NewOpportunityGenerated
+        ) {
+            onRedirectToOpportunityPage({
+                referrer: OpportunityPageReferrer.IN_APP_NOTIFICATION,
+            })
+        } else {
+            logEvent(SegmentEvent.AiAgentOnboardingNotificationClicked, {
+                type: payload.ai_agent_notification_type,
+            })
+        }
     }
 
     return (

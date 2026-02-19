@@ -15,6 +15,8 @@ import AiAgentNotification from '../AiAgentNotification'
 const TICKET_VIEW_ID = 123
 const SHOP_NAME = 'store_1'
 
+const mockOnRedirectToOpportunityPage = jest.fn()
+
 jest.mock(
     '@repo/logging',
     () =>
@@ -31,6 +33,16 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 }))
 
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
+
+jest.mock('pages/aiAgent/opportunities/hooks/useOpportunitiesTracking', () => ({
+    useOpportunitiesTracking: jest.fn(() => ({
+        onRedirectToOpportunityPage: mockOnRedirectToOpportunityPage,
+        onOpportunityPageVisited: jest.fn(),
+        onOpportunityViewed: jest.fn(),
+        onOpportunityAccepted: jest.fn(),
+        onOpportunityDismissed: jest.fn(),
+    })),
+}))
 
 const mockUseAiAgentOnboardingNotification = assumeMock(
     useAiAgentOnboardingNotification,
@@ -288,5 +300,35 @@ describe('AiAgentNotification', () => {
         fireEvent.click(linkElement as HTMLElement)
 
         expect(mockOnClick).toHaveBeenCalled()
+    })
+
+    it('should track redirect to opportunity page when NewOpportunityGenerated notification is clicked', () => {
+        const notification: Notification<AiAgentNotificationPayload> = {
+            id: '3',
+            inserted_datetime: '2024-11-04T13:07:00',
+            read_datetime: null,
+            seen_datetime: null,
+            type: 'automate-setup-and-optimization',
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.NewOpportunityGenerated,
+                opportunity_ids: [123],
+                total_tickets: 4,
+            },
+        }
+
+        const { container } = renderWithRouter(
+            <AiAgentNotification notification={notification} />,
+        )
+
+        const linkElement = container.querySelector('a')
+        expect(linkElement).toBeInTheDocument()
+
+        fireEvent.click(linkElement as HTMLElement)
+
+        expect(mockOnRedirectToOpportunityPage).toHaveBeenCalledWith({
+            referrer: 'in-app-notification',
+        })
     })
 })

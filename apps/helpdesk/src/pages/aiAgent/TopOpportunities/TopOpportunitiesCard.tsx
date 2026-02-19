@@ -15,8 +15,10 @@ import {
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OpportunityTicketDrillDownModal } from 'pages/aiAgent/opportunities/components/OpportunityTicketDrillDownModal'
 import { useEnrichedOpportunity } from 'pages/aiAgent/opportunities/hooks/useEnrichedOpportunity'
+import { useOpportunitiesTracking } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesTracking'
 
 import { OpportunityType } from '../opportunities/enums'
+import { OpportunityPageReferrer } from '../opportunities/types'
 import type { OpportunityListItem } from '../opportunities/types'
 
 import css from './TopOpportunitiesCard.less'
@@ -44,6 +46,7 @@ export const TopOpportunityCard = ({
     const [isTicketDrillDownModalOpen, setIsTicketDrillDownModalOpen] =
         useState(false)
 
+    const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
     const { data: opportunityDetails } = useEnrichedOpportunity(
         shopIntegrationId ?? 0,
         parseInt(opportunity.id, 10),
@@ -65,6 +68,10 @@ export const TopOpportunityCard = ({
                 ? routes.opportunitiesWithId(opportunity.id)
                 : routes.opportunities,
         )
+
+        onRedirectToOpportunityPage({
+            referrer: OpportunityPageReferrer.OVERVIEW_PAGE,
+        })
     }
 
     const handleTicketCountClick = (e: React.MouseEvent) => {

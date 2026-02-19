@@ -11,6 +11,12 @@ export enum ResourceType {
     EXTERNAL_SNIPPET = 'external_snippet',
 }
 
+export enum OpportunityPageReferrer {
+    IN_APP_NOTIFICATION = 'in-app-notification',
+    OVERVIEW_PAGE = 'overview-page',
+    IN_TICKET_FEEDBACK_TAB = 'in-ticket-feedback-tab',
+}
+
 export interface ResourceIdentifiers {
     resourceId: string
     resourceSetId: string
