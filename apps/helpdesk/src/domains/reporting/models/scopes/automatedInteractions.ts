@@ -12,7 +12,7 @@ const automatedInteractionsScope = defineScope({
         'automatedInteractions',
         'automatedInteractionsByAutoResponders',
     ],
-    filters: ['periodStart', 'periodEnd', 'eventType'],
+    filters: ['periodStart', 'periodEnd', 'eventType', 'channel'],
     dimensions: ['eventType'],
     timeDimensions: ['createdDatetime'],
 })

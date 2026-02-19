@@ -61,7 +61,7 @@ describe('automationTrends', () => {
         }
 
         describe('automatedInteractions', () => {
-            it('should fetch query and return data for AutomatedInteractions', () => {
+            it('should fetch query and return data for FilteredAutomatedInteractions', () => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -84,7 +84,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should hook with V2 data', () => {
+            it('should hook with V2 data for FilteredAutomatedInteractions', () => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
                     data: {
                         automatedInteractions:
@@ -107,7 +107,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractions with fetch', async () => {
+            it('should fetch query and return data for FilteredAutomatedInteractions with fetch', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -152,7 +152,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch with V2 data', async () => {
+            it('should fetch with V2 data for FilteredAutomatedInteractions', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
                         automatedInteractions:
@@ -197,7 +197,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders', () => {
+            it('should fetch query and return data for FilteredAutomatedInteractionsByAutoResponders', () => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -244,7 +244,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders with fetch', async () => {
+            it('should fetch query and return data for FilteredAutomatedInteractionsByAutoResponders with fetch', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -290,7 +290,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders', () => {
+            it('should fetch query and return data for AllAutomatedInteractions', () => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -313,7 +313,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders with fetch', async () => {
+            it('should fetch query and return data for AllAutomatedInteractions with fetch', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -340,12 +340,11 @@ describe('automationTrends', () => {
                         timezone,
                     ),
                     automatedInteractionsQueryV2Factory({
-                        filters: statsFilters,
+                        filters: { period: statsFilters.period },
                         timezone,
                     }),
                     automatedInteractionsQueryV2Factory({
                         filters: {
-                            ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
                         timezone,
@@ -358,7 +357,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders', () => {
+            it('should fetch query and return data for AllAutomatedInteractionsByAutoResponders', () => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -387,12 +386,11 @@ describe('automationTrends', () => {
                         timezone,
                     ),
                     automatedInteractionsQueryV2Factory({
-                        filters: statsFilters,
+                        filters: { period: statsFilters.period },
                         timezone,
                     }),
                     automatedInteractionsQueryV2Factory({
                         filters: {
-                            ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
                         timezone,
@@ -405,7 +403,7 @@ describe('automationTrends', () => {
                 })
             })
 
-            it('should fetch query and return data for AutomatedInteractionsByAutoResponders with fetch', async () => {
+            it('should fetch query and return data for AllAutomatedInteractionsByAutoResponders with fetch', async () => {
                 fetchMultipleMetricsTrendsMock.mockResolvedValue({
                     data: {
                         [AutomationDatasetMeasure.AutomatedInteractions]:
@@ -433,12 +431,11 @@ describe('automationTrends', () => {
                         timezone,
                     ),
                     automatedInteractionsQueryV2Factory({
-                        filters: statsFilters,
+                        filters: { period: statsFilters.period },
                         timezone,
                     }),
                     automatedInteractionsQueryV2Factory({
                         filters: {
-                            ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
                         timezone,
