@@ -12,6 +12,7 @@ import {
 } from 'domains/reporting/hooks/useTimeSeries'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { aiAgentInteractionsTimeSeriesQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/timeseries'
+import { aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
@@ -34,6 +35,11 @@ export const useAIAgentAutomationRateTimeSeriesData = (
             timezone,
             granularity,
         ),
+        aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory({
+            filters,
+            timezone,
+            granularity,
+        }),
     )
 
     const allAIAgentInteractionsData = useTimeSeries(
@@ -42,6 +48,11 @@ export const useAIAgentAutomationRateTimeSeriesData = (
             timezone,
             granularity,
         ),
+        aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory({
+            filters: onlyPeriodFilter,
+            timezone,
+            granularity,
+        }),
     )
 
     const allAIAgentInteractionsSeries = allAIAgentInteractionsData.data[0]
@@ -131,6 +142,11 @@ export const fetchAIAgentAutomationRateTimeSeriesData = async (
                 timezone,
                 granularity,
             ),
+            aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory({
+                filters,
+                timezone,
+                granularity,
+            }),
         ),
         fetchTimeSeries(
             aiAgentInteractionsTimeSeriesQueryFactory(
@@ -138,6 +154,11 @@ export const fetchAIAgentAutomationRateTimeSeriesData = async (
                 timezone,
                 granularity,
             ),
+            aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory({
+                filters: onlyPeriodFilter,
+                timezone,
+                granularity,
+            }),
         ),
         fetchBillableTicketDatasetTimeSeries(
             filters,

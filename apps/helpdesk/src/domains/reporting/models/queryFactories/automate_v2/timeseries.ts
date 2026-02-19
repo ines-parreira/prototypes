@@ -202,5 +202,5 @@ export const aiAgentInteractionsTimeSeriesQueryFactory = (
             values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
         },
     ],
-    metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
+    metricName: METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES,
 })

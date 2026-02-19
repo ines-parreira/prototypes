@@ -54,3 +54,30 @@ export const aiAgentAutomatedInteractions = automatedInteractionsScope
 export const aiAgentAutomatedInteractionsQueryV2Factory = (
     ctx: AutomatedInteractionsContext,
 ) => aiAgentAutomatedInteractions.build(ctx)
+
+export const aiAgentAutomatedInteractionsTimeSeries = automatedInteractionsScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES)
+    .defineQuery(({ ctx, config }) => ({
+        measures: [
+            'automatedInteractions',
+            'automatedInteractionsByAutoResponders',
+        ],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'eventType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomateEventType.AI_AGENT_TICKET_RESOLVED],
+            },
+        ] as any,
+        time_dimensions: [
+            {
+                dimension: 'createdDatetime',
+                granularity: ctx.granularity,
+            },
+        ],
+    }))
+
+export const aiAgentAutomatedInteractionsTimeSeriesQueryV2Factory = (
+    ctx: AutomatedInteractionsContext,
+) => aiAgentAutomatedInteractionsTimeSeries.build(ctx)

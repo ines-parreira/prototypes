@@ -3,6 +3,8 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_TICKETS_FOR_AI_AGENT_TOTAL_COUNT:
         'ai-agent-all-tickets-for-ai-agent-total-count',
     AI_AGENT_AUTOMATED_INTERACTIONS: 'ai-agent-automated-interactions',
+    AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES:
+        'ai-agent-automated-interactions-time-series',
     AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
         'ai-agent-automated-interactions-tickets',
     AI_AGENT_AUTOMATED_TICKET_COUNT: 'ai-agent-automated-ticket-count',
@@ -698,6 +700,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AutomatedInteractions]: [
         METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES,
     ],
     [MetricScope.VoiceAgentEvents]: [
         METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
