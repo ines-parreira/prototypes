@@ -2,9 +2,10 @@ import { useMemo } from 'react'
 
 import { diffWords } from 'diff'
 import htmlToReact from 'html-react-parser'
-import HtmlDiff from 'htmldiff-js'
 
 import { Heading } from '@gorgias/axiom'
+
+import { computeSafeHtmlDiff } from './diffHtmlUtils'
 
 import css from './KnowledgeEditorHelpCenterArticleDiffView.less'
 
@@ -27,7 +28,7 @@ export function KnowledgeEditorHelpCenterArticleDiffView({
     )
 
     const diffHtml = useMemo(
-        () => HtmlDiff.execute(oldContent, newContent),
+        () => computeSafeHtmlDiff(oldContent, newContent),
         [oldContent, newContent],
     )
 

@@ -8,7 +8,7 @@ import {
     EditorState,
     genKey,
 } from 'draft-js'
-import { List } from 'immutable'
+import { Map as ImmutableMap, List } from 'immutable'
 
 import type { DecoratorComponentProps } from 'pages/common/draftjs/plugins/types'
 
@@ -134,6 +134,55 @@ function createAtomicImageContentState(
         [block],
         contentState.getEntityMap(),
     )
+}
+
+function createContentStateFromBlocks(
+    blocks: Array<{
+        text: string
+        type?: string
+        depth?: number
+        data?: Record<string, unknown>
+        removed?: boolean
+        added?: boolean
+    }>,
+): ContentState {
+    const contentBlocks = blocks.map(
+        ({
+            text,
+            type = 'unstyled',
+            depth = 0,
+            data,
+            removed = false,
+            added = false,
+        }) =>
+            new ContentBlock({
+                key: genKey(),
+                type,
+                text,
+                characterList: List(
+                    Array.from(text).map(() => {
+                        const baseMeta = CharacterMetadata.create()
+                        if (removed) {
+                            return CharacterMetadata.applyStyle(
+                                baseMeta,
+                                'DIFF_REMOVED',
+                            )
+                        }
+                        if (added) {
+                            return CharacterMetadata.applyStyle(
+                                baseMeta,
+                                'DIFF_ADDED',
+                            )
+                        }
+                        return baseMeta
+                    }),
+                ),
+                depth,
+                data: data ? ImmutableMap(data) : undefined,
+            }),
+    )
+
+    return ContentState.createFromBlockArray(contentBlocks)
 }
 
 beforeEach(() => {
@@ -373,6 +422,224 @@ describe('image block renderer plugin', () => {
         )
 
         expect(screen.getByText('Image unavailable')).toBeInTheDocument()
+    })
+
+    it('computes depth-aware ordered list marker classes', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Parent 1', type: 'ordered-list-item', depth: 0 },
+            { text: 'Parent 2', type: 'ordered-list-item', depth: 0 },
+            { text: 'Child 1', type: 'ordered-list-item', depth: 1 },
+            { text: 'Grandchild 1', type: 'ordered-list-item', depth: 2 },
+            { text: 'Grandchild 2', type: 'ordered-list-item', depth: 2 },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        expect(blockStyleFn(blocks[0])).toContain('markerStyle0')
+        expect(blockStyleFn(blocks[0])).toContain('listResetDepth0')
+        expect(blockStyleFn(blocks[1])).not.toContain('listResetDepth0')
+
+        expect(blockStyleFn(blocks[2])).toContain('markerStyle1')
+        expect(blockStyleFn(blocks[2])).toContain('listResetDepth1')
+
+        expect(blockStyleFn(blocks[3])).toContain('markerStyle2')
+        expect(blockStyleFn(blocks[3])).toContain('listResetDepth2')
+        expect(blockStyleFn(blocks[4])).toContain('markerStyle2')
+        expect(blockStyleFn(blocks[4])).not.toContain('listResetDepth2')
+    })
+
+    it('honors visualListStyle override when computing list classes', () => {
+        const contentState = createContentStateFromBlocks([
+            {
+                text: 'Visual unordered',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const block = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getFirstBlock()
+
+        const className = blockStyleFn(block)
+        expect(className).toContain('listUnordered')
+        expect(className).not.toContain('listOrdered')
+    })
+
+    it('resets ordered marker counters when parent list item changes', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Root 1', type: 'ordered-list-item', depth: 0 },
+            { text: 'Child 1', type: 'ordered-list-item', depth: 1 },
+            { text: 'Child 2', type: 'ordered-list-item', depth: 1 },
+            { text: 'Root 2', type: 'ordered-list-item', depth: 0 },
+            { text: 'Child A', type: 'ordered-list-item', depth: 1 },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        expect(blockStyleFn(blocks[4])).toContain('listResetDepth1')
+    })
+
+    it('keeps list flow when a removed non-list block is between list items', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Root 1', type: 'ordered-list-item', depth: 0 },
+            { text: 'Child 1', type: 'ordered-list-item', depth: 1 },
+            { text: 'Old removed paragraph', type: 'unstyled', removed: true },
+            { text: 'Child 2', type: 'ordered-list-item', depth: 1 },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        const child2ClassName = blockStyleFn(blocks[3])
+        expect(child2ClassName).toContain('markerStyle1')
+        expect(child2ClassName).not.toContain('listResetDepth1')
+    })
+
+    it('applies depth classes to non-list blocks', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Top paragraph', type: 'unstyled', depth: 0 },
+            { text: 'Nested paragraph', type: 'unstyled', depth: 2 },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        expect(blockStyleFn(blocks[0])).toBe('')
+        expect(blockStyleFn(blocks[1])).toContain('blockDepth2')
+    })
+
+    it('marks whitespace-only diff blocks as break markers', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: '\u00A0', type: 'unstyled', removed: true },
+            { text: '\u00A0', type: 'unstyled', added: true },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        expect(blockStyleFn(blocks[0])).toContain('diffBreakBlock')
+        expect(blockStyleFn(blocks[0])).toContain('diffBreakBlockRemoved')
+        expect(blockStyleFn(blocks[1])).toContain('diffBreakBlock')
+        expect(blockStyleFn(blocks[1])).toContain('diffBreakBlockAdded')
+    })
+
+    it('resets counter when list style changes at the same depth', () => {
+        const contentState = createContentStateFromBlocks([
+            {
+                text: 'Ordered style',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'ordered' },
+            },
+            {
+                text: 'Unordered style',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        const className = blockStyleFn(blocks[1])
+        expect(className).toContain('listUnordered')
+        expect(className).toContain('listResetDepth0')
+    })
+
+    it('does not reset root counter when previous block is deeper', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Root 1', type: 'ordered-list-item', depth: 0 },
+            { text: 'Child 1', type: 'ordered-list-item', depth: 1 },
+            { text: 'Root 2', type: 'ordered-list-item', depth: 0 },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        expect(blockStyleFn(blocks[2])).not.toContain('listResetDepth0')
+    })
+
+    it('falls back to markerStyle0 when list style changes before the chain starts', () => {
+        const contentState = createContentStateFromBlocks([
+            { text: 'Parent', type: 'ordered-list-item', depth: 0 },
+            {
+                text: 'Old sibling',
+                type: 'ordered-list-item',
+                depth: 1,
+                data: { visualListStyle: 'unordered' },
+            },
+            {
+                text: 'Current sibling',
+                type: 'ordered-list-item',
+                depth: 1,
+                data: { visualListStyle: 'ordered' },
+            },
+        ])
+
+        render(<DiffReadOnlyEditor contentState={contentState} />)
+
+        const blockStyleFn = capturedEditorProps!.blockStyleFn as (
+            block: ContentBlock,
+        ) => string
+        const blocks = (capturedEditorProps!.editorState as EditorState)
+            .getCurrentContent()
+            .getBlocksAsArray()
+
+        const className = blockStyleFn(blocks[2])
+        expect(className).toContain('markerStyle0')
+        expect(className).toContain('listResetDepth1')
     })
 })
 

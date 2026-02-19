@@ -103,6 +103,205 @@ function DiffImageBlock({ block, contentState }: DiffImageBlockProps) {
     )
 }
 
+function getEffectiveListStyle(block: ContentBlock): 'ordered' | 'unordered' {
+    const visualListStyle = block.getData?.()?.get?.('visualListStyle') as
+        | string
+        | undefined
+
+    if (visualListStyle === 'ordered') return 'ordered'
+    if (visualListStyle === 'unordered') return 'unordered'
+    return block.getType() === 'ordered-list-item' ? 'ordered' : 'unordered'
+}
+
+function isListBlock(block: ContentBlock): boolean {
+    const type = block.getType()
+    return type === 'ordered-list-item' || type === 'unordered-list-item'
+}
+
+function isFullyRemovedBlock(block: ContentBlock): boolean {
+    const text = block.getText()
+    if (!text.length) return false
+
+    for (let i = 0; i < text.length; i++) {
+        const style = block.getInlineStyleAt(i)
+        if (!style.has('DIFF_REMOVED') || style.has('DIFF_ADDED')) {
+            return false
+        }
+    }
+
+    return true
+}
+
+function isFullyAddedBlock(block: ContentBlock): boolean {
+    const text = block.getText()
+    if (!text.length) return false
+
+    for (let i = 0; i < text.length; i++) {
+        const style = block.getInlineStyleAt(i)
+        if (!style.has('DIFF_ADDED') || style.has('DIFF_REMOVED')) {
+            return false
+        }
+    }
+
+    return true
+}
+
+function isTransparentBlockForListFlow(block: ContentBlock): boolean {
+    return !isListBlock(block) && isFullyRemovedBlock(block)
+}
+
+function isWhitespaceOnlyBreakDiffBlock(block: ContentBlock): boolean {
+    if (block.getType() !== 'unstyled') {
+        return false
+    }
+
+    if (
+        block
+            .getText()
+            .replace(/\u00A0/g, ' ')
+            .trim() !== ''
+    ) {
+        return false
+    }
+
+    return isFullyAddedBlock(block) || isFullyRemovedBlock(block)
+}
+
+function getPreviousRelevantBlock(
+    contentState: ContentStateType,
+    blockKey: string,
+): ContentBlock | undefined {
+    let previous = contentState.getBlockBefore(blockKey)
+    while (previous && isTransparentBlockForListFlow(previous)) {
+        previous = contentState.getBlockBefore(previous.getKey())
+    }
+
+    return previous
+}
+
+function findChainContext(
+    contentState: ContentStateType,
+    block: ContentBlock,
+    depth: number,
+    effectiveStyle: 'ordered' | 'unordered',
+): { chainStart: ContentBlock; hasStyleBreak: boolean } {
+    let chainStart = block
+    let prev = contentState.getBlockBefore(block.getKey())
+    while (prev) {
+        if (isTransparentBlockForListFlow(prev)) {
+            prev = contentState.getBlockBefore(prev.getKey())
+            continue
+        }
+
+        if (prev.getDepth() > depth) {
+            prev = contentState.getBlockBefore(prev.getKey())
+            continue
+        }
+        if (prev.getDepth() < depth) break
+        if (
+            !isListBlock(prev) ||
+            getEffectiveListStyle(prev) !== effectiveStyle
+        )
+            break
+
+        chainStart = prev
+        prev = contentState.getBlockBefore(prev.getKey())
+    }
+
+    let chainPrev = contentState.getBlockBefore(chainStart.getKey())
+    while (chainPrev) {
+        if (isTransparentBlockForListFlow(chainPrev)) {
+            chainPrev = contentState.getBlockBefore(chainPrev.getKey())
+            continue
+        }
+        if (chainPrev.getDepth() <= depth) break
+        chainPrev = contentState.getBlockBefore(chainPrev.getKey())
+    }
+
+    const hasStyleBreak =
+        !!chainPrev &&
+        chainPrev.getDepth() === depth &&
+        isListBlock(chainPrev) &&
+        getEffectiveListStyle(chainPrev) !== effectiveStyle
+
+    return { chainStart, hasStyleBreak }
+}
+
+function getStyleNestingLevel(
+    contentState: ContentStateType,
+    block: ContentBlock,
+    effectiveStyle: 'ordered' | 'unordered',
+): number {
+    const depth = block.getDepth()
+    if (depth === 0) return 0
+
+    const { chainStart, hasStyleBreak } = findChainContext(
+        contentState,
+        block,
+        depth,
+        effectiveStyle,
+    )
+    if (hasStyleBreak) return 0
+
+    let nestingLevel = 0
+    let targetDepth = depth - 1
+    let walkFrom = contentState.getBlockBefore(chainStart.getKey())
+
+    while (walkFrom && targetDepth >= 0) {
+        if (isTransparentBlockForListFlow(walkFrom)) {
+            walkFrom = contentState.getBlockBefore(walkFrom.getKey())
+            continue
+        }
+
+        if (walkFrom.getDepth() > targetDepth) {
+            walkFrom = contentState.getBlockBefore(walkFrom.getKey())
+            continue
+        }
+        if (walkFrom.getDepth() < targetDepth) break
+        if (!isListBlock(walkFrom)) break
+        if (getEffectiveListStyle(walkFrom) !== effectiveStyle) break
+
+        const ancestorContext = findChainContext(
+            contentState,
+            walkFrom,
+            targetDepth,
+            effectiveStyle,
+        )
+
+        nestingLevel++
+        if (ancestorContext.hasStyleBreak) break
+
+        targetDepth--
+        walkFrom = contentState.getBlockBefore(
+            ancestorContext.chainStart.getKey(),
+        )
+    }
+
+    return nestingLevel
+}
+
+function getNearestAncestorAtDepth(
+    contentState: ContentStateType,
+    block: ContentBlock,
+    targetDepth: number,
+): ContentBlock | undefined {
+    let cursor = contentState.getBlockBefore(block.getKey())
+    while (cursor) {
+        if (isTransparentBlockForListFlow(cursor)) {
+            cursor = contentState.getBlockBefore(cursor.getKey())
+            continue
+        }
+
+        const cursorDepth = cursor.getDepth()
+        if (cursorDepth === targetDepth) {
+            return cursor
+        }
+        cursor = contentState.getBlockBefore(cursor.getKey())
+    }
+
+    return undefined
+}
+
 // Decorator components wrap guidance tokens in a span with diff styling.
 // The diffStatus is attached as entity data by addDiffEntities in diffUtils.ts.
 function DiffActionDecorator(props: DecoratorComponentProps) {
@@ -244,6 +443,108 @@ export function DiffReadOnlyEditor({
         setEditorState(newState)
     }, [])
 
+    const blockStyleFn = useCallback(
+        (block: ContentBlock): string => {
+            const type = block.getType()
+            const classes: string[] = []
+
+            const isOrderedList = type === 'ordered-list-item'
+            const isUnorderedList = type === 'unordered-list-item'
+
+            if (isOrderedList || isUnorderedList) {
+                const depth = block.getDepth()
+                const effectiveStyle = getEffectiveListStyle(block)
+
+                classes.push(css.listItem)
+                classes.push(
+                    effectiveStyle === 'ordered'
+                        ? css.listOrdered
+                        : css.listUnordered,
+                )
+
+                const depthClass = css[`listDepth${depth}` as keyof typeof css]
+                if (depthClass) classes.push(depthClass)
+
+                const contentState = editorState.getCurrentContent()
+
+                const nestingLevel = getStyleNestingLevel(
+                    contentState,
+                    block,
+                    effectiveStyle,
+                )
+                const markerClass =
+                    css[`markerStyle${nestingLevel % 3}` as keyof typeof css]
+                if (markerClass) classes.push(markerClass)
+
+                const blockBefore = getPreviousRelevantBlock(
+                    contentState,
+                    block.getKey(),
+                )
+
+                const shouldReset = (() => {
+                    if (!blockBefore) return true
+
+                    const prevType = blockBefore.getType()
+                    const isPrevList =
+                        prevType === 'ordered-list-item' ||
+                        prevType === 'unordered-list-item'
+                    if (!isPrevList) return true
+
+                    const prevDepth = blockBefore.getDepth()
+                    if (prevDepth < depth) return true
+                    if (prevDepth > depth) return false
+
+                    if (depth > 0) {
+                        const currentParent = getNearestAncestorAtDepth(
+                            contentState,
+                            block,
+                            depth - 1,
+                        )
+                        const previousParent = getNearestAncestorAtDepth(
+                            contentState,
+                            blockBefore,
+                            depth - 1,
+                        )
+
+                        if (
+                            currentParent?.getKey() !== previousParent?.getKey()
+                        ) {
+                            return true
+                        }
+                    }
+
+                    return getEffectiveListStyle(blockBefore) !== effectiveStyle
+                })()
+
+                if (shouldReset) {
+                    const resetClass =
+                        css[`listResetDepth${depth}` as keyof typeof css]
+                    if (resetClass) classes.push(resetClass)
+                }
+            } else {
+                const depth = block.getDepth()
+                if (depth > 0) {
+                    const depthClass =
+                        css[`blockDepth${depth}` as keyof typeof css]
+                    if (depthClass) classes.push(depthClass)
+                }
+
+                if (isWhitespaceOnlyBreakDiffBlock(block)) {
+                    classes.push(css.diffBreakBlock)
+
+                    if (isFullyAddedBlock(block)) {
+                        classes.push(css.diffBreakBlockAdded)
+                    } else if (isFullyRemovedBlock(block)) {
+                        classes.push(css.diffBreakBlockRemoved)
+                    }
+                }
+            }
+
+            return classes.filter(Boolean).join(' ')
+        },
+        [editorState],
+    )
+
     return (
         <ToolbarProvider
             guidanceVariables={availableVariables}
@@ -258,6 +559,7 @@ export function DiffReadOnlyEditor({
                 onChange={onChange}
                 plugins={plugins}
                 customStyleMap={DIFF_STYLE_MAP}
+                blockStyleFn={blockStyleFn}
                 readOnly
             />
         </ToolbarProvider>

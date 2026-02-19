@@ -1,10 +1,15 @@
 import { CharacterMetadata, ContentBlock, ContentState, genKey } from 'draft-js'
-import { List } from 'immutable'
+import { Map as ImmutableMap, List } from 'immutable'
 
 import { addDiffEntities, computeUnifiedDiff } from './diffUtils'
 
 function createContentState(
-    blocks: { text: string; type?: string; depth?: number }[],
+    blocks: {
+        text: string
+        type?: string
+        depth?: number
+        data?: Record<string, unknown>
+    }[],
 ): ContentState {
     const contentBlocks = blocks.map(
         (block) =>
@@ -13,11 +18,10 @@ function createContentState(
                 type: block.type ?? 'unstyled',
                 text: block.text,
                 characterList: List(
-                    Array.from(block.text).map(() =>
-                        CharacterMetadata.create(),
-                    ),
+                    block.text.split('').map(() => CharacterMetadata.create()),
                 ),
                 depth: block.depth ?? 0,
+                data: block.data ? ImmutableMap(block.data) : undefined,
             }),
     )
     return ContentState.createFromBlockArray(contentBlocks)
@@ -42,6 +46,27 @@ function getDiffStyles(
         }
     }
     return result
+}
+
+function hasUnpairedSurrogate(value: string): boolean {
+    for (let index = 0; index < value.length; index += 1) {
+        const codeUnit = value.charCodeAt(index)
+
+        if (codeUnit >= 0xd800 && codeUnit <= 0xdbff) {
+            const nextCodeUnit = value.charCodeAt(index + 1)
+            if (!(nextCodeUnit >= 0xdc00 && nextCodeUnit <= 0xdfff)) {
+                return true
+            }
+            index += 1
+            continue
+        }
+
+        if (codeUnit >= 0xdc00 && codeUnit <= 0xdfff) {
+            return true
+        }
+    }
+
+    return false
 }
 
 function createImageContentState(src: string, type = 'img'): ContentState {
@@ -140,6 +165,23 @@ describe('computeUnifiedDiff', () => {
         expect(addedText).toContain('planet')
     })
 
+    it('handles emoji replacements without introducing broken surrogate pairs', () => {
+        const old = createContentState([
+            { text: `Escalation summary ${String.fromCodePoint(0x1f604)}` },
+        ])
+        const new_ = createContentState([
+            { text: `Escalation summary ${String.fromCodePoint(0x1f605)}` },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const mergedText = mergedContentState.getPlainText('\n')
+
+        expect(mergedText).toContain(String.fromCodePoint(0x1f604))
+        expect(mergedText).toContain(String.fromCodePoint(0x1f605))
+        expect(mergedText).not.toContain('\uFFFD')
+        expect(hasUnpairedSurrogate(mergedText)).toBe(false)
+    })
+
     it('handles multi-block content', () => {
         const old = createContentState([
             { text: 'Line one' },
@@ -154,6 +196,46 @@ describe('computeUnifiedDiff', () => {
 
         const blocks = mergedContentState.getBlocksAsArray()
         expect(blocks.length).toBeGreaterThanOrEqual(2)
+    })
+
+    it('keeps trailing removed blocks when there is no paired addition', () => {
+        const old = createContentState([
+            { text: 'Shared intro' },
+            { text: 'Legacy tail' },
+        ])
+        const new_ = createContentState([{ text: 'Shared intro' }])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(2)
+        expect(blocks[0].getText()).toBe('Shared intro')
+        expect(blocks[1].getText()).toBe('Legacy tail')
+        const isFullyRemoved = blocks[1]
+            .getCharacterList()
+            .toArray()
+            .every((meta) => meta.getStyle().has('DIFF_REMOVED'))
+        expect(isFullyRemoved).toBe(true)
+    })
+
+    it('keeps trailing added blocks when there is no paired removal', () => {
+        const old = createContentState([{ text: 'Shared intro' }])
+        const new_ = createContentState([
+            { text: 'Shared intro' },
+            { text: 'New tail' },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(2)
+        expect(blocks[0].getText()).toBe('Shared intro')
+        expect(blocks[1].getText()).toBe('New tail')
+        const isFullyAdded = blocks[1]
+            .getCharacterList()
+            .toArray()
+            .every((meta) => meta.getStyle().has('DIFF_ADDED'))
+        expect(isFullyAdded).toBe(true)
     })
 
     it('handles empty old content with all-new text', () => {
@@ -206,6 +288,163 @@ describe('computeUnifiedDiff', () => {
         const blocks = mergedContentState.getBlocksAsArray()
         expect(blocks[0].getType()).toBe('header-one')
         expect(blocks[1].getType()).toBe('unstyled')
+    })
+
+    it('preserves list block metadata from the new content', () => {
+        const old = createContentState([
+            {
+                text: 'List item',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'ordered' },
+            },
+        ])
+        const new_ = createContentState([
+            {
+                text: 'List item updated',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+
+        const firstBlock = mergedContentState.getBlocksAsArray()[0]
+        expect(firstBlock.getType()).toBe('ordered-list-item')
+        expect(firstBlock.getData().get('visualListStyle')).toBe('unordered')
+    })
+
+    it('keeps list items contiguous when old dash paragraphs migrate to a new unordered list', () => {
+        const old = createContentState([
+            {
+                text: 'If a customer requires a spare part for their product, and the product is within the warranty window.',
+            },
+            { text: ' ' },
+            { text: 'The only spare parts available that we have are:' },
+            { text: '- Cash bands' },
+            { text: '- Finder Card Charging Cable /Charging cord / Charger' },
+            { text: '- Backpack straps' },
+        ])
+        const new_ = createContentState([
+            { text: 'If a customer requires a spare part for their product:' },
+            {
+                text: 'Cash bands',
+                type: 'unordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+            {
+                text: 'Charging Cable / Charging cord / Charger only for Finder Card - Android or Apple (not for Finder for MagSafe)',
+                type: 'unordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+            {
+                text: 'Backpack straps',
+                type: 'unordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+            {
+                text: 'Verify the Order:',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'ordered' },
+            },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        const unorderedBlockIndexes = blocks
+            .map((block, index) => ({ block, index }))
+            .filter(({ block }) => block.getType() === 'unordered-list-item')
+            .map(({ index }) => index)
+
+        expect(unorderedBlockIndexes.length).toBe(3)
+        expect(unorderedBlockIndexes).toEqual([
+            unorderedBlockIndexes[0],
+            unorderedBlockIndexes[0] + 1,
+            unorderedBlockIndexes[0] + 2,
+        ])
+        const unorderedTexts = blocks
+            .filter((block) => block.getType() === 'unordered-list-item')
+            .map((block) => block.getText())
+        unorderedTexts.forEach((text) => {
+            expect(text.startsWith('- ')).toBe(false)
+        })
+        expect(unorderedTexts[0]).toContain('Cash bands')
+        expect(unorderedTexts[1]).toContain(
+            'Charging Cable / Charging cord / Charger only for Finder Card - Android or Apple (not for Finder for MagSafe)',
+        )
+        expect(unorderedTexts[2]).toContain('Backpack straps')
+
+        const standaloneLegacyDashBlocks = blocks.filter(
+            (block) =>
+                block.getType() === 'unstyled' &&
+                /^-\s+(Cash bands|Finder Card Charging Cable|Backpack straps)/.test(
+                    block.getText(),
+                ),
+        )
+        expect(standaloneLegacyDashBlocks).toHaveLength(0)
+    })
+
+    it('keeps a leading marker when it is added (not removed) in a list item', () => {
+        const old = createContentState([
+            {
+                text: 'Cash bands',
+                type: 'unordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+        ])
+        const new_ = createContentState([
+            {
+                text: '- Cash bands',
+                type: 'unordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'unordered' },
+            },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const firstBlock = mergedContentState.getBlocksAsArray()[0]
+
+        expect(firstBlock.getText().startsWith('- ')).toBe(true)
+    })
+
+    it('does not pair unrelated cross-type blocks with low similarity', () => {
+        const old = createContentState([
+            { text: 'Warranty is expired', type: 'unstyled' },
+        ])
+        const new_ = createContentState([
+            {
+                text: 'Collect order number',
+                type: 'ordered-list-item',
+                depth: 0,
+                data: { visualListStyle: 'ordered' },
+            },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(2)
+        expect(blocks[0].getType()).toBe('unstyled')
+        expect(blocks[1].getType()).toBe('ordered-list-item')
+
+        const removedStyles = blocks[0]
+            .getCharacterList()
+            .toArray()
+            .every((meta) => meta.getStyle().has('DIFF_REMOVED'))
+        const addedStyles = blocks[1]
+            .getCharacterList()
+            .toArray()
+            .every((meta) => meta.getStyle().has('DIFF_ADDED'))
+
+        expect(removedStyles).toBe(true)
+        expect(addedStyles).toBe(true)
     })
 
     it('treats guidance action tokens ($$$...$$$) as atomic units', () => {
@@ -325,6 +564,51 @@ describe('computeUnifiedDiff', () => {
         expect(blocks[1].getType()).toBe('atomic')
         expect(blocks[0].getInlineStyleAt(0).has('DIFF_REMOVED')).toBe(true)
         expect(blocks[1].getInlineStyleAt(0).has('DIFF_ADDED')).toBe(true)
+    })
+
+    it('keeps unchanged images as a single atomic block without diff styles', () => {
+        const old = createImageContentState('https://example.com/same.png')
+        const new_ = createImageContentState('https://example.com/same.png')
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(1)
+        expect(blocks[0].getType()).toBe('atomic')
+        expect(blocks[0].getInlineStyleAt(0).has('DIFF_REMOVED')).toBe(false)
+        expect(blocks[0].getInlineStyleAt(0).has('DIFF_ADDED')).toBe(false)
+
+        const entityKey = blocks[0].getEntityAt(0)
+        expect(entityKey).not.toBeNull()
+        const entity = mergedContentState.getEntity(entityKey)
+        expect(entity.getData()).toMatchObject({
+            src: 'https://example.com/same.png',
+            diffStatus: null,
+        })
+    })
+
+    it('pairs highly similar non-list cross-type blocks into a single merged block', () => {
+        const old = createContentState([
+            {
+                text: 'Verify order details for this request',
+                type: 'header-two',
+            },
+        ])
+        const new_ = createContentState([
+            {
+                text: 'Verify order details for this request',
+                type: 'blockquote',
+            },
+        ])
+
+        const { mergedContentState } = computeUnifiedDiff(old, new_)
+        const blocks = mergedContentState.getBlocksAsArray()
+
+        expect(blocks).toHaveLength(1)
+        expect(blocks[0].getType()).toBe('blockquote')
+        expect(blocks[0].getText()).toBe(
+            'Verify order details for this request',
+        )
     })
 
     it('treats legacy image entity types as images in diffing', () => {
