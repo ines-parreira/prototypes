@@ -428,7 +428,7 @@ export default function UserMenu({ onClose }: Props) {
                         <NoticeableIndicator />
                     </button>
                     <a
-                        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
+                        href="https://www.gorgias.com/roadmap"
                         target="_blank"
                         rel="noreferrer"
                         className={css['dropdown-item-user-menu']}
