@@ -13,6 +13,7 @@ import {
 
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { BaseArticle } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import type { MutationOverrides } from 'types/query'
@@ -43,7 +44,6 @@ import {
     getFileIngestion,
     getFileIngestionArticleTitlesAndStatus,
     getHelpCenter,
-    getHelpCenterArticle,
     getHelpCenterArticles,
     getHelpCenterList,
     getHelpCenterStatistics,
@@ -216,6 +216,45 @@ export const helpCenterArticleKeys = (
     locale: string,
     versionStatus?: GetArticleVersionStatus,
 ) => [...helpCenterKeys.article(helpCenterId, articleId), locale, versionStatus]
+
+export type GetHelpCenterArticleQueryOptions = {
+    client: HelpCenterClient | undefined
+    articleId: Paths.GetArticle.Parameters.Id
+    helpCenterId: Paths.GetArticle.Parameters.HelpCenterId
+    locale: Paths.GetArticle.Parameters.Locale
+    versionStatus?: GetArticleVersionStatus
+    throwOn404?: boolean
+}
+
+export const getHelpCenterArticleQuery = ({
+    client,
+    articleId,
+    helpCenterId,
+    locale,
+    versionStatus = 'current',
+    throwOn404,
+}: GetHelpCenterArticleQueryOptions) => ({
+    queryKey: helpCenterArticleKeys(
+        helpCenterId,
+        articleId,
+        locale,
+        versionStatus,
+    ),
+    queryFn: async () =>
+        getHelpCenterArticle(
+            client,
+            {
+                help_center_id: helpCenterId,
+                id: articleId,
+            },
+            {
+                locale: locale,
+                version_status: versionStatus,
+            },
+            { throwOn404 },
+        ),
+    staleTime: STALE_TIME,
+})
 
 export const useGetHelpCenterArticleList = (
     helpCenterId: Paths.ListArticles.Parameters.HelpCenterId,
@@ -489,28 +528,17 @@ export const useGetHelpCenterArticle = (
     > & { throwOn404?: boolean },
 ) => {
     const { client } = useHelpCenterApi()
+    const query = getHelpCenterArticleQuery({
+        client,
+        articleId,
+        helpCenterId,
+        locale,
+        versionStatus,
+        throwOn404: overrides?.throwOn404,
+    })
 
     return useQuery({
-        queryKey: helpCenterArticleKeys(
-            helpCenterId,
-            articleId,
-            locale,
-            versionStatus,
-        ),
-        queryFn: async () =>
-            getHelpCenterArticle(
-                client,
-                {
-                    help_center_id: helpCenterId,
-                    id: articleId,
-                },
-                {
-                    locale: locale,
-                    version_status: versionStatus,
-                },
-                { throwOn404: overrides?.throwOn404 },
-            ),
-        staleTime: STALE_TIME,
+        ...query,
         ...overrides,
         enabled:
             !!client &&

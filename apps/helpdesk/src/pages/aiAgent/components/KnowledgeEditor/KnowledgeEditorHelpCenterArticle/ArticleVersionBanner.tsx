@@ -1,12 +1,33 @@
 import { useCallback } from 'react'
 
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
+import { useQueryClient } from '@tanstack/react-query'
+
+import {
+    getHelpCenterArticleQuery,
+    type GetHelpCenterArticleQueryOptions,
+} from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { VersionBanner } from '../shared/VersionBanner'
 import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
 import { useVersionHistory } from './hooks/useVersionHistory'
+
+const useFetchHelpCenterArticle = () => {
+    const queryClient = useQueryClient()
+    const { client } = useHelpCenterApi()
+
+    return useCallback(
+        (params: Omit<GetHelpCenterArticleQueryOptions, 'client'>) =>
+            queryClient.fetchQuery(
+                getHelpCenterArticleQuery({
+                    ...params,
+                    client,
+                }),
+            ),
+        [queryClient, client],
+    )
+}
 
 export function ArticleVersionBanner() {
     const {
@@ -19,7 +40,7 @@ export function ArticleVersionBanner() {
 
     const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
     const { state, dispatch, config } = useArticleContext()
-    const { client } = useHelpCenterApi()
+    const fetchHelpCenterArticle = useFetchHelpCenterArticle()
 
     const isDiffMode = state.articleMode === 'diff'
 
@@ -35,17 +56,12 @@ export function ArticleVersionBanner() {
                 hasPublishedVersion
             ) {
                 try {
-                    const publishedVersion = await getHelpCenterArticle(
-                        client,
-                        {
-                            help_center_id: config.helpCenter.id,
-                            id: state.article?.id ?? 0,
-                        },
-                        {
-                            locale: state.currentLocale,
-                            version_status: 'current',
-                        },
-                    )
+                    const publishedVersion = await fetchHelpCenterArticle({
+                        helpCenterId: config.helpCenter.id,
+                        articleId: state.article?.id ?? 0,
+                        locale: state.currentLocale,
+                        versionStatus: 'current',
+                    })
                     if (publishedVersion) {
                         dispatch({
                             type: 'SET_COMPARISON_VERSION',
@@ -67,7 +83,7 @@ export function ArticleVersionBanner() {
         isViewingHistoricalVersion,
         hasPublishedVersion,
         dispatch,
-        client,
+        fetchHelpCenterArticle,
         config.helpCenter.id,
         state.article?.id,
         state.currentLocale,

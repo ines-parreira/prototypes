@@ -10,11 +10,13 @@ type HelpCenterType = 'guidance' | 'snippet' | 'faq'
 type UseAiAgentHelpCenterParams = {
     shopName: string
     helpCenterType: HelpCenterType
+    enabled?: boolean
 }
 
 export const useAiAgentHelpCenterState = ({
     shopName,
     helpCenterType,
+    enabled = true,
 }: UseAiAgentHelpCenterParams): {
     helpCenter: HelpCenter | undefined
     isLoading: boolean
@@ -25,6 +27,7 @@ export const useAiAgentHelpCenterState = ({
         {
             // Guidance Help Center is not expected to change frequently
             staleTime: FIVE_MINUTES,
+            enabled,
             onSuccess: (data) => {
                 const helpCenter = data?.data.data[0]
 
@@ -57,10 +60,12 @@ export const useAiAgentHelpCenterState = ({
 export const useAiAgentHelpCenter = ({
     shopName,
     helpCenterType,
+    enabled = true,
 }: UseAiAgentHelpCenterParams): HelpCenter | undefined => {
     const { helpCenter } = useAiAgentHelpCenterState({
         shopName,
         helpCenterType,
+        enabled,
     })
 
     return helpCenter

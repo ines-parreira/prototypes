@@ -1,4 +1,5 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -61,6 +62,22 @@ const mockUseVersionBanner = useVersionBanner as jest.Mock
 const mockUseVersionHistory = useVersionHistory as jest.Mock
 const mockUseArticleContext = useArticleContext as jest.Mock
 
+const renderComponent = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            },
+        },
+    })
+
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <ArticleVersionBanner />
+        </QueryClientProvider>,
+    )
+}
+
 describe('ArticleVersionBanner', () => {
     let mockSwitchVersion: jest.Mock
 
@@ -111,7 +128,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
 
-            const { container } = render(<ArticleVersionBanner />)
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -124,7 +141,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
 
-            const { container } = render(<ArticleVersionBanner />)
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -137,7 +154,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
 
-            const { container } = render(<ArticleVersionBanner />)
+            const { container } = renderComponent()
 
             expect(container.firstChild).toBeNull()
         })
@@ -150,7 +167,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
 
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(screen.getByText(/published version/i)).toBeInTheDocument()
         })
@@ -168,7 +185,7 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render draft version message', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByText(/This is a draft version/i),
@@ -176,13 +193,13 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render link to published version', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(screen.getByText('published version')).toBeInTheDocument()
         })
 
         it('should render description about editing draft', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByText(
@@ -193,7 +210,7 @@ describe('ArticleVersionBanner', () => {
 
         it('should call switchVersion when clicking published version link', async () => {
             const user = userEvent.setup()
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             await user.click(screen.getByText('published version'))
 
@@ -210,7 +227,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
             const user = userEvent.setup()
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             await user.click(screen.getByText('published version'))
 
@@ -230,7 +247,7 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('renders diff toggle when viewing draft with published version', () => {
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.getByText('Compare to current'),
@@ -252,7 +269,7 @@ describe('ArticleVersionBanner', () => {
                     } as any,
                 })
 
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.getByText('Compare to current'),
@@ -289,7 +306,7 @@ describe('ArticleVersionBanner', () => {
                 })
 
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -297,6 +314,7 @@ describe('ArticleVersionBanner', () => {
                     {} as any,
                     { help_center_id: 1, id: 123 },
                     { locale: 'en', version_status: 'current' },
+                    { throwOn404: undefined },
                 )
 
                 await screen.findByRole('switch')
@@ -308,6 +326,29 @@ describe('ArticleVersionBanner', () => {
                         content: 'Published Content',
                     },
                 })
+            })
+
+            it('reuses cached published version when toggling to diff repeatedly without state changes', async () => {
+                const { getHelpCenterArticle } = await import(
+                    'models/helpCenter/resources'
+                )
+                const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                mockGetArticle.mockResolvedValue({
+                    id: 123,
+                    translation: {
+                        title: 'Published Title',
+                        content: 'Published Content',
+                    },
+                } as any)
+
+                const user = userEvent.setup()
+                renderComponent()
+
+                await user.click(screen.getByRole('switch'))
+                await user.click(screen.getByRole('switch'))
+
+                expect(mockGetArticle).toHaveBeenCalledTimes(1)
             })
 
             it('dispatches CLEAR_HISTORICAL_VERSION when toggling off from draft', async () => {
@@ -327,7 +368,7 @@ describe('ArticleVersionBanner', () => {
                 })
 
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -349,7 +390,7 @@ describe('ArticleVersionBanner', () => {
                     }),
                 )
 
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.queryByText('Compare to current'),
@@ -371,7 +412,7 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render published version message', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByText(/This is a published version/i),
@@ -379,13 +420,13 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render link to draft version', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(screen.getByText('draft version')).toBeInTheDocument()
         })
 
         it('should not render description (only shown for draft view)', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.queryByText(/Edit, test, and publish/i),
@@ -394,7 +435,7 @@ describe('ArticleVersionBanner', () => {
 
         it('should call switchVersion when clicking draft version link', async () => {
             const user = userEvent.setup()
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             await user.click(screen.getByText('draft version'))
 
@@ -411,7 +452,7 @@ describe('ArticleVersionBanner', () => {
                 }),
             )
             const user = userEvent.setup()
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             await user.click(screen.getByText('draft version'))
 
@@ -452,7 +493,7 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render historical version banner', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByText(/You are viewing a previous version/i),
@@ -460,7 +501,7 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should render commit message when provided', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByText(/Fixed article content/i),
@@ -484,7 +525,7 @@ describe('ArticleVersionBanner', () => {
                 } as any,
             })
 
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.queryByText(/Changes in this version/i),
@@ -493,7 +534,7 @@ describe('ArticleVersionBanner', () => {
 
         it('should call onGoToLatest when "Back to latest" is clicked', async () => {
             const user = userEvent.setup()
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             await user.click(
                 screen.getByRole('button', { name: /Back to latest/i }),
@@ -503,7 +544,7 @@ describe('ArticleVersionBanner', () => {
         })
 
         it('should not render a restore button in the banner', () => {
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.queryByRole('button', {
@@ -517,7 +558,7 @@ describe('ArticleVersionBanner', () => {
                 createMockVersionBanner({ isDisabled: true }),
             )
 
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.getByRole('button', { name: /Back to latest/i }),
@@ -533,7 +574,7 @@ describe('ArticleVersionBanner', () => {
             })
 
             it('should render unchecked toggle when not in diff mode', () => {
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.getByText('Compare to current'),
@@ -555,7 +596,7 @@ describe('ArticleVersionBanner', () => {
                     } as any,
                 })
 
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.getByText('Compare to current'),
@@ -565,7 +606,7 @@ describe('ArticleVersionBanner', () => {
 
             it('should dispatch SET_MODE with "diff" when toggle is clicked on', async () => {
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -590,7 +631,7 @@ describe('ArticleVersionBanner', () => {
                 } as any)
 
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -598,6 +639,7 @@ describe('ArticleVersionBanner', () => {
                     {} as any,
                     { help_center_id: 1, id: 123 },
                     { locale: 'en', version_status: 'current' },
+                    { throwOn404: undefined },
                 )
 
                 await screen.findByRole('switch')
@@ -623,7 +665,7 @@ describe('ArticleVersionBanner', () => {
                 mockGetArticle.mockRejectedValue(new Error('Failed to fetch'))
 
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -646,7 +688,7 @@ describe('ArticleVersionBanner', () => {
                 mockGetArticle.mockResolvedValue(null)
 
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -673,7 +715,7 @@ describe('ArticleVersionBanner', () => {
                     } as any,
                 })
                 const user = userEvent.setup()
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 await user.click(screen.getByRole('switch'))
 
@@ -688,7 +730,7 @@ describe('ArticleVersionBanner', () => {
                     createMockVersionBanner({ isDisabled: true }),
                 )
 
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(screen.getByRole('switch')).toBeDisabled()
             })
@@ -696,7 +738,7 @@ describe('ArticleVersionBanner', () => {
             it('should not render diff toggle when feature flag is disabled', () => {
                 mockUseFlag.mockReturnValue(false)
 
-                render(<ArticleVersionBanner />)
+                renderComponent()
 
                 expect(
                     screen.queryByText('Compare to current'),
@@ -721,7 +763,7 @@ describe('ArticleVersionBanner', () => {
                 } as any,
             })
 
-            render(<ArticleVersionBanner />)
+            renderComponent()
 
             expect(
                 screen.queryByText('Compare to current'),

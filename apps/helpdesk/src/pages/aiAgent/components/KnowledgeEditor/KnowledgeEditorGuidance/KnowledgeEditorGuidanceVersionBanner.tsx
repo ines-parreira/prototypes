@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
+import { appQueryClient } from 'api/queryClient'
+import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { VersionBanner } from '../shared/VersionBanner'
@@ -37,19 +38,20 @@ export function KnowledgeEditorGuidanceVersionBanner() {
                 hasPublishedVersion
             ) {
                 try {
-                    const publishedVersion = await getHelpCenterArticle(
-                        client,
-                        {
-                            help_center_id: config.guidanceHelpCenter?.id ?? 0,
-                            id: state.guidance?.id ?? 0,
-                        },
-                        {
-                            locale:
-                                config.guidanceHelpCenter?.default_locale ??
-                                'en-US',
-                            version_status: 'current',
-                        },
+                    const helpCenterId = config.guidanceHelpCenter?.id ?? 0
+                    const articleId = state.guidance?.id ?? 0
+                    const locale =
+                        config.guidanceHelpCenter?.default_locale ?? 'en-US'
+                    const publishedVersion = await appQueryClient.fetchQuery(
+                        getHelpCenterArticleQuery({
+                            client,
+                            helpCenterId,
+                            articleId,
+                            locale,
+                            versionStatus: 'current',
+                        }),
                     )
+
                     if (publishedVersion) {
                         const article = fromArticleTranslation(publishedVersion)
                         dispatch({

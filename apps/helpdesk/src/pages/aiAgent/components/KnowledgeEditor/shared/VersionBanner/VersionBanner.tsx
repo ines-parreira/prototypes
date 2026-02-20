@@ -32,6 +32,8 @@ type VersionBannerProps = {
     className?: string
 }
 
+const USER_STALE_TIME = 5 * 60 * 1000
+
 export function VersionBanner({
     isViewingDraft,
     hasDraftVersion,
@@ -52,7 +54,13 @@ export function VersionBanner({
     const publisherUserId = historicalVersion?.publisherUserId
     const { data: publisherData } = useGetUser<{ data: { name: string } }>(
         publisherUserId ?? 0,
-        { query: { enabled: !!publisherUserId } },
+        {
+            query: {
+                enabled: !!publisherUserId,
+                staleTime: USER_STALE_TIME,
+                refetchOnWindowFocus: false,
+            },
+        },
     )
     const publisherName = publisherData?.data?.name
 

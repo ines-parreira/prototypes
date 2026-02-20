@@ -136,6 +136,7 @@ export const KnowledgeEditorGuidance = ({
     } = useAiAgentHelpCenterState({
         shopName: shopName,
         helpCenterType: 'guidance',
+        enabled: isOpen,
     })
 
     const { guidanceArticle, isGuidanceArticleLoading, isError, error } =
@@ -145,6 +146,7 @@ export const KnowledgeEditorGuidance = ({
             locale: guidanceHelpCenter?.default_locale ?? 'en-US',
             versionStatus: 'latest_draft',
             enabled:
+                isOpen &&
                 !!guidanceArticleId &&
                 !!guidanceHelpCenter?.id &&
                 guidanceMode !== 'create',
@@ -154,7 +156,7 @@ export const KnowledgeEditorGuidance = ({
 
     useEffect(() => {
         // Only show error if editor is actually open and attempting to display content
-        if (isError && guidanceArticleId && error) {
+        if (isOpen && isError && guidanceArticleId && error) {
             // Check if it's a 404 error
             const is404 =
                 isGorgiasApiError(error) && error.response.status === 404
@@ -166,7 +168,7 @@ export const KnowledgeEditorGuidance = ({
             notifyError(message)
             onClose()
         }
-    }, [isError, guidanceArticleId, error, isOpen, notifyError, onClose])
+    }, [isOpen, isError, guidanceArticleId, error, notifyError, onClose])
     if (!isOpen) {
         return null
     }

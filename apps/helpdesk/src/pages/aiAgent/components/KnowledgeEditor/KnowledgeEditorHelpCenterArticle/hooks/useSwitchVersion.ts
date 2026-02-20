@@ -1,7 +1,8 @@
 import { useCallback } from 'react'
 
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
-import { getHelpCenterArticle } from 'models/helpCenter/resources'
+import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { useArticleContext } from '../context'
@@ -21,16 +22,14 @@ export function useSwitchVersion() {
 
             dispatch({ type: 'SET_UPDATING', payload: true })
             try {
-                const response = await getHelpCenterArticle(
-                    client,
-                    {
-                        help_center_id: helpCenter?.id ?? 0,
-                        id: state.article.id,
-                    },
-                    {
+                const response = await appQueryClient.fetchQuery(
+                    getHelpCenterArticleQuery({
+                        client,
+                        helpCenterId: helpCenter?.id ?? 0,
+                        articleId: state.article.id,
                         locale: state.currentLocale,
-                        version_status: targetStatus,
-                    },
+                        versionStatus: targetStatus,
+                    }),
                 )
                 if (response) {
                     dispatch({

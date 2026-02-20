@@ -49,7 +49,7 @@ export const FaqEditorWrapper = ({
     const { data: faqHelpCenter } = useGetHelpCenter(
         faqHelpCenterId,
         {},
-        { enabled: !!faqHelpCenterId },
+        { enabled: isOpen && !!faqHelpCenterId },
     )
 
     const { data: faqCategoryTree } = useGetHelpCenterCategoryTree(
@@ -61,7 +61,7 @@ export const FaqEditorWrapper = ({
             order_by: 'position',
             order_dir: 'asc',
         },
-        { enabled: !!faqHelpCenter?.id },
+        { enabled: isOpen && !!faqHelpCenter?.id },
     )
 
     const faqCategories = useMemo(() => {

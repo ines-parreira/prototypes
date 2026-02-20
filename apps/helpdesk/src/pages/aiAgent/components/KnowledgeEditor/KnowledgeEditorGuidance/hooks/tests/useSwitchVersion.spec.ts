@@ -1,5 +1,9 @@
-import { act, renderHook } from '@repo/testing'
+import { createElement } from 'react'
 
+import { act, renderHook } from '@repo/testing'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
@@ -105,8 +109,28 @@ describe('useSwitchVersion (Guidance)', () => {
         publishedVersionId: 2,
     }
 
+    const renderUseSwitchVersion = () => {
+        const queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        })
+
+        return renderHook(() => useSwitchVersion(), {
+            wrapper: ({ children }) =>
+                createElement(
+                    QueryClientProvider,
+                    { client: queryClient },
+                    children,
+                ),
+        })
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
+        appQueryClient.clear()
         ;(useNotify as jest.Mock).mockReturnValue({
             error: mockNotifyError,
         })
@@ -129,7 +153,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -149,7 +173,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -168,7 +192,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -178,6 +202,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockClient,
             { help_center_id: 1, id: 123 },
             { locale: 'en-US', version_status: 'current' },
+            { throwOn404: undefined },
         )
     })
 
@@ -189,7 +214,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('latest_draft')
@@ -199,7 +224,26 @@ describe('useSwitchVersion (Guidance)', () => {
             mockClient,
             { help_center_id: 1, id: 123 },
             { locale: 'en-US', version_status: 'latest_draft' },
+            { throwOn404: undefined },
         )
+    })
+
+    it('should reuse cached response when switching to the same version repeatedly', async () => {
+        ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(
+            mockArticleResponse,
+        )
+        ;(fromArticleTranslation as jest.Mock).mockReturnValue(
+            mockTransformedGuidance,
+        )
+
+        const { result } = renderUseSwitchVersion()
+
+        await act(async () => {
+            await result.current.switchToVersion('current')
+            await result.current.switchToVersion('current')
+        })
+
+        expect(getHelpCenterArticle).toHaveBeenCalledTimes(1)
     })
 
     it('should dispatch SWITCH_VERSION with transformed guidance on success', async () => {
@@ -210,7 +254,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -226,7 +270,7 @@ describe('useSwitchVersion (Guidance)', () => {
     it('should not dispatch SWITCH_VERSION when response is null', async () => {
         ;(getHelpCenterArticle as jest.Mock).mockResolvedValue(null)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -242,7 +286,7 @@ describe('useSwitchVersion (Guidance)', () => {
             new Error('API Error'),
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -258,7 +302,7 @@ describe('useSwitchVersion (Guidance)', () => {
             new Error('API Error'),
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -282,7 +326,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -292,6 +336,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockClient,
             { help_center_id: 0, id: 123 },
             { locale: 'en-US', version_status: 'current' },
+            { throwOn404: undefined },
         )
     })
 
@@ -308,7 +353,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockTransformedGuidance,
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -318,6 +363,7 @@ describe('useSwitchVersion (Guidance)', () => {
             mockClient,
             { help_center_id: 1, id: 0 },
             { locale: 'en-US', version_status: 'current' },
+            { throwOn404: undefined },
         )
     })
 })

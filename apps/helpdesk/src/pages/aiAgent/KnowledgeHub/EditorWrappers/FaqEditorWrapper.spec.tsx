@@ -230,6 +230,22 @@ describe('FaqEditorWrapper', () => {
             )
         })
 
+        it('disables help center and category queries when editor is closed', () => {
+            renderComponent({ isOpen: false })
+
+            expect(mockUseGetHelpCenter).toHaveBeenCalledWith(
+                123,
+                {},
+                { enabled: false },
+            )
+            expect(mockUseGetHelpCenterCategoryTree).toHaveBeenCalledWith(
+                123,
+                0,
+                expect.any(Object),
+                { enabled: false },
+            )
+        })
+
         it('does not fetch category tree when help center id is not available', () => {
             mockUseGetHelpCenter.mockReturnValue({
                 data: null,

@@ -1,5 +1,9 @@
+import { createElement } from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
+import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { LocaleCode } from 'models/helpCenter/types'
@@ -135,8 +139,28 @@ describe('useSwitchVersion (Article)', () => {
         },
     }
 
+    const renderUseSwitchVersion = () => {
+        const queryClient = new QueryClient({
+            defaultOptions: {
+                queries: {
+                    retry: false,
+                },
+            },
+        })
+
+        return renderHook(() => useSwitchVersion(), {
+            wrapper: ({ children }) =>
+                createElement(
+                    QueryClientProvider,
+                    { client: queryClient },
+                    children,
+                ),
+        })
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
+        appQueryClient.clear()
 
         mockDispatch = jest.fn()
         mockNotifyError = jest.fn()
@@ -159,7 +183,7 @@ describe('useSwitchVersion (Article)', () => {
             }),
         )
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -172,7 +196,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should dispatch SET_UPDATING true at start', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -187,7 +211,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should dispatch SET_UPDATING false at end', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -201,7 +225,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should call getHelpCenterArticle with correct params for "current" target', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -211,13 +235,14 @@ describe('useSwitchVersion (Article)', () => {
             mockClient,
             { help_center_id: 1, id: 123 },
             { locale: 'en-US', version_status: 'current' },
+            { throwOn404: undefined },
         )
     })
 
     it('should call getHelpCenterArticle with correct params for "latest_draft" target', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('latest_draft')
@@ -227,13 +252,27 @@ describe('useSwitchVersion (Article)', () => {
             mockClient,
             { help_center_id: 1, id: 123 },
             { locale: 'en-US', version_status: 'latest_draft' },
+            { throwOn404: undefined },
         )
+    })
+
+    it('should reuse cached response when switching to the same version repeatedly', async () => {
+        mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
+
+        const { result } = renderUseSwitchVersion()
+
+        await act(async () => {
+            await result.current.switchToVersion('current')
+            await result.current.switchToVersion('current')
+        })
+
+        expect(mockGetHelpCenterArticle).toHaveBeenCalledTimes(1)
     })
 
     it('should dispatch SWITCH_VERSION with article and versionStatus on success', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -251,7 +290,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should include the correct versionStatus in SWITCH_VERSION payload', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('latest_draft')
@@ -269,7 +308,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should not dispatch SWITCH_VERSION when response is null', async () => {
         mockGetHelpCenterArticle.mockResolvedValue(null)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -283,7 +322,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should show error notification on failure', async () => {
         mockGetHelpCenterArticle.mockRejectedValue(new Error('API Error'))
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -297,7 +336,7 @@ describe('useSwitchVersion (Article)', () => {
     it('should dispatch SET_UPDATING false even on error', async () => {
         mockGetHelpCenterArticle.mockRejectedValue(new Error('API Error'))
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -316,7 +355,7 @@ describe('useSwitchVersion (Article)', () => {
         )
         mockGetHelpCenterArticle.mockResolvedValue(mockArticleResponse)
 
-        const { result } = renderHook(() => useSwitchVersion())
+        const { result } = renderUseSwitchVersion()
 
         await act(async () => {
             await result.current.switchToVersion('current')
@@ -326,6 +365,7 @@ describe('useSwitchVersion (Article)', () => {
             mockClient,
             expect.any(Object),
             expect.objectContaining({ locale: 'fr-FR' }),
+            { throwOn404: undefined },
         )
     })
 })

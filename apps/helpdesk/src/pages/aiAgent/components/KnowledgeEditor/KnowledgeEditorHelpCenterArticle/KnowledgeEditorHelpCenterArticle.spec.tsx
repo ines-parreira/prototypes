@@ -1,6 +1,8 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
+import { GetArticleVersionStatus } from '@gorgias/help-center-types'
+
 import { toImmutable } from 'common/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -463,6 +465,89 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
             screen.getByTestId('article-context-provider'),
         ).toBeInTheDocument()
         expect(screen.getByTestId('article-editor-content')).toBeInTheDocument()
+    })
+
+    describe('query configuration', () => {
+        it('passes existing article versionStatus to useGetHelpCenterArticle', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+                versionStatus: GetArticleVersionStatus.Current,
+            })
+
+            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
+                1,
+                baseProps.helpCenter.id,
+                baseProps.helpCenter.default_locale,
+                GetArticleVersionStatus.Current,
+                {
+                    enabled: true,
+                    throwOn404: true,
+                    refetchOnWindowFocus: false,
+                },
+            )
+            expect(lastConfig?.versionStatus).toBe(
+                GetArticleVersionStatus.Current,
+            )
+        })
+
+        it('defaults to latest_draft when versionStatus is not provided', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+            })
+
+            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
+                1,
+                baseProps.helpCenter.id,
+                baseProps.helpCenter.default_locale,
+                'latest_draft',
+                {
+                    enabled: true,
+                    throwOn404: true,
+                    refetchOnWindowFocus: false,
+                },
+            )
+            expect(lastConfig?.versionStatus).toBe('latest_draft')
+        })
+
+        it('disables article query for new article mode', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+
+            renderComponent({
+                type: 'new',
+                template: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    key: 'test-template',
+                },
+                onCreated: () => {},
+            })
+
+            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
+                0,
+                baseProps.helpCenter.id,
+                baseProps.helpCenter.default_locale,
+                'latest_draft',
+                {
+                    enabled: false,
+                    throwOn404: true,
+                    refetchOnWindowFocus: false,
+                },
+            )
+        })
     })
 
     describe('Error handling', () => {

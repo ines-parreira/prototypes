@@ -1,8 +1,10 @@
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
-import { render, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { appQueryClient } from 'api/queryClient'
 import {
     getDateAndTimeFormatter,
     getTimezone,
@@ -84,7 +86,19 @@ const defaultContextValue = {
 }
 
 const renderComponent = () => {
-    return render(<KnowledgeEditorGuidanceVersionBanner />)
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+            },
+        },
+    })
+
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <KnowledgeEditorGuidanceVersionBanner />
+        </QueryClientProvider>,
+    )
 }
 
 const mockGetTimezone = jest.mocked(getTimezone)
@@ -93,6 +107,7 @@ const mockGetDateAndTimeFormatter = jest.mocked(getDateAndTimeFormatter)
 describe('KnowledgeEditorGuidanceVersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        appQueryClient.clear()
         mockUseFlag.mockReturnValue(false)
         mockUseVersionBanner.mockReturnValue(defaultMockState)
         mockUseVersionHistory.mockReturnValue({
@@ -472,6 +487,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     {},
                     { help_center_id: 1, id: 1 },
                     { locale: 'en-US', version_status: 'current' },
+                    { throwOn404: undefined },
                 )
 
                 await screen.findByRole('switch')
@@ -711,6 +727,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         {},
                         { help_center_id: 1, id: 1 },
                         { locale: 'en-US', version_status: 'current' },
+                        { throwOn404: undefined },
                     )
 
                     await screen.findByRole('switch')
@@ -722,6 +739,50 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             content: 'Published Content',
                         },
                     })
+                })
+
+                it('reuses cached published version when toggling to diff mode repeatedly', async () => {
+                    const { getHelpCenterArticle } = await import(
+                        'models/helpCenter/resources'
+                    )
+                    const mockGetArticle = jest.mocked(getHelpCenterArticle)
+
+                    mockGetArticle.mockResolvedValue({
+                        id: 1,
+                        translation: {
+                            title: 'Published Title',
+                            content: 'Published Content',
+                        },
+                    } as any)
+
+                    const user = userEvent.setup()
+                    mockUseGuidanceContext.mockReturnValue({
+                        state: {
+                            guidanceMode: 'read',
+                            historicalVersion: null,
+                            guidance: { id: 1 },
+                        },
+                        dispatch: mockDispatch,
+                        config: {
+                            guidanceHelpCenter: {
+                                id: 1,
+                                default_locale: 'en-US',
+                            },
+                        },
+                    })
+
+                    renderComponent()
+
+                    await user.click(screen.getByRole('switch'))
+                    await waitFor(() =>
+                        expect(mockGetArticle).toHaveBeenCalledTimes(1),
+                    )
+
+                    await user.click(screen.getByRole('switch'))
+
+                    await waitFor(() =>
+                        expect(mockGetArticle).toHaveBeenCalledTimes(1),
+                    )
                 })
 
                 it('handles error when fetching published version fails', async () => {

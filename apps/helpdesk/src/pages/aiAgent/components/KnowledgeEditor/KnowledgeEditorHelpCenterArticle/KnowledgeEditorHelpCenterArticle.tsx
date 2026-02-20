@@ -111,18 +111,22 @@ const ArticleEditorInner = ({
 }
 
 export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
-    const { article } = props
+    const { article, onClose } = props
     const isExisting = article.type === 'existing'
     const articleId = isExisting ? article.articleId : 0
+    const versionStatus: GetArticleVersionStatus = isExisting
+        ? (article.versionStatus ?? 'latest_draft')
+        : 'latest_draft'
 
     const getArticle = useGetHelpCenterArticle(
         articleId,
         props.helpCenter.id,
         props.helpCenter.default_locale,
-        'latest_draft',
+        versionStatus,
         {
-            enabled: isExisting,
+            enabled: isExisting && articleId > 0,
             throwOn404: true,
+            refetchOnWindowFocus: false,
         },
     )
 
@@ -141,9 +145,9 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
                 : 'Unable to load this FAQ article. Please try again or contact support.'
 
             notifyError(message)
-            props.onClose()
+            onClose()
         }
-    }, [getArticle.isError, isExisting, getArticle.error, notifyError, props])
+    }, [getArticle.isError, isExisting, getArticle.error, notifyError, onClose])
 
     const initialMode: ArticleModeType =
         article.type === 'new'
@@ -159,10 +163,10 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         shopName: props.shopName,
         articleId: isExisting ? article.articleId : undefined,
         initialArticle: getArticle.data ?? undefined,
-        versionStatus: 'latest_draft',
+        versionStatus,
         template: article.type === 'new' ? article.template : undefined,
         initialMode,
-        onClose: props.onClose,
+        onClose,
         onClickPrevious: props.onClickPrevious,
         onClickNext: props.onClickNext,
         onCreatedFn: article.type === 'new' ? article.onCreated : undefined,
