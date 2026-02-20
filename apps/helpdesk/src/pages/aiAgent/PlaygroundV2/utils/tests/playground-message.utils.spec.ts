@@ -12,12 +12,10 @@ import {
 import { GREETING_MESSAGE_TEXT } from 'pages/aiAgent/PlaygroundV2/constants'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
-import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {
     getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,
     mapPlaygroundMessagesToServerMessages,
-    shouldDisplayActions,
 } from '../playground-messages.utils'
 
 describe('playground-message utils', () => {
@@ -106,35 +104,6 @@ describe('playground-message utils', () => {
             expect(mapPlaygroundFormValuesToMessage(formValues)).toEqual(
                 expected,
             )
-        })
-    })
-
-    describe('shouldDisplayActions ', () => {
-        it('should return true if aiAgentResponse has chatTicketMessageMeta', () => {
-            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
-                postProcessing: {
-                    internalNote: '',
-                    htmlReply: null,
-                    chatTicketMessageMeta: {
-                        ai_agent_message_type:
-                            AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
-                    },
-                    isSalesOpportunity: false,
-                },
-            })
-            expect(shouldDisplayActions(aiAgentResponse)).toBe(true)
-        })
-
-        it('should return false if aiAgentResponse does not have chatTicketMessageMeta', () => {
-            const aiAgentResponse = getSubmitPlaygroundTicketResponseFixture({
-                postProcessing: {
-                    internalNote: '',
-                    htmlReply: null,
-                    chatTicketMessageMeta: undefined,
-                    isSalesOpportunity: false,
-                },
-            })
-            expect(shouldDisplayActions(aiAgentResponse)).toBe(false)
         })
     })
 

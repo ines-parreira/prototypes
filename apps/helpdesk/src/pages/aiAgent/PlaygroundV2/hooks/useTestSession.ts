@@ -10,6 +10,7 @@ import { reportError } from 'utils/errors'
 export const useTestSession = (
     baseUrl?: string,
     payload?: AiAgentPlaygroundOptions,
+    useV3?: boolean,
 ) => {
     const { notify } = useNotify()
     const [testSessionId, setTestSessionId] = useState<string | null>(null)
@@ -20,13 +21,20 @@ export const useTestSession = (
         error,
     } = useCreateTestSessionMutation()
 
-    const createTestSession = useCallback(async () => {
-        const data = await createTestSessionAsync([baseUrl, payload])
-        const testSessionId = data?.testModeSession.id
+    const createTestSession = useCallback(
+        async (overridePayload?: AiAgentPlaygroundOptions) => {
+            const data = await createTestSessionAsync([
+                baseUrl,
+                overridePayload || payload,
+                useV3,
+            ])
+            const testSessionId = data?.testModeSession.id
 
-        setTestSessionId(testSessionId)
-        return testSessionId
-    }, [createTestSessionAsync, payload, baseUrl])
+            setTestSessionId(testSessionId)
+            return testSessionId
+        },
+        [createTestSessionAsync, payload, baseUrl, useV3],
+    )
 
     useEffect(() => {
         const testSessionId = data?.testModeSession.id
@@ -53,9 +61,14 @@ export const useTestSession = (
         }
     }, [error, notify])
 
+    const clearTestSession = useCallback(() => {
+        setTestSessionId(null)
+    }, [])
+
     return {
         testSessionId,
         isTestSessionLoading: isLoading,
         createTestSession,
+        clearTestSession,
     }
 }

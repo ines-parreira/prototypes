@@ -1,6 +1,9 @@
 import { renderHook } from '@repo/testing'
 
-import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
+import {
+    useSubmitPlaygroundTicket,
+    useSubmitTestModeMessageMutation,
+} from 'models/aiAgent/queries'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import {
     DEFAULT_PLAYGROUND_CUSTOMER,
@@ -15,6 +18,7 @@ import { usePlaygroundApi } from '../usePlaygroundApi'
 // Mock dependencies
 jest.mock('models/aiAgent/queries', () => ({
     useSubmitPlaygroundTicket: jest.fn(),
+    useSubmitTestModeMessageMutation: jest.fn(),
 }))
 
 jest.mock('../../utils/playground-ticket.util', () => ({
@@ -30,7 +34,11 @@ jest.mock('../../contexts/CoreContext', () => ({
 }))
 
 const mockSubmitPlaygroundTicket = jest.fn()
+const mockSubmitTestModeMessage = jest.fn()
 const mockedUseSubmitPlaygroundTicket = jest.mocked(useSubmitPlaygroundTicket)
+const mockedUseSubmitTestModeMessageMutation = jest.mocked(
+    useSubmitTestModeMessageMutation,
+)
 const mockedGetTicketCustomer = jest.mocked(getTicketCustomer)
 const mockedUseCoreContext = jest.mocked(useCoreContext)
 
@@ -57,10 +65,22 @@ describe('usePlaygroundApi', () => {
             data: { _action_serialized_state: 'serialized_state_value' },
         })
 
+        mockedUseSubmitTestModeMessageMutation.mockReturnValue({
+            mutateAsync: mockSubmitTestModeMessage,
+            isLoading: false,
+        } as any)
+
+        mockSubmitTestModeMessage.mockResolvedValue({
+            sessionId: 'session-123',
+            workflow: { workflowId: 'wf-1' },
+        })
+
         mockedGetTicketCustomer.mockResolvedValue(PLAYGROUND_CUSTOMER_MOCK)
 
         mockedUseCoreContext.mockReturnValue({
             draftKnowledge: undefined,
+            useV3: false,
+            areActionsEnabled: false,
         } as any)
 
         // Mock AbortController
@@ -104,10 +124,10 @@ describe('usePlaygroundApi', () => {
         expect(abortControllerMock).toHaveBeenCalled()
     })
 
-    it('should submit message and return response', async () => {
+    it('should submit message', async () => {
         const { result } = renderHook(() => usePlaygroundApi(defaultProps))
 
-        const response = await result.current.submitMessage({
+        await result.current.submitMessage({
             messages: [playgroundCustomerMessage],
             customer: DEFAULT_PLAYGROUND_CUSTOMER,
             subject: 'Test Subject',
@@ -119,9 +139,6 @@ describe('usePlaygroundApi', () => {
         })
 
         expect(mockSubmitPlaygroundTicket).toHaveBeenCalled()
-        expect(response).toEqual({
-            _action_serialized_state: 'serialized_state_value',
-        })
     })
 
     it('should use mock customer when getTicketCustomer fails', async () => {
@@ -209,49 +226,11 @@ describe('usePlaygroundApi', () => {
         ])
     })
 
-    it('should store action serialized state from response', async () => {
-        mockSubmitPlaygroundTicket.mockResolvedValue({
-            data: { _action_serialized_state: 'updated_state_value' },
-        })
-
-        const { result } = renderHook(() => usePlaygroundApi(defaultProps))
-
-        await result.current.submitMessage({
-            messages: [playgroundCustomerMessage],
-            customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            channel: 'email',
-            storeData: { storeName: 'Test Store' } as StoreConfiguration,
-            testSessionId: '',
-            createTestSession: jest.fn(),
-        })
-
-        // Verify first call
-        expect(mockSubmitPlaygroundTicket).toHaveBeenCalled()
-
-        // Send another message to see if state is preserved
-        mockSubmitPlaygroundTicket.mockClear()
-        await result.current.submitMessage({
-            messages: [playgroundCustomerMessage],
-            customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            channel: 'email',
-            storeData: { storeName: 'Test Store' } as StoreConfiguration,
-            testSessionId: '',
-            createTestSession: jest.fn(),
-        })
-
-        // Check that the second call includes the serialized state from first response
-        expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
-            expect.objectContaining({
-                _action_serialized_state: 'updated_state_value',
-            }),
-            '',
-            expect.any(Object),
-        ])
-    })
-
     it('should include empty _knowledge_override_rules when draftKnowledge is undefined', async () => {
         mockedUseCoreContext.mockReturnValue({
             draftKnowledge: undefined,
+            useV3: false,
+            areActionsEnabled: false,
         } as any)
 
         const { result } = renderHook(() => usePlaygroundApi(defaultProps))
@@ -282,6 +261,7 @@ describe('usePlaygroundApi', () => {
 
         mockedUseCoreContext.mockReturnValue({
             draftKnowledge,
+            useV3: false,
         } as any)
 
         const { result } = renderHook(() => usePlaygroundApi(defaultProps))
@@ -312,5 +292,140 @@ describe('usePlaygroundApi', () => {
             '',
             expect.any(Object),
         ])
+    })
+
+    describe('V3 offline eval flow', () => {
+        beforeEach(() => {
+            mockedUseCoreContext.mockReturnValue({
+                draftKnowledge: undefined,
+                useV3: true,
+                areActionsEnabled: false,
+            } as any)
+        })
+
+        it('creates a session with offline eval payload when no session exists and submits via new API', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'chat',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    areActionsAllowedToExecute: false,
+                    offlineEvalSettings: expect.objectContaining({
+                        app: expect.objectContaining({
+                            shopName: 'Test Store',
+                            gorgiasDomain: 'acme',
+                        }),
+                        session: expect.objectContaining({ channel: 'chat' }),
+                    }),
+                }),
+            )
+            expect(mockSubmitTestModeMessage).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    sessionId: 'v3-session',
+                    isDirectModelCall: false,
+                    userMessage: expect.objectContaining({
+                        type: 'message',
+                        role: 'user',
+                    }),
+                }),
+            ])
+            expect(mockSubmitPlaygroundTicket).not.toHaveBeenCalled()
+        })
+
+        it('passes areActionsEnabled from context into the offline eval payload', async () => {
+            mockedUseCoreContext.mockReturnValue({
+                draftKnowledge: undefined,
+                useV3: true,
+                areActionsEnabled: true,
+            } as any)
+
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'chat',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    areActionsAllowedToExecute: true,
+                }),
+            )
+        })
+
+        it('skips session creation and submits via new API when session already exists', async () => {
+            const createTestSession = jest.fn()
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'existing-v3-session',
+                createTestSession,
+            })
+
+            expect(createTestSession).not.toHaveBeenCalled()
+            expect(mockSubmitTestModeMessage).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({ sessionId: 'existing-v3-session' }),
+            ])
+            expect(mockSubmitPlaygroundTicket).not.toHaveBeenCalled()
+        })
+
+        it('returns undefined for V3 path', async () => {
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            const response = await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'v3-session',
+                createTestSession: jest.fn(),
+            })
+
+            expect(response).toBeUndefined()
+        })
+
+        it('still submits via new API with null session ID when session creation returns null', async () => {
+            const createTestSession = jest.fn().mockResolvedValue(null)
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(mockSubmitTestModeMessage).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({ sessionId: null }),
+            ])
+            expect(mockSubmitPlaygroundTicket).not.toHaveBeenCalled()
+        })
     })
 })

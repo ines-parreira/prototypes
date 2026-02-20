@@ -22,11 +22,7 @@ import { reportError } from 'utils/errors'
 
 import type { PlaygroundCustomer } from '../types'
 import { PlaygroundEvent } from '../types'
-import {
-    handleAiAgentResponse,
-    handleAiAgentTestSessionLog,
-} from '../utils/playground-handler.utils'
-import { shouldDisplayActions } from '../utils/playground-messages.utils'
+import { handleAiAgentTestSessionLog } from '../utils/playground-handler.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
 
 const PLACEHOLDER_MESSAGE: PlaygroundMessage = {
@@ -64,6 +60,7 @@ export const usePlaygroundMessages = () => {
         isPolling,
         testSessionId,
         createTestSession,
+        clearTestSession,
         channelAvailability,
         channel,
     } = useCoreContext()
@@ -90,9 +87,10 @@ export const usePlaygroundMessages = () => {
     const onNewConversation = useCallback(() => {
         abortCurrentRequest()
         stopPolling()
+        clearTestSession()
         setMessages([])
         setIsWaitingResponse(false)
-    }, [abortCurrentRequest, stopPolling])
+    }, [abortCurrentRequest, stopPolling, clearTestSession])
 
     useSubscribeToEvent(PlaygroundEvent.RESET_CONVERSATION, onNewConversation)
 
@@ -106,7 +104,7 @@ export const usePlaygroundMessages = () => {
         ) => {
             if (!storeData) return null
             try {
-                const response = await submitMessage({
+                await submitMessage({
                     messages: newMessages,
                     customer,
                     subject,
@@ -122,16 +120,6 @@ export const usePlaygroundMessages = () => {
                     return
                 }
 
-                const aiAgentMessages = handleAiAgentResponse({
-                    channel,
-                    aiAgentResponse: response,
-                    storeData,
-                })
-
-                if (shouldDisplayActions(response)) {
-                    setIsWaitingResponse(true)
-                }
-
                 setMessages((prevMessages) => {
                     // Remove the placeholder
                     const filteredMessages: PlaygroundMessage[] =
@@ -140,8 +128,7 @@ export const usePlaygroundMessages = () => {
                                 message.type !== MessageType.PLACEHOLDER,
                         )
 
-                    // Add the actual processed message
-                    return [...filteredMessages, ...aiAgentMessages]
+                    return [...filteredMessages]
                 })
             } catch (error) {
                 // skip if request canceled
@@ -240,23 +227,21 @@ export const usePlaygroundMessages = () => {
                 )
 
                 // Track existing message timestamps to avoid duplicates
-                const newLogs = testSessionLogs.logs.filter(
-                    (log) => !processedLogIds.current.has(log.id),
-                )
+                // we also avoid duplicates between the new logs
+                const newLogs = testSessionLogs.logs.filter((log) => {
+                    const notPresent = !processedLogIds.current.has(log.id)
+                    processedLogIds.current.add(log.id)
+                    return notPresent
+                })
 
                 // Process only new logs
                 const newMessages = newLogs
-                    .map((log, index) => {
-                        const message = handleAiAgentTestSessionLog(
+                    .map((log, index) =>
+                        handleAiAgentTestSessionLog(
                             log,
                             index > 0 ? newLogs[index - 1] : undefined,
-                        )
-                        if (message) {
-                            // Add the log id to the processed set to avoid duplicates
-                            processedLogIds.current.add(log.id)
-                        }
-                        return message
-                    })
+                        ),
+                    )
                     .filter(
                         (message): message is NonNullable<typeof message> =>
                             message !== null,

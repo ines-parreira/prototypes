@@ -20,6 +20,11 @@ import { PlaygroundSettings } from './PlaygroundSettings'
 
 const mockSetIsCollapsibleColumnOpen = jest.fn()
 
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: () => ({
         setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,

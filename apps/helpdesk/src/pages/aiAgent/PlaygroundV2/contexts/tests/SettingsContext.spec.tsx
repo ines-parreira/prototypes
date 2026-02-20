@@ -70,6 +70,11 @@ jest.mock('../CoreContext', () => {
     }
 })
 
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(),

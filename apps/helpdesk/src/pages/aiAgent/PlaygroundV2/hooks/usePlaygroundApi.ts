@@ -2,8 +2,15 @@
 import { useCallback, useRef } from 'react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
-import type { StoreConfiguration } from 'models/aiAgent/types'
+import {
+    useSubmitPlaygroundTicket,
+    useSubmitTestModeMessageMutation,
+} from 'models/aiAgent/queries'
+import type {
+    AiAgentPlaygroundOptions,
+    StoreConfiguration,
+    TestModeSessionMessagePayload,
+} from 'models/aiAgent/types'
 import type { PlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { isApiEligiblePlaygroundMessage } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
@@ -16,6 +23,7 @@ import type {
     PlaygroundChannels,
     PlaygroundCustomer,
 } from '../types'
+import { buildOfflineEvalPayload } from '../utils/offline-eval-payload.utils'
 import {
     getLastShopperMessage,
     getPlaygroundMessageMeta,
@@ -38,19 +46,30 @@ export const usePlaygroundApi = ({
     isNewAgenticArchitectureEnabled: boolean
     baseUrl?: string
 }) => {
-    const { mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting } =
-        useSubmitPlaygroundTicket()
+    const {
+        mutateAsync: submitPlaygroundTicket,
+        isLoading: isSubmittingTicket,
+    } = useSubmitPlaygroundTicket()
+    const submitPlaygroundMessageMutation = useSubmitTestModeMessageMutation()
+    const submitPlaygroundMessageAsync =
+        submitPlaygroundMessageMutation.mutateAsync
+    const isSubmittingMessage = submitPlaygroundMessageMutation.isLoading
     const abortControllerRef = useRef<AbortController>()
-    const actionSerializedStateRef = useRef<unknown>()
 
     const abortCurrentRequest = useCallback(() => {
         if (abortControllerRef.current) {
             abortControllerRef.current.abort()
         }
-        actionSerializedStateRef.current = undefined
     }, [])
 
-    const { draftKnowledge } = useCoreContext()
+    const { draftKnowledge, useV3, areActionsEnabled } = useCoreContext()
+    const isSubmitting = isSubmittingTicket || isSubmittingMessage
+
+    const callSubmitMessage = useCallback(
+        (payload: TestModeSessionMessagePayload | {}) =>
+            submitPlaygroundMessageAsync([baseUrl, payload]),
+        [baseUrl, submitPlaygroundMessageAsync],
+    )
 
     const submitMessage = useCallback(
         async ({
@@ -70,13 +89,47 @@ export const usePlaygroundApi = ({
             storeData: StoreConfiguration
             channelAvailability?: PlaygroundChannelAvailability
             testSessionId: string | null
-            createTestSession: () => Promise<string | null>
+            createTestSession: (
+                aiAgentPlaygroundOptions?: AiAgentPlaygroundOptions,
+            ) => Promise<string | null>
         }) => {
             const filteredMessages = messages.filter(
                 isApiEligiblePlaygroundMessage,
             )
             const lastMessage = getLastShopperMessage(filteredMessages)
 
+            let consolidatedTestSessionId = testSessionId
+            if (useV3) {
+                if (!consolidatedTestSessionId) {
+                    const offlineEvalPayload = buildOfflineEvalPayload({
+                        customer,
+                        storeData,
+                        gorgiasDomain,
+                        channel,
+                        areActionsAllowedToExecute: areActionsEnabled,
+                    })
+                    consolidatedTestSessionId =
+                        await createTestSession(offlineEvalPayload)
+                }
+
+                await callSubmitMessage({
+                    sessionId: consolidatedTestSessionId,
+                    userMessage: {
+                        type: 'message',
+                        role: 'user',
+                        content: [
+                            {
+                                type: 'input_text',
+                                text: lastMessage.content,
+                            },
+                        ],
+                    },
+                    isDirectModelCall: false,
+                })
+                return
+            }
+
+            // Traditional playground ticket submission flow
             let messageCustomer
             try {
                 messageCustomer = await getTicketCustomer({
@@ -108,7 +161,7 @@ export const usePlaygroundApi = ({
                 testSessionIdToUse = await createTestSession()
             }
 
-            const { data: aiAgentResponse } = await submitPlaygroundTicket([
+            await submitPlaygroundTicket([
                 {
                     domain: gorgiasDomain,
                     customer_email: customer.email,
@@ -136,7 +189,6 @@ export const usePlaygroundApi = ({
                     subject: subject ?? '',
                     http_integration_id: httpIntegrationId,
                     account_id: accountId,
-                    _action_serialized_state: actionSerializedStateRef.current,
                     _playground_options: {
                         shopName: storeData.storeName,
                     },
@@ -160,10 +212,6 @@ export const usePlaygroundApi = ({
                 abortController,
                 baseUrl,
             ])
-
-            actionSerializedStateRef.current =
-                aiAgentResponse._action_serialized_state
-            return aiAgentResponse
         },
         [
             accountId,
@@ -174,6 +222,9 @@ export const usePlaygroundApi = ({
             isNewAgenticArchitectureEnabled,
             baseUrl,
             draftKnowledge,
+            callSubmitMessage,
+            useV3,
+            areActionsEnabled,
         ],
     )
 

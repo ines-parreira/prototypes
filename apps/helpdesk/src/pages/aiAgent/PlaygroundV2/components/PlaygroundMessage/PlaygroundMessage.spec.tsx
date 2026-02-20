@@ -25,6 +25,11 @@ import PlaygroundMessage from './PlaygroundMessage'
 const mockUseMessagesContext = jest.fn()
 const mockUseAIJourneyContext = jest.fn()
 
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
 jest.mock('../../contexts/MessagesContext', () => ({
     useMessagesContext: () => mockUseMessagesContext(),
 }))

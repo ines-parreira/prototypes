@@ -1,4 +1,5 @@
 import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
+import { AI_AGENT_V3_QUERY_PARAM } from 'pages/aiAgent/PlaygroundV2/constants'
 
 import type {
     AiAgentPlaygroundOptions,
@@ -27,10 +28,11 @@ export const getPlaygroundExecutions = async (
 export const createTestSession = async (
     baseUrl?: string,
     payload: AiAgentPlaygroundOptions | {} = {},
+    useV3: boolean = false,
 ) => {
     const client = baseUrl ? createApiClient(baseUrl) : aiAgentApiClient
     const response = await client.post<CreateTestSessionResponse>(
-        '/api/test-mode-session',
+        `/api/test-mode-session?${AI_AGENT_V3_QUERY_PARAM}=${useV3}`,
         payload,
     )
 
@@ -52,10 +54,11 @@ export const submitTestSessionMessage = async (
 export const getTestSessionLogs = async (
     testSessionId: string,
     baseUrl?: string,
+    useV3: boolean = false,
 ) => {
     const client = baseUrl ? createApiClient(baseUrl) : aiAgentApiClient
     const response = await client.get<GetTestSessionLogsResponse>(
-        `/api/test-mode-session/${testSessionId}/logs`,
+        `/api/test-mode-session/${testSessionId}/logs?${AI_AGENT_V3_QUERY_PARAM}=${useV3}`,
     )
 
     return response.data

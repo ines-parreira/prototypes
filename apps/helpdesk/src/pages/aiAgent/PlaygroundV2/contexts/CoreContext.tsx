@@ -4,9 +4,13 @@ import {
     useCallback,
     useContext,
     useMemo,
+    useRef,
     useState,
 } from 'react'
 
+import { useSearchParams } from '@repo/routing'
+
+import type { AiAgentPlaygroundOptions } from 'models/aiAgent/types'
 import type { GetTestSessionLogsResponse } from 'models/aiAgentPlayground/types'
 import { useAiAgentHttpIntegration } from 'pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration'
 import { useDraftKnowledgeSync } from 'pages/aiAgent/PlaygroundV2/hooks/useDraftKnowledge'
@@ -25,9 +29,10 @@ const DEFAULT_ACTIONS_ENABLED = false
 type CoreContextValue = {
     testSessionId: string | null
     isTestSessionLoading: boolean
-    // TODO: Refactor to make function indempotent
-    // getOrCreateTestSession: () => Promise<string>
-    createTestSession: () => Promise<string>
+    createTestSession: (
+        overridePayload?: AiAgentPlaygroundOptions,
+    ) => Promise<string>
+    clearTestSession: () => void
     testSessionLogs?: GetTestSessionLogsResponse
     isPolling: boolean
     startPolling: () => void
@@ -44,6 +49,7 @@ type CoreContextValue = {
     resetToDefaultActionsEnabled: () => void
     isDraftKnowledgeReady: boolean
     draftKnowledge?: DraftKnowledge
+    useV3: boolean
 }
 
 const CoreContext = createContext<CoreContextValue | undefined>(undefined)
@@ -75,12 +81,21 @@ export const CoreProvider = ({
         arePlaygroundActionsAllowed || areActionsEnabledInSettings
     const { baseUrl } = useAiAgentHttpIntegration()
     const channelState = usePlaygroundChannel()
-    const sessionState = useTestSession(baseUrl, {
-        areActionsAllowedToExecute: areActionsEnabled ?? false,
-    })
+
+    const [searchParams] = useSearchParams()
+    const useV3 = useRef(searchParams.get('use-v3') === 'true')
+
+    const sessionState = useTestSession(
+        baseUrl,
+        {
+            areActionsAllowedToExecute: areActionsEnabled ?? false,
+        },
+        useV3.current,
+    )
     const pollingState = usePlaygroundPolling({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
+        useV3: useV3.current,
     })
 
     const { isDraftKnowledgeReady } = useDraftKnowledgeSync(draftKnowledge)
@@ -99,6 +114,7 @@ export const CoreProvider = ({
             areActionsEnabled,
             resetToDefaultActionsEnabled,
             setAreActionsEnabled: setAreActionsEnabledInSettings,
+            useV3: useV3.current,
         }),
         [
             isDraftKnowledgeReady,

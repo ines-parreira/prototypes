@@ -476,6 +476,21 @@ export type TriggerAIJourneyResponse = {
 
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
+    offlineEvalSettings?: {
+        app: {
+            evaluatedUseCase?: string
+            shopName: string
+            shopType: string
+            gorgiasDomain: string
+        }
+        user: {
+            id: string
+            name: string
+        }
+        session: {
+            channel?: string
+        }
+    }
 }
 
 export type TestModeSessionUserMessageContent = {

@@ -3,7 +3,6 @@ import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import {
-    AiAgentMessageType,
     MessageType,
     TestSessionLogType,
     TicketOutcome,
@@ -12,7 +11,7 @@ import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 
 import { playgroundMessageFixture } from '../../../fixtures/playgroundMessages.fixture'
 import { getStoreConfigurationFixture } from '../../../fixtures/storeConfiguration.fixtures'
-import { getSubmitPlaygroundTicketResponseFixture } from '../../../fixtures/submitPlaygroundTicketResponse.fixture'
+import { getTestSessionLogsWithDuplicateIdsFixture } from '../../fixtures/testSessionLogs.fixture'
 import { usePlaygroundApi } from '../usePlaygroundApi'
 import { usePlaygroundMessages } from '../usePlaygroundMessages'
 
@@ -71,6 +70,7 @@ const defaultCoreContext = {
     testSessionId: '123',
     isTestSessionLoading: false,
     createTestSession: jest.fn(() => Promise.resolve('123')),
+    clearTestSession: jest.fn(),
     testSessionLogs: undefined,
     isPolling: false,
     startPolling: jest.fn(),
@@ -80,9 +80,7 @@ const defaultCoreContext = {
 describe('usePlaygroundMessages hook', () => {
     beforeEach(() => {
         // Setup mocks for each test
-        const submitMessageMock = jest.fn(() =>
-            Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
-        )
+        const submitMessageMock = jest.fn(() => Promise.resolve())
 
         mockedUsePlaygroundApi.mockReturnValue({
             submitMessage: submitMessageMock,
@@ -102,9 +100,7 @@ describe('usePlaygroundMessages hook', () => {
     })
 
     it('should submit a message', async () => {
-        const submitMessageMock = jest.fn(() =>
-            Promise.resolve(getSubmitPlaygroundTicketResponseFixture()),
-        )
+        const submitMessageMock = jest.fn(() => Promise.resolve())
 
         mockedUsePlaygroundApi.mockReturnValue({
             submitMessage: submitMessageMock,
@@ -135,8 +131,6 @@ describe('usePlaygroundMessages hook', () => {
             testSessionId: '123',
             createTestSession: expect.any(Function),
         })
-
-        expect(result.current.messages.length).toBe(2)
     })
 
     it('should handle errors during message submission', async () => {
@@ -180,53 +174,26 @@ describe('usePlaygroundMessages hook', () => {
         expect(result.current.messages.length).toBe(0)
     })
 
-    it('should update waiting response state based on action display', async () => {
-        const response = getSubmitPlaygroundTicketResponseFixture({
-            postProcessing: {
-                internalNote: '',
-                htmlReply: null,
-                chatTicketMessageMeta: {
-                    ai_agent_message_type:
-                        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION,
-                },
-                isSalesOpportunity: false,
-            },
-        })
+    it('should clear the test session on new conversation', () => {
+        const clearTestSessionMock = jest.fn()
 
-        mockedUsePlaygroundApi.mockReturnValue({
-            submitMessage: jest.fn(() => Promise.resolve(response)),
-            isSubmitting: false,
-            abortCurrentRequest: jest.fn(),
-        })
-
-        // Update core context to use 'chat' channel
         mockedUseCoreContext.mockReturnValue({
             ...defaultCoreContext,
-            channel: 'chat',
+            clearTestSession: clearTestSessionMock,
         } as any)
 
         const { result } = renderHook(() => usePlaygroundMessages())
 
-        await act(async () => {
-            await result.current.onMessageSend(playgroundMessageFixture, {
-                customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            })
+        act(() => {
+            result.current.onNewConversation()
         })
 
-        expect(result.current.isWaitingResponse).toBeTruthy()
+        expect(clearTestSessionMock).toHaveBeenCalled()
     })
 
     it('should not add internal note when postProcess internal note is empty string', async () => {
-        const response = getSubmitPlaygroundTicketResponseFixture({
-            postProcessing: {
-                internalNote: '',
-                htmlReply: 'reply',
-                isSalesOpportunity: false,
-            },
-        })
-
         mockedUsePlaygroundApi.mockReturnValue({
-            submitMessage: jest.fn(() => Promise.resolve(response)),
+            submitMessage: jest.fn(() => Promise.resolve()),
             isSubmitting: false,
             abortCurrentRequest: jest.fn(),
         })
@@ -241,33 +208,6 @@ describe('usePlaygroundMessages hook', () => {
 
         const messageTypes = result.current.messages.map((m) => m.type)
         expect(messageTypes).not.toContain('INTERNAL_NOTE')
-    })
-
-    it('should add internal note when postProcess internal note is not empty string', async () => {
-        const response = getSubmitPlaygroundTicketResponseFixture({
-            postProcessing: {
-                internalNote: 'internal note',
-                htmlReply: 'reply',
-                isSalesOpportunity: false,
-            },
-        })
-
-        mockedUsePlaygroundApi.mockReturnValue({
-            submitMessage: jest.fn(() => Promise.resolve(response)),
-            isSubmitting: false,
-            abortCurrentRequest: jest.fn(),
-        })
-
-        const { result } = renderHook(() => usePlaygroundMessages())
-
-        await act(async () => {
-            await result.current.onMessageSend(playgroundMessageFixture, {
-                customer: DEFAULT_PLAYGROUND_CUSTOMER,
-            })
-        })
-
-        const messageTypes = result.current.messages.map((m) => m.type)
-        expect(messageTypes).toContain('INTERNAL_NOTE')
     })
 
     describe('test session logs', () => {
@@ -563,6 +503,35 @@ describe('usePlaygroundMessages hook', () => {
             // Should only have placeholder, unknown log type message is filtered out
             expect(result.current.messages.length).toBe(1)
             expect(result.current.messages[0].type).toBe(
+                MessageType.PLACEHOLDER,
+            )
+        })
+
+        it('should deduplicate logs with the same id within a single batch', async () => {
+            mockedUseFlag.mockReturnValue(true)
+
+            const { result, rerender } = renderHook(() =>
+                usePlaygroundMessages(),
+            )
+
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                isPolling: true,
+                startPolling: jest.fn(),
+                stopPolling: jest.fn(),
+                testSessionLogs: getTestSessionLogsWithDuplicateIdsFixture(),
+            })
+
+            rerender()
+
+            // Only one message + placeholder despite two logs with the same id
+            const fixture = getTestSessionLogsWithDuplicateIdsFixture()
+            expect(result.current.messages.length).toBe(2)
+            expect(result.current.messages[0].type).toBe(MessageType.MESSAGE)
+            expect(
+                (result.current.messages[0] as { content: string }).content,
+            ).toBe(fixture.logs[0].data.message)
+            expect(result.current.messages[1].type).toBe(
                 MessageType.PLACEHOLDER,
             )
         })

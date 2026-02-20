@@ -865,9 +865,12 @@ describe('queries', () => {
                 enabled: false,
             }
 
-            renderHook(() => useGetTestSessionLogs(testSessionId, overrides), {
-                wrapper,
-            })
+            renderHook(
+                () => useGetTestSessionLogs(testSessionId, false, overrides),
+                {
+                    wrapper,
+                },
+            )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
                 queryKey: ['aiAgentTestSessionLogs', testSessionId],

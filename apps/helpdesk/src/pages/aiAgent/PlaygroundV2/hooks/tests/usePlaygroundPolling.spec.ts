@@ -44,7 +44,7 @@ describe('usePlaygroundPolling hook', () => {
         )
 
         expect(result.current.isPolling).toBe(false)
-        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', {
+        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', false, {
             enabled: false,
             refetchInterval: 5000,
         })
@@ -60,10 +60,22 @@ describe('usePlaygroundPolling hook', () => {
         })
 
         expect(result.current.isPolling).toBe(true)
-        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', {
+        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', false, {
             enabled: true,
             refetchInterval: 5000,
         })
+    })
+
+    it('should forward useV3=true to useGetTestSessionLogs', () => {
+        renderHook(() =>
+            usePlaygroundPolling({ testSessionId: 'abc', useV3: true }),
+        )
+
+        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith(
+            'abc',
+            true,
+            expect.objectContaining({ enabled: false }),
+        )
     })
 
     it('should stop polling when stopPolling is called', () => {

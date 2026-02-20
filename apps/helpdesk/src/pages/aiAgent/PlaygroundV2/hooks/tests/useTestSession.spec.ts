@@ -3,6 +3,7 @@ import { act } from '@testing-library/react'
 
 import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
 
+import { getOfflineEvalPayloadFixture } from '../../fixtures/offlineEval.fixture'
 import { useTestSession } from '../useTestSession'
 
 jest.mock('hooks/useNotify', () => ({
@@ -64,7 +65,11 @@ describe('useTestSession hook', () => {
 
         result.current.createTestSession()
 
-        expect(createTestSessionMock).toHaveBeenCalledWith([baseUrl, undefined])
+        expect(createTestSessionMock).toHaveBeenCalledWith([
+            baseUrl,
+            undefined,
+            undefined,
+        ])
     })
 
     it('should call createTestSession with baseUrl and payload when provided', () => {
@@ -82,7 +87,11 @@ describe('useTestSession hook', () => {
 
         result.current.createTestSession()
 
-        expect(createTestSessionMock).toHaveBeenCalledWith([baseUrl, payload])
+        expect(createTestSessionMock).toHaveBeenCalledWith([
+            baseUrl,
+            payload,
+            undefined,
+        ])
     })
 
     it('should call createTestSession with undefined baseUrl and payload when only payload is provided', () => {
@@ -99,7 +108,61 @@ describe('useTestSession hook', () => {
 
         result.current.createTestSession()
 
-        expect(createTestSessionMock).toHaveBeenCalledWith([undefined, payload])
+        expect(createTestSessionMock).toHaveBeenCalledWith([
+            undefined,
+            payload,
+            undefined,
+        ])
+    })
+
+    it('should pass useV3 to the mutation call', () => {
+        const createTestSessionMock = jest.fn()
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const { result } = renderHook(() =>
+            useTestSession(undefined, undefined, true),
+        )
+
+        result.current.createTestSession()
+
+        expect(createTestSessionMock).toHaveBeenCalledWith([
+            undefined,
+            undefined,
+            true,
+        ])
+    })
+
+    it('should use overridePayload instead of payload when provided', async () => {
+        const defaultPayload = { areActionsAllowedToExecute: false }
+        const overridePayload = getOfflineEvalPayloadFixture()
+        const createTestSessionMock = jest.fn().mockResolvedValue({
+            testModeSession: { id: 'session-override' },
+        })
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const { result } = renderHook(() =>
+            useTestSession(undefined, defaultPayload),
+        )
+
+        await act(async () => {
+            await result.current.createTestSession(overridePayload)
+        })
+
+        expect(createTestSessionMock).toHaveBeenCalledWith([
+            undefined,
+            overridePayload,
+            undefined,
+        ])
     })
 
     it('should return initial state correctly', () => {
@@ -161,6 +224,34 @@ describe('useTestSession hook', () => {
         expect(createTestSessionMock).toHaveBeenCalledTimes(1)
         expect(returnedValue).toBe(mockSessionId)
         expect(result.current.testSessionId).toBe(mockSessionId)
+    })
+
+    it('should clear testSessionId when clearTestSession is called', async () => {
+        const mockSessionId = 'session-to-clear'
+        const createTestSessionMock = jest.fn().mockResolvedValue({
+            testModeSession: { id: mockSessionId },
+        })
+
+        mockedUseCreateTestSessionMutation.mockReturnValue({
+            mutateAsync: createTestSessionMock,
+            isLoading: false,
+            data: undefined,
+            error: null,
+        } as unknown as ReturnType<typeof useCreateTestSessionMutation>)
+
+        const { result } = renderHook(() => useTestSession())
+
+        await act(async () => {
+            await result.current.createTestSession()
+        })
+
+        expect(result.current.testSessionId).toBe(mockSessionId)
+
+        act(() => {
+            result.current.clearTestSession()
+        })
+
+        expect(result.current.testSessionId).toBeNull()
     })
 
     it('should handle errors properly when createTestSession fails', async () => {

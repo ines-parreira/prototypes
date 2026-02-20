@@ -2,6 +2,11 @@ import { act, renderHook } from '@testing-library/react'
 
 import { CoreProvider, useCoreContext } from '../CoreContext'
 
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
 jest.mock('../../hooks/useAiAgentHttpIntegration', () => ({
     useAiAgentHttpIntegration: jest.fn(() => ({
         httpIntegrationId: 123,
@@ -150,6 +155,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 expect.objectContaining({
                     areActionsAllowedToExecute: true,
                 }),
+                false,
             )
         })
 
@@ -168,6 +174,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 expect.objectContaining({
                     areActionsAllowedToExecute: false,
                 }),
+                false,
             )
         })
 
@@ -185,6 +192,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             expect(usePlaygroundPolling).toHaveBeenCalledWith({
                 testSessionId: 'test-session-123',
                 baseUrl: 'https://test-base-url.com',
+                useV3: false,
             })
         })
 
@@ -210,6 +218,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
             expect(usePlaygroundPolling).toHaveBeenCalledWith({
                 testSessionId: undefined,
                 baseUrl: 'https://test-base-url.com',
+                useV3: false,
             })
         })
     })
@@ -304,6 +313,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 expect.objectContaining({
                     areActionsAllowedToExecute: false,
                 }),
+                false,
             )
 
             act(() => {
@@ -315,6 +325,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                 expect.objectContaining({
                     areActionsAllowedToExecute: true,
                 }),
+                false,
             )
         })
 

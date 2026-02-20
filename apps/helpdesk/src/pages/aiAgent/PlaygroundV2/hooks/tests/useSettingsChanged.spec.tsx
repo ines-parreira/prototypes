@@ -20,6 +20,11 @@ import { CoreProvider } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { SettingsProvider } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import { useSettingsChanged } from 'pages/aiAgent/PlaygroundV2/hooks/useSettingsChanged'
 
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
 jest.mock('hooks/useNotify', () => ({
     __esModule: true,
     useNotify: jest.fn(() => ({

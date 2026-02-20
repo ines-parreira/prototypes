@@ -10,14 +10,17 @@ const POLLING_TIMEOUT = 5 * 60 * 1000 // 5 minutes in milliseconds
 export const usePlaygroundPolling = ({
     testSessionId,
     baseUrl,
+    useV3 = false,
 }: {
     testSessionId?: string
     baseUrl?: string
+    useV3?: boolean
 }) => {
     const [isPolling, setIsPolling] = useState(false)
 
     const { data: testSessionLogs, error } = useGetTestSessionLogs(
         testSessionId ?? '',
+        useV3,
         {
             enabled: !!isPolling,
             refetchInterval: POLLING_INTERVAL,

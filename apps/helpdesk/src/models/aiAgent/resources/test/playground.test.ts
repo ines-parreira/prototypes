@@ -39,14 +39,14 @@ describe('aiAgent/resources/test/playground', () => {
             }
 
             aiAgentServer
-                .onPost('/api/test-mode-session')
+                .onPost('/api/test-mode-session?use-v3=false')
                 .reply(201, expectedResponse)
 
             const response = await createTestSession()
 
             expect(aiAgentServer.history.post.length).toBe(1)
             expect(aiAgentServer.history.post[0].url).toBe(
-                '/api/test-mode-session',
+                '/api/test-mode-session?use-v3=false',
             )
             expect(response).toEqual(expectedResponse)
         })

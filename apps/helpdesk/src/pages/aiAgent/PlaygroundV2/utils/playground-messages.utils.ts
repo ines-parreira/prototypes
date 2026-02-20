@@ -112,14 +112,6 @@ export const mapPlaygroundPromptToMessage = (
     }
 }
 
-export const shouldDisplayActions = (aiAgentResponse: AiAgentResponse) => {
-    return (
-        aiAgentResponse.postProcessing.chatTicketMessageMeta
-            ?.ai_agent_message_type ===
-        AiAgentMessageType.WAIT_FOR_CLOSE_TICKET_CONFIRMATION
-    )
-}
-
 export const getLastShopperMessage = (
     messages: (PlaygroundTextMessage | PlaygroundPromptMessage)[],
 ): PlaygroundTextMessage | PlaygroundPromptMessage => {

@@ -287,6 +287,7 @@ export const testSessionLogsKeys = {
 
 export const useGetTestSessionLogs = (
     testSessionId: string,
+    useV3: boolean = false,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getTestSessionLogs>>
     > & {
@@ -296,7 +297,7 @@ export const useGetTestSessionLogs = (
     const { baseUrl, ...queryOverrides } = overrides || {}
     return useQuery({
         queryKey: testSessionLogsKeys.logs(testSessionId),
-        queryFn: () => getTestSessionLogs(testSessionId, baseUrl),
+        queryFn: () => getTestSessionLogs(testSessionId, baseUrl, useV3),
         ...queryOverrides,
     })
 }
