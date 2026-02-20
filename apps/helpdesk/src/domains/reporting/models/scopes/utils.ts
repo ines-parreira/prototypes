@@ -283,6 +283,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'searchResultCount':
             case 'isInfluenced':
             case 'articleId':
+            case 'abVariant':
+            case 'shopName':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {
@@ -384,6 +386,17 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
             }
+            case 'campaignId':
+                if (statFilters.campaigns && hasFilter(statFilters.campaigns)) {
+                    filters.push(
+                        createStandardFilter(
+                            'campaignId',
+                            statFilters.campaigns.operator,
+                            statFilters.campaigns.values,
+                        ),
+                    )
+                }
+                break
         }
     })
     return filters as ScopeFilters<TMeta>

@@ -56,6 +56,8 @@ export enum APIOnlyFilterKey {
     SearchResultCount = 'searchResultCount',
     IsInfluenced = 'isInfluenced',
     ArticleId = 'articleId',
+    ShopName = 'shopName',
+    AbVariant = 'abVariant',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -306,6 +308,8 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.SearchResultCount]?: WithLogicalOperator<number>
     [APIOnlyFilterKey.IsInfluenced]?: WithLogicalOperator<boolean>
     [APIOnlyFilterKey.ArticleId]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.ShopName]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.AbVariant]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

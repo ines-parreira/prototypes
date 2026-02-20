@@ -219,6 +219,9 @@ export type StringFilterName =
     | 'articleId'
     | 'outcome'
     | 'discountCode'
+    | 'abVariant'
+    | 'shopName'
+    | 'campaignId'
 
 export type NumberFilterName =
     | 'agentId'

@@ -10,10 +10,16 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
         ],
         "filters": [
           {
-            "member": "CampaignEvents.createdDatetime",
-            "operator": "inDateRange",
+            "member": "CampaignEvents.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "CampaignEvents.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -54,10 +60,16 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
         ],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -97,10 +109,16 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
         ],
         "filters": [
           {
-            "member": "CampaignOrderEvents.createdDatetime",
-            "operator": "inDateRange",
+            "member": "CampaignOrderEvents.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -133,10 +151,16 @@ exports[`GetTableStat useGetTableStat should fill default values if data is miss
         "dimensions": [],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -224,10 +248,16 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
         ],
         "filters": [
           {
-            "member": "CampaignEvents.createdDatetime",
-            "operator": "inDateRange",
+            "member": "CampaignEvents.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "CampaignEvents.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -268,10 +298,16 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
         ],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -311,10 +347,16 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
         ],
         "filters": [
           {
-            "member": "CampaignOrderEvents.createdDatetime",
-            "operator": "inDateRange",
+            "member": "CampaignOrderEvents.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },
@@ -347,10 +389,16 @@ exports[`GetTableStat useGetTableStat should return prepared data for campaign p
         "dimensions": [],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-04-01T00:00:00.000",
             ],
           },

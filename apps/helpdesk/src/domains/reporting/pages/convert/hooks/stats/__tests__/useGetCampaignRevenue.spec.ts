@@ -98,12 +98,14 @@ describe('useGetCampaignRevenueTimeSeries', () => {
                     dimensions: [],
                     filters: [
                         {
-                            member: 'OrderConversion.createdDatetime',
-                            operator: 'inDateRange',
-                            values: [
-                                '2024-09-16T00:00:00.000',
-                                '2024-09-18T00:00:00.000',
-                            ],
+                            member: 'OrderConversion.periodStart',
+                            operator: 'afterDate',
+                            values: ['2024-09-16T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2024-09-18T00:00:00.000'],
                         },
                         {
                             member: 'OrderConversion.campaignId',

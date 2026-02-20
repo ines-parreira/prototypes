@@ -4,6 +4,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     Cube,
@@ -12,7 +13,7 @@ import {
     SharedDimension,
 } from 'domains/reporting/pages/convert/clients/constants'
 import { campaignSalesDrillDownQueryFactory } from 'domains/reporting/pages/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import { getDateRange } from 'domains/reporting/pages/convert/clients/utils'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 describe('campaignSalesDrillDownQueryFactory', () => {
@@ -61,12 +62,16 @@ describe('campaignSalesDrillDownQueryFactory', () => {
             ],
             filters: [
                 {
-                    member: `${Cube.orderConversion}.${SharedDimension.createdDatetime}`,
-                    operator: FilterOperator.inDateRange,
-                    values: getDateRange(
-                        periodStart.toISOString(),
-                        periodEnd.toISOString(),
-                    ),
+                    member: `${Cube.orderConversion}.periodStart`,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(periodStart.toISOString()),
+                    ],
+                },
+                {
+                    member: `${Cube.orderConversion}.periodEnd`,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd.toISOString())],
                 },
                 {
                     member: `${Cube.orderConversion}.${SharedDimension.campaignId}`,
@@ -119,12 +124,16 @@ describe('campaignSalesDrillDownQueryFactory', () => {
             ],
             filters: [
                 {
-                    member: `${Cube.orderConversion}.${SharedDimension.createdDatetime}`,
-                    operator: FilterOperator.inDateRange,
-                    values: getDateRange(
-                        periodStart.toISOString(),
-                        periodEnd.toISOString(),
-                    ),
+                    member: `${Cube.orderConversion}.periodStart`,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(periodStart.toISOString()),
+                    ],
+                },
+                {
+                    member: `${Cube.orderConversion}.periodEnd`,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd.toISOString())],
                 },
                 {
                     member: `${Cube.orderConversion}.${SharedDimension.campaignId}`,

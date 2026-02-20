@@ -129,12 +129,14 @@ describe('GetTableStat', () => {
                     dimensions: ['CampaignEvents.campaignId'],
                     filters: [
                         {
-                            member: 'CampaignEvents.createdDatetime',
-                            operator: 'inDateRange',
-                            values: [
-                                '2023-02-01T00:00:00.000',
-                                '2023-04-01T00:00:00.000',
-                            ],
+                            member: 'CampaignEvents.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'CampaignEvents.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
                         },
                         {
                             member: 'CampaignEvents.campaignId',
@@ -166,12 +168,14 @@ describe('GetTableStat', () => {
                     dimensions: ['OrderConversion.campaignId'],
                     filters: [
                         {
-                            member: 'OrderConversion.createdDatetime',
-                            operator: 'inDateRange',
-                            values: [
-                                '2023-02-01T00:00:00.000',
-                                '2023-04-01T00:00:00.000',
-                            ],
+                            member: 'OrderConversion.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
                         },
                         {
                             member: 'OrderConversion.campaignId',
@@ -205,12 +209,14 @@ describe('GetTableStat', () => {
                     dimensions: ['CampaignOrderEvents.campaignId'],
                     filters: [
                         {
-                            member: 'CampaignOrderEvents.createdDatetime',
-                            operator: 'inDateRange',
-                            values: [
-                                '2023-02-01T00:00:00.000',
-                                '2023-04-01T00:00:00.000',
-                            ],
+                            member: 'CampaignOrderEvents.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'CampaignOrderEvents.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
                         },
                         {
                             member: 'CampaignOrderEvents.campaignId',
@@ -238,12 +244,14 @@ describe('GetTableStat', () => {
                     dimensions: [],
                     filters: [
                         {
-                            member: 'OrderConversion.createdDatetime',
-                            operator: 'inDateRange',
-                            values: [
-                                '2023-02-01T00:00:00.000',
-                                '2023-04-01T00:00:00.000',
-                            ],
+                            member: 'OrderConversion.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
                         },
                         {
                             member: 'OrderConversion.shopName',

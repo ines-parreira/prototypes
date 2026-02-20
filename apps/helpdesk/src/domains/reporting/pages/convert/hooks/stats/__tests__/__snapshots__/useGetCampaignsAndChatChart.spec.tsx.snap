@@ -8,10 +8,16 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "dimensions": [],
         "filters": [
           {
-            "member": "CampaignOrderEvents.createdDatetime",
-            "operator": "inDateRange",
+            "member": "CampaignOrderEvents.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-02-28T00:00:00.000",
+            ],
+          },
+          {
+            "member": "CampaignOrderEvents.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-03-02T00:00:00.000",
             ],
           },

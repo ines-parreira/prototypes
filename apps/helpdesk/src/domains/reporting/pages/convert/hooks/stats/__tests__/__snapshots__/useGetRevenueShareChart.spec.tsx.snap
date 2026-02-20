@@ -8,10 +8,16 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "dimensions": [],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-01-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-03-01T00:00:00.000",
             ],
           },
@@ -65,10 +71,16 @@ exports[`useGetTotalsStat should return prepared data for totals section 1`] = `
         "dimensions": [],
         "filters": [
           {
-            "member": "OrderConversion.createdDatetime",
-            "operator": "inDateRange",
+            "member": "OrderConversion.periodStart",
+            "operator": "afterDate",
             "values": [
               "2023-01-01T00:00:00.000",
+            ],
+          },
+          {
+            "member": "OrderConversion.periodEnd",
+            "operator": "beforeDate",
+            "values": [
               "2023-03-01T00:00:00.000",
             ],
           },

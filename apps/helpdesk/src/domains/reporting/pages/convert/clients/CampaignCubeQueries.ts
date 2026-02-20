@@ -2,6 +2,11 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
 import type { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/ConvertOrderEventsCube'
 import { FilterOperatorMap } from 'domains/reporting/models/queryFactories/utils'
+import {
+    APIOnlyFilterKey,
+    type ApiStatsFilters,
+    FilterKey,
+} from 'domains/reporting/models/stat/types'
 import type {
     ReportingParams,
     ReportingQuery,
@@ -11,7 +16,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
-import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -30,6 +35,7 @@ import type {
     DefaultFilterParams,
 } from 'domains/reporting/pages/convert/clients/types'
 import { getDateRange } from 'domains/reporting/pages/convert/clients/utils'
+import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { OrderDirection } from 'models/api/types'
 
 const _getDefaultFilters = ({
@@ -42,7 +48,7 @@ const _getDefaultFilters = ({
     abVariant,
     allowNoCampaign,
 }: DefaultFilterParams): CubeFilter[] => {
-    const filters = [_inDateRangeFilter(startDate, endDate, cubeName)]
+    const filters = [..._periodFilters(startDate, endDate, cubeName)]
 
     if (campaignIds && campaignsOperator && campaignIds?.length) {
         filters.push(
@@ -67,16 +73,76 @@ const _getDefaultFilters = ({
     return filters
 }
 
-const _inDateRangeFilter = (
+export const getDefaultApiStatsFilters = ({
+    startDate,
+    endDate,
+    campaignIds,
+    campaignsOperator,
+    shopName,
+    abVariant,
+    allowNoCampaign,
+}: {
+    startDate: string
+    endDate: string
+    campaignIds: string[]
+    campaignsOperator?: LogicalOperatorEnum
+    shopName?: string
+    abVariant?: string
+    allowNoCampaign?: boolean
+}): ApiStatsFilters => {
+    const filters: ApiStatsFilters = {
+        [FilterKey.Period]: {
+            start_datetime: startDate,
+            end_datetime: endDate,
+        },
+    }
+
+    if (campaignIds?.length && campaignsOperator) {
+        filters[FilterKey.Campaigns] = {
+            operator: campaignsOperator,
+            values: campaignIds,
+        }
+    } else if (!allowNoCampaign) {
+        filters[FilterKey.Campaigns] = {
+            operator: LogicalOperatorEnum.NOT_ONE_OF,
+            values: [''],
+        }
+    }
+
+    if (shopName) {
+        filters[APIOnlyFilterKey.ShopName] = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [shopName],
+        }
+    }
+
+    if (abVariant) {
+        filters[APIOnlyFilterKey.AbVariant] = {
+            operator: LogicalOperatorEnum.ONE_OF,
+            values: [abVariant],
+        }
+    }
+
+    return filters
+}
+
+const _periodFilters = (
     startDate: string,
     endDate: string,
     cubeName: string,
-): CubeFilter => {
-    return {
-        member: `${cubeName}.${SharedDimension.createdDatetime}`,
-        operator: FilterOperator.inDateRange,
-        values: getDateRange(startDate, endDate),
-    }
+): CubeFilter[] => {
+    return [
+        {
+            member: `${cubeName}.periodStart`,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [formatReportingQueryDate(startDate)],
+        },
+        {
+            member: `${cubeName}.periodEnd`,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [formatReportingQueryDate(endDate)],
+        },
+    ]
 }
 
 const _shopNameEqualsFilter = (
@@ -470,11 +536,7 @@ export const getCampaignABTestEvents = ({
                 CampaignOrderEventsMeasure.firstCampaignDisplay,
             ],
             filters: [
-                _inDateRangeFilter(
-                    startDate,
-                    endDate,
-                    Cube.campaignOrderEvents,
-                ),
+                ..._periodFilters(startDate, endDate, Cube.campaignOrderEvents),
                 _shopNameEqualsFilter(
                     shopName as string,
                     Cube.campaignOrderEvents,

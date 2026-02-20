@@ -1207,6 +1207,209 @@ describe('utils', () => {
             })
         })
 
+        describe('convert filters', () => {
+            it('should add shopName filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['shopName'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    shopName: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [
+                            'shop-a.myshopify.com',
+                            'shop-b.myshopify.com',
+                        ],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'shopName',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['shop-a.myshopify.com', 'shop-b.myshopify.com'],
+                })
+            })
+
+            it('should not add shopName filter when values array is empty', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['shopName'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    shopName: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'shopName' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should not add shopName filter when shopName is undefined', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['shopName'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'shopName' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should add abVariant filter when present', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['abVariant'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    abVariant: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['control', 'variant-a'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'abVariant',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['control', 'variant-a'],
+                })
+            })
+
+            it('should not add abVariant filter when values array is empty', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['abVariant'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    abVariant: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'abVariant' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should not add abVariant filter when abVariant is undefined', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['abVariant'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'abVariant' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should add campaignId filter when campaigns are present', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['campaignId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    campaigns: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['campaign-1', 'campaign-2'],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'campaignId',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['campaign-1', 'campaign-2'],
+                })
+            })
+
+            it('should not add campaignId filter when campaigns values are empty', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['campaignId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                    campaigns: {
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: [],
+                    },
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'campaignId' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+
+            it('should not add campaignId filter when campaigns is undefined', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['campaignId'],
+                }
+
+                const statFilters: ApiStatsFilters = {
+                    ...basePeriodFilters,
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).not.toContainEqual(
+                    expect.objectContaining({ member: 'campaignId' }),
+                )
+                expect(result).toHaveLength(2)
+            })
+        })
+
         it('should handle multiple filters together', () => {
             const scopeConfig: ScopeMeta = {
                 measures: ['ticketCount'],

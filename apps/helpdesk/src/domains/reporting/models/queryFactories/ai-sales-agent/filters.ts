@@ -36,11 +36,13 @@ export const clicksDefaultFilters = (
     filters: StatsFilters,
 ): ReportingFilter[] => [
     {
-        member: ConvertTrackingEventsDimension.CreatedDatetime,
-        operator: ReportingFilterOperator.InDateRange,
-        values: [
-            formatReportingQueryDate(filters.period.start_datetime),
-            formatReportingQueryDate(filters.period.end_datetime),
-        ],
+        member: ConvertTrackingEventsDimension.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [formatReportingQueryDate(filters.period.start_datetime)],
+    },
+    {
+        member: ConvertTrackingEventsDimension.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [formatReportingQueryDate(filters.period.end_datetime)],
     },
 ]

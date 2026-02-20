@@ -8,10 +8,16 @@ exports[`Getting Cube queries [Function getCampaignEventsOrdersPerformanceData] 
     ],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -43,10 +49,16 @@ exports[`Getting Cube queries [Function getCampaignEventsPerformanceData] should
     ],
     "filters": [
       {
-        "member": "CampaignEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -82,10 +94,16 @@ exports[`Getting Cube queries [Function getCampaignEventsTotalsData] should call
     "dimensions": [],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -123,10 +141,16 @@ exports[`Getting Cube queries [Function getCampaignOrderPerformanceData] should 
     ],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -161,10 +185,16 @@ exports[`Getting Cube queries [Function getCampaignOrderTotalsData] should call 
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -200,10 +230,16 @@ exports[`Getting Cube queries [Function getCampaignsPerformanceGraphData] should
     "dimensions": [],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -255,10 +291,16 @@ exports[`Getting Cube queries [Function getRevenueGraphData] should call load 1`
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -301,10 +343,16 @@ exports[`Getting Cube queries [Function getRevenueShareGraphData] should call lo
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -355,10 +403,16 @@ exports[`Getting Cube queries [Function getStoreRevenueTotalData] should call lo
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -387,10 +441,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsOrde
     ],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -422,10 +482,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsPerf
     ],
     "filters": [
       {
-        "member": "CampaignEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -461,10 +527,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignEventsTota
     "dimensions": [],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -502,10 +574,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignOrderPerfo
     ],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -540,10 +618,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignOrderTotal
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -579,10 +663,16 @@ exports[`Getting Cube queries for with notEquals [Function getCampaignsPerforman
     "dimensions": [],
     "filters": [
       {
-        "member": "CampaignOrderEvents.createdDatetime",
-        "operator": "inDateRange",
+        "member": "CampaignOrderEvents.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "CampaignOrderEvents.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -634,10 +724,16 @@ exports[`Getting Cube queries for with notEquals [Function getRevenueGraphData] 
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -680,10 +776,16 @@ exports[`Getting Cube queries for with notEquals [Function getRevenueShareGraphD
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
@@ -734,10 +836,16 @@ exports[`Getting Cube queries for with notEquals [Function getStoreRevenueTotalD
     "dimensions": [],
     "filters": [
       {
-        "member": "OrderConversion.createdDatetime",
-        "operator": "inDateRange",
+        "member": "OrderConversion.periodStart",
+        "operator": "afterDate",
         "values": [
           "2023-01-01T20:00:00.000",
+        ],
+      },
+      {
+        "member": "OrderConversion.periodEnd",
+        "operator": "beforeDate",
+        "values": [
           "2023-03-15T06:00:00.000",
         ],
       },
