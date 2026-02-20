@@ -7,6 +7,7 @@ import type {
 import { OpportunityType } from '../enums'
 import type { Opportunity, OpportunityResource } from '../types'
 import { ResourceType } from '../types'
+import { capitalizeFirstLetter } from './capitalizeFirstLetter'
 
 /**
  * Maps knowledge service resource type to internal ResourceType enum
@@ -56,7 +57,7 @@ export const mapOpportunityDetailToOpportunity = (
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
             ticketCount: knowledgeGap.detectionCount,
             detectionObjectIds: knowledgeGap.detectionObjectIds,
-            insight: knowledgeGap.insight,
+            insight: capitalizeFirstLetter(knowledgeGap.insight),
             resources,
         }
     }
@@ -94,7 +95,7 @@ export const mapOpportunityDetailToOpportunity = (
         type: OpportunityType.RESOLVE_CONFLICT,
         ticketCount: conflict.detectionCount,
         detectionObjectIds: conflict.detectionObjectIds,
-        insight: conflict.insight,
+        insight: capitalizeFirstLetter(conflict.insight),
         resources,
     }
 }

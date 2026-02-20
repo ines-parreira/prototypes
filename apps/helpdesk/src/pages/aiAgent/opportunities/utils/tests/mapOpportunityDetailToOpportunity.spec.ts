@@ -122,7 +122,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['10', '11'],
-                insight: undefined,
+                insight: '',
                 resources: [],
             })
         })
@@ -160,7 +160,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['20'],
-                insight: null,
+                insight: '',
                 resources: [
                     {
                         title: 'Untitled',
@@ -205,7 +205,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.FILL_KNOWLEDGE_GAP,
                 ticketCount: 5,
                 detectionObjectIds: ['30', '31', '32'],
-                insight: undefined,
+                insight: '',
                 resources: [
                     {
                         title: 'Untitled',
@@ -327,7 +327,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 7,
                 detectionObjectIds: ['50', '51', '52', '53', '54', '55', '56'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [
                     {
                         title: 'First Conflict Title',
@@ -382,7 +382,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['60', '61'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [],
             })
         })
@@ -422,7 +422,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['70', '71'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -471,7 +471,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['80', '81'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -520,7 +520,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 2,
                 detectionObjectIds: ['90', '91'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Untitled',
@@ -579,7 +579,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                 type: OpportunityType.RESOLVE_CONFLICT,
                 ticketCount: 3,
                 detectionObjectIds: ['110', '111', '112'],
-                insight: 'test',
+                insight: 'Test',
                 resources: [
                     {
                         title: 'Resource with Insight',
@@ -666,7 +666,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
 
             const result = mapOpportunityDetailToOpportunity(conflictDetail)
 
-            expect(result.insight).toBe('test')
+            expect(result.insight).toBe('Test')
             expect(result.resources[0].title).toBe('Keep This Title')
             expect(result.resources[0].content).toBe('<p>Keep this content</p>')
             expect(result.resources[0].identifiers).toEqual({

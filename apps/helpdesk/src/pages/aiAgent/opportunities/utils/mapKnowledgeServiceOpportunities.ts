@@ -2,6 +2,7 @@ import type { PaginatedOpportunities } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../enums'
 import type { OpportunityListItem } from '../types'
+import { capitalizeFirstLetter } from './capitalizeFirstLetter'
 
 /**
  * Maps Knowledge Service paginated opportunities to OpportunityListItem[].
@@ -20,7 +21,7 @@ export const mapKnowledgeServiceOpportunities = (
                     ? OpportunityType.FILL_KNOWLEDGE_GAP
                     : OpportunityType.RESOLVE_CONFLICT,
             ticketCount: item.detectionCount,
-            insight: item.insight,
+            insight: capitalizeFirstLetter(item.insight),
         }
     })
 }

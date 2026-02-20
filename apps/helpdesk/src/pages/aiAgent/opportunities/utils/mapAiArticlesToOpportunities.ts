@@ -3,6 +3,7 @@ import type { AILibraryArticleItem } from 'models/helpCenter/types'
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
 import { ResourceType } from '../types'
+import { capitalizeFirstLetter } from './capitalizeFirstLetter'
 
 const removeAiPrefix = (key: string): string => {
     return key.startsWith('ai_') ? key.slice(3) : key
@@ -20,7 +21,7 @@ export const mapAiArticlesToOpportunities = (
             id: removeAiPrefix(article.key),
             key: article.key,
             type: OpportunityType.FILL_KNOWLEDGE_GAP,
-            insight: article.title,
+            insight: capitalizeFirstLetter(article.title),
             resources: [
                 {
                     title: article.title,
