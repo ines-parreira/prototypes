@@ -137,7 +137,7 @@ export const ActionDrivenNavigationItems = ({
                                                         size="sm"
                                                         color="purple"
                                                     >
-                                                        New
+                                                        Beta
                                                     </Tag>
                                                 </div>
                                                 <div
@@ -177,7 +177,7 @@ export const ActionDrivenNavigationItems = ({
                                 <div className={css.navItemWithBadgeContent}>
                                     <span>{item.title}</span>
                                     <Tag size="sm" color="purple">
-                                        New
+                                        Beta
                                     </Tag>
                                 </div>
                                 <div className={css.navItemCount}>

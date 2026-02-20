@@ -47,10 +47,6 @@ const KNOWLEDGE_GAP_DISMISS_REASON_OPTIONS: Option[] = [
         value: OpportunityDismissReason.TOPIC_ALREADY_EXISTS,
     },
     {
-        label: 'Content is inaccurate',
-        value: OpportunityDismissReason.INCORRECT_SUGGESTION,
-    },
-    {
         label: 'Opportunity is irrelevant',
         value: OpportunityDismissReason.IRRELEVANT_OPPORTUNITY,
     },

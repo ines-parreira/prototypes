@@ -117,7 +117,7 @@ describe('DismissOpportunityModal', () => {
             expect(dismissButtons.length).toBeGreaterThan(0)
         })
 
-        it('should render 5 checkboxes for knowledge gap opportunities', () => {
+        it('should render 4 checkboxes for knowledge gap opportunities', () => {
             renderComponent()
 
             expect(
@@ -125,15 +125,12 @@ describe('DismissOpportunityModal', () => {
             ).toBeInTheDocument()
 
             const checkboxes = screen.getAllByRole('checkbox')
-            expect(checkboxes).toHaveLength(5)
+            expect(checkboxes).toHaveLength(4)
             expect(
                 screen.getByText("Topic shouldn't be handled by AI"),
             ).toBeInTheDocument()
             expect(
                 screen.getByText('Knowledge for this topic already exists'),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByText('Content is inaccurate'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText('Opportunity is irrelevant'),
@@ -198,7 +195,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -234,7 +231,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -380,7 +377,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -408,7 +405,7 @@ describe('DismissOpportunityModal', () => {
             const user = userEvent.setup({ delay: null })
             renderComponent()
 
-            const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
             await act(() => user.click(otherCheckbox))
 
             await waitFor(() => {
@@ -431,7 +428,7 @@ describe('DismissOpportunityModal', () => {
             renderComponent()
 
             const firstCheckbox = screen.getAllByRole('checkbox')[0]
-            const otherCheckbox = screen.getAllByRole('checkbox')[4]
+            const otherCheckbox = screen.getAllByRole('checkbox')[3]
 
             await act(() => user.click(firstCheckbox))
             await act(() => user.click(otherCheckbox))
