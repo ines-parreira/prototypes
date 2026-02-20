@@ -406,16 +406,49 @@ import { Box } from '@gorgias/axiom'
 
 ### Tooltips (New API)
 
-```tsx
-import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+**When `TooltipTrigger` is NOT needed:**
 
-;<Tooltip>
-    <TooltipTrigger>
-        <Button>Hover me</Button>
-    </TooltipTrigger>
+For focusable Axiom components (Button, Link, etc.), you can omit `TooltipTrigger`:
+
+```tsx
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
+
+<Tooltip>
+    <Button>Hover me</Button>
     <TooltipContent>Helpful information</TooltipContent>
 </Tooltip>
 ```
+
+**When `TooltipTrigger` IS needed:**
+
+For custom elements (div, span) or when customizing component children with render props:
+
+```tsx
+import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+
+// Custom div element
+<Tooltip>
+    <TooltipTrigger>
+        <div role="button">Custom trigger</div>
+    </TooltipTrigger>
+    <TooltipContent>Helpful information</TooltipContent>
+</Tooltip>
+
+// Component with render prop that returns custom content
+<OverflowListShowMore>
+    {({ hiddenCount }) => (
+        <Tooltip>
+            <TooltipTrigger>
+                <div>+{hiddenCount}</div>
+            </TooltipTrigger>
+            <TooltipContent>Content here</TooltipContent>
+        </Tooltip>
+    )}
+</OverflowListShowMore>
+```
+
+**Why use `TooltipTrigger`?**
+Without it on custom elements, tooltips may flash at position (0,0) before repositioning. `TooltipTrigger` provides proper refs and accessibility attributes for immediate, correct positioning.
 
 ### Design Tokens in CSS
 
