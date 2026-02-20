@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 
-import { useGuidanceContext } from '../context'
+import { useShallow } from 'zustand/react/shallow'
+
+import { hasDraft, useGuidanceStore } from '../context'
 import { useSwitchVersion } from './useSwitchVersion'
 
 export type VersionBannerState = {
@@ -12,32 +14,48 @@ export type VersionBannerState = {
 }
 
 export function useVersionBanner(): VersionBannerState {
-    const { state, hasDraft } = useGuidanceContext()
+    const {
+        historicalPublishedDatetime,
+        isGuidanceCurrent,
+        hasPublishedVersion,
+        isUpdating,
+        isAutoSaving,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            historicalPublishedDatetime:
+                storeState.state.historicalVersion?.publishedDatetime,
+            isGuidanceCurrent: storeState.state.guidance?.isCurrent,
+            hasPublishedVersion:
+                !!storeState.state.guidance?.publishedVersionId,
+            isUpdating: storeState.state.isUpdating,
+            isAutoSaving: storeState.state.isAutoSaving,
+        })),
+    )
+    const guidanceHasDraft = useGuidanceStore((storeState) =>
+        hasDraft(storeState.state),
+    )
 
     const isViewingHistoricalVersion =
-        state.historicalVersion !== null &&
-        state.historicalVersion.publishedDatetime !== null
+        historicalPublishedDatetime !== null &&
+        historicalPublishedDatetime !== undefined
 
     const isViewingDraft = isViewingHistoricalVersion
         ? false
-        : state.guidance?.isCurrent === undefined
+        : isGuidanceCurrent === undefined
           ? false
-          : !state.guidance?.isCurrent
+          : !isGuidanceCurrent
 
-    const hasPublishedVersion = !!state.guidance?.publishedVersionId
-
-    const isDisabled = state.isUpdating || state.isAutoSaving
+    const isDisabled = isUpdating || isAutoSaving
 
     const { switchToVersion } = useSwitchVersion()
 
     const switchVersion = useCallback(async () => {
-        const isCurrent = state.guidance?.isCurrent
-        await switchToVersion(isCurrent ? 'latest_draft' : 'current')
-    }, [switchToVersion, state.guidance?.isCurrent])
+        await switchToVersion(isGuidanceCurrent ? 'latest_draft' : 'current')
+    }, [switchToVersion, isGuidanceCurrent])
 
     return {
         isViewingDraft,
-        hasDraftVersion: hasDraft,
+        hasDraftVersion: guidanceHasDraft,
         hasPublishedVersion,
         isDisabled,
         switchVersion,

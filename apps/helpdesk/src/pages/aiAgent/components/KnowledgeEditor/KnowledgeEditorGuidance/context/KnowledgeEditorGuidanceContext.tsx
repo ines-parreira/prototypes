@@ -1,10 +1,7 @@
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useReducer,
-} from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef } from 'react'
+
+import { useStore } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 
 import {
     getPlainTextLength,
@@ -12,21 +9,150 @@ import {
 } from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { guidanceReducer } from './KnowledgeEditorGuidanceReducer'
-import type { GuidanceContextConfig, GuidanceContextValue } from './types'
+import type {
+    GuidanceContextConfig,
+    GuidanceContextValue,
+    GuidanceReducerAction,
+    GuidanceState,
+    PlaygroundState,
+} from './types'
 import { createInitialState } from './types'
 
-const GuidanceContext = createContext<GuidanceContextValue | null>(null)
+type GuidanceStoreState = {
+    state: GuidanceState
+    config: GuidanceContextConfig
+    guidanceArticle: GuidanceArticle | undefined
+    playground: PlaygroundState
+}
 
-export const useGuidanceContext = (): GuidanceContextValue => {
-    const context = useContext(GuidanceContext)
-    if (!context) {
+type GuidanceStoreActions = {
+    dispatch: (action: GuidanceReducerAction) => void
+    setConfig: (config: GuidanceContextConfig) => void
+    setGuidanceArticle: (guidanceArticle: GuidanceArticle | undefined) => void
+    setPlayground: (playground: PlaygroundState) => void
+}
+
+type GuidanceStoreValue = GuidanceStoreState & GuidanceStoreActions
+
+type GuidanceStoreApi = ReturnType<typeof createGuidanceStore>
+
+const noop = () => undefined
+
+const defaultPlaygroundState: PlaygroundState = {
+    isOpen: false,
+    onTest: noop,
+    onClose: noop,
+    sidePanelWidth: '100vw',
+    shouldHideFullscreenButton: false,
+}
+
+export const hasPendingChanges = (state: GuidanceState): boolean => {
+    if (state.guidanceMode === 'read' || state.guidanceMode === 'diff') {
+        return false
+    }
+
+    return (
+        !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
+        state.content !== state.savedSnapshot.content
+    )
+}
+
+export const isFormValid = (state: GuidanceState): boolean =>
+    state.title.trim() !== '' &&
+    state.content.trim() !== '' &&
+    getPlainTextLength(state.content) <= textLimit
+
+export const hasDraft = (state: GuidanceState): boolean =>
+    state.guidance !== undefined &&
+    (!state.guidance.publishedVersionId ||
+        state.guidance.draftVersionId !== state.guidance.publishedVersionId)
+
+export const canEdit = (state: GuidanceState): boolean => {
+    if (state.guidance === undefined) {
+        return false
+    }
+
+    const guidanceHasDraft = hasDraft(state)
+
+    if (state.guidance.isCurrent && guidanceHasDraft) {
+        return false
+    }
+
+    return true
+}
+
+const createGuidanceStore = (config: GuidanceContextConfig) => {
+    const initialState = createInitialState(
+        config.guidanceTemplate,
+        config.guidanceArticle,
+        config.initialMode,
+    )
+
+    return createStore<GuidanceStoreValue>()((set) => ({
+        state: initialState,
+        config,
+        guidanceArticle: config.guidanceArticle,
+        playground: defaultPlaygroundState,
+        dispatch: (action) =>
+            set((storeState) => ({
+                state: guidanceReducer(storeState.state, action),
+            })),
+        setConfig: (nextConfig) => set({ config: nextConfig }),
+        setGuidanceArticle: (nextGuidanceArticle) =>
+            set({ guidanceArticle: nextGuidanceArticle }),
+        setPlayground: (nextPlayground) => set({ playground: nextPlayground }),
+    }))
+}
+
+const GuidanceStoreContext = createContext<GuidanceStoreApi | null>(null)
+
+export const useGuidanceStoreApi = (): GuidanceStoreApi => {
+    const store = useContext(GuidanceStoreContext)
+
+    if (!store) {
         throw new Error(
-            'useGuidanceContext must be used within a KnowledgeEditorGuidanceProvider',
+            'useGuidanceStore must be used within a KnowledgeEditorGuidanceProvider',
         )
     }
-    return context
+
+    return store
+}
+
+export const useGuidanceStore = <T,>(
+    selector: (state: GuidanceStoreValue) => T,
+): T => {
+    const store = useGuidanceStoreApi()
+    return useStore(store, selector)
+}
+
+export const useGuidanceContext = (): GuidanceContextValue => {
+    const state = useGuidanceStore((storeState) => storeState.state)
+    const config = useGuidanceStore((storeState) => storeState.config)
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
+    const guidanceArticle = useGuidanceStore(
+        (storeState) => storeState.guidanceArticle,
+    )
+    const playground = useGuidanceStore((storeState) => storeState.playground)
+
+    const contextValue = useMemo<GuidanceContextValue>(
+        () => ({
+            state,
+            config,
+            dispatch,
+            guidanceArticle,
+            playground,
+            hasPendingChanges: hasPendingChanges(state),
+            isFormValid: isFormValid(state),
+            hasDraft: hasDraft(state),
+            canEdit: canEdit(state),
+        }),
+        [state, config, dispatch, guidanceArticle, playground],
+    )
+
+    return contextValue
 }
 
 type ProviderProps = {
@@ -38,21 +164,18 @@ export const KnowledgeEditorGuidanceProvider = ({
     config,
     children,
 }: ProviderProps) => {
-    const { guidanceTemplate, initialMode, guidanceArticle } = config
+    const storeRef = useRef<GuidanceStoreApi | null>(null)
 
-    const [state, dispatch] = useReducer(
-        guidanceReducer,
-        createInitialState(guidanceTemplate, guidanceArticle, initialMode),
+    if (!storeRef.current) {
+        storeRef.current = createGuidanceStore(config)
+    }
+
+    const store = storeRef.current
+
+    const isFullscreen = useStore(
+        store,
+        (storeState) => storeState.state.isFullscreen,
     )
-
-    useEffect(() => {
-        if (guidanceArticle && guidanceArticle.id !== state.guidance?.id) {
-            dispatch({
-                type: 'SWITCH_GUIDANCE',
-                payload: { article: guidanceArticle, mode: 'read' },
-            })
-        }
-    }, [guidanceArticle, state.guidance?.id, dispatch])
 
     const {
         isPlaygroundOpen,
@@ -60,79 +183,54 @@ export const KnowledgeEditorGuidanceProvider = ({
         onClosePlayground,
         sidePanelWidth,
         shouldHideFullscreenButton,
-    } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
+    } = usePlaygroundPanelInKnowledgeEditor(isFullscreen)
 
-    const hasPendingChanges = useMemo(() => {
-        if (state.guidanceMode === 'read' || state.guidanceMode === 'diff')
-            return false
-        return (
-            !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
-            state.content !== state.savedSnapshot.content
-        )
-    }, [state.title, state.content, state.savedSnapshot, state.guidanceMode])
-
-    const isFormValid = useMemo(
-        () =>
-            state.title.trim() !== '' &&
-            state.content.trim() !== '' &&
-            getPlainTextLength(state.content) <= textLimit,
-        [state.title, state.content],
-    )
-
-    // a user has draft when either the published version is null or the draft version is different from the published version
-    const hasDraft =
-        state.guidance !== undefined &&
-        (!state.guidance.publishedVersionId ||
-            state.guidance.draftVersionId !== state.guidance.publishedVersionId)
-
-    // a user can edit if they are seeing either the published version BUT don't have a draft version
-    // or is seeing the draft version
-    let canEdit = false
-    if (state.guidance !== undefined) {
-        if (state.guidance.isCurrent && hasDraft) {
-            canEdit = false
-        } else {
-            canEdit = true
+    useEffect(() => {
+        if (store.getState().config !== config) {
+            store.getState().setConfig(config)
         }
-    }
+    }, [store, config])
 
-    const value = useMemo<GuidanceContextValue>(
-        () => ({
-            state,
-            canEdit,
-            dispatch,
-            hasPendingChanges,
-            isFormValid,
-            hasDraft,
-            config,
-            guidanceArticle,
-            playground: {
-                isOpen: isPlaygroundOpen,
-                onTest,
-                onClose: onClosePlayground,
-                sidePanelWidth,
-                shouldHideFullscreenButton,
-            },
-        }),
-        [
-            state,
-            canEdit,
-            hasPendingChanges,
-            isFormValid,
-            config,
-            hasDraft,
-            guidanceArticle,
-            isPlaygroundOpen,
+    useEffect(() => {
+        if (store.getState().guidanceArticle !== config.guidanceArticle) {
+            store.getState().setGuidanceArticle(config.guidanceArticle)
+        }
+    }, [store, config.guidanceArticle])
+
+    useEffect(() => {
+        const currentGuidanceId = store.getState().state.guidance?.id
+
+        if (
+            config.guidanceArticle &&
+            config.guidanceArticle.id !== currentGuidanceId
+        ) {
+            store.getState().dispatch({
+                type: 'SWITCH_GUIDANCE',
+                payload: { article: config.guidanceArticle, mode: 'read' },
+            })
+        }
+    }, [store, config.guidanceArticle])
+
+    useEffect(() => {
+        store.getState().setPlayground({
+            isOpen: isPlaygroundOpen,
             onTest,
-            onClosePlayground,
+            onClose: onClosePlayground,
             sidePanelWidth,
             shouldHideFullscreenButton,
-        ],
-    )
+        })
+    }, [
+        store,
+        isPlaygroundOpen,
+        onTest,
+        onClosePlayground,
+        sidePanelWidth,
+        shouldHideFullscreenButton,
+    ])
 
     return (
-        <GuidanceContext.Provider value={value}>
+        <GuidanceStoreContext.Provider value={store}>
             {children}
-        </GuidanceContext.Provider>
+        </GuidanceStoreContext.Provider>
     )
 }

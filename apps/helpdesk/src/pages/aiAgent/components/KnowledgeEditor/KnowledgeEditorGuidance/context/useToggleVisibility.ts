@@ -1,33 +1,48 @@
 import { useCallback } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
-import { useGuidanceContext } from './KnowledgeEditorGuidanceContext'
+import { useGuidanceStore } from './KnowledgeEditorGuidanceContext'
 import { useGuidanceLimit } from './useGuidanceLimit'
 
 export const useToggleVisibility = () => {
     const { error: notifyError } = useNotify()
 
-    const { state, dispatch, config } = useGuidanceContext()
-
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
     const {
+        guidanceId,
+        visibility,
         onUpdateFn,
-        guidanceHelpCenter,
+        guidanceHelpCenterId,
+        guidanceHelpCenterLocale,
         guidanceArticles,
         handleVisibilityUpdate,
-    } = config
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceId: storeState.state.guidance?.id,
+            visibility: storeState.state.visibility,
+            onUpdateFn: storeState.config.onUpdateFn,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter.id ?? 0,
+            guidanceHelpCenterLocale:
+                storeState.config.guidanceHelpCenter.default_locale,
+            guidanceArticles: storeState.config.guidanceArticles,
+            handleVisibilityUpdate: storeState.config.handleVisibilityUpdate,
+        })),
+    )
 
     const { updateGuidanceArticle } = useGuidanceArticleMutation({
-        guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
+        guidanceHelpCenterId,
     })
 
     const { isAtLimit, limitMessage } = useGuidanceLimit(guidanceArticles)
 
     const toggleVisibility = useCallback(async () => {
-        if (!state.guidance?.id || !guidanceHelpCenter.default_locale) return
+        if (!guidanceId || !guidanceHelpCenterLocale) return
 
-        const newVisibility = state.visibility ? 'UNLISTED' : 'PUBLIC'
+        const newVisibility = visibility ? 'UNLISTED' : 'PUBLIC'
 
         // Prevent enabling if at limit
         if (newVisibility === 'PUBLIC' && isAtLimit) {
@@ -43,8 +58,8 @@ export const useToggleVisibility = () => {
                     isCurrent: false,
                 },
                 {
-                    articleId: state.guidance.id,
-                    locale: guidanceHelpCenter.default_locale,
+                    articleId: guidanceId,
+                    locale: guidanceHelpCenterLocale,
                 },
             )
 
@@ -52,7 +67,7 @@ export const useToggleVisibility = () => {
                 // NOTE: we are not calling MARK_AS_SAVED here because changing visibility
                 // doesn't create a new version and modifies the structure in place. Ideally the API should return the current version
                 // where it is applied, although it doesn't do that now.
-                dispatch({ type: 'SET_VISIBILITY', payload: !state.visibility })
+                dispatch({ type: 'SET_VISIBILITY', payload: !visibility })
                 onUpdateFn?.()
                 handleVisibilityUpdate?.(newVisibility)
             }
@@ -62,9 +77,9 @@ export const useToggleVisibility = () => {
             dispatch({ type: 'SET_UPDATING', payload: false })
         }
     }, [
-        state.guidance?.id,
-        state.visibility,
-        guidanceHelpCenter.default_locale,
+        guidanceId,
+        visibility,
+        guidanceHelpCenterLocale,
         dispatch,
         updateGuidanceArticle,
         notifyError,

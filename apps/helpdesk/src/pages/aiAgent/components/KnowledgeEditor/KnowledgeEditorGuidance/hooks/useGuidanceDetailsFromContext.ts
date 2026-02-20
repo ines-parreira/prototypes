@@ -1,6 +1,8 @@
 import { useMemo } from 'react'
 
-import { useGuidanceContext } from '../context'
+import { useShallow } from 'zustand/react/shallow'
+
+import { useGuidanceStore } from '../context'
 import type { GuidanceModeType } from '../context/types'
 import { useToggleVisibility } from '../context/useToggleVisibility'
 
@@ -38,61 +40,78 @@ const getAiAgentStatusTooltip = (
 }
 
 export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
-    const { state, guidanceArticle } = useGuidanceContext()
+    const {
+        visibility,
+        isUpdating,
+        isAutoSaving,
+        isGuidanceCurrent,
+        historicalPublishedDatetime,
+        guidanceMode,
+        createdDatetime,
+        lastUpdated,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            visibility: storeState.state.visibility,
+            isUpdating: storeState.state.isUpdating,
+            isAutoSaving: storeState.state.isAutoSaving,
+            isGuidanceCurrent: storeState.state.guidance?.isCurrent,
+            historicalPublishedDatetime:
+                storeState.state.historicalVersion?.publishedDatetime,
+            guidanceMode: storeState.state.guidanceMode,
+            createdDatetime: storeState.guidanceArticle?.createdDatetime,
+            lastUpdated: storeState.guidanceArticle?.lastUpdated,
+        })),
+    )
     const { toggleVisibility, isAtLimit, limitMessage } = useToggleVisibility()
 
-    const isDisabled = state.isUpdating || state.isAutoSaving
-    const isDraft =
-        state.guidance?.isCurrent === undefined
-            ? false
-            : !state.guidance?.isCurrent
+    const isDisabled = isUpdating || isAutoSaving
+    const isDraft = isGuidanceCurrent === undefined ? false : !isGuidanceCurrent
     // Consider it a historical version if historicalVersion exists with a published date
     // (not when comparing draft to published, which has publishedDatetime = null)
     const isViewingHistoricalVersion =
-        state.historicalVersion !== null &&
-        state.historicalVersion.publishedDatetime !== null
+        historicalPublishedDatetime !== null &&
+        historicalPublishedDatetime !== undefined
 
     return useMemo(
         () => ({
             aiAgentStatus: {
                 value:
-                    isDraft || isViewingHistoricalVersion
-                        ? false
-                        : state.visibility,
+                    isDraft || isViewingHistoricalVersion ? false : visibility,
                 onChange: toggleVisibility,
                 tooltip: getAiAgentStatusTooltip(
                     isDraft,
                     isAtLimit,
-                    state.visibility,
+                    visibility,
                     limitMessage,
                     isViewingHistoricalVersion,
                 ),
             },
-            createdDatetime: guidanceArticle
-                ? new Date(guidanceArticle.createdDatetime)
+            createdDatetime: createdDatetime
+                ? new Date(createdDatetime)
                 : undefined,
-            lastUpdatedDatetime: guidanceArticle
-                ? new Date(guidanceArticle.lastUpdated)
+            lastUpdatedDatetime: lastUpdated
+                ? new Date(lastUpdated)
                 : undefined,
             isUpdating:
                 isDisabled ||
                 isDraft ||
                 isViewingHistoricalVersion ||
-                (isAtLimit && !state.visibility),
+                (isAtLimit && !visibility),
             isDraft,
             isViewingHistoricalVersion,
-            guidanceMode: state.guidanceMode,
+            guidanceMode,
         }),
         [
-            state.visibility,
-            guidanceArticle,
+            visibility,
+            createdDatetime,
+            lastUpdated,
             toggleVisibility,
             isAtLimit,
             limitMessage,
             isDraft,
             isDisabled,
             isViewingHistoricalVersion,
-            state.guidanceMode,
+            guidanceMode,
         ],
     )
 }

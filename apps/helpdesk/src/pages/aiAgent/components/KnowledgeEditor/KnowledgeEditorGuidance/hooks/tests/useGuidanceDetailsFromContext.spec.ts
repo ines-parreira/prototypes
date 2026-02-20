@@ -3,12 +3,13 @@ import { renderHook } from '@testing-library/react'
 import type { GuidanceContextValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context/types'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { useGuidanceContext } from '../../context'
+import { useGuidanceContext, useGuidanceStore } from '../../context'
 import { useToggleVisibility } from '../../context/useToggleVisibility'
 import { useGuidanceDetailsFromContext } from '../useGuidanceDetailsFromContext'
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
 }))
 
 jest.mock('../../context/useToggleVisibility', () => ({
@@ -16,6 +17,7 @@ jest.mock('../../context/useToggleVisibility', () => ({
 }))
 
 const mockUseGuidanceContext = useGuidanceContext as jest.Mock
+const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 const mockUseToggleVisibility = useToggleVisibility as jest.Mock
 
 describe('useGuidanceDetailsFromContext', () => {
@@ -49,10 +51,34 @@ describe('useGuidanceDetailsFromContext', () => {
         guidanceArticle: mockGuidanceArticle,
     }
 
+    const getStoreValue = () => {
+        const contextValue = mockUseGuidanceContext()
+
+        return {
+            state: contextValue.state,
+            config: contextValue.config ?? {
+                guidanceHelpCenter: {
+                    id: 1,
+                    default_locale: 'en-US',
+                    shop_integration_id: 0,
+                },
+            },
+            dispatch: contextValue.dispatch ?? jest.fn(),
+            guidanceArticle: contextValue.guidanceArticle,
+            playground: contextValue.playground ?? ({} as any),
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+        }
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockUseGuidanceContext.mockReturnValue(defaultContextValue)
+        mockUseGuidanceStore.mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
         mockUseToggleVisibility.mockReturnValue({
             toggleVisibility: mockToggleVisibility,
             isAtLimit: false,

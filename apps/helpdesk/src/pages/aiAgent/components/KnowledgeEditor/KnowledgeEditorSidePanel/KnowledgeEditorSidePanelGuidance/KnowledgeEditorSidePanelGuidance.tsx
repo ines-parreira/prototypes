@@ -1,4 +1,8 @@
-import { useGuidanceContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
+import { memo } from 'react'
+
+import { useShallow } from 'zustand/react/shallow'
+
+import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import {
     useGuidanceImpactFromContext,
     useGuidanceRecentTicketsFromContext,
@@ -10,33 +14,46 @@ import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePan
 import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 
-export const KnowledgeEditorSidePanelGuidance = () => {
+const initialExpandedSections: string[] = [
+    'details',
+    'impact',
+    'related-tickets',
+]
+
+const KnowledgeEditorSidePanelGuidanceComponent = () => {
     const impact = useGuidanceImpactFromContext()
     const recentTickets = useGuidanceRecentTicketsFromContext()
-    const { guidanceArticle, config, state } = useGuidanceContext()
-
-    const initialExpandedSections: string[] = [
-        'details',
-        'impact',
-        'related-tickets',
-    ]
+    const {
+        guidanceArticleId,
+        guidanceArticleLocale,
+        guidanceHelpCenterId,
+        publishedVersionId,
+        draftVersionId,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceArticleId: storeState.guidanceArticle?.id,
+            guidanceArticleLocale: storeState.guidanceArticle?.locale,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
+            publishedVersionId: storeState.state.guidance?.publishedVersionId,
+            draftVersionId: storeState.state.guidance?.draftVersionId,
+        })),
+    )
 
     const backendIds: Record<string, string | number> = {}
-    if (guidanceArticle?.id) {
-        backendIds['Article ID (SourceId)'] = guidanceArticle.id
+    if (guidanceArticleId) {
+        backendIds['Article ID (SourceId)'] = guidanceArticleId
     }
-    if (config.guidanceHelpCenter?.id) {
-        backendIds['Help Center ID (SourceSetId)'] =
-            config.guidanceHelpCenter.id
+    if (guidanceHelpCenterId) {
+        backendIds['Help Center ID (SourceSetId)'] = guidanceHelpCenterId
     }
-    if (guidanceArticle?.locale) {
-        backendIds['Locale'] = guidanceArticle.locale
+    if (guidanceArticleLocale) {
+        backendIds['Locale'] = guidanceArticleLocale
     }
-    if (state.guidance?.publishedVersionId) {
-        backendIds['Published Version ID'] = state.guidance.publishedVersionId
+    if (publishedVersionId) {
+        backendIds['Published Version ID'] = publishedVersionId
     }
-    if (state.guidance?.draftVersionId) {
-        backendIds['Draft Version ID'] = state.guidance.draftVersionId
+    if (draftVersionId) {
+        backendIds['Draft Version ID'] = draftVersionId
     }
 
     return (
@@ -58,3 +75,7 @@ export const KnowledgeEditorSidePanelGuidance = () => {
         </KnowledgeEditorSidePanel>
     )
 }
+
+export const KnowledgeEditorSidePanelGuidance = memo(
+    KnowledgeEditorSidePanelGuidanceComponent,
+)

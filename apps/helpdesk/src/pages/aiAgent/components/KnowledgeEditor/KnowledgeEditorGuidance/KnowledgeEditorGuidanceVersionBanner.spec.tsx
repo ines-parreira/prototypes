@@ -22,6 +22,7 @@ const mockDispatch = jest.fn()
 const mockUseVersionBanner = jest.fn<VersionBannerState, []>()
 const mockUseVersionHistory = jest.fn<VersionHistoryData, []>()
 const mockUseGuidanceContext = jest.fn()
+const mockUseGuidanceStore = jest.fn()
 const mockUseFlag = jest.fn()
 
 jest.mock('@repo/feature-flags', () => ({
@@ -39,6 +40,8 @@ jest.mock('./hooks/useVersionHistory', () => ({
 
 jest.mock('./context', () => ({
     useGuidanceContext: () => mockUseGuidanceContext(),
+    useGuidanceStore: (selector: (storeState: unknown) => unknown) =>
+        mockUseGuidanceStore(selector),
     fromArticleTranslation: (article: any) => ({
         title: article.translation?.title ?? article.title,
         content: article.translation?.content ?? article.content,
@@ -85,6 +88,22 @@ const defaultContextValue = {
     },
 }
 
+const getStoreValue = () => {
+    const contextValue = mockUseGuidanceContext()
+
+    return {
+        state: contextValue.state,
+        config: contextValue.config,
+        dispatch: contextValue.dispatch,
+        guidanceArticle:
+            contextValue.guidanceArticle ?? contextValue.state?.guidance,
+        playground: contextValue.playground ?? ({} as any),
+        setConfig: jest.fn(),
+        setGuidanceArticle: jest.fn(),
+        setPlayground: jest.fn(),
+    }
+}
+
 const renderComponent = () => {
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -125,6 +144,9 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             shouldLoadMore: false,
         })
         mockUseGuidanceContext.mockReturnValue(defaultContextValue)
+        mockUseGuidanceStore.mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
         mockGetTimezone.mockReturnValue('UTC')
         mockGetDateAndTimeFormatter.mockReturnValue(
             () =>

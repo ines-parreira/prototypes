@@ -1,28 +1,46 @@
+import { useMemo } from 'react'
+
+import { useShallow } from 'zustand/react/shallow'
+
 import type { KnowledgeRecentTicketsData } from '../../shared/hooks/useKnowledgeRecentTickets'
 import { useKnowledgeRecentTickets } from '../../shared/hooks/useKnowledgeRecentTickets'
 import { formatDateRangeSubtitle } from '../../shared/useVersionHistoryBase/useVersionHistoryBase'
-import { useGuidanceContext } from '../context'
+import { useGuidanceStore } from '../context'
 
 export type GuidanceRecentTicketsData = KnowledgeRecentTicketsData
 
 export const useGuidanceRecentTicketsFromContext = ():
     | GuidanceRecentTicketsData
     | undefined => {
-    const { guidanceArticle, config, state } = useGuidanceContext()
-    const { guidanceHelpCenter } = config
+    const {
+        guidanceArticleId,
+        guidanceHelpCenterId,
+        shopIntegrationId,
+        impactDateRange,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceArticleId: storeState.guidanceArticle?.id,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter.id,
+            shopIntegrationId:
+                storeState.config.guidanceHelpCenter.shop_integration_id ?? 0,
+            impactDateRange:
+                storeState.state.historicalVersion?.impactDateRange,
+        })),
+    )
 
     const recentTickets = useKnowledgeRecentTickets({
-        resourceSourceId: guidanceArticle?.id ?? 0,
-        resourceSourceSetId: guidanceHelpCenter.id,
-        shopIntegrationId: guidanceHelpCenter.shop_integration_id ?? 0,
-        enabled: !!guidanceArticle,
-        dateRange: state.historicalVersion?.impactDateRange,
+        resourceSourceId: guidanceArticleId ?? 0,
+        resourceSourceSetId: guidanceHelpCenterId,
+        shopIntegrationId,
+        enabled: !!guidanceArticleId,
+        dateRange: impactDateRange,
     })
 
-    return {
-        ...recentTickets,
-        subtitle: formatDateRangeSubtitle(
-            state.historicalVersion?.impactDateRange,
-        ),
-    }
+    return useMemo(
+        () => ({
+            ...recentTickets,
+            subtitle: formatDateRangeSubtitle(impactDateRange),
+        }),
+        [recentTickets, impactDateRange],
+    )
 }

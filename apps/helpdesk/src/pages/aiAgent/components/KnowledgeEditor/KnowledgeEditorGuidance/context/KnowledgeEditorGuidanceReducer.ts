@@ -94,12 +94,25 @@ export function guidanceReducer(
             }
         }
 
-        case 'SET_AUTO_SAVING':
+        case 'SET_AUTO_SAVING': {
+            const nextIsAutoSaving = action.payload
+            const nextAutoSaveError = action.payload
+                ? false
+                : state.autoSaveError
+
+            if (
+                state.isAutoSaving === nextIsAutoSaving &&
+                state.autoSaveError === nextAutoSaveError
+            ) {
+                return state
+            }
+
             return {
                 ...state,
-                isAutoSaving: action.payload,
-                autoSaveError: action.payload ? false : state.autoSaveError,
+                isAutoSaving: nextIsAutoSaving,
+                autoSaveError: nextAutoSaveError,
             }
+        }
 
         case 'SET_AUTO_SAVE_ERROR':
             return { ...state, autoSaveError: action.payload }
@@ -145,6 +158,10 @@ export function guidanceReducer(
             }
 
         case 'SET_UPDATING':
+            if (state.isUpdating === action.payload) {
+                return state
+            }
+
             return { ...state, isUpdating: action.payload }
 
         case 'SWITCH_GUIDANCE':

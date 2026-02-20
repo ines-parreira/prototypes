@@ -6,7 +6,7 @@ import {
 } from 'models/helpCenter/queries'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { useGuidanceContext } from '../../context'
+import { useGuidanceStore } from '../../context'
 import type {
     ArticleTranslationVersion,
     GuidanceState,
@@ -19,7 +19,7 @@ jest.mock('models/helpCenter/queries', () => ({
 }))
 
 jest.mock('../../context', () => ({
-    useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
 }))
 
 const mockSwitchToVersion = jest.fn().mockResolvedValue(undefined)
@@ -29,7 +29,7 @@ jest.mock('../useSwitchVersion', () => ({
 
 const mockUseInfiniteGetVersions =
     useInfiniteGetArticleTranslationVersions as jest.Mock
-const mockUseGuidanceContext = useGuidanceContext as jest.Mock
+const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 
 const mockDispatch = jest.fn()
 
@@ -74,6 +74,34 @@ const defaultConfig = {
     initialMode: 'read' as const,
     guidanceHelpCenter: { id: 10, default_locale: 'en-US' },
     onClose: jest.fn(),
+}
+
+const defaultStoreState = {
+    state: defaultState,
+    dispatch: mockDispatch,
+    config: defaultConfig,
+    guidanceArticle: mockGuidance,
+    playground: {
+        isOpen: false,
+        onTest: jest.fn(),
+        onClose: jest.fn(),
+        sidePanelWidth: '100%',
+        shouldHideFullscreenButton: false,
+    },
+    setConfig: jest.fn(),
+    setGuidanceArticle: jest.fn(),
+    setPlayground: jest.fn(),
+}
+
+const mockGuidanceStore = (
+    storeState: Partial<typeof defaultStoreState> = {},
+) => {
+    const state = {
+        ...defaultStoreState,
+        ...storeState,
+    }
+
+    mockUseGuidanceStore.mockImplementation((selector) => selector(state))
 }
 
 const mockVersions: ArticleTranslationVersion[] = [
@@ -136,11 +164,7 @@ describe('useVersionHistory', () => {
             fetchNextPage: mockFetchNextPage,
         })
 
-        mockUseGuidanceContext.mockReturnValue({
-            state: defaultState,
-            dispatch: mockDispatch,
-            config: defaultConfig,
-        })
+        mockGuidanceStore()
     })
 
     describe('query enablement', () => {
@@ -167,7 +191,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should disable the query when helpCenterId is 0', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: defaultState,
                 dispatch: mockDispatch,
                 config: {
@@ -186,7 +210,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should disable the query when articleId is 0', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, guidance: undefined },
                 dispatch: mockDispatch,
                 config: defaultConfig,
@@ -238,7 +262,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should return null currentVersionId when guidance is undefined', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, guidance: undefined },
                 dispatch: mockDispatch,
                 config: defaultConfig,
@@ -250,7 +274,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should return selectedVersionId from historicalVersion', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: {
                     ...defaultState,
                     historicalVersion: {
@@ -282,7 +306,7 @@ describe('useVersionHistory', () => {
             )
             expect(noHistorical.current.isViewingHistoricalVersion).toBe(false)
 
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: {
                     ...defaultState,
                     historicalVersion: {
@@ -312,7 +336,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should return true when isUpdating is true', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, isUpdating: true },
                 dispatch: mockDispatch,
                 config: defaultConfig,
@@ -324,7 +348,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should return true when isAutoSaving is true', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, isAutoSaving: true },
                 dispatch: mockDispatch,
                 config: defaultConfig,
@@ -365,7 +389,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should not dispatch when disabled', () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, isUpdating: true },
                 dispatch: mockDispatch,
                 config: defaultConfig,
@@ -394,7 +418,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should call switchToVersion with latest_draft when draft exists', async () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: {
                     ...defaultState,
                     guidance: {
@@ -420,7 +444,7 @@ describe('useVersionHistory', () => {
         })
 
         it('should not call switchToVersion or dispatch when disabled', async () => {
-            mockUseGuidanceContext.mockReturnValue({
+            mockGuidanceStore({
                 state: { ...defaultState, isUpdating: true },
                 dispatch: mockDispatch,
                 config: defaultConfig,

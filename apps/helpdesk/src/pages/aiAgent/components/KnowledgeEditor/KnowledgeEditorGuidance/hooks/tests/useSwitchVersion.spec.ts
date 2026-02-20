@@ -9,7 +9,11 @@ import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import { fromArticleTranslation, useGuidanceContext } from '../../context'
+import {
+    fromArticleTranslation,
+    useGuidanceContext,
+    useGuidanceStore,
+} from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useSwitchVersion } from '../useSwitchVersion'
 
@@ -27,6 +31,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
     fromArticleTranslation: jest.fn(),
 }))
 
@@ -34,6 +39,7 @@ describe('useSwitchVersion (Guidance)', () => {
     const mockDispatch = jest.fn()
     const mockNotifyError = jest.fn()
     const mockClient = { getArticle: jest.fn() }
+    const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 
     const mockGuidance: GuidanceArticle = {
         id: 123,
@@ -77,6 +83,22 @@ describe('useSwitchVersion (Guidance)', () => {
         initialMode: 'edit' as const,
         guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
         onClose: jest.fn(),
+    }
+
+    const getStoreValue = () => {
+        const contextValue = (useGuidanceContext as jest.Mock)()
+
+        return {
+            state: contextValue.state,
+            config: contextValue.config,
+            dispatch: contextValue.dispatch,
+            guidanceArticle:
+                contextValue.guidanceArticle ?? contextValue.state?.guidance,
+            playground: contextValue.playground ?? ({} as any),
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+        }
     }
 
     const mockArticleResponse = {
@@ -143,6 +165,9 @@ describe('useSwitchVersion (Guidance)', () => {
             dispatch: mockDispatch,
             config: defaultConfig,
         })
+        mockUseGuidanceStore.mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
     })
 
     it('should dispatch SET_UPDATING true at start', async () => {

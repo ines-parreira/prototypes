@@ -6,22 +6,29 @@ import { KnowledgeEditorSidePanelGuidance } from 'pages/aiAgent/components/Knowl
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const mockToggleVisibility = jest.fn()
+const mockUseGuidanceStore = jest.fn()
+const mockDispatch = jest.fn()
+const mockUseGuidanceContext = jest.fn(() => ({
+    guidanceArticle: { id: 123, locale: 'en' },
+    config: {
+        guidanceHelpCenter: { id: 456 },
+    },
+    state: {
+        guidance: {
+            publishedVersionId: 789,
+            draftVersionId: 790,
+        },
+    },
+    dispatch: mockDispatch,
+    playground: {} as any,
+}))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
     () => ({
-        useGuidanceContext: jest.fn(() => ({
-            guidanceArticle: { id: 123, locale: 'en' },
-            config: {
-                guidanceHelpCenter: { id: 456 },
-            },
-            state: {
-                guidance: {
-                    publishedVersionId: 789,
-                    draftVersionId: 790,
-                },
-            },
-        })),
+        useGuidanceContext: () => mockUseGuidanceContext(),
+        useGuidanceStore: (selector: (storeState: unknown) => unknown) =>
+            mockUseGuidanceStore(selector),
     }),
 )
 
@@ -90,6 +97,25 @@ jest.mock(
 )
 
 describe('KnowledgeEditorSidePanelGuidance', () => {
+    beforeEach(() => {
+        mockUseGuidanceStore.mockImplementation((selector) => {
+            const contextValue = mockUseGuidanceContext()
+
+            return selector({
+                state: contextValue.state,
+                config: contextValue.config,
+                dispatch: contextValue.dispatch,
+                guidanceArticle:
+                    contextValue.guidanceArticle ??
+                    contextValue.state?.guidance,
+                playground: contextValue.playground,
+                setConfig: jest.fn(),
+                setGuidanceArticle: jest.fn(),
+                setPlayground: jest.fn(),
+            })
+        })
+    })
+
     afterEach(() => {
         jest.clearAllMocks()
     })

@@ -89,6 +89,24 @@ describe('useToggleVisibility', () => {
         comparisonVersion: null,
     }
 
+    const setGuidanceStore = (storeValueOverride: any) => {
+        const storeValue = {
+            state: mockState,
+            dispatch: jest.fn(),
+            config: mockConfig,
+            guidanceArticle: mockConfig.guidanceArticle,
+            playground: {} as any,
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+            ...storeValueOverride,
+        }
+
+        jest.spyOn(GuidanceContext, 'useGuidanceStore').mockImplementation(
+            (selector) => selector(storeValue),
+        )
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         mockNotifyError.mockClear()
@@ -105,7 +123,7 @@ describe('useToggleVisibility', () => {
             createMockFilteredGuidanceArticle(i, 'PUBLIC'),
         )
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: mockState,
             dispatch: jest.fn(),
             config: { ...mockConfig, guidanceArticles },
@@ -128,7 +146,7 @@ describe('useToggleVisibility', () => {
             (_, i) => createMockFilteredGuidanceArticle(i, 'PUBLIC'),
         )
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: mockState,
             dispatch: jest.fn(),
             config: { ...mockConfig, guidanceArticles },
@@ -156,7 +174,7 @@ describe('useToggleVisibility', () => {
             (_, i) => createMockFilteredGuidanceArticle(i, 'PUBLIC'),
         )
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: mockState,
             dispatch,
             config: { ...mockConfig, guidanceArticles },
@@ -201,7 +219,7 @@ describe('useToggleVisibility', () => {
             guidance: createMockGuidanceArticle(1, 'PUBLIC'),
         }
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: stateWithPublicGuidance,
             dispatch,
             config: { ...mockConfig, guidanceArticles },
@@ -243,7 +261,7 @@ describe('useToggleVisibility', () => {
             createMockFilteredGuidanceArticle(i, 'PUBLIC'),
         )
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: mockState,
             dispatch,
             config: { ...mockConfig, guidanceArticles },
@@ -281,7 +299,7 @@ describe('useToggleVisibility', () => {
             visibility: 'PUBLIC',
         })
 
-        jest.spyOn(GuidanceContext, 'useGuidanceContext').mockReturnValue({
+        setGuidanceStore({
             state: mockState,
             dispatch,
             config: mockConfig,

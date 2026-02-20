@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import cn from 'classnames'
+import { useShallow } from 'zustand/react/shallow'
 
 import { Card } from '@gorgias/axiom'
 
@@ -14,7 +15,7 @@ import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
-import { KnowledgeEditorGuidanceProvider, useGuidanceContext } from './context'
+import { KnowledgeEditorGuidanceProvider, useGuidanceStore } from './context'
 import type { GuidanceContextConfig, GuidanceModeType } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 
@@ -48,21 +49,26 @@ const KnowledgeEditorGuidanceInner = ({
 }) => {
     const closeHandlerRef = useRef<(() => void) | null>(null)
 
-    const { playground, config, state } = useGuidanceContext()
+    const { playground, onClose, guidance, guidanceHelpCenterId } =
+        useGuidanceStore(
+            useShallow((storeState) => ({
+                playground: storeState.playground,
+                onClose: storeState.config.onClose,
+                guidance: storeState.state.guidance,
+                guidanceHelpCenterId: storeState.config.guidanceHelpCenter.id,
+            })),
+        )
+
     const isGuidanceInDraftState =
-        state.guidance?.isCurrent === undefined
-            ? false
-            : !state.guidance?.isCurrent
+        guidance?.isCurrent === undefined ? false : !guidance?.isCurrent
 
     const draftKnowledgeForPlayground =
-        isGuidanceInDraftState && state.guidance
+        isGuidanceInDraftState && guidance
             ? {
-                  sourceId: state.guidance.id,
-                  sourceSetId: config.guidanceHelpCenter.id,
+                  sourceId: guidance.id,
+                  sourceSetId: guidanceHelpCenterId,
               }
             : undefined
-
-    const { onClose } = config
 
     const onRequestClose = useCallback(() => {
         if (closeHandlerRef.current) {
@@ -168,7 +174,47 @@ export const KnowledgeEditorGuidance = ({
             notifyError(message)
             onClose()
         }
-    }, [isOpen, isError, guidanceArticleId, error, notifyError, onClose])
+    }, [isError, guidanceArticleId, error, isOpen, notifyError, onClose])
+    const memoizedConfig = useMemo<GuidanceContextConfig | null>(() => {
+        if (!guidanceHelpCenter) {
+            return null
+        }
+
+        return {
+            shopName,
+            shopType,
+            guidanceTemplate,
+            guidanceArticles,
+            initialMode: guidanceMode,
+            guidanceArticle,
+            guidanceHelpCenter,
+            onClose,
+            onClickPrevious,
+            onClickNext,
+            onDeleteFn: onDelete,
+            onCreateFn: onCreate,
+            onUpdateFn: onUpdate,
+            onCopyFn: onCopy,
+            handleVisibilityUpdate,
+        }
+    }, [
+        shopName,
+        shopType,
+        guidanceTemplate,
+        guidanceArticles,
+        guidanceMode,
+        guidanceArticle,
+        guidanceHelpCenter,
+        onClose,
+        onClickPrevious,
+        onClickNext,
+        onDelete,
+        onCreate,
+        onUpdate,
+        onCopy,
+        handleVisibilityUpdate,
+    ])
+
     if (!isOpen) {
         return null
     }
@@ -177,30 +223,12 @@ export const KnowledgeEditorGuidance = ({
         return <KnowledgeEditorLoadingShell />
     }
 
-    if (!guidanceHelpCenter) {
+    if (!memoizedConfig) {
         return null
     }
 
-    const config: GuidanceContextConfig = {
-        shopName,
-        shopType,
-        guidanceTemplate,
-        guidanceArticles,
-        initialMode: guidanceMode,
-        guidanceArticle,
-        guidanceHelpCenter,
-        onClose,
-        onClickPrevious,
-        onClickNext,
-        onDeleteFn: onDelete,
-        onCreateFn: onCreate,
-        onUpdateFn: onUpdate,
-        onCopyFn: onCopy,
-        handleVisibilityUpdate,
-    }
-
     return (
-        <KnowledgeEditorGuidanceProvider config={config}>
+        <KnowledgeEditorGuidanceProvider config={memoizedConfig}>
             <KnowledgeEditorGuidanceInner
                 isLoading={!!guidanceArticleId && isGuidanceArticleLoading}
                 onSharedPanelStateChange={onSharedPanelStateChange}

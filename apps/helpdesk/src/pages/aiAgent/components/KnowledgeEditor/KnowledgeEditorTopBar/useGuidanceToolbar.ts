@@ -1,6 +1,14 @@
 import { useCallback } from 'react'
 
-import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
+import { useShallow } from 'zustand/react/shallow'
+
+import {
+    canEdit,
+    hasDraft,
+    isFormValid,
+    useGuidanceStore,
+    useGuidanceStoreApi,
+} from '../KnowledgeEditorGuidance/context'
 import type { GuidanceModeType } from '../KnowledgeEditorGuidance/context/types'
 
 export type GuidanceToolbarState =
@@ -33,15 +41,40 @@ export type GuidanceToolbarData = {
 }
 
 export const useGuidanceToolbar = (): GuidanceToolbarData => {
+    const store = useGuidanceStoreApi()
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
+    const onClose = useGuidanceStore((storeState) => storeState.config.onClose)
+    const { onTest, isPlaygroundOpen } = useGuidanceStore(
+        useShallow((storeState) => ({
+            onTest: storeState.playground.onTest,
+            isPlaygroundOpen: storeState.playground.isOpen,
+        })),
+    )
     const {
-        state,
-        dispatch,
-        isFormValid,
-        canEdit,
-        config,
-        hasDraft,
-        playground,
-    } = useGuidanceContext()
+        guidanceMode,
+        isGuidanceCurrent,
+        historicalPublishedDatetime,
+        isUpdating,
+        isAutoSaving,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceMode: storeState.state.guidanceMode,
+            isGuidanceCurrent: storeState.state.guidance?.isCurrent,
+            historicalPublishedDatetime:
+                storeState.state.historicalVersion?.publishedDatetime,
+            isUpdating: storeState.state.isUpdating,
+            isAutoSaving: storeState.state.isAutoSaving,
+        })),
+    )
+    const guidanceCanEdit = useGuidanceStore((storeState) =>
+        canEdit(storeState.state),
+    )
+    const guidanceHasDraft = useGuidanceStore((storeState) =>
+        hasDraft(storeState.state),
+    )
+    const guidanceIsFormValid = useGuidanceStore((storeState) =>
+        isFormValid(storeState.state),
+    )
 
     const onClickEdit = useCallback(() => {
         dispatch({ type: 'SET_MODE', payload: 'edit' })
@@ -64,26 +97,28 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     }, [dispatch])
 
     const onDiscardCreate = useCallback(() => {
-        const hasNoContent = !state.title && !state.content
+        const currentState = store.getState().state
+        const hasNoContent = !currentState.title && !currentState.content
+
         if (hasNoContent) {
-            config.onClose()
+            onClose()
         } else {
             dispatch({ type: 'SET_MODAL', payload: 'unsaved' })
         }
-    }, [state.title, state.content, config, dispatch])
+    }, [store, onClose, dispatch])
 
     const toolbarState = getToolbarState(
-        state.guidanceMode,
-        state.guidance?.isCurrent,
-        hasDraft,
-        state.historicalVersion !== null &&
-            state.historicalVersion.publishedDatetime !== null,
+        guidanceMode,
+        isGuidanceCurrent,
+        guidanceHasDraft,
+        historicalPublishedDatetime !== null &&
+            historicalPublishedDatetime !== undefined,
     )
 
-    const isDisabled = state.isUpdating || state.isAutoSaving
+    const isDisabled = isUpdating || isAutoSaving
 
     const editDisabledReason =
-        toolbarState.type === 'published-with-draft' || !canEdit
+        toolbarState.type === 'published-with-draft' || !guidanceCanEdit
             ? 'This version is read-only. Edit the draft to make changes.'
             : undefined
 
@@ -98,11 +133,11 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
             onDiscardCreate,
         },
         isDisabled,
-        isFormValid,
-        canEdit,
+        isFormValid: guidanceIsFormValid,
+        canEdit: guidanceCanEdit,
         editDisabledReason,
-        onTest: playground.onTest,
-        isPlaygroundOpen: playground.isOpen,
+        onTest,
+        isPlaygroundOpen,
     }
 }
 

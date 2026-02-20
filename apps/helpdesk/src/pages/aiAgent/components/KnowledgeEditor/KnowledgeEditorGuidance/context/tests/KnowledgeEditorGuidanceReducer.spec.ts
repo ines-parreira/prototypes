@@ -570,6 +570,17 @@ describe('guidanceReducer', () => {
 
             expect(result.isAutoSaving).toBe(false)
         })
+
+        it('should return the same state when value does not change', () => {
+            const stateAutoSaving = { ...initialState, isAutoSaving: true }
+
+            const result = guidanceReducer(stateAutoSaving, {
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+
+            expect(result).toBe(stateAutoSaving)
+        })
     })
 
     describe('SET_VERSION_STATUS', () => {
@@ -789,6 +800,17 @@ describe('guidanceReducer', () => {
             })
 
             expect(result.isUpdating).toBe(false)
+        })
+
+        it('should return the same state when value does not change', () => {
+            const stateUpdating = { ...initialState, isUpdating: true }
+
+            const result = guidanceReducer(stateUpdating, {
+                type: 'SET_UPDATING',
+                payload: true,
+            })
+
+            expect(result).toBe(stateUpdating)
         })
     })
 

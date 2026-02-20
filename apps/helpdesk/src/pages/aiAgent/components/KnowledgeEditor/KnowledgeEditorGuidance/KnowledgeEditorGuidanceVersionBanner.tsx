@@ -1,11 +1,13 @@
 import { useCallback } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import { appQueryClient } from 'api/queryClient'
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { VersionBanner } from '../shared/VersionBanner'
-import { fromArticleTranslation, useGuidanceContext } from './context'
+import { fromArticleTranslation, useGuidanceStore } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
 import { useVersionHistory } from './hooks/useVersionHistory'
 
@@ -21,10 +23,26 @@ export function KnowledgeEditorGuidanceVersionBanner() {
     } = useVersionBanner()
 
     const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
-    const { state, dispatch, config } = useGuidanceContext()
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
+    const {
+        guidanceMode,
+        guidanceId,
+        historicalVersion,
+        guidanceHelpCenterId,
+        guidanceHelpCenterLocale,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceMode: storeState.state.guidanceMode,
+            guidanceId: storeState.state.guidance?.id ?? 0,
+            historicalVersion: storeState.state.historicalVersion,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id ?? 0,
+            guidanceHelpCenterLocale:
+                storeState.config.guidanceHelpCenter?.default_locale ?? 'en-US',
+        })),
+    )
     const { client } = useHelpCenterApi()
 
-    const isDiffMode = state.guidanceMode === 'diff'
+    const isDiffMode = guidanceMode === 'diff'
 
     const onToggleDiff = useCallback(async () => {
         if (isDiffMode) {
@@ -38,16 +56,12 @@ export function KnowledgeEditorGuidanceVersionBanner() {
                 hasPublishedVersion
             ) {
                 try {
-                    const helpCenterId = config.guidanceHelpCenter?.id ?? 0
-                    const articleId = state.guidance?.id ?? 0
-                    const locale =
-                        config.guidanceHelpCenter?.default_locale ?? 'en-US'
                     const publishedVersion = await appQueryClient.fetchQuery(
                         getHelpCenterArticleQuery({
                             client,
-                            helpCenterId,
-                            articleId,
-                            locale,
+                            helpCenterId: guidanceHelpCenterId,
+                            articleId: guidanceId,
+                            locale: guidanceHelpCenterLocale,
                             versionStatus: 'current',
                         }),
                     )
@@ -75,8 +89,9 @@ export function KnowledgeEditorGuidanceVersionBanner() {
         hasPublishedVersion,
         dispatch,
         client,
-        config.guidanceHelpCenter,
-        state.guidance?.id,
+        guidanceHelpCenterId,
+        guidanceHelpCenterLocale,
+        guidanceId,
     ])
 
     const shouldShowDiffToggle =
@@ -91,7 +106,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
             switchVersion={switchVersion}
             isViewingHistoricalVersion={isViewingHistoricalVersion}
             onGoToLatest={onGoToLatest}
-            historicalVersion={state.historicalVersion}
+            historicalVersion={historicalVersion}
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
             className={css.guidanceBanner}

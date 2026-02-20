@@ -1,40 +1,66 @@
+import { useShallow } from 'zustand/react/shallow'
+
 import { useVersionHistoryBase } from '../../shared/useVersionHistoryBase'
 import type { VersionHistoryData } from '../../shared/useVersionHistoryBase'
-import { useGuidanceContext } from '../context'
+import { useGuidanceStore } from '../context'
 import { useSwitchVersion } from './useSwitchVersion'
 
 export type { ArticleTranslationVersion } from '../../shared/useVersionHistoryBase'
 export type { VersionHistoryData }
 
 export function useVersionHistory(): VersionHistoryData {
-    const { state, dispatch, config } = useGuidanceContext()
-
-    const { guidanceHelpCenter } = config
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
+    const {
+        shopName,
+        guidanceHelpCenterId,
+        guidanceHelpCenterLocale,
+        guidanceId,
+        publishedVersionId,
+        draftVersionId,
+        guidanceIsCurrent,
+        historicalVersion,
+        isUpdating,
+        isAutoSaving,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            shopName: storeState.config.shopName,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id ?? 0,
+            guidanceHelpCenterLocale:
+                storeState.config.guidanceHelpCenter?.default_locale ?? 'en-US',
+            guidanceId: storeState.state.guidance?.id ?? 0,
+            publishedVersionId: storeState.state.guidance?.publishedVersionId,
+            draftVersionId: storeState.state.guidance?.draftVersionId,
+            guidanceIsCurrent: storeState.state.guidance?.isCurrent,
+            historicalVersion: storeState.state.historicalVersion,
+            isUpdating: storeState.state.isUpdating,
+            isAutoSaving: storeState.state.isAutoSaving,
+        })),
+    )
 
     const isViewingHistoricalVersion =
-        state.historicalVersion !== null &&
-        state.historicalVersion.publishedDatetime !== null
+        historicalVersion !== null &&
+        historicalVersion.publishedDatetime !== null
 
     const isViewingDraft = isViewingHistoricalVersion
         ? false
-        : state.guidance?.isCurrent === undefined
+        : guidanceIsCurrent === undefined
           ? false
-          : !state.guidance?.isCurrent
+          : !guidanceIsCurrent
 
     const { switchToVersion } = useSwitchVersion()
 
     return useVersionHistoryBase({
-        shopName: config.shopName,
+        shopName,
         resourceType: 'guidance',
-        helpCenterId: guidanceHelpCenter?.id ?? 0,
-        articleId: state.guidance?.id ?? 0,
-        locale: guidanceHelpCenter?.default_locale ?? 'en-US',
-        currentVersionId: state.guidance?.publishedVersionId ?? null,
-        draftVersionId: state.guidance?.draftVersionId ?? null,
+        helpCenterId: guidanceHelpCenterId,
+        articleId: guidanceId,
+        locale: guidanceHelpCenterLocale,
+        currentVersionId: publishedVersionId ?? null,
+        draftVersionId: draftVersionId ?? null,
         isViewingDraft,
-        historicalVersion: state.historicalVersion,
-        isUpdating: state.isUpdating,
-        isAutoSaving: state.isAutoSaving,
+        historicalVersion,
+        isUpdating,
+        isAutoSaving,
         dispatch,
         switchToVersion,
     })

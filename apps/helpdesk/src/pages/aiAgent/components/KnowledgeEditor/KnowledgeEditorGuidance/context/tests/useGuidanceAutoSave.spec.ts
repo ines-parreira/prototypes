@@ -5,7 +5,11 @@ import { useNotify } from 'hooks/useNotify'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { useGuidanceContext } from '../KnowledgeEditorGuidanceContext'
+import {
+    useGuidanceContext,
+    useGuidanceStore,
+    useGuidanceStoreApi,
+} from '../KnowledgeEditorGuidanceContext'
 import type { GuidanceState } from '../types'
 import { useGuidanceAutoSave } from '../useGuidanceAutoSave'
 import {
@@ -27,6 +31,8 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
 
 jest.mock('../KnowledgeEditorGuidanceContext', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
+    useGuidanceStoreApi: jest.fn(),
 }))
 
 jest.mock('../utils', () => ({
@@ -87,6 +93,22 @@ describe('useGuidanceAutoSave', () => {
         onUpdateFn: mockOnUpdateFn,
     }
 
+    const getStoreValue = () => {
+        const contextValue = (useGuidanceContext as jest.Mock)()
+
+        return {
+            state: contextValue.state,
+            dispatch: contextValue.dispatch,
+            config: contextValue.config,
+            guidanceArticle:
+                contextValue.guidanceArticle ?? contextValue.state?.guidance,
+            playground: contextValue.playground ?? ({} as any),
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+        }
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useNotify as jest.Mock).mockReturnValue({
@@ -101,6 +123,12 @@ describe('useGuidanceAutoSave', () => {
             dispatch: mockDispatch,
             config: defaultConfig,
         })
+        ;(useGuidanceStore as jest.Mock).mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
+        ;(useGuidanceStoreApi as jest.Mock).mockImplementation(() => ({
+            getState: () => getStoreValue(),
+        }))
     })
 
     describe('onChangeField', () => {

@@ -1,71 +1,93 @@
 import { renderHook } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 
-import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
-import type { GuidanceContextValue } from '../KnowledgeEditorGuidance/context/types'
+import {
+    canEdit,
+    hasDraft,
+    isFormValid,
+    useGuidanceContext,
+    useGuidanceStore,
+    useGuidanceStoreApi,
+} from '../KnowledgeEditorGuidance/context'
 import { useGuidanceToolbar } from './useGuidanceToolbar'
 
 jest.mock('../KnowledgeEditorGuidance/context', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
+    useGuidanceStoreApi: jest.fn(),
+    canEdit: jest.fn(),
+    hasDraft: jest.fn(),
+    isFormValid: jest.fn(),
 }))
 
 const mockDispatch = jest.fn()
 const mockOnUpdateFn = jest.fn()
 const mockOnTest = jest.fn()
 
-const createMockContext = (
-    overrides: Partial<{
-        state: Partial<GuidanceContextValue['state']>
-        canEdit: boolean
-        hasDraft: boolean
-        isFormValid: boolean
-        playground: Partial<GuidanceContextValue['playground']>
-    }> = {},
-): GuidanceContextValue => ({
-    state: {
-        guidance: {
-            id: 1,
-            title: 'Test Article',
-            content: 'Test Content',
-            isCurrent: true,
-        },
-        guidanceMode: 'read',
-        title: 'Test Article',
-        content: 'Test Content',
-        isUpdating: false,
-        isAutoSaving: false,
-        historicalVersion: null,
-        ...overrides.state,
-    } as GuidanceContextValue['state'],
-    dispatch: mockDispatch,
-    isFormValid: overrides.isFormValid ?? true,
-    canEdit: overrides.canEdit ?? true,
-    hasPendingChanges: false,
-    guidanceArticle: undefined,
-    config: {
-        guidanceHelpCenter: { id: 1, default_locale: 'en-US' } as any,
-        onUpdateFn: mockOnUpdateFn,
-        onClose: jest.fn(),
-        shopName: 'test-shop',
-        shopType: 'shopify',
-        guidanceArticles: [],
-        initialMode: 'edit' as const,
-    } as GuidanceContextValue['config'],
-    hasDraft: overrides.hasDraft ?? false,
-    playground: {
-        isOpen: false,
-        onTest: mockOnTest,
-        onClose: jest.fn(),
-        sidePanelWidth: '100%',
-        shouldHideFullscreenButton: false,
-        ...overrides.playground,
-    },
-})
+const setMockContextValue = (contextValue: any) => {
+    const storeValue = {
+        state: contextValue.state,
+        config: contextValue.config,
+        dispatch: contextValue.dispatch,
+        guidanceArticle: contextValue.state?.guidance,
+        playground: contextValue.playground,
+        setConfig: jest.fn(),
+        setGuidanceArticle: jest.fn(),
+        setPlayground: jest.fn(),
+    }
+
+    jest.mocked(useGuidanceContext).mockReturnValue(contextValue)
+    jest.mocked(useGuidanceStore).mockImplementation((selector) =>
+        selector(storeValue),
+    )
+    jest.mocked(useGuidanceStoreApi).mockReturnValue({
+        getState: () => storeValue,
+    } as any)
+    jest.mocked(canEdit).mockReturnValue(contextValue.canEdit)
+    jest.mocked(hasDraft).mockReturnValue(contextValue.hasDraft)
+    jest.mocked(isFormValid).mockReturnValue(contextValue.isFormValid)
+}
 
 describe('useGuidanceToolbar', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        jest.mocked(useGuidanceContext).mockReturnValue(createMockContext())
+
+        setMockContextValue({
+            state: {
+                guidance: {
+                    id: 1,
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    isCurrent: true,
+                },
+                guidanceMode: 'read',
+                title: 'Test Article',
+                content: 'Test Content',
+                isUpdating: false,
+                isAutoSaving: false,
+                historicalVersion: null,
+            },
+            dispatch: mockDispatch,
+            isFormValid: true,
+            canEdit: true,
+            config: {
+                guidanceHelpCenter: {
+                    id: 1,
+                    default_locale: 'en-US',
+                },
+                onUpdateFn: mockOnUpdateFn,
+                onClose: jest.fn(),
+                shopName: 'test-shop',
+            },
+            hasDraft: false,
+            playground: {
+                isOpen: false,
+                onTest: mockOnTest,
+                onClose: jest.fn(),
+                sidePanelWidth: '100%',
+                shouldHideFullscreenButton: false,
+            },
+        } as any)
     })
 
     describe('onOpenDuplicateModal', () => {
@@ -85,9 +107,29 @@ describe('useGuidanceToolbar', () => {
 
     describe('toolbar state management', () => {
         it('should return correct disabled state', () => {
-            jest.mocked(useGuidanceContext).mockReturnValue(
-                createMockContext({ state: { isUpdating: true } }),
-            )
+            setMockContextValue({
+                state: {
+                    guidance: { id: 1 },
+                    guidanceMode: 'read',
+                    isUpdating: true,
+                    isAutoSaving: false,
+                    historicalVersion: null,
+                },
+                dispatch: mockDispatch,
+                isFormValid: true,
+                canEdit: true,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+                hasDraft: false,
+                playground: {
+                    isOpen: false,
+                    onTest: mockOnTest,
+                    onClose: jest.fn(),
+                    sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
+                },
+            } as any)
 
             const { result } = renderHook(() => useGuidanceToolbar())
 
@@ -101,9 +143,34 @@ describe('useGuidanceToolbar', () => {
         })
 
         it('should return correct toolbar state for published-with-draft', () => {
-            jest.mocked(useGuidanceContext).mockReturnValue(
-                createMockContext({ canEdit: false, hasDraft: true }),
-            )
+            setMockContextValue({
+                state: {
+                    guidance: {
+                        id: 1,
+                        title: 'Test',
+                        content: 'Content',
+                        isCurrent: true,
+                    },
+                    guidanceMode: 'read',
+                    isUpdating: false,
+                    isAutoSaving: false,
+                    historicalVersion: null,
+                },
+                dispatch: mockDispatch,
+                isFormValid: true,
+                canEdit: false,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+                hasDraft: true,
+                playground: {
+                    isOpen: false,
+                    onTest: mockOnTest,
+                    onClose: jest.fn(),
+                    sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
+                },
+            } as any)
 
             const { result } = renderHook(() => useGuidanceToolbar())
 
@@ -115,9 +182,34 @@ describe('useGuidanceToolbar', () => {
         })
 
         it('should return disabled reason when in published-with-draft state even if canEdit is true', () => {
-            jest.mocked(useGuidanceContext).mockReturnValue(
-                createMockContext({ canEdit: true, hasDraft: true }),
-            )
+            setMockContextValue({
+                state: {
+                    guidance: {
+                        id: 1,
+                        title: 'Test',
+                        content: 'Content',
+                        isCurrent: true,
+                    },
+                    guidanceMode: 'read',
+                    isUpdating: false,
+                    isAutoSaving: false,
+                    historicalVersion: null,
+                },
+                dispatch: mockDispatch,
+                isFormValid: true,
+                canEdit: true,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+                hasDraft: true,
+                playground: {
+                    isOpen: false,
+                    onTest: mockOnTest,
+                    onClose: jest.fn(),
+                    sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
+                },
+            } as any)
 
             const { result } = renderHook(() => useGuidanceToolbar())
 
@@ -128,9 +220,29 @@ describe('useGuidanceToolbar', () => {
         })
 
         it('should return isPlaygroundOpen based on playground.isOpen', () => {
-            jest.mocked(useGuidanceContext).mockReturnValue(
-                createMockContext({ playground: { isOpen: true } }),
-            )
+            setMockContextValue({
+                state: {
+                    guidance: { id: 1 },
+                    guidanceMode: 'read',
+                    isUpdating: false,
+                    isAutoSaving: false,
+                    historicalVersion: null,
+                },
+                dispatch: mockDispatch,
+                isFormValid: true,
+                canEdit: true,
+                config: {
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+                hasDraft: false,
+                playground: {
+                    isOpen: true,
+                    onTest: mockOnTest,
+                    onClose: jest.fn(),
+                    sidePanelWidth: '100%',
+                    shouldHideFullscreenButton: false,
+                },
+            } as any)
 
             const { result } = renderHook(() => useGuidanceToolbar())
 

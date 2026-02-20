@@ -2,12 +2,14 @@ import { act, renderHook } from '@repo/testing'
 
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { useGuidanceContext } from '../../context'
+import { hasDraft, useGuidanceContext, useGuidanceStore } from '../../context'
 import type { GuidanceState } from '../../context/types'
 import { useVersionBanner } from '../useVersionBanner'
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
+    hasDraft: jest.fn(),
 }))
 
 const mockSwitchToVersion = jest.fn()
@@ -62,6 +64,22 @@ describe('useVersionBanner', () => {
         onClose: jest.fn(),
     }
 
+    const getStoreValue = () => {
+        const contextValue = (useGuidanceContext as jest.Mock)()
+
+        return {
+            state: contextValue.state,
+            config: contextValue.config,
+            dispatch: contextValue.dispatch,
+            guidanceArticle:
+                contextValue.guidanceArticle ?? contextValue.state?.guidance,
+            playground: contextValue.playground ?? ({} as any),
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+        }
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useGuidanceContext as jest.Mock).mockReturnValue({
@@ -69,6 +87,13 @@ describe('useVersionBanner', () => {
             dispatch: mockDispatch,
             config: defaultConfig,
             hasDraft: true,
+        })
+        ;(useGuidanceStore as jest.Mock).mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
+        ;(hasDraft as jest.Mock).mockImplementation(() => {
+            const contextValue = (useGuidanceContext as jest.Mock)()
+            return contextValue.hasDraft ?? false
         })
     })
 

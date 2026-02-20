@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import {
     getLast28DaysDateRange,
     useResourceMetrics,
@@ -9,7 +11,7 @@ import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/Knowl
 import { formatDateRangeSubtitle } from 'pages/aiAgent/components/KnowledgeEditor/shared/useVersionHistoryBase/useVersionHistoryBase'
 import { getTimezone } from 'state/currentUser/selectors'
 
-import { useGuidanceContext } from '../context'
+import { useGuidanceStore } from '../context'
 
 export type GuidanceImpactData = {
     tickets?: MetricProps | null
@@ -22,29 +24,38 @@ export type GuidanceImpactData = {
 
 export const useGuidanceImpactFromContext = (): GuidanceImpactData => {
     const timezone = useAppSelector(getTimezone)
-    const { guidanceArticle, config, state } = useGuidanceContext()
-    const { guidanceHelpCenter } = config
+    const {
+        guidanceArticleId,
+        guidanceHelpCenterId,
+        shopIntegrationId,
+        impactDateRange,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceArticleId: storeState.guidanceArticle?.id,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter.id,
+            shopIntegrationId:
+                storeState.config.guidanceHelpCenter.shop_integration_id ?? 0,
+            impactDateRange:
+                storeState.state.historicalVersion?.impactDateRange,
+        })),
+    )
 
     // Use historical version's date range if viewing history, otherwise last 28 days
     const dateRange = useMemo(
-        () =>
-            state.historicalVersion?.impactDateRange ??
-            getLast28DaysDateRange(),
-        [state.historicalVersion?.impactDateRange],
+        () => impactDateRange ?? getLast28DaysDateRange(),
+        [impactDateRange],
     )
 
     const resourceImpact = useResourceMetrics({
-        resourceSourceId: guidanceArticle?.id ?? 0,
-        resourceSourceSetId: guidanceHelpCenter.id,
-        shopIntegrationId: guidanceHelpCenter.shop_integration_id ?? 0,
+        resourceSourceId: guidanceArticleId ?? 0,
+        resourceSourceSetId: guidanceHelpCenterId,
+        shopIntegrationId,
         timezone: timezone ?? 'UTC',
-        enabled: !!guidanceArticle,
+        enabled: !!guidanceArticleId,
         dateRange,
     })
 
-    const subtitle = formatDateRangeSubtitle(
-        state.historicalVersion?.impactDateRange,
-    )
+    const subtitle = formatDateRangeSubtitle(impactDateRange)
 
     return useMemo(
         () => ({

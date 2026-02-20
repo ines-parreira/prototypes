@@ -1,6 +1,7 @@
 import { useCallback, useRef } from 'react'
 
 import { useDebouncedCallback } from '@repo/hooks'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useNotify } from 'hooks/useNotify'
 import {
@@ -11,7 +12,10 @@ import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 
-import { useGuidanceContext } from './KnowledgeEditorGuidanceContext'
+import {
+    useGuidanceStore,
+    useGuidanceStoreApi,
+} from './KnowledgeEditorGuidanceContext'
 import type { GuidanceState } from './types'
 import { fromArticleTranslation, fromArticleTranslationResponse } from './utils'
 
@@ -27,10 +31,17 @@ type AutoSaveParams = {
 }
 
 export const useGuidanceAutoSave = () => {
-    const { state, dispatch, config } = useGuidanceContext()
-
+    const store = useGuidanceStoreApi()
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
     const { guidanceTemplate, onCreateFn, onUpdateFn, guidanceHelpCenter } =
-        config
+        useGuidanceStore(
+            useShallow((storeState) => ({
+                guidanceTemplate: storeState.config.guidanceTemplate,
+                onCreateFn: storeState.config.onCreateFn,
+                onUpdateFn: storeState.config.onUpdateFn,
+                guidanceHelpCenter: storeState.config.guidanceHelpCenter,
+            })),
+        )
 
     const { error: notifyError } = useNotify()
 
@@ -181,11 +192,17 @@ export const useGuidanceAutoSave = () => {
 
     const onChangeField = useCallback(
         (field: 'title' | 'content', value: string) => {
-            if (state.guidanceMode === 'read' || state.guidanceMode === 'diff')
+            const currentState = store.getState().state
+
+            if (
+                currentState.guidanceMode === 'read' ||
+                currentState.guidanceMode === 'diff'
+            )
                 return
 
-            let newTitle = field === 'title' ? value : state.title
-            const newContent = field === 'content' ? value : state.content
+            let newTitle = field === 'title' ? value : currentState.title
+            const newContent =
+                field === 'content' ? value : currentState.content
 
             // If content is present but title is empty, use "Untitled" as temporary title
             // Only do this when the content field is being changed, not the title field
@@ -220,9 +237,10 @@ export const useGuidanceAutoSave = () => {
 
             const titleMatches = areTrimmedStringsEqual(
                 newTitle,
-                state.savedSnapshot.title,
+                currentState.savedSnapshot.title,
             )
-            const contentMatches = newContent === state.savedSnapshot.content
+            const contentMatches =
+                newContent === currentState.savedSnapshot.content
             const hasChanges = !titleMatches || !contentMatches
 
             if (!hasChanges) {
@@ -231,22 +249,13 @@ export const useGuidanceAutoSave = () => {
             triggerAutoSave({
                 title: newTitle,
                 content: newContent,
-                visibility: state.visibility,
-                mode: state.guidanceMode,
-                articleId: state.guidance?.id,
-                savedSnapshot: state.savedSnapshot,
+                visibility: currentState.visibility,
+                mode: currentState.guidanceMode,
+                articleId: currentState.guidance?.id,
+                savedSnapshot: currentState.savedSnapshot,
             })
         },
-        [
-            dispatch,
-            triggerAutoSave,
-            state.guidanceMode,
-            state.title,
-            state.content,
-            state.visibility,
-            state.guidance?.id,
-            state.savedSnapshot,
-        ],
+        [store, dispatch, triggerAutoSave],
     )
 
     return { onChangeField }

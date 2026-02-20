@@ -1,6 +1,8 @@
+import { useShallow } from 'zustand/react/shallow'
+
 import { Button, Menu, MenuItem } from '@gorgias/axiom'
 
-import { useGuidanceContext } from '../KnowledgeEditorGuidance/context'
+import { useGuidanceStore } from '../KnowledgeEditorGuidance/context'
 import { useVersionHistory } from '../KnowledgeEditorGuidance/hooks/useVersionHistory'
 import { VersionHistoryButton } from '../shared/VersionHistoryButton'
 import {
@@ -84,9 +86,13 @@ export const GuidanceToolbarControls = () => {
         onDiscardCreate,
     } = actions
 
-    const { state, config, dispatch } = useGuidanceContext()
-    const articleId = state.guidance?.id
-    const shopName = config.shopName
+    const { articleId, shopName, dispatch } = useGuidanceStore(
+        useShallow((storeState) => ({
+            articleId: storeState.state.guidance?.id,
+            shopName: storeState.config.shopName,
+            dispatch: storeState.dispatch,
+        })),
+    )
     const showDuplicate = !!articleId && !!shopName
     const versionHistory = useVersionHistory()
 

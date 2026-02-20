@@ -1,6 +1,12 @@
 export {
+    canEdit,
+    hasDraft,
+    hasPendingChanges,
+    isFormValid,
     KnowledgeEditorGuidanceProvider,
     useGuidanceContext,
+    useGuidanceStoreApi,
+    useGuidanceStore,
 } from './KnowledgeEditorGuidanceContext'
 export { fromArticleTranslation, fromArticleTranslationResponse } from './utils'
 export { guidanceReducer } from './KnowledgeEditorGuidanceReducer'

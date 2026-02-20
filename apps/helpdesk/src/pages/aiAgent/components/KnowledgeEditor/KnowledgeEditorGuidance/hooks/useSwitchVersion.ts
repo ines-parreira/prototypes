@@ -1,20 +1,31 @@
 import { useCallback } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import { fromArticleTranslation, useGuidanceContext } from '../context'
+import { fromArticleTranslation, useGuidanceStore } from '../context'
 
 export type VersionStatus = 'latest_draft' | 'current'
 
 export function useSwitchVersion() {
-    const { state, dispatch, config } = useGuidanceContext()
+    const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
+    const { guidanceId, guidanceHelpCenterId, guidanceHelpCenterLocale } =
+        useGuidanceStore(
+            useShallow((storeState) => ({
+                guidanceId: storeState.state.guidance?.id ?? 0,
+                guidanceHelpCenterId:
+                    storeState.config.guidanceHelpCenter?.id ?? 0,
+                guidanceHelpCenterLocale:
+                    storeState.config.guidanceHelpCenter?.default_locale ??
+                    'en-US',
+            })),
+        )
     const { error: notifyError } = useNotify()
     const { client } = useHelpCenterApi()
-
-    const { guidanceHelpCenter } = config
 
     const switchToVersion = useCallback(
         async (targetStatus: VersionStatus) => {
@@ -23,9 +34,9 @@ export function useSwitchVersion() {
                 const response = await appQueryClient.fetchQuery(
                     getHelpCenterArticleQuery({
                         client,
-                        helpCenterId: guidanceHelpCenter?.id ?? 0,
-                        articleId: state.guidance?.id ?? 0,
-                        locale: guidanceHelpCenter?.default_locale ?? 'en-US',
+                        helpCenterId: guidanceHelpCenterId,
+                        articleId: guidanceId,
+                        locale: guidanceHelpCenterLocale,
                         versionStatus: targetStatus,
                     }),
                 )
@@ -44,9 +55,9 @@ export function useSwitchVersion() {
         [
             dispatch,
             client,
-            guidanceHelpCenter?.id,
-            guidanceHelpCenter?.default_locale,
-            state.guidance?.id,
+            guidanceHelpCenterId,
+            guidanceHelpCenterLocale,
+            guidanceId,
             notifyError,
         ],
     )

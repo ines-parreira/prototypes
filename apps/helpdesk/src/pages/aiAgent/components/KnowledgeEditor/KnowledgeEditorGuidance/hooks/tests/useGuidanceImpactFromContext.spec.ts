@@ -9,7 +9,7 @@ import type { GuidanceContextValue } from 'pages/aiAgent/components/KnowledgeEdi
 import type { MetricProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
-import { useGuidanceContext } from '../../context'
+import { useGuidanceContext, useGuidanceStore } from '../../context'
 import { useGuidanceImpactFromContext } from '../useGuidanceImpactFromContext'
 
 jest.mock(
@@ -24,12 +24,14 @@ jest.mock('hooks/useAppSelector', () => jest.fn())
 
 jest.mock('../../context', () => ({
     useGuidanceContext: jest.fn(),
+    useGuidanceStore: jest.fn(),
 }))
 
 const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 const mockGetLast28DaysDateRange = getLast28DaysDateRange as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseGuidanceContext = useGuidanceContext as jest.Mock
+const mockUseGuidanceStore = useGuidanceStore as jest.Mock
 
 describe('useGuidanceImpactFromContext', () => {
     const mockGuidanceArticle: GuidanceArticle = {
@@ -71,11 +73,30 @@ describe('useGuidanceImpactFromContext', () => {
         until: '2025-01-28',
     }
 
+    const getStoreValue = () => {
+        const contextValue = mockUseGuidanceContext()
+
+        return {
+            state: contextValue.state,
+            config: contextValue.config,
+            dispatch: contextValue.dispatch ?? jest.fn(),
+            guidanceArticle:
+                contextValue.guidanceArticle ?? contextValue.state?.guidance,
+            playground: contextValue.playground ?? ({} as any),
+            setConfig: jest.fn(),
+            setGuidanceArticle: jest.fn(),
+            setPlayground: jest.fn(),
+        }
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockUseAppSelector.mockReturnValue('America/New_York')
         mockUseGuidanceContext.mockReturnValue(defaultContextValue)
+        mockUseGuidanceStore.mockImplementation((selector) =>
+            selector(getStoreValue()),
+        )
         mockGetLast28DaysDateRange.mockReturnValue(mockDateRange)
         mockUseResourceMetrics.mockReturnValue({
             data: mockMetricsData,

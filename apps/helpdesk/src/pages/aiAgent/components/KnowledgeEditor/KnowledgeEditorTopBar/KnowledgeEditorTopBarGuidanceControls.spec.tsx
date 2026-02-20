@@ -72,6 +72,9 @@ const mockUseGuidanceToolbar = jest.requireMock('./useGuidanceToolbar')
 const mockUseGuidanceContext = jest.requireMock(
     '../KnowledgeEditorGuidance/context',
 ).useGuidanceContext as jest.Mock
+const mockUseGuidanceStore = jest.requireMock(
+    '../KnowledgeEditorGuidance/context',
+).useGuidanceStore as jest.Mock
 const mockUseVersionHistory = jest.requireMock(
     '../KnowledgeEditorGuidance/hooks/useVersionHistory',
 ).useVersionHistory as jest.Mock
@@ -111,6 +114,32 @@ const defaultContextData = {
     },
 }
 
+const mapContextToStore = (contextData: any) => ({
+    state: contextData.state,
+    config: contextData.config,
+    dispatch: contextData.dispatch ?? jest.fn(),
+    guidanceArticle: contextData.state?.guidance,
+    playground:
+        contextData.playground ??
+        ({
+            isOpen: false,
+            onTest: jest.fn(),
+            onClose: jest.fn(),
+            sidePanelWidth: '100%',
+            shouldHideFullscreenButton: false,
+        } as const),
+    setConfig: jest.fn(),
+    setGuidanceArticle: jest.fn(),
+    setPlayground: jest.fn(),
+})
+
+const setMockContextData = (contextData: any) => {
+    mockUseGuidanceContext.mockReturnValue(contextData)
+    mockUseGuidanceStore.mockImplementation((selector) =>
+        selector(mapContextToStore(contextData)),
+    )
+}
+
 const mockVersion: ArticleTranslationVersion = {
     id: 1,
     version: 1,
@@ -142,7 +171,7 @@ const defaultVersionHistoryData = {
 describe('GuidanceToolbarControls', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseGuidanceContext.mockReturnValue(defaultContextData)
+        setMockContextData(defaultContextData)
         mockUseVersionHistory.mockReturnValue(defaultVersionHistoryData)
     })
 
@@ -156,7 +185,7 @@ describe('GuidanceToolbarControls', () => {
                     type: 'viewing-historical-version',
                 } as GuidanceToolbarState,
             })
-            mockUseGuidanceContext.mockReturnValue({
+            setMockContextData({
                 ...defaultContextData,
                 dispatch: mockDispatch,
             })
