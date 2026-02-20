@@ -22,6 +22,10 @@ const ticketsClosedScope = defineScope({
         'languageProficiency',
         'resolutionCompleteness',
         'score',
+        'accuracy',
+        'efficiency',
+        'internalCompliance',
+        'brandVoice',
     ],
     order: ['ticketId', 'ticketCount', 'closedDatetime', 'createdDatetime'],
 })

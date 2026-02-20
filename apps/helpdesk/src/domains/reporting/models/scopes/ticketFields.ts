@@ -31,6 +31,14 @@ const ticketFieldsScope = defineScope({
         'tags',
         'teamId',
         'customFieldValue',
+        'communicationSkills',
+        'languageProficiency',
+        'resolutionCompleteness',
+        'accuracy',
+        'efficiency',
+        'internalCompliance',
+        'brandVoice',
+        'score',
     ],
 })
 

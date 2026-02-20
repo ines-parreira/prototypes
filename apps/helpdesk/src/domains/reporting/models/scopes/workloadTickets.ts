@@ -20,6 +20,7 @@ const workloadTicketsScope = defineScope({
         'integrationId',
         'languageProficiency',
         'resolutionCompleteness',
+        'internalCompliance',
         'periodStart',
         'storeId',
         'tags',

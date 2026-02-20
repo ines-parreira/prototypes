@@ -67,6 +67,7 @@ const voiceCallsScope = defineScope({
         'queueId',
         'storeId',
         'tags',
+        'customFields',
     ],
 })
 

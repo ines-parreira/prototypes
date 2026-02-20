@@ -78,10 +78,6 @@ export const VoiceCallFiltersMembers: StatsFiltersMembers = {
     [FilterKey.IsDuringBusinessHours]: VoiceCallMember.IsDuringBusinessHours,
     tags: TicketMember.Tags,
     customFields: TicketMember.CustomField,
-    score: TicketMember.SurveyScore,
-    resolutionCompleteness: TicketMember.ResolutionCompletenessScore,
-    communicationSkills: TicketMember.CommunicationSkillsScore,
-    languageProficiency: TicketMember.LanguageProficiencyScore,
     voiceQueues: VoiceCallMember.QueueId,
     stores: VoiceCallMember.Store,
 }
