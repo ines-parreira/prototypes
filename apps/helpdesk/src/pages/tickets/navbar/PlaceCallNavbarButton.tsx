@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { useConditionalShortcuts } from '@repo/utils'
+import * as utils from '@repo/utils'
 
 import {
     LegacyShortcutKey as ShortcutKey,
@@ -21,7 +21,6 @@ import DeactivatedViewIcon from 'pages/common/components/DeactivatedViewIcon'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import { isDesktopDevice, isDeviceReady } from 'utils/device'
-import { isMacOs } from 'utils/platform'
 
 import css from './PlaceCallNavbarButton.less'
 
@@ -39,7 +38,7 @@ export function PlaceCallNavbarButton() {
 
     const { permissionDenied } = useMicrophonePermissions()
 
-    useConditionalShortcuts(
+    utils.useConditionalShortcuts(
         shouldDisplayButton && isDeviceActive && !permissionDenied,
         'Dialpad',
         {
@@ -109,7 +108,7 @@ export function PlaceCallNavbarButton() {
                 <div className={navbarCss.tooltipContent}>
                     <span>Open the dialpad</span>
                     <ShortcutKey color="dark">
-                        {isMacOs ? '⌘' : 'ctrl'}
+                        {utils.isMacOs ? '⌘' : 'ctrl'}
                     </ShortcutKey>
                     <ShortcutKey color="dark">e</ShortcutKey>
                 </div>

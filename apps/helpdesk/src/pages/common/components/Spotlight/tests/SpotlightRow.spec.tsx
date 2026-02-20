@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { userEvent } from '@repo/testing'
+import * as platform from '@repo/utils'
 import { screen } from '@testing-library/react'
 import type { History } from 'history'
 import { createBrowserHistory } from 'history'
@@ -10,7 +11,6 @@ import { mockSearchRank } from 'fixtures/searchRank'
 import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
-import * as platform from 'utils/platform'
 import { renderWithRouter } from 'utils/testing'
 
 describe('<SpotlightRow/>', () => {

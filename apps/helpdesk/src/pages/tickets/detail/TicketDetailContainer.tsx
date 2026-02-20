@@ -18,7 +18,7 @@ import {
     useHelpdeskV2MS1Flag,
     useHelpdeskV2MS3Flag,
 } from '@repo/tickets/feature-flags'
-import { shortcutManager } from '@repo/utils'
+import { isMacOs, shortcutManager } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
@@ -86,7 +86,6 @@ import { updateCursor } from 'state/tickets/actions'
 import type { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
-import { isMacOs } from 'utils/platform'
 
 import { getMacroTicketFieldValues } from '../../../../../../packages/tickets/src/components/InfobarTicketDetails/components/InfobarTicketFields/utils/getMacroTicketFieldValues'
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'

@@ -1,10 +1,10 @@
 import { useContext } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { isMacOs } from '@repo/utils'
 
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
-import { isMacOs } from 'utils/platform'
 
 import GlobalNavigationItem from './GlobalNavigationItem'
 

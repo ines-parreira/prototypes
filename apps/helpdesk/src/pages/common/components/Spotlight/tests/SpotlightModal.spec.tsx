@@ -46,7 +46,7 @@ import { history } from '@repo/routing'
 import * as billingSelectors from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import * as platform from 'utils/platform'
+import * as platform from '@repo/utils'
 import { renderWithRouter } from 'utils/testing'
 
 const TICKET_SPOTLIGHT_ROW_TEST_ID = 'spotlight-ticket-row'

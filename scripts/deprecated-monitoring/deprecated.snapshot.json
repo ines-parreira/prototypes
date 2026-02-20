@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-13T16:26:03.740Z",
-  "total": 4418,
+  "date": "2026-02-20T08:50:02.778Z",
+  "total": 4432,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1998,35 +1998,6 @@
       ]
     },
     {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "isMacOs",
-      "comment": "*\n * @deprecated use platform from @repo/utils\n * @date 2026-01-24\n * @type migration to @repo/utils\n ",
-      "count": 15,
-      "filePath": "apps/helpdesk/src/utils/platform.ts",
-      "usages": [
-        {
-          "name": "isMacOs",
-          "files": [
-            "apps/helpdesk/src/common/navigation/components/GlobalNavigationSpotlight.tsx",
-            "apps/helpdesk/src/common/navigation/components/tests/GlobalNavigationSpotlight.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/PlaceCallNavbarButton.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightButton.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightButton.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightRow.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/useSearch.ts",
-            "apps/helpdesk/src/pages/common/components/tests/PlaceCallNavbarButton.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/Header.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/TicketDetailContainer.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/PlaceCallNavbarButton.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/tests/PlaceCallNavbarButton.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "MultiSelectOptionsField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<MultiSelectField />` from @gorgias/axiom instead.\n * @date 2026-01-06\n * @type ui-kit-migration\n ",
@@ -2906,26 +2877,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
             "apps/helpdesk/src/utils/tests/date.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "platform",
-      "comment": "*\n * @deprecated use platform from @repo/utils\n * @date 2026-01-24\n * @type migration to @repo/utils\n ",
-      "count": 6,
-      "filePath": "apps/helpdesk/src/utils/platform.ts",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/common/navigation/components/tests/GlobalNavigationSpotlight.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightButton.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightModal.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/tests/SpotlightRow.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/tests/PlaceCallNavbarButton.spec.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/tests/PlaceCallNavbarButton.spec.tsx"
           ]
         }
       ]

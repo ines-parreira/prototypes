@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 
 import { useId } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { isMacOs } from '@repo/utils'
 
 import {
     LegacyButton as Button,
@@ -12,7 +13,6 @@ import navbarCss from 'assets/css/navbar.less'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import { SpotlightContext } from 'providers/ui/SpotlightContext'
-import { isMacOs } from 'utils/platform'
 
 const SpotlightButton = () => {
     const { isOpen, setIsOpen } = useContext(SpotlightContext)

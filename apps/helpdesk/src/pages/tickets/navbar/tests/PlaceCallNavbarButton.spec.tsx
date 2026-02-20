@@ -18,12 +18,16 @@ import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import { isDesktopDevice, isDeviceReady } from 'utils/device'
-import * as platform from 'utils/platform'
 
 import { PlaceCallNavbarButton } from '../PlaceCallNavbarButton'
 
+let mockIsMacOs = false
+
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
+    get isMacOs() {
+        return mockIsMacOs
+    },
     useConditionalShortcuts: jest.fn(),
 }))
 jest.mock('utils/device')
@@ -57,6 +61,7 @@ describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
 
     beforeEach(() => {
+        mockIsMacOs = false
         isDesktopDeviceMock.mockReturnValue(true)
         useHasPhoneMock.mockReturnValue(true)
         useVoiceDeviceMock.mockReturnValue({ device: {} } as any)
@@ -175,10 +180,7 @@ describe('<PlaceCallNavbarButton />', () => {
     })
 
     it('should display keyboard shortcut tooltip when hovered on non-MacOS', async () => {
-        Object.defineProperty(platform, 'isMacOs', {
-            value: false,
-            writable: true,
-        })
+        mockIsMacOs = false
         renderComponent()
 
         const button = screen.getByText('Place call')
@@ -193,10 +195,7 @@ describe('<PlaceCallNavbarButton />', () => {
     })
 
     it('should display keyboard shortcut tooltip when hovered on MacOS', async () => {
-        Object.defineProperty(platform, 'isMacOs', {
-            value: true,
-            writable: true,
-        })
+        mockIsMacOs = true
         renderComponent()
 
         const button = screen.getByText('Place call')

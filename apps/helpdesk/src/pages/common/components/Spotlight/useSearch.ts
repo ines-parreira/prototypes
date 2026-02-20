@@ -15,6 +15,7 @@ import {
     useSelectedIndex,
 } from '@repo/hooks'
 import { history } from '@repo/routing'
+import { isMacOs } from '@repo/utils'
 import type { CancelToken } from 'axios'
 import axios from 'axios'
 import _isEmpty from 'lodash/isEmpty'
@@ -55,7 +56,6 @@ import {
 import { currentAccountHasProduct } from 'state/billing/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { isMacOs } from 'utils/platform'
 
 type OldSearchPaginationMeta = {
     prev_items: string

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useUnmount, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
-import { shortcutManager } from '@repo/utils'
+import { isMacOs, shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import { stringify } from 'qs'
 import { useLocation } from 'react-router-dom'
@@ -28,7 +28,6 @@ import { SpotlightModalContent } from 'pages/common/components/Spotlight/Spotlig
 import { Tabs, useSearch } from 'pages/common/components/Spotlight/useSearch'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { isMacOs } from 'utils/platform'
 
 type Props = {
     isOpen: boolean
