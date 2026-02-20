@@ -82,9 +82,10 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 
     const isDisabled = state.isUpdating || state.isAutoSaving
 
-    const editDisabledReason = !canEdit
-        ? 'This version is read-only. View the version with draft edits to make changes.'
-        : undefined
+    const editDisabledReason =
+        toolbarState.type === 'published-with-draft' || !canEdit
+            ? 'This version is read-only. Edit the draft to make changes.'
+            : undefined
 
     return {
         state: toolbarState,

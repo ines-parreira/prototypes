@@ -388,7 +388,33 @@ describe('useArticleToolbar', () => {
 
             expect(result.current.canEdit).toBe(false)
             expect(result.current.editDisabledReason).toBe(
-                'This version is read-only. View the version with draft edits to make changes.',
+                'This version is read-only. Edit the draft to make changes.',
+            )
+        })
+
+        it('should return disabled reason when in published-with-draft state even if canEdit is true', () => {
+            mockUseArticleContext.mockReturnValue(
+                createMockContext({
+                    canEdit: true,
+                    hasDraft: true,
+                    state: {
+                        articleMode: 'read',
+                        article: {
+                            ...mockArticle,
+                            translation: {
+                                ...mockTranslation,
+                                is_current: true,
+                            },
+                        },
+                    },
+                }),
+            )
+
+            const { result } = renderHook(() => useArticleToolbar())
+
+            expect(result.current.state.type).toBe('published-with-draft')
+            expect(result.current.editDisabledReason).toBe(
+                'This version is read-only. Edit the draft to make changes.',
             )
         })
     })
