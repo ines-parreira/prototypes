@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect'
 
 import { USERS_PERFORMANCE_OVERVIEW } from 'domains/reporting/config/stats'
-import type { StatCell } from 'domains/reporting/models/stat/types'
 import { StatType } from 'domains/reporting/models/stat/types'
 import type { RootState } from 'state/types'
 
@@ -29,25 +28,21 @@ export const getUserIdsFromLiveAgentsPerformance = createSelector(
 
         const { lines } = userPerformanceData
 
-        return lines
-            .filter((line): line is StatCell[] => Array.isArray(line))
-            .map((line) => {
-                const userCell = line.find(
-                    (cell) => cell?.type === StatType.User,
-                )
-
-                if (
-                    !userCell ||
-                    !('value' in userCell) ||
-                    !userCell.value ||
-                    typeof userCell.value !== 'object' ||
-                    !('id' in userCell.value)
-                ) {
-                    return undefined
-                }
-
-                return userCell.value.id
-            })
-            .filter((id): id is number => typeof id === 'number' && id > 0)
+        return lines.reduce<number[]>((acc, line) => {
+            if (!Array.isArray(line)) return acc
+            const userCell = line.find((cell) => cell?.type === StatType.User)
+            if (
+                userCell &&
+                'value' in userCell &&
+                userCell.value &&
+                typeof userCell.value === 'object' &&
+                'id' in userCell.value &&
+                typeof userCell.value.id === 'number' &&
+                userCell.value.id > 0
+            ) {
+                acc.push(userCell.value.id)
+            }
+            return acc
+        }, [])
     },
 )
