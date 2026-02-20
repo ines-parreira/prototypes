@@ -181,6 +181,14 @@
             var(--surface-neutral-tertiary) 50%,
             var(--content-neutral-default) 100%
         );
+        background-size: 200% 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        :global {
+            animation: shimmer 1.5s infinite ease-in-out;
+        }
     }
 
     .textError {

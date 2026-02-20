@@ -29,6 +29,13 @@ jest.mock('services/activityTracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 
+jest.mock('../../contexts/CoreContext', () => ({
+    useCoreContext: jest.fn(() => ({ useV3: false })),
+}))
+
+const mockUseCoreContext = jest.requireMock('../../contexts/CoreContext')
+    .useCoreContext as jest.MockedFunction<() => { useV3: boolean }>
+
 const mockIsSessionImpersonated = isSessionImpersonated as jest.MockedFunction<
     typeof isSessionImpersonated
 >
@@ -82,6 +89,37 @@ const renderComponent = (
 describe('PlaygroundReasoning', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseCoreContext.mockReturnValue({ useV3: false })
+    })
+
+    describe('V3 mode', () => {
+        it('should render "Reasoning not yet available for V3" when useV3 is true', () => {
+            mockUseCoreContext.mockReturnValue({ useV3: true })
+            renderComponent({ status: 'collapsed' })
+
+            expect(
+                screen.getByText('Reasoning not yet available for V3'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render toggle button when useV3 is true', () => {
+            mockUseCoreContext.mockReturnValue({ useV3: true })
+            renderComponent({ status: 'collapsed' })
+
+            expect(
+                screen.queryByRole('button', { name: 'Show reasoning' }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render "Reasoning not yet available for V3" when useV3 is false', () => {
+            mockUseCoreContext.mockReturnValue({ useV3: false })
+            renderComponent({ status: 'collapsed' })
+
+            expect(
+                screen.queryByText('Reasoning not yet available for V3'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+        })
     })
 
     describe('Status Behavior', () => {

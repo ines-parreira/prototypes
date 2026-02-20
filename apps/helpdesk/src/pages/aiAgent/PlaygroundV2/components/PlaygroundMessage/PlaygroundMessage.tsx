@@ -1,7 +1,9 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
+import { marked } from 'marked'
 
 import error from 'assets/img/icons/error.svg'
 import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'
@@ -13,7 +15,7 @@ import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/Settings
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
-import { linkifyHtml, sanitizeHtmlDefault } from 'utils/html'
+import { linkifyHtml } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import type { PlaygroundChannels } from '../../types'
@@ -122,7 +124,11 @@ const PlaygroundMessage = ({
                             className={css.messageContent}
                             dangerouslySetInnerHTML={{
                                 __html: sanitizeHtmlDefault(
-                                    linkifyHtml(message.content),
+                                    linkifyHtml(
+                                        marked(message.content, {
+                                            async: false,
+                                        }),
+                                    ),
                                 ),
                             }}
                         />

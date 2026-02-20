@@ -155,6 +155,31 @@ describe('PlaygroundMessage', () => {
         ).toBeInTheDocument()
     })
 
+    it('should render markdown content as HTML', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                content: '**bold text**',
+            },
+        })
+
+        expect(screen.getByText('bold text')).toBeInTheDocument()
+        expect(container.querySelector('strong')).toBeInTheDocument()
+    })
+
+    it('should render pre-existing HTML content without double-encoding (backwards compatibility with marked)', () => {
+        const { container } = renderComponent({
+            message: {
+                ...playgroundMessageFixture,
+                content: '<p>Hello <strong>world</strong></p>',
+            },
+        })
+
+        expect(screen.getByText('world')).toBeInTheDocument()
+        expect(container.querySelector('strong')).toBeInTheDocument()
+        expect(screen.queryByText('<strong>')).not.toBeInTheDocument()
+    })
+
     it('should render AI Agent internal note', () => {
         renderComponent({
             message: { ...playgroundMessageFixture, sender: AI_AGENT },
