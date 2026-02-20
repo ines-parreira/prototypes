@@ -42,3 +42,7 @@ export {
     ConfigureMetricsModal,
 } from './components/ConfigureMetricsModal'
 export { DrillDownModalTrigger } from './components/DrillDownModal/DrillDownModalTrigger'
+export {
+    ShowMoreList,
+    type ShowMoreListProps,
+} from './components/ShowMoreList/ShowMoreList'

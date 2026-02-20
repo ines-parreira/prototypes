@@ -7,44 +7,13 @@
 
     .kpisSection {
         display: flex;
-        gap: 16px;
-        overflow-x: auto;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+        gap: var(--spacing-md);
         width: 100%;
-        max-width: 100%;
-        transition: all 0.3s ease-in-out;
-
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Hide scrollbar for IE, Edge and Firefox */
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-
-    .kpisSection.clickable {
-        cursor: pointer;
-    }
-
-    .kpisSection.clickable:hover {
-        opacity: 0.95;
-    }
-
-    .kpisSection.wrapped {
-        flex-direction: column;
-        overflow-x: visible;
-        overflow-y: visible;
     }
 
     .kpiItem {
-        flex-shrink: 0;
-        width: 100%;
-    }
-
-    .kpisSection:not(.wrapped) .kpiItem {
-        flex: 1;
+        flex: 1 1 240px;
         min-width: 240px;
     }
 }

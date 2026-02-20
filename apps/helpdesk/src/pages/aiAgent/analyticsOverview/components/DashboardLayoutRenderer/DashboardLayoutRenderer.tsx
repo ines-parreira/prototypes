@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { type MetricConfigItem } from '@repo/reporting'
+import { type MetricConfigItem, ShowMoreList } from '@repo/reporting'
 import { motion } from 'framer-motion'
 
 import { Box } from '@gorgias/axiom'
@@ -14,6 +12,7 @@ import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOvervi
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
+    LayoutItem,
     LayoutSection,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { validateLayoutConfig } from 'pages/aiAgent/analyticsOverview/utils/validateLayoutConfig'
@@ -34,6 +33,49 @@ const getEntranceAnimation = (index: number) => {
     return animations[index % animations.length]
 }
 
+const renderKpiItem = (
+    item: LayoutItem,
+    index: number,
+    tabKey: string | undefined,
+    reportConfig: ReportConfig<AnalyticsChartType>,
+) => {
+    const entrance = getEntranceAnimation(index)
+
+    return (
+        <motion.div
+            key={tabKey ? `${tabKey}-${item.chartId}` : item.chartId}
+            initial={{
+                x: entrance.x,
+                y: entrance.y,
+                opacity: 0,
+            }}
+            animate={{
+                x: 0,
+                y: 0,
+                opacity: 1,
+            }}
+            transition={{
+                x: {
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                    delay: index * 0.05,
+                },
+                y: {
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                    delay: index * 0.05,
+                },
+                opacity: { duration: 0.7, delay: index * 0.05 },
+            }}
+            className={css.kpiItem}
+        >
+            <DashboardComponent chart={item.chartId} config={reportConfig} />
+        </motion.div>
+    )
+}
+
 const KpisSection = ({
     section,
     reportConfig,
@@ -46,47 +88,8 @@ const KpisSection = ({
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
     )
-    const [isWrapped, setIsWrapped] = useState(false)
-    const containerRef = useRef<HTMLDivElement>(null)
-    const [isScrollable, setIsScrollable] = useState(false)
-    const [animationComplete, setAnimationComplete] = useState(
-        section.items.length === 0,
-    )
 
-    useEffect(() => {
-        if (!animationComplete) return
-
-        const checkScrollable = () => {
-            if (containerRef.current) {
-                const hasOverflow =
-                    containerRef.current.scrollWidth >
-                    containerRef.current.clientWidth
-                setIsScrollable(hasOverflow)
-            }
-        }
-
-        checkScrollable()
-
-        const resizeObserver = new ResizeObserver(() => {
-            checkScrollable()
-        })
-
-        if (containerRef.current) {
-            resizeObserver.observe(containerRef.current)
-        }
-
-        return () => {
-            resizeObserver.disconnect()
-        }
-    }, [animationComplete])
-
-    const handleClick = () => {
-        if (isScrollable) {
-            setIsWrapped(!isWrapped)
-        }
-    }
-
-    const lastItemIndex = section.items.length - 1
+    const visibleItems = section.items.filter((item) => item.visibility)
 
     const keyKpisConfig: MetricConfigItem[] = section.items.map((item) => ({
         id: item.chartId,
@@ -99,81 +102,11 @@ const KpisSection = ({
             {isAnalyticsDashboardsTrendCardsEnabled && (
                 <MetricsConfigurator metrics={keyKpisConfig} />
             )}
-            <motion.div
-                ref={containerRef}
-                onClick={handleClick}
-                className={`${css.kpisSection} ${isScrollable ? css.clickable : ''} ${isWrapped ? css.wrapped : ''}`}
-            >
-                {section.items
-                    .filter((item) => item.visibility)
-                    .map((item, index) => {
-                        const entrance = getEntranceAnimation(index)
-                        const isLastItem = index === lastItemIndex
-
-                        return (
-                            <motion.div
-                                key={
-                                    tabKey
-                                        ? `${tabKey}-${item.chartId}`
-                                        : item.chartId
-                                }
-                                layout="position"
-                                initial={{
-                                    x: entrance.x,
-                                    y: entrance.y,
-                                    opacity: 0,
-                                }}
-                                animate={{
-                                    x: 0,
-                                    y: 0,
-                                    opacity: 1,
-                                    width: isWrapped ? '100%' : 'auto',
-                                }}
-                                transition={{
-                                    x: {
-                                        type: 'spring',
-                                        stiffness: 200,
-                                        damping: 15,
-                                        delay: index * 0.05,
-                                    },
-                                    y: {
-                                        type: 'spring',
-                                        stiffness: 200,
-                                        damping: 15,
-                                        delay: index * 0.05,
-                                    },
-                                    opacity: {
-                                        duration: 0.7,
-                                        delay: index * 0.05,
-                                    },
-                                    width: {
-                                        duration: 0.7,
-                                        type: 'spring',
-                                        stiffness: 100,
-                                        damping: 15,
-                                    },
-                                    layout: {
-                                        duration: 0.7,
-                                        type: 'spring',
-                                        stiffness: 100,
-                                        damping: 15,
-                                    },
-                                }}
-                                onAnimationComplete={
-                                    isLastItem
-                                        ? () => setAnimationComplete(true)
-                                        : undefined
-                                }
-                                className={css.kpiItem}
-                            >
-                                <DashboardComponent
-                                    chart={item.chartId}
-                                    config={reportConfig}
-                                />
-                            </motion.div>
-                        )
-                    })}
-            </motion.div>
+            <ShowMoreList containerClassName={css.kpisSection}>
+                {visibleItems.map((item, index) =>
+                    renderKpiItem(item, index, tabKey, reportConfig),
+                )}
+            </ShowMoreList>
         </>
     )
 }
