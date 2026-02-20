@@ -144,7 +144,11 @@ export default function AddLogicalCondition({
     }
 
     return (
-        <span className={hoverableClassName || ''} ref={setRef}>
+        <span
+            className={hoverableClassName || ''}
+            ref={setRef}
+            style={{ minHeight: 32, alignItems: 'center' }}
+        >
             <UncontrolledButtonDropdown>
                 <DropdownToggle
                     className="ControlStructureButton"

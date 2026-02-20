@@ -78,6 +78,7 @@ export function ChannelSelectBox() {
                 caption="Choose the channels this SLA should apply to. Voice cannot be combined with other channels."
                 name={FIELD_NAME}
                 items={options}
+                maxHeight={300}
                 onChannelChange={handleChannelChange}
                 outputTransform={(options: Option[]) =>
                     options.map((option) => option.id)

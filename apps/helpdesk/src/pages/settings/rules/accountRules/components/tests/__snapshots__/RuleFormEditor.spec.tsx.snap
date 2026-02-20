@@ -212,6 +212,7 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
             >
               <span
                 class=""
+                style="display: flex; min-height: 32px; align-items: center;"
               >
                 <div
                   class="AddActionOrIfStatement btn-group"
@@ -589,6 +590,7 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
             >
               <span
                 class=""
+                style="display: flex; min-height: 32px; align-items: center;"
               >
                 <div
                   class="AddActionOrIfStatement btn-group"

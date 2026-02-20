@@ -85,6 +85,8 @@ export default function CallExpression({
                 style={{
                     width: '100%',
                     paddingRight: '32px',
+                    alignItems: 'center',
+                    minHeight: 32,
                 }}
             >
                 <Expression

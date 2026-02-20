@@ -22,7 +22,11 @@ const TestExpression = ({
     return (
         <div
             className="test flex flex-wrap"
-            style={{ paddingLeft: computeLeftPadding(depth) }}
+            style={{
+                paddingLeft: computeLeftPadding(depth),
+                alignItems: 'center',
+                minHeight: 32,
+            }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >

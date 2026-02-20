@@ -177,6 +177,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
       >
         <span
           class=""
+          style="display: flex; min-height: 32px; align-items: center;"
         >
           <div
             class="AddActionOrIfStatement btn-group"

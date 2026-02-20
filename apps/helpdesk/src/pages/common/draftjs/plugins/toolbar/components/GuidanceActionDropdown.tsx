@@ -79,7 +79,7 @@ const GuidanceActionDropdown = ({
             safeDistance={0}
         >
             {search !== null && (
-                <DropdownHeader>
+                <DropdownHeader className={css.dropdownHeader}>
                     <Button
                         onClick={() => {
                             setSearch(null)

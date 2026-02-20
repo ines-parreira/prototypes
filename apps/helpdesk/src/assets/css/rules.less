@@ -82,15 +82,6 @@ pre {
     }
 }
 
-.BlockStatement,
-.IfStatement,
-.consequent,
-.alternate,
-.Action {
-    padding-top: 2.5px;
-    padding-bottom: 2.5px;
-}
-
 // For If/Then/Else labels and their dropdown menu
 .test,
 .consequent,
@@ -275,6 +266,10 @@ pre {
         line-height: 1 !important;
         position: relative !important;
 
+        .material-icons {
+            color: var(--content-warning-default) !important;
+        }
+
         & > span {
             display: inline-flex;
             align-items: center;
@@ -411,7 +406,7 @@ pre {
         background: var(--elevation-neutral-default);
         border: none;
         border-radius: var(--spacing-xs);
-        padding: var(--spacing-xxs);
+        padding: var(--spacing-xxxs);
         box-shadow: inset 0 0 0 1px var(--border-neutral-default);
 
         input {
@@ -971,6 +966,10 @@ pre {
         background-color: var(--surface-success-primary) !important;
         cursor: pointer !important;
         color: var(--content-success-primary) !important;
+
+        .material-icons {
+            color: var(--content-success-primary) !important;
+        }
         text-transform: none !important;
         font-size: inherit !important;
         font-weight: inherit !important;
@@ -1026,6 +1025,70 @@ pre {
             line-height: 1;
             position: relative;
             z-index: 1;
+        }
+    }
+
+    .Action .compact-action .ActionWidget.custom-field-input--dropdown > span {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: var(--spacing-xxxs) !important;
+        height: 24px !important;
+        padding: 0 var(--spacing-xs) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        border-radius: var(--spacing-xxs) !important;
+        border: none !important;
+        box-shadow: inset 0 0 0 1px var(--border-success-primary) !important;
+        outline: none !important;
+        background-color: var(--surface-success-primary) !important;
+        cursor: pointer !important;
+        color: var(--content-success-primary) !important;
+        text-transform: none !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: 1 !important;
+        position: relative !important;
+
+        & > span {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+            padding: 0;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: var(--spacing-xxs);
+            pointer-events: none;
+        }
+
+        &:hover::before {
+            background-color: var(--hover-default);
+        }
+
+        input {
+            padding: 0;
+            background: none !important;
+            top: 0;
+            left: var(--spacing-xs);
+            color: var(--content-success-primary) !important;
+            font-weight: inherit;
+            line-height: 1;
+            position: relative;
+            z-index: 1;
+            border: none !important;
+            box-shadow: none !important;
         }
     }
 

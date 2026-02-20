@@ -30,7 +30,10 @@ export default function ExpressionStatement({
     const { hovered, setRef } = useHoverable()
     return (
         <span ref={setRef}>
-            <div className={classnames('ExpressionStatement', { hovered })}>
+            <div
+                className={classnames('ExpressionStatement', { hovered })}
+                style={{ minHeight: 32, alignItems: 'center' }}
+            >
                 <DeleteBlockStatementItem
                     parent={parent}
                     rule={rule}

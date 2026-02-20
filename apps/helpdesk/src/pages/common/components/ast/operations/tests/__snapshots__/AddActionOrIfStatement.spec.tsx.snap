@@ -3,6 +3,7 @@
 exports[`AddActionOrIfStatement component should render 1`] = `
 <span
   class=""
+  style="display: flex; min-height: 32px; align-items: center;"
 >
   <div
     class="AddActionOrIfStatement btn-group"
@@ -46,6 +47,7 @@ exports[`AddActionOrIfStatement component should render 1`] = `
 exports[`AddActionOrIfStatement component should render a button to delete the block when it is allowed to delete itself 1`] = `
 <span
   class=""
+  style="display: flex; min-height: 32px; align-items: center;"
 >
   <div
     class="AddActionOrIfStatement btn-group"
@@ -102,6 +104,7 @@ exports[`AddActionOrIfStatement component should render a button to delete the b
 exports[`AddActionOrIfStatement component should render with error 1`] = `
 <span
   class=""
+  style="display: flex; min-height: 32px; align-items: center;"
 >
   <div
     class="AddActionOrIfStatement btn-group"

@@ -230,6 +230,7 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
             >
               <span
                 class=""
+                style="display: flex; min-height: 32px; align-items: center;"
               >
                 <div
                   class="AddActionOrIfStatement btn-group"
@@ -593,6 +594,7 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
             >
               <span
                 class=""
+                style="display: flex; min-height: 32px; align-items: center;"
               >
                 <div
                   class="AddActionOrIfStatement btn-group"
@@ -942,6 +944,7 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
             >
               <span
                 class=""
+                style="display: flex; min-height: 32px; align-items: center;"
               >
                 <div
                   class="AddActionOrIfStatement btn-group"

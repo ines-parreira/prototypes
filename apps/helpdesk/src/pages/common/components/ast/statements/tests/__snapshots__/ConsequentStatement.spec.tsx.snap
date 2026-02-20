@@ -18,6 +18,7 @@ exports[`<ConsequentStatement/> component should render 1`] = `
     </div>
     <span
       class="d-inline-flex"
+      style="display: flex; min-height: 32px; align-items: center;"
     >
       <div
         class="AddActionOrIfStatement btn-group"

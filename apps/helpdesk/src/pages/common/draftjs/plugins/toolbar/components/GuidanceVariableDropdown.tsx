@@ -169,7 +169,7 @@ const GuidanceVariableDropdown = ({
             safeDistance={0}
         >
             {(selectedProvider || Array.isArray(searchResults)) && (
-                <DropdownHeader>
+                <DropdownHeader className={css.dropdownHeader}>
                     <Button
                         onClick={() => {
                             if (Array.isArray(searchResults)) {

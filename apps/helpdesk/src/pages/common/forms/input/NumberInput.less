@@ -136,6 +136,11 @@
         box-shadow: none;
         background-color: transparent;
 
+        &.isNested {
+            border: 1px solid transparent;
+            border-radius: 0;
+        }
+
         &:hover:not(.isDisabled):not(.isFocused) {
             border: 1px solid var(--border-neutral-default);
             background-color: var(--hover-input);
@@ -194,6 +199,7 @@
         border-bottom-right-radius: 0 !important;
         border: none !important;
         box-shadow: none !important;
+        background-color: transparent !important;
         width: 20px;
     }
 }

@@ -112,7 +112,15 @@ export default function AddActionOrIfStatement({
     }
 
     return (
-        <span className={hoverableClassName || ''} ref={setRef}>
+        <span
+            className={hoverableClassName || ''}
+            ref={setRef}
+            style={{
+                display: 'flex',
+                minHeight: 32,
+                alignItems: 'center',
+            }}
+        >
             <UncontrolledButtonDropdown
                 style={{ paddingLeft: computeLeftPadding(depth) }}
                 className="AddActionOrIfStatement"

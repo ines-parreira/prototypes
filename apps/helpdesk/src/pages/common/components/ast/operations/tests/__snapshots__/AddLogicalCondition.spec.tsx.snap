@@ -3,6 +3,7 @@
 exports[`AddLogicalCondition component should not render an option to add ELSE because there is already an ELSE 1`] = `
 <span
   class=""
+  style="min-height: 32px; align-items: center;"
 >
   <div
     class="btn-group"
@@ -66,6 +67,7 @@ exports[`AddLogicalCondition component should not render an option to add ELSE b
 exports[`AddLogicalCondition component should render an option to add AND because existing operator is already AND  1`] = `
 <span
   class=""
+  style="min-height: 32px; align-items: center;"
 >
   <div
     class="btn-group"
@@ -129,6 +131,7 @@ exports[`AddLogicalCondition component should render an option to add AND becaus
 exports[`AddLogicalCondition component should render an option to add OR because existing operator is already OR  1`] = `
 <span
   class=""
+  style="min-height: 32px; align-items: center;"
 >
   <div
     class="btn-group"
@@ -192,6 +195,7 @@ exports[`AddLogicalCondition component should render an option to add OR because
 exports[`AddLogicalCondition component should render empty condition 1`] = `
 <span
   class=""
+  style="min-height: 32px; align-items: center;"
 >
   <div
     class="btn-group"

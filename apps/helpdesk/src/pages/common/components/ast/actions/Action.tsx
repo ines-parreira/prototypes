@@ -96,11 +96,14 @@ export default function Action({
     return (
         <div
             className={classnames('Action', {
-                'd-flex align-items-baseline': config?.compact,
+                'd-flex': config?.compact,
             })}
             style={{
+                display: 'flex',
                 paddingLeft: computeLeftPadding(depth),
                 gap: 'var(--spacing-xxs)',
+                minHeight: 32,
+                alignItems: 'center',
             }}
         >
             <ActionSelect
