@@ -3,6 +3,10 @@ import { useCallback, useRef } from 'react'
 import { useDebouncedCallback } from '@repo/hooks'
 
 import { useNotify } from 'hooks/useNotify'
+import {
+    getPlainTextLength,
+    textLimit,
+} from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
@@ -143,6 +147,7 @@ export const useGuidanceAutoSave = () => {
                         ? 'An error occurred while creating guidance.'
                         : 'An error occurred while saving guidance.',
                 )
+                dispatch({ type: 'SET_AUTO_SAVE_ERROR', payload: true })
             } finally {
                 pendingSaveRef.current = null
                 dispatch({ type: 'SET_AUTO_SAVING', payload: false })
@@ -206,6 +211,10 @@ export const useGuidanceAutoSave = () => {
 
             const isValid = newTitle.trim() !== '' && newContent.trim() !== ''
             if (!isValid) {
+                return
+            }
+
+            if (getPlainTextLength(newContent) > textLimit) {
                 return
             }
 

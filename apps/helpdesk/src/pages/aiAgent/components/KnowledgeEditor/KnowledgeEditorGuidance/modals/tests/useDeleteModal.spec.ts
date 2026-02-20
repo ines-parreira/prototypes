@@ -52,6 +52,7 @@ describe('useDeleteModal', () => {
         guidance: mockGuidance,
         isAutoSaving: false,
         hasAutoSavedInSession: false,
+        autoSaveError: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

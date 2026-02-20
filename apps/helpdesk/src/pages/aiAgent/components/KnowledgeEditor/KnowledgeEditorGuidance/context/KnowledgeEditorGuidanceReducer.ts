@@ -89,12 +89,20 @@ export function guidanceReducer(
                 },
                 isAutoSaving: false,
                 hasAutoSavedInSession: true,
+                autoSaveError: false,
                 guidance: newGuidance,
             }
         }
 
         case 'SET_AUTO_SAVING':
-            return { ...state, isAutoSaving: action.payload }
+            return {
+                ...state,
+                isAutoSaving: action.payload,
+                autoSaveError: action.payload ? false : state.autoSaveError,
+            }
+
+        case 'SET_AUTO_SAVE_ERROR':
+            return { ...state, autoSaveError: action.payload }
 
         case 'SET_VERSION_STATUS':
             return { ...state, versionStatus: action.payload }

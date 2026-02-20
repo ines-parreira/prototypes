@@ -11,6 +11,7 @@ import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'
 
+import { getPlainTextLength, textLimit } from './guidanceTextContent.utils'
 import { guidanceVariables } from './variables'
 
 import css from './GuidanceEditor.less'
@@ -27,7 +28,6 @@ type GuidanceEditorProps = {
     showDefaultToolbarActions?: boolean
 }
 
-export const textLimit = 30000
 const defaultToolbarActions = [
     ActionName.Bold,
     ActionName.Italic,
@@ -73,6 +73,11 @@ export function GuidanceEditor({
         return actions
     }, [showActionsButton, showVariablesButton, showDefaultToolbarActions])
 
+    const isOverLimit = useMemo(
+        () => getPlainTextLength(content) > textLimit,
+        [content],
+    )
+
     const richFieldValue = useMemo(
         () => ({
             html: content,
@@ -88,7 +93,7 @@ export function GuidanceEditor({
         if (text === content) return
         const convertedHTML = convertToHTML(currentContent)
 
-        if (convertedHTML === content || text.length > textLimit) {
+        if (convertedHTML === content) {
             return
         }
 
@@ -123,27 +128,29 @@ export function GuidanceEditor({
                 actions.
             </Text>
 
-            <ToolbarProvider
-                canAddProductCard={true}
-                canAddDiscountCodeLink={false}
-                canAddVideoPlayer={false}
-                guidanceVariables={guidanceVariables}
-                guidanceActions={availableActions}
-                shopName={shopName}
-            >
-                <RichField
-                    minHeight={320}
-                    maxLength={textLimit}
-                    value={richFieldValue}
-                    allowExternalChanges
-                    onChange={handleChange}
-                    displayedActions={toolbarActions}
-                    noAutoScroll
-                    uploadType={UploadType.PublicAttachment}
-                    onBlur={onBlur}
-                    getGuidanceVariables={() => guidanceVariables}
-                />
-            </ToolbarProvider>
+            <div className={isOverLimit ? css.editorError : undefined}>
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    canAddDiscountCodeLink={false}
+                    canAddVideoPlayer={false}
+                    guidanceVariables={guidanceVariables}
+                    guidanceActions={availableActions}
+                    shopName={shopName}
+                >
+                    <RichField
+                        minHeight={320}
+                        maxLength={textLimit}
+                        value={richFieldValue}
+                        allowExternalChanges
+                        onChange={handleChange}
+                        displayedActions={toolbarActions}
+                        noAutoScroll
+                        uploadType={UploadType.PublicAttachment}
+                        onBlur={onBlur}
+                        getGuidanceVariables={() => guidanceVariables}
+                    />
+                </ToolbarProvider>
+            </div>
         </div>
     )
 }

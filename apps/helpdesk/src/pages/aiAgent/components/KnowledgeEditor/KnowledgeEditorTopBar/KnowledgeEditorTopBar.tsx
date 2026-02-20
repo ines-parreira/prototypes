@@ -40,6 +40,7 @@ type Props = {
     disabled?: boolean
 
     isSaving?: boolean
+    autoSaveError?: boolean
     lastUpdatedDatetime?: Date
 
     guidanceMode?: GuidanceMode['mode']
@@ -61,6 +62,10 @@ export const defaultProps: Props = {
 export const KnowledgeEditorTopBar = (props: Props) => {
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.RelativeDateAndTime,
+    )
+
+    const isEditable = Boolean(
+        props.onChangeTitle || props.guidanceMode === 'edit',
     )
 
     return (
@@ -101,8 +106,19 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                         Saving
                     </span>
                 )}
-                {(props.onChangeTitle || props.guidanceMode === 'edit') &&
+                {isEditable && !props.isSaving && props.autoSaveError && (
+                    <span className={css.savingIndicator} tabIndex={0}>
+                        <Tooltip placement="bottom">
+                            <TooltipTrigger>
+                                <Icon name="cloud-off" size={IconSize.Md} />
+                            </TooltipTrigger>
+                            <TooltipContent caption="Failed to save content." />
+                        </Tooltip>
+                    </span>
+                )}
+                {isEditable &&
                     !props.isSaving &&
+                    !props.autoSaveError &&
                     props.lastUpdatedDatetime && (
                         <span className={css.savingIndicator} tabIndex={0}>
                             <Tooltip placement="bottom">

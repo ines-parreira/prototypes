@@ -6,6 +6,10 @@ import {
     useReducer,
 } from 'react'
 
+import {
+    getPlainTextLength,
+    textLimit,
+} from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 
@@ -68,7 +72,10 @@ export const KnowledgeEditorGuidanceProvider = ({
     }, [state.title, state.content, state.savedSnapshot, state.guidanceMode])
 
     const isFormValid = useMemo(
-        () => state.title.trim() !== '' && state.content.trim() !== '',
+        () =>
+            state.title.trim() !== '' &&
+            state.content.trim() !== '' &&
+            getPlainTextLength(state.content) <= textLimit,
         [state.title, state.content],
     )
 

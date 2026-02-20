@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { Heading } from '@gorgias/axiom'
 
-import { textLimit } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
+import { textLimit } from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'

@@ -52,6 +52,7 @@ export type GuidanceState = {
     guidance: GuidanceArticle | undefined
     isAutoSaving: boolean
     hasAutoSavedInSession: boolean
+    autoSaveError: boolean
 
     // Template tracking (for create mode autosave)
     isFromTemplate: boolean
@@ -95,6 +96,7 @@ export type GuidanceReducerAction =
           }
       }
     | { type: 'SET_AUTO_SAVING'; payload: boolean }
+    | { type: 'SET_AUTO_SAVE_ERROR'; payload: boolean }
     | { type: 'SET_VERSION_STATUS'; payload: GetArticleVersionStatus }
     | { type: 'SWITCH_VERSION'; payload: GuidanceArticle }
     | { type: 'SET_MODAL'; payload: ModalType }
@@ -197,6 +199,7 @@ export const createInitialState = (
         guidance: article ?? undefined,
         isAutoSaving: false,
         hasAutoSavedInSession: false,
+        autoSaveError: false,
         isFromTemplate: template !== undefined && initialMode === 'create',
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

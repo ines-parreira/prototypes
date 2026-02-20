@@ -79,6 +79,7 @@ describe('useToggleVisibility', () => {
         guidance: createMockGuidanceArticle(1, 'UNLISTED'),
         isAutoSaving: false,
         hasAutoSavedInSession: false,
+        autoSaveError: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',

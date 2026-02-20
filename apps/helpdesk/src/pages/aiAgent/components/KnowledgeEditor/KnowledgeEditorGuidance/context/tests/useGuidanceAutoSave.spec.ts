@@ -66,6 +66,7 @@ describe('useGuidanceAutoSave', () => {
         },
         isAutoSaving: false,
         hasAutoSavedInSession: false,
+        autoSaveError: false,
         isFromTemplate: false,
         hasTemplateChanges: false,
         versionStatus: 'latest_draft',
@@ -218,6 +219,71 @@ describe('useGuidanceAutoSave', () => {
             const { result } = renderHook(() => useGuidanceAutoSave())
 
             act(() => {
+                result.current.onChangeField('title', 'New Title')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('should not trigger autosave when content plain text exceeds textLimit', () => {
+            const overLimitContent = `<p>${'a'.repeat(30001)}</p>`
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    content: overLimitContent,
+                    savedSnapshot: {
+                        title: 'Test Title',
+                        content: overLimitContent,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            act(() => {
+                result.current.onChangeField('title', 'New Title')
+            })
+
+            expect(mockDispatch).not.toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+        })
+
+        it('should trigger autosave when content plain text is within textLimit', async () => {
+            const withinLimitContent = `<p>${'a'.repeat(30000)}</p>`
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    content: withinLimitContent,
+                    savedSnapshot: {
+                        title: 'Old Title',
+                        content: withinLimitContent,
+                    },
+                },
+                dispatch: mockDispatch,
+                config: {
+                    ...defaultConfig,
+                    guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                },
+            })
+
+            mockUpdateGuidanceArticle.mockResolvedValue({
+                title: 'New Title',
+                content: withinLimitContent,
+            })
+            ;(fromArticleTranslationResponse as jest.Mock).mockReturnValue({
+                id: 123,
+            })
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
                 result.current.onChangeField('title', 'New Title')
             })
 
@@ -583,6 +649,60 @@ describe('useGuidanceAutoSave', () => {
             expect(mockNotifyError).toHaveBeenCalledWith(
                 'An error occurred while saving guidance.',
             )
+        })
+
+        it('should dispatch SET_AUTO_SAVE_ERROR on create failure', async () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    guidanceMode: 'create',
+                    guidance: undefined,
+                    savedSnapshot: { title: '', content: '' },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            mockCreateGuidanceArticle.mockRejectedValue(
+                new Error('Create failed'),
+            )
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
+                result.current.onChangeField('title', 'New Title')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVE_ERROR',
+                payload: true,
+            })
+        })
+
+        it('should dispatch SET_AUTO_SAVE_ERROR on update failure', async () => {
+            ;(useGuidanceContext as jest.Mock).mockReturnValue({
+                state: {
+                    ...defaultState,
+                    savedSnapshot: { title: 'Old', content: 'Old' },
+                },
+                dispatch: mockDispatch,
+                config: defaultConfig,
+            })
+
+            mockUpdateGuidanceArticle.mockRejectedValue(
+                new Error('Update failed'),
+            )
+
+            const { result } = renderHook(() => useGuidanceAutoSave())
+
+            await act(async () => {
+                result.current.onChangeField('title', 'New Title')
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith({
+                type: 'SET_AUTO_SAVE_ERROR',
+                payload: true,
+            })
         })
 
         it('should always set isAutoSaving to false in finally block', async () => {
