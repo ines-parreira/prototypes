@@ -107,6 +107,8 @@ export type DimensionName =
     | 'searchResultRange'
     | 'currency'
     | 'influencedProductId'
+    | 'productId'
+    | 'storeIntegrationId'
 
 export type MeasureName =
     | 'ticketCount'
@@ -215,6 +217,8 @@ export type StringFilterName =
     | 'source'
     | 'storeIntegrationId'
     | 'articleId'
+    | 'outcome'
+    | 'discountCode'
 
 export type NumberFilterName =
     | 'agentId'
@@ -223,10 +227,12 @@ export type NumberFilterName =
     | 'teamId'
     | 'customFieldId'
     | 'queueId'
+    | 'storeIntegrationId'
 
 export type BooleanFilterName =
     | 'isAnsweredByAgent'
     | 'isDuringBusinessHours'
     | 'isInfluenced'
+    | 'isSalesOpportunity'
 
 export type FilterName = StringFilterName | NumberFilterName | BooleanFilterName

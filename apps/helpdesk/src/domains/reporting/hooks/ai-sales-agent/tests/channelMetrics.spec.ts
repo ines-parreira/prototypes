@@ -19,6 +19,10 @@ import {
     snoozedInteractionsPerChannelQueryFactory,
     totalSalesConversationsPerChannelQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/channelMetrics'
+import {
+    AISalesAgentAutomatedSalesConversationsPerChannelQueryFactoryV2,
+    AISalesAgentTotalSalesConversationsPerChannelQueryFactoryV2,
+} from 'domains/reporting/models/scopes/AISalesAgentConversations'
 import { AISalesAgentGMVInfluencedPerChannelQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
@@ -227,11 +231,15 @@ describe('Channel Metrics Hooks', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 totalSalesConversationsPerChannelQueryFactory(
                     filters,
                     timezone,
                 ),
+                AISalesAgentTotalSalesConversationsPerChannelQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
                 undefined,
             )
         })
@@ -247,11 +255,15 @@ describe('Channel Metrics Hooks', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 totalSalesConversationsPerChannelQueryFactory(
                     filters,
                     timezone,
                 ),
+                AISalesAgentTotalSalesConversationsPerChannelQueryFactoryV2({
+                    filters,
+                    timezone,
+                }),
                 channel,
             )
         })
@@ -281,10 +293,16 @@ describe('Channel Metrics Hooks', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 automatedSalesConversationsPerChannelQueryFactory(
                     filters,
                     timezone,
+                ),
+                AISalesAgentAutomatedSalesConversationsPerChannelQueryFactoryV2(
+                    {
+                        filters,
+                        timezone,
+                    },
                 ),
                 undefined,
             )
@@ -301,10 +319,16 @@ describe('Channel Metrics Hooks', () => {
                 {},
             )
 
-            expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
+            expect(useMetricPerDimensionV2Mock).toHaveBeenCalledWith(
                 automatedSalesConversationsPerChannelQueryFactory(
                     filters,
                     timezone,
+                ),
+                AISalesAgentAutomatedSalesConversationsPerChannelQueryFactoryV2(
+                    {
+                        filters,
+                        timezone,
+                    },
                 ),
                 channel,
             )

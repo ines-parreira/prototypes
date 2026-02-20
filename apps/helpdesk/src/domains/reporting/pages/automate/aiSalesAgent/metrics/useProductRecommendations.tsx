@@ -37,13 +37,18 @@ import { IntegrationType } from 'models/integration/types'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
 import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
+import { AISalesAgentProductRecommendationsCountQueryFactoryV2 } from '../../../../models/scopes/AISalesAgentConversations'
+
 const useProductRecommendations = (filters: StatsFilters, timezone: string) => {
     // Get recommendations totals
-    const recommendationsTotalData =
-        useMetricPerDimension<StringWhichShouldBeNumber>(
-            productRecommendationsQueryFactory(filters, timezone),
-            AiSalesAgentConversationsDimension.ProductId,
-        )
+    const recommendationsTotalData = useMetricPerDimensionV2(
+        productRecommendationsQueryFactory(filters, timezone),
+        AISalesAgentProductRecommendationsCountQueryFactoryV2({
+            filters,
+            timezone,
+        }),
+        AiSalesAgentConversationsDimension.ProductId,
+    )
     const productTotals = mapMetrics(
         recommendationsTotalData,
         AiSalesAgentConversationsDimension.ProductId,
@@ -167,8 +172,12 @@ const fetchProductRecommendations = async (
         // Fetch metrics data
         const [recommendationsTotalData, clickTotalData, boughtTotalData] =
             await Promise.all([
-                fetchMetricPerDimension<StringWhichShouldBeNumber>(
+                fetchMetricPerDimensionV2<StringWhichShouldBeNumber>(
                     productRecommendationsQueryFactory(filters, timezone),
+                    AISalesAgentProductRecommendationsCountQueryFactoryV2({
+                        filters,
+                        timezone,
+                    }),
                 ),
                 fetchMetricPerDimension<StringWhichShouldBeNumber>(
                     productClicksQueryFactory(filters, timezone),

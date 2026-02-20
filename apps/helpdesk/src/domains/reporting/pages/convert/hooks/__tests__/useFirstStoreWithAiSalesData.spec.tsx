@@ -11,7 +11,7 @@ jest.mock(
 )
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension', () => ({
-    useMetricPerDimension: jest.fn(),
+    useMetricPerDimensionV2: jest.fn(),
 }))
 
 const mockUseStatsFilters = jest.requireMock(
@@ -20,7 +20,7 @@ const mockUseStatsFilters = jest.requireMock(
 
 const mockUseMetricPerDimension = jest.requireMock(
     'domains/reporting/hooks/useMetricPerDimension',
-).useMetricPerDimension
+).useMetricPerDimensionV2
 
 describe('useFirstStoreWithAiSalesData', () => {
     beforeEach(() => {

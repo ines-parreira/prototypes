@@ -259,7 +259,21 @@ describe('productRecommendations', () => {
         })
 
         it('should fetch and map product recommendations successfully', async () => {
-            fetchMetricPerDimensionMock
+            fetchMetricPerDimensionMock.mockResolvedValueOnce({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 0,
+                    decile: 0,
+                    allData: [
+                        {
+                            [ConvertTrackingEventsDimension.ProductId]: '1',
+                            [ConvertTrackingEventsMeasure.UniqClicks]: '50',
+                        },
+                    ],
+                },
+            })
+            fetchMetricPerDimensionV2Mock
                 .mockResolvedValueOnce({
                     isFetching: false,
                     isError: false,
@@ -283,27 +297,13 @@ describe('productRecommendations', () => {
                         decile: 0,
                         allData: [
                             {
-                                [ConvertTrackingEventsDimension.ProductId]: '1',
-                                [ConvertTrackingEventsMeasure.UniqClicks]: '50',
+                                [AiSalesAgentOrdersDimension.InfluencedProductId]:
+                                    '1',
+                                [AiSalesAgentOrdersMeasure.UniqCount]: '10',
                             },
                         ],
                     },
                 })
-            fetchMetricPerDimensionV2Mock.mockResolvedValueOnce({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: 0,
-                    decile: 0,
-                    allData: [
-                        {
-                            [AiSalesAgentOrdersDimension.InfluencedProductId]:
-                                '1',
-                            [AiSalesAgentOrdersMeasure.UniqCount]: '10',
-                        },
-                    ],
-                },
-            })
 
             mockFetchIntegrationProductsByIds.mockResolvedValue([
                 fromJS({

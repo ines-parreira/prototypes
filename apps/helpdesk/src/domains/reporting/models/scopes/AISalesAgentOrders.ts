@@ -1,6 +1,9 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { ProductRecommendation } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
+import {
+    InfluencedByFilter,
+    SourceFilter,
+} from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
@@ -239,7 +242,7 @@ export const AISalesAgentDiscountCodesApplied =
             {
                 member: 'influencedBy',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['discount-code'],
+                values: [InfluencedByFilter.DiscountCount],
             },
             {
                 member: 'source',
@@ -267,7 +270,7 @@ export const AISalesAgentDiscountCodesAverage =
             {
                 member: 'influencedBy',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: ['discount-code'],
+                values: [InfluencedByFilter.DiscountCount],
             },
             {
                 member: 'source',

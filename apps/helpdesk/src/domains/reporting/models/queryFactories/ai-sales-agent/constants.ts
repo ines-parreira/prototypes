@@ -3,3 +3,11 @@ export enum SourceFilter {
     AiJourney = 'ai-journey',
     ShoppingAssistant = 'shopping-assistant',
 }
+
+export enum InfluencedByFilter {
+    DiscountCount = 'discount-code',
+}
+
+export enum OutcomeFilter {
+    Handover = 'handover',
+}

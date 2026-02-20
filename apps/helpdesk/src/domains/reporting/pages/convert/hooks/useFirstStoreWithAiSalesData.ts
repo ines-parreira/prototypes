@@ -1,7 +1,8 @@
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentGroupedSalesOpportunityQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'
 
 export const useFirstStoreWithAiSalesData = ({
     enabled,
@@ -13,11 +14,15 @@ export const useFirstStoreWithAiSalesData = ({
 } => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const { data, isFetching } = useMetricPerDimension(
+    const { data, isFetching } = useMetricPerDimensionV2(
         totalNumberOfGroupedSalesOpportunityConvFromAIAgentQueryFactory(
             cleanStatsFilters,
             userTimezone,
         ),
+        AISalesAgentGroupedSalesOpportunityQueryFactoryV2({
+            timezone: userTimezone,
+            filters: cleanStatsFilters,
+        }),
         undefined,
         enabled,
     )

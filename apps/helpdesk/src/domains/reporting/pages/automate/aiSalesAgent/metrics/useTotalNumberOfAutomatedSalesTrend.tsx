@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalNumberOfAutomatedSalesQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { AISalesAgentTotalNumberOfAutomatedSalesQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentConversations'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
@@ -18,6 +19,17 @@ const useTotalNumberOfAutomatedSalesTrend = (
             },
             timezone,
         ),
+        AISalesAgentTotalNumberOfAutomatedSalesQueryFactoryV2({
+            filters,
+            timezone,
+        }),
+        AISalesAgentTotalNumberOfAutomatedSalesQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 const fetchTotalNumberOfAutomatedSalesTrend = (
@@ -33,6 +45,17 @@ const fetchTotalNumberOfAutomatedSalesTrend = (
             },
             timezone,
         ),
+        AISalesAgentTotalNumberOfAutomatedSalesQueryFactoryV2({
+            filters,
+            timezone,
+        }),
+        AISalesAgentTotalNumberOfAutomatedSalesQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
     )
 
 export {
