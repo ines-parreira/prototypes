@@ -8,6 +8,7 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
@@ -38,7 +39,7 @@ const createTrendCardProps = ({
     value: number
     prevValue: number
     description: string
-    metricFormat: 'decimal' | 'duration'
+    metricFormat: 'decimal' | 'duration' | 'currency'
 }) => ({
     trend: {
         isFetching: false,
@@ -71,7 +72,7 @@ const createChartConfig = ({
     Component: (props: DashboardChartProps) => React.JSX.Element
     label: string
     description: string
-    metricFormat: 'decimal' | 'duration'
+    metricFormat: 'decimal' | 'duration' | 'currency'
 }): ChartConfig => ({
     chartComponent: Component,
     label,
@@ -82,7 +83,7 @@ const createChartConfig = ({
     interpretAs: 'more-is-better',
 })
 
-describe('Analytics Overview Trend Cards', () => {
+describe('Analytics Dynamic Trend Cards', () => {
     const testCases = [
         {
             name: 'AnalyticsOverviewAutomatedInteractionsCard',
@@ -106,6 +107,18 @@ describe('Analytics Overview Trend Cards', () => {
                 metricFormat: 'duration' as const,
                 value: 19800,
                 prevValue: 19400,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAverageDiscountAmountCard',
+            Component: AnalyticsAiAgentAverageDiscountAmountCard,
+            config: {
+                label: 'Average discount amount',
+                description:
+                    'The average discount value given by AI Sales Agent per interaction.',
+                metricFormat: 'currency' as const,
+                value: 15.5,
+                prevValue: 14.2,
             },
         },
     ]

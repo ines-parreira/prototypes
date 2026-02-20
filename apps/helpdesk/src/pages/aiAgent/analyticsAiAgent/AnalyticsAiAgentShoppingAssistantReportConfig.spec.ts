@@ -78,6 +78,19 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Card)
     })
 
+    it('should have average discount amount card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Average discount amount')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('currency')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
     it('should have shopping assistant trend combo chart config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
@@ -125,7 +138,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentShoppingAssistantReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(7)
+        expect(Object.keys(charts)).toHaveLength(8)
         expect(
             charts[AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard],
         ).toBeDefined()
@@ -140,6 +153,11 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(
             charts[
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard
+            ],
+        ).toBeDefined()
+        expect(
+            charts[
+                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
             ],
         ).toBeDefined()
         expect(
@@ -208,6 +226,21 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
+    it('should have fetch function for average discount amount trend', async () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
             ]
 
         expect(config.csvProducer).toBeDefined()

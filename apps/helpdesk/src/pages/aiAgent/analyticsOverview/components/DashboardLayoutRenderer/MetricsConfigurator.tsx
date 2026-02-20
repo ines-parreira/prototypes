@@ -25,6 +25,7 @@ export const MetricsConfigurator = ({ metrics }: MetricsConfiguratorProps) => {
             <ConfigureMetricsModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
+                maxVisibleMetric={8}
                 metrics={metrics}
                 onSave={() => {
                     // TODO - save the new configuration in #ANALYT-5234

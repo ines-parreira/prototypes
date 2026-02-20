@@ -9,12 +9,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 4 cards', () => {
+        it('should have kpis section with 5 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(4)
+            expect(kpisSection.items).toHaveLength(5)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -31,6 +31,9 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
             expect(kpisSection.items[3].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
+            )
+            expect(kpisSection.items[4].chartId).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
             )
         })
 
@@ -80,13 +83,13 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 7 charts across all sections', () => {
+        it('should have total of 8 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(7)
+            expect(totalCharts).toBe(8)
         })
 
         it('should have all required chart types defined', () => {
@@ -106,6 +109,9 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
+            )
+            expect(allChartIds).toContain(
+                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,

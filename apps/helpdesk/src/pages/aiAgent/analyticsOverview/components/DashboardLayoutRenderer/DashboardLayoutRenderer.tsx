@@ -89,7 +89,12 @@ const KpisSection = ({
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
     )
 
-    const visibleItems = section.items.filter((item) => item.visibility)
+    const visibleItems = section.items.filter(
+        (item) =>
+            item.visibility &&
+            (!item.requiresFeatureFlag ||
+                isAnalyticsDashboardsTrendCardsEnabled),
+    )
 
     const keyKpisConfig: MetricConfigItem[] = section.items.map((item) => ({
         id: item.chartId,
@@ -97,17 +102,21 @@ const KpisSection = ({
         visibility: item.visibility,
     }))
 
-    return (
+    return isAnalyticsDashboardsTrendCardsEnabled ? (
         <>
-            {isAnalyticsDashboardsTrendCardsEnabled && (
-                <MetricsConfigurator metrics={keyKpisConfig} />
-            )}
+            <MetricsConfigurator metrics={keyKpisConfig} />
             <ShowMoreList containerClassName={css.kpisSection}>
                 {visibleItems.map((item, index) =>
                     renderKpiItem(item, index, tabKey, reportConfig),
                 )}
             </ShowMoreList>
         </>
+    ) : (
+        <div className={css.kpisSection}>
+            {visibleItems.map((item, index) =>
+                renderKpiItem(item, index, tabKey, reportConfig),
+            )}
+        </div>
     )
 }
 

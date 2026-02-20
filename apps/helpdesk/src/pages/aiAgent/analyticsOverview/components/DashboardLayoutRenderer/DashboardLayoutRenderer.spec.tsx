@@ -275,6 +275,16 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('KPIs section with tabKey', () => {
+        const { useFlag } = require('@repo/feature-flags')
+
+        beforeEach(() => {
+            useFlag.mockReturnValue(true)
+        })
+
+        afterEach(() => {
+            useFlag.mockReset()
+        })
+
         it('should render KPI items without tabKey', () => {
             render(
                 <DashboardLayoutRenderer
@@ -590,7 +600,7 @@ describe('DashboardLayoutRenderer', () => {
             )
 
             const kpiElements = screen.getAllByText(/Chart: kpi/)
-            expect(kpiElements).toHaveLength(4)
+            expect(kpiElements).toHaveLength(5)
         })
     })
 
@@ -646,6 +656,134 @@ describe('DashboardLayoutRenderer', () => {
             expect(
                 screen.getByText('MetricsConfigurator with 3 metrics'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('requiresFeatureFlag filtering', () => {
+        const { useFlag } = require('@repo/feature-flags')
+
+        beforeEach(() => {
+            useFlag.mockReset()
+        })
+
+        it('should show item when requiresFeatureFlag=true and feature flag=true', () => {
+            useFlag.mockReturnValue(true)
+
+            const config: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId: 'kpi1' as any,
+                                gridSize: 3,
+                                visibility: true,
+                                requiresFeatureFlag: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={config}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+        })
+
+        it('should show item when requiresFeatureFlag=false and feature flag=false', () => {
+            useFlag.mockReturnValue(false)
+
+            const config: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId: 'kpi1' as any,
+                                gridSize: 3,
+                                visibility: true,
+                                requiresFeatureFlag: false,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={config}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+        })
+
+        it('should show item when requiresFeatureFlag=false and feature flag=true', () => {
+            useFlag.mockReturnValue(true)
+
+            const config: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId: 'kpi1' as any,
+                                gridSize: 3,
+                                visibility: true,
+                                requiresFeatureFlag: false,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={config}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+        })
+
+        it('should hide item when requiresFeatureFlag=true and feature flag=false', () => {
+            useFlag.mockReturnValue(false)
+
+            const config: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId: 'kpi1' as any,
+                                gridSize: 3,
+                                visibility: true,
+                                requiresFeatureFlag: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            render(
+                <DashboardLayoutRenderer
+                    layoutConfig={config}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(screen.queryByText('Chart: kpi1')).not.toBeInTheDocument()
         })
     })
 })
