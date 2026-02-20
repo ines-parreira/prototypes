@@ -91,6 +91,19 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
+    it('should have discount usage card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Discount usage')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal-to-percent')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
     it('should have shopping assistant trend combo chart config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
@@ -137,44 +150,13 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentShoppingAssistantReportConfig.charts
+        const enumKeys = Object.values(AnalyticsAiAgentShoppingAssistantChart)
 
-        expect(Object.keys(charts)).toHaveLength(8)
-        expect(
-            charts[AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendComboChart
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendLineChart
-            ],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentShoppingAssistantChart.PerformanceTable],
-        ).toBeDefined()
+        expect(Object.keys(charts)).toHaveLength(enumKeys.length)
+
+        for (const key of enumKeys) {
+            expect(charts[key]).toBeDefined()
+        }
     })
 
     it('should have fetch function for total sales trend', async () => {
@@ -241,6 +223,21 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
+    it('should have fetch function for discount usage trend', async () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard
             ]
 
         expect(config.csvProducer).toBeDefined()

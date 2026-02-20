@@ -39,6 +39,13 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                         visibility: true,
                         requiresFeatureFlag: true,
                     },
+                    {
+                        chartId:
+                            AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                 ],
             },
             {

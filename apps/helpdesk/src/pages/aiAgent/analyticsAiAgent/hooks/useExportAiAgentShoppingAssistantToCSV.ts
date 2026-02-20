@@ -6,6 +6,7 @@ import { formatMetricValue } from '@repo/reporting'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { useAverageDiscountAmountMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAverageDiscountAmountMetric'
+import { useDiscountUsageMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useDiscountUsageMetric'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -27,6 +28,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const totalSalesMetric = useTotalSalesMetric()
     const averageDiscountAmountMetric = useAverageDiscountAmountMetric()
+    const discountUsageMetric = useDiscountUsageMetric()
     const ordersInfluencedMetric = useOrdersInfluencedMetric()
     const resolvedInteractionsMetric = useResolvedInteractionsMetric()
     const revenuePerInteractionMetric = useRevenuePerInteractionMetric()
@@ -40,6 +42,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const isLoading =
         totalSalesMetric.isFetching ||
         averageDiscountAmountMetric.isFetching ||
+        discountUsageMetric.isFetching ||
         ordersInfluencedMetric.isFetching ||
         resolvedInteractionsMetric.isFetching ||
         revenuePerInteractionMetric.isFetching ||
@@ -64,10 +67,22 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
                     'currency-precision-1',
                 ),
             ],
+            [
+                'Discount usage',
+                formatMetricValue(
+                    discountUsageMetric.data?.value,
+                    'decimal-to-percent',
+                ),
+                formatMetricValue(
+                    discountUsageMetric.data?.prevValue,
+                    'decimal-to-percent',
+                ),
+            ],
         ]
     }, [
         isAnalyticsDashboardsTrendCardsEnabled,
         averageDiscountAmountMetric.data,
+        discountUsageMetric.data,
     ])
 
     const kpiCardsCsv = useMemo(() => {

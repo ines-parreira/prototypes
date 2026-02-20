@@ -9,6 +9,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
@@ -39,7 +40,7 @@ const createTrendCardProps = ({
     value: number
     prevValue: number
     description: string
-    metricFormat: 'decimal' | 'duration' | 'currency'
+    metricFormat: 'decimal' | 'duration' | 'currency' | 'decimal-to-percent'
 }) => ({
     trend: {
         isFetching: false,
@@ -72,7 +73,7 @@ const createChartConfig = ({
     Component: (props: DashboardChartProps) => React.JSX.Element
     label: string
     description: string
-    metricFormat: 'decimal' | 'duration' | 'currency'
+    metricFormat: 'decimal' | 'duration' | 'currency' | 'decimal-to-percent'
 }): ChartConfig => ({
     chartComponent: Component,
     label,
@@ -119,6 +120,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'currency' as const,
                 value: 15.5,
                 prevValue: 14.2,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentDiscountUsageCard',
+            Component: AnalyticsAiAgentDiscountUsageCard,
+            config: {
+                label: 'Discount usage',
+                description:
+                    'The percentage of discounts generated and sent by Shopping Assistant that customers apply.',
+                metricFormat: 'decimal-to-percent' as const,
+                value: 0.75,
+                prevValue: 0.6,
             },
         },
     ]

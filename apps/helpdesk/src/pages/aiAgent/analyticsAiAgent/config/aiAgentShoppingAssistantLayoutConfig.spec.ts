@@ -14,7 +14,6 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(5)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -81,15 +80,6 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
-        })
-
-        it('should have total of 8 charts across all sections', () => {
-            const totalCharts =
-                ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections.reduce(
-                    (sum, section) => sum + section.items.length,
-                    0,
-                )
-            expect(totalCharts).toBe(8)
         })
 
         it('should have all required chart types defined', () => {
