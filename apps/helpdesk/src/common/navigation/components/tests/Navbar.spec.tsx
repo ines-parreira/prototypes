@@ -43,6 +43,13 @@ jest.mock('@repo/logging')
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
 
+jest.mock('providers/ui/SpotlightContext', () => ({
+    useSpotlightContext: jest.fn(() => ({
+        isOpen: false,
+        setIsOpen: jest.fn(),
+    })),
+}))
+
 jest.mock('pages/tickets/navbar/CreateTicketNavbarButton', () => () => (
     <div>CreateTicketNavbarButton</div>
 ))

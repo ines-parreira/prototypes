@@ -17,6 +17,11 @@ jest.mock('common/navigation/components/UserItem', () => ({
 jest.mock('routes/layout/NavigationSidebarNotificationsButton', () => ({
     NavigationSidebarNotificationsButton: () => <div>NotificationsButton</div>,
 }))
+jest.mock('routes/layout/NavigationSidebarSpotlightButton', () => ({
+    NavigationSidebarSpotlightButton: () => (
+        <button>NavigationSidebarSpotlightButton</button>
+    ),
+}))
 
 jest.mock('routes/layout/sidebars', () => ({
     InboxSidebar: () => <div>InboxSidebar</div>,

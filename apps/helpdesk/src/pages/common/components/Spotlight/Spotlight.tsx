@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from 'react'
+import { useEffect } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 
 import SpotlightModal from 'pages/common/components/Spotlight/SpotlightModal'
-import { SpotlightContext } from 'providers/ui/SpotlightContext'
+import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 
 const Spotlight = () => {
-    const { isOpen, setIsOpen } = useContext(SpotlightContext)
+    const { isOpen, setIsOpen } = useSpotlightContext()
 
     useEffect(() => {
         shortcutManager.bind('SpotlightModal', {

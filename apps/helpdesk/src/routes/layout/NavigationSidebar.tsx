@@ -7,6 +7,7 @@ import UserItem from 'common/navigation/components/UserItem'
 import { HELP_DOCS_BASE_URL } from 'config'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
+import { NavigationSidebarSpotlightButton } from 'routes/layout/NavigationSidebarSpotlightButton'
 import {
     Product,
     productConfig,
@@ -47,8 +48,12 @@ export function NavigationSidebar() {
                 )}
 
                 <Box gap="xxxs">
-                    <Button icon="search-magnifying-glass" variant="tertiary" />
-                    <Button icon="system-bar-expand" variant="tertiary" />
+                    <NavigationSidebarSpotlightButton />
+                    <Button
+                        icon="system-bar-expand"
+                        variant="tertiary"
+                        size="sm"
+                    />
                 </Box>
             </Box>
 

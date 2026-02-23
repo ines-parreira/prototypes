@@ -1,15 +1,13 @@
-import { useContext } from 'react'
-
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { isMacOs } from '@repo/utils'
 
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import { SpotlightContext } from 'providers/ui/SpotlightContext'
+import { useSpotlightContext } from 'providers/ui/SpotlightContext'
 
 import GlobalNavigationItem from './GlobalNavigationItem'
 
 export function GlobalNavigationSpotlight() {
-    const { isOpen, setIsOpen } = useContext(SpotlightContext)
+    const { isOpen, setIsOpen } = useSpotlightContext()
 
     const handleClick = () => {
         logEvent(SegmentEvent.GlobalSearchOpenButtonClick)
