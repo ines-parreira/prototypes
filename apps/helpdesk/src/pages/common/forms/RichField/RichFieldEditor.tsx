@@ -526,7 +526,12 @@ export class RichFieldEditor extends Component<Props, State> {
         const { editorState } = this.props
         const listReturnState = handleListReturn(editorState)
         if (listReturnState) {
-            this.handleChildChange(listReturnState)
+            const selection = listReturnState
+                .getSelection()
+                .merge({ hasFocus: true })
+            this.handleChildChange(
+                EditorState.forceSelection(listReturnState, selection),
+            )
             return EditorHandledNotHandled.Handled
         }
 
@@ -561,6 +566,9 @@ export class RichFieldEditor extends Component<Props, State> {
                 blockMap: newContent.getBlockMap().set(newBlockKey, fixedBlock),
             }) as typeof newContent
 
+            const focusedSelection = afterSplit
+                .getSelection()
+                .merge({ hasFocus: true })
             this.handleChildChange(
                 EditorState.forceSelection(
                     EditorState.push(
@@ -568,7 +576,7 @@ export class RichFieldEditor extends Component<Props, State> {
                         fixedContent,
                         'change-block-data',
                     ),
-                    afterSplit.getSelection(),
+                    focusedSelection,
                 ),
             )
             return EditorHandledNotHandled.Handled

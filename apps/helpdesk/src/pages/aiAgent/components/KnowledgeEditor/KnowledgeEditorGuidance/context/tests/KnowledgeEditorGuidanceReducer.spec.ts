@@ -429,7 +429,7 @@ describe('guidanceReducer', () => {
     })
 
     describe('MARK_AS_SAVED', () => {
-        it('should update state with provided payload', () => {
+        it('should preserve current edits and update savedSnapshot', () => {
             const newGuidance: GuidanceArticle = {
                 ...mockGuidance,
                 id: 456,
@@ -446,9 +446,11 @@ describe('guidanceReducer', () => {
                 },
             })
 
-            expect(result.title).toBe('Saved Title')
-            expect(result.content).toBe('Saved Content')
+            // Should preserve user's current edits, not overwrite them
+            expect(result.title).toBe('Test Title')
+            expect(result.content).toBe('Test Content')
             expect(result.guidance).toEqual(newGuidance)
+            // Only savedSnapshot should be updated to track what was saved
             expect(result.savedSnapshot).toEqual({
                 title: 'Saved Title',
                 content: 'Saved Content',
@@ -456,20 +458,19 @@ describe('guidanceReducer', () => {
             expect(result.isAutoSaving).toBe(false)
         })
 
-        it('should use current state values when payload is undefined', () => {
+        it('should preserve current edits when payload is undefined', () => {
             const stateWithAutoSaving = { ...initialState, isAutoSaving: true }
 
             const result = guidanceReducer(stateWithAutoSaving, {
                 type: 'MARK_AS_SAVED',
             })
 
+            // Current edits are always preserved
             expect(result.title).toBe('Test Title')
             expect(result.content).toBe('Test Content')
             expect(result.guidance).toEqual(mockGuidance)
-            expect(result.savedSnapshot).toEqual({
-                title: 'Test Title',
-                content: 'Test Content',
-            })
+            // savedSnapshot keeps its previous values when payload is undefined
+            expect(result.savedSnapshot).toEqual(initialState.savedSnapshot)
             expect(result.isAutoSaving).toBe(false)
         })
 

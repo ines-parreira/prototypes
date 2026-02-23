@@ -71,10 +71,11 @@ const requestPrediction = async (
     const preKey = createPrediction(predictionText, newEditorState)
     predictionKey.set(preKey)
 
+    const newSelection = selection.merge({ hasFocus: true })
     plugin.setEditorState(
         EditorState.forceSelection(
             insertPrediction(preKey, newEditorState),
-            selection,
+            newSelection,
         ),
     )
 

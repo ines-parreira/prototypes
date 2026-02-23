@@ -539,8 +539,11 @@ export class AddLinkContainer extends Component<Props> {
 
         // Force selection workaround to trigger re-render of decorators
         // https://github.com/facebook/draft-js/issues/1047
+        const focusedSelection = editorState
+            .getSelection()
+            .merge({ hasFocus: true })
         this.props.setEditorState(
-            EditorState.forceSelection(editorState, editorState.getSelection()),
+            EditorState.forceSelection(editorState, focusedSelection),
         )
 
         return editorState
@@ -579,10 +582,10 @@ export class AddLinkContainer extends Component<Props> {
             contentState,
             'apply-entity',
         )
-        editorState = EditorState.forceSelection(
-            editorState,
-            editorState.getSelection(),
-        ) // Focus the editor
+        const focusedSelection = editorState
+            .getSelection()
+            .merge({ hasFocus: true })
+        editorState = EditorState.forceSelection(editorState, focusedSelection) // Focus the editor
 
         this.props.setEditorState(editorState)
 
@@ -600,9 +603,12 @@ export class AddLinkContainer extends Component<Props> {
         let newEditorState = focusToTheEndOfContent(editorState)
         newEditorState = addVideo(newEditorState, url)
 
+        const videoSelection = newEditorState
+            .getSelection()
+            .merge({ hasFocus: true })
         newEditorState = EditorState.forceSelection(
             newEditorState,
-            newEditorState.getSelection(),
+            videoSelection,
         )
         setEditorState(newEditorState)
 

@@ -107,7 +107,6 @@ const GuidanceActionDropdown = ({
                         className={css.search}
                         value={search?.query}
                         onChange={handleSearch}
-                        autoFocus
                     />
                 )}
 
@@ -136,8 +135,8 @@ const GuidanceActionDropdown = ({
                             value: action.value,
                         }}
                         onClick={() => {
-                            onToggle(false)
                             onSelect(action)
+                            onToggle(false)
                         }}
                         className={css.item}
                     >

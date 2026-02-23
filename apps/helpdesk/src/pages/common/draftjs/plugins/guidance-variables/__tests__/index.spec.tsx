@@ -186,14 +186,20 @@ describe('createGuidanceVariablesPlugin', () => {
             getLastCreatedEntityKey: jest.fn().mockReturnValue('entity-1'),
         }
 
+        const mockSelection = {
+            getHasFocus: jest.fn().mockReturnValue(true),
+            merge: jest.fn().mockReturnThis(),
+        }
+
         const mockEditorState = {
             getCurrentContent: jest.fn().mockReturnValue(mockContentState),
-            getSelection: jest.fn().mockReturnValue({
-                getHasFocus: jest.fn().mockReturnValue(true),
-            }),
+            getSelection: jest.fn().mockReturnValue(mockSelection),
         } as unknown as EditorState
 
-        const mockNewEditorState = {} as EditorState
+        const mockNewEditorState = {
+            getSelection: jest.fn().mockReturnValue(mockSelection),
+        } as unknown as EditorState
+
         mockEditorStatePush.mockReturnValue(mockNewEditorState)
         mockEditorStateForceSelection.mockReturnValue(mockNewEditorState)
 
@@ -213,9 +219,11 @@ describe('createGuidanceVariablesPlugin', () => {
             mockContentState,
             'apply-entity',
         )
+        // Verify focus is preserved
+        expect(mockSelection.merge).toHaveBeenCalledWith({ hasFocus: true })
         expect(mockEditorStateForceSelection).toHaveBeenCalledWith(
             mockNewEditorState,
-            mockEditorState.getSelection(),
+            mockSelection,
         )
     })
 
@@ -250,7 +258,7 @@ describe('createGuidanceVariablesPlugin', () => {
         expect(result).toBe(mockEditorState)
     })
 
-    it('onChange does not force selection when editor is not focused', () => {
+    it('onChange preserves unfocused state when editor is not focused', () => {
         const plugin = createGuidanceVariablesPlugin()
 
         // Mock editor state and content
@@ -270,15 +278,22 @@ describe('createGuidanceVariablesPlugin', () => {
             equals: jest.fn().mockReturnValue(false),
         }
 
+        const mockSelection = {
+            getHasFocus: jest.fn().mockReturnValue(false), // Editor is not focused
+            merge: jest.fn().mockReturnThis(),
+        }
+
         const mockEditorState = {
             getCurrentContent: jest.fn().mockReturnValue(mockContentState),
-            getSelection: jest.fn().mockReturnValue({
-                getHasFocus: jest.fn().mockReturnValue(false), // Editor is not focused
-            }),
+            getSelection: jest.fn().mockReturnValue(mockSelection),
         } as unknown as EditorState
 
-        const mockNewEditorState = {} as EditorState
+        const mockNewEditorState = {
+            getSelection: jest.fn().mockReturnValue(mockSelection),
+        } as unknown as EditorState
+
         mockEditorStatePush.mockReturnValue(mockNewEditorState)
+        mockEditorStateForceSelection.mockReturnValue(mockNewEditorState)
 
         // Call the onChange function
         const result = plugin.onChange(mockEditorState)
@@ -289,6 +304,12 @@ describe('createGuidanceVariablesPlugin', () => {
             mockEditorState,
             mockContentState,
             'apply-entity',
+        )
+        // Verify unfocused state is preserved
+        expect(mockSelection.merge).toHaveBeenCalledWith({ hasFocus: false })
+        expect(mockEditorStateForceSelection).toHaveBeenCalledWith(
+            mockNewEditorState,
+            mockSelection,
         )
     })
 })

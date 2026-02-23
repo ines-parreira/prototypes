@@ -67,17 +67,13 @@ export default function createGuidanceActionsPlugin() {
                     newContentState,
                     'apply-entity',
                 )
-                const currentSelection = editorState.getSelection()
-                // only if editor is focused,
-                // so we don't steal focus from elsewhere when rendering the editor.
-                if (currentSelection.getHasFocus()) {
-                    // restore selection after replaceText
-                    return EditorState.forceSelection(
-                        newEditorState,
-                        currentSelection,
-                    )
-                }
-                return newEditorState
+                // Always preserve selection to prevent cursor jumping
+                // Only set hasFocus if editor currently has focus
+                const hadFocus = editorState.getSelection().getHasFocus()
+                const selection = newEditorState
+                    .getSelection()
+                    .merge({ hasFocus: hadFocus })
+                return EditorState.forceSelection(newEditorState, selection)
             }
 
             return editorState

@@ -68,10 +68,10 @@ const AddVideo = ({ getEditorState, setEditorState, isDisabled }: Props) => {
             }
         }
 
-        newEditorState = EditorState.forceSelection(
-            newEditorState,
-            newEditorState.getSelection(),
-        )
+        const selection = newEditorState
+            .getSelection()
+            .merge({ hasFocus: true })
+        newEditorState = EditorState.forceSelection(newEditorState, selection)
         setEditorState(newEditorState)
 
         onInsertVideoAdded()

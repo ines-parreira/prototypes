@@ -8,7 +8,11 @@ import _isEqual from 'lodash/isEqual'
 import 'draft-js/dist/Draft.css'
 
 import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
-import { contentStateFromTextOrHTML, convertToHTML } from 'utils/editor'
+import {
+    contentStateFromTextOrHTML,
+    convertToHTML,
+    isValidSelectionKey,
+} from 'utils/editor'
 
 import RichFieldEditor from './RichFieldEditor'
 
@@ -99,6 +103,9 @@ export default class RichField extends Component<Props, State> {
 
         let { editorState } = this.state
 
+        // Preserve current selection before updating content
+        const currentSelection = editorState.getSelection()
+
         // generate a content state from incoming value
         const contentState = contentStateFromTextOrHTML(value.text, value.html)
         // set content state in editor state
@@ -111,6 +118,15 @@ export default class RichField extends Component<Props, State> {
 
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
+
+        // Restore the preserved selection to maintain cursor position
+        // Only if the selection is still valid (block keys exist in new content)
+        if (isValidSelectionKey(editorState, currentSelection)) {
+            editorState = EditorState.forceSelection(
+                editorState,
+                currentSelection,
+            )
+        }
 
         this._latestEditorState = editorState
         this.setState({ editorState }, callback)

@@ -76,16 +76,15 @@ export function guidanceReducer(
             }
 
         case 'MARK_AS_SAVED': {
-            const newTitle = action.payload?.title ?? state.title
-            const newContent = action.payload?.content ?? state.content
             const newGuidance = action.payload?.guidance ?? state.guidance
             return {
                 ...state,
-                title: newTitle,
-                content: newContent,
+                // Don't update title/content - preserve user's current edits
+                // Only update savedSnapshot to track what was successfully saved
                 savedSnapshot: {
-                    title: newTitle,
-                    content: newContent,
+                    title: action.payload?.title ?? state.savedSnapshot.title,
+                    content:
+                        action.payload?.content ?? state.savedSnapshot.content,
                 },
                 isAutoSaving: false,
                 hasAutoSavedInSession: true,

@@ -155,12 +155,10 @@ const Toolbar = ({
         const newEditorState = insertText(editorState, toLiquidSyntax(variable))
 
         // restore focus after insertText
-        setEditorState(
-            EditorState.forceSelection(
-                newEditorState,
-                newEditorState.getSelection(),
-            ),
-        )
+        const selection = newEditorState
+            .getSelection()
+            .merge({ hasFocus: true })
+        setEditorState(EditorState.forceSelection(newEditorState, selection))
     }
 
     const handleGuidanceVariableSelection = (variable: GuidanceVariable) => {
@@ -169,12 +167,10 @@ const Toolbar = ({
         const newEditorState = insertText(editorState, variable.value)
 
         // restore focus after insertText
-        setEditorState(
-            EditorState.forceSelection(
-                newEditorState,
-                newEditorState.getSelection(),
-            ),
-        )
+        const selection = newEditorState
+            .getSelection()
+            .merge({ hasFocus: true })
+        setEditorState(EditorState.forceSelection(newEditorState, selection))
     }
     const handleGuidanceActionSelection = (action: GuidanceAction) => {
         const editorState = getEditorState()
@@ -182,12 +178,10 @@ const Toolbar = ({
         const newEditorState = insertText(editorState, encodeAction(action))
 
         // restore focus after insertText
-        setEditorState(
-            EditorState.forceSelection(
-                newEditorState,
-                newEditorState.getSelection(),
-            ),
-        )
+        const selection = newEditorState
+            .getSelection()
+            .merge({ hasFocus: true })
+        setEditorState(EditorState.forceSelection(newEditorState, selection))
     }
 
     const isActionDisplayed = (name: ActionName) =>

@@ -108,9 +108,12 @@ const AddDiscountCode = ({
             } else {
                 newEditorState = insertText(editorState, discount.code)
             }
+            const selection = newEditorState
+                .getSelection()
+                .merge({ hasFocus: true })
             newEditorState = EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection(),
+                selection,
             )
             setEditorState(newEditorState)
 

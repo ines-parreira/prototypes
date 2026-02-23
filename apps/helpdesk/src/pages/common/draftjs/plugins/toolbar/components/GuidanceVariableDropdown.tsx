@@ -204,7 +204,6 @@ const GuidanceVariableDropdown = ({
                         className={css.search}
                         value={searchQuery}
                         onChange={handleSearch}
-                        autoFocus
                     />
                 )}
 
@@ -242,8 +241,8 @@ const GuidanceVariableDropdown = ({
                                     if ('variables' in option) {
                                         setSelectedProvider(option)
                                     } else {
-                                        onToggle(false)
                                         onSelect(option)
+                                        onToggle(false)
                                     }
                                 }}
                                 className={css.item}

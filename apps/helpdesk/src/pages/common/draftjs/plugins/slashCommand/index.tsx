@@ -205,11 +205,11 @@ export default function createSlashCommandPlugin(options: Options) {
                 'insert-characters',
             )
 
+            const newSelection = newContent
+                .getSelectionAfter()
+                .merge({ hasFocus: true })
             setEditorState(
-                EditorState.forceSelection(
-                    newEditorState,
-                    newContent.getSelectionAfter(),
-                ),
+                EditorState.forceSelection(newEditorState, newSelection),
             )
 
             store.setState({
