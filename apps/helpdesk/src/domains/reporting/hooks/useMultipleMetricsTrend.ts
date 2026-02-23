@@ -9,6 +9,7 @@ import type {
     ScopeMeta,
 } from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 export type MultipleMetricsData<TCube extends Cubes> = Record<
@@ -112,11 +113,22 @@ export const fetchMultipleMetricsTrends = async <
         TMeta
     >([previousPeriodQuery], previousPeriodQueryV2)
 
-    return Promise.all([currentMetrics, previousMetrics])
-        .then(([currentMetricsResult, previousMetricsResult]) => {
+    const migrationStage = getNewStatsFeatureFlagMigration(
+        currentPeriodQuery.metricName,
+    )
+
+    return Promise.all([currentMetrics, previousMetrics, migrationStage])
+        .then(([currentMetricsResult, previousMetricsResult, stage]) => {
             const currentMetrics = multipleMetricsSelect(currentMetricsResult)
             const previousMetrics = multipleMetricsSelect(previousMetricsResult)
-            const data = currentPeriodQuery.measures.reduce((acc, measure) => {
+            const isV2 =
+                (stage === 'complete' || stage === 'live') &&
+                !!currentPeriodQueryV2
+            const measures = isV2
+                ? (currentPeriodQueryV2!
+                      .measures as unknown as TCube['measures'][])
+                : currentPeriodQuery.measures
+            const data = measures.reduce((acc, measure) => {
                 acc[measure] = {
                     value: currentMetrics?.[measure]
                         ? parseFloat(currentMetrics[measure])

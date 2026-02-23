@@ -1,22 +1,16 @@
 import { act, renderHook } from '@testing-library/react'
 
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import * as fileUtils from 'utils/file'
 
-import { useAutomatedInteractionsMetric } from './useAutomatedInteractionsMetric'
-import { useAutomationRateMetric } from './useAutomationRateMetric'
-import { useCostSavedMetric } from './useCostSavedMetric'
 import { useDownloadAutomationRateByFeatureData } from './useDownloadAutomationRateByFeatureData'
 import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomationRateTimeSeriesData'
 import { useDownloadPerformanceBreakdownData } from './useDownloadPerformanceBreakdownData'
 import { useExportAnalyticsOverviewToCSV } from './useExportAnalyticsOverviewToCSV'
-import { useTimeSavedMetric } from './useTimeSavedMetric'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useAutomationRateMetric')
-jest.mock('./useAutomatedInteractionsMetric')
-jest.mock('./useTimeSavedMetric')
-jest.mock('./useCostSavedMetric')
+jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('./useDownloadPerformanceBreakdownData')
 jest.mock('./useDownloadAutomationRateByFeatureData')
 jest.mock('./useDownloadAutomationRateTimeSeriesData')
@@ -26,12 +20,7 @@ jest.mock('utils/file', () => ({
 }))
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseAutomationRateMetric = jest.mocked(useAutomationRateMetric)
-const mockedUseAutomatedInteractionsMetric = jest.mocked(
-    useAutomatedInteractionsMetric,
-)
-const mockedUseTimeSavedMetric = jest.mocked(useTimeSavedMetric)
-const mockedUseCostSavedMetric = jest.mocked(useCostSavedMetric)
+const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseDownloadPerformanceBreakdownData = jest.mocked(
     useDownloadPerformanceBreakdownData,
 )
@@ -60,44 +49,13 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             granularity: 'day',
         } as any)
 
-        mockedUseAutomationRateMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Overall automation rate',
-                value: 0.9,
-                prevValue: 0.85,
+        mockedUseDashboardData.mockReturnValue({
+            files: {
+                'analytics-overview - trends.csv':
+                    ',current period,previous period\nOverall automation rate,90%,85%',
             },
-        })
-
-        mockedUseAutomatedInteractionsMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Automated interactions',
-                value: 5000,
-                prevValue: 4500,
-            },
-        })
-
-        mockedUseTimeSavedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Time saved by agents',
-                value: 360000,
-                prevValue: 324000,
-            },
-        })
-
-        mockedUseCostSavedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Cost saved',
-                value: 5000,
-                prevValue: 4500,
-            },
+            fileName: 'analytics-overview - trends.csv',
+            isLoading: false,
         })
 
         mockedUseDownloadPerformanceBreakdownData.mockReturnValue({
@@ -128,53 +86,17 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         })
     })
 
-    it('should return isLoading as false when data is loaded', () => {
+    it('should return isLoading as false when all data is loaded', () => {
         const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
 
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return isLoading as true when automation rate is loading', () => {
-        mockedUseAutomationRateMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when automated interactions is loading', () => {
-        mockedUseAutomatedInteractionsMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when time saved is loading', () => {
-        mockedUseTimeSavedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when cost saved is loading', () => {
-        mockedUseCostSavedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
+    it('should return isLoading as true when KPI data is loading', () => {
+        mockedUseDashboardData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
         })
 
         const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
@@ -194,6 +116,30 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
+    it('should return isLoading as true when automation rate by feature is loading', () => {
+        mockedUseDownloadAutomationRateByFeatureData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when automation rate time series is loading', () => {
+        mockedUseDownloadAutomationRateTimeSeriesData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
     it('should call saveZippedFiles when triggerDownload is called', async () => {
         const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
 
@@ -201,14 +147,13 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             await result.current.triggerDownload()
         })
 
-        expect(mockedSaveZippedFiles).toHaveBeenCalled()
         expect(mockedSaveZippedFiles).toHaveBeenCalledWith(
             expect.any(Object),
             expect.stringContaining('analytics-overview'),
         )
     })
 
-    it('should include KPI cards and chart files in the ZIP', async () => {
+    it('should include KPI trends, charts and table files in the ZIP', async () => {
         const { result } = renderHook(() => useExportAnalyticsOverviewToCSV())
 
         await act(async () => {
@@ -219,7 +164,9 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(4)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(
+            fileNames.some((name) => name.includes('analytics-overview')),
+        ).toBe(true)
         expect(
             fileNames.some((name) => name.includes('performance-breakdown')),
         ).toBe(true)

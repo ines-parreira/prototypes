@@ -59,7 +59,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchFilteredAutomatedInteractions,
-                        metricFormat: 'integer',
+                        metricFormat: 'decimal',
                     },
                 ],
                 description:
@@ -91,7 +91,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAutomationCostSavedTrend,
-                        metricFormat: 'currency',
+                        metricFormat: 'currency-precision-1',
                     },
                 ],
                 description:

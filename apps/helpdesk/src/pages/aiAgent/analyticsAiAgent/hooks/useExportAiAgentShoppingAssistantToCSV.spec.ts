@@ -1,28 +1,18 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useAverageDiscountAmountMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAverageDiscountAmountMetric'
-import { useDiscountUsageMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useDiscountUsageMetric'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import { useExportAiAgentShoppingAssistantToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentShoppingAssistantToCSV'
-import { useOrdersInfluencedMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useOrdersInfluencedMetric'
-import { useResolvedInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useResolvedInteractionsMetric'
-import { useRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
-import { useTotalSalesMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesMetric'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useAverageDiscountAmountMetric')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useDiscountUsageMetric')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesMetric')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useOrdersInfluencedMetric')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useResolvedInteractionsMetric')
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric')
+jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData',
 )
@@ -42,18 +32,7 @@ jest.mock('utils/file', () => ({
 
 const mockUseFlag = jest.mocked(useFlag)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseTotalSalesMetric = jest.mocked(useTotalSalesMetric)
-const mockedUseAverageDiscountAmountMetric = jest.mocked(
-    useAverageDiscountAmountMetric,
-)
-const mockedUseDiscountUsageMetric = jest.mocked(useDiscountUsageMetric)
-const mockedUseOrdersInfluencedMetric = jest.mocked(useOrdersInfluencedMetric)
-const mockedUseResolvedInteractionsMetric = jest.mocked(
-    useResolvedInteractionsMetric,
-)
-const mockedUseRevenuePerInteractionMetric = jest.mocked(
-    useRevenuePerInteractionMetric,
-)
+const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseDownloadTotalSalesByProductData = jest.mocked(
     useDownloadTotalSalesByProductData,
 )
@@ -87,64 +66,12 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             granularity: 'day',
         } as any)
 
-        mockedUseTotalSalesMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Total sales',
-                value: 75000,
-                prevValue: 65000,
+        mockedUseDashboardData.mockReturnValue({
+            files: {
+                'ai-agent-shopping-assistant - trends.csv': 'trends content',
             },
-        })
-
-        mockedUseAverageDiscountAmountMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Average discount amount',
-                value: 25,
-                prevValue: 20,
-            },
-        })
-
-        mockedUseDiscountUsageMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Discount usage',
-                value: 0.75,
-                prevValue: 0.6,
-            },
-        })
-
-        mockedUseOrdersInfluencedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Orders influenced',
-                value: 500,
-                prevValue: 450,
-            },
-        })
-
-        mockedUseResolvedInteractionsMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Automated interactions',
-                value: 2000,
-                prevValue: 1800,
-            },
-        })
-
-        mockedUseRevenuePerInteractionMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Revenue per interaction',
-                value: 37.5,
-                prevValue: 36.11,
-            },
+            fileName: 'ai-agent-shopping-assistant - trends.csv',
+            isLoading: false,
         })
 
         mockedUseDownloadTotalSalesByProductData.mockReturnValue({
@@ -191,81 +118,11 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return isLoading as true when total sales metric is loading', () => {
-        mockedUseTotalSalesMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when orders influenced metric is loading', () => {
-        mockedUseOrdersInfluencedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when automated interactions metric is loading', () => {
-        mockedUseResolvedInteractionsMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when average discount amount metric is loading', () => {
-        mockedUseAverageDiscountAmountMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when discount usage metric is loading', () => {
-        mockedUseDiscountUsageMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when revenue per interaction metric is loading', () => {
-        mockedUseRevenuePerInteractionMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
+    it('should return isLoading as true when KPI data is loading', () => {
+        mockedUseDashboardData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
         })
 
         const { result } = renderHook(() =>
@@ -359,7 +216,7 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(5)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
             fileNames.some((name) => name.includes('total-sales-by-product')),
         ).toBe(true)
@@ -376,117 +233,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
                 name.includes('shopping-assistant-top-products'),
             ),
         ).toBe(true)
-    })
-
-    it('should include correct KPI data in CSV', async () => {
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-
-        expect(kpiFileName).toBeDefined()
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).toContain('Total sales')
-        expect(kpiContent).toContain('Average discount amount')
-        expect(kpiContent).toContain('Discount usage')
-        expect(kpiContent).toContain('Orders influenced')
-        expect(kpiContent).toContain('Automated interactions')
-        expect(kpiContent).toContain('Revenue per interaction')
-    })
-
-    it('should include Average discount amount in KPI CSV when AiAgentAnalyticsDashboardsTrendCards flag is enabled', async () => {
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-        )
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).toContain('Average discount amount')
-    })
-
-    it('should not include Average discount amount in KPI CSV when AiAgentAnalyticsDashboardsTrendCards flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).not.toContain('Average discount amount')
-    })
-
-    it('should include Discount usage in KPI CSV when AiAgentAnalyticsDashboardsTrendCards flag is enabled', async () => {
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-        )
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).toContain('Discount usage')
-    })
-
-    it('should not include Discount usage in KPI CSV when AiAgentAnalyticsDashboardsTrendCards flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-
-        const { result } = renderHook(() =>
-            useExportAiAgentShoppingAssistantToCSV(),
-        )
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).not.toContain('Discount usage')
     })
 
     it('should handle empty download data files', async () => {
@@ -525,6 +271,6 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(1)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
     })
 })

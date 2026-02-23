@@ -197,6 +197,33 @@ describe('useDownloadDashboardData', () => {
         })
     })
 
+    it('should pass only the period filter when isAiAgentDashboard is true', () => {
+        const statsFiltersWithAgents = {
+            ...statsFilters,
+            agents: { values: [1, 2], operator: 'AND' },
+        } as unknown as StatsFilters
+
+        useStatsFiltersMock.mockReturnValue({
+            cleanStatsFilters: statsFiltersWithAgents,
+            userTimezone,
+            granularity,
+        })
+
+        renderHook(() => useDashboardData(exampleDashboard, true))
+
+        expect(useTrendReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period },
+            userTimezone,
+            expect.any(Array),
+        )
+        expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
+            { period: statsFilters.period },
+            userTimezone,
+            granularity,
+            expect.any(Array),
+        )
+    })
+
     it('should return isLoading flag', () => {
         useTrendReportDataMock.mockReturnValue({ data: [], isFetching: true })
         useTimeSeriesReportDataMock.mockReturnValue({

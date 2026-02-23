@@ -1,23 +1,17 @@
 import { act, renderHook } from '@testing-library/react'
 
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useCostSavedMetric } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedMetric'
 import * as fileUtils from 'utils/file'
 
-import { useAiAgentSupportInteractionsMetric } from './useAiAgentSupportInteractionsMetric'
-import { useAiAgentTimeSavedMetric } from './useAiAgentTimeSavedMetric'
-import { useDecreaseInFirstResponseTimeMetric } from './useDecreaseInFirstResponseTimeMetric'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
 import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
 import { useExportAiAgentSupportAgentToCSV } from './useExportAiAgentSupportAgentToCSV'
 
+jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('pages/aiAgent/analyticsOverview/hooks/useCostSavedMetric')
-jest.mock('./useAiAgentTimeSavedMetric')
-jest.mock('./useAiAgentSupportInteractionsMetric')
-jest.mock('./useDecreaseInFirstResponseTimeMetric')
 jest.mock('./useDownloadSupportInteractionsByIntentData')
 jest.mock('./useDownloadSupportInteractionsTimeSeriesData')
 jest.mock('./useDownloadSupportAgentChannelPerformanceData')
@@ -27,15 +21,8 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
+const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseCostSavedMetric = jest.mocked(useCostSavedMetric)
-const mockedUseAiAgentTimeSavedMetric = jest.mocked(useAiAgentTimeSavedMetric)
-const mockedUseAiAgentSupportInteractionsMetric = jest.mocked(
-    useAiAgentSupportInteractionsMetric,
-)
-const mockedUseDecreaseInFirstResponseTimeMetric = jest.mocked(
-    useDecreaseInFirstResponseTimeMetric,
-)
 const mockedUseDownloadSupportInteractionsByIntentData = jest.mocked(
     useDownloadSupportInteractionsByIntentData,
 )
@@ -67,44 +54,12 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             granularity: 'day',
         } as any)
 
-        mockedUseAiAgentTimeSavedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Time saved by agents',
-                value: 180000,
-                prevValue: 160000,
+        mockedUseDashboardData.mockReturnValue({
+            files: {
+                'ai-agent-support-agent - trends.csv': 'trends content',
             },
-        })
-
-        mockedUseCostSavedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Cost saved',
-                value: 5000,
-                prevValue: 4500,
-            },
-        })
-
-        mockedUseAiAgentSupportInteractionsMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Automated interactions',
-                value: 3000,
-                prevValue: 2800,
-            },
-        } as any)
-
-        mockedUseDecreaseInFirstResponseTimeMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Decrease in first response time',
-                value: 120,
-                prevValue: 100,
-            },
+            fileName: 'ai-agent-support-agent - trends.csv',
+            isLoading: false,
         })
 
         mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
@@ -148,47 +103,11 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return isLoading as true when time saved metric is loading', () => {
-        mockedUseAiAgentTimeSavedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when cost saved metric is loading', () => {
-        mockedUseCostSavedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when support interactions metric is loading', () => {
-        mockedUseAiAgentSupportInteractionsMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        } as any)
-
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when decrease in FRT metric is loading', () => {
-        mockedUseDecreaseInFirstResponseTimeMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
+    it('should return isLoading as true when KPI data is loading', () => {
+        mockedUseDashboardData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
         })
 
         const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
@@ -267,7 +186,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(5)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
             fileNames.some((name) =>
                 name.includes('support-interactions-by-intent'),
@@ -290,44 +209,20 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         ).toBe(true)
     })
 
-    it('should include correct KPI data in CSV', async () => {
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        await act(async () => {
-            await result.current.triggerDownload()
-        })
-
-        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const kpiFileName = Object.keys(filesArg).find((name) =>
-            name.includes('kpi-cards'),
-        )
-
-        expect(kpiFileName).toBeDefined()
-        const kpiContent = filesArg[kpiFileName!]
-
-        expect(kpiContent).toContain('Time saved by agents')
-        expect(kpiContent).toContain('Cost saved')
-        expect(kpiContent).toContain('Automated interactions')
-        expect(kpiContent).toContain('Decrease in first response time')
-    })
-
     it('should handle empty download data files', async () => {
         mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
             files: {},
             isLoading: false,
         })
-
         mockedUseDownloadSupportInteractionsTimeSeriesData.mockReturnValue({
             files: {},
             isLoading: false,
         })
-
         mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
-
         mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
@@ -344,6 +239,6 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(1)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
     })
 })

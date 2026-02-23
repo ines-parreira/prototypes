@@ -74,7 +74,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchCostSavedTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'currency-precision-1',
                     },
                 ],
                 description:
@@ -90,7 +90,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAiAgentSupportInteractionsTrend,
-                        metricFormat: 'integer',
+                        metricFormat: 'decimal',
                     },
                 ],
                 description:

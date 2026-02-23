@@ -13,10 +13,15 @@ import {
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 
 jest.mock('domains/reporting/models/queries')
+jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
+const getNewStatsFeatureFlagMigrationMock = assumeMock(
+    getNewStatsFeatureFlagMigration,
+)
 
 describe('MultipleMetricTrend', () => {
     const defaultReporting = {
@@ -260,6 +265,7 @@ describe('MultipleMetricTrend', () => {
 
     describe('fetchMultipleMetricTrend', () => {
         beforeEach(() => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('off')
             fetchPostReportingV2Mock.mockReturnValue({
                 ...defaultReporting,
                 data: {
@@ -417,6 +423,58 @@ describe('MultipleMetricTrend', () => {
                         },
                     },
             })
+        })
+
+        it('should use V2 measures when migration stage is complete and V2 query is provided', async () => {
+            getNewStatsFeatureFlagMigrationMock.mockResolvedValue('complete')
+            const currentPeriodQueryV2 = {
+                ...defaultQuery,
+                measures: [AutomationDatasetMeasure.AutomatedInteractions],
+                scope: 'test-scope',
+            } as any
+
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
+                ...defaultReporting,
+                data: {
+                    data: [
+                        {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 42,
+                            [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 99,
+                        },
+                    ],
+                },
+            } as any)
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
+                ...defaultReporting,
+                data: {
+                    data: [
+                        {
+                            [AutomationDatasetMeasure.AutomatedInteractions]: 21,
+                        },
+                    ],
+                },
+            } as any)
+
+            const result = await fetchMultipleMetricsTrends(
+                defaultQuery,
+                defaultQuery,
+                currentPeriodQueryV2,
+                currentPeriodQueryV2,
+            )
+
+            expect(result.data).toEqual({
+                [AutomationDatasetMeasure.AutomatedInteractions]: {
+                    value: 42,
+                    prevValue: 21,
+                    rawData: {
+                        [AutomationDatasetMeasure.AutomatedInteractions]: 42,
+                        [AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders]: 99,
+                    },
+                },
+            })
+            expect(result.data).not.toHaveProperty(
+                AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+            )
         })
 
         it('should call fetchPostReporting with the query', async () => {

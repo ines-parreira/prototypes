@@ -51,6 +51,10 @@ import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'domains/reporting/services/supportPerformanceReportingService'
+import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
+import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
+import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
+import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 
 const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...SupportPerformanceOverviewReportConfig.charts,
@@ -69,6 +73,10 @@ const chartsLookupTable: Record<string, ChartConfig | undefined> = {
     ...CampaignsLegacyReportConfig.charts,
     ...CampaignsPerformanceReportConfig.charts,
     ...AiSalesAgentReportConfig.charts,
+    ...AnalyticsOverviewReportConfig.charts,
+    ...AnalyticsAiAgentAllAgentsReportConfig.charts,
+    ...AnalyticsAiAgentShoppingAssistantReportConfig.charts,
+    ...AnalyticsAiAgentSupportAgentReportConfig.charts,
 }
 
 type Queries = {
@@ -167,8 +175,19 @@ const TRENDS_FILE_SUFFIX = 'trends'
 const TIME_SERIES_FILE_SUFFIX = 'timeSeries'
 const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 
-export const useDashboardData = (dashboard: DashboardSchema) => {
+export const useDashboardData = (
+    dashboard: DashboardSchema,
+    isAiAgentDashboard?: boolean,
+) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
+
+    const statsFilters = useMemo(
+        () =>
+            isAiAgentDashboard
+                ? { period: cleanStatsFilters.period }
+                : cleanStatsFilters,
+        [isAiAgentDashboard, cleanStatsFilters],
+    )
 
     const sanitizedDashboard = useSanitizedDashboard(dashboard)
 
@@ -178,47 +197,47 @@ export const useDashboardData = (dashboard: DashboardSchema) => {
     )
 
     const trends = useTrendReportData(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         queryGroups.trends,
     )
     const trendsReport = createTrendReport(
         trends.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${dashboard.name} - ${TRENDS_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(statsFilters.period, `${dashboard.name} - ${TRENDS_FILE_SUFFIX}`)}`,
     )
     const timeSeries = useTimeSeriesReportData(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
         queryGroups.timeSeries,
     )
     const timeSeriesReport = createTimeSeriesReport(
         timeSeries.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${dashboard.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(statsFilters.period, `${dashboard.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`,
     )
 
     const timeSeriesPerDimension = useTimeSeriesPerDimensionReportData(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
         queryGroups.timeSeriesPerDimension,
     )
     const timeSeriesPerDimensionReports = createTimeSeriesPerDimensionReport(
         timeSeriesPerDimension.data,
-        cleanStatsFilters.period,
+        statsFilters.period,
     )
 
     const distributions = useDistributionTrendReportData(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         queryGroups.distributions,
     )
     const distributionsReport = createTrendReport(
         distributions.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`,
+        `${getCsvFileNameWithDates(statsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`,
     )
     const tables = useTables(
-        cleanStatsFilters,
+        statsFilters,
         userTimezone,
         granularity,
         queryGroups.tables,
@@ -235,7 +254,7 @@ export const useDashboardData = (dashboard: DashboardSchema) => {
     }, [distributions, tables, timeSeries, timeSeriesPerDimension, trends])
 
     const fileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
+        statsFilters.period,
         dashboard.name,
     )
 

@@ -1,30 +1,43 @@
 import { useCallback, useMemo } from 'react'
 
-import { formatMetricValue } from '@repo/reporting'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useCostSavedMetric } from 'pages/aiAgent/analyticsOverview/hooks/useCostSavedMetric'
-import { createCsv, saveZippedFiles } from 'utils/file'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import { saveZippedFiles } from 'utils/file'
 
-import { useAiAgentSupportInteractionsMetric } from './useAiAgentSupportInteractionsMetric'
-import { useAiAgentTimeSavedMetric } from './useAiAgentTimeSavedMetric'
-import { useDecreaseInFirstResponseTimeMetric } from './useDecreaseInFirstResponseTimeMetric'
+import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
 import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
 
 const REPORT_NAME = 'ai-agent-support-agent'
-const KPI_CARDS_FILE_NAME = 'kpi-cards'
+
+const aiAgentSupportAgentDashboard: DashboardSchema = {
+    id: -1,
+    name: REPORT_NAME,
+    analytics_filter_id: null,
+    emoji: null,
+    children: ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections
+        .filter((section) => section.type === 'kpis')
+        .map((section) => ({
+            type: DashboardChildType.Section,
+            children: section.items
+                .filter((item) => item.visibility)
+                .map((item) => ({
+                    type: DashboardChildType.Chart,
+                    config_id: item.chartId,
+                })),
+        })),
+}
 
 export const useExportAiAgentSupportAgentToCSV = () => {
     const { cleanStatsFilters } = useStatsFilters()
 
-    const timeSavedMetric = useAiAgentTimeSavedMetric()
-    const costSavedMetric = useCostSavedMetric()
-    const supportInteractionsMetric = useAiAgentSupportInteractionsMetric()
-    const decreaseInFRTMetric = useDecreaseInFirstResponseTimeMetric()
+    const { files: trendCardsFiles, isLoading: isKpiLoading } =
+        useDashboardData(aiAgentSupportAgentDashboard, true)
 
     const supportInteractionsByIntentData =
         useDownloadSupportInteractionsByIntentData()
@@ -35,78 +48,22 @@ export const useExportAiAgentSupportAgentToCSV = () => {
     const intentPerformanceData = useDownloadIntentPerformanceData()
 
     const isLoading =
-        timeSavedMetric.isFetching ||
-        costSavedMetric.isFetching ||
-        supportInteractionsMetric.isFetching ||
-        decreaseInFRTMetric.isFetching ||
+        isKpiLoading ||
         supportInteractionsByIntentData.isLoading ||
         supportInteractionsTimeSeriesData.isLoading ||
         channelPerformanceData.isLoading ||
         intentPerformanceData.isLoading
 
-    const kpiCardsCsv = useMemo(() => {
-        const csvData = [
-            ['', 'current period', 'previous period'],
-            [
-                'Time saved by agents',
-                formatMetricValue(timeSavedMetric.data?.value, 'duration'),
-                formatMetricValue(timeSavedMetric.data?.prevValue, 'duration'),
-            ],
-            [
-                'Cost saved',
-                formatMetricValue(
-                    costSavedMetric.data?.value,
-                    'currency-precision-1',
-                ),
-                formatMetricValue(
-                    costSavedMetric.data?.prevValue,
-                    'currency-precision-1',
-                ),
-            ],
-            [
-                'Automated interactions',
-                formatMetricValue(
-                    supportInteractionsMetric.data?.value,
-                    'decimal',
-                ),
-                formatMetricValue(
-                    supportInteractionsMetric.data?.prevValue,
-                    'decimal',
-                ),
-            ],
-            [
-                'Decrease in first response time',
-                formatMetricValue(decreaseInFRTMetric.data?.value, 'duration'),
-                formatMetricValue(
-                    decreaseInFRTMetric.data?.prevValue,
-                    'duration',
-                ),
-            ],
-        ]
-        return createCsv(csvData)
-    }, [
-        timeSavedMetric.data,
-        costSavedMetric.data,
-        supportInteractionsMetric.data,
-        decreaseInFRTMetric.data,
-    ])
-
-    const kpiCardsFileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        KPI_CARDS_FILE_NAME,
-    )
-
     const files = useMemo(
         () => ({
-            [kpiCardsFileName]: kpiCardsCsv,
+            ...trendCardsFiles,
             ...supportInteractionsByIntentData.files,
             ...supportInteractionsTimeSeriesData.files,
             ...channelPerformanceData.files,
             ...intentPerformanceData.files,
         }),
         [
-            kpiCardsFileName,
-            kpiCardsCsv,
+            trendCardsFiles,
             supportInteractionsByIntentData.files,
             supportInteractionsTimeSeriesData.files,
             channelPerformanceData.files,

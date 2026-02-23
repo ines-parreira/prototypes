@@ -1,30 +1,43 @@
 import { useCallback, useMemo } from 'react'
 
-import { formatMetricValue } from '@repo/reporting'
-
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { createCsv, saveZippedFiles } from 'utils/file'
+import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
+import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import { saveZippedFiles } from 'utils/file'
 
-import { useAiAgentAutomatedInteractionsMetric } from './useAiAgentAutomatedInteractionsMetric'
-import { useAiAgentAutomationRateMetric } from './useAiAgentAutomationRateMetric'
-import { useAiAgentTimeSavedMetric } from './useAiAgentTimeSavedMetric'
+import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from '../config/aiAgentAllAgentsLayoutConfig'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from './useDownloadAiAgentAutomationRateTimeSeriesData'
 import { useDownloadAutomatedInteractionsBySkillData } from './useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from './useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
-import { useTotalSalesMetric } from './useTotalSalesMetric'
 
 const REPORT_NAME = 'ai-agent-all-agents'
-const KPI_CARDS_FILE_NAME = 'kpi-cards'
+
+const aiAgentAllAgentsDashboard: DashboardSchema = {
+    id: -1,
+    name: REPORT_NAME,
+    analytics_filter_id: null,
+    emoji: null,
+    children: ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections
+        .filter((section) => section.type === 'kpis')
+        .map((section) => ({
+            type: DashboardChildType.Section,
+            children: section.items
+                .filter((item) => item.visibility)
+                .map((item) => ({
+                    type: DashboardChildType.Chart,
+                    config_id: item.chartId,
+                })),
+        })),
+}
 
 export const useExportAiAgentAllAgentsToCSV = () => {
     const { cleanStatsFilters } = useStatsFilters()
 
-    const automationRateMetric = useAiAgentAutomationRateMetric()
-    const automatedInteractionsMetric = useAiAgentAutomatedInteractionsMetric()
-    const totalSalesMetric = useTotalSalesMetric()
-    const timeSavedMetric = useAiAgentTimeSavedMetric()
+    const { files: trendCardsFiles, isLoading: isKpiLoading } =
+        useDashboardData(aiAgentAllAgentsDashboard, true)
 
     const automatedInteractionsBySkillData =
         useDownloadAutomatedInteractionsBySkillData()
@@ -34,75 +47,22 @@ export const useExportAiAgentAllAgentsToCSV = () => {
     const intentPerformanceData = useDownloadIntentPerformanceData()
 
     const isLoading =
-        automationRateMetric.isFetching ||
-        automatedInteractionsMetric.isFetching ||
-        totalSalesMetric.isFetching ||
-        timeSavedMetric.isFetching ||
+        isKpiLoading ||
         automatedInteractionsBySkillData.isLoading ||
         automationRateTimeSeriesData.isLoading ||
         channelPerformanceData.isLoading ||
         intentPerformanceData.isLoading
 
-    const kpiCardsCsv = useMemo(() => {
-        const csvData = [
-            ['', 'current period', 'previous period'],
-            [
-                'Automation rate',
-                formatMetricValue(
-                    automationRateMetric.data?.value,
-                    'decimal-to-percent',
-                ),
-                formatMetricValue(
-                    automationRateMetric.data?.prevValue,
-                    'decimal-to-percent',
-                ),
-            ],
-            [
-                'Automated interactions',
-                formatMetricValue(
-                    automatedInteractionsMetric.data?.value,
-                    'integer',
-                ),
-                formatMetricValue(
-                    automatedInteractionsMetric.data?.prevValue,
-                    'integer',
-                ),
-            ],
-            [
-                'Total sales',
-                formatMetricValue(totalSalesMetric.data?.value, 'currency'),
-                formatMetricValue(totalSalesMetric.data?.prevValue, 'currency'),
-            ],
-            [
-                'Time saved by agents',
-                formatMetricValue(timeSavedMetric.data?.value, 'duration'),
-                formatMetricValue(timeSavedMetric.data?.prevValue, 'duration'),
-            ],
-        ]
-        return createCsv(csvData)
-    }, [
-        automationRateMetric.data,
-        automatedInteractionsMetric.data,
-        totalSalesMetric.data,
-        timeSavedMetric.data,
-    ])
-
-    const kpiCardsFileName = getCsvFileNameWithDates(
-        cleanStatsFilters.period,
-        KPI_CARDS_FILE_NAME,
-    )
-
     const files = useMemo(
         () => ({
-            [kpiCardsFileName]: kpiCardsCsv,
+            ...trendCardsFiles,
             ...automatedInteractionsBySkillData.files,
             ...automationRateTimeSeriesData.files,
             ...channelPerformanceData.files,
             ...intentPerformanceData.files,
         }),
         [
-            kpiCardsFileName,
-            kpiCardsCsv,
+            trendCardsFiles,
             automatedInteractionsBySkillData.files,
             automationRateTimeSeriesData.files,
             channelPerformanceData.files,

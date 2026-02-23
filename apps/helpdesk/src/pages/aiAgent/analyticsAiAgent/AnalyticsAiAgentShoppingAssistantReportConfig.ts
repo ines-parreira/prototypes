@@ -67,7 +67,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchGmvInfluencedTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'currency-precision-1',
                     },
                 ],
                 description:
@@ -83,7 +83,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchTotalNumberOfOrdersTrend,
-                        metricFormat: 'integer',
+                        metricFormat: 'decimal',
                     },
                 ],
                 description:
@@ -99,7 +99,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchTotalNumberOfSalesConversationsTrend,
-                        metricFormat: 'integer',
+                        metricFormat: 'decimal',
                     },
                 ],
                 description:
@@ -116,7 +116,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                         {
                             type: DataExportFormat.Trend,
                             fetch: fetchTotalSalePerInteractionTrend,
-                            metricFormat: 'decimal',
+                            metricFormat: 'currency-precision-1',
                         },
                     ],
                     description:

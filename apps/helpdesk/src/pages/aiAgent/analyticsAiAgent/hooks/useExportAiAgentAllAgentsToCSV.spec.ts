@@ -1,23 +1,17 @@
 import { act, renderHook } from '@testing-library/react'
 
+import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import * as fileUtils from 'utils/file'
 
-import { useAiAgentAutomatedInteractionsMetric } from './useAiAgentAutomatedInteractionsMetric'
-import { useAiAgentAutomationRateMetric } from './useAiAgentAutomationRateMetric'
-import { useAiAgentTimeSavedMetric } from './useAiAgentTimeSavedMetric'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from './useDownloadAiAgentAutomationRateTimeSeriesData'
 import { useDownloadAutomatedInteractionsBySkillData } from './useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from './useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useExportAiAgentAllAgentsToCSV } from './useExportAiAgentAllAgentsToCSV'
-import { useTotalSalesMetric } from './useTotalSalesMetric'
 
+jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useAiAgentAutomationRateMetric')
-jest.mock('./useAiAgentAutomatedInteractionsMetric')
-jest.mock('./useTotalSalesMetric')
-jest.mock('./useAiAgentTimeSavedMetric')
 jest.mock('./useDownloadChannelPerformanceData')
 jest.mock('./useDownloadIntentPerformanceData')
 jest.mock('./useDownloadAutomatedInteractionsBySkillData')
@@ -27,15 +21,8 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
+const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseAiAgentAutomationRateMetric = jest.mocked(
-    useAiAgentAutomationRateMetric,
-)
-const mockedUseAiAgentAutomatedInteractionsMetric = jest.mocked(
-    useAiAgentAutomatedInteractionsMetric,
-)
-const mockedUseTotalSalesMetric = jest.mocked(useTotalSalesMetric)
-const mockedUseAiAgentTimeSavedMetric = jest.mocked(useAiAgentTimeSavedMetric)
 const mockedUseDownloadChannelPerformanceData = jest.mocked(
     useDownloadChannelPerformanceData,
 )
@@ -67,44 +54,12 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             granularity: 'day',
         } as any)
 
-        mockedUseAiAgentAutomationRateMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Automation rate',
-                value: 0.85,
-                prevValue: 0.8,
+        mockedUseDashboardData.mockReturnValue({
+            files: {
+                'ai-agent-all-agents - trends.csv': 'trends content',
             },
-        })
-
-        mockedUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Automated interactions',
-                value: 3000,
-                prevValue: 2500,
-            },
-        })
-
-        mockedUseTotalSalesMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Total sales',
-                value: 50000,
-                prevValue: 45000,
-            },
-        })
-
-        mockedUseAiAgentTimeSavedMetric.mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                label: 'Time saved by agents',
-                value: 180000,
-                prevValue: 160000,
-            },
+            fileName: 'ai-agent-all-agents - trends.csv',
+            isLoading: false,
         })
 
         mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
@@ -150,47 +105,11 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return isLoading as true when automation rate is loading', () => {
-        mockedUseAiAgentAutomationRateMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when automated interactions is loading', () => {
-        mockedUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when total sales is loading', () => {
-        mockedUseTotalSalesMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when time saved is loading', () => {
-        mockedUseAiAgentTimeSavedMetric.mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
+    it('should return isLoading as true when KPI data is loading', () => {
+        mockedUseDashboardData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
         })
 
         const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
@@ -271,7 +190,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         const fileNames = Object.keys(filesArg)
 
         expect(fileNames.length).toBe(5)
-        expect(fileNames.some((name) => name.includes('kpi-cards'))).toBe(true)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
             fileNames.some((name) =>
                 name.includes('automated-interactions-by-skill'),

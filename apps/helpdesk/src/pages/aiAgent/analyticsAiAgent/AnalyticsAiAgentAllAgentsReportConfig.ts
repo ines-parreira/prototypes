@@ -61,7 +61,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAIAgentAutomationRateTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'decimal-to-percent',
                     },
                 ],
                 description:
@@ -77,7 +77,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchAIAgentAutomatedInteractionsTrend,
-                        metricFormat: 'integer',
+                        metricFormat: 'decimal',
                     },
                 ],
                 description:
@@ -93,7 +93,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     {
                         type: DataExportFormat.Trend,
                         fetch: fetchGmvInfluencedTrend,
-                        metricFormat: 'decimal',
+                        metricFormat: 'currency-precision-1',
                     },
                 ],
                 description:
