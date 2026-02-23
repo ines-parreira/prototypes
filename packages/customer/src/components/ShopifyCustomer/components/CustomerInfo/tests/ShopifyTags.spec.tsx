@@ -142,10 +142,7 @@ describe('ShopifyTags', () => {
             expect(screen.getByText('VIP')).toBeInTheDocument()
         })
 
-        const buttons = screen.getAllByRole('button')
-        const plusButton = buttons.find(
-            (button) => button.getAttribute('slot') === 'button',
-        )
+        const plusButton = screen.getByRole('button', { name: /add-plus/ })
         expect(plusButton).toBeInTheDocument()
     })
 

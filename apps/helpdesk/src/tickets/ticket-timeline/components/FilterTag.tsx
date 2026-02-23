@@ -44,14 +44,8 @@ export function FilterTag<T extends { id: string | number; label: string }>({
     // Show placeholder when no items are selected
     const displayLabel = selectedItems.length === 0 ? 'Select an option' : label
 
-    const triggerButton = ({
-        ref,
-    }: {
-        ref: React.RefObject<HTMLButtonElement>
-    }) => (
+    const triggerButton = () => (
         <Button
-            ref={ref}
-            slot="button"
             size="sm"
             style={{
                 all: 'unset',

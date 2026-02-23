@@ -76,14 +76,8 @@ export function SortingButton({
                 }
             }}
             selectionBehavior="replace"
-            trigger={({ ref }) => (
-                <Button
-                    ref={ref}
-                    slot="button"
-                    variant="tertiary"
-                    size="sm"
-                    icon="arrow-down-up"
-                />
+            trigger={() => (
+                <Button variant="tertiary" size="sm" icon="arrow-down-up" />
             )}
         >
             {(item) => {

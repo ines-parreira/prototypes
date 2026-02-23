@@ -100,11 +100,11 @@ exports[`<Access/> should render properly 1`] = `
           <div
             class="mt-4"
             data-name="box"
-            style="display: flex; flex-direction: column;"
+            style="flex-direction: column; display: flex;"
           >
             <div
               data-name="box"
-              style="display: flex; flex-direction: column;"
+              style="flex-direction: column; display: flex;"
             />
           </div>
           <h4
@@ -336,11 +336,11 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
           <div
             class="mt-4"
             data-name="box"
-            style="display: flex; flex-direction: column;"
+            style="flex-direction: column; display: flex;"
           >
             <div
               data-name="box"
-              style="display: flex; flex-direction: column;"
+              style="flex-direction: column; display: flex;"
             />
           </div>
           <h4
@@ -575,11 +575,11 @@ exports[`<Access/> should show an error and block submit when using a generic do
           <div
             class="mt-4"
             data-name="box"
-            style="display: flex; flex-direction: column;"
+            style="flex-direction: column; display: flex;"
           >
             <div
               data-name="box"
-              style="display: flex; flex-direction: column;"
+              style="flex-direction: column; display: flex;"
             />
           </div>
           <h4

@@ -556,7 +556,7 @@ exports[`<Shopify/> Integration should render 1`] = `
           </div>
           <div
             data-name="box"
-            style="display: flex; justify-content: space-between;"
+            style="justify-content: space-between; display: flex;"
           >
             <div
               data-name="box"

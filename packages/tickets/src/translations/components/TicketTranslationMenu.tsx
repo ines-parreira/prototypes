@@ -47,7 +47,6 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
                 placement="bottom right"
                 trigger={
                     <Button
-                        slot="button"
                         size="sm"
                         variant="secondary"
                         icon="translate"

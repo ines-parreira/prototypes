@@ -445,7 +445,7 @@ exports[`<Magento2/> Integration should render 1`] = `
           </span>
           <div
             data-name="box"
-            style="display: flex; justify-content: space-between;"
+            style="justify-content: space-between; display: flex;"
           >
             <div
               data-name="box"
@@ -794,7 +794,7 @@ exports[`<Magento2/> New should render 1`] = `
           </span>
           <div
             data-name="box"
-            style="display: flex; justify-content: space-between;"
+            style="justify-content: space-between; display: flex;"
           >
             <div
               data-name="box"

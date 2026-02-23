@@ -178,7 +178,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
           </div>
           <div
             data-name="box"
-            style="display: flex; justify-content: space-between;"
+            style="justify-content: space-between; display: flex;"
           >
             <div
               data-name="box"

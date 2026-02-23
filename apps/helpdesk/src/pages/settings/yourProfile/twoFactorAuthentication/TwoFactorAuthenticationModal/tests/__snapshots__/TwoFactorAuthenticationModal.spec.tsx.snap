@@ -523,7 +523,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"
@@ -758,7 +758,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"
@@ -983,7 +983,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"
@@ -1422,7 +1422,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"
@@ -1630,7 +1630,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"
@@ -2287,7 +2287,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with the 
               </div>
               <div
                 data-name="box"
-                style="display: flex; flex-direction: column; align-items: center;"
+                style="flex-direction: column; align-items: center; display: flex;"
               >
                 <button
                   aria-disabled="false"

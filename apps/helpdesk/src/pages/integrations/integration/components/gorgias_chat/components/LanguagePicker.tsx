@@ -169,11 +169,9 @@ export function LanguagePicker({
                         isSearchable
                         aria-label="Add more languages"
                         placeholder="Search languages"
-                        trigger={({ ref }) => (
+                        trigger={() => (
                             <Button
                                 variant="tertiary"
-                                ref={ref}
-                                slot="trigger"
                                 leadingSlot="add"
                                 size="sm"
                             >

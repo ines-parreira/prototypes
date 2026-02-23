@@ -51,14 +51,8 @@ export function FilteringButton({
             selectionBehavior="toggle"
             isOpen={isOpen}
             onOpenChange={onOpenChange}
-            trigger={({ ref }) => (
-                <Button
-                    ref={ref}
-                    slot="button"
-                    variant="tertiary"
-                    size="sm"
-                    icon="slider-filter"
-                />
+            trigger={() => (
+                <Button variant="tertiary" size="sm" icon="slider-filter" />
             )}
         >
             {(option) => <ListItem label={option.label} />}

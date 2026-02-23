@@ -115,13 +115,11 @@ export function ShopifyTags({
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
                 <OverflowListItem>
                     <MultiSelect
-                        trigger={({ ref }) => (
+                        trigger={() => (
                             <>
                                 {selectedTags.length === 0 ? (
                                     <Button
-                                        ref={ref}
-                                        slot="button"
-                                        leadingSlot={<Icon name="add-plus" />}
+                                        leadingSlot="add-plus"
                                         variant="secondary"
                                         size="sm"
                                     >
@@ -129,8 +127,6 @@ export function ShopifyTags({
                                     </Button>
                                 ) : (
                                     <Button
-                                        ref={ref}
-                                        slot="button"
                                         icon="add-plus"
                                         variant="secondary"
                                         size="sm"

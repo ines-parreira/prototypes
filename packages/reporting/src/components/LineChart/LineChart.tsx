@@ -81,10 +81,8 @@ export const LineChart = ({
                                     onMetricChange?.(item.label)
                                 }}
                                 items={metrics}
-                                trigger={({ ref, isOpen }) => (
+                                trigger={({ isOpen }) => (
                                     <Button
-                                        ref={ref}
-                                        slot="button"
                                         size="sm"
                                         variant="tertiary"
                                         icon={

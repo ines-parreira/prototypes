@@ -166,7 +166,6 @@ export function TagsMultiSelect({
                                 {selectedTags.length === 0 ? (
                                     <Button
                                         ref={ref}
-                                        slot="button"
                                         leadingSlot={<Icon name="add-plus" />}
                                         variant="secondary"
                                         size="sm"
@@ -176,7 +175,6 @@ export function TagsMultiSelect({
                                 ) : (
                                     <Button
                                         ref={ref}
-                                        slot="button"
                                         icon="add-plus"
                                         variant="secondary"
                                         size="sm"

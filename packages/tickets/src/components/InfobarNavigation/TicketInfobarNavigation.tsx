@@ -94,7 +94,6 @@ export function TicketInfobarNavigation({
                     trigger={
                         <Tooltip placement="left">
                             <Button
-                                slot="button"
                                 variant="tertiary"
                                 icon="settings"
                                 aria-label="Edit Widget data"

@@ -62,7 +62,7 @@ export function StorePicker({
             selectedText,
         }: {
             isOpen: boolean
-            ref: RefObject<HTMLButtonElement>
+            ref?: RefObject<HTMLButtonElement>
             selectedText: string
         }) => (
             <SelectTrigger>

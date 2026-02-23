@@ -218,7 +218,6 @@ export function PeriodFilter({
                 trigger={(renderProps) => (
                     <Button
                         {...renderProps}
-                        slot="button"
                         variant="tertiary"
                         id="period-filter-compact-trigger"
                     >

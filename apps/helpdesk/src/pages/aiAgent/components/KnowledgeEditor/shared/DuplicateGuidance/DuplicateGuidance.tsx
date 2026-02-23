@@ -25,7 +25,6 @@ import type {
     DuplicateGuidanceProps,
     StoreIntegrationItem,
     StoreSection,
-    TriggerProps,
 } from './types'
 import { useStoresWithCompletedSetup } from './useStoresWithCompletedSetup'
 import { buildDuplicateNotificationMessage, cleanStoreName } from './utils'
@@ -164,10 +163,8 @@ export const DuplicateGuidance = ({
     }, [])
 
     // Default trigger for bulk actions (Button with text "Duplicate")
-    const defaultTrigger = ({ ref }: TriggerProps) => (
+    const defaultTrigger = () => (
         <Button
-            ref={ref}
-            slot="button"
             intent="regular"
             size="sm"
             variant="secondary"

@@ -199,11 +199,10 @@ export function VersionHistoryButton<V extends VersionItem>({
         [onSelectVersion, versionItems],
     )
 
-    const trigger = ({ ref }: { ref: React.Ref<HTMLButtonElement> }) => {
+    const trigger = ({ ref }: { ref?: React.Ref<HTMLButtonElement> }) => {
         const button = (
             <Button
                 ref={ref}
-                slot="button"
                 variant="secondary"
                 icon="history"
                 isDisabled={isDisabled}

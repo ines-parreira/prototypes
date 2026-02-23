@@ -84,7 +84,6 @@ export function TicketActions(ticket: TicketActionsProps) {
                 aria-label="More ticket options selection"
                 trigger={
                     <Button
-                        slot="button"
                         size="sm"
                         variant="tertiary"
                         icon={IconName.DotsMeatballsHorizontal}

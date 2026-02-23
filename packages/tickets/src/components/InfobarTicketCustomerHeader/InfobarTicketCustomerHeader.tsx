@@ -67,7 +67,6 @@ export function InfobarTicketCustomerHeader({
                 aria-label="Customer actions"
                 trigger={
                     <Button
-                        slot="button"
                         variant={ButtonVariant.Tertiary}
                         size={ButtonSize.Sm}
                         aria-label="Customer menu"

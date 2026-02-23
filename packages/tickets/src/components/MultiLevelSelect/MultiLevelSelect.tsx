@@ -117,7 +117,7 @@ export function MultiLevelSelect(props: Props) {
             ref,
         }: {
             isOpen: boolean
-            ref: RefObject<HTMLButtonElement>
+            ref?: RefObject<HTMLButtonElement>
         }) => {
             const label = getDisplayLabel(selectedValue)
 
