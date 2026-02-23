@@ -86,7 +86,9 @@ export const InfobarTicketCustomerInstagramSection = ({
                 padding="md"
                 paddingBottom="sm"
             >
-                <Heading size="sm">Instagram</Heading>
+                <Heading size="sm" className={css.heading}>
+                    Instagram
+                </Heading>
                 <FieldRow label="Handle">
                     <a
                         href={`https://www.instagram.com/${customerInstagramHandle}`}
@@ -107,7 +109,7 @@ export const InfobarTicketCustomerInstagramSection = ({
             className={css.instagramContainer}
             flexDirection="column"
             gap="xs"
-            paddingTop="md"
+            padding="md"
             paddingBottom="sm"
         >
             <Heading size="sm" className={css.heading}>
