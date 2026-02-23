@@ -20,6 +20,7 @@ let capturedOnBreakpointChange:
     | ((breakpoint: string, cols: number) => void)
     | null = null
 let capturedResizeConfig: any = null
+let capturedDragConfig: any = null
 
 jest.mock('react-grid-layout', () => {
     const MockResponsiveGridLayout = ({
@@ -43,6 +44,7 @@ jest.mock('react-grid-layout', () => {
         capturedOnResizeStop = onResizeStop
         capturedOnBreakpointChange = onBreakpointChange
         capturedResizeConfig = resizeConfig
+        capturedDragConfig = dragConfig
 
         const layout = layouts?.lg || []
 
@@ -1214,6 +1216,52 @@ describe('DragAndResizeDashboardGrid', () => {
             expect(capturedResizeConfig).toBeDefined()
             // We use the default handle styled with CSS, not a custom React component
             expect(capturedResizeConfig?.handleComponent).toBeUndefined()
+        })
+    })
+
+    describe('Drag Handle', () => {
+        beforeEach(() => {
+            capturedDragConfig = null
+        })
+
+        it('should configure drag handle to restrict drag to .drag-handle elements', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            expect(capturedDragConfig).toBeDefined()
+            expect(capturedDragConfig?.handle).toBe('.drag-handle')
+        })
+
+        it('should render a drag handle element for each chart in the grid', () => {
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const dashboard = createMockDashboard([chart1, chart2])
+
+            const { container } = render(
+                <DragAndResizeDashboardGrid dashboard={dashboard} />,
+            )
+
+            const dragHandles = container.querySelectorAll('.drag-handle')
+            expect(dragHandles).toHaveLength(2)
+            dragHandles.forEach((handle) => {
+                expect(handle).toHaveAttribute('aria-hidden', 'true')
+            })
+        })
+
+        it('should render drag handle for charts in nested rows and sections', () => {
+            const chart1 = createMockChart('chart-1')
+            const chart2 = createMockChart('chart-2')
+            const row = createMockRow([chart1, chart2])
+            const dashboard = createMockDashboard([row])
+
+            const { container } = render(
+                <DragAndResizeDashboardGrid dashboard={dashboard} />,
+            )
+
+            const dragHandles = container.querySelectorAll('.drag-handle')
+            expect(dragHandles).toHaveLength(2)
         })
     })
 })

@@ -13,6 +13,18 @@
             box-shadow: 0 0 0 2px var(--border-accent-default);
             border-radius: var(--spacing-sm);
         }
+
+        &:hover,
+        &.react-dragging {
+            > .drag-handle {
+                opacity: 1;
+                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 14 9" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="7" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="12" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="2" cy="7" r="1.5" fill="%238b5cf6"/><circle cx="7" cy="7" r="1.5" fill="%238b5cf6"/><circle cx="12" cy="7" r="1.5" fill="%238b5cf6"/></svg>');
+            }
+        }
+
+        &.react-dragging > .drag-handle {
+            cursor: grabbing;
+        }
     }
 }
 
@@ -25,6 +37,24 @@
         height: 100%;
         box-sizing: border-box;
         overflow: auto;
+    }
+
+    > .drag-handle {
+        position: absolute;
+        top: var(--spacing-xxs);
+        left: 50%;
+        transform: translateX(-50%);
+        width: 18px;
+        height: 10px;
+        overflow: visible;
+        opacity: 0;
+        z-index: 10;
+        cursor: grab;
+        transition: opacity 200ms ease;
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 14 9" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="%236b7280"/><circle cx="7" cy="2" r="1.5" fill="%236b7280"/><circle cx="12" cy="2" r="1.5" fill="%236b7280"/><circle cx="2" cy="7" r="1.5" fill="%236b7280"/><circle cx="7" cy="7" r="1.5" fill="%236b7280"/><circle cx="12" cy="7" r="1.5" fill="%236b7280"/></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
     }
 }
 

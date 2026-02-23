@@ -37,6 +37,7 @@ const renderDashboard = (dashboard: DashboardSchema): React.ReactNode[] => {
 
     return charts.map((chart) => (
         <div key={chart.config_id}>
+            <div className="drag-handle" aria-hidden="true" />
             <DragAndResizeChart schema={chart} dashboard={dashboard} />
         </div>
     ))
@@ -245,6 +246,7 @@ export const DragAndResizeDashboardGrid = ({
                 containerPadding={[24, 24]}
                 dragConfig={{
                     enabled: currentBreakpoint === 'lg',
+                    handle: '.drag-handle',
                 }}
                 resizeConfig={{
                     enabled: currentBreakpoint === 'lg',
