@@ -14,10 +14,11 @@
             border-radius: var(--spacing-sm);
         }
 
-        &:hover,
+        &:hover:not(.react-resizing),
         &.react-dragging {
             > .drag-handle {
                 opacity: 1;
+                pointer-events: auto;
                 background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 14 9" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="7" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="12" cy="2" r="1.5" fill="%238b5cf6"/><circle cx="2" cy="7" r="1.5" fill="%238b5cf6"/><circle cx="7" cy="7" r="1.5" fill="%238b5cf6"/><circle cx="12" cy="7" r="1.5" fill="%238b5cf6"/></svg>');
             }
         }
@@ -48,6 +49,7 @@
         height: 10px;
         overflow: visible;
         opacity: 0;
+        pointer-events: none;
         z-index: 10;
         cursor: grab;
         transition: opacity 200ms ease;
