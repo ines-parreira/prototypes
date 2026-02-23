@@ -10,7 +10,12 @@ export function SidebarFooter({ children }: SidebarFooterProps) {
     return (
         <Box flexDirection="column" gap="md">
             <Separator />
-            <Box justifyContent="space-between" ml="xxs" mr="xs">
+            <Box
+                justifyContent="space-between"
+                ml="xxs"
+                mr="xs"
+                alignItems="center"
+            >
                 {children}
             </Box>
         </Box>

@@ -14,6 +14,10 @@ jest.mock('common/navigation/components/UserItem', () => ({
     default: () => <div>UserItem</div>,
 }))
 
+jest.mock('routes/layout/NavigationSidebarNotificationsButton', () => ({
+    NavigationSidebarNotificationsButton: () => <div>NotificationsButton</div>,
+}))
+
 jest.mock('routes/layout/sidebars', () => ({
     InboxSidebar: () => <div>InboxSidebar</div>,
     AiAgentSidebar: () => <div>AiAgentSidebar</div>,
@@ -51,6 +55,7 @@ describe('NavigationSidebar', () => {
         it('should render footer with UserItem and buttons', () => {
             render(<NavigationSidebar />)
             expect(screen.getByText('UserItem')).toBeInTheDocument()
+            expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(1)
         })

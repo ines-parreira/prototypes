@@ -5,7 +5,7 @@ import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeader
 
 type SelectedItem = {
     name: string
-    icon: string
+    icon?: string
 }
 
 type SidebarProductHeaderProps = {

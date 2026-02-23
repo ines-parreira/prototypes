@@ -13,8 +13,13 @@
         position: absolute;
         z-index: 1001;
         top: var(--layout-spacing-xs);
+
+        &.legacy {
+            bottom: var(--layout-spacing-xs);
+        }
+
+        bottom: var(--spacing-xxxl);
         left: calc(48px + var(--layout-spacing-xs));
-        bottom: var(--layout-spacing-xs);
         width: 402px;
         border-radius: 10px;
         box-shadow:

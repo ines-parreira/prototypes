@@ -4,7 +4,9 @@ import { history } from '@repo/routing'
 import { Box, Button } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
+import { HELP_DOCS_BASE_URL } from 'config'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
+import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
 import {
     Product,
     productConfig,
@@ -23,23 +25,27 @@ export function NavigationSidebar() {
         <SidebarRoot>
             <Box justifyContent="space-between" alignItems="center">
                 {isSticky ? (
-                    <Box gap="sm" alignItems="center">
+                    <Box gap="xxxxs" alignItems="center">
                         <Button
                             icon="arrow-left"
-                            variant="tertiary"
+                            size="sm"
+                            variant="secondary"
                             onClick={() =>
                                 history.push(
                                     productConfig[Product.Home].defaultPath,
                                 )
                             }
                         />
-                        <Button variant="tertiary">
-                            {currentProduct.name}
-                        </Button>
+                        <SidebarProductHeader
+                            selectedItem={{
+                                name: currentProduct.name,
+                            }}
+                        />
                     </Box>
                 ) : (
                     <SidebarProductHeader selectedItem={currentProduct} />
                 )}
+
                 <Box gap="xxxs">
                     <Button icon="search-magnifying-glass" variant="tertiary" />
                     <Button icon="system-bar-expand" variant="tertiary" />
@@ -52,15 +58,30 @@ export function NavigationSidebar() {
 
             <SidebarFooter>
                 <UserItem />
-                <Button
-                    onClick={() => {
-                        history.push(
-                            productConfig[Product.Settings].defaultPath,
-                        )
-                    }}
-                    icon={productConfig[Product.Settings].icon}
-                    variant="tertiary"
-                />
+                <Box gap="xxxxs" alignItems="center">
+                    <Button
+                        onClick={() => {
+                            history.push(
+                                productConfig[Product.Settings].defaultPath,
+                            )
+                        }}
+                        icon={productConfig[Product.Settings].icon}
+                        variant={
+                            currentProduct.id === Product.Settings
+                                ? 'secondary'
+                                : 'tertiary'
+                        }
+                        size="sm"
+                    />
+                    <Button
+                        icon="circle-help"
+                        as="a"
+                        href={HELP_DOCS_BASE_URL}
+                        variant="tertiary"
+                        size="sm"
+                    />
+                    <NavigationSidebarNotificationsButton />
+                </Box>
             </SidebarFooter>
         </SidebarRoot>
     )

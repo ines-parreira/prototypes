@@ -1,3 +1,5 @@
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import cn from 'classnames'
 import { CSSTransition } from 'react-transition-group'
 
 import useNotificationsOverlay from '../hooks/useNotificationsOverlay'
@@ -16,6 +18,8 @@ const transitionClassNames = {
 
 export default function Overlay() {
     const [isVisible, onToggle] = useNotificationsOverlay()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+
     return (
         <>
             {isVisible && <div className={css.backdrop} onClick={onToggle} />}
@@ -27,7 +31,11 @@ export default function Overlay() {
                 in={isVisible}
                 timeout={200}
             >
-                <div className={css.container}>
+                <div
+                    className={cn(css.container, {
+                        [css.legacy]: !hasWayfindingMS1Flag,
+                    })}
+                >
                     <Feed onClose={onToggle} />
                 </div>
             </CSSTransition>

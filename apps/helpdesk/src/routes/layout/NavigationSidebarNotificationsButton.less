@@ -1,0 +1,21 @@
+:local {
+    .container {
+        position: relative;
+    }
+
+    .badge {
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+
+        &[data-right-offset='s'] {
+            right: 0px;
+        }
+        &[data-right-offset='m'] {
+            right: -5px;
+        }
+        &[data-right-offset='l'] {
+            right: -8px;
+        }
+    }
+}
