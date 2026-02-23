@@ -127,7 +127,7 @@ describe('GuidanceForm', () => {
                 onSubmit={onSubmit}
                 initialFields={{
                     name: 'Initial Name',
-                    content: 'Initial Content',
+                    content: '<div>Initial Content</div>',
                     isVisible: true,
                 }}
             />,
@@ -142,7 +142,7 @@ describe('GuidanceForm', () => {
         expect(onSubmit).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'Updated Name',
-                content: 'Initial Content',
+                content: '<div>Initial Content</div>',
                 isVisible: true,
             }),
         )

@@ -35,6 +35,8 @@ export default class RichField extends Component<Props, State> {
     // Synchronous mirror of `this.state.editorState` to avoid stale reads
     // between batched/async `setState` calls (e.g. in _didHTMLChanged).
     _latestEditorState: EditorState | null = null
+    _sentHTMLSet = new Set<string>()
+    _sentHTMLCleanupTimer: ReturnType<typeof setTimeout> | null = null
 
     constructor(props: Props) {
         super(props)
@@ -82,7 +84,21 @@ export default class RichField extends Component<Props, State> {
         return this.state.isFocused
     }
 
-    _didHTMLChanged = (html?: string) => {
+    _didHTMLChanged = (html?: string, text?: string) => {
+        const incomingIsEmpty = !html && !text
+        if (incomingIsEmpty) {
+            const editorState =
+                this._latestEditorState || this.state.editorState
+            const currentIsEmpty =
+                !editorState ||
+                editorState.getCurrentContent().getPlainText() === ''
+            if (currentIsEmpty) return false
+        }
+
+        if (html !== undefined && this._sentHTMLSet.has(html)) {
+            return false
+        }
+
         const editorState = this._latestEditorState || this.state.editorState
         if (editorState) {
             return convertToHTML(editorState.getCurrentContent()) !== html
@@ -97,7 +113,7 @@ export default class RichField extends Component<Props, State> {
         callback?: () => any,
     ) => {
         // if incoming value is the same as the current one, don't update the current one
-        if (!this._didHTMLChanged(value.html)) {
+        if (!this._didHTMLChanged(value.html, value.text)) {
             return
         }
 
@@ -135,8 +151,24 @@ export default class RichField extends Component<Props, State> {
     handleEditorChange = (editorState: EditorState) => {
         this._latestEditorState = editorState
         this.setState({ editorState }, () => {
+            const html = convertToHTML(editorState.getCurrentContent())
+            this._sentHTMLSet.add(html)
+
+            if (this._sentHTMLCleanupTimer !== null) {
+                clearTimeout(this._sentHTMLCleanupTimer)
+            }
+            this._sentHTMLCleanupTimer = setTimeout(() => {
+                this._sentHTMLSet.clear()
+            }, 3000)
+
             this.props.onChange(editorState)
         })
+    }
+
+    componentWillUnmount() {
+        if (this._sentHTMLCleanupTimer !== null) {
+            clearTimeout(this._sentHTMLCleanupTimer)
+        }
     }
 
     _onFocus = () => {

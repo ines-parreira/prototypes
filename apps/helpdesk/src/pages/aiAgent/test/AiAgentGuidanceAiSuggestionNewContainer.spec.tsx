@@ -203,7 +203,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
         expect(createGuidanceArticle).toHaveBeenCalledWith(
             expect.objectContaining({
                 title: aiGuidanceSuggestion.name,
-                content: aiGuidanceSuggestion.content,
+                content: `<div>${aiGuidanceSuggestion.content}</div>`,
             }),
         )
     })

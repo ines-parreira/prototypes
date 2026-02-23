@@ -220,7 +220,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         expect(updateGuidanceArticle).toHaveBeenCalledWith(
             {
                 title: 'New name',
-                content: guidanceArticle.content,
+                content: `<div>${guidanceArticle.content}</div>`,
                 locale: guidanceArticle.locale,
                 templateKey: null,
                 visibility: 'PUBLIC',
@@ -246,7 +246,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         expect(updateGuidanceArticle).toHaveBeenCalledWith(
             {
                 title: guidanceArticle.title,
-                content: guidanceArticle.content,
+                content: `<div>${guidanceArticle.content}</div>`,
                 locale: guidanceArticle.locale,
                 templateKey: null,
                 visibility: 'UNLISTED',

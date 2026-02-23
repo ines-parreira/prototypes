@@ -233,7 +233,10 @@ describe('KnowledgeEditorGuidance', () => {
         })
         queryClient.clear()
         mockUseGuidanceArticle.mockReturnValue({
-            guidanceArticle,
+            guidanceArticle: {
+                ...guidanceArticle,
+                content: '<div>Content 1</div>',
+            },
             isGuidanceArticleLoading: false,
             refetch: jest.fn(),
         })
@@ -287,6 +290,7 @@ describe('KnowledgeEditorGuidance', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
                 ...guidanceArticle,
+                content: '<div>Content 1</div>',
                 isCurrent: false,
                 publishedVersionId: 1,
             },
@@ -566,6 +570,7 @@ describe('KnowledgeEditorGuidance', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: {
                 ...guidanceArticle,
+                content: '<div>Content 1</div>',
                 isCurrent: false,
                 publishedVersionId: 1,
             },

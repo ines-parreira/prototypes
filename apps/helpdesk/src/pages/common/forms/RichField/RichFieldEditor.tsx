@@ -11,8 +11,9 @@ import { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
-import type { ContentBlock, ContentState } from 'draft-js'
+import type { ContentBlock } from 'draft-js'
 import {
+    ContentState,
     EditorState,
     getDefaultKeyBinding,
     KeyBindingUtil,
@@ -54,6 +55,7 @@ import type { ConnectedAction } from '../../../../state/types'
 import {
     containsMarkdownSyntax,
     contentStateFromTextOrHTML,
+    convertToHTML,
     EditorHandledNotHandled,
     focusToTheEndOfContent,
     isValidSelectionKey,
@@ -463,13 +465,13 @@ export class RichFieldEditor extends Component<Props, State> {
         )
         if (this.props.getGuidanceVariables) {
             this.editorWrapperRef?.removeEventListener(
-                'copy',
-                this._nativeCopyHandler,
+                'cut',
+                this._nativeCutHandler,
                 true,
             )
             this.editorWrapperRef?.removeEventListener(
-                'cut',
-                this._nativeCutHandler,
+                'copy',
+                this._nativeCopyHandler,
                 true,
             )
             document.removeEventListener(
@@ -718,13 +720,58 @@ export class RichFieldEditor extends Component<Props, State> {
         return textParts.join('\n')
     }
 
-    _nativeCopyHandler: EventListener = (event) => {
-        const text = this._getSelectedText()
-        if (!text) return
+    _getSelectedContentState = (): ContentState | null => {
+        const { editorState } = this.props
+        const selection = editorState.getSelection()
+        if (selection.isCollapsed()) return null
 
-        const clipboardEvent = event as ClipboardEvent
-        clipboardEvent.clipboardData?.setData('text/plain', text)
-        clipboardEvent.preventDefault()
+        const contentState = editorState.getCurrentContent()
+        const startKey = selection.getStartKey()
+        const endKey = selection.getEndKey()
+        const startOffset = selection.getStartOffset()
+        const endOffset = selection.getEndOffset()
+
+        const blockMap = contentState.getBlockMap()
+        const selectedBlocks = blockMap
+            .skipUntil((_, key) => key === startKey)
+            .takeUntil((_, key) => key === endKey)
+            .concat(blockMap.filter((_, key) => key === endKey))
+            .toArray()
+
+        if (selectedBlocks.length === 0) return null
+
+        const trimmedBlocks = selectedBlocks.map((block, index) => {
+            const isFirst = index === 0
+            const isLast = index === selectedBlocks.length - 1
+            const isSingleBlock = selectedBlocks.length === 1
+            const text = block.getText()
+            const charList = block.getCharacterList()
+
+            if (isSingleBlock) {
+                return block.merge({
+                    text: text.slice(startOffset, endOffset),
+                    characterList: charList.slice(startOffset, endOffset),
+                }) as typeof block
+            }
+            if (isFirst && startOffset > 0) {
+                return block.merge({
+                    text: text.slice(startOffset),
+                    characterList: charList.slice(startOffset),
+                }) as typeof block
+            }
+            if (isLast && endOffset < text.length) {
+                return block.merge({
+                    text: text.slice(0, endOffset),
+                    characterList: charList.slice(0, endOffset),
+                }) as typeof block
+            }
+            return block
+        })
+
+        return ContentState.createFromBlockArray(
+            trimmedBlocks,
+            contentState.getEntityMap(),
+        )
     }
 
     _nativeCutHandler: EventListener = (event) => {
@@ -732,7 +779,15 @@ export class RichFieldEditor extends Component<Props, State> {
         if (!text) return
 
         const clipboardEvent = event as ClipboardEvent
+        const selectedContentState = this._getSelectedContentState()
+        const html = selectedContentState
+            ? convertToHTML(selectedContentState)
+            : ''
+
         clipboardEvent.clipboardData?.setData('text/plain', text)
+        if (html) {
+            clipboardEvent.clipboardData?.setData('text/html', html)
+        }
         clipboardEvent.preventDefault()
 
         const { editorState } = this.props
@@ -749,6 +804,23 @@ export class RichFieldEditor extends Component<Props, State> {
             'remove-range',
         )
         this.handleChildChange(newEditorState)
+    }
+
+    _nativeCopyHandler: EventListener = (event) => {
+        const text = this._getSelectedText()
+        if (!text) return
+
+        const clipboardEvent = event as ClipboardEvent
+        const selectedContentState = this._getSelectedContentState()
+        const html = selectedContentState
+            ? convertToHTML(selectedContentState)
+            : ''
+
+        clipboardEvent.clipboardData?.setData('text/plain', text)
+        if (html) {
+            clipboardEvent.clipboardData?.setData('text/html', html)
+        }
+        clipboardEvent.preventDefault()
     }
 
     _selectionChangeRAF = 0
@@ -938,13 +1010,13 @@ export class RichFieldEditor extends Component<Props, State> {
             )
             if (this.props.getGuidanceVariables) {
                 this.editorWrapperRef.removeEventListener(
-                    'copy',
-                    this._nativeCopyHandler,
+                    'cut',
+                    this._nativeCutHandler,
                     true,
                 )
                 this.editorWrapperRef.removeEventListener(
-                    'cut',
-                    this._nativeCutHandler,
+                    'copy',
+                    this._nativeCopyHandler,
                     true,
                 )
                 document.removeEventListener(
@@ -958,8 +1030,8 @@ export class RichFieldEditor extends Component<Props, State> {
             ref.addEventListener('keydown', this._nativeTabHandler, true)
             ref.addEventListener('keydown', this._nativeFindHandler, true)
             if (this.props.getGuidanceVariables) {
-                ref.addEventListener('copy', this._nativeCopyHandler, true)
                 ref.addEventListener('cut', this._nativeCutHandler, true)
+                ref.addEventListener('copy', this._nativeCopyHandler, true)
                 document.addEventListener(
                     'selectionchange',
                     this._handleSelectionChange,

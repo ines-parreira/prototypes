@@ -2894,62 +2894,6 @@ describe('RichFieldEditor', () => {
             expect(result).toBe('hello\nworld')
         })
 
-        it('should call clipboardData.setData and preventDefault on copy with selection', () => {
-            const blocks = [
-                new ContentBlock({
-                    key: 'b1',
-                    type: 'unstyled',
-                    text: 'hello world',
-                    depth: 0,
-                    characterList: ImmutableList(),
-                    data: ImmutableMap(),
-                }),
-            ]
-            const content = DraftContentState.createFromBlockArray(blocks)
-            let state = EditorState.createWithContent(content)
-            state = EditorState.forceSelection(
-                state,
-                SelectionState.createEmpty('b1').merge({
-                    anchorOffset: 0,
-                    focusOffset: 5,
-                    hasFocus: true,
-                }) as SelectionState,
-            )
-
-            const instanceRef = renderWithGuidanceVariables(state, jest.fn())
-
-            const setData = jest.fn()
-            const preventDefault = jest.fn()
-            const event = {
-                clipboardData: { setData },
-                preventDefault,
-            } as unknown as ClipboardEvent
-
-            instanceRef.current!._nativeCopyHandler(event)
-
-            expect(setData).toHaveBeenCalledWith('text/plain', 'hello')
-            expect(preventDefault).toHaveBeenCalled()
-        })
-
-        it('should do nothing on copy with collapsed selection', () => {
-            const instanceRef = renderWithGuidanceVariables(
-                editorState,
-                jest.fn(),
-            )
-
-            const setData = jest.fn()
-            const preventDefault = jest.fn()
-            const event = {
-                clipboardData: { setData },
-                preventDefault,
-            } as unknown as ClipboardEvent
-
-            instanceRef.current!._nativeCopyHandler(event)
-
-            expect(setData).not.toHaveBeenCalled()
-            expect(preventDefault).not.toHaveBeenCalled()
-        })
-
         it('should set clipboard, remove range, and call onChange on cut with selection', () => {
             const onChangeSpy = jest.fn()
             const blocks = [
@@ -2987,6 +2931,10 @@ describe('RichFieldEditor', () => {
             instanceRef.current!._nativeCutHandler(event)
 
             expect(setData).toHaveBeenCalledWith('text/plain', 'hello')
+            expect(setData).toHaveBeenCalledWith(
+                'text/html',
+                '<div>hello</div>',
+            )
             expect(preventDefault).toHaveBeenCalled()
             expect(onChangeSpy).toHaveBeenCalled()
         })
@@ -3011,6 +2959,98 @@ describe('RichFieldEditor', () => {
 
             expect(setData).not.toHaveBeenCalled()
             expect(onChangeSpy).not.toHaveBeenCalled()
+        })
+
+        it('should set text/plain and text/html on clipboard and call preventDefault on copy with selection', () => {
+            const blocks = [
+                new ContentBlock({
+                    key: 'b1',
+                    type: 'unstyled',
+                    text: 'hello world',
+                    depth: 0,
+                    characterList: ImmutableList(),
+                    data: ImmutableMap(),
+                }),
+            ]
+            const content = DraftContentState.createFromBlockArray(blocks)
+            let state = EditorState.createWithContent(content)
+            state = EditorState.forceSelection(
+                state,
+                SelectionState.createEmpty('b1').merge({
+                    anchorOffset: 0,
+                    focusOffset: 5,
+                    hasFocus: true,
+                }) as SelectionState,
+            )
+
+            const instanceRef = renderWithGuidanceVariables(state, jest.fn())
+
+            const setData = jest.fn()
+            const preventDefault = jest.fn()
+            const event = {
+                clipboardData: { setData },
+                preventDefault,
+            } as unknown as ClipboardEvent
+
+            instanceRef.current!._nativeCopyHandler(event)
+
+            expect(setData).toHaveBeenCalledWith('text/plain', 'hello')
+            expect(setData).toHaveBeenCalledWith(
+                'text/html',
+                '<div>hello</div>',
+            )
+            expect(preventDefault).toHaveBeenCalled()
+        })
+
+        it('should preserve inline styles in text/html when copying formatted text', () => {
+            const content = convertFromHTML('<strong>hello</strong> world')
+            const firstKey = content.getFirstBlock().getKey()
+            let state = EditorState.createWithContent(content)
+            state = EditorState.forceSelection(
+                state,
+                SelectionState.createEmpty(firstKey).merge({
+                    anchorOffset: 0,
+                    focusOffset: 5,
+                    hasFocus: true,
+                }) as SelectionState,
+            )
+
+            const instanceRef = renderWithGuidanceVariables(state, jest.fn())
+
+            const setData = jest.fn()
+            const preventDefault = jest.fn()
+            const event = {
+                clipboardData: { setData },
+                preventDefault,
+            } as unknown as ClipboardEvent
+
+            instanceRef.current!._nativeCopyHandler(event)
+
+            expect(setData).toHaveBeenCalledWith('text/plain', 'hello')
+            expect(setData).toHaveBeenCalledWith(
+                'text/html',
+                expect.stringContaining('<strong>'),
+            )
+            expect(preventDefault).toHaveBeenCalled()
+        })
+
+        it('should do nothing on copy with collapsed selection', () => {
+            const instanceRef = renderWithGuidanceVariables(
+                editorState,
+                jest.fn(),
+            )
+
+            const setData = jest.fn()
+            const preventDefault = jest.fn()
+            const event = {
+                clipboardData: { setData },
+                preventDefault,
+            } as unknown as ClipboardEvent
+
+            instanceRef.current!._nativeCopyHandler(event)
+
+            expect(setData).not.toHaveBeenCalled()
+            expect(preventDefault).not.toHaveBeenCalled()
         })
     })
 
@@ -3280,7 +3320,7 @@ describe('RichFieldEditor', () => {
     })
 
     describe('componentWillUnmount with getGuidanceVariables', () => {
-        it('should remove copy/cut listeners and selectionchange on unmount', () => {
+        it('should remove cut and copy listeners and selectionchange on unmount', () => {
             const instanceRef: {
                 current: InstanceType<typeof RichFieldEditor> | null
             } = { current: null }
@@ -3302,12 +3342,12 @@ describe('RichFieldEditor', () => {
             unmount()
 
             expect(removeSpy).toHaveBeenCalledWith(
-                'copy',
+                'cut',
                 expect.any(Function),
                 true,
             )
             expect(removeSpy).toHaveBeenCalledWith(
-                'cut',
+                'copy',
                 expect.any(Function),
                 true,
             )
@@ -3322,7 +3362,7 @@ describe('RichFieldEditor', () => {
     })
 
     describe('_setEditorWrapperRef with getGuidanceVariables', () => {
-        it('should add copy/cut listeners and selectionchange when ref is set', () => {
+        it('should add cut and copy listeners and selectionchange when ref is set', () => {
             const instanceRef: {
                 current: InstanceType<typeof RichFieldEditor> | null
             } = { current: null }
@@ -3344,12 +3384,12 @@ describe('RichFieldEditor', () => {
             instanceRef.current!._setEditorWrapperRef(newDiv)
 
             expect(addSpy).toHaveBeenCalledWith(
-                'copy',
+                'cut',
                 expect.any(Function),
                 true,
             )
             expect(addSpy).toHaveBeenCalledWith(
-                'cut',
+                'copy',
                 expect.any(Function),
                 true,
             )
@@ -3385,12 +3425,12 @@ describe('RichFieldEditor', () => {
             instanceRef.current!._setEditorWrapperRef(newDiv)
 
             expect(removeSpy).toHaveBeenCalledWith(
-                'copy',
+                'cut',
                 expect.any(Function),
                 true,
             )
             expect(removeSpy).toHaveBeenCalledWith(
-                'cut',
+                'copy',
                 expect.any(Function),
                 true,
             )

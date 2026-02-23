@@ -81,21 +81,19 @@ export function GuidanceEditor({
     const richFieldValue = useMemo(
         () => ({
             html: content,
-            text: content,
         }),
         [content],
     )
 
     const handleChange = (editorState: EditorState) => {
         const currentContent = editorState.getCurrentContent()
-        const text = currentContent.getPlainText()
-
-        if (text === content) return
         const convertedHTML = convertToHTML(currentContent)
 
         if (convertedHTML === content) {
             return
         }
+
+        const text = currentContent.getPlainText()
 
         if (text === '') {
             const blocks = currentContent.getBlocksAsArray()
@@ -104,7 +102,7 @@ export function GuidanceEditor({
             )
             if (hasStructuredBlocks) {
                 handleUpdateContent(convertedHTML)
-            } else {
+            } else if (content !== '') {
                 handleUpdateContent('')
             }
             return
