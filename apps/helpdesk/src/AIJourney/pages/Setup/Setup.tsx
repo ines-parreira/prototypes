@@ -170,7 +170,11 @@ export const Setup = ({ journeyType }: SetupProps) => {
             )
             setIsImageEnabled(journeyParams.include_image || false)
 
-            if ('media_urls' in journeyParams && journeyParams.media_urls) {
+            if (
+                'media_urls' in journeyParams &&
+                journeyParams.media_urls &&
+                journeyParams.media_urls.length > 0
+            ) {
                 setUploadedImageAttachment([
                     {
                         url: journeyParams.media_urls[0].url,

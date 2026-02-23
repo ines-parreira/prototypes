@@ -1390,6 +1390,173 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('should render upload drop zone when media_urls is an empty array', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-no-image-123',
+                    type: 'campaign',
+                    campaign: { title: 'No Image Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                        media_urls: [],
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Upload custom image'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Uploaded image'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should render upload drop zone when media_urls is null in journeyParams', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-null-image-123',
+                    type: 'campaign',
+                    campaign: { title: 'Null Image Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                        media_urls: null,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Upload custom image'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Uploaded image'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should render upload drop zone when media_urls is undefined in journeyParams', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-null-image-123',
+                    type: 'campaign',
+                    campaign: { title: 'Null Image Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                        media_urls: undefined,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Upload custom image'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Uploaded image'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should render upload drop zone when media_urls key is not present in configuration', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: {
+                    id: 'campaign-journey-missing-key-123',
+                    type: 'campaign',
+                    campaign: { title: 'Missing Key Campaign' },
+                    included_audience_list_ids: ['audience-1'],
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        offer_discount: false,
+                    },
+                },
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'campaign',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
+                        </IntegrationsProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Upload custom image'),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByAltText('Uploaded image'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
         it('should clear uploaded image when remove button is clicked', async () => {
             mockUseJourneyContext.mockReturnValue({
                 journeyData: {
