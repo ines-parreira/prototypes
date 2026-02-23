@@ -230,6 +230,28 @@ describe('AgentAvailabilityStatusSelect', () => {
             const trigger = screen.getByRole('button', { name: /Available/i })
             expect(trigger).toBeDisabled()
         })
+
+        it('should hide caret when disabled', () => {
+            render(
+                <AgentAvailabilityStatusSelect
+                    {...defaultProps}
+                    isDisabled={true}
+                />,
+            )
+
+            expect(screen.queryByText('▾')).not.toBeInTheDocument()
+        })
+
+        it('should show caret when enabled', () => {
+            render(
+                <AgentAvailabilityStatusSelect
+                    {...defaultProps}
+                    isDisabled={false}
+                />,
+            )
+
+            expect(screen.getByText('▾')).toBeInTheDocument()
+        })
     })
 
     describe('Empty states', () => {

@@ -1,5 +1,6 @@
 import { AVAILABLE_STATUS } from '@repo/agent-status'
 import { assumeMock } from '@repo/testing'
+import { UserRole } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -210,6 +211,63 @@ describe('AgentAvailabilityCell', () => {
                     'Failed to update status. Please try again.',
                 )
             })
+        })
+    })
+
+    describe('Permissions', () => {
+        it('should enable dropdown for admin users', async () => {
+            const testUser = userEvent.setup()
+
+            renderComponent()
+
+            const badge = screen.getByRole('button', { name: /Available/i })
+            expect(badge).not.toHaveAttribute('aria-disabled', 'true')
+
+            await testUser.click(badge)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /Unavailable/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should disable dropdown for non-admin users', () => {
+            const nonAdminUser = {
+                ...user,
+                role: { name: UserRole.Agent },
+            }
+
+            const nonAdminState = {
+                currentUser: fromJS(nonAdminUser),
+            }
+
+            renderComponent(nonAdminState)
+
+            const badge = screen.getByRole('button', { name: /Available/i })
+            expect(badge).toBeDisabled()
+        })
+
+        it('should not open dropdown when non-admin user clicks', async () => {
+            const testUser = userEvent.setup()
+
+            const nonAdminUser = {
+                ...user,
+                role: { name: UserRole.Agent },
+            }
+
+            const nonAdminState = {
+                currentUser: fromJS(nonAdminUser),
+            }
+
+            renderComponent(nonAdminState)
+
+            const badge = screen.getByRole('button', { name: /Available/i })
+            await testUser.click(badge)
+
+            expect(
+                screen.queryByRole('option', { name: /Unavailable/i }),
+            ).not.toBeInTheDocument()
         })
     })
 })

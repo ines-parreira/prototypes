@@ -35,7 +35,7 @@ export function AgentAvailabilityStatusSelect({
                     <SelectTrigger ref={ref}>
                         <Badge type={isAvailable ? 'success' : 'warning'}>
                             {text}
-                            <span>▾</span>
+                            {!isDisabled && <span>▾</span>}
                         </Badge>
                     </SelectTrigger>
                 )

@@ -5,10 +5,12 @@ import {
     AgentAvailabilityStatusSelect,
     useUpdateUserAvailabilityStatus,
 } from '@repo/agent-status'
+import { isAdmin } from '@repo/utils'
 
 import { Box, Icon, LegacyBadge, Skeleton, Text } from '@gorgias/axiom'
 
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
+import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 
 type Props = {
@@ -18,6 +20,7 @@ type Props = {
 export function AgentAvailabilityCell({ userId }: Props) {
     const notify = useNotify()
     const { updateStatusAsync } = useUpdateUserAvailabilityStatus()
+    const currentUser = useAppSelector((state) => state.currentUser)
 
     const {
         status,
@@ -27,6 +30,8 @@ export function AgentAvailabilityCell({ userId }: Props) {
         // isPhoneError is tracked separately but we don't show phone errors in UI
         // If phone status fails, we simply won't have agentPhoneUnavailabilityStatus
     } = useAvailabilityCellData({ userId })
+
+    const canEditStatus = isAdmin(currentUser.toJS())
 
     const handleSelectStatus = useCallback(
         async (status: AgentStatusWithSystem) => {
@@ -65,6 +70,7 @@ export function AgentAvailabilityCell({ userId }: Props) {
         <AgentAvailabilityStatusSelect
             activeAvailabilityStatus={status}
             onSelect={handleSelectStatus}
+            isDisabled={!canEditStatus}
         />
     )
 }
