@@ -774,7 +774,7 @@ describe('getDrillDownQuery', () => {
         )
     })
 
-    it('should be populated with channel filter using statsFiltersWithLogicalOperator', () => {
+    it('should always use ONE_OF logical operator for channel filter regardless of statsFilters operator', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
         const statsFilters: StatsFilters = {
@@ -782,7 +782,10 @@ describe('getDrillDownQuery', () => {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
             },
-            channels: withDefaultLogicalOperator(['email']),
+            channels: withDefaultLogicalOperator(
+                ['email'],
+                LogicalOperatorEnum.NOT_ONE_OF,
+            ),
         }
         const timezone = 'someTimeZone'
         const drillDownMetric: DrillDownMetric = {

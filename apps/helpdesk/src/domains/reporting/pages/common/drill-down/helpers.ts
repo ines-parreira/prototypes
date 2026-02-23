@@ -660,7 +660,7 @@ const queryBuilderWithChannelFilter =
                 ...statsFilters,
                 channels: withDefaultLogicalOperator(
                     [channel],
-                    statsFilters[FilterKey.Channels]?.operator,
+                    LogicalOperatorEnum.ONE_OF,
                 ),
             },
             timezone,
