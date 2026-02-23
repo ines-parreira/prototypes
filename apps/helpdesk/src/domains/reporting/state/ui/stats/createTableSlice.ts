@@ -7,6 +7,7 @@ import type { User } from 'config/types/user'
 import type { ReportingMetricItem } from 'domains/reporting/hooks/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
+import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { statsFiltersWithLogicalOperatorsFromSavedFilters } from 'domains/reporting/state/stats/utils'
 import {
     getIsSavedFilterApplied,
@@ -42,7 +43,10 @@ export type AgentPerformanceState<T> = {
 export const DEFAULT_SORTING_DIRECTION = OrderDirection.Asc
 
 export function createTableSlice<
-    T extends AgentsTableColumn | VoiceAgentsTableColumn,
+    T extends
+        | AgentsTableColumn
+        | VoiceAgentsTableColumn
+        | AgentAvailabilityColumn,
 >(config: {
     sliceName: string
     defaultSortingField: T

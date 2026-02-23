@@ -15,6 +15,7 @@ export const P1_SCOPES: MetricScope[] = [
     MetricScope.MessagesPerTicket,
     MetricScope.OneTouchTickets,
     MetricScope.OnlineTime,
+    MetricScope.UserAvailabilityTracking,
     MetricScope.ResolutionTime,
     MetricScope.TicketsReplied,
     MetricScope.TicketsOpen,

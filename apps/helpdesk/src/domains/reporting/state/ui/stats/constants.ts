@@ -1,4 +1,5 @@
 export const AGENT_PERFORMANCE_SLICE_NAME = 'agentPerformance'
+export const AGENT_AVAILABILITY_SLICE_NAME = 'agentAvailability'
 export const AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME = 'autoQAAgentPerformance'
 export const INTENT_SLICE_NAME = 'intent'
 export const QUALITY_MANAGEMENT_SLICE_NAME = 'qualityManagements'

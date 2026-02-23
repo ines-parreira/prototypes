@@ -160,6 +160,11 @@ export const METRIC_NAMES = {
         'agentxp-ticket-average-handle-time-per-agent-per-channel',
     AGENTXP_TICKET_HANDLE_TIME_PER_TICKET_DRILL_DOWN:
         'agentxp-ticket-handle-time-per-ticket-drill-down',
+    AGENTXP_AVAILABILITY_TRACKING: 'agentxp-availability-tracking',
+    AGENTXP_AVAILABILITY_TRACKING_PER_AGENT:
+        'agentxp-availability-tracking-per-agent',
+    AGENTXP_AVAILABILITY_TRACKING_PER_AGENT_PER_STATUS:
+        'agentxp-availability-tracking-per-agent-per-status',
 
     // Automation
     AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL:
@@ -551,6 +556,7 @@ export enum MetricScope {
     TicketsOpen = 'tickets-open',
     TicketHandleTime = 'ticket-handle-time',
     OnlineTime = 'online-time',
+    UserAvailabilityTracking = 'user-availability-tracking',
     KnowledgeInsights = 'knowledge-insights',
     VoiceServiceLevelAgreement = 'voice-queue-exposure',
 
@@ -642,6 +648,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.OnlineTime]: [
         METRIC_NAMES.AGENTXP_ONLINE_TIME,
         METRIC_NAMES.AGENTXP_ONLINE_TIME_PER_AGENT,
+    ],
+    [MetricScope.UserAvailabilityTracking]: [
+        METRIC_NAMES.AGENTXP_AVAILABILITY_TRACKING,
+        METRIC_NAMES.AGENTXP_AVAILABILITY_TRACKING_PER_AGENT,
+        METRIC_NAMES.AGENTXP_AVAILABILITY_TRACKING_PER_AGENT_PER_STATUS,
     ],
     [MetricScope.KnowledgeInsights]: [
         METRIC_NAMES.KNOWLEDGE_TICKETS,

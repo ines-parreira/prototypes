@@ -109,6 +109,7 @@ export type DimensionName =
     | 'influencedProductId'
     | 'productId'
     | 'storeIntegrationId'
+    | 'statusName'
 
 export type MeasureName =
     | 'ticketCount'
@@ -162,6 +163,9 @@ export type MeasureName =
     | 'count'
     | 'uniqCount'
     | 'averageDiscountUsd'
+    | 'totalDurationSeconds'
+    | 'onlineDurationSeconds'
+    | 'offlineDurationSeconds'
 
 export type TimeDimensionName =
     | 'createdDatetime'
