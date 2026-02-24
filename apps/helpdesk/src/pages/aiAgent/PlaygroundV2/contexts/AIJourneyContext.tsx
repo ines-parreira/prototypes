@@ -9,6 +9,7 @@ import {
 } from 'react'
 
 import type {
+    CampaignJourneyConfigurationApiDTO,
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
     JourneyDetailApiDTO,
@@ -48,6 +49,7 @@ export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
     targetOrderStatus: 'order_placed',
     postPurchaseWaitInMinutes: 1,
     waitTimeMinutes: 1,
+    mediaUrls: undefined,
 }
 
 const journeySettingsMapper = {
@@ -63,6 +65,7 @@ const journeySettingsMapper = {
     targetOrderStatus: 'target_order_status',
     postPurchaseWaitInMinutes: 'post_purchase_wait_minutes',
     waitTimeMinutes: 'wait_time_minutes',
+    mediaUrls: 'media_urls',
 } as const
 
 function buildJourneyConfig(
@@ -110,6 +113,12 @@ function parseJourneyConfig(
             ? (config as WelcomeFlowConfigurationApiDTO)
             : null
 
+    // treat campaigns specific configurations
+    const campaignConfig =
+        journeyData.type === JourneyTypeEnum.Campaign
+            ? (config as CampaignJourneyConfigurationApiDTO)
+            : null
+
     return {
         totalFollowUp: config[journeySettingsMapper.totalFollowUp] ?? undefined,
         includeProductImage: config[journeySettingsMapper.includeProductImage],
@@ -137,6 +146,8 @@ function parseJourneyConfig(
             ] ?? undefined,
         waitTimeMinutes:
             welcomeConfig?.[journeySettingsMapper.waitTimeMinutes] ?? undefined,
+        mediaUrls:
+            campaignConfig?.[journeySettingsMapper.mediaUrls] ?? undefined,
     }
 }
 

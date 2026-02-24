@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 
+import type { AttachmentDTO } from '@gorgias/convert-client'
+
 import { highlightFakeLinks } from 'AIJourney/utils/highlightFakeLinks/highlightFakeLinks'
 import type { Image } from 'constants/integrations/types/shopify'
 
@@ -13,6 +15,8 @@ type PlaygroundPreviewProps = {
     includeImage?: boolean
     isGeneratingMessages?: boolean
     selectedProductImage?: Maybe<Image>
+    isCampaign?: boolean
+    campaignImage?: AttachmentDTO
 }
 
 export const PlaygroundPreview = ({
@@ -20,10 +24,15 @@ export const PlaygroundPreview = ({
     includeImage = false,
     isGeneratingMessages = false,
     selectedProductImage,
+    isCampaign,
+    campaignImage,
 }: PlaygroundPreviewProps) => {
     const previewBodyRef = useRef<HTMLDivElement>(null)
 
-    const shouldIncludeImage = includeImage && !!selectedProductImage?.src
+    const shouldIncludeFlowImage =
+        !isCampaign && includeImage && !!selectedProductImage?.src
+    const shouldIncludeCampaignImage =
+        isCampaign && campaignImage && !!campaignImage?.url
 
     useEffect(() => {
         if (previewBodyRef.current) {
@@ -56,12 +65,23 @@ export const PlaygroundPreview = ({
                                 : `${index * 24} hours later`}
                         </span>
                         <div className={css.messageBubble}>
-                            {index === 0 && shouldIncludeImage && (
+                            {index === 0 && shouldIncludeFlowImage && (
                                 <div className={css.attachedImage}>
                                     <img
                                         src={selectedProductImage.src}
                                         alt={
                                             selectedProductImage.alt ??
+                                            'selected-product-image'
+                                        }
+                                    />
+                                </div>
+                            )}
+                            {index === 0 && shouldIncludeCampaignImage && (
+                                <div className={css.attachedImage}>
+                                    <img
+                                        src={campaignImage?.url}
+                                        alt={
+                                            campaignImage?.name ??
                                             'selected-product-image'
                                         }
                                     />

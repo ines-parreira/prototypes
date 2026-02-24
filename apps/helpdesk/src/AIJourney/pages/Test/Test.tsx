@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useHistory } from 'react-router-dom'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import type { CampaignJourneyConfigurationApiDTO } from '@gorgias/convert-client'
 
 import {
     Button,
@@ -48,6 +49,16 @@ export const Test = () => {
     const integrationId = currentIntegration?.id
 
     const { configuration: journeyParams } = journeyData || {}
+
+    const isCampaign = journeyData?.type === JOURNEY_TYPES.CAMPAIGN
+
+    const campaignParams = isCampaign
+        ? (journeyParams as CampaignJourneyConfigurationApiDTO)
+        : null
+
+    const campaignImage = useMemo(() => {
+        return campaignParams?.media_urls?.[0] ?? undefined
+    }, [campaignParams?.media_urls])
 
     const totalMessagesToBeGenerated = useMemo(() => {
         return (journeyParams?.max_follow_up_messages ?? 0) + 1
@@ -258,6 +269,8 @@ export const Test = () => {
                         isGeneratingMessages={isGeneratingMessages}
                         includeImage={journeyParams?.include_image}
                         selectedProductImage={currentProductImage}
+                        campaignImage={campaignImage}
+                        isCampaign={isCampaign}
                     />
                 </div>
             </motion.div>

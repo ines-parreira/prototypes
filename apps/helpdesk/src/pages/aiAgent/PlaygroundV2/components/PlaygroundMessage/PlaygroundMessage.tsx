@@ -5,6 +5,8 @@ import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import { marked } from 'marked'
 
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import error from 'assets/img/icons/error.svg'
 import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'
 import { MessageType } from 'models/aiAgentPlayground/types'
@@ -38,20 +40,37 @@ const PlaygroundMessage = ({
     const { mode } = useSettingsContext()
     const { messages } = useMessagesContext()
     const {
-        aiJourneySettings: { includeProductImage, selectedProduct },
+        aiJourneySettings: { includeProductImage, selectedProduct, mediaUrls },
+        currentJourney,
     } = useAIJourneyContext()
     const isAiAgentSender = message.sender === AI_AGENT_SENDER
     const messageType = message.type
 
-    const renderFirstJourneyImage =
+    const isJourneyFirstMessage =
         mode === 'outbound' &&
-        message.createdDatetime === messages[0]?.createdDatetime &&
+        message.createdDatetime === messages[0]?.createdDatetime
+
+    const renderFirstJourneyImage =
+        isJourneyFirstMessage &&
+        currentJourney?.type !== JourneyTypeEnum.Campaign &&
         includeProductImage &&
         selectedProduct !== null
+
+    const renderCampaignImage =
+        isJourneyFirstMessage &&
+        currentJourney?.type === JourneyTypeEnum.Campaign &&
+        mediaUrls &&
+        mediaUrls.length > 0
 
     const productImage = useRef({
         src: selectedProduct?.image?.src,
         alt: selectedProduct?.title,
+    })
+
+    const campaignImage = useRef({
+        name: mediaUrls?.[0]?.name,
+        url: mediaUrls?.[0]?.url,
+        content_type: mediaUrls?.[0]?.content_type,
     })
 
     switch (messageType) {
@@ -141,6 +160,14 @@ const PlaygroundMessage = ({
                             className={css.journeyImage}
                             src={productImage.current.src}
                             alt={productImage.current.alt}
+                        />
+                    )}
+
+                    {renderCampaignImage && (
+                        <img
+                            className={css.journeyImage}
+                            src={campaignImage.current.url}
+                            alt={campaignImage.current.name}
                         />
                     )}
 

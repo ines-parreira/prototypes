@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { assumeMock } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
@@ -14,11 +14,18 @@ import {
     AI_JOURNEY_DEFAULT_STATE,
     useAIJourneyContext,
 } from '../../contexts/AIJourneyContext'
+import { useEvents } from '../../contexts/EventsContext'
+import { PlaygroundEvent } from '../../types'
 import { AIJourneySettings } from './AIJourneySettings'
 
 jest.mock('../../contexts/AIJourneyContext', () => ({
     ...jest.requireActual('../../contexts/AIJourneyContext'),
     useAIJourneyContext: jest.fn(),
+}))
+
+jest.mock('../../contexts/EventsContext', () => ({
+    ...jest.requireActual('../../contexts/EventsContext'),
+    useEvents: jest.fn(),
 }))
 
 jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
@@ -38,6 +45,7 @@ jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
 }))
 
 const mockUseAIJourneyContext = assumeMock(useAIJourneyContext)
+const mockUseEvents = assumeMock(useEvents)
 
 const mockProducts = shopifyProductResult().map(
     (product) => product.data,
@@ -164,11 +172,18 @@ const createMockAIJourneyContextValue = (
 
 describe('AIJourneySettings', () => {
     let mockSetAIJourneySettings: jest.Mock
+    let mockEmit: jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockSetAIJourneySettings = jest.fn()
+        mockEmit = jest.fn()
+
+        mockUseEvents.mockReturnValue({
+            emit: mockEmit,
+            on: jest.fn(),
+        })
 
         mockUseAIJourneyContext.mockReturnValue(
             createMockAIJourneyContextValue({
@@ -425,12 +440,16 @@ describe('AIJourneySettings', () => {
             const selectField = screen.getByRole('textbox', {
                 name: /total number of messages to send/i,
             })
-            await user.click(selectField)
+            await act(async () => {
+                await user.click(selectField)
+            })
 
             const option2 = await screen.findByRole('option', {
                 name: '2',
             })
-            await user.click(option2)
+            await act(async () => {
+                await user.click(option2)
+            })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -458,12 +477,16 @@ describe('AIJourneySettings', () => {
             const selectField = screen.getByRole('textbox', {
                 name: /total number of messages to send/i,
             })
-            await user.click(selectField)
+            await act(async () => {
+                await user.click(selectField)
+            })
 
             const option3 = await screen.findByRole('option', {
                 name: '3',
             })
-            await user.click(option3)
+            await act(async () => {
+                await user.click(option3)
+            })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -803,8 +826,9 @@ describe('AIJourneySettings', () => {
             renderComponent()
 
             const includeSelect = screen.getByLabelText('Audience to include')
-            await user.selectOptions(includeSelect, 'audience-1')
-
+            await act(async () => {
+                await user.selectOptions(includeSelect, 'audience-1')
+            })
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
                     includedAudienceListIds: ['audience-1'],
@@ -817,7 +841,9 @@ describe('AIJourneySettings', () => {
             renderComponent()
 
             const excludeSelect = screen.getByLabelText('Audience to exclude')
-            await user.selectOptions(excludeSelect, 'audience-1')
+            await act(async () => {
+                await user.selectOptions(excludeSelect, 'audience-1')
+            })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -1043,9 +1069,11 @@ describe('AIJourneySettings', () => {
                 name: /wait time after trigger \(in minutes\)/i,
             })
 
-            await user.clear(waitTimeInput)
-            await user.type(waitTimeInput, '60')
-            await user.tab()
+            await act(async () => {
+                await user.clear(waitTimeInput)
+                await user.type(waitTimeInput, '60')
+                await user.tab()
+            })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -1199,9 +1227,11 @@ describe('AIJourneySettings', () => {
                 name: /wait time before trigger \(in minutes\)/i,
             })
 
-            await user.clear(waitTimeInput)
-            await user.type(waitTimeInput, '60')
-            await user.tab()
+            await act(async () => {
+                await user.clear(waitTimeInput)
+                await user.type(waitTimeInput, '60')
+                await user.tab()
+            })
 
             await waitFor(() => {
                 expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
@@ -1257,6 +1287,67 @@ describe('AIJourneySettings', () => {
                     `Please enter wait time between 0 and ${MAX_WAIT_TIME} minutes (7 days)`,
                 ),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('RESET_CONVERSATION event', () => {
+        it('should emit RESET_CONVERSATION on mount when a journey is selected', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockFlows[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(mockEmit).toHaveBeenCalledWith(
+                PlaygroundEvent.RESET_CONVERSATION,
+            )
+        })
+
+        it('should emit RESET_CONVERSATION when the selected journey changes', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockFlows[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            const { rerender } = renderComponent()
+            mockEmit.mockClear()
+
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockFlows[1],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+            rerender(<AIJourneySettings />)
+
+            expect(mockEmit).toHaveBeenCalledWith(
+                PlaygroundEvent.RESET_CONVERSATION,
+            )
+        })
+
+        it('should not emit RESET_CONVERSATION again when the journey id does not change', () => {
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: mockFlows[0],
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            const { rerender } = renderComponent()
+            mockEmit.mockClear()
+
+            rerender(<AIJourneySettings />)
+
+            expect(mockEmit).not.toHaveBeenCalled()
         })
     })
 })

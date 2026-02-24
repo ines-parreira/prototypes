@@ -605,6 +605,146 @@ describe('<Test />', () => {
         ).not.toBeInTheDocument()
     })
 
+    describe('Campaign journey image', () => {
+        const campaignImageUrl = 'https://example.com/campaign-image.jpg'
+        const campaignImageName = 'campaign-image.jpg'
+
+        beforeEach(() => {
+            mockUseGeneratePlaygroundMessage.mockImplementation(() => ({
+                handleGenerateMessages: mockHandleGenerateMessages,
+                playgroundMessages: ['Preview message text'],
+                isGeneratingMessages: false,
+            }))
+
+            mockUseJourneyContext.mockImplementation(() => ({
+                journey: null,
+                journeyData: {
+                    id: 'journey-123',
+                    type: 'campaign',
+                    message_instructions: 'Campaign instructions',
+                    configuration: {
+                        max_follow_up_messages: 1,
+                        include_image: false,
+                        media_urls: [
+                            {
+                                url: campaignImageUrl,
+                                name: campaignImageName,
+                                content_type: 'image/jpeg',
+                            },
+                        ],
+                    },
+                },
+                journeyType: 'campaign',
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                storeConfiguration: { monitoredSmsIntegrations: [] },
+            }))
+        })
+
+        it('should show campaign image when media_urls is provided', () => {
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const campaignImage = screen.getByAltText(
+                campaignImageName,
+            ) as HTMLImageElement
+            expect(campaignImage).toBeInTheDocument()
+            expect(campaignImage.src).toBe(campaignImageUrl)
+        })
+
+        it('should not show campaign image when media_urls is empty', () => {
+            mockUseJourneyContext.mockImplementation(() => ({
+                journey: null,
+                journeyData: {
+                    id: 'journey-123',
+                    type: 'campaign',
+                    message_instructions: 'Campaign instructions',
+                    configuration: {
+                        max_follow_up_messages: 1,
+                        include_image: false,
+                        media_urls: [],
+                    },
+                },
+                journeyType: 'campaign',
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                storeConfiguration: { monitoredSmsIntegrations: [] },
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByAltText('selected-product-image'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show campaign image when media_urls is not present in configuration', () => {
+            mockUseJourneyContext.mockImplementation(() => ({
+                journey: null,
+                journeyData: {
+                    id: 'journey-123',
+                    type: 'campaign',
+                    message_instructions: 'Campaign instructions',
+                    configuration: {
+                        max_follow_up_messages: 1,
+                        include_image: false,
+                    },
+                },
+                journeyType: 'campaign',
+                currentIntegration: { id: 1, name: 'shopify-store' },
+                shopName: 'shopify-store',
+                isLoading: false,
+                storeConfiguration: { monitoredSmsIntegrations: [] },
+            }))
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByAltText('selected-product-image'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show a product image for a campaign journey even when includeImage is enabled', () => {
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <Test />
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const images = screen.getAllByRole('img')
+            const campaignImage = images.find(
+                (img) => img.getAttribute('alt') === campaignImageName,
+            ) as HTMLImageElement
+            expect(campaignImage.src).toBe(campaignImageUrl)
+
+            const productImage = images.find(
+                (img) => img.getAttribute('alt') === 'selected-product-image',
+            )
+            expect(productImage).toBeUndefined()
+        })
+    })
+
     describe('Welcome journey', () => {
         beforeEach(() => {
             mockUseJourneyContext.mockImplementation(() => ({

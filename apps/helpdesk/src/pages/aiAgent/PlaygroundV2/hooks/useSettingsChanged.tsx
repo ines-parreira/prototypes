@@ -89,6 +89,7 @@ export const useSettingsChanged = () => {
             postPurchaseWaitInMinutes:
                 aiJourneySettings.postPurchaseWaitInMinutes,
             waitTimeMinutes: aiJourneySettings.waitTimeMinutes,
+            mediaUrls: aiJourneySettings.mediaUrls,
         }),
         [aiJourneySettings],
     )

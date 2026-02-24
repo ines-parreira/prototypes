@@ -5,6 +5,8 @@ import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { JourneyTypeEnum } from '@gorgias/convert-client'
+
 import { AgentSkill, MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
@@ -712,6 +714,189 @@ describe('PlaygroundMessage', () => {
             const image = screen.getByAltText(productWithoutImage.title)
             expect(image).toBeInTheDocument()
             expect(image).not.toHaveAttribute('src')
+        })
+
+        describe('Campaign journey image', () => {
+            const mockMediaUrls = [
+                {
+                    url: 'https://example.com/campaign-image.jpg',
+                    name: 'Campaign Image',
+                },
+            ]
+
+            const firstMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                createdDatetime: '2021-06-01T12:00:00',
+            }
+
+            const campaignJourney = {
+                type: JourneyTypeEnum.Campaign,
+                id: 'campaign-1',
+                state: 'active',
+            }
+
+            beforeEach(() => {
+                mockUseMessagesContext.mockReturnValue({
+                    messages: [firstMessage],
+                    onMessageSend: jest.fn(),
+                    isMessageSending: false,
+                    onNewConversation: jest.fn(),
+                    isWaitingResponse: false,
+                    draftMessage: '',
+                    draftSubject: '',
+                    setDraftMessage: jest.fn(),
+                    setDraftSubject: jest.fn(),
+                })
+            })
+
+            it('should render campaign media image when journey is Campaign type and mediaUrls has items', () => {
+                mockUseAIJourneyContext.mockReturnValue({
+                    aiJourneySettings: {
+                        journeyType: null,
+                        selectedProduct: null,
+                        totalFollowUp: 1,
+                        includeProductImage: false,
+                        includeDiscountCode: false,
+                        discountCodeValue: 0,
+                        discountCodeMessageIdx: 0,
+                        outboundMessageInstructions: '',
+                        mediaUrls: mockMediaUrls,
+                    },
+                    setAIJourneySettings: jest.fn(),
+                    resetAIJourneySettings: jest.fn(),
+                    saveAIJourneySettings: jest.fn(),
+                    shopifyIntegration: undefined,
+                    journeys: [],
+                    shopName: '',
+                    isLoadingJourneys: false,
+                    isLoadingJourneyData: false,
+                    isSavingJourneyData: false,
+                    followUpMessagesSent: 0,
+                    setFollowUpMessagesSent: jest.fn(),
+                    currentJourney: campaignJourney,
+                    journeyConfiguration: undefined,
+                    productList: [],
+                    isLoadingProducts: false,
+                })
+
+                renderComponent({ message: firstMessage }, ['outbound'])
+
+                const image = screen.getByAltText(mockMediaUrls[0].name)
+                expect(image).toBeInTheDocument()
+                expect(image).toHaveAttribute('src', mockMediaUrls[0].url)
+            })
+
+            it('should not render image when journey is Campaign type but mediaUrls is empty', () => {
+                mockUseAIJourneyContext.mockReturnValue({
+                    aiJourneySettings: {
+                        journeyType: null,
+                        selectedProduct: null,
+                        totalFollowUp: 1,
+                        includeProductImage: false,
+                        includeDiscountCode: false,
+                        discountCodeValue: 0,
+                        discountCodeMessageIdx: 0,
+                        outboundMessageInstructions: '',
+                        mediaUrls: [],
+                    },
+                    setAIJourneySettings: jest.fn(),
+                    resetAIJourneySettings: jest.fn(),
+                    saveAIJourneySettings: jest.fn(),
+                    shopifyIntegration: undefined,
+                    journeys: [],
+                    shopName: '',
+                    isLoadingJourneys: false,
+                    isLoadingJourneyData: false,
+                    isSavingJourneyData: false,
+                    followUpMessagesSent: 0,
+                    setFollowUpMessagesSent: jest.fn(),
+                    currentJourney: campaignJourney,
+                    journeyConfiguration: undefined,
+                    productList: [],
+                    isLoadingProducts: false,
+                })
+
+                renderComponent({ message: firstMessage }, ['outbound'])
+
+                expect(
+                    screen.queryByAltText(mockMediaUrls[0].name),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should not render image when journey is Campaign type but mediaUrls is undefined', () => {
+                mockUseAIJourneyContext.mockReturnValue({
+                    aiJourneySettings: {
+                        journeyType: null,
+                        selectedProduct: null,
+                        totalFollowUp: 1,
+                        includeProductImage: false,
+                        includeDiscountCode: false,
+                        discountCodeValue: 0,
+                        discountCodeMessageIdx: 0,
+                        outboundMessageInstructions: '',
+                        mediaUrls: undefined,
+                    },
+                    setAIJourneySettings: jest.fn(),
+                    resetAIJourneySettings: jest.fn(),
+                    saveAIJourneySettings: jest.fn(),
+                    shopifyIntegration: undefined,
+                    journeys: [],
+                    shopName: '',
+                    isLoadingJourneys: false,
+                    isLoadingJourneyData: false,
+                    isSavingJourneyData: false,
+                    followUpMessagesSent: 0,
+                    setFollowUpMessagesSent: jest.fn(),
+                    currentJourney: campaignJourney,
+                    journeyConfiguration: undefined,
+                    productList: [],
+                    isLoadingProducts: false,
+                })
+
+                renderComponent({ message: firstMessage }, ['outbound'])
+
+                expect(
+                    screen.queryByAltText(mockMediaUrls[0].name),
+                ).not.toBeInTheDocument()
+            })
+
+            it('should not render campaign image when mode is inbound even if mediaUrls has items', () => {
+                mockUseAIJourneyContext.mockReturnValue({
+                    aiJourneySettings: {
+                        journeyType: null,
+                        selectedProduct: null,
+                        totalFollowUp: 1,
+                        includeProductImage: false,
+                        includeDiscountCode: false,
+                        discountCodeValue: 0,
+                        discountCodeMessageIdx: 0,
+                        outboundMessageInstructions: '',
+                        mediaUrls: mockMediaUrls,
+                    },
+                    setAIJourneySettings: jest.fn(),
+                    resetAIJourneySettings: jest.fn(),
+                    saveAIJourneySettings: jest.fn(),
+                    shopifyIntegration: undefined,
+                    journeys: [],
+                    shopName: '',
+                    isLoadingJourneys: false,
+                    isLoadingJourneyData: false,
+                    isSavingJourneyData: false,
+                    followUpMessagesSent: 0,
+                    setFollowUpMessagesSent: jest.fn(),
+                    currentJourney: campaignJourney,
+                    journeyConfiguration: undefined,
+                    productList: [],
+                    isLoadingProducts: false,
+                })
+
+                renderComponent({ message: firstMessage }, ['inbound'])
+
+                expect(
+                    screen.queryByAltText(mockMediaUrls[0].name),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

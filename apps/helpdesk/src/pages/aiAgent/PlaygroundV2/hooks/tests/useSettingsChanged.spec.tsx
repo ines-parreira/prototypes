@@ -270,6 +270,34 @@ describe('useSettingsChanged', () => {
         expect(result.current.settingsChanged.hasOutboundChanged).toBe(true)
     })
 
+    it('should detect changes when mediaUrls changes', () => {
+        const { result } = renderHook(
+            () => ({
+                settingsChanged: useSettingsChanged(),
+                aiJourneyContext: useAIJourneyContext(),
+            }),
+            {
+                wrapper: createWrapper(),
+            },
+        )
+
+        expect(result.current.settingsChanged.hasOutboundChanged).toBe(false)
+
+        act(() => {
+            result.current.aiJourneyContext.setAIJourneySettings({
+                mediaUrls: [
+                    {
+                        url: 'https://example.com/image.jpg',
+                        name: 'Test Image',
+                        content_type: 'content-type',
+                    },
+                ],
+            })
+        })
+
+        expect(result.current.settingsChanged.hasOutboundChanged).toBe(true)
+    })
+
     it('should reset initial state when journeyId changes', () => {
         const { result } = renderHook(
             () => ({

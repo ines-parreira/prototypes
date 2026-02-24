@@ -790,6 +790,55 @@ describe('AIJourneyContext', () => {
                         .outboundMessageInstructions,
                 ).toBe('')
             })
+
+            it('should parse media_urls from campaign configuration', () => {
+                const mockMediaUrls = [
+                    {
+                        url: 'https://example.com/image.jpg',
+                        name: 'Campaign Image',
+                    },
+                ]
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.Campaign,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                            media_urls: mockMediaUrls,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(result.current.aiJourneySettings.mediaUrls).toEqual(
+                    mockMediaUrls,
+                )
+            })
+
+            it('should set mediaUrls to undefined for non-campaign journeys', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        ...mockJourneyData,
+                        type: JourneyTypeEnum.CartAbandoned,
+                        configuration: {
+                            ...mockJourneyData.configuration,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(
+                    result.current.aiJourneySettings.mediaUrls,
+                ).toBeUndefined()
+            })
         })
 
         describe('hook query options', () => {

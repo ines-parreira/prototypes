@@ -1,3 +1,5 @@
+import type { AttachmentDTO } from '@gorgias/convert-client'
+
 import type { OrderStatus } from 'AIJourney/types/AIJourneyTypes'
 import type { Product } from 'constants/integrations/types/shopify'
 
@@ -59,6 +61,7 @@ export type AIJourneySettings = {
     targetOrderStatus?: OrderStatus
     postPurchaseWaitInMinutes?: number
     waitTimeMinutes: number
+    mediaUrls?: AttachmentDTO[]
 }
 
 export type DraftKnowledge = {

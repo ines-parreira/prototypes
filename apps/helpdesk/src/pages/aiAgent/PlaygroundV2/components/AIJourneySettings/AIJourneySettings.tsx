@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import type { RefObject } from 'react'
 
 import classNames from 'classnames'
@@ -25,6 +25,8 @@ import type {
     OrderStatusOption,
 } from 'AIJourney/types/AIJourneyTypes'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
+import { useEvents } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
+import { PlaygroundEvent } from 'pages/aiAgent/PlaygroundV2/types'
 import TextArea from 'pages/common/forms/TextArea'
 
 import css from './AIJourneySettings.less'
@@ -85,6 +87,8 @@ export const AIJourneySettings: React.FC = () => {
         shopName,
         productList,
     } = useAIJourneyContext()
+
+    const { emit } = useEvents()
 
     const {
         selectedProduct,
@@ -162,6 +166,10 @@ export const AIJourneySettings: React.FC = () => {
             (option) => selectedProduct && option.id === selectedProduct.id,
         )
     }, [productOptions, selectedProduct])
+
+    useEffect(() => {
+        emit(PlaygroundEvent.RESET_CONVERSATION)
+    }, [selectedJourneyOption?.id, emit])
 
     const getProductById = useCallback(
         (id: number) => productList.find((product) => product.id === id),
