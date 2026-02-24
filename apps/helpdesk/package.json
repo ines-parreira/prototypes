@@ -167,7 +167,7 @@
         "jquery": "3.5.1",
         "jsonp": "0.2.1",
         "jsonpath-plus": "^10.3.0",
-        "jspdf": "^4.1.0",
+        "jspdf": "^4.2.0",
         "jszip": "^3.10.1",
         "launchdarkly-js-client-sdk": "catalog:feature-flags",
         "launchdarkly-react-client-sdk": "catalog:feature-flags",
