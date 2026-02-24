@@ -19,15 +19,17 @@ const analyticsOverviewDashboard: DashboardSchema = {
     name: REPORT_NAME,
     analytics_filter_id: null,
     emoji: null,
-    children: DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections.map((section) => ({
-        type: DashboardChildType.Section,
-        children: section.items
-            .filter((item) => item.visibility)
-            .map((item) => ({
-                type: DashboardChildType.Chart,
-                config_id: item.chartId,
-            })),
-    })),
+    children: DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections
+        .filter((section) => section.type === 'kpis')
+        .map((section) => ({
+            type: DashboardChildType.Section,
+            children: section.items
+                .filter((item) => item.visibility)
+                .map((item) => ({
+                    type: DashboardChildType.Chart,
+                    config_id: item.chartId,
+                })),
+        })),
 }
 
 export const useExportAnalyticsOverviewToCSV = () => {

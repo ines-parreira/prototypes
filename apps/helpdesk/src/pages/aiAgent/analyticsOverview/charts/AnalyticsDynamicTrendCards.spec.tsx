@@ -9,6 +9,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
@@ -132,6 +133,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal-to-percent' as const,
                 value: 0.75,
                 prevValue: 0.6,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentDiscountCodesAppliedCard',
+            Component: AnalyticsAiAgentDiscountCodesAppliedCard,
+            config: {
+                label: 'Discount codes applied',
+                description:
+                    'The number of purchases placed using discount codes generated and sent by Shopping Assistant.',
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 95,
             },
         },
     ]

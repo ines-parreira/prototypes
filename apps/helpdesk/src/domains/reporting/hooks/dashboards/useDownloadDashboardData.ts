@@ -24,7 +24,6 @@ export const useDownloadDashboardData = (
     const triggerDownload = useCallback(async () => {
         logEvent(SegmentEvent.StatDownloadClicked, {
             name: 'all-metrics',
-            isAiAgentDashboard: false,
         })
         await saveZippedFiles(files, fileName)
     }, [fileName, files])

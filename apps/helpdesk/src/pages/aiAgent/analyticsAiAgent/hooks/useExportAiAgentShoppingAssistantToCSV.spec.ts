@@ -3,6 +3,11 @@ import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type {
+    DashboardChartSchema,
+    DashboardSectionSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -233,6 +238,44 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
                 name.includes('shopping-assistant-top-products'),
             ),
         ).toBe(true)
+    })
+
+    it('should include DiscountCodesAppliedCard in dashboard when feature flag is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderHook(() => useExportAiAgentShoppingAssistantToCSV())
+
+        const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
+        const passedConfigIds = (
+            dashboardArg.children as DashboardSectionSchema[]
+        ).flatMap((section) =>
+            (section.children as DashboardChartSchema[]).map(
+                (child) => child.config_id,
+            ),
+        )
+
+        expect(passedConfigIds).toContain(
+            AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
+        )
+    })
+
+    it('should exclude DiscountCodesAppliedCard from dashboard when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+
+        renderHook(() => useExportAiAgentShoppingAssistantToCSV())
+
+        const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
+        const passedConfigIds = (
+            dashboardArg.children as DashboardSectionSchema[]
+        ).flatMap((section) =>
+            (section.children as DashboardChartSchema[]).map(
+                (child) => child.config_id,
+            ),
+        )
+
+        expect(passedConfigIds).not.toContain(
+            AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
+        )
     })
 
     it('should handle empty download data files', async () => {

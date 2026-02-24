@@ -2,18 +2,28 @@ import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import type {
+    DashboardChartSchema,
+    DashboardSectionSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
+import { useDownloadAutomationRateByFeatureData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateByFeatureData'
+import { useDownloadAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData'
+import { useDownloadPerformanceBreakdownData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
+import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import * as fileUtils from 'utils/file'
-
-import { useDownloadAutomationRateByFeatureData } from './useDownloadAutomationRateByFeatureData'
-import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomationRateTimeSeriesData'
-import { useDownloadPerformanceBreakdownData } from './useDownloadPerformanceBreakdownData'
-import { useExportAnalyticsOverviewToCSV } from './useExportAnalyticsOverviewToCSV'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
-jest.mock('./useDownloadPerformanceBreakdownData')
-jest.mock('./useDownloadAutomationRateByFeatureData')
-jest.mock('./useDownloadAutomationRateTimeSeriesData')
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateByFeatureData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData',
+)
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -151,6 +161,27 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             expect.any(Object),
             expect.stringContaining('analytics-overview'),
         )
+    })
+
+    it('should only pass KPI sections to useDashboardData', () => {
+        renderHook(() => useExportAnalyticsOverviewToCSV())
+
+        const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
+        const passedConfigIds = (
+            dashboardArg.children as DashboardSectionSchema[]
+        ).flatMap((section) =>
+            (section.children as DashboardChartSchema[]).map(
+                (child) => child.config_id,
+            ),
+        )
+
+        const nonKpiConfigIds = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections
+            .filter((section) => section.type !== 'kpis')
+            .flatMap((section) => section.items.map((item) => item.chartId))
+
+        nonKpiConfigIds.forEach((id) => {
+            expect(passedConfigIds).not.toContain(id)
+        })
     })
 
     it('should include KPI trends, charts and table files in the ZIP', async () => {

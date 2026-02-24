@@ -9,11 +9,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 5 cards', () => {
+        it('should have kpis section with 7 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
+            expect(kpisSection.items).toHaveLength(7)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -33,6 +34,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
             expect(kpisSection.items[4].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
+            )
+            expect(kpisSection.items[5].chartId).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
+            )
+            expect(kpisSection.items[6].chartId).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
             )
         })
 
@@ -102,6 +109,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
+            )
+            expect(allChartIds).toContain(
+                AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
+            )
+            expect(allChartIds).toContain(
+                AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,

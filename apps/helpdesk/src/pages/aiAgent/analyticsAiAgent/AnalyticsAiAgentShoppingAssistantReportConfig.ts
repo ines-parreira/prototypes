@@ -1,4 +1,5 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchDiscountCodesAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
 import { fetchDiscountCodesAverageValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAverageValueTrend'
 import { fetchDiscountCodesRateAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesRateAppliedTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
@@ -13,6 +14,7 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsShoppingAssistantComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
+import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
@@ -49,6 +51,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     RevenuePerInteractionCard = 'revenue_per_interaction_card',
     AverageDiscountAmountCard = 'average_discount_amount_card',
     DiscountUsageCard = 'discount_usage_card',
+    DiscountCodesAppliedCard = 'discount_codes_applied_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -156,6 +159,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     'The percentage of discounts generated and sent by Shopping Assistant that customers apply.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard]: {
+                chartComponent: AnalyticsAiAgentDiscountCodesAppliedCard,
+                label: 'Discount codes applied',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchDiscountCodesAppliedTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'The number of purchases placed using discount codes generated and sent by Shopping Assistant.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
