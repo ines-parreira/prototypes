@@ -123,9 +123,8 @@ const TicketHeader = ({
             !ticket.get('id')
         )
             return false
-        if (isInitialLoading) return true
-        return !translationMap[ticket.get('id')]?.subject
-    }, [shouldShowTranslatedContent, isInitialLoading, translationMap, ticket])
+        return isInitialLoading
+    }, [shouldShowTranslatedContent, isInitialLoading, ticket])
 
     const shouldDisplayAllFollowUps = useAppSelector(
         getShouldDisplayAllFollowUps,
@@ -397,7 +396,6 @@ const TicketHeader = ({
                         maxLength={998}
                     />
                 </TicketSubjectLoadingState>
-
                 <div className={css.actions}>
                     <>
                         {shouldShowTranslatedContent(
