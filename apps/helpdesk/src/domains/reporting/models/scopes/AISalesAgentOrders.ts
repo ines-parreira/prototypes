@@ -14,7 +14,14 @@ import { createScopeFilters } from './utils'
 
 const AISalesAgentOrdersScope = defineScope({
     scope: MetricScope.AISalesAgentOrders,
-    measures: ['gmv', 'gmvUsd', 'count', 'uniqCount', 'averageDiscountUsd'],
+    measures: [
+        'gmv',
+        'gmvUsd',
+        'count',
+        'uniqCount',
+        'averageDiscountUsd',
+        'medianPurchaseTime',
+    ],
     filters: [
         'periodStart',
         'periodEnd',
@@ -338,3 +345,27 @@ export const AISalesAgentInfluencedUsdTimeSeries =
 export const AISalesAgentInfluencedUsdTimeSeriesQueryFactoryV2 = (
     ctx: AISalesAgentOrdersContext,
 ) => AISalesAgentInfluencedUsdTimeSeries.build(ctx)
+
+export const AISalesMedianPurchaseTime =
+    AISalesAgentOrdersScope.defineMetricName(
+        METRIC_NAMES.AI_SALES_AGENT_MEDIAN_PURCHASE_TIME,
+    ).defineQuery(({ ctx, config }) => ({
+        measures: ['medianPurchaseTime'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'isInfluenced',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [true],
+            },
+            {
+                member: 'source',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [SourceFilter.ShoppingAssistant],
+            },
+        ] as any,
+    }))
+
+export const AISalesMedianPurchaseTimeQueryFactoryV2 = (
+    ctx: AISalesAgentOrdersContext,
+) => AISalesMedianPurchaseTime.build(ctx)

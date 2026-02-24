@@ -31,6 +31,8 @@ import {
     AISalesAgentTotalNumberOfOrderQueryFactoryV2,
     AISalesAgentTotalProductBought,
     AISalesAgentTotalProductBoughtQueryFactoryV2,
+    AISalesMedianPurchaseTime,
+    AISalesMedianPurchaseTimeQueryFactoryV2,
 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
 import type {
     AggregationWindow,
@@ -454,6 +456,41 @@ describe('AISalesAgentOrders scope', () => {
             expect(result.metricName).toBe(
                 METRIC_NAMES.AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES,
             )
+        })
+    })
+
+    describe('AISalesMedianPurchaseTime', () => {
+        it('should build query with medianPurchaseTime measure', () => {
+            const result = AISalesMedianPurchaseTime.build(mockContext)
+
+            expect(result.measures).toEqual(['medianPurchaseTime'])
+            expect(result.metricName).toBe(
+                METRIC_NAMES.AI_SALES_AGENT_MEDIAN_PURCHASE_TIME,
+            )
+            expect(result.filters).toEqual([
+                ...mockScopeFilters,
+                {
+                    member: 'isInfluenced',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [true],
+                },
+                {
+                    member: 'source',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: ['shopping-assistant'],
+                },
+            ])
+        })
+
+        it('should work with query factory', () => {
+            const result = AISalesMedianPurchaseTimeQueryFactoryV2(
+                mockContext as AISalesAgentOrdersContext,
+            )
+
+            expect(result.metricName).toBe(
+                METRIC_NAMES.AI_SALES_AGENT_MEDIAN_PURCHASE_TIME,
+            )
+            expect(result.measures).toEqual(['medianPurchaseTime'])
         })
     })
 })

@@ -4,6 +4,7 @@ import { fetchDiscountCodesAverageValueTrend } from 'domains/reporting/pages/aut
 import { fetchDiscountCodesOfferedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
 import { fetchDiscountCodesRateAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesRateAppliedTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
+import { fetchMedianPurchaseTimeTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useMedianPerchaseTimeTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { fetchTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
@@ -19,6 +20,7 @@ import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analytic
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
+import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsShoppingAssistantPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsShoppingAssistantPerformanceTable'
 import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
@@ -55,6 +57,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     DiscountUsageCard = 'discount_usage_card',
     DiscountCodesAppliedCard = 'discount_codes_applied_card',
     DiscountsOfferedCard = 'discounts_offered_card',
+    MedianPurchaseTimeCard = 'median_purchase_time_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -195,6 +198,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentShoppingAssistantChart.MedianPurchaseTimeCard]: {
+                chartComponent: AnalyticsAiAgentMedianPurchaseTimeCard,
+                label: 'Median purchase time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchMedianPurchaseTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'Median duration between automated interaction with Shopping assistant and order placed.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'less-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
                 {

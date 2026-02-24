@@ -166,6 +166,7 @@ export type MeasureName =
     | 'totalDurationSeconds'
     | 'onlineDurationSeconds'
     | 'offlineDurationSeconds'
+    | 'medianPurchaseTime'
 
 export type TimeDimensionName =
     | 'createdDatetime'

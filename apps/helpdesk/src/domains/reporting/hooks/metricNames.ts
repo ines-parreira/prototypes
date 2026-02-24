@@ -89,6 +89,7 @@ export const METRIC_NAMES = {
     AI_SALES_AGENT_GMV_USD_TIME_SERIES: 'ai-sales-agent-gmv-usd-time-series',
     AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES:
         'ai-sales-agent-influenced-gmv-time-series',
+    AI_SALES_AGENT_MEDIAN_PURCHASE_TIME: 'ai-sales-agent-median-purchase-time',
     AI_SALES_AGENT_GMV_USD: 'ai-sales-agent-gmv-usd',
     AI_SALES_AGENT_GMV_USD_INFLUENCED: 'ai-sales-agent-gmv-usd-influenced',
     AI_SALES_AGENT_GROUPED_SALES_OPPORTUNITY:
@@ -809,6 +810,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_AVERAGE,
         METRIC_NAMES.AI_SALES_AGENT_GMV_USD_TIME_SERIES,
         METRIC_NAMES.AI_SALES_AGENT_INFLUENCED_GMV_TIME_SERIES,
+        METRIC_NAMES.AI_SALES_AGENT_MEDIAN_PURCHASE_TIME,
     ],
     [MetricScope.AISalesAgentConversations]: [
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_SALES_CONVERSATIONS_PER_CHANNEL,

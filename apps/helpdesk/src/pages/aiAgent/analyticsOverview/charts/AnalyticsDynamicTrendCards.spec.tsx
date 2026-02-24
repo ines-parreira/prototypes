@@ -12,6 +12,7 @@ import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyti
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
+import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
@@ -158,6 +159,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 85,
                 prevValue: 72,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentMedianPurchaseTimeCard',
+            Component: AnalyticsAiAgentMedianPurchaseTimeCard,
+            config: {
+                label: 'Median purchase time',
+                description:
+                    'Median duration between automated interaction with Shopping assistant and order placed.',
+                metricFormat: 'decimal' as const,
+                value: 42,
+                prevValue: 38,
             },
         },
     ]
