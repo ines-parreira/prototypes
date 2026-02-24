@@ -228,7 +228,6 @@ describe('usePublishModal', () => {
             await act(async () => {
                 await Promise.resolve()
             })
-
             expect(mockMutateAsync).toHaveBeenCalledWith([
                 undefined,
                 {
@@ -241,6 +240,32 @@ describe('usePublishModal', () => {
                     commit_message: undefined,
                 },
             ])
+        })
+
+        it('should not re-trigger auto-publish when hook re-renders', async () => {
+            mockMutateAsync.mockResolvedValue({
+                data: {
+                    title: 'Updated Title',
+                    content: 'Updated Content',
+                },
+            })
+
+            const { rerender } = renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await Promise.resolve()
+            })
+
+            mockUseUpdateArticleTranslation.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+            })
+            rerender()
+
+            await act(async () => {
+                await Promise.resolve()
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledTimes(1)
         })
 
         it('should not auto-publish when not first publish', () => {
