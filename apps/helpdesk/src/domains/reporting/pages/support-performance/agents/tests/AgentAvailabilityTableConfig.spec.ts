@@ -20,6 +20,9 @@ import {
 } from 'domains/reporting/pages/support-performance/agents/constants'
 import * as mobileUtils from 'pages/common/utils/mobile'
 
+const { AGENT_NAME_COLUMN, ONLINE_TIME_COLUMN, AVAILABLE_STATUS_COLUMN } =
+    AGENT_AVAILABILITY_COLUMNS
+
 jest.mock('pages/common/utils/mobile', () => ({
     isMediumOrSmallScreen: jest.fn(),
     isExtraLargeScreen: jest.fn(() => false),
@@ -124,12 +127,10 @@ describe('AgentAvailabilityTableConfig', () => {
                 false,
             )
 
-            expect(
-                getColumnWidth(AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN),
-            ).toBe(AGENT_NAME_COLUMN_WIDTH)
-            expect(getColumnWidth('agent_online_time')).toBe(
-                METRIC_COLUMN_WIDTH,
+            expect(getColumnWidth(AGENT_NAME_COLUMN)).toBe(
+                AGENT_NAME_COLUMN_WIDTH,
             )
+            expect(getColumnWidth(ONLINE_TIME_COLUMN)).toBe(METRIC_COLUMN_WIDTH)
         })
 
         it('should return mobile widths on small screens', () => {
@@ -137,10 +138,10 @@ describe('AgentAvailabilityTableConfig', () => {
                 true,
             )
 
-            expect(
-                getColumnWidth(AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN),
-            ).toBe(MOBILE_AGENT_NAME_COLUMN_WIDTH)
-            expect(getColumnWidth('agent_online_time')).toBe(
+            expect(getColumnWidth(AGENT_NAME_COLUMN)).toBe(
+                MOBILE_AGENT_NAME_COLUMN_WIDTH,
+            )
+            expect(getColumnWidth(ONLINE_TIME_COLUMN)).toBe(
                 MOBILE_METRIC_COLUMN_WIDTH,
             )
         })
@@ -148,13 +149,9 @@ describe('AgentAvailabilityTableConfig', () => {
 
     describe('getColumnAlignment', () => {
         it('should return "left" for agent_name, "right" for metrics', () => {
-            expect(
-                getColumnAlignment(
-                    AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN,
-                ),
-            ).toBe('left')
-            expect(getColumnAlignment('agent_online_time')).toBe('right')
-            expect(getColumnAlignment('agent_status_available')).toBe('right')
+            expect(getColumnAlignment(AGENT_NAME_COLUMN)).toBe('left')
+            expect(getColumnAlignment(ONLINE_TIME_COLUMN)).toBe('right')
+            expect(getColumnAlignment(AVAILABLE_STATUS_COLUMN)).toBe('right')
         })
     })
 })

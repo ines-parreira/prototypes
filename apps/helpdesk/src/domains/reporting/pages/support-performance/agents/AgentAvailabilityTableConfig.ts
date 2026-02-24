@@ -17,6 +17,7 @@ import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 
 export type OnlineTimeColumnKey = 'agent_online_time'
 export type AgentNameColumnKey = 'agent_name'
+const { AGENT_NAME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
 
 // hard-coded on the BE as such
 type SystemStatusName = 'available' | 'unavailable' | 'on-call' | 'wrapping-up'
@@ -85,14 +86,14 @@ export const getColumnConfig = (
 
 export const getColumnWidth = (column: AgentAvailabilityColumn) => {
     if (isMediumOrSmallScreen()) {
-        return column === AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN
+        return column === AGENT_NAME_COLUMN
             ? MOBILE_AGENT_NAME_COLUMN_WIDTH
             : MOBILE_METRIC_COLUMN_WIDTH
     }
-    return column === AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN
+    return column === AGENT_NAME_COLUMN
         ? AGENT_NAME_COLUMN_WIDTH
         : METRIC_COLUMN_WIDTH
 }
 
 export const getColumnAlignment = (column: AgentAvailabilityColumn) =>
-    column === AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN ? 'left' : 'right'
+    column === AGENT_NAME_COLUMN ? 'left' : 'right'

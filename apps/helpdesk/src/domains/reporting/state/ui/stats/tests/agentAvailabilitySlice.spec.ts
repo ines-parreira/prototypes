@@ -25,19 +25,21 @@ import { initialState as uiFiltersInitialState } from 'domains/reporting/state/u
 import { OrderDirection } from 'models/api/types'
 import type { RootState } from 'state/types'
 
+const { ONLINE_TIME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
+
 describe('agentAvailabilitySlice', () => {
     describe('reducers', () => {
         it('should keep sorting field, direction and loading state', () => {
             const newState = agentAvailabilitySlice.reducer(
                 initialState,
                 sortingSet({
-                    field: 'agent_online_time',
+                    field: ONLINE_TIME_COLUMN,
                     direction: OrderDirection.Desc,
                 }),
             )
 
             expect(newState.sorting).toEqual({
-                field: 'agent_online_time',
+                field: ONLINE_TIME_COLUMN,
                 direction: OrderDirection.Desc,
                 isLoading: true,
                 lastSortingMetric: null,
@@ -302,7 +304,7 @@ describe('agentAvailabilitySlice', () => {
             ]
 
             const state = buildState({
-                field: AGENT_AVAILABILITY_COLUMNS.ONLINE_TIME_COLUMN,
+                field: ONLINE_TIME_COLUMN,
                 isLoading: false,
                 lastSortingMetric: metricData,
             }) as unknown as RootState
@@ -318,7 +320,7 @@ describe('agentAvailabilitySlice', () => {
             const metricData = [{ agentId: '2', value: 100 }]
 
             const state = buildState({
-                field: AGENT_AVAILABILITY_COLUMNS.ONLINE_TIME_COLUMN,
+                field: ONLINE_TIME_COLUMN,
                 isLoading: false,
                 lastSortingMetric: metricData,
             }) as unknown as RootState

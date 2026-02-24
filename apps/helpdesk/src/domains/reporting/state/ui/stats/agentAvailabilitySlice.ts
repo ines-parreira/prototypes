@@ -6,9 +6,11 @@ import { AGENT_AVAILABILITY_SLICE_NAME } from 'domains/reporting/state/ui/stats/
 import type { AgentPerformanceState } from 'domains/reporting/state/ui/stats/createTableSlice'
 import { createTableSlice } from 'domains/reporting/state/ui/stats/createTableSlice'
 
+const { AGENT_NAME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
+
 export const agentAvailability = createTableSlice<AgentAvailabilityColumn>({
     sliceName: AGENT_AVAILABILITY_SLICE_NAME,
-    defaultSortingField: AGENT_AVAILABILITY_COLUMNS.AGENT_NAME_COLUMN,
+    defaultSortingField: AGENT_NAME_COLUMN,
     agentIdFields: ['agentId'],
 })
 
