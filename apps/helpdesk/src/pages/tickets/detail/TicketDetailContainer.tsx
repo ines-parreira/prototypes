@@ -11,6 +11,7 @@ import {
 } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import {
+    getMacroTicketFieldValues,
     useLiveTicketTranslationsUpdates,
     useTicketFieldsValidation,
 } from '@repo/tickets'
@@ -87,7 +88,6 @@ import type { RootState } from 'state/types'
 import { getActiveView } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
-import { getMacroTicketFieldValues } from '../../../../../../packages/tickets/src/components/InfobarTicketDetails/components/InfobarTicketFields/utils/getMacroTicketFieldValues'
 import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'
 import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
