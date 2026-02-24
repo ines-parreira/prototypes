@@ -138,7 +138,7 @@ const WorkflowVariableDropdown = ({
             safeDistance={0}
         >
             {(selectedCategory || Array.isArray(searchResults)) && (
-                <DropdownHeader>
+                <DropdownHeader className={css.dropdownHeader}>
                     <Button
                         onClick={() => {
                             if (Array.isArray(searchResults)) {

@@ -351,6 +351,7 @@ export default function SlashCommandSuggestions({
             >
                 <div
                     ref={contentRef}
+                    className={css.content}
                     onMouseDown={(e) => {
                         if (!(e.target instanceof HTMLInputElement)) {
                             e.preventDefault()
@@ -359,7 +360,7 @@ export default function SlashCommandSuggestions({
                     onClick={(e) => e.stopPropagation()}
                 >
                     {selectedProvider && (
-                        <DropdownHeader>
+                        <DropdownHeader className={css.dropdownHeader}>
                             <Button
                                 onClick={() => setSelectedProvider(null)}
                                 variant="tertiary"
