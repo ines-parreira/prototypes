@@ -24,6 +24,7 @@ describe('NavigationProvider', () => {
                 ticketInfobar: {
                     activeTab: TicketInfobarTab.Customer,
                     isExpanded: true,
+                    isEditShopifyFieldsOpen: false,
                 },
             },
             expect.any(Function),

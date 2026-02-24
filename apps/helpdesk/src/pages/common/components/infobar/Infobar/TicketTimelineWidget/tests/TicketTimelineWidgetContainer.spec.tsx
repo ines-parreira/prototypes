@@ -143,6 +143,8 @@ describe('TicketTimelineWidgetContainer', () => {
             onChangeTab: jest.fn(),
             onToggle: jest.fn(),
             isExpanded: true,
+            isEditShopifyFieldsOpen: false,
+            onToggleEditShopifyFields: jest.fn(),
         },
         useCustomFieldDefinitions: {
             data: { data: [] as CustomField[] },
@@ -386,6 +388,8 @@ describe('TicketTimelineWidgetContainer', () => {
                 onChangeTab: mockOnChangeTab,
                 onToggle: mockOnToggle,
                 isExpanded: false, // Collapsed
+                isEditShopifyFieldsOpen: false,
+                onToggleEditShopifyFields: jest.fn(),
             })
 
             mockUseTicketTimelineData.mockReturnValue({
@@ -452,6 +456,8 @@ describe('TicketTimelineWidgetContainer', () => {
                 onChangeTab: mockOnChangeTab,
                 onToggle: mockOnToggle,
                 isExpanded: true, // Already expanded
+                isEditShopifyFieldsOpen: false,
+                onToggleEditShopifyFields: jest.fn(),
             })
 
             mockUseTicketTimelineData.mockReturnValue({

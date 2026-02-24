@@ -1,6 +1,7 @@
 import {
     buildShopTagOptions,
     extractTagValues,
+    formatTagCount,
     parseTags,
     tagsToString,
 } from '../shopifyTags.utils'
@@ -84,6 +85,32 @@ describe('extractTagValues', () => {
 
     it('returns empty array for empty input', () => {
         expect(extractTagValues([])).toEqual([])
+    })
+})
+
+describe('formatTagCount', () => {
+    it('returns dash for undefined', () => {
+        expect(formatTagCount(undefined)).toBe('-')
+    })
+
+    it('returns dash for empty string', () => {
+        expect(formatTagCount('')).toBe('-')
+    })
+
+    it('returns dash for whitespace-only string', () => {
+        expect(formatTagCount('   ')).toBe('-')
+    })
+
+    it('returns singular for single tag', () => {
+        expect(formatTagCount('VIP')).toBe('(1 tag)')
+    })
+
+    it('returns plural for multiple tags', () => {
+        expect(formatTagCount('VIP, Wholesale, Returning')).toBe('(3 tags)')
+    })
+
+    it('handles tags with extra commas and whitespace', () => {
+        expect(formatTagCount('VIP,,  , Wholesale, ')).toBe('(2 tags)')
     })
 })
 

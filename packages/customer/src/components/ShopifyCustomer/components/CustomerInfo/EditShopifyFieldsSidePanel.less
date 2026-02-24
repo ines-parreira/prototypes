@@ -1,0 +1,70 @@
+:local {
+    .tableContainer {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .sectionContainer {
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .sectionHeader {
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .row {
+        cursor: move;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: var(--surface-neutral-tertiary);
+        }
+    }
+
+    .dragHandle {
+        cursor: grab;
+        color: var(--text-neutral-tertiary);
+        display: flex;
+        align-items: center;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .dragHeaderCell,
+    .dragCell {
+        width: 48px;
+    }
+
+    .metricHeaderCell,
+    .metricNameCell {
+        flex: 1;
+        overflow: hidden;
+        min-width: 0;
+        max-width: 120px;
+    }
+
+    .valueHeaderCell,
+    .valueCell {
+        flex: 1;
+        overflow: hidden;
+        min-width: 0;
+        max-width: 120px;
+    }
+
+    .toggleHeaderCell,
+    .toggleCell {
+        width: 80px;
+    }
+
+    .metricLabelText {
+        color: var(--content-neutral-secondary);
+    }
+    .metricLabelText,
+    .metricValue {
+        margin: 0;
+    }
+}

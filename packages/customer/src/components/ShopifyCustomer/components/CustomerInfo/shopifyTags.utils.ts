@@ -1,3 +1,5 @@
+import pluralize from 'pluralize'
+
 export type TagOption = {
     id: string
     label: string
@@ -25,6 +27,12 @@ export function extractTagValues(selectedOptions: TagOption[]): string[] {
         return opt.id
     })
     return [...new Set(newTagValues)]
+}
+
+export function formatTagCount(tagsString: string | undefined): string {
+    const tags = parseTags(tagsString)
+    if (tags.length === 0) return '-'
+    return `(${tags.length} ${pluralize('tag', tags.length)})`
 }
 
 export function buildShopTagOptions(

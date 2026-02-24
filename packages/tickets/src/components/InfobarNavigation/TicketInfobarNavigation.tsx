@@ -25,8 +25,13 @@ export function TicketInfobarNavigation({
     hasAIFeedback,
     hasTimeline,
 }: TicketInfobarNavigationProps) {
-    const { activeTab, isExpanded, onChangeTab, onToggle } =
-        useTicketInfobarNavigation()
+    const {
+        activeTab,
+        isExpanded,
+        onChangeTab,
+        onToggle,
+        onToggleEditShopifyFields,
+    } = useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
 
@@ -106,7 +111,7 @@ export function TicketInfobarNavigation({
                         <MenuItem
                             label="Shopify"
                             leadingSlot="vendor-shopify-colored"
-                            onAction={() => {}}
+                            onAction={() => onToggleEditShopifyFields(true)}
                         />
                         <MenuItem
                             label="Yotpo"

@@ -8,6 +8,7 @@ export function useNavigationContext(): NavigationContextValue {
         ticketInfobar: {
             activeTab: TicketInfobarTab.Customer,
             isExpanded: true,
+            isEditShopifyFieldsOpen: false,
         },
     })
 }

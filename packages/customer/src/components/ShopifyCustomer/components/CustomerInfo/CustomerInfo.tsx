@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/user'
 
 import { Box } from '@gorgias/axiom'
@@ -13,10 +14,10 @@ import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
+import { EditShopifyFieldsSidePanel } from './EditShopifyFieldsSidePanel'
 import { NoShopifyProfile } from './NoShopifyProfile'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
-import { ShopifyTags } from './ShopifyTags'
 import type { FieldRenderContext } from './types'
 import { useCustomerFieldPreferences } from './useCustomerFieldPreferences'
 
@@ -86,11 +87,17 @@ export function CustomerInfo({
         timeFormat,
         integrationId: selectedIntegration?.id,
         externalId: selectedExternalId,
+        customerId,
+        ticketId,
     }
 
     const hasData = !!purchaseSummary || !!shopper
 
-    const { fields } = useCustomerFieldPreferences()
+    const { fields, preferences, setPreferences } =
+        useCustomerFieldPreferences()
+
+    const { isEditShopifyFieldsOpen, onToggleEditShopifyFields } =
+        useTicketInfobarNavigation()
 
     const [selectedOrder, setSelectedOrder] =
         useState<OrderEcommerceData | null>(null)
@@ -151,19 +158,7 @@ export function CustomerInfo({
                     isLoading={isLoadingIntegrations}
                 />
                 {hasData && (
-                    <>
-                        <ShopifyTags
-                            tags={shopper?.data?.tags}
-                            integrationId={selectedIntegration?.id}
-                            externalId={selectedExternalId}
-                            customerId={customerId}
-                            ticketId={ticketId}
-                        />
-                        <CustomerInfoFieldList
-                            fields={fields}
-                            context={context}
-                        />
-                    </>
+                    <CustomerInfoFieldList fields={fields} context={context} />
                 )}
             </Box>
             <OrdersList
@@ -182,6 +177,13 @@ export function CustomerInfo({
                 onDuplicate={handleDuplicateOrder}
                 onRefund={handleRefundOrder}
                 onCancel={handleCancelOrder}
+            />
+            <EditShopifyFieldsSidePanel
+                isOpen={isEditShopifyFieldsOpen}
+                onOpenChange={onToggleEditShopifyFields}
+                preferences={preferences}
+                onSave={setPreferences}
+                context={context}
             />
         </>
     )

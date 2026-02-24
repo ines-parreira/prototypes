@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 
+import { NavigationProvider } from '@repo/navigation'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
@@ -50,9 +51,11 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         ...options,
         wrapper: ({ children }) => (
             <QueryClientProvider client={testAppQueryClient}>
-                <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                    <Route path={mergedOptions.path}>{children}</Route>
-                </MemoryRouter>
+                <NavigationProvider>
+                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
+                        <Route path={mergedOptions.path}>{children}</Route>
+                    </MemoryRouter>
+                </NavigationProvider>
             </QueryClientProvider>
         ),
     })
@@ -76,9 +79,11 @@ export const renderHook = <TProps, TResult>(
         ...options,
         wrapper: ({ children }) => (
             <QueryClientProvider client={testAppQueryClient}>
-                <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                    <Route path={mergedOptions.path}>{children}</Route>
-                </MemoryRouter>
+                <NavigationProvider>
+                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
+                        <Route path={mergedOptions.path}>{children}</Route>
+                    </MemoryRouter>
+                </NavigationProvider>
             </QueryClientProvider>
         ),
     })

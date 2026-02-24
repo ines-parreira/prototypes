@@ -2,14 +2,18 @@ import { FieldRow } from '@repo/tickets'
 
 import { OverflowListItem, Text } from '@gorgias/axiom'
 
-import type { FieldRenderContext, ReadOnlyFieldConfig } from './types'
+import type { FieldConfig, FieldRenderContext } from './types'
 
 type Props = {
-    field: ReadOnlyFieldConfig
+    field: FieldConfig
     context: FieldRenderContext
 }
 
 export function CustomerInfoFieldItem({ field, context }: Props) {
+    if (field.type === 'component') {
+        return <OverflowListItem>{field.render(context)}</OverflowListItem>
+    }
+
     const value = field.getValue(context)
     const displayValue =
         field.formatValue?.(value, context) ?? String(value ?? '-')

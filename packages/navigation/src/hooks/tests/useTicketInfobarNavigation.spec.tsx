@@ -19,8 +19,10 @@ describe('useTicketInfobarNavigation', () => {
         expect(result.current).toEqual({
             activeTab: TicketInfobarTab.Customer,
             isExpanded: true,
+            isEditShopifyFieldsOpen: false,
             onChangeTab: expect.any(Function),
             onToggle: expect.any(Function),
+            onToggleEditShopifyFields: expect.any(Function),
         })
     })
 
