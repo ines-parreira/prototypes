@@ -98,17 +98,19 @@ export const AiJourneyNavbar = () => {
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
             <Navigation.Root className={css.container}>
-                <StoreSelector
-                    integrations={storeIntegrations}
-                    selected={selectedStoreIntegration}
-                    onChange={handleStoreChange}
-                    enableDynamicHeight
-                    fullWidth
-                    singleStoreInline
-                    buttonClassName={css.storeSelectorButton}
-                    hideSelectedFromDropdown
-                    applyClassicThemeOverride
-                />
+                <div className={css.storeSelector}>
+                    <StoreSelector
+                        integrations={storeIntegrations}
+                        selected={selectedStoreIntegration}
+                        onChange={handleStoreChange}
+                        enableDynamicHeight
+                        fullWidth
+                        singleStoreInline
+                        buttonClassName={css.storeSelectorButton}
+                        hideSelectedFromDropdown
+                        applyClassicThemeOverride
+                    />
+                </div>
                 <div className={css.navigationSections}>
                     <Navigation.SectionItem
                         as={NavLink}
