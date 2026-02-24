@@ -20,10 +20,8 @@ exports[`<LimitWarning /> should render a limit warning 1`] = `
     >
       <span>
         <strong>
-          Your account has reached the integration limit.
-           
+          Your account has expired. Please resubscribe to continue using integrations.
         </strong>
-        Need more?
       </span>
     </span>
     <div

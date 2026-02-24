@@ -37,8 +37,22 @@ const products = [
     },
 ]
 
+const billingState = fromJS({ products })
+
 const integrations = fromJS({
     integrations: Array.from({ length: 5 }, (_, index) => ({ id: index })),
+})
+
+const activeSubscriptionState = fromJS({
+    current_subscription: {
+        products: {
+            [HELPDESK_PRODUCT_ID]: LOW_INTEGRATION_PLAN_ID,
+        },
+    },
+})
+
+const canceledSubscriptionState = fromJS({
+    current_subscription: null,
 })
 
 describe('<LimitWarning />', () => {
@@ -51,10 +65,8 @@ describe('<LimitWarning />', () => {
                     },
                 },
             }),
-            billing: fromJS({
-                products,
-            }),
-            integrations,
+            billing: billingState,
+            integrations: integrations,
         })
         const { container } = renderWithRouter(
             <Provider store={store}>
@@ -63,18 +75,11 @@ describe('<LimitWarning />', () => {
         )
         expect(container.firstChild).toBeNull()
     })
+
     it('should render a limit warning', () => {
         const store = mockStore({
-            currentAccount: fromJS({
-                current_subscription: {
-                    products: {
-                        [HELPDESK_PRODUCT_ID]: LOW_INTEGRATION_PLAN_ID,
-                    },
-                },
-            }),
-            billing: fromJS({
-                products,
-            }),
+            currentAccount: activeSubscriptionState,
+            billing: billingState,
             integrations,
         })
         const { container } = renderWithRouter(
@@ -83,5 +88,87 @@ describe('<LimitWarning />', () => {
             </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    describe('with an active subscription at the integration limit', () => {
+        const renderComponent = () => {
+            const store = mockStore({
+                currentAccount: activeSubscriptionState,
+                billing: billingState,
+                integrations: integrations,
+            })
+            return renderWithRouter(
+                <Provider store={store}>
+                    <LimitWarning />
+                </Provider>,
+            )
+        }
+
+        it('should show "Upgrade your plan" as the action label', () => {
+            const { getByRole } = renderComponent()
+            expect(
+                getByRole('link', { name: 'Upgrade your plan' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show the account expired message', () => {
+            const { getByText } = renderComponent()
+            expect(
+                getByText(
+                    /Your account has expired\. Please resubscribe to continue using integrations\./,
+                ),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('with no subscription at the integration limit', () => {
+        const renderComponent = () => {
+            const store = mockStore({
+                currentAccount: canceledSubscriptionState,
+                billing: billingState,
+                integrations: integrations,
+            })
+            return renderWithRouter(
+                <Provider store={store}>
+                    <LimitWarning />
+                </Provider>,
+            )
+        }
+
+        it('should show "Go to billing settings" as the action label', () => {
+            const { getByRole } = renderComponent()
+            expect(
+                getByRole('link', { name: 'Go to billing settings' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show the integration limit reached message', () => {
+            const { getByText } = renderComponent()
+            expect(
+                getByText(/Your account has reached the integration limit\./),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('with an active subscription approaching the integration limit', () => {
+        it('should show "Upgrade your plan" as the action label', () => {
+            const store = mockStore({
+                currentAccount: activeSubscriptionState,
+                billing: billingState,
+                integrations: fromJS({
+                    integrations: Array.from({ length: 3 }, (_, index) => ({
+                        id: index,
+                    })),
+                }),
+            })
+            const { getByRole } = renderWithRouter(
+                <Provider store={store}>
+                    <LimitWarning />
+                </Provider>,
+            )
+            expect(
+                getByRole('link', { name: 'Upgrade your plan' }),
+            ).toBeInTheDocument()
+        })
     })
 })

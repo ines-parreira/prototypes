@@ -5,6 +5,7 @@ import {
     getCurrentHelpdeskMaxIntegrations,
     getCurrentHelpdeskPlanName,
 } from 'state/billing/selectors'
+import { getCurrentSubscription } from 'state/currentAccount/selectors'
 import { getActiveIntegrations } from 'state/integrations/selectors'
 
 export default function LimitWarning({ className }: { className?: string }) {
@@ -14,6 +15,8 @@ export default function LimitWarning({ className }: { className?: string }) {
 
     const remainingIntegrations = maxIntegrations - activeIntegrationsNumber
     const plural = activeIntegrationsNumber > 1
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
 
     if (remainingIntegrations > 3) {
         return null
@@ -25,7 +28,11 @@ export default function LimitWarning({ className }: { className?: string }) {
                 remainingIntegrations > 0 ? AlertType.Warning : AlertType.Error
             }
             icon
-            actionLabel="Upgrade your plan"
+            actionLabel={
+                isCurrentSubscriptionCanceled
+                    ? 'Go to billing settings'
+                    : 'Upgrade your plan'
+            }
             actionHref={'/app/settings/billing'}
             className={className}
         >
@@ -40,12 +47,19 @@ export default function LimitWarning({ className }: { className?: string }) {
                     allowed on your <strong>{helpdeskName} plan.</strong> Need
                     more?
                 </span>
-            ) : (
+            ) : isCurrentSubscriptionCanceled ? (
                 <span>
                     <strong>
                         Your account has reached the integration limit.{' '}
                     </strong>
                     Need more?
+                </span>
+            ) : (
+                <span>
+                    <strong>
+                        Your account has expired. Please resubscribe to continue
+                        using integrations.
+                    </strong>
                 </span>
             )}
         </LinkAlert>
