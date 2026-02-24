@@ -7,7 +7,6 @@ import ProductCardForCoupon from '../../components/ProductCardForCoupon'
 import UpcomingInvoiceCard from '../../components/UpcomingInvoiceCard'
 import { useDeactivateAccountWithSideEffects } from '../../hooks/useDeactivateAccountWithSideEffects'
 import { useReactivateAccountWithSideEffects } from '../../hooks/useReactivateAccountWithSideEffects'
-import { useSetIsVettedWithSideEffects } from '../../hooks/useSetIsVettedWithSideEffects'
 
 import css from './BillingInternalViewUI.less'
 
@@ -25,7 +24,6 @@ export function BillingInternalViewUI({
 }: BillingInternalViewUIProps) {
     const deactivateAccount = useDeactivateAccountWithSideEffects()
     const reactivateAccount = useReactivateAccountWithSideEffects()
-    const setIsVettedAccount = useSetIsVettedWithSideEffects()
 
     const currentCoupon = billingState.subscription?.coupon
 
@@ -56,24 +54,6 @@ export function BillingInternalViewUI({
                     isLoading={reactivateAccount.isLoading}
                 >
                     Reactivate account
-                </Button>
-            </div>
-            <div className={css.buttons_line}>
-                <Button
-                    onClick={() => {
-                        setIsVettedAccount.mutate([{ isVetted: true }])
-                    }}
-                    isLoading={setIsVettedAccount.isLoading}
-                >
-                    Vet account
-                </Button>
-                <Button
-                    onClick={() => {
-                        setIsVettedAccount.mutate([{ isVetted: false }])
-                    }}
-                    isLoading={setIsVettedAccount.isLoading}
-                >
-                    Unvet account
                 </Button>
             </div>
             <UpcomingInvoiceCard

@@ -401,48 +401,4 @@ describe('BillingInternalViewUI', () => {
             style: 'alert',
         })
     })
-
-    it('should be always possible to vet and unvet an account', async () => {
-        const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
-            <BillingInternalViewUI
-                {...BillingInternalViewUIDefaultProps}
-                billingState={payingWithCreditCard}
-            />,
-        )
-
-        const vetButton = screen.getByRole('button', {
-            name: /Vet account/,
-        })
-        const unvetButton = screen.getByRole('button', {
-            name: /Unvet account/,
-        })
-
-        mockedServer.onPost('/billing/vet-account').reply(200, {})
-        await user.click(vetButton)
-
-        expect(mockedServer.history.post.length).toBe(1)
-        expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
-
-        expect(notify).toHaveBeenLastCalledWith({
-            allowHTML: true,
-            message: 'Account has been successfully (un)vetted.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
-
-        await user.click(unvetButton)
-        expect(mockedServer.history.post.length).toBe(2)
-        expect(mockedServer.history.post[1].url).toBe('/billing/vet-account')
-        expect(notify).toHaveBeenLastCalledWith({
-            allowHTML: true,
-            message: 'Account has been successfully (un)vetted.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
-    })
 })
