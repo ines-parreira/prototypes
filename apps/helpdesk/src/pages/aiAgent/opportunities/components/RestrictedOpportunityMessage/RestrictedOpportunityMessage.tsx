@@ -14,7 +14,7 @@ import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import css from './RestrictedOpportunityMessage.less'
 
 const BOOK_DEMO_URL =
-    'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_opportunities'
+    'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_feature_opportunities_paywall'
 
 interface RestrictedOpportunityMessageProps {
     opportunitiesPageState: OpportunityPageState

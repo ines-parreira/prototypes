@@ -290,7 +290,7 @@ describe('RestrictedOpportunityMessage', () => {
             )
 
             expect(windowOpenSpy).toHaveBeenCalledWith(
-                'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_opportunities',
+                'https://www.gorgias.com/demo/customers/automate?utm_source=product&utm_medium=in_product&utm_campaign=ai_agent_feature_opportunities_paywall',
                 '_blank',
             )
 
