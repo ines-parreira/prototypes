@@ -561,6 +561,16 @@ describe('editor utils', () => {
             const contentState = contentStateFromTextOrHTML('foo')
             expect(contentState.getPlainText()).toBe('foo')
         })
+
+        it('should preserve line breaks from <br> tags inside paragraphs', () => {
+            // marked.parse with breaks: true produces <br> for \n in paragraphs.
+            // This verifies that those <br> tags are preserved as \n in block text,
+            // fixing line break loss when pasting text containing ordered list syntax.
+            const html = '<p>First line<br>Second line</p>'
+            const contentState = contentStateFromTextOrHTML('any text', html)
+            const block = contentState.getFirstBlock()
+            expect(block.getText()).toBe('First line\nSecond line')
+        })
     })
 
     describe('editorStateWithReplacedText', () => {

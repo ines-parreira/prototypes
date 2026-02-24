@@ -1088,7 +1088,10 @@ export class RichFieldEditor extends Component<Props, State> {
         const resolvedHtml =
             html ||
             (text && containsMarkdownSyntax(text)
-                ? (marked.parse(text) as string)
+                ? (marked.parse(text, { breaks: true }) as string).replace(
+                      /<\/(p|ol|ul|pre|h1|h2|h3|h4|h5|h6|blockquote)>\s*(?=<(?:p|ol|ul|pre|h1|h2|h3|h4|h5|h6|blockquote)[\s>])/g,
+                      '</$1><br>',
+                  )
                 : text
                   ? `<div>${text.replace(/\n/g, '<br>')}</div>`
                   : undefined)

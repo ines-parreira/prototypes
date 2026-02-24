@@ -15,6 +15,7 @@ import {
 import { fromJS, List as ImmutableList, Map as ImmutableMap } from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
+import { marked } from 'marked'
 import { Provider } from 'react-redux'
 
 import { predictionKey } from 'pages/common/draftjs/plugins/prediction/state'
@@ -28,7 +29,9 @@ import provideToolbarPlugin from '../provideToolbarPlugin'
 import { RichFieldEditor } from '../RichFieldEditor'
 
 // mock random key generation so they match from a snapshot to the other
-jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('draft-js/lib/generateRandomKey', () =>
+    jest.fn().mockReturnValue('123'),
+)
 jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     shortcutManager: {
@@ -621,6 +624,35 @@ describe('RichFieldEditor', () => {
             expect(blocks[0].getText()).toBe('Line 1\nLine 2\nLine 3')
         })
 
+        it('should handle pasting text that contains ordered list syntax', () => {
+            const onChangeSpy = jest.fn()
+            contentState = convertFromHTML('<p></p>')
+            editorState = EditorState.createWithContent(contentState)
+            editorState = EditorState.moveFocusToEnd(editorState)
+            const instanceRef: LegacyRef<InstanceType<typeof RichFieldEditor>> =
+                { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
+            )
+
+            onChangeSpy.mockClear()
+            instanceRef.current?._handlePastedText(
+                'Intro line\nLine two\n\n1. First item\n2. Second item',
+                undefined,
+                editorState,
+            )
+
+            // Paste should be handled - onChange is called with updated content
+            expect(onChangeSpy).toHaveBeenCalled()
+        })
+
         it('should NOT treat asterisks in sentences as markdown', () => {
             const onChangeSpy = jest.fn()
             contentState = convertFromHTML('<p></p>')
@@ -840,6 +872,130 @@ describe('RichFieldEditor', () => {
 
             expect(result).toBe('handled')
             expect(onChangeSpy).toHaveBeenCalled()
+        })
+
+        it('should call marked.parse once with full text when pasting text with numbered lists', () => {
+            const onChangeSpy = jest.fn()
+            contentState = convertFromHTML('<p></p>')
+            editorState = EditorState.createWithContent(contentState)
+            editorState = EditorState.moveFocusToEnd(editorState)
+
+            const instanceRef: LegacyRef<InstanceType<typeof RichFieldEditor>> =
+                { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
+            )
+
+            const parseSpy = jest.spyOn(marked, 'parse')
+
+            instanceRef.current?._handlePastedText(
+                'Intro line\n\n1. First item\n2. Second item',
+                undefined,
+                editorState,
+            )
+
+            expect(parseSpy).toHaveBeenCalledTimes(1)
+            expect(parseSpy).toHaveBeenCalledWith(
+                'Intro line\n\n1. First item\n2. Second item',
+                { breaks: true },
+            )
+            expect(onChangeSpy).toHaveBeenCalled()
+
+            parseSpy.mockRestore()
+        })
+
+        it('should call marked.parse once with full text for multiple double newlines', () => {
+            const onChangeSpy = jest.fn()
+            contentState = convertFromHTML('<p></p>')
+            editorState = EditorState.createWithContent(contentState)
+            editorState = EditorState.moveFocusToEnd(editorState)
+
+            const instanceRef: LegacyRef<InstanceType<typeof RichFieldEditor>> =
+                { current: null }
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={editorState}
+                    onChange={onChangeSpy}
+                    ref={instanceRef}
+                />,
+            )
+
+            const parseSpy = jest.spyOn(marked, 'parse')
+
+            instanceRef.current?._handlePastedText(
+                'Para 1\n\nPara 2\n\n1. Item',
+                undefined,
+                editorState,
+            )
+
+            expect(parseSpy).toHaveBeenCalledTimes(1)
+            expect(parseSpy).toHaveBeenCalledWith(
+                'Para 1\n\nPara 2\n\n1. Item',
+                {
+                    breaks: true,
+                },
+            )
+            expect(onChangeSpy).toHaveBeenCalled()
+
+            parseSpy.mockRestore()
+        })
+
+        it('should produce an empty block between paragraphs when pasting text with double newlines', () => {
+            const onChangeSpy = jest.fn()
+
+            const generateRandomKeyMock = jest.requireMock(
+                'draft-js/lib/generateRandomKey',
+            ) as jest.Mock
+            let keyCounter = 0
+            generateRandomKeyMock.mockImplementation(() => `key${keyCounter++}`)
+
+            try {
+                contentState = convertFromHTML('<p></p>')
+                editorState = EditorState.createWithContent(contentState)
+                editorState = EditorState.moveFocusToEnd(editorState)
+
+                const instanceRef: LegacyRef<
+                    InstanceType<typeof RichFieldEditor>
+                > = { current: null }
+
+                render(
+                    <RichFieldEditor
+                        {...defaultProps}
+                        editorKey="editor"
+                        editorState={editorState}
+                        onChange={onChangeSpy}
+                        ref={instanceRef}
+                    />,
+                )
+
+                const callsBefore = onChangeSpy.mock.calls.length
+
+                instanceRef.current?._handlePastedText(
+                    '**Para 1**\n\nPara 2',
+                    undefined,
+                    editorState,
+                )
+
+                const [newEditorState]: EditorState[] =
+                    onChangeSpy.mock.calls[callsBefore]
+                const blocks = newEditorState
+                    .getCurrentContent()
+                    .getBlocksAsArray()
+                    .map((block) => block.getText())
+                expect(blocks).toContain('')
+            } finally {
+                generateRandomKeyMock.mockReturnValue('123')
+            }
         })
     })
 
