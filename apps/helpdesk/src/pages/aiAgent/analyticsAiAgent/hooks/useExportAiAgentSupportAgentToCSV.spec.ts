@@ -2,20 +2,27 @@ import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
+import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
+import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
+import { useDownloadSupportInteractionsTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData'
+import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
 import * as fileUtils from 'utils/file'
-
-import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
-import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
-import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
-import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
-import { useExportAiAgentSupportAgentToCSV } from './useExportAiAgentSupportAgentToCSV'
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useDownloadSupportInteractionsByIntentData')
-jest.mock('./useDownloadSupportInteractionsTimeSeriesData')
-jest.mock('./useDownloadSupportAgentChannelPerformanceData')
-jest.mock('./useDownloadIntentPerformanceData')
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData',
+)
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),

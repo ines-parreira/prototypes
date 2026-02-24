@@ -7,7 +7,7 @@ import type {
     DashboardChartSchema,
     DashboardSectionSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
+import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -240,43 +240,38 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         ).toBe(true)
     })
 
-    it('should include DiscountCodesAppliedCard in dashboard when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
+    const featureFlaggedChartIds =
+        ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections
+            .flatMap((section) => section.items)
+            .filter((item) => item.requiresFeatureFlag)
+            .map((item) => item.chartId)
 
-        renderHook(() => useExportAiAgentShoppingAssistantToCSV())
+    describe.each(featureFlaggedChartIds)(
+        'feature flag gating for %s',
+        (chartId) => {
+            const getPassedConfigIds = () => {
+                renderHook(() => useExportAiAgentShoppingAssistantToCSV())
+                const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
+                return (
+                    dashboardArg.children as DashboardSectionSchema[]
+                ).flatMap((section) =>
+                    (section.children as DashboardChartSchema[]).map(
+                        (child) => child.config_id,
+                    ),
+                )
+            }
 
-        const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
-        const passedConfigIds = (
-            dashboardArg.children as DashboardSectionSchema[]
-        ).flatMap((section) =>
-            (section.children as DashboardChartSchema[]).map(
-                (child) => child.config_id,
-            ),
-        )
+            it('should include card in dashboard when feature flag is enabled', () => {
+                mockUseFlag.mockReturnValue(true)
+                expect(getPassedConfigIds()).toContain(chartId)
+            })
 
-        expect(passedConfigIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
-        )
-    })
-
-    it('should exclude DiscountCodesAppliedCard from dashboard when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        renderHook(() => useExportAiAgentShoppingAssistantToCSV())
-
-        const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
-        const passedConfigIds = (
-            dashboardArg.children as DashboardSectionSchema[]
-        ).flatMap((section) =>
-            (section.children as DashboardChartSchema[]).map(
-                (child) => child.config_id,
-            ),
-        )
-
-        expect(passedConfigIds).not.toContain(
-            AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
-        )
-    })
+            it('should exclude card from dashboard when feature flag is disabled', () => {
+                mockUseFlag.mockReturnValue(false)
+                expect(getPassedConfigIds()).not.toContain(chartId)
+            })
+        },
+    )
 
     it('should handle empty download data files', async () => {
         mockedUseDownloadTotalSalesByProductData.mockReturnValue({

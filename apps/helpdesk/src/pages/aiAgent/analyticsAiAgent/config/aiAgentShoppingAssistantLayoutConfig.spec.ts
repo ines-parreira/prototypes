@@ -9,38 +9,39 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 7 cards', () => {
+        it('should have kpis section with 8 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(7)
+            expect(kpisSection.items).toHaveLength(8)
         })
 
         it('should have correct KPI cards in kpis section', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
-            expect(kpisSection.items[0].chartId).toBe(
+            const expectedChartIds = [
                 AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
-            )
-            expect(kpisSection.items[1].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
-            )
-            expect(kpisSection.items[2].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
-            )
-            expect(kpisSection.items[3].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
-            )
-            expect(kpisSection.items[4].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
-            )
-            expect(kpisSection.items[5].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
-            )
-            expect(kpisSection.items[6].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
+                AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard,
+            ]
+            expect(kpisSection.items.map((item) => item.chartId)).toEqual(
+                expectedChartIds,
             )
+        })
+
+        it('should have discount cards with requiresFeatureFlag', () => {
+            const kpisSection =
+                ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
+            const discountCards = kpisSection.items.slice(4)
+            discountCards.forEach((item) => {
+                expect(item.requiresFeatureFlag).toBe(true)
+            })
         })
 
         it('should have all KPI cards with gridSize 3', () => {
@@ -95,35 +96,10 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                     (section) => section.items.map((item) => item.chartId),
                 )
 
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,
+            Object.values(AnalyticsAiAgentShoppingAssistantChart).forEach(
+                (chartId) => {
+                    expect(allChartIds).toContain(chartId)
+                },
             )
         })
     })
