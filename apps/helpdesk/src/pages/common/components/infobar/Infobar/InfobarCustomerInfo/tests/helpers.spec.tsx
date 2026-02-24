@@ -289,13 +289,12 @@ describe('useWidgetData()', () => {
         server.close()
     })
 
-    it('should default to returning from source if the path is not for customer integrations', () => {
+    it('should return from source when path is not for customer integrations', () => {
+        const source = fromJS({ ticket: { id: 1 } })
         const { result } = renderHook(
             () =>
                 useWidgetData({
-                    source: fromJS({
-                        ticket: { id: 1 },
-                    }),
+                    source,
                     path: ['ticket', 'id'],
                 }),
             {
@@ -306,14 +305,16 @@ describe('useWidgetData()', () => {
                 ),
             },
         )
-        expect(result.current).toEqual(1)
+        expect(result.current.integrationData).toEqual(1)
+        expect(result.current.effectiveSource).toBe(source)
     })
 
     it('should return empty array when no source data is found', () => {
+        const source = fromJS({})
         const { result } = renderHook(
             () =>
                 useWidgetData({
-                    source: fromJS({}),
+                    source,
                     path: ['ticket', 'id'],
                 }),
             {
@@ -325,10 +326,11 @@ describe('useWidgetData()', () => {
             },
         )
 
-        expect(result.current).toEqual(fromJS([]))
+        expect(result.current.integrationData).toEqual(fromJS([]))
+        expect(result.current.effectiveSource).toBe(source)
     })
 
-    it('should return the source data if the API call for the customer does not return data', async () => {
+    it('should fall back to source data when the API call fails', async () => {
         const mock = mockGetCustomerHandler(async () =>
             HttpResponse.json({}, { status: 500 }),
         )
@@ -341,6 +343,7 @@ describe('useWidgetData()', () => {
                 useWidgetData({
                     source: fromJS({ customer: { integrations } }),
                     path: ['customer', 'integrations'],
+                    customerId: 1,
                 }),
             {
                 wrapper: ({ children }) => (
@@ -352,11 +355,11 @@ describe('useWidgetData()', () => {
         )
 
         await waitFor(() => {
-            expect(result.current).toEqual(fromJS(integrations))
+            expect(result.current.integrationData).toEqual(fromJS(integrations))
         })
     })
 
-    it('should default to 0 when neither source.customer.id nor source.ticket.customer.id are available', () => {
+    it('should return source data when customerId is not provided', () => {
         const { result } = renderHook(
             () =>
                 useWidgetData({
@@ -374,8 +377,140 @@ describe('useWidgetData()', () => {
             },
         )
 
-        // Should return empty array from source since customerId is 0 (API call disabled)
-        expect(result.current).toEqual(fromJS([]))
+        expect(result.current.integrationData).toEqual(fromJS([]))
+    })
+
+    it('should use RQ data for effectiveSource when customerId is provided and API returns data', async () => {
+        const rqIntegrations = {
+            '42': { customer: { name: 'RQ Customer' } },
+        }
+        const mock = mockGetCustomerHandler(async () =>
+            HttpResponse.json({
+                id: 1,
+                integrations: rqIntegrations,
+            }),
+        )
+        server.use(mock.handler)
+
+        const { result } = renderHook(
+            () =>
+                useWidgetData({
+                    source: fromJS({ customer: { integrations: {} } }),
+                    path: ['customer', 'integrations'],
+                    customerId: 1,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore()}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        await waitFor(() => {
+            expect(result.current.integrationData).toEqual(
+                fromJS(rqIntegrations),
+            )
+            expect(
+                result.current.effectiveSource.getIn([
+                    'customer',
+                    'integrations',
+                ]),
+            ).toEqual(fromJS(rqIntegrations))
+        })
+    })
+
+    it('should allow sub-path getIn on effectiveSource for individual integration data', async () => {
+        const rqIntegrations = {
+            '42': {
+                customer: { name: 'Shopify Customer', tags: 'vip' },
+                orders: [{ id: 1, total: '99.99' }],
+            },
+            '99': {
+                customer: { name: 'Recharge Customer' },
+            },
+        }
+        const mock = mockGetCustomerHandler(async () =>
+            HttpResponse.json({
+                id: 1,
+                integrations: rqIntegrations,
+            }),
+        )
+        server.use(mock.handler)
+
+        const { result } = renderHook(
+            () =>
+                useWidgetData({
+                    source: fromJS({ customer: { integrations: {} } }),
+                    path: ['customer', 'integrations'],
+                    customerId: 1,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore()}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        await waitFor(() => {
+            expect(
+                result.current.effectiveSource.getIn([
+                    'customer',
+                    'integrations',
+                    '42',
+                ]),
+            ).toEqual(fromJS(rqIntegrations['42']))
+
+            expect(
+                result.current.effectiveSource.getIn([
+                    'customer',
+                    'integrations',
+                    '99',
+                ]),
+            ).toEqual(fromJS(rqIntegrations['99']))
+        })
+    })
+
+    it('should return undefined for sub-path getIn on effectiveSource when integration does not exist', async () => {
+        const rqIntegrations = {
+            '42': { customer: { name: 'Shopify Customer' } },
+        }
+        const mock = mockGetCustomerHandler(async () =>
+            HttpResponse.json({
+                id: 1,
+                integrations: rqIntegrations,
+            }),
+        )
+        server.use(mock.handler)
+
+        const { result } = renderHook(
+            () =>
+                useWidgetData({
+                    source: fromJS({ customer: { integrations: {} } }),
+                    path: ['customer', 'integrations'],
+                    customerId: 1,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore()}>{children}</Provider>
+                    </QueryClientProvider>
+                ),
+            },
+        )
+
+        await waitFor(() => {
+            expect(
+                result.current.effectiveSource.getIn([
+                    'customer',
+                    'integrations',
+                    '999',
+                ]),
+            ).toBeUndefined()
+        })
     })
 })
 

@@ -101,13 +101,10 @@ const receivedEvents: ReceivedEvent[] = [
                     (json as CustomerUpdatedEvent).customer,
                 ),
             )
-
-            const customerId = (json as CustomerUpdatedEvent)?.customer?.get(
-                'id',
-            )
+            const customerId = (json as CustomerUpdatedEvent)?.customer?.id
 
             if (customerId) {
-                throttledUpdateCustomerCache(customerId)
+                throttledUpdateCustomerCache(customerId as number)
             }
         },
     },

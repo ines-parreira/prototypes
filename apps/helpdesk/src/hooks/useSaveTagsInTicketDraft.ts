@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import type { Order } from 'constants/integrations/types/shopify'
@@ -60,7 +59,7 @@ export default function useSaveTagsInTicketDraft(
                 },
             }
 
-            dispatch(mergeCustomer(fromJS(updatedCustomer)))
+            dispatch(mergeCustomer(updatedCustomer))
         },
         [
             isTicketNew,

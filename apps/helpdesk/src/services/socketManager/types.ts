@@ -1,5 +1,3 @@
-import type { Map } from 'immutable'
-
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
 import type { RecentChatTicket } from 'business/types/recentChats'
@@ -110,7 +108,7 @@ export type CustomerUpdatedEvent = {
     event: {
         type: 'customer-updated'
     }
-    customer: Map<any, any>
+    customer: Record<string, unknown>
 }
 
 export type CustomerExternalDataUpdatedEvent = {

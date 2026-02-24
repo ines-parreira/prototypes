@@ -69,7 +69,7 @@ describe('useSaveTagsInTicketDraft', () => {
         const actions = store.getActions()
         expect(actions).toHaveLength(1)
         expect(actions[0].type).toBe('MERGE_CUSTOMER')
-        expect(actions[0].customer.toJS()).toEqual({
+        expect(actions[0].customer).toEqual({
             integrations: {
                 '1': {
                     customer: { tags: 'new-customer-tag' },
@@ -92,7 +92,7 @@ describe('useSaveTagsInTicketDraft', () => {
         const actions = store.getActions()
         expect(actions).toHaveLength(1)
         expect(actions[0].type).toBe('MERGE_CUSTOMER')
-        expect(actions[0].customer.toJS()).toEqual({
+        expect(actions[0].customer).toEqual({
             integrations: {
                 '1': {
                     customer: mockIntegrationData.customer,

@@ -1,15 +1,20 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render } from '@testing-library/react'
+import { render, waitFor } from '@testing-library/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { mockGetCustomerHandler } from '@gorgias/helpdesk-mocks'
+
 import { agents } from 'fixtures/agents'
 import { IntegrationType } from 'models/integration/constants'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
@@ -475,6 +480,165 @@ describe('InfobarWidgets component', () => {
             </Provider>,
         )
         expect(mockedWidget.mock.calls.length).toBe(0)
+    })
+
+    describe('effectiveSource with RQ data', () => {
+        const server = setupServer()
+        const rqQueryClient = mockQueryClient()
+
+        beforeAll(() => {
+            server.listen()
+        })
+
+        beforeEach(() => {
+            server.resetHandlers()
+            rqQueryClient.clear()
+            mockedWidget.mockClear()
+        })
+
+        afterAll(() => {
+            server.close()
+        })
+
+        const shopifyWidget = fromJS([
+            {
+                id: 5,
+                type: IntegrationType.Shopify,
+                context: WidgetEnvironment.Ticket,
+                template: {
+                    type: 'wrapper',
+                    widgets: [
+                        {
+                            path: '',
+                            type: 'card',
+                            title: 'Shopify',
+                            widgets: [
+                                {
+                                    path: 'bar',
+                                    type: 'text',
+                                    title: 'Bar',
+                                    order: 1,
+                                },
+                            ],
+                        },
+                    ],
+                },
+                order: 1,
+            },
+        ]) as List<Map<string, unknown>>
+
+        it('should pass effectiveSource data to Widget source prop when RQ returns integration data', async () => {
+            const customerId = 123
+            const rqIntegrations = {
+                [shopifyIntegrationId]: {
+                    bar: 'rq-value',
+                    customer: { name: 'RQ Shopify Customer' },
+                },
+            }
+
+            const mock = mockGetCustomerHandler(async () =>
+                HttpResponse.json({
+                    id: customerId,
+                    integrations: rqIntegrations,
+                }),
+            )
+            server.use(mock.handler)
+
+            const sourceWithOldData = fromJS({
+                ticket: {
+                    customer: {
+                        integrations: {
+                            [shopifyIntegrationId]: {
+                                bar: 'old-source-value',
+                            },
+                        },
+                    },
+                },
+            }) as Map<string, unknown>
+
+            render(
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <QueryClientProvider client={rqQueryClient}>
+                            <CustomerContext.Provider value={{ customerId }}>
+                                <EditionContext.Provider
+                                    value={{ isEditing: false }}
+                                >
+                                    <InfobarWidgets
+                                        widgets={shopifyWidget}
+                                        context={WidgetEnvironment.Ticket}
+                                        source={sourceWithOldData}
+                                        displayTabs
+                                    />
+                                </EditionContext.Provider>
+                            </CustomerContext.Provider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            await waitFor(() => {
+                const widgetCalls = mockedWidget.mock.calls
+                const matchingCall = widgetCalls.find(
+                    (call) => call[0].source?.toJS?.()?.bar === 'rq-value',
+                )
+                expect(matchingCall).toBeDefined()
+
+                const props = matchingCall![0] as {
+                    source: Map<string, unknown>
+                }
+                expect(props.source.toJS()).toEqual(
+                    rqIntegrations[shopifyIntegrationId],
+                )
+            })
+        })
+
+        it('should fall back to original source for passedSource when RQ data is not available', () => {
+            const sourceWithIntegrations = fromJS({
+                ticket: {
+                    customer: {
+                        integrations: {
+                            [shopifyIntegrationId]: {
+                                bar: shopifyIntegrationId,
+                            },
+                        },
+                    },
+                },
+            }) as Map<string, unknown>
+
+            render(
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <QueryClientProvider client={rqQueryClient}>
+                            <EditionContext.Provider
+                                value={{ isEditing: false }}
+                            >
+                                <InfobarWidgets
+                                    widgets={shopifyWidget}
+                                    context={WidgetEnvironment.Ticket}
+                                    source={sourceWithIntegrations}
+                                    displayTabs
+                                />
+                            </EditionContext.Provider>
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            const widgetCalls = mockedWidget.mock.calls
+            const callWithSource = widgetCalls.find(
+                (call) => call[0].source !== undefined,
+            )
+            expect(callWithSource).toBeDefined()
+            expect(callWithSource![0].source).toEqual(
+                sourceWithIntegrations.getIn([
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    String(shopifyIntegrationId),
+                ]),
+            )
+        })
     })
 })
 

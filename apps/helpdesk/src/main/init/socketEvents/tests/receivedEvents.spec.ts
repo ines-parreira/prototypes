@@ -1042,11 +1042,11 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch mergeCustomer action and call throttledUpdateCustomerCache with customer id', () => {
-            const customer = fromJS({
+            const customer = {
                 id: 456,
                 name: 'John Doe',
                 email: 'john@example.com',
-            })
+            }
 
             handler.onReceive({
                 event: { type: 'customer-updated' },
@@ -1055,14 +1055,40 @@ describe('receivedEvents', () => {
 
             expect(ticketActions.mergeCustomer).toHaveBeenCalledWith(customer)
             expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(
-                customer.get('id'),
+                customer.id,
             )
+        })
+
+        it('should not call throttledUpdateCustomerCache when customer has no id', () => {
+            handler.onReceive({
+                event: { type: 'customer-updated' },
+                customer: { name: 'No ID Customer', email: 'noid@example.com' },
+            })
+
+            expect(ticketActions.mergeCustomer).toHaveBeenCalledWith({
+                name: 'No ID Customer',
+                email: 'noid@example.com',
+            })
+            expect(throttledUpdateCustomerCache).not.toHaveBeenCalled()
+        })
+
+        it('should not call throttledUpdateCustomerCache when customer id is falsy', () => {
+            handler.onReceive({
+                event: { type: 'customer-updated' },
+                customer: { id: 0, name: 'Zero ID' },
+            })
+
+            expect(ticketActions.mergeCustomer).toHaveBeenCalledWith({
+                id: 0,
+                name: 'Zero ID',
+            })
+            expect(throttledUpdateCustomerCache).not.toHaveBeenCalled()
         })
 
         it('should not break on non-customer / incorrect event data', () => {
             handler.onReceive({
                 event: { type: 'customer-updated' },
-                customer: fromJS(undefined),
+                customer: undefined as any,
             })
 
             expect(throttledUpdateCustomerCache).not.toHaveBeenCalled()

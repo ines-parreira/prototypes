@@ -4,7 +4,7 @@ import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { memoize, throttle } from 'lodash'
 
-import { queryKeys } from '@gorgias/helpdesk-queries'
+import { queryKeys, useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import useAppSelector from 'hooks/useAppSelector'
@@ -69,6 +69,12 @@ export type UseWidgetDataValue = List<Map<string, unknown>>
 export type UseWidgetDataParams = {
     source: Map<string, unknown>
     path: string[]
+    customerId?: number | null
+}
+
+export type UseWidgetDataResult = {
+    integrationData: UseWidgetDataValue
+    effectiveSource: Map<string, unknown>
 }
 
 //
@@ -86,8 +92,25 @@ export const CUSTOMER_DATA_CACHE_TIME_MS = 61 * 60 * 1000 // 61 minutes
 export function useWidgetData({
     source,
     path,
-}: UseWidgetDataParams): UseWidgetDataValue {
-    return source.getIn(path, fromJS([]))
+    customerId,
+}: UseWidgetDataParams): UseWidgetDataResult {
+    const { data: customerRQData } = useGetCustomer(customerId!, undefined, {
+        query: {
+            enabled: !!customerId,
+            staleTime: CUSTOMER_DATA_STALE_TIME_MS,
+        },
+    })
+
+    const effectiveSource = useMemo(() => {
+        const rqIntegrations = customerRQData?.data?.integrations
+        if (!rqIntegrations) return source
+        return source.setIn(path, fromJS(rqIntegrations))
+    }, [source, customerRQData, path])
+
+    return {
+        integrationData: effectiveSource.getIn(path, fromJS([])),
+        effectiveSource,
+    }
 }
 
 //

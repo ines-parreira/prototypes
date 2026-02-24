@@ -128,7 +128,7 @@ export const mergeTicket =
         return Promise.resolve(mergeDispatch)
     }
 
-export const mergeCustomer = (customer: Map<any, any>) => {
+export const mergeCustomer = (customer: Record<string, unknown>) => {
     return {
         type: types.MERGE_CUSTOMER,
         customer,

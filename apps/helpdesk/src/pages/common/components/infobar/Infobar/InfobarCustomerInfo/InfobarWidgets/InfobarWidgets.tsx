@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -13,6 +13,7 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { useWidgetData } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
 import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import { canDisplayWidget } from 'pages/common/components/infobar/utils'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { getIntegrations } from 'state/integrations/selectors'
 import {
@@ -65,10 +66,18 @@ const InfobarWidgets = ({
     const integrations = useAppSelector(getIntegrations)
     const widgetState = useAppSelector(getWidgetsState)
     const { isEditing } = useContext(EditionContext)
+    const { customerId } = useContext(CustomerContext)
 
-    const path = getSourcePathFromContext(context, 'integrations') as string[]
+    const path = useMemo(
+        () => getSourcePathFromContext(context, 'integrations') as string[],
+        [context],
+    )
 
-    const integrationData = useWidgetData({ source, path })
+    const { integrationData, effectiveSource } = useWidgetData({
+        source,
+        path,
+        customerId,
+    })
 
     if (!widgets) {
         return null
@@ -114,7 +123,7 @@ const InfobarWidgets = ({
     }
 
     const preparedDisplayList = getPreparedDisplayList({
-        source,
+        source: effectiveSource,
         widgets,
         displayList,
         integrations,
@@ -126,7 +135,10 @@ const InfobarWidgets = ({
         const widget = item.widget
         const title = getWidgetTitle({
             source: (
-                source.getIn(item.absolutePath || []) as Map<string, unknown>
+                effectiveSource.getIn(item.absolutePath || []) as Map<
+                    string,
+                    unknown
+                >
             )?.toJS() as Source,
             template: item.template.toJS() as Template,
             widgetType: item.widget.get('type') as WidgetType,
@@ -170,7 +182,9 @@ const InfobarWidgets = ({
                         if (
                             item.widget.get('type') !== STANDALONE_WIDGET_TYPE
                         ) {
-                            passedSource = source.getIn(item.absolutePath || [])
+                            passedSource = effectiveSource.getIn(
+                                item.absolutePath || [],
+                            )
                         }
                         // it is very important we get stable props here for memo to work
                         return (

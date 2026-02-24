@@ -5,6 +5,9 @@ import _isUndefined from 'lodash/isUndefined'
 import { notify as updateNotification } from 'reapop'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
+import { appQueryClient } from 'api/queryClient'
 import * as viewsConfig from 'config/views'
 import client from 'models/api/resources'
 import type { Customer, CustomerDraft } from 'models/customer/types'
@@ -221,6 +224,15 @@ export function mergeCustomers(
                     dispatch({
                         type: types.MERGE_CUSTOMERS_SUCCESS,
                         resp,
+                    })
+
+                    appQueryClient.removeQueries({
+                        queryKey:
+                            queryKeys.customers.getCustomer(baseCustomerId),
+                    })
+                    appQueryClient.removeQueries({
+                        queryKey:
+                            queryKeys.customers.getCustomer(mergeCustomerId),
                     })
 
                     void dispatch(
