@@ -16,7 +16,8 @@ type Props = {
     header: {
         title: string | React.ReactNode
         subtitle?: string
-        tooltip?: string
+        subtitleAlign?: 'center' | 'left'
+        tooltip?: React.ReactNode
     } | null
     bottomElement?: React.ReactNode
     children: React.ReactNode
@@ -29,6 +30,13 @@ export const KnowledgeEditorSidePanelSection = ({
     children,
     sectionId,
 }: Props) => {
+    const headerTooltipContent =
+        typeof header?.tooltip === 'string' ? (
+            <TooltipContent caption={header.tooltip} />
+        ) : (
+            <TooltipContent>{header?.tooltip}</TooltipContent>
+        )
+
     return (
         <Accordion.Item value={sectionId}>
             <div className={css.section}>
@@ -51,9 +59,7 @@ export const KnowledgeEditorSidePanelSection = ({
                                                     size={IconSize.Xs}
                                                 />
                                             </TooltipTrigger>
-                                            <TooltipContent
-                                                caption={header.tooltip}
-                                            />
+                                            {headerTooltipContent}
                                         </Tooltip>
                                     </div>
                                 ) : (
@@ -61,7 +67,13 @@ export const KnowledgeEditorSidePanelSection = ({
                                 )}
                             </div>
                             {header.subtitle && (
-                                <div className={css.subtitle}>
+                                <div
+                                    className={classNames(
+                                        css.subtitle,
+                                        header.subtitleAlign === 'left' &&
+                                            css.subtitleLeftAligned,
+                                    )}
+                                >
                                     {header.subtitle}
                                 </div>
                             )}

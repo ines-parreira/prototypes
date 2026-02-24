@@ -1,3 +1,4 @@
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { screen } from '@testing-library/react'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
@@ -8,6 +9,28 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 const mockToggleVisibility = jest.fn()
 const mockUseGuidanceStore = jest.fn()
 const mockDispatch = jest.fn()
+const mockUseFlag = jest.fn()
+const mockUseGetArticleTranslationIntents = jest.fn(
+    (__params?: unknown, __options?: unknown) => ({
+        data: {
+            intents: [
+                {
+                    name: 'Order',
+                    children: [
+                        {
+                            name: 'Order/status',
+                            intent: 'order-status',
+                            is_available: true,
+                        },
+                    ],
+                },
+            ],
+        },
+        isLoading: false,
+        isError: false,
+        refetch: jest.fn(),
+    }),
+)
 const mockUseGuidanceContext = jest.fn(() => ({
     guidanceArticle: { id: 123, locale: 'en' },
     config: {
@@ -96,8 +119,21 @@ jest.mock(
     }),
 )
 
+jest.mock('models/helpCenter/queries', () => ({
+    useGetArticleTranslationIntents: (params: unknown, options: unknown) =>
+        mockUseGetArticleTranslationIntents(params, options),
+}))
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
+    useFlag: (key: string) => mockUseFlag(key),
+}))
+
 describe('KnowledgeEditorSidePanelGuidance', () => {
     beforeEach(() => {
+        mockUseFlag.mockImplementation(
+            (key) => key === FeatureFlagKey.AddLinkedIntentsFromSidepanel,
+        )
         mockUseGuidanceStore.mockImplementation((selector) => {
             const contextValue = mockUseGuidanceContext()
 
@@ -120,12 +156,25 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
         jest.clearAllMocks()
     })
 
-    it('renders all sections', () => {
+    it('renders all sections when linked intents feature flag is enabled', () => {
         renderWithStoreAndQueryClientAndRouter(
             <KnowledgeEditorSidePanelGuidance />,
         )
 
         expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.getByText('Linked intents')).toBeInTheDocument()
+        expect(screen.getByText('Impact')).toBeInTheDocument()
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+    })
+
+    it('does not render linked intents section when feature flag is disabled', () => {
+        mockUseFlag.mockReturnValue(false)
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanelGuidance />,
+        )
+
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.queryByText('Linked intents')).not.toBeInTheDocument()
         expect(screen.getByText('Impact')).toBeInTheDocument()
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
     })

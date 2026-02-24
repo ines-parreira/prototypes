@@ -188,6 +188,12 @@ jest.mock('models/helpCenter/queries', () => ({
         hasNextPage: false,
         fetchNextPage: jest.fn(),
     })),
+    useGetArticleTranslationIntents: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+        isError: false,
+        refetch: jest.fn(),
+    })),
 }))
 
 jest.mock('models/api/types', () => ({

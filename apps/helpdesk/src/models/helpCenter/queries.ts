@@ -39,6 +39,7 @@ import {
     deleteHelpCenterTranslation,
     getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
+    getArticleTranslationIntents,
     getArticleTranslationVersion,
     getCategoryTree,
     getFileIngestion,
@@ -196,6 +197,16 @@ export const helpCenterKeys = {
             locale,
             queryParams,
         ].filter(Boolean),
+    articleTranslationIntents: (
+        helpCenterId: number,
+        articleId: number,
+        locale: string,
+    ) =>
+        [
+            ...helpCenterKeys.article(helpCenterId, articleId),
+            'translation-intents',
+            locale,
+        ] as const,
     articleTranslationVersion: (
         helpCenterId: number,
         articleId: number,
@@ -1413,6 +1424,33 @@ export const useGetArticleTranslationVersion = (
             pathParams.article_id !== undefined &&
             !!pathParams.locale &&
             pathParams.version_id !== undefined &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleTranslationIntents = (
+    pathParams: Paths.GetArticleTranslationIntents.PathParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleTranslationIntents>>
+    >,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.articleTranslationIntents(
+            pathParams.help_center_id,
+            pathParams.article_id,
+            pathParams.locale,
+        ),
+        queryFn: async () => getArticleTranslationIntents(client, pathParams),
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            pathParams.help_center_id !== undefined &&
+            pathParams.article_id !== undefined &&
+            !!pathParams.locale &&
             (overrides === undefined || overrides.enabled),
     })
 }

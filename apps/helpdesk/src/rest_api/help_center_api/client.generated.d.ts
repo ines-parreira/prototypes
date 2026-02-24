@@ -263,6 +263,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -349,6 +350,24 @@ declare namespace Components {
                 | 'saveAsDraft'
             reason?: string | null
         }
+        export interface ArticleTranslationIntentDto {
+            name: string
+            intent: string
+            is_available: boolean
+            used_by_article?: ArticleTranslationIntentUsedByArticleDto
+        }
+        export interface ArticleTranslationIntentGroupDto {
+            name: string
+            children: ArticleTranslationIntentDto[]
+        }
+        export interface ArticleTranslationIntentUsedByArticleDto {
+            id: number
+            version: number
+            title: string
+        }
+        export interface ArticleTranslationIntentsResponseDto {
+            intents: ArticleTranslationIntentGroupDto[]
+        }
         export interface ArticleTranslationRatingDto {
             /**
              * Creation date
@@ -398,6 +417,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -463,6 +483,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -1021,6 +1042,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
              * example:
              * https://cdn.shopify.com/image.jpg
@@ -1116,6 +1138,7 @@ declare namespace Components {
                     description: string | null
                 }
                 visibility_status: 'PUBLIC' | 'UNLISTED'
+                customer_visibility?: 'PUBLIC' | 'UNLISTED'
                 is_current: boolean
                 draft_version_id: number | null
                 published_version_id: number | null
@@ -1195,6 +1218,7 @@ declare namespace Components {
                     description: string | null
                 }
                 visibility_status: 'PUBLIC' | 'UNLISTED'
+                customer_visibility?: 'PUBLIC' | 'UNLISTED'
                 /**
                  * example:
                  * https://cdn.shopify.com/image.jpg
@@ -2826,6 +2850,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -2878,6 +2903,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
              * example:
              * https://cdn.shopify.com/image.jpg
@@ -3306,6 +3332,12 @@ declare namespace Components {
              * Used to change the categoryId of the article
              */
             category_id?: number | null
+            /**
+             * The ID of the user publishing this translation. Required when authenticating with an API key. When using token authentication, this field is ignored and the user ID is extracted from the token.
+             * example:
+             * 12345
+             */
+            publisher_user_id?: number
         }
         export interface UpdateArticleTranslationRatingDto {
             /**
@@ -4523,6 +4555,22 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.ArticleTemplateDto
+        }
+    }
+    namespace GetArticleTranslationIntents {
+        namespace Parameters {
+            export type ArticleId = number
+            export type HelpCenterId = number
+            export type Locale = string
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_id: Parameters.ArticleId
+            locale: Parameters.Locale
+        }
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ArticleTranslationIntentsResponseDto
         }
     }
     namespace GetArticleTranslationVersion {
@@ -6106,6 +6154,14 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
     /**
+     * getArticleTranslationIntents - List available intents for an article translation
+     */
+    'getArticleTranslationIntents'(
+        parameters: Parameters<Paths.GetArticleTranslationIntents.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.GetArticleTranslationIntents.Responses.$200>
+    /**
      * updateArticleTranslation - Update an article translation
      */
     'updateArticleTranslation'(
@@ -7404,6 +7460,16 @@ export interface PathsDictionary {
             data?: Paths.CreateArticleTranslation.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CreateArticleTranslation.Responses.$201>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/intents']: {
+        /**
+         * getArticleTranslationIntents - List available intents for an article translation
+         */
+        'get'(
+            parameters: Parameters<Paths.GetArticleTranslationIntents.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.GetArticleTranslationIntents.Responses.$200>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}']: {
         /**

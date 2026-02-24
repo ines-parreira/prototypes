@@ -436,3 +436,12 @@ export const getArticleTranslationVersion = async (
     const response = await client.getArticleTranslationVersion(pathParams)
     return response.data
 }
+
+export const getArticleTranslationIntents = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetArticleTranslationIntents.PathParameters,
+) => {
+    if (!client) return null
+    const response = await client.getArticleTranslationIntents(pathParams)
+    return response.data
+}

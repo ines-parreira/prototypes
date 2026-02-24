@@ -1067,6 +1067,45 @@
                 "tags": ["article-translations"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/intents": {
+            "get": {
+                "operationId": "getArticleTranslationIntents",
+                "summary": "List available intents for an article translation",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationIntentsResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}": {
             "put": {
                 "operationId": "updateArticleTranslation",
@@ -5443,6 +5482,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": { "type": "boolean" },
                     "draft_version_id": { "type": "number", "nullable": true },
                     "published_version_id": {
@@ -5477,6 +5520,7 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
@@ -5750,6 +5794,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": { "type": "boolean" },
                     "draft_version_id": { "type": "number", "nullable": true },
                     "published_version_id": {
@@ -5783,6 +5831,7 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
@@ -6155,6 +6204,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": { "type": "boolean" },
                     "draft_version_id": { "type": "number", "nullable": true },
                     "published_version_id": {
@@ -6184,6 +6237,7 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
@@ -6211,6 +6265,52 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
+            },
+            "ArticleTranslationIntentUsedByArticleDto": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "number" },
+                    "version": { "type": "number" },
+                    "title": { "type": "string" }
+                },
+                "required": ["id", "version", "title"]
+            },
+            "ArticleTranslationIntentDto": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "intent": { "type": "string" },
+                    "is_available": { "type": "boolean" },
+                    "used_by_article": {
+                        "$ref": "#/components/schemas/ArticleTranslationIntentUsedByArticleDto"
+                    }
+                },
+                "required": ["name", "intent", "is_available"]
+            },
+            "ArticleTranslationIntentGroupDto": {
+                "type": "object",
+                "properties": {
+                    "name": { "type": "string" },
+                    "children": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationIntentDto"
+                        }
+                    }
+                },
+                "required": ["name", "children"]
+            },
+            "ArticleTranslationIntentsResponseDto": {
+                "type": "object",
+                "properties": {
+                    "intents": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationIntentGroupDto"
+                        }
+                    }
+                },
+                "required": ["intents"]
             },
             "ArticleTranslationResponseDto": {
                 "type": "object",
@@ -6267,6 +6367,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": { "type": "boolean" },
                     "draft_version_id": { "type": "number", "nullable": true },
                     "published_version_id": {
@@ -6295,6 +6399,7 @@
                     "article_unlisted_id",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "is_current",
                     "draft_version_id",
                     "published_version_id",
@@ -6359,6 +6464,11 @@
                         "nullable": true,
                         "description": "Used to change the categoryId of the article",
                         "default": null
+                    },
+                    "publisher_user_id": {
+                        "type": "number",
+                        "description": "The ID of the user publishing this translation. Required when authenticating with an API key. When using token authentication, this field is ignored and the user ID is extracted from the token.",
+                        "example": 12345
                     }
                 }
             },
@@ -8100,6 +8210,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "image_url": {
                         "type": "string",
                         "nullable": true,
@@ -8123,6 +8237,7 @@
                     "locale",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "image_url",
                     "title",
                     "description",
@@ -8263,6 +8378,10 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "image_url": {
                         "type": "string",
                         "nullable": true,
@@ -8281,6 +8400,7 @@
                     "locale",
                     "seo_meta",
                     "visibility_status",
+                    "customer_visibility",
                     "image_url",
                     "title",
                     "description",

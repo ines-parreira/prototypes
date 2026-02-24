@@ -22,7 +22,7 @@
     }
 
     .headerWithSubtitle {
-        height: 35px;
+        height: auto;
     }
 
     .title {
@@ -34,16 +34,21 @@
     .titleWithTooltip {
         display: flex;
         align-items: center;
-        gap: var(--spacing-xxxxs);
+        gap: var(--spacing-xxxs);
     }
 
     .subtitle {
         color: var(--content-neutral-tertiary);
+        text-align: center;
 
         .caption-regular();
 
         font-size: 10px;
         line-height: 14px;
+    }
+
+    .subtitleLeftAligned {
+        text-align: left;
     }
 
     .titleAndSubtitle {

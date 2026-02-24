@@ -7,6 +7,7 @@ import {
     deleteFileIngestion,
     getArticleIngestionArticleTitlesAndStatus,
     getArticleIngestionLogs,
+    getArticleTranslationIntents,
     getCategoryTree,
     getFileIngestion,
     getFileIngestionArticleTitlesAndStatus,
@@ -596,6 +597,48 @@ describe('resources', () => {
             }
 
             expect(mockDeleteDraft).toHaveBeenCalledTimes(locales.length)
+        })
+    })
+
+    describe('getArticleTranslationIntents', () => {
+        it('should return null when client is not set', async () => {
+            const result = await getArticleTranslationIntents(undefined, {
+                help_center_id,
+                article_id: 123,
+                locale: 'en',
+            })
+            expect(result).toBeNull()
+        })
+
+        it('should return correct result from API', async () => {
+            const data = {
+                intents: [
+                    {
+                        name: 'Order',
+                        children: [],
+                    },
+                ],
+            }
+            const client = {
+                getArticleTranslationIntents: jest
+                    .fn()
+                    .mockReturnValue(Promise.resolve({ data })),
+            }
+            const result = await getArticleTranslationIntents(
+                client as unknown as HelpCenterClient,
+                {
+                    help_center_id,
+                    article_id: 123,
+                    locale: 'en',
+                },
+            )
+
+            expect(client.getArticleTranslationIntents).toHaveBeenCalledWith({
+                help_center_id,
+                article_id: 123,
+                locale: 'en',
+            })
+            expect(result).toEqual(data)
         })
     })
 })
