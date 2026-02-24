@@ -115,25 +115,23 @@ export function ShopifyTags({
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
                 <OverflowListItem>
                     <MultiSelect
-                        trigger={() => (
-                            <>
-                                {selectedTags.length === 0 ? (
-                                    <Button
-                                        leadingSlot="add-plus"
-                                        variant="secondary"
-                                        size="sm"
-                                    >
-                                        Add tags
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        icon="add-plus"
-                                        variant="secondary"
-                                        size="sm"
-                                    />
-                                )}
-                            </>
-                        )}
+                        trigger={() =>
+                            selectedTags.length === 0 ? (
+                                <Button
+                                    leadingSlot="add-plus"
+                                    variant="secondary"
+                                    size="sm"
+                                >
+                                    Add tags
+                                </Button>
+                            ) : (
+                                <Button
+                                    icon="add-plus"
+                                    variant="secondary"
+                                    size="sm"
+                                />
+                            )
+                        }
                         isSearchable
                         searchValue={search}
                         onSearchChange={setSearch}
