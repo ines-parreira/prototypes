@@ -59,11 +59,17 @@ export const selectMeasurePerDimension = <
         value: parseNumber(metric),
         decile: parseNumber(decile),
         allData: data,
-        allValues: data.map((row) => ({
-            dimension: row[dimensions[0]] ?? '',
-            value: parseNumber(row[measures[0]] ?? null),
-            decile: parseNumber(row['decile'] ?? null),
-        })),
+        allValues: data.map((row) => {
+            const dimension =
+                dimensions.length > 1 && row[dimensions[1]]
+                    ? `${row[dimensions[0]]},${row[dimensions[1]]}`
+                    : (row[dimensions[0]] ?? '')
+            return {
+                dimension,
+                value: parseNumber(row[measures[0]] ?? null),
+                decile: parseNumber(row['decile'] ?? null),
+            }
+        }),
         dimensions,
         measures,
     }

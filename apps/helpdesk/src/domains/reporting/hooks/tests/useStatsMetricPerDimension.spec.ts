@@ -234,6 +234,119 @@ describe('useStatsMetricPerDimension', () => {
                 { dimension: '2', value: 200, decile: 7 },
             ])
         })
+
+        it('should automatically concatenate multiple dimensions when query has more than one dimension', () => {
+            const multiDimensionQuery: BuiltQuery = {
+                scope: MetricScope.TicketsClosed,
+                dimensions: ['agentId', 'statusName'],
+                measures: ['totalDurationSeconds'],
+                filters: [],
+                metricName: METRIC_NAMES.TEST_METRIC,
+            }
+
+            const dataWithMultipleDimensions = [
+                {
+                    agentId: '1',
+                    statusName: 'Available',
+                    totalDurationSeconds: '3600',
+                    decile: '5',
+                },
+                {
+                    agentId: '1',
+                    statusName: 'Away',
+                    totalDurationSeconds: '1800',
+                    decile: '3',
+                },
+                {
+                    agentId: '2',
+                    statusName: 'Available',
+                    totalDurationSeconds: '7200',
+                    decile: '8',
+                },
+            ]
+
+            const result = selectMeasurePerDimension(
+                dataWithMultipleDimensions,
+                multiDimensionQuery,
+                '1',
+            )
+
+            expect(result?.allValues).toEqual([
+                { dimension: '1,Available', value: 3600, decile: 5 },
+                { dimension: '1,Away', value: 1800, decile: 3 },
+                { dimension: '2,Available', value: 7200, decile: 8 },
+            ])
+        })
+
+        it('should use only first dimension when query has single dimension', () => {
+            const singleDimensionQuery: BuiltQuery = {
+                scope: MetricScope.TicketsClosed,
+                dimensions: ['agentId'],
+                measures: ['totalDurationSeconds'],
+                filters: [],
+                metricName: METRIC_NAMES.TEST_METRIC,
+            }
+
+            const dataWithSingleDimension = [
+                {
+                    agentId: '1',
+                    totalDurationSeconds: '3600',
+                    decile: '5',
+                },
+                {
+                    agentId: '2',
+                    totalDurationSeconds: '1800',
+                    decile: '3',
+                },
+            ]
+
+            const result = selectMeasurePerDimension(
+                dataWithSingleDimension,
+                singleDimensionQuery,
+                '1',
+            )
+
+            expect(result?.allValues).toEqual([
+                { dimension: '1', value: 3600, decile: 5 },
+                { dimension: '2', value: 1800, decile: 3 },
+            ])
+        })
+
+        it('should handle missing second dimension gracefully in multi-dimension queries', () => {
+            const multiDimensionQuery: BuiltQuery = {
+                scope: MetricScope.TicketsClosed,
+                dimensions: ['agentId', 'statusName'],
+                measures: ['totalDurationSeconds'],
+                filters: [],
+                metricName: METRIC_NAMES.TEST_METRIC,
+            }
+
+            const dataWithMissingSecondDimension = [
+                {
+                    agentId: '1',
+                    statusName: 'Available',
+                    totalDurationSeconds: '3600',
+                    decile: '5',
+                },
+                {
+                    agentId: '2',
+                    statusName: null,
+                    totalDurationSeconds: '1800',
+                    decile: '3',
+                },
+            ] as any[]
+
+            const result = selectMeasurePerDimension(
+                dataWithMissingSecondDimension,
+                multiDimensionQuery,
+                '1',
+            )
+
+            expect(result?.allValues).toEqual([
+                { dimension: '1,Available', value: 3600, decile: 5 },
+                { dimension: '2', value: 1800, decile: 3 },
+            ])
+        })
     })
 
     describe('useStatsMetricPerDimension', () => {
