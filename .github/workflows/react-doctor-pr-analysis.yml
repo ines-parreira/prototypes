@@ -150,6 +150,8 @@ jobs:
             --project=${{ matrix.project }} \
             --pr-report=pr-reports/react-doctor-report-${{ matrix.alias }}.json \
             --baseline-report=baseline-reports/react-doctor-report-${{ matrix.alias }}.json \
+            --max-examples=6 \
+            --max-top-rules=5 \
             --output=react-doctor-${{ matrix.alias }}.md
 
       - name: Upload React Doctor markdown artifact
@@ -181,20 +183,112 @@ jobs:
             const path = require('path');
             const marker = '<!-- react-doctor -->';
             const reportsDirectory = 'md-reports';
+            const maxBodyLength = 65000;
+            const sectionSeparator = '\n\n---\n\n';
+
+            function parsePackageName(sectionBody) {
+              const match = sectionBody.match(/^### `([^`]+)`/m);
+              return match ? match[1] : 'unknown-package';
+            }
+
+            function formatUnchangedSummary(reports) {
+              if (reports.length === 0) {
+                return '';
+              }
+
+              const maxListedPackages = 12;
+              const listedPackages = reports
+                .slice(0, maxListedPackages)
+                .map((report) => `\`${report.packageName}\``)
+                .join(', ');
+              const extraCount = reports.length - Math.min(reports.length, maxListedPackages);
+              const extraSuffix = extraCount > 0 ? `, and ${extraCount} more` : '';
+
+              return `_✅ No diagnostic changes for ${reports.length} package(s): ${listedPackages}${extraSuffix}._`;
+            }
+
+            function buildCommentBody(header, sections, unchangedSummary, fallbackText) {
+              const parts = [];
+              if (sections.length > 0) {
+                parts.push(sections.join(sectionSeparator));
+              }
+              if (unchangedSummary) {
+                parts.push(unchangedSummary);
+              }
+              if (parts.length === 0) {
+                parts.push(fallbackText);
+              }
+              return `${header}${parts.join('\n\n')}`;
+            }
 
             const reportFiles = fs.existsSync(reportsDirectory)
               ? fs.readdirSync(reportsDirectory).filter((file) => file.endsWith('.md')).sort()
               : [];
 
-            const reportSections = reportFiles.map((file) =>
-              fs.readFileSync(path.join(reportsDirectory, file), 'utf8').trim(),
-            );
-            const body =
+            const reports = reportFiles.map((file) => {
+              const body = fs.readFileSync(path.join(reportsDirectory, file), 'utf8').trim();
+              return {
+                body,
+                packageName: parsePackageName(body),
+                hasChanges: !body.includes('_✅ No diagnostic changes._'),
+              };
+            });
+
+            const changedReports = reports.filter((report) => report.hasChanges);
+            const unchangedReports = reports.filter((report) => !report.hasChanges);
+            const unchangedSummary = formatUnchangedSummary(unchangedReports);
+            const header =
               `${marker}\n## 🩺 React Doctor Report\n\n` +
-              `_Legend: 🟢 good | 🟡 needs work | 🔴 critical_\n\n` +
-              (reportSections.length > 0
-                ? reportSections.join('\n\n---\n\n')
-                : '_No React Doctor reports generated._');
+              `_Legend: 🟢 good | 🟡 needs work | 🔴 critical_\n\n`;
+            const fallback = '_No React Doctor reports generated._';
+
+            const orderedSections = changedReports.map((report) => report.body);
+            let body = buildCommentBody(
+              header,
+              orderedSections,
+              unchangedSummary,
+              fallback,
+            );
+
+            if (body.length > maxBodyLength) {
+              const includedSections = [...orderedSections];
+              let omittedCount = 0;
+
+              while (includedSections.length > 0) {
+                const attempt = buildCommentBody(
+                  header,
+                  includedSections,
+                  unchangedSummary,
+                  fallback,
+                );
+                if (attempt.length <= maxBodyLength) {
+                  break;
+                }
+                includedSections.pop();
+                omittedCount += 1;
+              }
+
+              const truncationNotice =
+                `> ℹ️ Comment truncated to stay under GitHub's size limit. ` +
+                `Showing ${includedSections.length} package section(s), omitted ${omittedCount}.`;
+
+              body = buildCommentBody(
+                header,
+                includedSections,
+                unchangedSummary ? `${unchangedSummary}\n\n${truncationNotice}` : truncationNotice,
+                fallback,
+              );
+
+              if (body.length > maxBodyLength) {
+                body = buildCommentBody(header, includedSections, truncationNotice, fallback);
+              }
+
+              if (body.length > maxBodyLength) {
+                body =
+                  `${header}${truncationNotice}\n\n` +
+                  '_Too many diagnostics to render in a single comment. Check artifacts for full details._';
+              }
+            }
 
             const { data: comments } = await github.rest.issues.listComments({
               ...context.repo,
