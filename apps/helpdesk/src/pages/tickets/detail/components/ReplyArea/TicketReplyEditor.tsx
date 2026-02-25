@@ -51,6 +51,7 @@ type Props = {
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
     flags?: FeatureFlagsMap
+    onKeyDown?: (event: KeyboardEvent) => void
 } & ConnectedProps<typeof connector> &
     TypingActivityProps & { isTranslationPending: boolean }
 
@@ -383,6 +384,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             replyAreaHeader,
             handleTypingActivity,
             isTranslationPending,
+            onKeyDown,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -484,13 +486,14 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         text: newMessage.getIn(['newMessage', 'body_text']),
                     }}
                     onChange={this.onEditorChange}
-                    onKeyDown={() => {
+                    onKeyDown={(e) => {
                         handleTypingActivity()
+                        onKeyDown?.(e)
                     }}
                     attachFiles={(files: File[] | FileList) =>
                         this.handleFiles(files, attachmentsMask)
                     }
-                    tabIndex={4}
+                    tabIndex={0}
                     readOnly={
                         newMessage.getIn([
                             '_internal',

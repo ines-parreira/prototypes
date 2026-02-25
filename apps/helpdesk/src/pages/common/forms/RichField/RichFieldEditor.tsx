@@ -241,7 +241,7 @@ type Props = {
     uploadType?: UploadType
     getWorkflowVariables?: () => WorkflowVariableList
     getGuidanceVariables?: () => GuidanceVariableList
-    onKeyDown?: (event: KeyboardEvent) => void
+    onKeyDown?: (event: globalThis.KeyboardEvent) => void
     isToolbarDisabled?: boolean
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
@@ -853,6 +853,24 @@ export class RichFieldEditor extends Component<Props, State> {
         if (target.closest('[data-find-replace-dialog]')) return
         if (predictionKey.get()) return
 
+        if (keyEvent.shiftKey) {
+            const { editorState } = this.props
+            const content = editorState.getCurrentContent()
+            const selection = editorState.getSelection()
+            const block = content.getBlockForKey(selection.getStartKey())
+            const blockType = block.getType()
+            const isListItem =
+                blockType === 'unordered-list-item' ||
+                blockType === 'ordered-list-item'
+
+            if (!isListItem && block.getDepth() === 0) {
+                event.preventDefault()
+                event.stopPropagation()
+                this.props.onKeyDown?.(keyEvent)
+                return
+            }
+        }
+
         event.preventDefault()
         event.stopPropagation()
 
@@ -1195,7 +1213,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     _customKeyBindingFn = (e: KeyboardEvent) => {
-        this.props.onKeyDown?.(e)
+        this.props.onKeyDown?.(e.nativeEvent)
         if (e.key === 'Enter' && KeyBindingUtil.hasCommandModifier(e)) {
             return null
         }
@@ -1238,7 +1256,6 @@ export class RichFieldEditor extends Component<Props, State> {
             isRequired,
             pattern,
             displayOnly,
-            onFocus,
             emailExtraEnabled,
             ticket,
             header,
@@ -1265,7 +1282,6 @@ export class RichFieldEditor extends Component<Props, State> {
                         drop: this.state.isDragging,
                     })}
                     ref={this._setEditorWrapperRef}
-                    onClick={onFocus}
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}
                     onDrop={this._onDrop}

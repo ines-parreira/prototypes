@@ -778,15 +778,17 @@ describe('RichFieldEditor', () => {
                 />,
             )
 
+            const nativeEvent = { key: 'a' } as globalThis.KeyboardEvent
             const event = {
                 key: 'a',
                 keyCode: 65,
                 ctrlKey: false,
                 metaKey: false,
                 altKey: false,
+                nativeEvent,
             } as any
             instanceRef.current!._customKeyBindingFn(event)
-            expect(onKeyDown).toHaveBeenCalledWith(event)
+            expect(onKeyDown).toHaveBeenCalledWith(nativeEvent)
         })
     })
 

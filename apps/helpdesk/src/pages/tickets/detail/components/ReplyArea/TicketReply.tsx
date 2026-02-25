@@ -35,6 +35,7 @@ type TicketReplyProps = {
     richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
+    onKeyDown?: (event: KeyboardEvent) => void
 }
 
 export function TicketReply({
@@ -42,6 +43,7 @@ export function TicketReply({
     applyMacro,
     className: passedClassName,
     macros,
+    onKeyDown,
     replyAreaHeader,
     richAreaRef,
     shouldDisplayQuickReply,
@@ -87,6 +89,7 @@ export function TicketReply({
                     applyMacro={applyMacro}
                     shouldDisplayQuickReply={shouldDisplayQuickReply}
                     replyAreaHeader={replyAreaHeader}
+                    onKeyDown={onKeyDown}
                 />
             )}
             <TicketAttachments

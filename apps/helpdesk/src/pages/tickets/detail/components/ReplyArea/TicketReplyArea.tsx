@@ -369,6 +369,12 @@ export class TicketReplyArea extends Component<Props, State> {
                     }
                 },
             },
+            SEARCH_MACROS: {
+                action: (e) => {
+                    e.preventDefault()
+                    this.showMacros()
+                },
+            },
             BLUR_EVERYTHING: {
                 action: () => {
                     this.hideMacrosAndFocusEditor()
@@ -563,6 +569,12 @@ export class TicketReplyArea extends Component<Props, State> {
                             macros={macros}
                             applyMacro={this.handleApplyMacro}
                             shouldDisplayQuickReply={this.shouldDisplayQuickReply()}
+                            onKeyDown={(e: KeyboardEvent) => {
+                                if (e.shiftKey && e.key === 'Tab') {
+                                    this.showMacros()
+                                    this.macroInput?.focus()
+                                }
+                            }}
                         />
                     )}
                 </div>

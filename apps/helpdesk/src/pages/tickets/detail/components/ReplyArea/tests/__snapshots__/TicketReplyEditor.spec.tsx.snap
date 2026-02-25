@@ -39,7 +39,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
               role="combobox"
               spellcheck="true"
               style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-              tabindex="4"
+              tabindex="0"
             >
               <div
                 data-contents="true"

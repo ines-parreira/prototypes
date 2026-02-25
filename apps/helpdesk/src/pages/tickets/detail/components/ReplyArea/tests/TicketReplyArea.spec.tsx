@@ -13,6 +13,7 @@ import type { Language } from '@gorgias/helpdesk-queries'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { macros } from 'fixtures/macro'
 import type { InTicketSuggestionState } from 'state/entities/rules/types'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import type TicketMacrosSearch from '../TicketMacrosSearch'
 import TicketReply from '../TicketReply'
@@ -31,13 +32,15 @@ jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
 jest.mock('../TicketReply', () => {
     const { Component } = jest.requireActual('react')
     const focusEditor = jest.fn()
+    let capturedOnKeyDown: ((e: any) => void) | undefined
 
     class TicketReplyMock extends Component<Props> {
         focusEditor = focusEditor
         isFocused = jest.fn().mockReturnValue(false)
 
         render() {
-            const { richAreaRef }: Props = this.props
+            const { richAreaRef, onKeyDown }: any = this.props
+            capturedOnKeyDown = onKeyDown
             richAreaRef(this)
 
             return <div>hello</div>
@@ -45,6 +48,7 @@ jest.mock('../TicketReply', () => {
     }
     TicketReplyMock.mocks = {
         focusEditor,
+        getCapturedOnKeyDown: () => capturedOnKeyDown,
     }
 
     return TicketReplyMock
@@ -73,14 +77,29 @@ jest.mock(
         ({
             showMacros,
             handleSearchKeyDown,
+            setFocus,
         }: ComponentProps<typeof TicketMacrosSearch>) => (
             <input
                 data-testid="ticket-macro-search"
                 onKeyDown={handleSearchKeyDown}
                 onFocus={() => showMacros()}
+                ref={(el: HTMLInputElement | null) => el && setFocus?.(el)}
             />
         ),
 )
+
+jest.mock('@repo/utils', () => {
+    const actual = jest.requireActual('@repo/utils')
+    return {
+        ...actual,
+        shortcutManager: {
+            bind: jest.fn(),
+            unbind: jest.fn(),
+        },
+    }
+})
+
+const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
 
 const minProps = {
     ticket: fromJS({}),
@@ -266,6 +285,67 @@ describe('<TicketReplyArea/>', () => {
                 isMacrosLoading
             />,
         )
+    })
+
+    describe('Shift+Tab keyboard shortcut', () => {
+        it('should show macros and focus macro search input when Shift+Tab is pressed', () => {
+            const onChangeMacrosActive = jest.fn()
+            const { container } = render(
+                <TicketReplyArea
+                    {...minProps}
+                    onChangeMacrosActive={onChangeMacrosActive}
+                />,
+            )
+
+            const macroInput = getByTestId(container, 'ticket-macro-search')
+            const focusSpy = jest.spyOn(macroInput, 'focus')
+
+            const onKeyDown = (TicketReply as any).mocks.getCapturedOnKeyDown()
+            onKeyDown({ shiftKey: true, key: 'Tab' })
+
+            expect(onChangeMacrosActive).toHaveBeenCalledWith(true)
+            expect(focusSpy).toHaveBeenCalled()
+        })
+
+        it('should not show macros when Tab is pressed without Shift', () => {
+            const onChangeMacrosActive = jest.fn()
+            render(
+                <TicketReplyArea
+                    {...minProps}
+                    onChangeMacrosActive={onChangeMacrosActive}
+                />,
+            )
+
+            const onKeyDown = (TicketReply as any).mocks.getCapturedOnKeyDown()
+            onKeyDown({ shiftKey: false, key: 'Tab' })
+
+            expect(onChangeMacrosActive).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('SEARCH_MACROS keyboard shortcut', () => {
+        it('should call preventDefault and show macros when triggered', () => {
+            const onChangeMacrosActive = jest.fn()
+            render(
+                <TicketReplyArea
+                    {...minProps}
+                    onChangeMacrosActive={onChangeMacrosActive}
+                />,
+            )
+
+            const shortcutEvent = {
+                preventDefault: jest.fn(),
+            } as unknown as jest.Mocked<Event>
+
+            makeExecuteKeyboardAction(
+                shortcutManagerMock,
+                shortcutEvent,
+                'TicketDetailContainer',
+            )('SEARCH_MACROS')
+
+            expect(shortcutEvent.preventDefault).toHaveBeenCalled()
+            expect(onChangeMacrosActive).toHaveBeenCalledWith(true)
+        })
     })
 
     describe('prefill macro alert', () => {
