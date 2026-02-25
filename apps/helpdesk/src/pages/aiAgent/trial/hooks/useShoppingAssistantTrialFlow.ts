@@ -29,6 +29,7 @@ type UseShoppingAssistantTrialFlowProps = {
     onSuccessModalOpen?: () => void
     trialType: TrialType
     isOnboarded?: boolean
+    source?: string
 }
 
 const TRIAL_UPGRADE_MODAL_NAME = 'ShoppingAssistantTrialUpgradeModal'
@@ -123,6 +124,7 @@ export const useShoppingAssistantTrialFlow = ({
     onSuccessModalOpen,
     trialType,
     isOnboarded,
+    source,
 }: UseShoppingAssistantTrialFlowProps): UseShoppingAssistantTrialFlowReturn => {
     const isAiAgentTrial = trialType === TrialType.AiAgent
     const isExpandingTrialExperienceMilestone2Enabled = useFlag(
@@ -176,7 +178,7 @@ export const useShoppingAssistantTrialFlow = ({
             logEvent(SegmentEvent.PricingModalViewed, {
                 type: 'Trial',
                 trialType,
-                source: 'url_params',
+                source: source ?? 'url_params',
             })
             trialModal.openModal(trialUpgradeModalName)
         }
@@ -240,6 +242,7 @@ export const useShoppingAssistantTrialFlow = ({
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'trial_started',
             trialType,
+            ...(source && { source }),
         })
         triggerTrialMutation(
             {
@@ -262,6 +265,7 @@ export const useShoppingAssistantTrialFlow = ({
         logEvent(SegmentEvent.PricingModalClicked, {
             type: 'ai_agent_trial_started',
             trialType,
+            ...(source && { source }),
         })
         triggerAiAgentTrialMutation(['shopify', shopName, optedInForUpgrade], {
             onSuccess: async () => {
@@ -319,6 +323,7 @@ export const useShoppingAssistantTrialFlow = ({
         logEvent(SegmentEvent.PricingModalViewed, {
             type: 'Trial',
             trialType,
+            ...(source && { source }),
         })
         trialModal.openModal(trialUpgradeModalName)
     }
@@ -327,6 +332,7 @@ export const useShoppingAssistantTrialFlow = ({
         logEvent(SegmentEvent.PricingModalViewed, {
             type: isTrial ? 'Trial' : 'Upgrade',
             trialType,
+            ...(source && { source }),
         })
         upgradeModal.openModal(upgradeModalName)
     }
@@ -370,6 +376,7 @@ export const useShoppingAssistantTrialFlow = ({
         logEvent(SegmentEvent.PricingModalViewed, {
             type: 'Notify',
             trialType,
+            ...(source && { source }),
         })
         trialRequestModal.openModal(trialRequestModalName)
     }

@@ -36,6 +36,7 @@ export const RestrictedOpportunityMessage = ({
             accountDomain,
             storeActivations,
             trialType,
+            source: 'opportunities',
         })
 
     const { newTrialUpgradePlanModal } = useTrialModalProps({

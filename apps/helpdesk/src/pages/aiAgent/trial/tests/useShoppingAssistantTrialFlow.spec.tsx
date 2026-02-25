@@ -1343,4 +1343,120 @@ describe('useShoppingAssistantTrialFlow', () => {
             })
         })
     })
+
+    describe('source parameter', () => {
+        it('should include source in PricingModalViewed event when openTrialUpgradeModal is called with source', () => {
+            const { result } = renderHookWithDefaults({
+                source: 'opportunities',
+            })
+
+            act(() => {
+                result.current.openTrialUpgradeModal()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                    trialType: TrialType.ShoppingAssistant,
+                    source: 'opportunities',
+                },
+            )
+        })
+
+        it('should include source in PricingModalViewed event when openUpgradePlanModal is called with source', () => {
+            const { result } = renderHookWithDefaults({
+                source: 'opportunities',
+            })
+
+            act(() => {
+                result.current.openUpgradePlanModal(true)
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                    trialType: TrialType.ShoppingAssistant,
+                    source: 'opportunities',
+                },
+            )
+        })
+
+        it('should include source in PricingModalViewed event when openTrialRequestModal is called with source', () => {
+            const { result } = renderHookWithDefaults({
+                source: 'opportunities',
+            })
+
+            act(() => {
+                result.current.openTrialRequestModal()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Notify',
+                    trialType: TrialType.ShoppingAssistant,
+                    source: 'opportunities',
+                },
+            )
+        })
+
+        it('should include source in PricingModalClicked event when startTrial is called with source for ShoppingAssistant', () => {
+            mockMutateAsync.mockResolvedValue({})
+            const { result } = renderHookWithDefaults({
+                source: 'opportunities',
+            })
+
+            act(() => {
+                result.current.startTrial()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalClicked,
+                {
+                    type: 'trial_started',
+                    trialType: TrialType.ShoppingAssistant,
+                    source: 'opportunities',
+                },
+            )
+        })
+
+        it('should include source in PricingModalClicked event when startTrial is called with source for AiAgent', () => {
+            mockAiAgentMutateAsync.mockResolvedValue({})
+            const { result } = renderHookWithDefaults({
+                trialType: TrialType.AiAgent,
+                source: 'opportunities',
+            })
+
+            act(() => {
+                result.current.startTrial()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalClicked,
+                {
+                    type: 'ai_agent_trial_started',
+                    trialType: TrialType.AiAgent,
+                    source: 'opportunities',
+                },
+            )
+        })
+
+        it('should not include source in events when source is not provided', () => {
+            const { result } = renderHookWithDefaults()
+
+            act(() => {
+                result.current.openTrialUpgradeModal()
+            })
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                    trialType: TrialType.ShoppingAssistant,
+                },
+            )
+        })
+    })
 })
