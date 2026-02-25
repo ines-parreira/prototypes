@@ -33,7 +33,7 @@
         "@types/jest": "catalog:test",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
-        "@vitest/coverage-v8": "^3.2.4",
+        "@vitest/coverage-v8": "catalog:test",
         "jest": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
@@ -41,6 +41,6 @@
         "react-dom": "catalog:react",
         "swc_mut_cjs_exports": "catalog:test",
         "typescript": "catalog:typescript",
-        "vitest": "^3.2.4"
+        "vitest": "catalog:test"
     }
 }

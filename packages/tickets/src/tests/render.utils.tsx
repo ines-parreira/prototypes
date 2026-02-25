@@ -29,15 +29,15 @@ export const testAppQueryClient = new QueryClient({
 })
 
 type LegacyBridgeOptions = {
-    dispatchNotification?: ReturnType<typeof vi.fn>
-    dispatchDismissNotification?: ReturnType<typeof vi.fn>
+    dispatchNotification?: LegacyBridgeContextType['dispatchNotification']
+    dispatchDismissNotification?: LegacyBridgeContextType['dispatchDismissNotification']
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
-    dispatchAuditLogEvents?: ReturnType<typeof vi.fn>
-    dispatchHideAuditLogEvents?: ReturnType<typeof vi.fn>
-    toggleQuickReplies?: ReturnType<typeof vi.fn>
-    onToggleUnread?: ReturnType<typeof vi.fn>
+    dispatchAuditLogEvents?: LegacyBridgeContextType['dispatchAuditLogEvents']
+    dispatchHideAuditLogEvents?: LegacyBridgeContextType['dispatchHideAuditLogEvents']
+    toggleQuickReplies?: LegacyBridgeContextType['toggleQuickReplies']
+    onToggleUnread?: LegacyBridgeContextType['onToggleUnread']
     handleTicketDraft?: LegacyBridgeContextType['handleTicketDraft']
-    makeOutboundCall?: ReturnType<typeof vi.fn>
+    makeOutboundCall?: LegacyBridgeContextType['makeOutboundCall']
     voiceDevice?: LegacyBridgeContextType['voiceDevice']
     dtpToggle?: LegacyBridgeContextType['dtpToggle']
     dtpEnabled?: LegacyBridgeContextType['dtpEnabled']

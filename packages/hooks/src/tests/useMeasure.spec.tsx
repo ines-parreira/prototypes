@@ -4,7 +4,6 @@ import noop from 'lodash/noop'
 
 import { useMeasure } from '../useMeasure'
 
-type MockedResizeObserver = (listener: any) => any
 type ResizeListener = (rect: any) => void
 
 const resizeObserverMethods = {
@@ -47,11 +46,13 @@ describe('useMeasure', () => {
     })
 
     it('should track rectangle of a DOM element', () => {
-        let resizeListener: ResizeListener
-        vi.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
+        let resizeListener: ResizeListener = noop
+        vi.spyOn(window, 'ResizeObserver').mockImplementation(function (
+            listener: ResizeListener,
+        ) {
             resizeListener = listener
             return resizeObserverMethods
-        }) as MockedResizeObserver)
+        } as unknown as typeof ResizeObserver)
 
         const { result } = renderHook(() => useMeasure())
 
@@ -80,11 +81,13 @@ describe('useMeasure', () => {
     })
 
     it('should track multiple updates', () => {
-        let resizeListener: ResizeListener
-        vi.spyOn(window, 'ResizeObserver').mockImplementation(((listener) => {
+        let resizeListener: ResizeListener = noop
+        vi.spyOn(window, 'ResizeObserver').mockImplementation(function (
+            listener: ResizeListener,
+        ) {
             resizeListener = listener
             return resizeObserverMethods
-        }) as MockedResizeObserver)
+        } as unknown as typeof ResizeObserver)
 
         const { result } = renderHook(() => useMeasure())
 
@@ -131,9 +134,9 @@ describe('useMeasure', () => {
 
     it('should call .disconnect() on ResizeObserver when component unmounts', () => {
         const disconnect = vi.fn()
-        vi.spyOn(window, 'ResizeObserver').mockImplementation((() => {
+        vi.spyOn(window, 'ResizeObserver').mockImplementation(function () {
             return { observe: noop, disconnect }
-        }) as MockedResizeObserver)
+        } as unknown as typeof ResizeObserver)
 
         const { result, unmount } = renderHook(() => useMeasure())
 
