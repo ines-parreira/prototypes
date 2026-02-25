@@ -10,6 +10,7 @@
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/browser-storage --no-progress",
         "test": "vitest run --configLoader=runner",
         "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
         "test:watch": "vitest watch --configLoader=runner",

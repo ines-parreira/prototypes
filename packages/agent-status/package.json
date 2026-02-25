@@ -10,6 +10,7 @@
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/agent-status --no-progress",
         "test": "vitest run --configLoader=runner --passWithNoTests",
         "test:ci:cover": "vitest run --configLoader=runner --coverage --passWithNoTests --silent",
         "test:watch": "vitest watch --configLoader=runner",

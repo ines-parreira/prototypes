@@ -14,7 +14,8 @@
     "scripts": {
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
-        "lint": "oxlint --quiet"
+        "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory .. --workspace @repo/config --no-progress"
     },
     "devDependencies": {
         "@testing-library/jest-dom": "catalog:test",

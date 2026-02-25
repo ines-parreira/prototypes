@@ -11,6 +11,7 @@
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/tickets --no-progress",
         "test": "vitest --configLoader=runner",
         "test:ci:cover": "vitest --configLoader=runner --coverage --silent",
         "test:watch": "vitest watch --configLoader=runner",
