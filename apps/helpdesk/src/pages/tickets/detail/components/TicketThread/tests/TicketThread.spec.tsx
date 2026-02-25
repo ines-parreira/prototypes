@@ -15,10 +15,23 @@ import { TicketThread } from '../TicketThread'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
-jest.mock('@repo/tickets/ticket-thread', () => ({
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: () => ({ ticketId: '1' }),
+}))
+jest.mock('@repo/ticket-thread', () => ({
     TicketThreadContainer: ({ children }: { children: ReactNode }) => (
         <section aria-label="Ticket thread container">{children}</section>
     ),
+    TicketThreadItem: ({ item }: { item: { _tag: string } }) => (
+        <div>{item._tag}</div>
+    ),
+    useTicketThread: () => ({
+        ticketThreadItems: [
+            { _tag: 'Thread feed item 1' },
+            { _tag: 'Thread feed item 100' },
+        ],
+    }),
 }))
 jest.mock('pages/common/editor/Editor', () =>
     jest.fn(

@@ -39,3 +39,7 @@ export type PickOne<T, F extends keyof T> = Pick<T, F> & {
 }
 
 export type XOR<T, K = keyof T> = K extends keyof T ? PickOne<T, K> : never
+
+export type Prettify<T> = {
+    [K in keyof T]: T[K]
+} & {}

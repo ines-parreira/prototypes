@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { localForageManager } from '@repo/browser-storage'
 import { useFlag } from '@repo/feature-flags'
@@ -105,6 +105,14 @@ jest.mock('../components/TicketView', () => {
 jest.mock('pages/tickets/detail/components/TicketThread/TicketThread', () => ({
     TicketThread: jest.fn(() => <div>TicketThread mock</div>),
 }))
+jest.mock(
+    'pages/tickets/detail/components/TicketThread/TicketThreadLegacyBridge',
+    () => ({
+        TicketThreadLegacyBridge: ({ children }: { children: ReactNode }) => (
+            <div>{children}</div>
+        ),
+    }),
+)
 
 jest.mock('services/pendingMessageManager/pendingMessageManager', () => ({
     sendMessage: jest.fn(),

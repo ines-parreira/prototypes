@@ -1,6 +1,13 @@
 import { useCallback, useMemo } from 'react'
 
-import { TicketThreadContainer } from '@repo/tickets/ticket-thread'
+import {
+    TicketThreadContainer,
+    TicketThreadItem,
+    useTicketThread,
+} from '@repo/ticket-thread'
+import { useParams } from 'react-router-dom'
+
+import { Box } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,12 +26,22 @@ type TicketThreadProps = {
 export function TicketThread({ submit }: TicketThreadProps) {
     const dispatch = useAppDispatch()
     const ticketState = useAppSelector(getTicketState)
+    const { ticketId } = useParams<{ ticketId: string }>()
     const ticket = useAppSelector(getTicket)
     const initialMacroFilters = useInitialMacroFilters()
     const isShopperTyping = useMemo(
         () => ticketState.getIn(['_internal', 'isShopperTyping']) as boolean,
         [ticketState],
     )
+    const pendingMessages = useMemo(
+        () =>
+            ticketState.getIn(['_internal', 'pendingMessages'])?.toJS?.() ?? [],
+        [ticketState],
+    )
+    const { ticketThreadItems } = useTicketThread({
+        ticketId: Number(ticketId),
+        pendingMessages,
+    })
 
     const shopperName = useMemo(
         () => ticket.customer?.name ?? 'Customer',
@@ -41,9 +58,14 @@ export function TicketThread({ submit }: TicketThreadProps) {
 
     return (
         <TicketThreadContainer>
-            {Array.from({ length: 100 }).map((_, index) => (
-                <div key={index}>Thread feed item {index + 1}</div>
-            ))}
+            <Box flexGrow={1} flexDirection="column" padding="md">
+                {ticketThreadItems.map((item, index) => (
+                    <TicketThreadItem
+                        key={`${item._tag}-${index}`}
+                        item={item}
+                    />
+                ))}
+            </Box>
             <div>
                 <TypingActivity isTyping={isShopperTyping} name={shopperName} />
                 <WhatsAppEditorProvider>

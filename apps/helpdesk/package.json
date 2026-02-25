@@ -111,6 +111,7 @@
         "@repo/reporting": "workspace:*",
         "@repo/routing": "workspace:*",
         "@repo/tickets": "workspace:*",
+        "@repo/ticket-thread": "workspace:*",
         "@repo/utils": "workspace:*",
         "@sentry/react": "7.119.1",
         "@sentry/tracing": "7.119.1",

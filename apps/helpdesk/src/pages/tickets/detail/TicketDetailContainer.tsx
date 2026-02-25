@@ -52,6 +52,7 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import { TicketThread } from 'pages/tickets/detail/components/TicketThread/TicketThread'
+import { TicketThreadLegacyBridge } from 'pages/tickets/detail/components/TicketThread/TicketThreadLegacyBridge'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import socketManager from 'services/socketManager/socketManager'
@@ -743,7 +744,11 @@ export const TicketDetailContainer = ({
     }
 
     if (hasUIVisionMS3) {
-        return <TicketThread submit={submit} />
+        return (
+            <TicketThreadLegacyBridge>
+                <TicketThread submit={submit} />
+            </TicketThreadLegacyBridge>
+        )
     }
 
     return ticketView

@@ -5,8 +5,7 @@
     "private": true,
     "exports": {
         ".": "./src/index.ts",
-        "./feature-flags": "./src/feature-flags/index.ts",
-        "./ticket-thread": "./src/ticket-thread/index.ts"
+        "./feature-flags": "./src/feature-flags/index.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",

@@ -9,4 +9,5 @@ export type {
     UnionPick,
     PickOne,
     XOR,
+    Prettify,
 } from './utils'
