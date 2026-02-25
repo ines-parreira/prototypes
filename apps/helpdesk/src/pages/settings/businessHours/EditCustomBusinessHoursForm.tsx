@@ -99,7 +99,10 @@ export default function EditCustomBusinessHoursForm({ businessHours }: Props) {
                         </p>
                     </SettingsCardHeader>
                     <SettingsCardContent>
-                        <TimeScheduleField name="business_hours_config.business_hours" />
+                        <TimeScheduleField
+                            name="business_hours_config.business_hours"
+                            withCaption={false}
+                        />
                     </SettingsCardContent>
                 </SettingsCard>
 

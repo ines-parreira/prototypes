@@ -12,12 +12,14 @@ type Props = {
     isRemovable?: boolean
     name: string
     root?: HTMLElement
+    withCaption?: boolean
 }
 
 export default function TimeScheduleField({
     isRemovable = false,
     name,
     root,
+    withCaption = true,
 }: Props) {
     const { fields, append, remove } = useFieldArray({
         name,
@@ -27,10 +29,12 @@ export default function TimeScheduleField({
         <div className={css.container}>
             {fields.length ? (
                 <>
-                    <span className={css.caption}>
-                        Add one or multiple time ranges to create your custom
-                        schedule.
-                    </span>
+                    {withCaption && (
+                        <span className={css.caption}>
+                            Add one or multiple time ranges to create your
+                            custom schedule.
+                        </span>
+                    )}
                     <div className={css.inputs}>
                         {fields.map((field, index) => (
                             <TimeScheduleRow

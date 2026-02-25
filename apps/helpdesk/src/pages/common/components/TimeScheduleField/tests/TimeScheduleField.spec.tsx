@@ -106,4 +106,21 @@ describe('TimeScheduleField', () => {
             expect(screen.queryByText('close')).not.toBeInTheDocument()
         })
     })
+
+    it('should not show caption when withCaption is false', () => {
+        render(
+            <Form onValidSubmit={jest.fn()}>
+                <TimeScheduleField
+                    name="business_hours_config.business_hours"
+                    withCaption={false}
+                />
+            </Form>,
+        )
+
+        expect(
+            screen.queryByText(
+                'Add one or multiple time ranges to create your custom schedule.',
+            ),
+        ).not.toBeInTheDocument()
+    })
 })
