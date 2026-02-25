@@ -27,6 +27,22 @@ on:
         description: Other unaffected packages
         type: string
         required: true
+      has-react-doctor-affected-packages:
+        description: If there are affected packages for React Doctor diagnostics
+        type: string
+        required: true
+      react-doctor-affected-packages:
+        description: Affected packages for React Doctor diagnostics
+        type: string
+        required: true
+      react-doctor-gcloud-project:
+        description: GCloud project used to upload React Doctor reports
+        type: string
+        required: true
+      react-doctor-gcs-bucket:
+        description: GCS bucket path where React Doctor reports are stored
+        type: string
+        required: true
       nx-base-commit:
         description: Base commit for nx affected commands
         type: string
@@ -98,6 +114,91 @@ jobs:
       - name: Typecheck
         if: inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true'
         run: npx nx affected --target=typecheck --base=${{ inputs.nx-base-commit }} --head=HEAD
+
+  react-doctor:
+    name: 'React Doctor diagnostics'
+    runs-on: gh-actions-default-runner-set
+    if: inputs.has-react-doctor-affected-packages == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.react-doctor-affected-packages) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache-key: ${{ inputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+      - name: Ensure diagnostics directory exists
+        run: mkdir -p .diagnostics/react-doctor-reports
+
+      - name: 'Run React Doctor diagnostics for ${{ matrix.project }}'
+        run: pnpm react-doctor --project=${{ matrix.project }} --output-dir=.diagnostics/react-doctor-reports --fail-on=none
+
+      - name: Upload React Doctor report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-doctor-${{ matrix.alias }}
+          path: |
+            .diagnostics/react-doctor-reports/react-doctor-report-${{ matrix.alias }}.log
+            .diagnostics/react-doctor-reports/react-doctor-report-${{ matrix.alias }}.json
+
+  react-doctor-upload:
+    name: 'React Doctor upload'
+    needs: react-doctor
+    runs-on: gh-actions-small-runner-set
+    if: ${{ !cancelled() && inputs.has-react-doctor-affected-packages == 'true' }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.react-doctor-affected-packages) }}
+    container: google/cloud-sdk:502.0.0-alpine
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcloud-key.json
+      GCS_BUCKET: ${{ inputs.react-doctor-gcs-bucket }}
+    steps:
+      - name: Download React Doctor report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-doctor-${{ matrix.alias }}
+          path: reports
+
+      - name: Authenticate with GCS
+        shell: sh
+        run: |
+          cat <<EOF > $GOOGLE_APPLICATION_CREDENTIALS
+          ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} \
+            --key-file=$GOOGLE_APPLICATION_CREDENTIALS \
+            --project=${{ inputs.react-doctor-gcloud-project }}
+
+      - name: Upload reports to GCS
+        shell: sh
+        run: |
+          REPORT_LOG=reports/react-doctor-report-${{ matrix.alias }}.log
+          REPORT_JSON=reports/react-doctor-report-${{ matrix.alias }}.json
+
+          gsutil cp "$REPORT_LOG" \
+            ${{ env.GCS_BUCKET }}/${{ github.sha }}/react-doctor-report-${{ matrix.alias }}.log
+          gsutil cp "$REPORT_JSON" \
+            ${{ env.GCS_BUCKET }}/${{ github.sha }}/react-doctor-report-${{ matrix.alias }}.json
+
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            gsutil cp "$REPORT_LOG" \
+              ${{ env.GCS_BUCKET }}/latest/react-doctor-report-${{ matrix.alias }}.log
+            gsutil cp "$REPORT_JSON" \
+              ${{ env.GCS_BUCKET }}/latest/react-doctor-report-${{ matrix.alias }}.json
+          fi
 
   tests:
     name: Tests

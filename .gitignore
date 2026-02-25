@@ -71,3 +71,5 @@ yalc.lock
 
 .nx/cache
 .nx/workspace-data
+
+.diagnostics

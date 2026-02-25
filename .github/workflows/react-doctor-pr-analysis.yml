@@ -1,0 +1,220 @@
+name: React Doctor PR Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  NODE_VERSION: "22.22.0"
+  REACT_DOCTOR_GCLOUD_PROJECT: gorgias-helpdesk-staging
+  REACT_DOCTOR_GCS_BUCKET: gs://gorgias-assets-staging/react-doctor-reports/helpdesk-web-app
+
+concurrency:
+  group: react-doctor-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  workspace-setup:
+    name: Workspace setup
+    if: github.event.pull_request.head.repo.fork == false
+    runs-on: gh-actions-large-runner-set
+    outputs:
+      cache-key: ${{ env.CACHE_KEY }}
+      has-react-doctor-affected-packages: ${{ env.HAS_REACT_DOCTOR_AFFECTED_PACKAGES }}
+      react-doctor-affected-packages: ${{ env.REACT_DOCTOR_AFFECTED_PACKAGES }}
+      nx-base-ref: ${{ env.NX_BASE_REF }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+      - name: Get affected packages
+        run: |
+          NX_BASE_REF="origin/${{ github.base_ref }}"
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          echo "NX_BASE_REF=$NX_BASE_REF" >> $GITHUB_ENV
+
+          REACT_DOCTOR_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=lint --exclude=@repo/root --json --base=$NX_BASE_REF --head=HEAD)
+
+          if echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
+            REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX=$(echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: ., alias: (sub("^@"; "") | gsub("/"; "-"))})')
+            echo "REACT_DOCTOR_AFFECTED_PACKAGES=$REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
+            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=true" >> $GITHUB_ENV
+            echo "Found affected packages for React Doctor: $REACT_DOCTOR_AFFECTED_PACKAGES_JSON"
+          else
+            echo "REACT_DOCTOR_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
+            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=false" >> $GITHUB_ENV
+            echo "No affected packages with lint target found for React Doctor"
+          fi
+
+  react-doctor-scan:
+    name: React Doctor scan
+    needs: workspace-setup
+    if: needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true'
+    runs-on: gh-actions-default-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.workspace-setup.outputs.react-doctor-affected-packages) }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+      - name: Ensure diagnostics directory exists
+        run: mkdir -p .diagnostics/react-doctor-reports
+
+      - name: Run React Doctor diagnostics
+        run: pnpm react-doctor --project=${{ matrix.project }} --output-dir=.diagnostics/react-doctor-reports --fail-on=none
+
+      - name: Upload React Doctor report artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-doctor-${{ matrix.alias }}
+          path: |
+            .diagnostics/react-doctor-reports/react-doctor-report-${{ matrix.alias }}.log
+            .diagnostics/react-doctor-reports/react-doctor-report-${{ matrix.alias }}.json
+
+  react-doctor-compare:
+    name: React Doctor compare
+    needs:
+      - workspace-setup
+      - react-doctor-scan
+    if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
+    runs-on: gh-actions-small-runner-set
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.workspace-setup.outputs.react-doctor-affected-packages) }}
+    container: google/cloud-sdk:502.0.0-alpine
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: /tmp/gcloud-key.json
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download React Doctor report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-doctor-${{ matrix.alias }}
+          path: pr-reports
+
+      - name: Authenticate with GCS
+        shell: sh
+        run: |
+          cat <<EOF > $GOOGLE_APPLICATION_CREDENTIALS
+          ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
+          EOF
+          gcloud auth activate-service-account ${{ secrets.GCLOUD_SERVICE_ACCOUNT }} \
+            --key-file=$GOOGLE_APPLICATION_CREDENTIALS \
+            --project=$REACT_DOCTOR_GCLOUD_PROJECT
+
+      - name: Download latest baseline report from GCS
+        shell: sh
+        run: |
+          mkdir -p baseline-reports
+          gsutil cp \
+            $REACT_DOCTOR_GCS_BUCKET/latest/react-doctor-report-${{ matrix.alias }}.json \
+            baseline-reports/ || true
+
+      - name: Install Node.js
+        shell: sh
+        run: apk add --no-cache nodejs npm
+
+      - name: Compare reports
+        shell: sh
+        run: |
+          node scripts/react-doctor/compare-reports.mjs \
+            --project=${{ matrix.project }} \
+            --pr-report=pr-reports/react-doctor-report-${{ matrix.alias }}.json \
+            --baseline-report=baseline-reports/react-doctor-report-${{ matrix.alias }}.json \
+            --output=react-doctor-${{ matrix.alias }}.md
+
+      - name: Upload React Doctor markdown artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: react-doctor-md-${{ matrix.alias }}
+          path: react-doctor-${{ matrix.alias }}.md
+
+  react-doctor-comment:
+    name: React Doctor comment
+    needs:
+      - workspace-setup
+      - react-doctor-compare
+    if: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages == 'true' && !cancelled() }}
+    runs-on: gh-actions-small-runner-set
+    steps:
+      - name: Download React Doctor markdown artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: react-doctor-md-*
+          path: md-reports
+          merge-multiple: true
+
+      - name: Create or update PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const marker = '<!-- react-doctor -->';
+            const reportsDirectory = 'md-reports';
+
+            const reportFiles = fs.existsSync(reportsDirectory)
+              ? fs.readdirSync(reportsDirectory).filter((file) => file.endsWith('.md')).sort()
+              : [];
+
+            const reportSections = reportFiles.map((file) =>
+              fs.readFileSync(path.join(reportsDirectory, file), 'utf8').trim(),
+            );
+            const body =
+              `${marker}\n## 🩺 React Doctor Report\n\n` +
+              `_Legend: 🟢 good | 🟡 needs work | 🔴 critical_\n\n` +
+              (reportSections.length > 0
+                ? reportSections.join('\n\n---\n\n')
+                : '_No React Doctor reports generated._');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              ...context.repo,
+              issue_number: context.issue.number,
+            });
+
+            const previousComment = comments.find(
+              (comment) => comment.body?.startsWith(marker),
+            );
+
+            if (previousComment) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: previousComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
