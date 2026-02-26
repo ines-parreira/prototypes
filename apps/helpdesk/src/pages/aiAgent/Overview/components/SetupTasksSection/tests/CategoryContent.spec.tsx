@@ -194,7 +194,7 @@ describe('CategoryContent', () => {
     it('should render empty when no tasks are provided', () => {
         const { container } = renderComponent({ tasks: [] })
 
-        const accordion = container.querySelector('.stepsAccordion')
+        const accordion = container.querySelector('.accordionSteps')
         expect(accordion?.children).toHaveLength(0)
     })
 })

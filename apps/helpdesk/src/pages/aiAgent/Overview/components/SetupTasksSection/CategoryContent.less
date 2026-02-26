@@ -4,28 +4,22 @@
     .groupContent {
         width: 100%;
     }
-    .stepsAccordion {
+
+    .accordionSteps {
         gap: 0;
         margin-top: -15px;
     }
 
     .accordionItem {
-        border: none;
-        box-shadow: none;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        border-radius: 0 !important;
+        background-color: var(--elevation-neutral-default) !important;
 
         &:not(:last-child) {
             padding-bottom: var(--layout-spacing-xxs) 0;
-            border-bottom: 1px solid var(--border-neutral-default, #ebecef);
-        }
-
-        &:hover {
-            border: none;
-            box-shadow: none;
-            outline: none !important;
-
-            &:not(:last-child) {
-                border-bottom: 1px solid var(--border-neutral-default, #ebecef);
-            }
+            border-bottom: 1px solid var(--border-neutral-default, #ebecef) !important;
         }
 
         .stepTitleContainer {

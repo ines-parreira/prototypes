@@ -78,7 +78,7 @@ export const CategoryContent = ({
     return (
         <div className={css.groupContent}>
             <Accordion
-                className={css.stepsAccordion}
+                className={css.accordionSteps}
                 expandedItem={expandedStep}
                 onChange={setExpandedStep}
             >

@@ -38,9 +38,15 @@ export const CategoryList = ({
                     })}
                     onClick={() => onSelectCategory(category)}
                 >
-                    {isCategoryCompleted(category) && (
-                        <Icon name="circle-check" size="md" />
-                    )}
+                    <Icon
+                        name={
+                            isCategoryCompleted(category)
+                                ? 'circle-check'
+                                : 'shape-circle'
+                        }
+                        size="md"
+                        color="var(--content-neutral-secondary)"
+                    />
                     <div>{category}</div>
                 </div>
             ))}
