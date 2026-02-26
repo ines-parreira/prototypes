@@ -23,6 +23,7 @@ import {
     TrialType,
 } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { logTrialBannerEvent } from 'pages/aiAgent/components/ShoppingAssistant/utils/eventLogger'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import type { TrialActivatedModalProps } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import type { TrialAlertBannerProps } from 'pages/aiAgent/trial/components/TrialAlertBanner/TrialAlertBanner'
 import type { TrialManageModalProps } from 'pages/aiAgent/trial/components/TrialManageModal/TrialManageModal'
@@ -132,6 +133,26 @@ const SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED: TrialFeature[] = [
         title: 'Day 14',
         description:
             'Your AI Agent plan will automatically update to the new pricing which includes shopping assistant skills, unless you cancel before your trial ends.',
+    },
+]
+
+const SHOPPING_ASSISTANT_TRIAL_WITH_OPPORTUNITIES: TrialFeature[] = [
+    {
+        icon: 'check',
+        title: 'Today',
+        description:
+            'Your 14-day trial has started. Get full access to Opportunities and Shopping Assistant skills at no additional cost during the trial.',
+    },
+    {
+        icon: 'notifications_none',
+        title: 'Day 7',
+        description: 'We’ll remind you when you’re halfway through your trial.',
+    },
+    {
+        icon: 'star_outline',
+        title: 'Day 14',
+        description:
+            'Your AI Agent plan will automatically update to the new pricing, unless you cancel before your trial ends.',
     },
 ]
 
@@ -394,6 +415,7 @@ const useNewTrialUpgradePlanModal = (
     trialType: TrialType,
     isOnboarded: boolean | undefined,
     storeName?: string,
+    source?: string,
 ): TrialModalProps['newTrialUpgradePlanModal'] => {
     const isExpandingTrialExperienceMilestone2Enabled = useFlag(
         FeatureFlagKey.AiAgentExpandingTrialExperienceMilestone2,
@@ -590,6 +612,31 @@ const useNewTrialUpgradePlanModal = (
                 features: SHOPPING_ASSISTANT_TRIAL_AI_AGENT_NOT_ONBOARDED,
             }
         }
+        if (source && source === OPPORTUNITIES) {
+            props = {
+                ...props,
+                title: 'Unlock AI Agent Opportunities',
+                subtitle:
+                    'Your AI Agent analyzes its own conversations to surface knowledge gaps and conflicts — so you can fix what matters most and improve automation quality over time. Plus, unlock Shopping Assistant skills to turn support into sales.',
+                primaryAction: {
+                    ...props.primaryAction,
+                    label: 'Start Trial now (Opportunities + Shopping Assistant)',
+                    onClick: () => {
+                        setShoppingAssistantTrialOptin(true)
+                        openTrialFinishSetupModal()
+                    },
+                },
+                secondaryAction: {
+                    label: 'start AI Agent Only',
+                    onClick: () => {
+                        setShoppingAssistantTrialOptin(false)
+                        startOnboardingWizard()
+                        closeTrialUpgradeModal()
+                    },
+                },
+                features: SHOPPING_ASSISTANT_TRIAL_WITH_OPPORTUNITIES,
+            }
+        }
         return props
     }, [
         planDetails,
@@ -603,6 +650,7 @@ const useNewTrialUpgradePlanModal = (
         startOnboardingWizard,
         setShoppingAssistantTrialOptin,
         openTrialFinishSetupModal,
+        source,
     ])
 
     return trialType === TrialType.AiAgent
@@ -1134,10 +1182,12 @@ export const useTrialModalProps = ({
     storeName,
     onConfirmTrial,
     pageName,
+    source,
 }: {
     storeName?: string
     onConfirmTrial?: () => void
     pageName?: 'Strategy' | 'Engagement'
+    source?: string
 }): TrialModalProps => {
     const trialAccess = useTrialAccess(storeName)
     const { trialType, isOnboarded } = trialAccess
@@ -1148,6 +1198,7 @@ export const useTrialModalProps = ({
         trialType,
         isOnboarded,
         storeName,
+        source,
     )
     const trialFinishSetupModal = useTrialFinishSetupModal({
         trialType,

@@ -4,6 +4,7 @@ import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -36,11 +37,12 @@ export const RestrictedOpportunityMessage = ({
             accountDomain,
             storeActivations,
             trialType,
-            source: 'opportunities',
+            source: OPPORTUNITIES,
         })
 
     const { newTrialUpgradePlanModal } = useTrialModalProps({
         storeName: shopName,
+        source: OPPORTUNITIES,
     })
 
     const handleBookDemo = () => {

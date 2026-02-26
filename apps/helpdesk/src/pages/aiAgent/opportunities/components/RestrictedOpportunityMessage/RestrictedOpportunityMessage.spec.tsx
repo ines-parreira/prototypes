@@ -4,6 +4,7 @@ import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { State } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
@@ -425,7 +426,7 @@ describe('RestrictedOpportunityMessage', () => {
             })
         })
 
-        it('should call useTrialModalProps with the correct storeName', () => {
+        it('should call useTrialModalProps with the correct storeName and source', () => {
             setupMocks()
 
             render(
@@ -437,10 +438,11 @@ describe('RestrictedOpportunityMessage', () => {
 
             expect(mockUseTrialModalProps).toHaveBeenCalledWith({
                 storeName: 'props-test-shop',
+                source: OPPORTUNITIES,
             })
         })
 
-        it('should call useShoppingAssistantTrialFlow with correct parameters', () => {
+        it('should call useShoppingAssistantTrialFlow with correct parameters including source', () => {
             setupMocks()
 
             render(
@@ -454,6 +456,7 @@ describe('RestrictedOpportunityMessage', () => {
                 expect.objectContaining({
                     accountDomain: 'test-domain',
                     storeActivations: {},
+                    source: OPPORTUNITIES,
                 }),
             )
         })

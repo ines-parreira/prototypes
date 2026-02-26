@@ -19,6 +19,7 @@ import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActi
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { getUseShoppingAssistantTrialFlowFixture } from 'pages/aiAgent/fixtures/useShoppingAssistantTrialFlow.fixtures'
 import { getUseTrialEndingFixture } from 'pages/aiAgent/fixtures/useTrialEnding.fixture'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
@@ -3534,6 +3535,108 @@ describe('useTrialModalProps', () => {
                 )
                 expect(modal.primaryAction?.label).toBe('Start trial now')
                 expect(modal.secondaryAction?.label).toBe('No, thanks')
+            })
+        })
+
+        describe('when source is OPPORTUNITIES', () => {
+            it('should return opportunities-specific modal props', () => {
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({
+                        storeName: mockStoreName,
+                        source: OPPORTUNITIES,
+                    }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.title).toBe('Unlock AI Agent Opportunities')
+                expect(modal.subtitle).toBe(
+                    'Your AI Agent analyzes its own conversations to surface knowledge gaps and conflicts — so you can fix what matters most and improve automation quality over time. Plus, unlock Shopping Assistant skills to turn support into sales.',
+                )
+                expect(modal.primaryAction?.label).toBe(
+                    'Start Trial now (Opportunities + Shopping Assistant)',
+                )
+                expect(modal.secondaryAction?.label).toBe('start AI Agent Only')
+            })
+
+            it('should include SHOPPING_ASSISTANT_TRIAL_WITH_OPPORTUNITIES features', () => {
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({
+                        storeName: mockStoreName,
+                        source: OPPORTUNITIES,
+                    }),
+                )
+
+                const modal = result.current.newTrialUpgradePlanModal
+
+                expect(modal.features).toEqual([
+                    {
+                        icon: 'check',
+                        title: 'Today',
+                        description:
+                            'Your 14-day trial has started. Get full access to Opportunities and Shopping Assistant skills at no additional cost during the trial.',
+                    },
+                    {
+                        icon: 'notifications_none',
+                        title: 'Day 7',
+                        description:
+                            'We\u2019ll remind you when you\u2019re halfway through your trial.',
+                    },
+                    {
+                        icon: 'star_outline',
+                        title: 'Day 14',
+                        description:
+                            'Your AI Agent plan will automatically update to the new pricing, unless you cancel before your trial ends.',
+                    },
+                ])
+            })
+
+            it('should call openTrialFinishSetupModal when primary action is clicked', async () => {
+                const mockOpenTrialFinishSetupModal = jest.fn()
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    openTrialFinishSetupModal: mockOpenTrialFinishSetupModal,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({
+                        storeName: mockStoreName,
+                        source: OPPORTUNITIES,
+                    }),
+                )
+
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.primaryAction?.onClick(),
+                )
+
+                expect(mockOpenTrialFinishSetupModal).toHaveBeenCalledTimes(1)
+            })
+
+            it('should call startOnboardingWizard and closeTrialUpgradeModal when secondary action is clicked', async () => {
+                const mockStartOnboardingWizard = jest.fn()
+                const mockCloseTrialUpgradeModal = jest.fn()
+
+                mockUseAiAgentTrialOnboarding.mockReturnValue({
+                    startOnboardingWizard: mockStartOnboardingWizard,
+                })
+
+                mockUseShoppingAssistantTrialFlow.mockReturnValue({
+                    closeTrialUpgradeModal: mockCloseTrialUpgradeModal,
+                } as unknown as UseShoppingAssistantTrialFlowReturn)
+
+                const { result } = renderHookWithRouter(() =>
+                    useTrialModalProps({
+                        storeName: mockStoreName,
+                        source: OPPORTUNITIES,
+                    }),
+                )
+
+                await act(() =>
+                    result.current.newTrialUpgradePlanModal?.secondaryAction?.onClick(),
+                )
+
+                expect(mockStartOnboardingWizard).toHaveBeenCalledTimes(1)
+                expect(mockCloseTrialUpgradeModal).toHaveBeenCalledTimes(1)
             })
         })
     })

@@ -15,6 +15,7 @@ import { useModalManager } from 'hooks/useModalManager'
 import { useStartAiAgentTrialMutation } from 'models/aiAgent/queries'
 import { storeActivationFixture } from 'pages/aiAgent/Activation/hooks/storeActivation.fixture'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { OPPORTUNITIES } from 'pages/aiAgent/constants'
 import { extractShopNameFromUrl } from 'pages/aiAgent/utils/extractShopNameFromUrl'
 import { getShopNameFromStoreActivations } from 'pages/aiAgent/utils/getShopNameFromStoreActivations'
 import { notify } from 'state/notifications/actions'
@@ -1346,9 +1347,7 @@ describe('useShoppingAssistantTrialFlow', () => {
 
     describe('source parameter', () => {
         it('should include source in PricingModalViewed event when openTrialUpgradeModal is called with source', () => {
-            const { result } = renderHookWithDefaults({
-                source: 'opportunities',
-            })
+            const { result } = renderHookWithDefaults({ source: OPPORTUNITIES })
 
             act(() => {
                 result.current.openTrialUpgradeModal()
@@ -1359,15 +1358,13 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'Trial',
                     trialType: TrialType.ShoppingAssistant,
-                    source: 'opportunities',
+                    source: OPPORTUNITIES,
                 },
             )
         })
 
         it('should include source in PricingModalViewed event when openUpgradePlanModal is called with source', () => {
-            const { result } = renderHookWithDefaults({
-                source: 'opportunities',
-            })
+            const { result } = renderHookWithDefaults({ source: OPPORTUNITIES })
 
             act(() => {
                 result.current.openUpgradePlanModal(true)
@@ -1378,15 +1375,13 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'Trial',
                     trialType: TrialType.ShoppingAssistant,
-                    source: 'opportunities',
+                    source: OPPORTUNITIES,
                 },
             )
         })
 
         it('should include source in PricingModalViewed event when openTrialRequestModal is called with source', () => {
-            const { result } = renderHookWithDefaults({
-                source: 'opportunities',
-            })
+            const { result } = renderHookWithDefaults({ source: OPPORTUNITIES })
 
             act(() => {
                 result.current.openTrialRequestModal()
@@ -1397,16 +1392,14 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'Notify',
                     trialType: TrialType.ShoppingAssistant,
-                    source: 'opportunities',
+                    source: OPPORTUNITIES,
                 },
             )
         })
 
         it('should include source in PricingModalClicked event when startTrial is called with source for ShoppingAssistant', () => {
             mockMutateAsync.mockResolvedValue({})
-            const { result } = renderHookWithDefaults({
-                source: 'opportunities',
-            })
+            const { result } = renderHookWithDefaults({ source: OPPORTUNITIES })
 
             act(() => {
                 result.current.startTrial()
@@ -1417,7 +1410,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'trial_started',
                     trialType: TrialType.ShoppingAssistant,
-                    source: 'opportunities',
+                    source: OPPORTUNITIES,
                 },
             )
         })
@@ -1426,7 +1419,7 @@ describe('useShoppingAssistantTrialFlow', () => {
             mockAiAgentMutateAsync.mockResolvedValue({})
             const { result } = renderHookWithDefaults({
                 trialType: TrialType.AiAgent,
-                source: 'opportunities',
+                source: OPPORTUNITIES,
             })
 
             act(() => {
@@ -1438,7 +1431,7 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'ai_agent_trial_started',
                     trialType: TrialType.AiAgent,
-                    source: 'opportunities',
+                    source: OPPORTUNITIES,
                 },
             )
         })
@@ -1455,6 +1448,46 @@ describe('useShoppingAssistantTrialFlow', () => {
                 {
                     type: 'Trial',
                     trialType: TrialType.ShoppingAssistant,
+                },
+            )
+        })
+
+        it('should use provided source instead of url_params in PricingModalViewed when URL params trigger modal with source', () => {
+            const history = createMemoryHistory({
+                initialEntries: [
+                    '/?modal_name=opt-in&modal_version=ai-agent-trial',
+                ],
+            })
+
+            const customWrapper = ({
+                children,
+            }: {
+                children: React.ReactNode
+            }) => (
+                <Router history={history}>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </Router>
+            )
+
+            renderHook(
+                () =>
+                    useShoppingAssistantTrialFlow({
+                        accountDomain: mockAccountDomain,
+                        storeActivations: mockStoreActivations,
+                        trialType: TrialType.AiAgent,
+                        source: OPPORTUNITIES,
+                    }),
+                { wrapper: customWrapper },
+            )
+
+            expect(mockLogEvent).toHaveBeenCalledWith(
+                SegmentEvent.PricingModalViewed,
+                {
+                    type: 'Trial',
+                    trialType: TrialType.AiAgent,
+                    source: OPPORTUNITIES,
                 },
             )
         })
