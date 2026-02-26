@@ -19,7 +19,7 @@ describe('OpportunityCard', () => {
     it('should render info text', () => {
         render(<OpportunityCard {...defaultProps} />)
 
-        expect(screen.getByText('Create guidance')).toBeInTheDocument()
+        expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
     })
 
     it('should render info icon', () => {
@@ -108,7 +108,7 @@ describe('OpportunityCard', () => {
     it('should render with FILL_KNOWLEDGE_GAP info type by default', () => {
         render(<OpportunityCard {...defaultProps} />)
 
-        expect(screen.getByText('Create guidance')).toBeInTheDocument()
+        expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
         expect(screen.getByLabelText('nav-map')).toBeInTheDocument()
     })
 

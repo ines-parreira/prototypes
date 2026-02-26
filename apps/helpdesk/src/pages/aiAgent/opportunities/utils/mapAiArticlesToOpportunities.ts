@@ -9,6 +9,11 @@ const removeAiPrefix = (key: string): string => {
     return key.startsWith('ai_') ? key.slice(3) : key
 }
 
+const stripHtmlTags = (html: string | null | undefined): string => {
+    if (!html) return ''
+    return html.replace(/<[^>]*>/g, '')
+}
+
 /**
  * Maps AI articles to full Opportunity objects for the legacy flow.
  * In legacy flow, the same data is used for both sidebar and content display.
@@ -28,6 +33,7 @@ export const mapAiArticlesToOpportunities = (
                     content: article.html_content,
                     type: ResourceType.GUIDANCE,
                     isVisible: true,
+                    insight: stripHtmlTags(article.html_content),
                 },
             ],
         }),

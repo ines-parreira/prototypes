@@ -208,9 +208,9 @@ export const OpportunitiesContent = ({
         }
 
         return {
-            title: 'Publish and enable Guidance?',
-            body: "Your changes to this Guidance will be lost if you navigate elsewhere and don't publish it.",
-            primaryCtaText: 'Publish and enable',
+            title: 'Resolve?',
+            body: "Your changes will be lost if you navigate elsewhere and don't acknowledge this gap.",
+            primaryCtaText: 'Resolve',
         }
     }
 

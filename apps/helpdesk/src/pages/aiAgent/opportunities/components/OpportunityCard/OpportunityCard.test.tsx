@@ -20,10 +20,10 @@ describe('OpportunityCard', () => {
         expect(screen.getByText('Test Opportunity')).toBeInTheDocument()
     })
 
-    it('should render Create guidance type by default', () => {
+    it('should render Fill knowledge gap type by default', () => {
         render(<OpportunityCard {...defaultProps} />)
 
-        expect(screen.getByText('Create guidance')).toBeInTheDocument()
+        expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
     })
 
     it('should render Resolve conflict type', () => {
@@ -76,7 +76,7 @@ describe('OpportunityCard', () => {
 
         const tooltipTrigger = container.querySelector('[tabindex="0"]')
         expect(tooltipTrigger).toBeInTheDocument()
-        expect(tooltipTrigger).toHaveTextContent('Create guidance')
+        expect(tooltipTrigger).toHaveTextContent('Fill knowledge gap')
     })
 
     it('should have aria-disabled attribute when restricted', () => {

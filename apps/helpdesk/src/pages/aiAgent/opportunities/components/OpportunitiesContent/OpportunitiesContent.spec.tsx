@@ -10,7 +10,6 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
-import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { ResourceType } from 'pages/aiAgent/opportunities/types'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
@@ -55,7 +54,6 @@ jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     })),
 }))
 
-jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation')
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
 )
@@ -146,7 +144,6 @@ const mockRestrictedPageState: OpportunityPageState = {
 }
 
 describe('OpportunitiesContent', () => {
-    const mockCreateGuidanceArticle = jest.fn()
     const mockReviewArticleMutate = jest.fn()
     const mockMarkArticleAsReviewed = jest.fn()
     const mockOnArchive = jest.fn()
@@ -159,6 +156,21 @@ describe('OpportunitiesContent', () => {
         id: '1',
         key: 'ai_1',
         type: OpportunityType.FILL_KNOWLEDGE_GAP,
+        insight: 'Test opportunity',
+        resources: [
+            {
+                title: 'Test opportunity',
+                content: 'Test content',
+                type: ResourceType.GUIDANCE,
+                isVisible: true,
+            },
+        ],
+    }
+
+    const conflictOpportunity: Opportunity = {
+        id: '1',
+        key: 'ai_1',
+        type: OpportunityType.RESOLVE_CONFLICT,
         insight: 'Test opportunity',
         resources: [
             {
@@ -230,16 +242,11 @@ describe('OpportunitiesContent', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockCreateGuidanceArticle.mockClear()
         mockReviewArticleMutate.mockClear()
         mockMarkArticleAsReviewed.mockClear()
         mockOnArchive.mockClear()
         mockOnPublish.mockClear()
         mockOnOpportunityAccepted.mockClear()
-        ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
-            createGuidanceArticle: mockCreateGuidanceArticle,
-            isGuidanceArticleUpdating: false,
-        })
         ;(useGetGuidancesAvailableActions as jest.Mock).mockReturnValue({
             guidanceActions: [],
             isLoading: false,
@@ -285,16 +292,13 @@ describe('OpportunitiesContent', () => {
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
-        expect(
-            screen.getByText(/Review and approve this AI-generated guidance/),
-        ).toBeInTheDocument()
+        expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
 
         expect(
             screen.getByRole('button', { name: /Dismiss/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /Publish and enable/i }),
+            screen.getByRole('button', { name: /Mark as done/i }),
         ).toBeInTheDocument()
     })
 
@@ -394,70 +398,23 @@ describe('OpportunitiesContent', () => {
         })
     })
 
-    it('should create guidance and archive article when approving', async () => {
-        mockCreateGuidanceArticle.mockResolvedValueOnce({})
-
-        renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
-        })
-
-        await act(async () => {
-            await userEvent.click(approveButton)
-        })
-
-        await waitFor(() => {
-            expect(mockCreateGuidanceArticle).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    name: 'Test opportunity',
-                    content: 'Test content',
-                    is_visible: true,
-                    locale: 'en-US',
-                    ai_suggestion_key: '1',
-                }),
-            )
-        })
-
-        await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                status: 'success',
-                message: 'Guidance saved and enabled',
-            })
-        })
-
-        await waitFor(() => {
-            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
-                undefined,
-                { help_center_id: 1 },
-                {
-                    action: 'archive',
-                    template_key: 'ai_1',
-                    reason: 'Created as guidance',
-                },
-            ])
-        })
-    })
-
-    it('should call onOpportunityAccepted with correct parameters when guidance is created successfully', async () => {
-        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+    it('should call onOpportunityAccepted with correct parameters when opportunity is approved successfully', async () => {
+        mockProcessOpportunity.mockResolvedValueOnce({})
 
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
             opportunityConfig: {
                 ...mockOpportunityConfig,
+                useKnowledgeService: true,
+                shopIntegrationId: 1,
                 onOpportunityAccepted: mockOnOpportunityAccepted,
             },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
 
         await act(async () => {
@@ -465,11 +422,7 @@ describe('OpportunitiesContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
-        })
-
-        await waitFor(() => {
-            expect(mockReviewArticleMutate).toHaveBeenCalled()
+            expect(mockProcessOpportunity).toHaveBeenCalled()
         })
 
         await waitFor(() => {
@@ -482,16 +435,21 @@ describe('OpportunitiesContent', () => {
     })
 
     it('should handle approve failure gracefully', async () => {
-        mockCreateGuidanceArticle.mockRejectedValueOnce(new Error('API Error'))
+        mockProcessOpportunity.mockRejectedValueOnce(new Error('API Error'))
 
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                useKnowledgeService: true,
+                shopIntegrationId: 1,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
 
         await act(async () => {
@@ -499,33 +457,36 @@ describe('OpportunitiesContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
+            expect(mockProcessOpportunity).toHaveBeenCalled()
         })
 
         await waitFor(() => {
             expect(notify).toHaveBeenCalledWith({
                 status: 'error',
-                message: 'Failed to create guidance. Please try again.',
+                message: 'Failed to resolve knowledge gap. Please try again.',
             })
         })
-
-        expect(mockReviewArticleMutate).not.toHaveBeenCalled()
     })
 
-    it('should show loading state on approve button when creating guidance', () => {
-        ;(useGuidanceArticleMutation as jest.Mock).mockReturnValueOnce({
-            createGuidanceArticle: mockCreateGuidanceArticle,
-            isGuidanceArticleUpdating: true,
+    it('should show loading state on approve button when processing opportunity', () => {
+        ;(useProcessOpportunity as jest.Mock).mockReturnValueOnce({
+            mutateAsync: mockProcessOpportunity,
+            isLoading: true,
         })
 
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                useKnowledgeService: true,
+                shopIntegrationId: 1,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
         expect(approveButton).toBeInTheDocument()
     })
@@ -543,15 +504,15 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
         expect(approveButton).toBeInTheDocument()
     })
 
     it('should render form with initial values from opportunity', () => {
         renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
+            selectedOpportunity: conflictOpportunity,
+            opportunities: [conflictOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -685,8 +646,8 @@ describe('OpportunitiesContent', () => {
 
     it('should render guidance editor with correct fields', async () => {
         renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
+            selectedOpportunity: conflictOpportunity,
+            opportunities: [conflictOpportunity],
             opportunityConfig: {
                 ...mockOpportunityConfig,
                 shopName: 'my-shop',
@@ -695,7 +656,7 @@ describe('OpportunitiesContent', () => {
             opportunitiesPageState: mockOpportunityPageState,
         })
 
-        expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
+        expect(screen.getByText(/Resolve conflict/)).toBeInTheDocument()
 
         await waitFor(() => {
             expect(screen.getByText('Guidance name')).toBeInTheDocument()
@@ -712,7 +673,7 @@ describe('OpportunitiesContent', () => {
             screen.queryByRole('button', { name: /Dismiss/i }),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByRole('button', { name: /Publish and enable/i }),
+            screen.queryByRole('button', { name: /Mark as done/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -723,8 +684,8 @@ describe('OpportunitiesContent', () => {
         })
 
         renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
+            selectedOpportunity: conflictOpportunity,
+            opportunities: [conflictOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -746,7 +707,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
     })
@@ -764,7 +725,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
     })
@@ -782,7 +743,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
         expect(approveButton).not.toHaveAttribute('aria-disabled', 'true')
 
@@ -801,8 +762,8 @@ describe('OpportunitiesContent', () => {
         const user = userEvent.setup()
 
         renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
+            selectedOpportunity: conflictOpportunity,
+            opportunities: [conflictOpportunity],
             opportunitiesPageState: mockOpportunityPageState,
         })
 
@@ -821,16 +782,21 @@ describe('OpportunitiesContent', () => {
             id: 1,
         })
 
-        mockCreateGuidanceArticle.mockResolvedValueOnce({})
+        mockProcessOpportunity.mockResolvedValueOnce({})
 
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                useKnowledgeService: true,
+                shopIntegrationId: 1,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
 
         await act(async () => {
@@ -838,25 +804,23 @@ describe('OpportunitiesContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockCreateGuidanceArticle).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    locale: 'en-US',
-                }),
-            )
+            expect(mockProcessOpportunity).toHaveBeenCalled()
         })
     })
 
     it('should handle undefined onOpportunityDismissed callback', async () => {
-        mockCreateGuidanceArticle.mockResolvedValueOnce({})
-
         renderComponent({
             selectedOpportunity,
             opportunities: [selectedOpportunity],
+            opportunityConfig: {
+                ...mockOpportunityConfig,
+                useKnowledgeService: false,
+            },
             opportunitiesPageState: mockOpportunityPageState,
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
 
         await act(async () => {
@@ -864,14 +828,13 @@ describe('OpportunitiesContent', () => {
         })
 
         await waitFor(() => {
-            expect(mockCreateGuidanceArticle).toHaveBeenCalled()
             expect(mockReviewArticleMutate).toHaveBeenCalledWith([
                 undefined,
                 { help_center_id: 1 },
                 {
                     action: 'archive',
                     template_key: 'ai_1',
-                    reason: 'Created as guidance',
+                    reason: 'Archived as opportunity',
                 },
             ])
         })
@@ -918,7 +881,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Publish and enable/i,
+            name: /Mark as done/i,
         })
 
         await act(async () => {
@@ -957,7 +920,7 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
         })
 
         it('should handle missing detectionObjectIds with console.warn', () => {
@@ -971,7 +934,7 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
 
             consoleWarnSpy.mockRestore()
         })
@@ -989,9 +952,9 @@ describe('OpportunitiesContent', () => {
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
-            expect(screen.getByText(/Create guidance/)).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Publish and enable/i }),
+                screen.getByRole('button', { name: /Mark as done/i }),
             ).toBeInTheDocument()
         })
     })
@@ -1006,7 +969,7 @@ describe('OpportunitiesContent', () => {
             })
 
             expect(
-                screen.queryByText(/Create guidance/),
+                screen.queryByText(/Fill knowledge gap/),
             ).not.toBeInTheDocument()
 
             const skeletons = container.querySelectorAll('[class*="skeleton"]')
@@ -1174,13 +1137,13 @@ describe('OpportunitiesContent', () => {
             })
 
             expect(
-                screen.queryByText(/Create guidance/),
+                screen.queryByText(/Fill knowledge gap/),
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByRole('button', { name: /Dismiss/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /Publish and enable/i }),
+                screen.queryByRole('button', { name: /Mark as done/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -1278,8 +1241,8 @@ describe('OpportunitiesContent', () => {
             const user = userEvent.setup()
 
             renderComponent({
-                selectedOpportunity,
-                opportunities: [selectedOpportunity],
+                selectedOpportunity: conflictOpportunity,
+                opportunities: [conflictOpportunity],
                 opportunitiesPageState: mockOpportunityPageState,
             })
 
@@ -1289,13 +1252,13 @@ describe('OpportunitiesContent', () => {
 
             await user.clear(titleInput)
             let approveButton = screen.getByRole('button', {
-                name: /Publish and enable/i,
+                name: /Resolve/i,
             })
             expect(approveButton).toHaveAttribute('aria-disabled', 'true')
 
             await user.type(titleInput, '   ')
             approveButton = screen.getByRole('button', {
-                name: /Publish and enable/i,
+                name: /Resolve/i,
             })
             expect(approveButton).toHaveAttribute('aria-disabled', 'true')
 
@@ -1303,13 +1266,13 @@ describe('OpportunitiesContent', () => {
             await user.type(titleInput, 'Valid Title')
             await user.clear(contentEditor)
             approveButton = screen.getByRole('button', {
-                name: /Publish and enable/i,
+                name: /Resolve/i,
             })
             expect(approveButton).toHaveAttribute('aria-disabled', 'true')
 
             await user.type(contentEditor, '   ')
             approveButton = screen.getByRole('button', {
-                name: /Publish and enable/i,
+                name: /Resolve/i,
             })
             expect(approveButton).toHaveAttribute('aria-disabled', 'true')
         })

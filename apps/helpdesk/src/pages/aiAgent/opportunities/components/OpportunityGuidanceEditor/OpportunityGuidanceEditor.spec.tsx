@@ -97,17 +97,30 @@ describe('OpportunityGuidanceEditor', () => {
         })
     })
 
-    it('should render only form fields in editor mode', () => {
+    it('should render knowledge gap view', () => {
+        const resourceWithInsight = {
+            ...mockResource,
+            insight: 'This is an AI-generated summary',
+        }
+
         render(
             <OpportunityGuidanceEditor
                 {...defaultProps}
+                resource={resourceWithInsight}
                 isInGuidanceEditorModeOnly
             />,
         )
 
-        expect(screen.getByLabelText(/guidance name/i)).toBeInTheDocument()
-        expect(screen.getByTestId('guidance-editor')).toBeInTheDocument()
-        expect(screen.queryByText(/preview/i)).not.toBeInTheDocument()
+        expect(screen.getByText('Summary')).toBeInTheDocument()
+        expect(
+            screen.getByText('This is an AI-generated summary'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: /go to guidance/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByLabelText(/guidance name/i),
+        ).not.toBeInTheDocument()
     })
 
     it('should disable inputs when isVisible is false', () => {

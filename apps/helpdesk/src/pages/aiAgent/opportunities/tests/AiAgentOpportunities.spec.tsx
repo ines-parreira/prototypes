@@ -376,6 +376,7 @@ describe('AiAgentOpportunities', () => {
                 id: '1',
                 title: 'Test Article 1',
                 content: 'Content 1',
+                html_content: '<p>Content 1</p>',
                 article_key: 'article-1',
                 article_template_key: 'template-1',
                 key: 'ai_1',

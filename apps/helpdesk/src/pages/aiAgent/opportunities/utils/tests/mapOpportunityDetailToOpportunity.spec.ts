@@ -1,6 +1,7 @@
 import type {
     ConflictOpportunityDetail,
     KnowledgeGapOpportunityDetail,
+    KnowledgeGapOpportunityDetailResourcesItem,
 } from '@gorgias/knowledge-service-types'
 
 import { OpportunityType } from '../../enums'
@@ -31,7 +32,13 @@ describe('mapOpportunityDetailToOpportunity', () => {
                     sourceId: 'source-123',
                     sourceSetId: 'source-set-123',
                 },
-                resources: [],
+                resources: [
+                    {
+                        resourceId: 'source-123',
+                        resourceSetId: 'source-set-123',
+                        insight: 'Test',
+                    },
+                ] as KnowledgeGapOpportunityDetailResourcesItem[],
             }
 
             const result = mapOpportunityDetailToOpportunity(knowledgeGapDetail)
@@ -49,6 +56,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         content: '<p>Test knowledge gap content</p>',
                         type: ResourceType.ARTICLE,
                         isVisible: true,
+                        insight: 'Test',
                     },
                 ],
             })
@@ -94,6 +102,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         content: '',
                         type: ResourceType.ARTICLE,
                         isVisible: true,
+                        insight: '',
                     },
                 ],
             })
@@ -167,6 +176,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         content: '',
                         type: ResourceType.ARTICLE,
                         isVisible: true,
+                        insight: '',
                     },
                 ],
             })
@@ -212,6 +222,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         content: '',
                         type: ResourceType.ARTICLE,
                         isVisible: true,
+                        insight: '',
                     },
                 ],
             })
@@ -257,6 +268,7 @@ describe('mapOpportunityDetailToOpportunity', () => {
                         content: '<p>Guidance content</p>',
                         type: ResourceType.GUIDANCE,
                         isVisible: true,
+                        insight: '',
                     },
                 ],
             })

@@ -95,7 +95,7 @@ export const OpportunityDetailsHeader = ({
                 return 'Resolve conflict'
             case OpportunityType.FILL_KNOWLEDGE_GAP:
             default:
-                return 'Create guidance'
+                return 'Fill knowledge gap'
         }
     }
 
@@ -141,7 +141,7 @@ export const OpportunityDetailsHeader = ({
                     />
                     <div className={css.headerActionDelimiter} />
                     <Button
-                        variant="tertiary"
+                        variant="secondary"
                         onClick={onOpenDismissModal}
                         isDisabled={!isRelevant}
                     >
@@ -178,7 +178,7 @@ export const OpportunityDetailsHeader = ({
                                             !isFormValid
                                         }
                                     >
-                                        Publish and enable
+                                        Mark as done
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -193,8 +193,8 @@ export const OpportunityDetailsHeader = ({
                                         >
                                             Guidance
                                         </a>{' '}
-                                        enabled. To publish and enable this
-                                        Guidance, disable an existing one.
+                                        enabled. To acknowledge this gap,
+                                        disable an existing one.
                                     </div>
                                 </TooltipContent>
                             </Tooltip>
@@ -210,7 +210,7 @@ export const OpportunityDetailsHeader = ({
                                     !isFormValid
                                 }
                             >
-                                Publish and enable
+                                Mark as done
                             </Button>
                         ))}
                 </div>

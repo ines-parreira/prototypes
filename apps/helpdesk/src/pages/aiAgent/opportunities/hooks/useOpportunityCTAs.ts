@@ -8,24 +8,23 @@ import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
-import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import type {
     Opportunity,
     OpportunityConfig,
     ResourceFormFields,
 } from 'pages/aiAgent/opportunities/types'
-import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
-import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import { FeedbackObjectType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import {
+    FeedbackObjectType,
+    FeedbackTargetType,
+    OpportunityFeedbackType,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { getViewLanguage } from 'state/ui/helpCenter'
 import { reportError } from 'utils/errors'
 
 import {
@@ -50,12 +49,9 @@ export const useOpportunityCTAs = ({
     const queryClient = useQueryClient()
     const [isProcessing, setIsProcessing] = useState(false)
 
-    const locale = useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
-
     const {
         shopIntegrationId,
         helpCenterId,
-        guidanceHelpCenterId,
         useKnowledgeService,
         onArchive,
         onPublish,
@@ -63,9 +59,6 @@ export const useOpportunityCTAs = ({
         onOpportunityAccepted,
         onOpportunityDismissed,
     } = opportunityConfig
-
-    const { createGuidanceArticle, isGuidanceArticleUpdating } =
-        useGuidanceArticleMutation({ guidanceHelpCenterId })
 
     const processOpportunity = useProcessOpportunity(shopIntegrationId)
 
@@ -132,6 +125,39 @@ export const useOpportunityCTAs = ({
         [dispatch, selectedOpportunity, onArchive],
     )
 
+    const handleFeedback = useCallback(
+        (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {
+            upsertFeedback({ data: feedbackData }).catch((error) => {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context: 'Failed to submit opportunity feedback',
+                        feedbackData,
+                    },
+                })
+            })
+        },
+        [upsertFeedback],
+    )
+
+    const buildAcknowledgeFeedback = useCallback(
+        (opportunityId: string): FeedbackMutation[] => {
+            return [
+                {
+                    objectType: FeedbackObjectType.OPPORTUNITY,
+                    objectId: opportunityId,
+                    executionId: '00000000-0000-0000-0000-000000000000',
+                    targetType: FeedbackTargetType.OPPORTUNITY,
+                    targetId: opportunityId,
+                    feedbackType: OpportunityFeedbackType.OPPORTUNITY_FREEFORM,
+                    feedbackValue:
+                        'Knowledge gap opportunity was resolved by the merchant',
+                },
+            ]
+        },
+        [],
+    )
+
     const handleApprove = useCallback(async () => {
         if (!selectedOpportunity) return
 
@@ -151,26 +177,19 @@ export const useOpportunityCTAs = ({
                     }),
                 })
                 onArchive(selectedOpportunity.key)
-            } else {
-                await createGuidanceArticle(
-                    mapGuidanceFormFieldsToGuidanceArticle(
-                        {
-                            name: resource.title,
-                            content: resource.content,
-                            isVisible: resource.isVisible,
-                        },
-                        locale,
-                        selectedOpportunity.id,
-                    ),
-                )
 
+                const feedback = buildAcknowledgeFeedback(
+                    selectedOpportunity.id,
+                )
+                handleFeedback({ feedbackToUpsert: feedback })
+            } else {
                 reviewArticle.mutate([
                     undefined,
                     { help_center_id: helpCenterId },
                     {
                         action: 'archive',
                         template_key: `ai_${selectedOpportunity.id}`,
-                        reason: 'Created as guidance',
+                        reason: 'Archived as opportunity',
                     },
                 ])
             }
@@ -178,7 +197,7 @@ export const useOpportunityCTAs = ({
             dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Guidance saved and enabled',
+                    message: 'Knowledge gap resolved',
                 }),
             )
 
@@ -189,8 +208,8 @@ export const useOpportunityCTAs = ({
         } catch (error) {
             await handleOpportunityProcessError(
                 error,
-                'Failed to create guidance. Please try again.',
-                'Failed to approve opportunity',
+                'Failed to resolve knowledge gap. Please try again.',
+                'Failed to resolve knowledge gap',
             )
         } finally {
             setIsProcessing(false)
@@ -199,9 +218,7 @@ export const useOpportunityCTAs = ({
         selectedOpportunity,
         helpCenterId,
         reviewArticle,
-        createGuidanceArticle,
         editorFormResources,
-        locale,
         dispatch,
         onOpportunityAccepted,
         useKnowledgeService,
@@ -209,6 +226,8 @@ export const useOpportunityCTAs = ({
         onArchive,
         shopIntegrationId,
         handleOpportunityProcessError,
+        handleFeedback,
+        buildAcknowledgeFeedback,
     ])
 
     const handleResolve = useCallback(async () => {
@@ -276,22 +295,6 @@ export const useOpportunityCTAs = ({
         onOpportunityAccepted,
         handleOpportunityProcessError,
     ])
-
-    const handleFeedback = useCallback(
-        (feedbackData: { feedbackToUpsert: FeedbackMutation[] }) => {
-            upsertFeedback({ data: feedbackData }).catch((error) => {
-                reportError(error, {
-                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
-                    extra: {
-                        context:
-                            'Failed to submit opportunity dismiss feedback',
-                        feedbackData,
-                    },
-                })
-            })
-        },
-        [upsertFeedback],
-    )
 
     const handleDismiss = useCallback(
         async (feedbackData?: { feedbackToUpsert: FeedbackMutation[] }) => {
@@ -362,9 +365,6 @@ export const useOpportunityCTAs = ({
         handleApprove,
         handleResolve,
         handleDismiss,
-        isProcessing:
-            isProcessing ||
-            reviewArticle.isLoading ||
-            isGuidanceArticleUpdating,
+        isProcessing: isProcessing || reviewArticle.isLoading,
     }
 }

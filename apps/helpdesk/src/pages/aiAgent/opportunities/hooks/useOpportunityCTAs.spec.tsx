@@ -6,14 +6,17 @@ import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
+import {
+    FeedbackObjectType,
+    FeedbackTargetType,
+    OpportunityFeedbackType,
+} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
 
-import { useGuidanceArticleMutation } from '../../hooks/useGuidanceArticleMutation'
 import { OpportunityType } from '../enums'
 import type {
     Opportunity,
@@ -28,11 +31,9 @@ jest.mock('./useProcessOpportunity', () => ({
     ...jest.requireActual('./useProcessOpportunity'),
     useProcessOpportunity: jest.fn(),
 }))
-jest.mock('../../hooks/useGuidanceArticleMutation')
 jest.mock('models/knowledgeService/mutations')
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useAppSelector')
 jest.mock('utils/errors')
 jest.mock('state/notifications/actions')
 
@@ -87,25 +88,14 @@ describe('useOpportunityCTAs', () => {
                 },
             },
         })
-        store = mockStore({
-            ui: {
-                helpCenter: {
-                    selectedLanguage: 'en',
-                },
-            },
-        })
+        store = mockStore({})
 
         // Mock Redux hooks
         ;(useAppDispatch as jest.Mock).mockReturnValue(jest.fn())
-        ;(useAppSelector as jest.Mock).mockReturnValue('en')
 
         // Setup default mocks
         ;(useProcessOpportunity as jest.Mock).mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({}),
-        })
-        ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
-            createGuidanceArticle: jest.fn().mockResolvedValue({}),
-            isGuidanceArticleUpdating: false,
         })
         ;(useUpsertFeedback as jest.Mock).mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({}),
@@ -236,6 +226,86 @@ describe('useOpportunityCTAs', () => {
                     opportunityId: '123',
                     opportunityType: OpportunityType.FILL_KNOWLEDGE_GAP,
                 })
+            })
+        })
+
+        it('should submit acknowledge feedback when approving with knowledge service', async () => {
+            const upsertFeedbackMock = jest.fn().mockResolvedValue({})
+            ;(useUpsertFeedback as jest.Mock).mockReturnValue({
+                mutateAsync: upsertFeedbackMock,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: mockOpportunityConfig,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleApprove()
+
+            await waitFor(() => {
+                expect(upsertFeedbackMock).toHaveBeenCalledWith({
+                    data: {
+                        feedbackToUpsert: [
+                            {
+                                objectType: FeedbackObjectType.OPPORTUNITY,
+                                objectId: '123',
+                                executionId:
+                                    '00000000-0000-0000-0000-000000000000',
+                                targetType: FeedbackTargetType.OPPORTUNITY,
+                                targetId: '123',
+                                feedbackType:
+                                    OpportunityFeedbackType.OPPORTUNITY_FREEFORM,
+                                feedbackValue:
+                                    'Knowledge gap opportunity was resolved by the merchant',
+                            },
+                        ],
+                    },
+                })
+            })
+        })
+
+        it('should call reviewArticle when not using knowledge service', async () => {
+            const reviewArticleMock = jest.fn()
+            ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValue({
+                mutate: reviewArticleMock,
+                isLoading: false,
+            })
+
+            const configWithoutKnowledgeService = {
+                ...mockOpportunityConfig,
+                useKnowledgeService: false,
+            }
+
+            const { result } = renderHook(
+                () =>
+                    useOpportunityCTAs({
+                        selectedOpportunity: mockOpportunity,
+                        editorFormResources: [mockFormData],
+                        opportunityConfig: configWithoutKnowledgeService,
+                    }),
+                { wrapper },
+            )
+
+            await result.current.handleApprove()
+
+            await waitFor(() => {
+                expect(reviewArticleMock).toHaveBeenCalledWith([
+                    undefined,
+                    { help_center_id: 789 },
+                    {
+                        action: 'archive',
+                        template_key: 'ai_123',
+                        reason: 'Archived as opportunity',
+                    },
+                ])
+                expect(
+                    mockOpportunityConfig.onOpportunityAccepted,
+                ).toHaveBeenCalled()
             })
         })
     })
@@ -424,25 +494,6 @@ describe('useOpportunityCTAs', () => {
 
             expect(result.current.isProcessing).toBe(true)
         })
-
-        it('should include guidance article updating state', () => {
-            ;(useGuidanceArticleMutation as jest.Mock).mockReturnValue({
-                createGuidanceArticle: jest.fn(),
-                isGuidanceArticleUpdating: true,
-            })
-
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
-            )
-
-            expect(result.current.isProcessing).toBe(true)
-        })
     })
 
     describe('Error handling', () => {
@@ -576,7 +627,8 @@ describe('useOpportunityCTAs', () => {
                 expect(mockDispatch).toHaveBeenCalledWith(
                     notify({
                         status: NotificationStatus.Error,
-                        message: 'Failed to create guidance. Please try again.',
+                        message:
+                            'Failed to resolve knowledge gap. Please try again.',
                     }),
                 )
             })
@@ -605,7 +657,7 @@ describe('useOpportunityCTAs', () => {
                 expect(reportError).toHaveBeenCalledWith(error, {
                     tags: { team: 'convai-knowledge' },
                     extra: {
-                        context: 'Failed to approve opportunity',
+                        context: 'Failed to resolve knowledge gap',
                         opportunityId: '123',
                     },
                 })

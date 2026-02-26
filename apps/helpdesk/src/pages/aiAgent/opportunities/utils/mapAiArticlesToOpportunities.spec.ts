@@ -33,6 +33,7 @@ describe('mapAiArticlesToOpportunities', () => {
                     content: '<p>Test article content</p>',
                     type: ResourceType.GUIDANCE,
                     isVisible: true,
+                    insight: 'Test article content',
                 },
             ],
         })
@@ -70,6 +71,7 @@ describe('mapAiArticlesToOpportunities', () => {
                     content: '<p>Test article content</p>',
                     type: ResourceType.GUIDANCE,
                     isVisible: true,
+                    insight: 'Test article content',
                 },
             ],
         })
@@ -84,6 +86,7 @@ describe('mapAiArticlesToOpportunities', () => {
                     content: '<p>Second article content</p>',
                     type: ResourceType.GUIDANCE,
                     isVisible: true,
+                    insight: 'Second article content',
                 },
             ],
         })
@@ -98,6 +101,7 @@ describe('mapAiArticlesToOpportunities', () => {
                     content: '<p>Third article content</p>',
                     type: ResourceType.GUIDANCE,
                     isVisible: true,
+                    insight: 'Third article content',
                 },
             ],
         })
@@ -127,7 +131,9 @@ describe('mapAiArticlesToOpportunities', () => {
 
         expect(result).toHaveLength(2)
         expect(result[0].resources[0].content).toBe('')
+        expect(result[0].resources[0].insight).toBe('')
         expect(result[1].resources[0].content).toBe(null)
+        expect(result[1].resources[0].insight).toBe('')
     })
 
     it('should always map to FILL_KNOWLEDGE_GAP type', () => {

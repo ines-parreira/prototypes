@@ -15,7 +15,7 @@ describe('OpportunityDetailsCard', () => {
 
             expect(
                 screen.getByText(
-                    /Review and approve this AI-generated guidance based on your customers' top asked questions/,
+                    /Resolve this AI-generated guidance based on your customers' top asked questions/,
                 ),
             ).toBeInTheDocument()
         })
@@ -32,7 +32,7 @@ describe('OpportunityDetailsCard', () => {
             )
 
             expect(
-                screen.getByText(/This guidance was generated based on/),
+                screen.getByText(/This knowledge gap was generated based on/),
             ).toBeInTheDocument()
             expect(screen.getByText(/5 handover tickets/)).toBeInTheDocument()
             expect(
@@ -114,9 +114,7 @@ describe('OpportunityDetailsCard', () => {
                 screen.queryByText(/handover tickets/),
             ).not.toBeInTheDocument()
             expect(
-                screen.getByText(
-                    /Review and approve this AI-generated guidance/,
-                ),
+                screen.getByText(/Resolve this AI-generated guidance/),
             ).toBeInTheDocument()
         })
 
@@ -131,9 +129,7 @@ describe('OpportunityDetailsCard', () => {
                 screen.queryByText(/handover tickets/),
             ).not.toBeInTheDocument()
             expect(
-                screen.getByText(
-                    /Review and approve this AI-generated guidance/,
-                ),
+                screen.getByText(/Resolve this AI-generated guidance/),
             ).toBeInTheDocument()
         })
     })
@@ -145,7 +141,13 @@ describe('OpportunityDetailsCard', () => {
             const onParentClick = jest.fn()
 
             render(
-                <div onClick={onParentClick}>
+                <div
+                    role="region"
+                    onClick={onParentClick}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') onParentClick()
+                    }}
+                >
                     <OpportunityDetailsCard
                         type={OpportunityType.FILL_KNOWLEDGE_GAP}
                         ticketCount={15}
@@ -166,7 +168,13 @@ describe('OpportunityDetailsCard', () => {
             const onParentClick = jest.fn()
 
             render(
-                <div onClick={onParentClick}>
+                <div
+                    role="region"
+                    onClick={onParentClick}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') onParentClick()
+                    }}
+                >
                     <OpportunityDetailsCard
                         type={OpportunityType.RESOLVE_CONFLICT}
                         ticketCount={25}
@@ -182,6 +190,184 @@ describe('OpportunityDetailsCard', () => {
         })
     })
 
+    describe('Keyboard interactions', () => {
+        describe('FILL_KNOWLEDGE_GAP', () => {
+            it('should call onTicketCountClick when Enter key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                        ticketCount={10}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /10 handover tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard('{Enter}')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+
+            it('should call onTicketCountClick when Space key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                        ticketCount={10}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /10 handover tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard(' ')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+
+            it('should not call onTicketCountClick when other keys are pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                        ticketCount={10}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /10 handover tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard('{Escape}')
+                await user.keyboard('a')
+                await user.keyboard('{Tab}')
+
+                expect(onTicketCountClick).not.toHaveBeenCalled()
+            })
+
+            it('should prevent default behavior when Enter key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.FILL_KNOWLEDGE_GAP}
+                        ticketCount={10}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /10 handover tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard('{Enter}')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('RESOLVE_CONFLICT', () => {
+            it('should call onTicketCountClick when Enter key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.RESOLVE_CONFLICT}
+                        ticketCount={15}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /15 tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard('{Enter}')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+
+            it('should call onTicketCountClick when Space key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.RESOLVE_CONFLICT}
+                        ticketCount={15}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /15 tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard(' ')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+
+            it('should not call onTicketCountClick when other keys are pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.RESOLVE_CONFLICT}
+                        ticketCount={15}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /15 tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard('{Escape}')
+                await user.keyboard('b')
+                await user.keyboard('{Tab}')
+
+                expect(onTicketCountClick).not.toHaveBeenCalled()
+            })
+
+            it('should prevent default behavior when Space key is pressed', async () => {
+                const user = userEvent.setup()
+                const onTicketCountClick = jest.fn()
+
+                render(
+                    <OpportunityDetailsCard
+                        type={OpportunityType.RESOLVE_CONFLICT}
+                        ticketCount={15}
+                        onTicketCountClick={onTicketCountClick}
+                    />,
+                )
+
+                const ticketCountButton = screen.getByRole('button', {
+                    name: /15 tickets/,
+                })
+                ticketCountButton.focus()
+                await user.keyboard(' ')
+
+                expect(onTicketCountClick).toHaveBeenCalledTimes(1)
+            })
+        })
+    })
+
     describe('Component structure', () => {
         it('should render with correct container structure for FILL_KNOWLEDGE_GAP', () => {
             const { container } = render(
@@ -192,7 +378,7 @@ describe('OpportunityDetailsCard', () => {
 
             expect(container.firstElementChild).toBeInTheDocument()
             expect(
-                container.querySelector('[class*="banner"]'),
+                screen.getByText(/Resolve this AI-generated guidance/),
             ).toBeInTheDocument()
         })
 

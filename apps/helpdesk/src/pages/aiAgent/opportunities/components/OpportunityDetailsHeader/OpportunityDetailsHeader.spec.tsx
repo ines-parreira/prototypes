@@ -104,7 +104,7 @@ describe('OpportunityDetailsHeader', () => {
             renderComponent()
 
             expect(
-                screen.getByText(/Create guidance: Test Opportunity Title/),
+                screen.getByText(/Fill knowledge gap: Test Opportunity Title/),
             ).toBeInTheDocument()
         })
 
@@ -147,11 +147,11 @@ describe('OpportunityDetailsHeader', () => {
     })
 
     describe('Knowledge Gap - Approve Button', () => {
-        it('should render "Publish and enable" button for knowledge gaps', () => {
+        it('should render "Mark as done" button for knowledge gaps', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', { name: /publish and enable/i }),
+                screen.getByRole('button', { name: /Mark as done/i }),
             ).toBeInTheDocument()
         })
 
@@ -167,7 +167,7 @@ describe('OpportunityDetailsHeader', () => {
             })
 
             const approveButton = screen.getByRole('button', {
-                name: /publish and enable/i,
+                name: /Mark as done/i,
             })
             await user.click(approveButton)
 
@@ -183,7 +183,7 @@ describe('OpportunityDetailsHeader', () => {
             })
 
             const approveButton = screen.getByRole('button', {
-                name: /publish and enable/i,
+                name: /Mark as done/i,
             })
 
             expect(approveButton).toBeDisabled()
@@ -199,7 +199,7 @@ describe('OpportunityDetailsHeader', () => {
             renderComponent()
 
             const approveButton = screen.getByRole('button', {
-                name: /publish and enable/i,
+                name: /Mark as done/i,
             })
 
             expect(approveButton).toBeDisabled()

@@ -40,6 +40,11 @@ export const mapOpportunityDetailToOpportunity = (
     if (detail.opportunityType === 'FILL_KNOWLEDGE_GAP') {
         const knowledgeGap = detail as KnowledgeGapOpportunityDetail
         const knowledgeResource = knowledgeGap.knowledgeResource
+        const resourceMeta = knowledgeGap.resources.find(
+            (resource) =>
+                knowledgeResource.sourceId === resource.resourceId &&
+                knowledgeResource.sourceSetId === resource.resourceSetId,
+        )
 
         const resources: OpportunityResource[] = knowledgeResource
             ? [
@@ -48,6 +53,7 @@ export const mapOpportunityDetailToOpportunity = (
                       content: knowledgeResource.body || '',
                       type: mapResourceType(knowledgeResource.type),
                       isVisible: true,
+                      insight: resourceMeta?.insight || '',
                   },
               ]
             : []
