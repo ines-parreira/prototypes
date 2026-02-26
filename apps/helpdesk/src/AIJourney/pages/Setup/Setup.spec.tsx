@@ -10,7 +10,6 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
@@ -205,9 +204,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -237,9 +234,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -268,9 +263,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -305,9 +298,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -342,9 +333,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -438,11 +427,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -473,11 +458,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -548,11 +529,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -638,11 +615,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -748,11 +721,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -771,11 +740,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -867,11 +832,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -950,11 +911,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1001,11 +958,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1096,11 +1049,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1153,11 +1102,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup
-                                journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1200,9 +1145,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1271,9 +1214,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1345,9 +1286,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1377,9 +1316,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1415,9 +1352,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1457,9 +1392,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1499,9 +1432,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1540,9 +1471,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1588,9 +1517,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.CART_ABANDONMENT} />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
-                        </IntegrationsProvider>
+                        <Setup journeyType={JOURNEY_TYPES.CAMPAIGN} />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -1729,9 +1656,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
                 renderWithRouter(
                     <Provider store={mockStore}>
                         <QueryClientProvider client={appQueryClient}>
-                            <IntegrationsProvider>
-                                <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
-                            </IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
                         </QueryClientProvider>
                     </Provider>,
                 )
@@ -1787,9 +1712,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WIN_BACK} />', () => {
                 renderWithRouter(
                     <Provider store={mockStore}>
                         <QueryClientProvider client={appQueryClient}>
-                            <IntegrationsProvider>
-                                <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
-                            </IntegrationsProvider>
+                            <Setup journeyType={JOURNEY_TYPES.WIN_BACK} />
                         </QueryClientProvider>
                     </Provider>,
                 )
@@ -1909,9 +1832,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -1948,9 +1869,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -1980,9 +1899,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2016,9 +1933,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2052,9 +1967,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2088,9 +2001,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2123,9 +2034,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2198,9 +2107,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2256,9 +2163,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2305,9 +2210,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.POST_PURCHASE} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2393,9 +2296,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2437,9 +2338,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2472,9 +2371,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2540,9 +2437,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2579,9 +2474,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2628,9 +2521,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2663,9 +2554,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -2702,9 +2591,7 @@ describe('<Setup journeyType={JOURNEY_TYPES.WELCOME} />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Setup journeyType={JOURNEY_TYPES.WELCOME} />
-                    </IntegrationsProvider>
+                    <Setup journeyType={JOURNEY_TYPES.WELCOME} />
                 </QueryClientProvider>
             </Provider>,
         )

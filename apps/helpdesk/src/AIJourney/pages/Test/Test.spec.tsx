@@ -8,7 +8,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { IntegrationsProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { shopifyProductResult } from 'fixtures/shopify'
 import useAllIntegrations from 'hooks/useAllIntegrations'
@@ -157,9 +156,7 @@ describe('<Test />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Test />
-                    </IntegrationsProvider>
+                    <Test />
                 </QueryClientProvider>
             </Provider>,
         )

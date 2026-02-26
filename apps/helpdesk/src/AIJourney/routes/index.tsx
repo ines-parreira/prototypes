@@ -1,10 +1,7 @@
-import { useEffect } from 'react'
-
-import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
 import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
-import { useLastSelectedStore } from 'AIJourney/hooks'
 import {
     AiJourneyOnboarding,
     Analytics,
@@ -13,43 +10,11 @@ import {
     Playground,
 } from 'AIJourney/pages'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
-import {
-    IntegrationsProvider,
-    JourneyProvider,
-    useIntegrations,
-} from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import App from 'pages/App'
 
 import DefaultStatsFilters from '../../domains/reporting/pages/DefaultStatsFilters'
-
-type RedirectToShopProps = {
-    basePath: string
-}
-
-export function RedirectToShop({ basePath }: RedirectToShopProps) {
-    const { integrations, isLoading } = useIntegrations()
-    const { resolveStore } = useLastSelectedStore()
-    const history = useHistory()
-
-    useEffect(() => {
-        if (isLoading) {
-            return
-        }
-
-        const sortedStoreNames = [...integrations]
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((store) => store.name)
-
-        const resolvedStore = resolveStore(sortedStoreNames)
-        if (!resolvedStore) {
-            return
-        }
-
-        history.replace(`${basePath}/${resolvedStore}`)
-    }, [isLoading, integrations, history, resolveStore, basePath])
-
-    return null
-}
+import { RedirectToShop } from './RedirectToShop'
 
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
@@ -134,9 +99,5 @@ function AiJourneyBaseRoutes() {
 }
 
 export function AiJourneyRoutes() {
-    return (
-        <IntegrationsProvider>
-            <AiJourneyBaseRoutes />
-        </IntegrationsProvider>
-    )
+    return <AiJourneyBaseRoutes />
 }

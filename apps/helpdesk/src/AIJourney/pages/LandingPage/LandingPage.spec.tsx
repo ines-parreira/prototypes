@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import useAllIntegrations from 'hooks/useAllIntegrations'
@@ -74,6 +74,7 @@ const mockUseJourneyContext =
 
 const mockStore = configureMockStore([thunk])({
     currentAccount: fromJS(account),
+    integrations: fromJS({ integrations: [] }),
 })
 
 describe('<LandingPage />', () => {
@@ -102,11 +103,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -118,11 +117,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -174,11 +171,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -203,11 +198,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -228,11 +221,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -251,11 +242,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -279,11 +268,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -302,11 +289,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -330,11 +315,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -353,11 +336,9 @@ describe('<LandingPage />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <LandingPage />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <LandingPage />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )

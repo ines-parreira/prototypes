@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
@@ -138,6 +138,11 @@ jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
 describe('<Analytics />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
+        integrations: fromJS({
+            integrations: [],
+            authentication: {},
+            state: { loading: {}, error: {} },
+        }),
     })
 
     beforeEach(() => {
@@ -287,11 +292,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -323,11 +326,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -367,11 +368,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -423,11 +422,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -479,11 +476,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -530,11 +525,9 @@ describe('<Analytics />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Analytics />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )

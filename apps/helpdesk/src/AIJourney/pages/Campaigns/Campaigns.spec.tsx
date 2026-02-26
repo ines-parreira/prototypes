@@ -10,7 +10,7 @@ import {
     DEFAULT_TABLE_METRICS,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'domains/reporting/state/ui/stats/selectors'
@@ -53,6 +53,7 @@ jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
 describe('<Campaigns />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
+        integrations: fromJS({ integrations: [] }),
     })
     const cleanStatsFilters = {
         period: {
@@ -99,11 +100,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -117,11 +116,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -147,11 +144,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -182,11 +177,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -214,11 +207,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )
@@ -261,11 +252,9 @@ describe('<Campaigns />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <Campaigns />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
                 </QueryClientProvider>
             </Provider>,
         )

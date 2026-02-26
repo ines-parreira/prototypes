@@ -2,10 +2,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Location } from 'history'
+import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
 import {
@@ -98,10 +99,12 @@ describe('CampaignsTable', () => {
 
     const wrapper = (children: React.ReactNode) => (
         <QueryClientProvider client={queryClient}>
-            <Provider store={mockStore({})}>
-                <IntegrationsProvider>
-                    <JourneyProvider>{children}</JourneyProvider>
-                </IntegrationsProvider>
+            <Provider
+                store={mockStore({
+                    integrations: fromJS({ integrations: [] }),
+                })}
+            >
+                <JourneyProvider>{children}</JourneyProvider>
             </Provider>
         </QueryClientProvider>
     )

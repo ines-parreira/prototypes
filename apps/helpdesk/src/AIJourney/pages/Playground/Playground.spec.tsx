@@ -20,14 +20,6 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
 }))
 
-jest.mock(
-    'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
-    () => ({
-        IntegrationsProvider: ({ children }: { children: React.ReactNode }) =>
-            children,
-    }),
-)
-
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: jest.fn(),
 }))

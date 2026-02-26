@@ -10,7 +10,7 @@ import { Provider } from 'react-redux'
 import { StaticRouter, useHistory, useParams } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
-import { IntegrationsProvider, JourneyProvider } from 'AIJourney/providers'
+import { JourneyProvider } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { ThemeProvider } from 'core/theme'
@@ -39,13 +39,6 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
-    ...jest.requireActual(
-        'AIJourney/providers/JourneyProvider/JourneyProvider',
-    ),
-    useJourneyContext: jest.fn(),
-}))
-
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
 
@@ -55,32 +48,24 @@ const mockPush = jest.fn()
 const mockReplace = jest.fn()
 const mockSetLastSelectedStore = jest.fn()
 
-const mockUseJourneyContext =
-    require('AIJourney/providers/JourneyProvider/JourneyProvider')
-        .useJourneyContext as jest.Mock
-
 const mockUseFlag = useFlag as jest.Mock
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-    <StaticRouter location="/app/ai-journey/teststore1">
-        <NavBarProvider>{children}</NavBarProvider>
-    </StaticRouter>
-)
-
-const renderNavbar = () =>
+const renderNavbar = (location = '/app/ai-journey/teststore1') =>
     render(
         <QueryClientProvider client={appQueryClient}>
             <Provider store={mockStore({})}>
                 <ThemeProvider>
-                    <IntegrationsProvider>
-                        <JourneyProvider>
-                            <AiJourneyNavbar />
-                        </JourneyProvider>
-                    </IntegrationsProvider>
+                    <AiJourneyNavbar />
                 </ThemeProvider>
             </Provider>
         </QueryClientProvider>,
-        { wrapper },
+        {
+            wrapper: ({ children }: { children: ReactNode }) => (
+                <StaticRouter location={location}>
+                    <NavBarProvider>{children}</NavBarProvider>
+                </StaticRouter>
+            ),
+        },
     )
 
 describe('<AiJourneyNavbar />', () => {
@@ -105,63 +90,6 @@ describe('<AiJourneyNavbar />', () => {
         },
     ]
 
-    const mockJourneyContext = {
-        journeyData: {
-            type: 'cart_abandoned',
-            id: 'journey-123',
-            configuration: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '415-111-111',
-                sms_sender_integration_id: 1,
-            },
-        },
-        currentIntegration: { id: 1, name: 'shopify-store' },
-        shopName: 'shopify-store',
-        isLoading: false,
-        journeyType: 'cart_abandoned',
-        storeConfiguration: {
-            monitoredSmsIntegrations: [1, 2],
-        },
-        journeys: [
-            {
-                id: '01JZAPAD606K1JSKNHC8KVA4BD',
-                type: 'cart_abandoned',
-                account_id: 6069,
-                store_integration_id: 33858,
-                store_name: 'artemisathletix',
-                store_type: 'shopify',
-                state: 'active',
-                message_instructions: '',
-                created_datetime: '2025-07-04T12:24:29.121874',
-                meta: {
-                    ticket_view_id: 2099726,
-                },
-            },
-        ],
-        campaigns: [
-            {
-                id: '01KBJ589YAYKG7YHKH349KKZH0',
-                type: 'campaign',
-                account_id: 6069,
-                store_integration_id: 33858,
-                store_name: 'artemisathletix',
-                store_type: 'shopify',
-                state: 'active',
-                message_instructions: null,
-                created_datetime: '2025-12-03T13:08:31.820085',
-                meta: {
-                    ticket_view_id: 2137239,
-                },
-                campaign: {
-                    title: '23123',
-                    state: 'active',
-                },
-            },
-        ],
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseAppSelector.mockImplementation((selector) => {
@@ -179,7 +107,6 @@ describe('<AiJourneyNavbar />', () => {
             replace: mockReplace,
         } as any)
 
-        mockUseJourneyContext.mockReturnValue(mockJourneyContext)
         mockUseLastSelectedStore.mockReturnValue({
             setLastSelectedStore: mockSetLastSelectedStore,
             resolveStore: (storeNames: string[]) => storeNames[0],
@@ -219,10 +146,9 @@ describe('<AiJourneyNavbar />', () => {
     })
 
     it('should redirect to first store when no shopName in URL and stores exist', async () => {
-        renderNavbar()
+        renderNavbar('/app/ai-journey')
 
         expect(mockReplace).toHaveBeenCalledWith('/app/ai-journey/teststore1')
-        expect(screen.getByText('teststore1')).toBeInTheDocument()
     })
 
     describe('localStorage persistence', () => {
@@ -235,7 +161,7 @@ describe('<AiJourneyNavbar />', () => {
                         : storeNames[0],
             })
 
-            renderNavbar()
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore2',
@@ -248,7 +174,7 @@ describe('<AiJourneyNavbar />', () => {
                 resolveStore: (storeNames: string[]) => storeNames[0],
             })
 
-            renderNavbar()
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -265,9 +191,7 @@ describe('<AiJourneyNavbar />', () => {
         })
 
         it('should save store to localStorage when URL has shopName', async () => {
-            mockUseParams.mockReturnValue({ shopName: 'teststore2' })
-
-            renderNavbar()
+            renderNavbar('/app/ai-journey/teststore2')
 
             expect(mockSetLastSelectedStore).toHaveBeenCalledWith('teststore2')
         })
@@ -286,76 +210,16 @@ describe('<AiJourneyNavbar />', () => {
             })
         })
 
-        it('should render analytics section when has journey, but does not have campaigns', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                campaigns: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
+        it('should render analytics section ', async () => {
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
             )
             expect(screen.queryByText('Analytics')).toBeInTheDocument()
-        })
-
-        it('should render analytics section when has campaigns, but does not have journey', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeys: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Analytics')).toBeInTheDocument()
-        })
-
-        it('should not render analytics section when no journey nor campaigns exists', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: undefined,
-                journeys: [],
-                campaigns: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Analytics')).not.toBeInTheDocument()
         })
 
         it('should not render analytics section when feature flag is disabled', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'draft',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.AiJourneyAnalyticsEnabled) {
                     return false
@@ -366,7 +230,7 @@ describe('<AiJourneyNavbar />', () => {
                 return false
             })
 
-            renderNavbar()
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -388,76 +252,7 @@ describe('<AiJourneyNavbar />', () => {
             })
         })
 
-        it('should render playground section when has journey, but does not have campaigns', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                campaigns: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).toBeInTheDocument()
-        })
-
-        it('should render playground section when has campaign, but does not have journey', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeys: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).toBeInTheDocument()
-        })
-
-        it('should not render playground section when no journey nor campaigns exists', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: undefined,
-                journeys: [],
-                campaigns: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Playground')).not.toBeInTheDocument()
-        })
-
         it('should not render playground section when feature flag is disabled', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'draft',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.AiJourneyPlaygroundEnabled) {
                     return false
@@ -468,7 +263,7 @@ describe('<AiJourneyNavbar />', () => {
                 return false
             })
 
-            renderNavbar()
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -490,37 +285,7 @@ describe('<AiJourneyNavbar />', () => {
             })
         })
 
-        it('should not render campaigns section when no journey exists', async () => {
-            const mockJourneyContextWithoutJourney = {
-                ...mockJourneyContext,
-                journeyData: undefined,
-                journeys: [],
-            }
-
-            mockUseJourneyContext.mockReturnValue(
-                mockJourneyContextWithoutJourney,
-            )
-
-            renderNavbar()
-
-            expect(mockReplace).toHaveBeenCalledWith(
-                '/app/ai-journey/teststore1',
-            )
-            expect(screen.queryByText('Campaigns')).not.toBeInTheDocument()
-        })
-
         it('should not render campaigns section when feature flag is disabled', async () => {
-            const mockJourneyContextWithJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-            }
-
-            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
-
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.AiJourneyCampaignsEnabled) {
                     return false
@@ -531,7 +296,7 @@ describe('<AiJourneyNavbar />', () => {
                 return false
             })
 
-            renderNavbar()
+            renderNavbar('/app/ai-journey')
 
             expect(mockReplace).toHaveBeenCalledWith(
                 '/app/ai-journey/teststore1',
@@ -540,45 +305,17 @@ describe('<AiJourneyNavbar />', () => {
         })
 
         it('should render campaigns section when journey exists', async () => {
-            const mockJourneyContextWithJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-                journeys: [{ id: 'journey-id' }],
-            }
-
-            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
-
             renderNavbar()
 
             expect(screen.getByText('Campaigns')).toBeInTheDocument()
         })
 
         it('should highlight campaigns link when pathname contains "campaign"', async () => {
-            const mockJourneyContextWithJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-                journeys: [{ id: 'journey-id' }],
-            }
-
-            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
-
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore({})}>
                         <ThemeProvider>
-                            <IntegrationsProvider>
-                                <JourneyProvider>
-                                    <AiJourneyNavbar />
-                                </JourneyProvider>
-                            </IntegrationsProvider>
+                            <AiJourneyNavbar />
                         </ThemeProvider>
                     </Provider>
                 </QueryClientProvider>,
@@ -596,27 +333,13 @@ describe('<AiJourneyNavbar />', () => {
         })
 
         it('should highlight campaigns link when pathname contains "campaign" (singular)', async () => {
-            const mockJourneyContextWithJourney = {
-                ...mockJourneyContext,
-                journeyData: {
-                    type: 'cart_abandoned',
-                    id: 'journey-id',
-                    state: 'paused',
-                },
-                journeys: [{ id: 'journey-id' }],
-            }
-
-            mockUseJourneyContext.mockReturnValue(mockJourneyContextWithJourney)
-
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore({})}>
                         <ThemeProvider>
-                            <IntegrationsProvider>
-                                <JourneyProvider>
-                                    <AiJourneyNavbar />
-                                </JourneyProvider>
-                            </IntegrationsProvider>
+                            <JourneyProvider>
+                                <AiJourneyNavbar />
+                            </JourneyProvider>
                         </ThemeProvider>
                     </Provider>
                 </QueryClientProvider>,

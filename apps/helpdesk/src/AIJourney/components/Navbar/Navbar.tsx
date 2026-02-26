@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { NavLink, useHistory, useParams } from 'react-router-dom'
+import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
-import { useJourneyContext } from 'AIJourney/providers'
 import { ActiveContent, Navbar } from 'common/navigation'
 import { Navigation } from 'components/Navigation/Navigation'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,7 +14,13 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import css from './Navbar.less'
 
 export const AiJourneyNavbar = () => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const history = useHistory()
+    const location = useLocation()
+    const match = matchPath<{ shopName: string }>(location.pathname, {
+        path: '/app/ai-journey/:shopName',
+    })
+    const shopName = match?.params.shopName
+
     const isAiJourneyAnalyticsEnabled = useFlag(
         FeatureFlagKey.AiJourneyAnalyticsEnabled,
     )
@@ -28,33 +33,18 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneyCampaignsEnabled,
     )
 
-    const { campaigns, journeys } = useJourneyContext()
-
-    const history = useHistory()
-
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     const { setLastSelectedStore, resolveStore } = useLastSelectedStore()
 
-    const [selectedStore, setSelectedStore] = useState(shopName)
-
-    const hasJourney = useMemo(() => {
-        return journeys?.length !== 0
-    }, [journeys])
-
-    const hasCampaigns = useMemo(() => {
-        return campaigns?.length !== 0
-    }, [campaigns])
-
     const selectedStoreIntegration = useMemo(() => {
         return storeIntegrations.find(
-            (store) => getShopNameFromStoreIntegration(store) === selectedStore,
+            (store) => getShopNameFromStoreIntegration(store) === shopName,
         )
-    }, [storeIntegrations, selectedStore])
+    }, [storeIntegrations, shopName])
 
     useEffect(() => {
         if (shopName) {
-            setSelectedStore(shopName)
             setLastSelectedStore(shopName)
             return
         }
@@ -69,7 +59,6 @@ export const AiJourneyNavbar = () => {
         }
 
         history.replace(`/app/ai-journey/${resolvedStore}`)
-        setSelectedStore(resolvedStore)
     }, [
         shopName,
         storeIntegrations,
@@ -89,11 +78,9 @@ export const AiJourneyNavbar = () => {
         [storeIntegrations, history, setLastSelectedStore],
     )
 
-    const shouldAccessPlayground =
-        isAiJourneyPlaygroundEnabled && (hasJourney || hasCampaigns)
-    const shouldAccessAnalytics =
-        isAiJourneyAnalyticsEnabled && (hasJourney || hasCampaigns)
-    const shouldAccessCampaigns = isAiJourneyCampaignsEnabled && hasJourney
+    const shouldAccessPlayground = isAiJourneyPlaygroundEnabled
+    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled
+    const shouldAccessCampaigns = isAiJourneyCampaignsEnabled
 
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
@@ -112,17 +99,15 @@ export const AiJourneyNavbar = () => {
                     />
                 </div>
                 <div className={css.navigationSections}>
-                    <Navigation.SectionItem
-                        as={NavLink}
-                        to={
-                            hasJourney
-                                ? `/app/ai-journey/${shopName}/flows`
-                                : `/app/ai-journey/${shopName}`
-                        }
-                        exact
-                    >
-                        {hasJourney ? 'Flows' : 'Setup'}
-                    </Navigation.SectionItem>
+                    {shouldAccessAnalytics && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/analytics`}
+                        >
+                            Analytics
+                        </Navigation.SectionItem>
+                    )}
                     {shouldAccessCampaigns && (
                         <Navigation.SectionItem
                             as={NavLink}
@@ -134,6 +119,13 @@ export const AiJourneyNavbar = () => {
                             Campaigns
                         </Navigation.SectionItem>
                     )}
+                    <Navigation.SectionItem
+                        as={NavLink}
+                        to={`/app/ai-journey/${shopName}/flows`}
+                        exact
+                    >
+                        Flows
+                    </Navigation.SectionItem>
                     {shouldAccessPlayground && (
                         <Navigation.SectionItem
                             as={NavLink}
@@ -141,15 +133,6 @@ export const AiJourneyNavbar = () => {
                             to={`/app/ai-journey/${shopName}/playground`}
                         >
                             Playground
-                        </Navigation.SectionItem>
-                    )}
-                    {shouldAccessAnalytics && (
-                        <Navigation.SectionItem
-                            as={NavLink}
-                            exact
-                            to={`/app/ai-journey/${shopName}/analytics`}
-                        >
-                            Analytics
                         </Navigation.SectionItem>
                     )}
                 </div>

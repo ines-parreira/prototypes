@@ -8,7 +8,6 @@ import thunk from 'redux-thunk'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
-import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
@@ -197,13 +196,11 @@ describe('<AiJourneyOnboarding />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <AiJourneyOnboarding
-                            journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                            step={STEPS_NAMES.SETUP}
-                            stepComponent={Setup}
-                        />
-                    </IntegrationsProvider>
+                    <AiJourneyOnboarding
+                        journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
+                        step={STEPS_NAMES.SETUP}
+                        stepComponent={Setup}
+                    />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -218,13 +215,11 @@ describe('<AiJourneyOnboarding />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <AiJourneyOnboarding
-                            journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
-                            step={STEPS_NAMES.SETUP}
-                            stepComponent={Setup}
-                        />
-                    </IntegrationsProvider>
+                    <AiJourneyOnboarding
+                        journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
+                        step={STEPS_NAMES.SETUP}
+                        stepComponent={Setup}
+                    />
                 </QueryClientProvider>
             </Provider>,
         )

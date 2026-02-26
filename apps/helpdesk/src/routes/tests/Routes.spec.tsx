@@ -16,7 +16,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { IntegrationsProvider } from 'AIJourney/providers'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProtectedRoute } from 'domains/reporting/pages/report-chart-restrictions/ProtectedRoute'
@@ -1133,7 +1132,13 @@ describe('<Routes/>', () => {
     })
 
     describe('AiJourneyRoutes', () => {
-        const mockStore = configureMockStore([thunk])()
+        const mockStore = configureMockStore([thunk])({
+            integrations: fromJS({
+                integrations: [
+                    { id: 1, name: 'shopify-store', type: 'shopify' },
+                ],
+            }),
+        })
 
         beforeEach(() => {
             jest.spyOn(axios, 'request').mockImplementation((config) => {
@@ -1295,13 +1300,11 @@ describe('<Routes/>', () => {
             render(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={queryClient}>
-                        <IntegrationsProvider>
-                            <Router history={history}>
-                                <SplitTicketViewProvider>
-                                    <Routes />
-                                </SplitTicketViewProvider>
-                            </Router>
-                        </IntegrationsProvider>
+                        <Router history={history}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
                     </QueryClientProvider>
                 </Provider>,
             )

@@ -21,10 +21,4 @@ describe('MarketingSidebar', () => {
         const navbar = screen.getByText('AiJourneyNavbar')
         expect(navbar).toBeInTheDocument()
     })
-
-    it('should wrap AiJourneyNavbar with IntegrationsProvider and JourneyProvider', () => {
-        render(<MarketingSidebar />)
-        expect(screen.getByTestId('integrations-provider')).toBeInTheDocument()
-        expect(screen.getByTestId('journey-provider')).toBeInTheDocument()
-    })
 })

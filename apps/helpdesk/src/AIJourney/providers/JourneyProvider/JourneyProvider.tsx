@@ -16,9 +16,9 @@ import { useJourneys } from 'AIJourney/queries/useJourneys/useJourneys'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import type { StoreConfiguration } from 'models/aiAgent/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-
-import { useIntegrations } from '../IntegrationsProvider/IntegrationsProvider'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 type JourneyContextType = {
     journeys: JourneyApiDTO[] | undefined
@@ -30,7 +30,6 @@ type JourneyContextType = {
     isLoading: boolean
     isLoadingJourneys: boolean
     isLoadingJourneyData: boolean
-    isLoadingIntegrations: boolean
     journeyType: JOURNEY_TYPES
     storeConfiguration: StoreConfiguration | undefined
 }
@@ -53,8 +52,12 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         [pathname],
     )
 
-    const { currentIntegration, isLoading: isLoadingIntegrations } =
-        useIntegrations(shopName)
+    const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
+    const currentIntegration = useMemo(() => {
+        return storeIntegrations.find(
+            (store) => getShopNameFromStoreIntegration(store) === shopName,
+        )
+    }, [storeIntegrations, shopName])
 
     const currency = useMemo(
         () => currentIntegration?.meta.currency as string,
@@ -124,7 +127,6 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
         })
 
     const isLoading =
-        isLoadingIntegrations ||
         isLoadingJourneys ||
         isStoreConfigurationLoading ||
         (!!journeyId && isLoadingJourneyData)
@@ -140,7 +142,6 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
-            isLoadingIntegrations,
             journeyType,
             storeConfiguration,
         }),
@@ -154,7 +155,6 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoading,
             isLoadingJourneys,
             isLoadingJourneyData,
-            isLoadingIntegrations,
             journeyType,
             storeConfiguration,
         ],

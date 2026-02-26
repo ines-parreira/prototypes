@@ -3,6 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import type { Location } from 'history'
 import { useLocation, useParams } from 'react-router-dom'
 
+import { IntegrationType } from 'models/integration/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
+
 import { appQueryClient } from '../../../api/queryClient'
 import { JourneyProvider, useJourneyContext } from './JourneyProvider'
 
@@ -14,13 +18,6 @@ jest.mock('react-router-dom', () => ({
 
 const useParamsMock = jest.mocked(useParams)
 const useLocationMock = jest.mocked(useLocation)
-
-jest.mock(
-    'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
-    () => ({
-        useIntegrations: jest.fn(),
-    }),
-)
 
 jest.mock('@gorgias/convert-client', () => ({
     ...jest.requireActual('@gorgias/convert-client'),
@@ -48,8 +45,6 @@ jest.mock('models/aiAgent/queries', () => ({
 }))
 
 const mockUseParams = useParams as jest.Mock
-const mockUseIntegrations =
-    require('AIJourney/providers/IntegrationsProvider/IntegrationsProvider').useIntegrations
 const mockUseAppSelector = require('hooks/useAppSelector') as jest.Mock
 const mockUseJourneyData =
     require('AIJourney/queries/useJourneyData/useJourneyData').useJourneyData
@@ -95,12 +90,27 @@ describe('<JourneyProvider />', () => {
 
         mockUseParams.mockReturnValue({ shopName: 'test-shop' })
 
-        // Mock useAppSelector to return a mock account with domain
-        mockUseAppSelector.mockReturnValue({
-            get: (key: string) => {
-                if (key === 'domain') return 'test-domain'
-                return null
-            },
+        // Mock useAppSelector to return correct values per selector
+        mockUseAppSelector.mockImplementation((selector: unknown) => {
+            if (selector === getShopifyIntegrationsSortedByName) {
+                return [
+                    {
+                        id: 1,
+                        name: 'test-shop',
+                        type: IntegrationType.Shopify,
+                        meta: { shop_name: 'test-shop', currency: 'USD' },
+                    },
+                ]
+            }
+            if (selector === getCurrentAccountState) {
+                return {
+                    get: (key: string) => {
+                        if (key === 'domain') return 'test-domain'
+                        return null
+                    },
+                }
+            }
+            return undefined
         })
 
         // Mock useGetStoresConfigurationForAccount - by default returns data with test-shop
@@ -131,15 +141,6 @@ describe('<JourneyProvider />', () => {
     })
 
     it('provides journey data and loading state', async () => {
-        mockUseIntegrations.mockReturnValue({
-            currentIntegration: {
-                id: 1,
-                name: 'test-shop',
-                type: 'shopify',
-                meta: { currency: 'USD' },
-            },
-            isLoading: false,
-        })
         mockUseJourneyData.mockReturnValue({
             data: {
                 id: 'journey-1',
@@ -182,16 +183,15 @@ describe('<JourneyProvider />', () => {
     })
 
     it('provides loading state when data is loading', () => {
-        mockUseIntegrations.mockReturnValue({
-            currentIntegration: undefined,
-            isLoading: true,
-        })
+        useLocationMock.mockReturnValue({
+            pathname:
+                '/app/ai-journey/test-shop/cart-abandoned/setup/journey-123',
+        } as Location)
+
         mockUseJourneyData.mockReturnValue({
             data: undefined,
             isLoading: true,
         })
-        // Don't need to mock getAllJourneysPublic for loading state
-        // as the query won't be enabled without integrationId
 
         render(
             <QueryClientProvider client={appQueryClient}>
@@ -244,16 +244,6 @@ describe('<JourneyProvider />', () => {
                 pathname: '/app/ai-journey/test-shop/cart-abandoned/setup',
             } as Location)
 
-            mockUseIntegrations.mockReturnValue({
-                currentIntegration: {
-                    id: 1,
-                    name: 'test-shop',
-                    type: 'shopify',
-                    meta: { currency: 'USD' },
-                },
-                isLoading: false,
-            })
-
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <JourneyProvider>
@@ -274,16 +264,6 @@ describe('<JourneyProvider />', () => {
                     '/app/ai-journey/test-shop/session-abandoned/test/journey-456',
             } as Location)
 
-            mockUseIntegrations.mockReturnValue({
-                currentIntegration: {
-                    id: 1,
-                    name: 'test-shop',
-                    type: 'shopify',
-                    meta: { currency: 'USD' },
-                },
-                isLoading: false,
-            })
-
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <JourneyProvider>
@@ -303,16 +283,6 @@ describe('<JourneyProvider />', () => {
                 pathname: '/app/ai-journey/test-shop/invalid-type/setup',
             } as Location)
 
-            mockUseIntegrations.mockReturnValue({
-                currentIntegration: {
-                    id: 1,
-                    name: 'test-shop',
-                    type: 'shopify',
-                    meta: { currency: 'USD' },
-                },
-                isLoading: false,
-            })
-
             render(
                 <QueryClientProvider client={appQueryClient}>
                     <JourneyProvider>
@@ -331,16 +301,6 @@ describe('<JourneyProvider />', () => {
             useLocationMock.mockReturnValue({
                 pathname: '/app/ai-journey/test-shop',
             } as Location)
-
-            mockUseIntegrations.mockReturnValue({
-                currentIntegration: {
-                    id: 1,
-                    name: 'test-shop',
-                    type: 'shopify',
-                    meta: { currency: 'USD' },
-                },
-                isLoading: false,
-            })
 
             render(
                 <QueryClientProvider client={appQueryClient}>

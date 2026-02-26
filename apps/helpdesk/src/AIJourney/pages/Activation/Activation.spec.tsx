@@ -9,7 +9,6 @@ import thunk from 'redux-thunk'
 
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import { IntegrationsProvider } from 'AIJourney/providers'
 import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
 import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
@@ -43,15 +42,6 @@ jest.mock('AIJourney/hooks', () => ({
     })),
 }))
 
-jest.mock(
-    'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
-    () => ({
-        ...jest.requireActual(
-            'AIJourney/providers/IntegrationsProvider/IntegrationsProvider',
-        ),
-        useIntegrations: jest.fn(),
-    }),
-)
 jest.mock('hooks/useAllIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -216,9 +206,7 @@ describe('<Activation />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Activation />
-                    </IntegrationsProvider>
+                    <Activation />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -272,9 +260,7 @@ describe('<Activation />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Activation />
-                    </IntegrationsProvider>
+                    <Activation />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -312,9 +298,7 @@ describe('<Activation />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Activation />
-                    </IntegrationsProvider>
+                    <Activation />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -336,9 +320,7 @@ describe('<Activation />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Activation />
-                    </IntegrationsProvider>
+                    <Activation />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -363,9 +345,7 @@ describe('<Activation />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={appQueryClient}>
-                    <IntegrationsProvider>
-                        <Activation />
-                    </IntegrationsProvider>
+                    <Activation />
                 </QueryClientProvider>
             </Provider>,
         )
@@ -412,9 +392,7 @@ describe('<Activation />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -446,9 +424,7 @@ describe('<Activation />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -503,9 +479,7 @@ describe('<Activation />', () => {
             const { rerender } = renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -542,9 +516,7 @@ describe('<Activation />', () => {
             rerender(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -586,9 +558,7 @@ describe('<Activation />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )
@@ -609,9 +579,7 @@ describe('<Activation />', () => {
             renderWithRouter(
                 <Provider store={mockStore}>
                     <QueryClientProvider client={appQueryClient}>
-                        <IntegrationsProvider>
-                            <Activation />
-                        </IntegrationsProvider>
+                        <Activation />
                     </QueryClientProvider>
                 </Provider>,
             )

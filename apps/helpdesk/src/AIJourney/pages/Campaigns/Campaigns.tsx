@@ -39,7 +39,6 @@ export const Campaigns = () => {
         campaigns,
         isLoadingJourneys: isLoadingCampaigns,
         currentIntegration,
-        isLoadingIntegrations,
     } = useJourneyContext()
 
     const integrationId = useMemo(() => {
@@ -151,7 +150,7 @@ export const Campaigns = () => {
                     columns={visibleColumns}
                     data={campaignRows || []}
                     onEditColumns={() => setIsEditModalOpen(true)}
-                    isLoading={isLoadingIntegrations || isLoadingCampaigns}
+                    isLoading={isLoadingCampaigns}
                 />
                 <DrillDownModal />
                 <ConfigureMetricsModal
