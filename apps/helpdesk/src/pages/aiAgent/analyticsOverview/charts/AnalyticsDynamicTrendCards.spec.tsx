@@ -1,4 +1,5 @@
 import { TrendCard } from '@repo/reporting'
+import type { MetricTrendFormat } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -9,6 +10,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
@@ -44,7 +46,7 @@ const createTrendCardProps = ({
     value: number
     prevValue: number
     description: string
-    metricFormat: 'decimal' | 'duration' | 'currency' | 'decimal-to-percent'
+    metricFormat: MetricTrendFormat
 }) => ({
     trend: {
         isFetching: false,
@@ -77,7 +79,7 @@ const createChartConfig = ({
     Component: (props: DashboardChartProps) => React.JSX.Element
     label: string
     description: string
-    metricFormat: 'decimal' | 'duration' | 'currency' | 'decimal-to-percent'
+    metricFormat: MetricTrendFormat
 }): ChartConfig => ({
     chartComponent: Component,
     label,
@@ -172,6 +174,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 42,
                 prevValue: 38,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentBuyThroughRateCard',
+            Component: AnalyticsAiAgentBuyThroughRateCard,
+            config: {
+                label: 'Buy through rate',
+                description:
+                    'The percentage of tickets with product recommendations that led to a purchase.',
+                metricFormat: 'percent' as const,
+                value: 0.42,
+                prevValue: 0.38,
             },
         },
         {

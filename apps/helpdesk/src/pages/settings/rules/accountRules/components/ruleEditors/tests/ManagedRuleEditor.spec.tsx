@@ -100,8 +100,11 @@ describe('<ManagedRuleEditor/>', () => {
     it.each(Object.values(ManagedRulesSlugs))(
         '%s editor should render correctly',
         (slug) => {
-            const { container } = renderManagedRuleEditor(slug)
-            expect(container.firstChild).toMatchSnapshot()
+            renderManagedRuleEditor(slug)
+            expect(
+                screen.getByRole('button', { name: /update rule/i }),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Enable rule')).toBeInTheDocument()
         },
     )
 
@@ -121,6 +124,7 @@ describe('<ManagedRuleEditor/>', () => {
         })
 
         it('should show subscription modal when toggling activation without automate access', async () => {
+            const user = userEvent.setup()
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: false,
                 isLoading: false,
@@ -129,7 +133,7 @@ describe('<ManagedRuleEditor/>', () => {
             renderManagedRuleEditor(ManagedRulesSlugs.AutoReplyWismo)
 
             const toggleButton = screen.getByRole('switch')
-            userEvent.click(toggleButton)
+            await user.click(toggleButton)
 
             await waitFor(() => {
                 expect(

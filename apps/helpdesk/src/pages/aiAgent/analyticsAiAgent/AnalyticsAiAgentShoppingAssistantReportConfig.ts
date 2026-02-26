@@ -6,6 +6,7 @@ import { fetchDiscountCodesOfferedTrend } from 'domains/reporting/pages/automate
 import { fetchDiscountCodesRateAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesRateAppliedTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { fetchMedianPurchaseTimeTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useMedianPerchaseTimeTrend'
+import { fetchProductBuyRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductBuyRateTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
 import { fetchTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
@@ -16,6 +17,7 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsShoppingAssistantComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
@@ -60,6 +62,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     DiscountCodesAppliedCard = 'discount_codes_applied_card',
     DiscountsOfferedCard = 'discounts_offered_card',
     MedianPurchaseTimeCard = 'median_purchase_time_card',
+    BuyThroughRateCard = 'buy_through_rate_card',
     ConversionRateCard = 'conversion_rate_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
@@ -217,6 +220,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'less-is-better',
+            },
+            [AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard]: {
+                chartComponent: AnalyticsAiAgentBuyThroughRateCard,
+                label: 'Buy through rate',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchProductBuyRateTrend,
+                        metricFormat: 'percent',
+                    },
+                ],
+                description:
+                    'The percentage of tickets with product recommendations that led to a purchase.',
+                chartType: ChartType.Card,
+                metricFormat: 'percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard]: {
                 chartComponent: AnalyticsAiAgentConversionRateCard,

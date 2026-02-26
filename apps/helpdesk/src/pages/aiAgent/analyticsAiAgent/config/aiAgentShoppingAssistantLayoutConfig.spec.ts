@@ -14,7 +14,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(10)
+            expect(kpisSection.items).toHaveLength(11)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -31,6 +31,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard,
                 AnalyticsAiAgentShoppingAssistantChart.MedianPurchaseTimeCard,
                 AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
+                AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard,
             ]
             expect(kpisSection.items.map((item) => item.chartId)).toEqual(
                 expectedChartIds,
