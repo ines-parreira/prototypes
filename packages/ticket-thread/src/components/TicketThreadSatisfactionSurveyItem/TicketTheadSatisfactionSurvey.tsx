@@ -9,5 +9,9 @@ type TicketThreadSatisfactionSurveyProps = {
 export function TicketThreadSatisfactionSurvey({
     item,
 }: TicketThreadSatisfactionSurveyProps) {
-    return <Box padding="md">{JSON.stringify(item.data)}</Box>
+    return (
+        <Box padding="md" alignSelf="flex-end">
+            {JSON.stringify(item.data)}
+        </Box>
+    )
 }

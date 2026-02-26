@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { Box } from '@gorgias/axiom'
 
 import { TicketThreadItemTag } from '../../hooks/types'
@@ -12,12 +14,16 @@ type TicketThreadCallItemProps = {
 }
 
 export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
-    switch (item._tag) {
-        case TicketThreadItemTag.VoiceCalls.VoiceCall:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
-        case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
-        default:
-            return assertNever(item)
-    }
+    const content = useMemo(() => {
+        switch (item._tag) {
+            case TicketThreadItemTag.VoiceCalls.VoiceCall:
+                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+            case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
+                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+            default:
+                return assertNever(item)
+        }
+    }, [item])
+
+    return <Box alignSelf="flex-end">{content}</Box>
 }

@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+
 import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadContactReasonSuggestionItem } from '../../hooks/contact-reason-prediction/types'
@@ -14,12 +16,16 @@ type TicketThreadSuggestionItemProps = {
 export function TicketThreadSuggestionItem({
     item,
 }: TicketThreadSuggestionItemProps) {
-    switch (item._tag) {
-        case TicketThreadItemTag.RuleSuggestion:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
-        case TicketThreadItemTag.ContactReasonSuggestion:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
-        default:
-            return assertNever(item)
-    }
+    const content = useMemo(() => {
+        switch (item._tag) {
+            case TicketThreadItemTag.RuleSuggestion:
+                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+            case TicketThreadItemTag.ContactReasonSuggestion:
+                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+            default:
+                return assertNever(item)
+        }
+    }, [item])
+
+    return <Box alignSelf="flex-end">{content}</Box>
 }

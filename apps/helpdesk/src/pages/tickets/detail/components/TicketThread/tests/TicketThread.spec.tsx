@@ -23,6 +23,9 @@ jest.mock('@repo/ticket-thread', () => ({
     TicketThreadContainer: ({ children }: { children: ReactNode }) => (
         <section aria-label="Ticket thread container">{children}</section>
     ),
+    TicketThreadItemsContainer: ({ children }: { children: ReactNode }) => (
+        <div>{children}</div>
+    ),
     TicketThreadItem: ({ item }: { item: { _tag: string } }) => (
         <div>{item._tag}</div>
     ),

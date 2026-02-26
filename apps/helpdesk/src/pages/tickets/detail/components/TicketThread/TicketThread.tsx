@@ -3,11 +3,10 @@ import { useCallback, useMemo } from 'react'
 import {
     TicketThreadContainer,
     TicketThreadItem,
+    TicketThreadItemsContainer,
     useTicketThread,
 } from '@repo/ticket-thread'
 import { useParams } from 'react-router-dom'
-
-import { Box } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -58,14 +57,14 @@ export function TicketThread({ submit }: TicketThreadProps) {
 
     return (
         <TicketThreadContainer>
-            <Box flexGrow={1} flexDirection="column" padding="md">
+            <TicketThreadItemsContainer>
                 {ticketThreadItems.map((item, index) => (
                     <TicketThreadItem
                         key={`${item._tag}-${index}`}
                         item={item}
                     />
                 ))}
-            </Box>
+            </TicketThreadItemsContainer>
             <div>
                 <TypingActivity isTyping={isShopperTyping} name={shopperName} />
                 <WhatsAppEditorProvider>

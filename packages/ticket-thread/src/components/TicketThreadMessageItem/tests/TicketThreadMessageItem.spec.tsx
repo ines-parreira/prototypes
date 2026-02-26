@@ -91,6 +91,48 @@ describe('TicketThreadMessageItem', () => {
         ).toBeInTheDocument()
     })
 
+    it('aligns agent messages to the right', () => {
+        const data = {
+            ...messageData,
+            channel: 'email',
+            via: 'email',
+            from_agent: true,
+        }
+
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.Message,
+            data,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.getByText(JSON.stringify(data)).parentElement,
+        ).toHaveStyle({
+            alignSelf: 'flex-end',
+        })
+    })
+
+    it('aligns customer messages to the left', () => {
+        const data = {
+            ...messageData,
+            channel: 'email',
+            via: 'email',
+            from_agent: false,
+        }
+
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.Message,
+            data,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.getByText(JSON.stringify(data)).parentElement,
+        ).toHaveStyle({
+            alignSelf: 'flex-start',
+        })
+    })
+
     it('renders merged messages item', () => {
         const mergedData = [
             {
