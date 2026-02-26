@@ -32,7 +32,7 @@ export function useCreateTicketTag() {
                 decoration: response.data.decoration,
             }
 
-            await queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
                 predicate: ({ queryKey }) => {
                     const base = queryKeys.tags.listTags()
                     if (queryKey[0] !== base[0] || queryKey[1] !== base[1]) {

@@ -42,6 +42,15 @@ afterAll(() => {
     server.close()
 })
 
+const waitForQueriesSettled = async () => {
+    await waitFor(
+        () => {
+            expect(testAppQueryClient.isFetching()).toBe(0)
+        },
+        { timeout: 5000 },
+    )
+}
+
 const customerId = 123
 
 const mockCustomer = {
@@ -157,7 +166,9 @@ describe('InfobarCustomCustomerFields', () => {
 
         render(<TestComponent />)
 
-        expect(await screen.findByText('Company')).toBeInTheDocument()
+        await waitForQueriesSettled()
+
+        expect(screen.getByText('Company')).toBeInTheDocument()
         expect(screen.getByText('Age')).toBeInTheDocument()
         expect(screen.getByText('Status')).toBeInTheDocument()
     })

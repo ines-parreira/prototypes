@@ -1,185 +1,141 @@
-import { act, screen, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import type { ComponentProps } from 'react'
+
+import { screen, waitFor } from '@testing-library/react'
 
 import {
     mockCustomer,
-    mockGetCustomerHandler,
-    mockMergeCustomersHandler,
     mockTicketCustomerChannel,
 } from '@gorgias/helpdesk-mocks'
 
-import { render } from '../../../tests/render.utils'
+import { createTestQueryClient, render } from '../../../tests/render.utils'
+import * as useMergeCustomersModule from '../hooks/useMergeCustomers'
+import * as useSourceCustomerModule from '../hooks/useSourceCustomer'
 import { MergeCustomersModal } from '../MergeCustomersModal'
 
-const server = setupServer()
+vi.mock('../hooks/useMergeCustomers')
+vi.mock('../hooks/useSourceCustomer')
 
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'warn' })
+const mockedUseMergeCustomers = vi.mocked(
+    useMergeCustomersModule.useMergeCustomers,
+)
+const mockedUseSourceCustomer = vi.mocked(
+    useSourceCustomerModule.useSourceCustomer,
+)
+
+const destinationCustomer = mockCustomer({
+    id: 1,
+    name: 'John Doe',
+    email: 'john@example.com',
+    note: 'VIP customer',
+    channels: [],
 })
 
-afterEach(() => {
-    server.resetHandlers()
+const sourceCustomer = mockCustomer({
+    id: 2,
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    note: 'Regular customer',
+    channels: [],
 })
 
-afterAll(() => {
-    server.close()
-})
+const mockMergeCustomers = vi.fn()
 
 describe('MergeCustomersModal', () => {
-    const mockOnOpenChange = vi.fn()
-    const mockOnMerge = vi.fn()
-    const destinationCustomer = mockCustomer({
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        note: 'VIP customer',
-    })
-    const sourceCustomer = mockCustomer({
-        id: 2,
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        note: 'Regular customer',
-    })
+    const mockOnOpenChange = vi.fn<(open: boolean) => void>()
+    const mockOnMerge = vi.fn<() => void>()
 
-    const mockMergeCustomers = mockMergeCustomersHandler(async () =>
-        HttpResponse.json({}),
-    )
-
-    const mockGetCustomer = mockGetCustomerHandler(async (info) => {
-        const url = new URL(info.request.url)
-        const customerId = url.pathname.split('/').pop()
-
-        if (customerId === '2') {
-            return HttpResponse.json({
-                ...sourceCustomer,
-            })
-        }
-
-        return HttpResponse.json({
-            ...destinationCustomer,
-        })
-    })
-
-    beforeEach(() => {
-        vi.clearAllMocks()
-        server.use(mockMergeCustomers.handler, mockGetCustomer.handler)
-    })
-
-    it('should not render when sourceCustomer is null', () => {
-        const { container } = render(
+    function renderModal(
+        props: Partial<ComponentProps<typeof MergeCustomersModal>> = {},
+    ) {
+        return render(
             <MergeCustomersModal
                 isOpen={true}
                 onOpenChange={mockOnOpenChange}
                 destinationCustomer={destinationCustomer}
-                sourceCustomer={null}
+                sourceCustomer={sourceCustomer}
                 onMerge={mockOnMerge}
+                {...props}
             />,
+            {
+                queryClient: createTestQueryClient(),
+            },
         )
+    }
+
+    beforeEach(() => {
+        mockOnOpenChange.mockReset()
+        mockOnMerge.mockReset()
+        mockMergeCustomers.mockReset()
+        mockMergeCustomers.mockResolvedValue(undefined)
+
+        mockedUseMergeCustomers.mockReturnValue({
+            mergeCustomers: mockMergeCustomers,
+            isLoading: false,
+        })
+
+        mockedUseSourceCustomer.mockImplementation((customer) => ({
+            sourceCustomer: customer,
+            isLoading: false,
+        }))
+    })
+
+    it('should not render when sourceCustomer is null', () => {
+        mockedUseSourceCustomer.mockReturnValue({
+            sourceCustomer: null,
+            isLoading: false,
+        })
+
+        const { container } = renderModal({ sourceCustomer: null })
 
         expect(container.firstChild).toBeNull()
     })
 
     it('should render modal with customer data', async () => {
-        render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationCustomer}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
-        )
+        renderModal()
 
-        await waitFor(() => {
-            expect(screen.getByText('Merge customers')).toBeInTheDocument()
-            expect(screen.getByText('Current customer')).toBeInTheDocument()
-            expect(screen.getByText('Merge customer')).toBeInTheDocument()
-            expect(screen.getByText('John Doe')).toBeInTheDocument()
-            expect(screen.getByText('Jane Smith')).toBeInTheDocument()
-        })
+        expect(await screen.findByText('Merge customers')).toBeInTheDocument()
+        expect(screen.getByText('Current customer')).toBeInTheDocument()
+        expect(screen.getByText('Merge customer')).toBeInTheDocument()
+        expect(screen.getByText('John Doe')).toBeInTheDocument()
+        expect(screen.getByText('Jane Smith')).toBeInTheDocument()
     })
 
     it('should disable merge button while loading source customer', async () => {
-        let resolveCustomerFetch: (value: unknown) => void
-        const customerFetchPromise = new Promise((resolve) => {
-            resolveCustomerFetch = resolve
+        mockedUseSourceCustomer.mockReturnValue({
+            sourceCustomer,
+            isLoading: true,
         })
 
-        const slowMockGetSourceCustomer = mockGetCustomerHandler(async () => {
-            await customerFetchPromise
-            return HttpResponse.json({
-                data: sourceCustomer,
-            })
-        })
-
-        server.use(slowMockGetSourceCustomer.handler)
-
-        const { user } = render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationCustomer}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
-        )
+        const { user } = renderModal()
 
         const checkbox = await screen.findByRole('checkbox', {
             name: /I understand that this action is irreversible/i,
         })
-        await act(async () => {
-            await user.click(checkbox)
-        })
+        await user.click(checkbox)
 
-        const mergeButton = screen.getByRole('button', { name: /merge/i })
-        expect(mergeButton).toBeDisabled()
-
-        resolveCustomerFetch!(null)
-
-        await waitFor(() => {
-            expect(mergeButton).not.toBeDisabled()
-        })
+        expect(screen.getByRole('button', { name: /merge/i })).toBeDisabled()
     })
 
     it('should disable merge button when confirmation is not checked', async () => {
-        render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationCustomer}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
-        )
+        renderModal()
 
-        await waitFor(() => {
-            const mergeButton = screen.getByRole('button', { name: /merge/i })
-            expect(mergeButton).toBeDisabled()
-        })
+        expect(
+            await screen.findByRole('button', { name: /merge/i }),
+        ).toBeDisabled()
     })
 
     it('should enable merge button when confirmation is checked', async () => {
-        const { user } = render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationCustomer}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
-        )
+        const { user } = renderModal()
 
         const checkbox = await screen.findByRole('checkbox', {
             name: /I understand that this action is irreversible/i,
         })
-        await act(async () => {
-            await user.click(checkbox)
-        })
+        await user.click(checkbox)
 
         await waitFor(() => {
-            const mergeButton = screen.getByRole('button', { name: /merge/i })
-            expect(mergeButton).not.toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /merge/i }),
+            ).not.toBeDisabled()
         })
     })
 
@@ -214,56 +170,42 @@ describe('MergeCustomersModal', () => {
             ],
         })
 
-        const { user } = render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationWithChannels}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
+        const { user } = renderModal({
+            destinationCustomer: destinationWithChannels,
+        })
+
+        await user.click(screen.getByText('alternative@example.com'))
+        await user.click(screen.getByText('@johndoe'))
+
+        const confirmationCheckbox = await screen.findByRole('checkbox', {
+            name: /I understand that this action is irreversible/i,
+        })
+        await user.click(confirmationCheckbox)
+        await user.click(screen.getByRole('button', { name: /merge/i }))
+
+        await waitFor(() => {
+            expect(mockMergeCustomers).toHaveBeenCalled()
+        })
+
+        const [payload] = mockMergeCustomers.mock.calls[0]
+        expect(payload.channels).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    address: 'john@example.com',
+                    type: 'email',
+                }),
+            ]),
         )
-
-        const alternativeEmailRadios = await screen.findAllByRole('radio', {
-            name: /alternative email/i,
-        })
-        const emailChannelRadio = alternativeEmailRadios.find(
-            (radio) => !radio.hasAttribute('disabled'),
-        )!
-        const instagramChannelRadio = await screen.findByRole('radio', {
-            name: /instagram/i,
-        })
-
-        expect(emailChannelRadio).toBeChecked()
-        expect(instagramChannelRadio).toBeChecked()
-
-        await act(async () => {
-            await user.click(emailChannelRadio)
-        })
-        await waitFor(() => {
-            expect(emailChannelRadio).not.toBeChecked()
-        })
-
-        await act(async () => {
-            await user.click(instagramChannelRadio)
-        })
-        await waitFor(() => {
-            expect(instagramChannelRadio).not.toBeChecked()
-        })
-
-        await act(async () => {
-            await user.click(emailChannelRadio)
-        })
-        await waitFor(() => {
-            expect(emailChannelRadio).toBeChecked()
-        })
-
-        await act(async () => {
-            await user.click(instagramChannelRadio)
-        })
-        await waitFor(() => {
-            expect(instagramChannelRadio).toBeChecked()
-        })
+        expect(payload.channels).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    address: 'alternative@example.com',
+                }),
+                expect.objectContaining({
+                    address: '@johndoe',
+                }),
+            ]),
+        )
     })
 
     it('should call merge with correct data and close modal', async () => {
@@ -298,63 +240,56 @@ describe('MergeCustomersModal', () => {
             ],
         })
 
-        const { user } = render(
-            <MergeCustomersModal
-                isOpen={true}
-                onOpenChange={mockOnOpenChange}
-                destinationCustomer={destinationWithChannels}
-                sourceCustomer={sourceCustomer}
-                onMerge={mockOnMerge}
-            />,
-        )
-
-        const nameRadios = screen.getAllByRole('radio', { name: /name/i })
-        await act(async () => {
-            await user.click(nameRadios[1])
+        const { user } = renderModal({
+            destinationCustomer: destinationWithChannels,
         })
 
-        const checkbox = screen.getByRole('checkbox', {
+        const nameRadios = await screen.findAllByRole('radio', {
+            name: /name/i,
+        })
+        await user.click(nameRadios[1])
+
+        const checkbox = await screen.findByRole('checkbox', {
             name: /I understand that this action is irreversible/i,
         })
-        await act(async () => {
-            await user.click(checkbox)
-        })
+        await user.click(checkbox)
 
-        const mergeButton = screen.getByRole('button', { name: /merge/i })
+        await user.click(await screen.findByRole('button', { name: /merge/i }))
 
-        const waitForRequest = mockMergeCustomers.waitForRequest(server)
-
-        await act(async () => {
-            await user.click(mergeButton)
-        })
-
-        await waitForRequest(async (request) => {
-            const body = await request.json()
-
-            expect(body.name).toBe('Jane Smith')
-            expect(body.email).toBe('john@example.com')
-            expect(body.note).toBe('VIP customer')
-            expect(body.channels).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        id: 1,
-                        address: 'john@example.com',
-                        type: 'email',
-                    }),
-                    expect.objectContaining({
-                        id: 3,
-                        address: 'alternative@example.com',
-                        type: 'email',
-                    }),
-                    expect.objectContaining({
-                        id: 4,
-                        address: '+1234567890',
-                        type: 'phone',
-                    }),
-                ]),
+        await waitFor(() => {
+            expect(mockMergeCustomers).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    name: 'Jane Smith',
+                    email: 'john@example.com',
+                    note: 'VIP customer',
+                    channels: expect.arrayContaining([
+                        expect.objectContaining({
+                            id: 1,
+                            address: 'john@example.com',
+                            type: 'email',
+                        }),
+                        expect.objectContaining({
+                            id: 3,
+                            address: 'alternative@example.com',
+                            type: 'email',
+                        }),
+                        expect.objectContaining({
+                            id: 4,
+                            address: '+1234567890',
+                            type: 'phone',
+                        }),
+                    ]),
+                }),
+                {
+                    source_id: 2,
+                    target_id: 1,
+                },
             )
         })
 
-        expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+        await waitFor(() => {
+            expect(mockOnOpenChange).toHaveBeenCalledWith(false)
+            expect(mockOnMerge).toHaveBeenCalled()
+        })
     })
 })

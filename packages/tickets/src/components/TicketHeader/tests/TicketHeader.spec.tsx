@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -14,7 +14,6 @@ import {
     mockSearchTicketsHandler,
     mockTicket,
     mockTicketCustomer,
-    mockTicketTranslationCompact,
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
@@ -34,6 +33,10 @@ vi.mock('@repo/feature-flags', async () => ({
         hasUIVisionBeta: false,
         onToggle: vi.fn(),
     }),
+}))
+
+vi.mock('../../../translations/components/TicketTranslationMenu', () => ({
+    TicketTranslationMenu: () => <div>Ticket translation menu</div>,
 }))
 
 const mockUseFlag = vi.mocked(useFlag)
@@ -259,61 +262,17 @@ describe('TicketHeader', () => {
         })
 
         it('should render when feature flag is enabled', async () => {
-            const mockGetCurrentUserWithTranslations =
-                mockGetCurrentUserHandler(async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        settings: [
-                            {
-                                ...mockLanguagePreferencesEnglish,
-                                data: {
-                                    enabled: true,
-                                    primary: Language.En,
-                                    proficient: [Language.Es],
-                                },
-                            },
-                        ],
-                    } as CurrentUser['data']),
-                )
-
-            const { handler: ticketHandler } = mockGetTicketHandler(async () =>
-                HttpResponse.json({
-                    ...defaultMockTicket,
-                    language: Language.Fr,
-                }),
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.MessagesTranslations,
             )
-
-            const mockTranslation = mockTicketTranslationCompact({
-                ticket_id: defaultMockTicket.id,
-                subject: 'Translated French subject',
-            })
-            const { handler: translationHandler } =
-                mockListTicketTranslationsHandler(async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [mockTranslation],
-                    }),
-                )
-
-            server.use(
-                mockGetCurrentUserWithTranslations.handler,
-                ticketHandler,
-                translationHandler,
-            )
-
-            mockUseFlag.mockReturnValue(true)
 
             render(<TicketHeader ticketId={1234} />)
 
-            await waitFor(() => {
-                expect(screen.getByText('John Doe')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('John Doe')).toBeInTheDocument()
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: /translate/i }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                screen.getByText('Ticket translation menu'),
+            ).toBeInTheDocument()
         })
     })
 

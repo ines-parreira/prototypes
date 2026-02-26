@@ -17,7 +17,7 @@ const mockGetCurrentUser = mockGetCurrentUserHandler()
 
 describe('useCurrentUserLanguagePreferences', () => {
     beforeAll(() => {
-        server.listen({ onUnhandledRequest: 'warn' })
+        server.listen({ onUnhandledRequest: 'error' })
     })
 
     beforeEach(() => {

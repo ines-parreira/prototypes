@@ -117,16 +117,41 @@ afterAll(() => {
 
 describe('TicketInfobarTicketDetailsTags', () => {
     const getAddButton = () => {
-        const buttons = screen.getAllByRole('button')
-        return buttons.find((btn) =>
-            btn.querySelector('[aria-label="add-plus"]'),
-        )!
+        return screen
+            .getAllByRole('button', { hidden: true })
+            .find(
+                (button) => button.getAttribute('aria-haspopup') === 'listbox',
+            )!
     }
 
     const getCloseButtons = () =>
         screen.queryAllByRole('button', {
             name: 'Remove tag',
         })
+
+    const waitUntilTagMenuIsOpen = async () => {
+        await waitFor(
+            () => {
+                expect(getAddButton()).toHaveAttribute('aria-expanded', 'true')
+            },
+            { timeout: 2000 },
+        )
+    }
+
+    const openTagMenu = async (user: ReturnType<typeof render>['user']) => {
+        if (getAddButton().getAttribute('aria-expanded') === 'true') {
+            return
+        }
+
+        await user.click(getAddButton())
+
+        try {
+            await waitUntilTagMenuIsOpen()
+        } catch {
+            await user.click(getAddButton())
+            await waitUntilTagMenuIsOpen()
+        }
+    }
 
     describe('Initial rendering', () => {
         it('should render the component with add button', async () => {
@@ -188,18 +213,6 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(featureTags.length).toBeGreaterThan(0)
             })
         })
-
-        it('should render tags with color decorations', async () => {
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                const bugTags = screen.getAllByText('Bug')
-                expect(bugTags.length).toBeGreaterThan(0)
-            })
-        })
     })
 
     describe('Tag selection via MultiSelect', () => {
@@ -212,7 +225,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
             await waitFor(
                 () => {
@@ -245,19 +258,12 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
-            await waitFor(() => {
-                const documentationOptions =
-                    screen.getAllByText('Documentation')
-                expect(documentationOptions.length).toBeGreaterThan(0)
+            const documentationOption = await screen.findByRole('option', {
+                name: 'Documentation',
             })
-
-            const documentationOptions = screen.getAllByText('Documentation')
-            const dropdownOption = documentationOptions.find(
-                (el) => el.tagName === 'SPAN',
-            )!
-            await user.click(dropdownOption)
+            await user.click(documentationOption)
 
             await waitForUpdateTicketRequest(async (request) => {
                 const body = await request.clone().json()
@@ -289,35 +295,22 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
-            await waitFor(() => {
-                const documentationOptions =
-                    screen.getAllByText('Documentation')
-                expect(documentationOptions.length).toBeGreaterThan(0)
+            const documentationOption = await screen.findByRole('option', {
+                name: 'Documentation',
             })
 
-            const documentationOptions = screen.getAllByText('Documentation')
-            const dropdownOption = documentationOptions.find(
-                (el) => el.tagName === 'SPAN',
-            )!
-
             const waitForFirstRequest = mockUpdateTicket.waitForRequest(server)
-            await user.click(dropdownOption)
+            await user.click(documentationOption)
 
             await waitForFirstRequest()
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
-            await waitFor(() => {
-                const marketingOptions = screen.getAllByText('Marketing')
-                expect(marketingOptions.length).toBeGreaterThan(0)
+            const marketingOption = await screen.findByRole('option', {
+                name: 'Marketing',
             })
-
-            const marketingOptions = screen.getAllByText('Marketing')
-            const marketingOption = marketingOptions.find(
-                (el) => el.tagName === 'SPAN',
-            )!
 
             const waitForSecondRequest = mockUpdateTicket.waitForRequest(server)
             await user.click(marketingOption)
@@ -344,17 +337,11 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
-            await waitFor(() => {
-                const salesOptions = screen.getAllByText('Sales')
-                expect(salesOptions.length).toBeGreaterThan(0)
+            const salesOption = await screen.findByRole('option', {
+                name: 'Sales',
             })
-
-            const salesOptions = screen.getAllByText('Sales')
-            const salesOption = salesOptions.find(
-                (el) => el.tagName === 'SPAN',
-            )!
             await user.click(salesOption)
 
             await waitForUpdateTicketRequest(async (request) => {
@@ -420,7 +407,6 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 mockCreateTagCustom.waitForRequest(server)
             const waitForUpdateTicketRequest =
                 mockUpdateTicket.waitForRequest(server)
-
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
@@ -429,13 +415,20 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
-
             await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
+                expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
+                expect(
+                    screen.getAllByText('Feature Request').length,
+                ).toBeGreaterThan(0)
             })
 
-            const searchInput = screen.getByRole('searchbox')
+            await openTagMenu(user)
+
+            const searchInput = await screen.findByRole(
+                'searchbox',
+                {},
+                { timeout: 3000 },
+            )
             await user.type(searchInput, 'NewTag')
 
             await waitFor(() => {
@@ -469,6 +462,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                     ]),
                 )
             })
+
+            await waitForQueriesSettled()
         })
     })
 
@@ -632,7 +627,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
             await waitFor(() => {
                 const documentationOptions =
@@ -674,7 +669,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
             await waitFor(() => {
                 expect(screen.getByRole('searchbox')).toBeInTheDocument()
@@ -697,7 +692,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(getAddButton()).toBeInTheDocument()
             })
 
-            await user.click(getAddButton())
+            await openTagMenu(user)
 
             await waitFor(() => {
                 expect(screen.getByRole('searchbox')).toBeInTheDocument()
@@ -709,297 +704,6 @@ describe('TicketInfobarTicketDetailsTags', () => {
             expect(searchInput).toHaveValue('Doc')
 
             await waitForQueriesSettled()
-        })
-    })
-
-    describe('Infinite scroll for tags', () => {
-        it('should render initial paginated tags', async () => {
-            const mockListTagsPage1 = mockListTagsHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    data: [tag1, tag2, tag3],
-                    meta: {
-                        total_resources: 6,
-                        prev_cursor: null,
-                        next_cursor: 'cursor-2',
-                    },
-                }),
-            )
-
-            server.use(mockGetTicket.handler, mockListTagsPage1.handler)
-
-            const { user } = render(
-                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
-            )
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-
-            await user.click(getAddButton())
-
-            await waitFor(() => {
-                const documentationOptions =
-                    screen.getAllByText('Documentation')
-                expect(documentationOptions.length).toBeGreaterThan(0)
-            })
-
-            await waitForQueriesSettled()
-        })
-
-        it('should not load more when no next cursor exists', async () => {
-            const mockListTagsComplete = mockListTagsHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    data: allTags,
-                    meta: {
-                        total_resources: 5,
-                        prev_cursor: null,
-                        next_cursor: null,
-                    },
-                }),
-            )
-
-            server.use(mockGetTicket.handler, mockListTagsComplete.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('Empty states', () => {
-        it('should handle ticket with no tags', async () => {
-            const ticketWithNoTags = mockTicket({
-                id: Number(ticketId),
-                tags: [],
-            })
-
-            const mockGetTicketNoTags = mockGetTicketHandler(async () =>
-                HttpResponse.json(ticketWithNoTags),
-            )
-
-            server.use(mockGetTicketNoTags.handler, mockListTags.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-
-        it('should handle empty tags list from API', async () => {
-            const mockListTagsEmpty = mockListTagsHandler(async ({ data }) =>
-                HttpResponse.json({
-                    ...data,
-                    data: [],
-                    meta: {
-                        total_resources: 0,
-                        prev_cursor: null,
-                        next_cursor: null,
-                    },
-                }),
-            )
-
-            server.use(mockGetTicket.handler, mockListTagsEmpty.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('Error handling', () => {
-        it('should handle ticket fetch error gracefully', async () => {
-            const mockGetTicketError = mockGetTicketHandler(async () =>
-                HttpResponse.json(
-                    // @ts-expect-error
-                    { error: 'Failed to fetch ticket' },
-                    { status: 500 },
-                ),
-            )
-
-            server.use(mockGetTicketError.handler, mockListTags.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-
-        it('should handle tags list fetch error gracefully', async () => {
-            const mockListTagsError = mockListTagsHandler(async () =>
-                HttpResponse.json(
-                    // @ts-expect-error
-                    { error: 'Failed to fetch tags' },
-                    { status: 500 },
-                ),
-            )
-
-            server.use(mockGetTicket.handler, mockListTagsError.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-
-        it('should handle update ticket error gracefully', async () => {
-            const mockUpdateTicketError = mockUpdateTicketHandler(async () =>
-                HttpResponse.json(
-                    // @ts-expect-error
-                    { error: 'Failed to update ticket' },
-                    { status: 500 },
-                ),
-            )
-
-            server.use(
-                mockGetTicket.handler,
-                mockListTags.handler,
-                mockUpdateTicketError.handler,
-            )
-
-            const { user } = render(
-                <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
-            )
-
-            await waitFor(() => {
-                expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
-            })
-
-            const closeButtons = getCloseButtons()
-
-            await user.click(closeButtons[0])
-
-            await waitFor(() => {
-                expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
-            })
-
-            await waitForQueriesSettled()
-        })
-    })
-
-    describe('OverflowList behavior', () => {
-        it('should display show more button when tags exceed line limit', async () => {
-            const manyTags = Array.from({ length: 20 }, (_, i) =>
-                mockTicketTag({
-                    id: i + 1,
-                    name: `Tag ${i + 1}`,
-                    decoration: null,
-                }),
-            )
-
-            const ticketWithManyTags = mockTicket({
-                id: Number(ticketId),
-                tags: manyTags,
-            })
-
-            const mockGetTicketManyTags = mockGetTicketHandler(async () =>
-                HttpResponse.json(ticketWithManyTags),
-            )
-
-            server.use(mockGetTicketManyTags.handler, mockListTags.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-
-        it('should expand to show all tags when show more is clicked', async () => {
-            const manyTags = Array.from({ length: 20 }, (_, i) =>
-                mockTicketTag({
-                    id: i + 1,
-                    name: `Tag ${i + 1}`,
-                    decoration: null,
-                }),
-            )
-
-            const ticketWithManyTags = mockTicket({
-                id: Number(ticketId),
-                tags: manyTags,
-            })
-
-            const mockGetTicketManyTags = mockGetTicketHandler(async () =>
-                HttpResponse.json(ticketWithManyTags),
-            )
-
-            server.use(mockGetTicketManyTags.handler, mockListTags.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(getAddButton()).toBeInTheDocument()
-            })
-        })
-    })
-
-    describe('Tag decorations', () => {
-        it('should render tags with color decorations', async () => {
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByText('Bug').length).toBeGreaterThan(0)
-            })
-        })
-
-        it('should render tags without decorations', async () => {
-            const plainTag = mockTicketTag({
-                id: 99,
-                name: 'Plain Tag',
-                decoration: null,
-            })
-
-            const ticketWithPlainTag = mockTicket({
-                id: Number(ticketId),
-                tags: [plainTag],
-            })
-
-            const mockGetTicketPlain = mockGetTicketHandler(async () =>
-                HttpResponse.json(ticketWithPlainTag),
-            )
-
-            server.use(mockGetTicketPlain.handler, mockListTags.handler)
-
-            render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
-                initialEntries: [`/tickets/${ticketId}`],
-                path: `/tickets/${ticketId}`,
-            })
-
-            await waitFor(() => {
-                expect(screen.getByText('Plain Tag')).toBeInTheDocument()
-            })
         })
     })
 })

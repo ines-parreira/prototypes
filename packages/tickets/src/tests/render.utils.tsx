@@ -15,18 +15,21 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
 
-export const testAppQueryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-            staleTime: 0,
-            cacheTime: 0,
+export const createTestQueryClient = () =>
+    new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: false,
+                staleTime: 0,
+                cacheTime: 0,
+            },
+            mutations: {
+                retry: false,
+            },
         },
-        mutations: {
-            retry: false,
-        },
-    },
-})
+    })
+
+export const testAppQueryClient = createTestQueryClient()
 
 type LegacyBridgeOptions = {
     dispatchNotification?: LegacyBridgeContextType['dispatchNotification']
@@ -48,12 +51,14 @@ type RenderOptions = RenderOptionsPrimitive &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
+        queryClient?: QueryClient
     }
 
 type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> &
     LegacyBridgeOptions & {
         initialEntries?: string[]
         path?: string
+        queryClient?: QueryClient
     }
 
 const defaultOptions = {
@@ -106,13 +111,14 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         ...options,
     }
 
+    const queryClient = options?.queryClient ?? testAppQueryClient
     const user = userEvent.setup()
 
     const result = renderPrimitive(element, {
         ...options,
         wrapper: ({ children }) => (
             <TicketsLegacyBridgeProvider {...mergedOptions}>
-                <QueryClientProvider client={testAppQueryClient}>
+                <QueryClientProvider client={queryClient}>
                     <MemoryRouter initialEntries={mergedOptions.initialEntries}>
                         <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>
@@ -149,11 +155,13 @@ export const renderHook = <TProps, TResult>(
         ...options,
     }
 
+    const queryClient = options?.queryClient ?? testAppQueryClient
+
     return renderHookPrimitive(hook, {
         ...options,
         wrapper: ({ children }) => (
             <TicketsLegacyBridgeProvider {...mergedOptions}>
-                <QueryClientProvider client={testAppQueryClient}>
+                <QueryClientProvider client={queryClient}>
                     <MemoryRouter initialEntries={mergedOptions.initialEntries}>
                         <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>

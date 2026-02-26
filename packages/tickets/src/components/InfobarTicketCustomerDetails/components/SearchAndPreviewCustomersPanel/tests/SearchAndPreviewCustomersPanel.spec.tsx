@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -138,7 +138,7 @@ describe('SearchAndPreviewCustomersPanel', () => {
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'John'))
+        await user.type(searchInput, 'John')
 
         await waitFor(() => {
             expect(
@@ -166,7 +166,7 @@ describe('SearchAndPreviewCustomersPanel', () => {
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'John'))
+        await user.type(searchInput, 'John')
 
         await waitFor(() => {
             expect(screen.getByText('2 results')).toBeInTheDocument()
@@ -195,7 +195,7 @@ describe('SearchAndPreviewCustomersPanel', () => {
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'John'))
+        await user.type(searchInput, 'John')
 
         await waitFor(() => {
             expect(screen.getByText('1 result')).toBeInTheDocument()
@@ -221,11 +221,19 @@ describe('SearchAndPreviewCustomersPanel', () => {
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'NonExistent'))
+        await user.type(searchInput, 'NonExistent')
 
-        await waitFor(() => {
-            expect(screen.getByText('No customers found.')).toBeInTheDocument()
-        })
+        await waitFor(
+            () => {
+                expect(
+                    screen.queryByText('Searching customers...'),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.getByText('No customers found.'),
+                ).toBeInTheDocument()
+            },
+            { timeout: 3000 },
+        )
     })
 
     it('should display previewed customer when provided', () => {
@@ -289,7 +297,7 @@ describe('SearchAndPreviewCustomersPanel', () => {
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'Test'))
+        await user.type(searchInput, 'Test')
 
         await waitFor(() => {
             expect(

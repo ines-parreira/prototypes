@@ -281,21 +281,17 @@ describe('InfobarTicketCustomerDetails', () => {
             user.click(screen.getByText('Merge or switch customer')),
         )
 
-        await waitFor(() => {
-            expect(screen.getByText('Search customers')).toBeInTheDocument()
-        })
+        await screen.findByText('Search customers')
 
-        const searchInput = screen.getByPlaceholderText(
+        const searchInput = await screen.findByPlaceholderText(
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'Antonio'))
+        await user.type(searchInput, 'Antonio')
 
-        await waitFor(() => {
-            expect(screen.getByText(/Antonio Lopez/)).toBeInTheDocument()
-        })
+        await screen.findByText(/Antonio Lopez/)
 
-        const switchCustomerButton = screen.getByRole('button', {
+        const switchCustomerButton = await screen.findByRole('button', {
             name: 'Switch customer',
         })
 
@@ -352,17 +348,17 @@ describe('InfobarTicketCustomerDetails', () => {
             user.click(screen.getByText('Merge or switch customer')),
         )
 
-        const searchInput = screen.getByPlaceholderText(
+        await screen.findByText('Search customers')
+
+        const searchInput = await screen.findByPlaceholderText(
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'Antonio'))
+        await user.type(searchInput, 'Antonio')
 
-        await waitFor(() => {
-            expect(screen.getByText(/Antonio Lopez/)).toBeInTheDocument()
-        })
+        await screen.findByText(/Antonio Lopez/)
 
-        const switchCustomerButton = screen.getByRole('button', {
+        const switchCustomerButton = await screen.findByRole('button', {
             name: 'Switch customer',
         })
 
@@ -374,7 +370,9 @@ describe('InfobarTicketCustomerDetails', () => {
             ).toBeInTheDocument()
         })
 
-        const cancelButton = screen.getByRole('button', { name: 'Cancel' })
+        const cancelButton = await screen.findByRole('button', {
+            name: 'Cancel',
+        })
 
         await act(() => user.click(cancelButton))
 

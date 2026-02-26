@@ -19,6 +19,7 @@ global.ResizeObserver = class ResizeObserver {
     unobserve() {}
 } as any
 
-afterEach(() => {
+afterEach(async () => {
+    await testAppQueryClient.cancelQueries()
     testAppQueryClient.clear()
 })

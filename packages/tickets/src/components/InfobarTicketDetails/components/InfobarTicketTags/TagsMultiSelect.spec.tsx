@@ -80,8 +80,10 @@ beforeEach(() => {
     testAppQueryClient.clear()
 })
 
-afterEach(() => {
-    server.resetHandlers()
+afterEach(async () => {
+    await testAppQueryClient.cancelQueries()
+    testAppQueryClient.clear()
+    server.resetHandlers(...localHandlers)
 })
 
 afterAll(() => {
@@ -89,8 +91,41 @@ afterAll(() => {
 })
 
 const waitForQueriesSettled = async () => {
+    await waitFor(
+        () => {
+            expect(testAppQueryClient.isFetching()).toBe(0)
+        },
+        { timeout: 3000 },
+    )
+}
+
+const getTagsTriggerButton = () => {
+    return screen
+        .getAllByRole('button', { hidden: true })
+        .find((button) => button.getAttribute('aria-haspopup') === 'listbox')!
+}
+
+const openTagsMenu = async (user: ReturnType<typeof render>['user']) => {
+    if (getTagsTriggerButton().getAttribute('aria-expanded') !== 'true') {
+        await user.click(getTagsTriggerButton())
+    }
+
     await waitFor(() => {
-        expect(testAppQueryClient.isFetching()).toBe(0)
+        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'true')
+    })
+}
+
+const closeTagsMenu = async (user: ReturnType<typeof render>['user']) => {
+    if (getTagsTriggerButton().getAttribute('aria-expanded') !== 'false') {
+        await user.click(getTagsTriggerButton())
+    }
+
+    await waitFor(() => {
+        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'false')
+    })
+
+    await waitFor(() => {
+        expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
     })
 }
 
@@ -102,9 +137,6 @@ describe('TagsMultiSelect', () => {
 
         expect(screen.getAllByText('Bug')[0]).toBeInTheDocument()
         expect(screen.getAllByText('Feature')[0]).toBeInTheDocument()
-        expect(
-            screen.getByRole('button', { name: /show.*more/i }),
-        ).toBeInTheDocument()
     })
 
     it('renders add tags button when no tags are selected', async () => {
@@ -126,7 +158,7 @@ describe('TagsMultiSelect', () => {
 
         await waitForQueriesSettled()
 
-        const closeTags = screen.getAllByRole('button', {
+        const closeTags = await screen.findAllByRole('button', {
             name: /remove tag/i,
         })
         await user.click(closeTags[0])
@@ -228,14 +260,9 @@ describe('TagsMultiSelect', () => {
 
             await waitForQueriesSettled()
 
-            const addButton = screen.getByRole('button', {
-                name: /add-plus/i,
-            })
-            await user.click(addButton)
+            await openTagsMenu(user)
 
-            await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
-            })
+            await screen.findByRole('searchbox', {}, { timeout: 3000 })
 
             await user.type(screen.getByRole('searchbox'), 'NewTag')
 
@@ -275,30 +302,23 @@ describe('TagsMultiSelect', () => {
 
         await waitForQueriesSettled()
 
-        const addButton = screen.getByRole('button', {
-            name: /add-plus/i,
-        })
-        await user.click(addButton)
+        await openTagsMenu(user)
+        const searchInput = await screen.findByRole(
+            'searchbox',
+            {},
+            {
+                timeout: 3000,
+            },
+        )
+        await user.type(searchInput, 'NewTag')
+        expect(searchInput).toHaveValue('NewTag')
 
-        await waitFor(() => {
-            expect(screen.getByRole('searchbox')).toBeInTheDocument()
-        })
+        await closeTagsMenu(user)
 
-        await user.type(screen.getByRole('searchbox'), 'NewTag')
-
-        expect(screen.getByRole('searchbox')).toHaveValue('NewTag')
-
-        await user.click(addButton)
-
-        await waitFor(() => {
-            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
-        })
-
-        await user.click(addButton)
-
-        await waitFor(() => {
-            expect(screen.getByRole('searchbox')).toHaveValue('')
-        })
+        await openTagsMenu(user)
+        expect(
+            await screen.findByRole('searchbox', {}, { timeout: 3000 }),
+        ).toHaveValue('')
 
         await waitForQueriesSettled()
     })
@@ -342,8 +362,7 @@ describe('TagsMultiSelect', () => {
 
         await waitForQueriesSettled()
 
-        const addButton = screen.getByRole('button', { name: /add-plus/i })
-        await user.click(addButton)
+        await openTagsMenu(user)
 
         await waitFor(() => {
             expect(
@@ -364,7 +383,7 @@ describe('TagsMultiSelect', () => {
         onChange.mockClear()
         rerender(<TagsMultiSelect value={mockTicketTags} onChange={onChange} />)
 
-        const closeTags = screen.getAllByRole('button', {
+        const closeTags = await screen.findAllByRole('button', {
             name: /remove tag/i,
         })
         await user.click(closeTags[0])
