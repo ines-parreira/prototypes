@@ -76,9 +76,26 @@ export const AiAgentOverview = () => {
         false,
     )
 
-    const isKnowledgeServiceEnabled = useFlag(
+    const isUseKnowledgeServiceEnabled = useFlag(
         FeatureFlagKey.OpportunitiesMilestone2,
         false,
+    )
+
+    const shouldSurfaceOpportunities = useFlag(
+        FeatureFlagKey.SurfaceOpportunities,
+        false,
+    )
+
+    const isOpportunitiesEnabled = useMemo(
+        () =>
+            isTopOpportunitiesEnabled &&
+            isUseKnowledgeServiceEnabled &&
+            shouldSurfaceOpportunities,
+        [
+            isTopOpportunitiesEnabled,
+            isUseKnowledgeServiceEnabled,
+            shouldSurfaceOpportunities,
+        ],
     )
 
     const shopIntegrationId = useShopIntegrationId(shopName)
@@ -91,19 +108,19 @@ export const AiAgentOverview = () => {
         shopIntegrationId ?? 0,
         !!shopIntegrationId &&
             !!isTopOpportunitiesEnabled &&
-            !!isKnowledgeServiceEnabled,
+            !!isUseKnowledgeServiceEnabled,
         TOP_OPPORTUNITIES_LIMIT,
     )
 
     const displayTopOpportunitiesSection = useMemo(() => {
-        if (hasFullAccess) return isTopOpportunitiesEnabled
+        if (hasFullAccess) return isOpportunitiesEnabled
 
         return (
-            isTopOpportunitiesEnabled &&
+            isOpportunitiesEnabled &&
             !!opportunities &&
             totalPending >= TOP_OPPORTUNITIES_RESTRICTED_LIMIT
         )
-    }, [hasFullAccess, isTopOpportunitiesEnabled, opportunities, totalPending])
+    }, [hasFullAccess, isOpportunitiesEnabled, opportunities, totalPending])
 
     const {
         activationModal,

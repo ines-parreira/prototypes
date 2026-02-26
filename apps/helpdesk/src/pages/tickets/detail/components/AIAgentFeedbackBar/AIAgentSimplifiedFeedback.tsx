@@ -132,6 +132,28 @@ const AIAgentSimplifiedFeedback = () => {
         false,
     )
 
+    const isUseKnowledgeServiceEnabled = useFlag(
+        FeatureFlagKey.OpportunitiesMilestone2,
+        false,
+    )
+
+    const shouldSurfaceOpportunities = useFlag(
+        FeatureFlagKey.SurfaceOpportunities,
+        false,
+    )
+
+    const isOpportunitiesEnabled = useMemo(
+        () =>
+            isTopOpportunitiesEnabled &&
+            isUseKnowledgeServiceEnabled &&
+            shouldSurfaceOpportunities,
+        [
+            isTopOpportunitiesEnabled,
+            isUseKnowledgeServiceEnabled,
+            shouldSurfaceOpportunities,
+        ],
+    )
+
     const { storeConfiguration } = useStoreConfiguration({
         shopName,
         accountDomain: account.get('domain') as string,
@@ -469,7 +491,7 @@ const AIAgentSimplifiedFeedback = () => {
                                         onKnowledgeResourceCreateClick
                                     }
                                 />
-                                {isTopOpportunitiesEnabled && hasFullAccess && (
+                                {isOpportunitiesEnabled && hasFullAccess && (
                                     <DetectedOpportunitiesBanner
                                         shopName={shopName}
                                         shopIntegrationId={shopIntegrationId}

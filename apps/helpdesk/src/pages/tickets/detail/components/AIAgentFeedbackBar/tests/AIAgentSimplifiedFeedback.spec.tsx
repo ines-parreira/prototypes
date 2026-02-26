@@ -113,6 +113,9 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
     FeatureFlagKey: {
         IncreaseVisibilityOfOpportunity: 'increase-visibility-of-opportunity',
+        OpportunitiesMilestone2: 'opportunities-milestone-2',
+        SurfaceOpportunities:
+            'linear.project_proactively-surface-opportunities.enable-new-opportunities',
     },
 }))
 
@@ -3235,8 +3238,40 @@ describe('AIAgentSimplifiedFeedback', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not render DetectedOpportunitiesBanner when feature flag is disabled', () => {
+        it('should not render DetectedOpportunitiesBanner when all feature flags are disabled', () => {
             useFlagMock.mockReturnValue(false)
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByRole('button', { name: /review guidance/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render DetectedOpportunitiesBanner when OpportunitiesMilestone2 flag is disabled', () => {
+            useFlagMock.mockImplementation((key: string) => {
+                if (key === 'increase-visibility-of-opportunity') return true
+                if (
+                    key ===
+                    'linear.project_proactively-surface-opportunities.enable-new-opportunities'
+                )
+                    return true
+                return false
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.queryByRole('button', { name: /review guidance/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render DetectedOpportunitiesBanner when SurfaceOpportunities flag is disabled', () => {
+            useFlagMock.mockImplementation((key: string) => {
+                if (key === 'increase-visibility-of-opportunity') return true
+                if (key === 'opportunities-milestone-2') return true
+                return false
+            })
 
             render(<AIAgentSimplifiedFeedback />)
 
