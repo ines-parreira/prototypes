@@ -3,9 +3,15 @@ import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useShallow } from 'zustand/react/shallow'
 
+import {
+    getLast28DaysDateRange,
+    useResourceMetrics,
+} from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import useAppSelector from 'hooks/useAppSelector'
 import { useGetArticleTranslationIntents } from 'models/helpCenter/queries'
 import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import { usePersistLinkedIntents } from '../../hooks/usePersistLinkedIntents'
 import type {
@@ -23,6 +29,32 @@ const createDefaultExpandedGroups = (groups: LinkedIntentGroup[]) =>
     }, {})
 
 const normalizeString = (value: string) => value.trim().toLowerCase()
+const getTicketCountForIntent = (
+    intentId: string,
+    intentTicketCountById: Record<string, number>,
+) => intentTicketCountById[intentId] ?? 0
+const sortIntentsByTicketCountDesc = (
+    leftIntent: ApiIntent,
+    rightIntent: ApiIntent,
+    intentTicketCountById: Record<string, number>,
+) => {
+    const leftIntentIsDisabled = !leftIntent.is_available
+    const rightIntentIsDisabled = !rightIntent.is_available
+
+    if (leftIntentIsDisabled !== rightIntentIsDisabled) {
+        return leftIntentIsDisabled ? 1 : -1
+    }
+
+    const ticketCountDifference =
+        getTicketCountForIntent(rightIntent.intent, intentTicketCountById) -
+        getTicketCountForIntent(leftIntent.intent, intentTicketCountById)
+
+    if (ticketCountDifference !== 0) {
+        return ticketCountDifference
+    }
+
+    return leftIntent.intent.localeCompare(rightIntent.intent)
+}
 
 export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -38,6 +70,7 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
         guidanceArticleId,
         guidanceArticleLocale,
         guidanceHelpCenterId,
+        guidanceShopIntegrationId,
         selectedIntentIds,
     } = useGuidanceStore(
         useShallow((storeState) => ({
@@ -47,15 +80,19 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
                 storeState.state.guidance?.locale ??
                 storeState.guidanceArticle?.locale,
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
+            guidanceShopIntegrationId:
+                storeState.config.guidanceHelpCenter?.shop_integration_id ?? 0,
             selectedIntentIds:
                 storeState.state.guidance?.intents ?? EMPTY_INTENT_IDS,
         })),
     )
+    const timezone = useAppSelector(getTimezone)
 
     const areIntentPathParamsReady =
         guidanceHelpCenterId !== undefined &&
         guidanceArticleId !== undefined &&
         guidanceArticleLocale !== undefined
+    const dateRange = useMemo(() => getLast28DaysDateRange(), [])
 
     const {
         data: articleTranslationIntents,
@@ -76,6 +113,15 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
     const intentGroups = articleTranslationIntents?.intents
     const groups = useMemo(() => intentGroups ?? [], [intentGroups])
 
+    const intentMetrics = useResourceMetrics({
+        resourceSourceId: guidanceArticleId ?? 0,
+        resourceSourceSetId: guidanceHelpCenterId ?? 0,
+        shopIntegrationId: guidanceShopIntegrationId,
+        timezone: timezone ?? 'UTC',
+        enabled: isOpen && areIntentPathParamsReady,
+        dateRange,
+    })
+
     const [searchValue, setSearchValue] = useState('')
     const [draftIntentIds, setDraftIntentIds] = useState<string[]>(
         () => selectedIntentIds,
@@ -84,23 +130,48 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
         Record<string, boolean>
     >({})
 
+    const intentTicketCountById = useMemo(
+        () =>
+            (intentMetrics.data?.intents ?? []).reduce<Record<string, number>>(
+                (acc, intentMetric) => {
+                    const previousCount = acc[intentMetric.intent] ?? 0
+                    acc[intentMetric.intent.toLowerCase()] = Math.max(
+                        previousCount,
+                        intentMetric.ticketCount,
+                    )
+                    return acc
+                },
+                {},
+            ),
+        [intentMetrics.data?.intents],
+    )
+
+    const groupsSortedByTicketCount = useMemo(
+        () =>
+            groups.map((group) => ({
+                ...group,
+                children: [...group.children].sort((leftIntent, rightIntent) =>
+                    sortIntentsByTicketCountDesc(
+                        leftIntent,
+                        rightIntent,
+                        intentTicketCountById,
+                    ),
+                ),
+            })),
+        [groups, intentTicketCountById],
+    )
+
     const defaultExpandedGroups = useMemo(
-        () => createDefaultExpandedGroups(groups),
-        [groups],
+        () => createDefaultExpandedGroups(groupsSortedByTicketCount),
+        [groupsSortedByTicketCount],
     )
 
     const getIsGroupExpanded = (groupName: string) =>
         Boolean(expandedGroups[groupName] ?? defaultExpandedGroups[groupName])
 
     const allIntents = useMemo<LinkedIntent[]>(
-        () =>
-            groups.flatMap((group) =>
-                group.children.map((intent) => ({
-                    ...intent,
-                    groupName: group.name,
-                })),
-            ),
-        [groups],
+        () => groupsSortedByTicketCount.flatMap((group) => group.children),
+        [groupsSortedByTicketCount],
     )
 
     const intentsById = useMemo(
@@ -115,10 +186,10 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
     const filteredGroups = useMemo(() => {
         const trimmedSearchValue = normalizeString(searchValue)
         if (!trimmedSearchValue) {
-            return groups
+            return groupsSortedByTicketCount
         }
 
-        return groups
+        return groupsSortedByTicketCount
             .map((group) => ({
                 ...group,
                 children: group.children.filter((intent) => {
@@ -131,15 +202,24 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
                 }),
             }))
             .filter((group) => group.children.length > 0)
-    }, [groups, searchValue])
+    }, [groupsSortedByTicketCount, searchValue])
 
     const suggestedIntents = useMemo(() => {
         if (searchValue.trim().length > 0) {
             return []
         }
 
-        return allIntents.filter((intent) => intent.is_available).slice(0, 2)
-    }, [allIntents, searchValue])
+        return allIntents
+            .filter((intent) => intent.is_available)
+            .sort((leftIntent, rightIntent) =>
+                sortIntentsByTicketCountDesc(
+                    leftIntent,
+                    rightIntent,
+                    intentTicketCountById,
+                ),
+            )
+            .slice(0, 2)
+    }, [allIntents, intentTicketCountById, searchValue])
 
     const isSearching = searchValue.trim().length > 0
 
@@ -212,6 +292,7 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
         allIntents,
         filteredGroups,
         suggestedIntents,
+        intentTicketCountById,
         isSearching,
         isLoadingIntents,
         isIntentsError,

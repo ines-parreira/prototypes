@@ -6,6 +6,7 @@
     .modalContent {
         color: var(--content-neutral-default);
         min-height: 0;
+        max-height: 600px;
     }
 
     .modalDescription {
@@ -69,6 +70,7 @@
             font-weight: 500 !important;
             line-height: 16px !important;
             letter-spacing: 0.12px !important;
+            text-transform: capitalize !important;
         }
     }
 
@@ -85,6 +87,27 @@
         justify-content: space-between;
         gap: var(--spacing-xxs);
         padding-right: var(--spacing-xxxs);
+    }
+
+    .intentCheckbox {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .intentTicketCount {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        flex-shrink: 0;
+        color: var(--content-neutral-secondary);
+    }
+
+    .intentTicketCountDisabled {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .intentTicketCountText {
+        color: inherit;
     }
 
     .errorState {
@@ -137,7 +160,6 @@
         display: inline-flex;
         align-items: center;
         gap: var(--spacing-xxxxs);
-        color: var(--content-inverted-default) !important;
         text-decoration: none;
         font-size: 12px;
         line-height: 16px;

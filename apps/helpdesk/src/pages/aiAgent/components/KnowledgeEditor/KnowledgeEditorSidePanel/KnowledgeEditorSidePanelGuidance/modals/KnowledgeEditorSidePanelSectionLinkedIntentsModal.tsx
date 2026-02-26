@@ -27,9 +27,7 @@ export type LinkedIntentGroup = Omit<
     children: ApiIntent[]
 }
 
-export type LinkedIntent = ApiIntent & {
-    groupName: string
-}
+export type LinkedIntent = ApiIntent
 
 type Props = {
     isOpen: boolean
@@ -47,6 +45,7 @@ export const KnowledgeEditorSidePanelSectionLinkedIntentsModal = ({
         allIntents,
         filteredGroups,
         suggestedIntents,
+        intentTicketCountById,
         isSearching,
         isLoadingIntents,
         isIntentsError,
@@ -116,6 +115,7 @@ export const KnowledgeEditorSidePanelSectionLinkedIntentsModal = ({
                             <SuggestedIntentsSection
                                 suggestedIntents={suggestedIntents}
                                 draftIntentIds={draftIntentIds}
+                                intentTicketCountById={intentTicketCountById}
                                 onToggleIntent={toggleIntent}
                             />
                         )}
@@ -129,6 +129,9 @@ export const KnowledgeEditorSidePanelSectionLinkedIntentsModal = ({
                                     draftIntentIds={draftIntentIds}
                                     isExpanded={getIsGroupExpanded(group.name)}
                                     isSearching={isSearching}
+                                    intentTicketCountById={
+                                        intentTicketCountById
+                                    }
                                     onToggleGroup={toggleGroupIntents}
                                     onToggleExpanded={toggleGroupExpanded}
                                     onToggleIntent={toggleIntent}

@@ -441,9 +441,9 @@ describe('parseIntentsData', () => {
             const result = parseIntentsData(mockData, false)
 
             expect(result).toEqual([
-                'Support::Technical',
-                'Shipping::Delay',
-                'Billing::Payment',
+                { intent: 'Support::Technical', ticketCount: 15 },
+                { intent: 'Shipping::Delay', ticketCount: 10 },
+                { intent: 'Billing::Payment', ticketCount: 5 },
             ])
         })
 
@@ -467,7 +467,10 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result?.[0]).toBe('Valid::Intent')
+            expect(result?.[0]).toEqual({
+                intent: 'Valid::Intent',
+                ticketCount: 10,
+            })
         })
     })
 
@@ -487,7 +490,9 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result).toEqual(['Valid::Intent'])
+            expect(result).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
 
         it('should filter out null and undefined intents', () => {
@@ -508,7 +513,9 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result).toEqual(['Valid::Intent'])
+            expect(result).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
     })
 
@@ -561,9 +568,9 @@ describe('parseIntentsData', () => {
             const result = parseIntentsData(mockData, false)
 
             expect(result).toEqual([
-                'Order::Status',
-                'Shipping::Inquiry',
-                'Returns::Process',
+                { intent: 'Order::Status', ticketCount: 100 },
+                { intent: 'Shipping::Inquiry', ticketCount: 75 },
+                { intent: 'Returns::Process', ticketCount: 60 },
             ])
         })
     })
@@ -588,9 +595,9 @@ describe('parseIntentsData', () => {
             const result = parseIntentsData(mockData, false)
 
             expect(result).toEqual([
-                'Shipping::Delay',
-                'Billing::Payment',
-                'Support::Technical',
+                { intent: 'Shipping::Delay', ticketCount: 20 },
+                { intent: 'Billing::Payment', ticketCount: 15 },
+                { intent: 'Support::Technical', ticketCount: 10 },
             ])
         })
 
@@ -608,7 +615,10 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result).toEqual(['Intent::V2', 'Intent::V1'])
+            expect(result).toEqual([
+                { intent: 'Intent::V2', ticketCount: 25 },
+                { intent: 'Intent::V1', ticketCount: 15 },
+            ])
         })
 
         it('should handle missing or invalid ticket counts with V2 fields', () => {
@@ -628,7 +638,10 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result?.[0]).toBe('Valid::Intent')
+            expect(result?.[0]).toEqual({
+                intent: 'Valid::Intent',
+                ticketCount: 10,
+            })
         })
 
         it('should filter out empty string intents with V2 fields', () => {
@@ -645,7 +658,9 @@ describe('parseIntentsData', () => {
 
             const result = parseIntentsData(mockData, false)
 
-            expect(result).toEqual(['Valid::Intent'])
+            expect(result).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
     })
 })
@@ -680,8 +695,11 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result).toEqual({
-                '100-200': ['Billing::Payment', 'Support::Technical'],
-                '101-201': ['Shipping::Delay'],
+                '100-200': [
+                    { intent: 'Billing::Payment', ticketCount: 10 },
+                    { intent: 'Support::Technical', ticketCount: 5 },
+                ],
+                '101-201': [{ intent: 'Shipping::Delay', ticketCount: 15 }],
             })
         })
 
@@ -722,9 +740,15 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result).toEqual({
-                '1-10': ['Intent::A', 'Intent::B'],
-                '2-20': ['Intent::C', 'Intent::D'],
-                '3-30': ['Intent::E'],
+                '1-10': [
+                    { intent: 'Intent::A', ticketCount: 20 },
+                    { intent: 'Intent::B', ticketCount: 15 },
+                ],
+                '2-20': [
+                    { intent: 'Intent::C', ticketCount: 30 },
+                    { intent: 'Intent::D', ticketCount: 25 },
+                ],
+                '3-30': [{ intent: 'Intent::E', ticketCount: 5 }],
             })
         })
     })
@@ -756,9 +780,9 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result['100-200']).toEqual([
-                'High::Count',
-                'Medium::Count',
-                'Low::Count',
+                { intent: 'High::Count', ticketCount: 50 },
+                { intent: 'Medium::Count', ticketCount: 25 },
+                { intent: 'Low::Count', ticketCount: 5 },
             ])
         })
     })
@@ -783,7 +807,9 @@ describe('parseIntentsDataByResource', () => {
 
             const result = parseIntentsDataByResource(mockData, false)
 
-            expect(result['100-200']).toEqual(['Valid::Intent'])
+            expect(result['100-200']).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
 
         it('should filter out null and undefined intents', () => {
@@ -810,7 +836,9 @@ describe('parseIntentsDataByResource', () => {
 
             const result = parseIntentsDataByResource(mockData, false)
 
-            expect(result['100-200']).toEqual(['Valid::Intent'])
+            expect(result['100-200']).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
     })
 
@@ -885,8 +913,11 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result).toEqual({
-                '100-200': ['Billing::Payment', 'Support::Technical'],
-                '101-201': ['Shipping::Delay'],
+                '100-200': [
+                    { intent: 'Billing::Payment', ticketCount: 15 },
+                    { intent: 'Support::Technical', ticketCount: 10 },
+                ],
+                '101-201': [{ intent: 'Shipping::Delay', ticketCount: 20 }],
             })
         })
 
@@ -908,7 +939,10 @@ describe('parseIntentsDataByResource', () => {
 
             const result = parseIntentsDataByResource(mockData, false)
 
-            expect(result['100-200']).toEqual(['Intent::V2', 'Intent::V1'])
+            expect(result['100-200']).toEqual([
+                { intent: 'Intent::V2', ticketCount: 25 },
+                { intent: 'Intent::V1', ticketCount: 15 },
+            ])
         })
 
         it('should sort intents by ticket count descending within each resource with V2 fields', () => {
@@ -936,9 +970,9 @@ describe('parseIntentsDataByResource', () => {
             const result = parseIntentsDataByResource(mockData, false)
 
             expect(result['100-200']).toEqual([
-                'High::Priority',
-                'Medium::Priority',
-                'Low::Priority',
+                { intent: 'High::Priority', ticketCount: 20 },
+                { intent: 'Medium::Priority', ticketCount: 10 },
+                { intent: 'Low::Priority', ticketCount: 5 },
             ])
         })
 
@@ -960,7 +994,9 @@ describe('parseIntentsDataByResource', () => {
 
             const result = parseIntentsDataByResource(mockData, false)
 
-            expect(result['100-200']).toEqual(['Valid::Intent'])
+            expect(result['100-200']).toEqual([
+                { intent: 'Valid::Intent', ticketCount: 5 },
+            ])
         })
     })
 })
@@ -1015,7 +1051,7 @@ describe('aggregateResourceMetrics', () => {
                     tickets: 50,
                     handoverTickets: 5,
                     csat: 4.5,
-                    intents: ['Intent::A'],
+                    intents: [{ intent: 'Intent::A', ticketCount: 10 }],
                 },
             ])
         })
@@ -1319,7 +1355,10 @@ describe('aggregateResourceMetrics', () => {
                 intentsData,
             )
 
-            expect(result[0].intents).toEqual(['Intent::B', 'Intent::A'])
+            expect(result[0].intents).toEqual([
+                { intent: 'Intent::B', ticketCount: 10 },
+                { intent: 'Intent::A', ticketCount: 5 },
+            ])
         })
 
         it('should handle intents for multiple resources', () => {
@@ -1362,8 +1401,12 @@ describe('aggregateResourceMetrics', () => {
             const resource100 = result.find((r) => r.resourceSourceId === 100)
             const resource101 = result.find((r) => r.resourceSourceId === 101)
 
-            expect(resource100?.intents).toEqual(['Intent::A'])
-            expect(resource101?.intents).toEqual(['Intent::B'])
+            expect(resource100?.intents).toEqual([
+                { intent: 'Intent::A', ticketCount: 10 },
+            ])
+            expect(resource101?.intents).toEqual([
+                { intent: 'Intent::B', ticketCount: 5 },
+            ])
         })
 
         it('should not add intents for resources not in tickets/handover/csat data', () => {
@@ -1399,7 +1442,9 @@ describe('aggregateResourceMetrics', () => {
 
             expect(result).toHaveLength(1)
             expect(result[0].resourceSourceId).toBe(100)
-            expect(result[0].intents).toEqual(['Intent::A'])
+            expect(result[0].intents).toEqual([
+                { intent: 'Intent::A', ticketCount: 10 },
+            ])
         })
     })
 
@@ -1587,7 +1632,7 @@ describe('aggregateResourceMetrics', () => {
                 tickets: 100,
                 handoverTickets: 10,
                 csat: 4.5,
-                intents: ['Billing::Payment'],
+                intents: [{ intent: 'Billing::Payment', ticketCount: 20 }],
             })
 
             expect(result).toContainEqual({
@@ -1596,7 +1641,7 @@ describe('aggregateResourceMetrics', () => {
                 tickets: 75,
                 handoverTickets: 5,
                 csat: null,
-                intents: ['Support::Technical'],
+                intents: [{ intent: 'Support::Technical', ticketCount: 15 }],
             })
 
             expect(result).toContainEqual({
@@ -1659,7 +1704,7 @@ describe('aggregateResourceMetrics', () => {
                     tickets: 50,
                     handoverTickets: 5,
                     csat: 4.5,
-                    intents: ['Intent::A'],
+                    intents: [{ intent: 'Intent::A', ticketCount: 10 }],
                 },
             ])
         })
@@ -1774,7 +1819,10 @@ describe('aggregateResourceMetrics', () => {
                     tickets: 50,
                     handoverTickets: 5,
                     csat: 4.5,
-                    intents: ['Intent::V2', 'Intent::V1'],
+                    intents: [
+                        { intent: 'Intent::V2', ticketCount: 15 },
+                        { intent: 'Intent::V1', ticketCount: 10 },
+                    ],
                 },
             ])
         })
@@ -2056,7 +2104,9 @@ describe('useResourceMetrics', () => {
         expect(result.current.data?.tickets?.value).toBe(100)
         expect(result.current.data?.handoverTickets?.value).toBe(5)
         expect(result.current.data?.csat?.value).toBe(4.5)
-        expect(result.current.data?.intents).toEqual(['Intent::A'])
+        expect(result.current.data?.intents).toEqual([
+            { intent: 'Intent::A', ticketCount: 10 },
+        ])
     })
 
     it('should return null for metrics without values', () => {
@@ -2308,7 +2358,7 @@ describe('useAllResourcesMetrics', () => {
             tickets: 50,
             handoverTickets: 5,
             csat: 4.5,
-            intents: ['Intent::A'],
+            intents: [{ intent: 'Intent::A', ticketCount: 10 }],
         })
 
         expect(resource101).toEqual({
@@ -2706,7 +2756,7 @@ describe('useAllResourcesMetrics', () => {
             tickets: 100,
             handoverTickets: 10,
             csat: 4.5,
-            intents: ['Billing::Payment'],
+            intents: [{ intent: 'Billing::Payment', ticketCount: 20 }],
         })
 
         expect(result.current.data).toContainEqual({
@@ -2715,7 +2765,7 @@ describe('useAllResourcesMetrics', () => {
             tickets: 75,
             handoverTickets: 5,
             csat: null,
-            intents: ['Support::Technical'],
+            intents: [{ intent: 'Support::Technical', ticketCount: 15 }],
         })
 
         expect(result.current.data).toContainEqual({

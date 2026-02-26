@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+
 import { KnowledgeEditorSidePanelSectionLinkedIntentsModal } from './KnowledgeEditorSidePanelSectionLinkedIntentsModal'
 
 const mockPersistLinkedIntents = jest.fn()
@@ -13,17 +15,17 @@ const mockIntentGroups = [
         children: [
             {
                 name: 'status',
-                intent: 'order-status',
+                intent: 'order::status',
                 is_available: true,
             },
             {
                 name: 'cancel',
-                intent: 'order-cancel',
+                intent: 'order::cancel',
                 is_available: true,
             },
             {
                 name: 'missing item',
-                intent: 'order-missing-item',
+                intent: 'order::missing-item',
                 is_available: false,
                 used_by_article: {
                     id: 99,
@@ -38,7 +40,7 @@ const mockIntentGroups = [
         children: [
             {
                 name: 'delay',
-                intent: 'shipping-delay',
+                intent: 'shipping::delay',
                 is_available: true,
             },
         ],
@@ -59,6 +61,7 @@ const mockUseGetArticleTranslationIntents = jest.fn(
             refetch: jest.Mock
         },
 )
+const mockUseResourceMetrics = useResourceMetrics as jest.Mock
 
 type MockGuidanceStoreState = {
     guidanceArticle: {
@@ -68,6 +71,7 @@ type MockGuidanceStoreState = {
     config: {
         guidanceHelpCenter: {
             id: number
+            shop_integration_id: number
         }
     }
     state: {
@@ -82,7 +86,7 @@ type MockGuidanceStoreState = {
 
 const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
     guidanceArticle: { id: 123, locale: 'en' },
-    config: { guidanceHelpCenter: { id: 456 } },
+    config: { guidanceHelpCenter: { id: 456, shop_integration_id: 1 } },
     state: {
         guidance: {
             id: 123,
@@ -99,6 +103,19 @@ jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationIntents: (...args: unknown[]) =>
         mockUseGetArticleTranslationIntents(...(args as [])),
 }))
+
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+    () => ({
+        useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(() => ({
+            start_datetime: '2025-01-01T00:00:00.000Z',
+            end_datetime: '2025-01-28T00:00:00.000Z',
+        })),
+    }),
+)
+
+jest.mock('hooks/useAppSelector', () => jest.fn(() => 'America/New_York'))
 
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
@@ -144,6 +161,18 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
             isError: false,
             refetch: jest.fn(),
         })
+        mockUseResourceMetrics.mockReturnValue({
+            data: {
+                intents: [
+                    { intent: 'order::status', ticketCount: 1337 },
+                    { intent: 'order::cancel', ticketCount: 678 },
+                    { intent: 'order::missing-item', ticketCount: 245 },
+                    { intent: 'shipping::delay', ticketCount: 20 },
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        })
     })
 
     afterEach(() => {
@@ -165,15 +194,76 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         ).toBeInTheDocument()
         expect(within(modal).getByText('Suggested')).toBeInTheDocument()
         expect(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' }),
+            within(modal).getAllByRole('checkbox', { name: 'order/status' }),
         ).toHaveLength(2)
         expect(
-            within(modal).getAllByRole('checkbox', { name: 'Order/cancel' }),
+            within(modal).getAllByRole('checkbox', { name: 'order/cancel' }),
         ).toHaveLength(2)
+        expect(within(modal).getAllByText('1337').length).toBeGreaterThan(0)
+        expect(within(modal).getAllByText('678').length).toBeGreaterThan(0)
+    })
+
+    it('shows suggested intents as the top two by ticket count', () => {
+        mockUseResourceMetrics.mockReturnValue({
+            data: {
+                intents: [
+                    { intent: 'order::status', ticketCount: 900 },
+                    { intent: 'order::cancel', ticketCount: 100 },
+                    { intent: 'order::missing-item', ticketCount: 500 },
+                    { intent: 'shipping::delay', ticketCount: 1200 },
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        })
+
+        renderComponent()
+
+        const modal = screen.getByRole('dialog')
+        const intentCheckboxes = within(modal).getAllByRole('checkbox', {
+            name: /.+\/.+/,
+        })
+
+        expect(intentCheckboxes[0]).toHaveAccessibleName('shipping/delay')
+        expect(intentCheckboxes[1]).toHaveAccessibleName('order/status')
+    })
+
+    it('orders intents in a group by availability, then ticket count descending', async () => {
+        const user = userEvent.setup()
+        mockUseResourceMetrics.mockReturnValue({
+            data: {
+                intents: [
+                    { intent: 'order::status', ticketCount: 100 },
+                    { intent: 'order::cancel', ticketCount: 900 },
+                    { intent: 'order::missing-item', ticketCount: 500 },
+                    { intent: 'shipping::delay', ticketCount: 50 },
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        })
+
+        renderComponent()
+
+        const modal = screen.getByRole('dialog')
+        await user.type(
+            within(modal).getByRole('searchbox', { name: 'Search intents' }),
+            'order',
+        )
+
+        const orderIntentCheckboxes = within(modal).getAllByRole('checkbox', {
+            name: /^order\//,
+        })
+
+        expect(orderIntentCheckboxes[0]).toHaveAccessibleName('order/cancel')
+        expect(orderIntentCheckboxes[1]).toHaveAccessibleName('order/status')
+        expect(orderIntentCheckboxes[2]).toHaveAccessibleName(
+            'order/missing-item',
+        )
     })
 
     it('reads selected intents from guidance store', () => {
-        mockGuidanceStoreState.state.guidance.intents = ['order-status']
+        mockGuidanceStoreState.state.guidance.intents = ['order::status']
 
         renderComponent()
 
@@ -182,7 +272,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
             within(modal).getByText('1 of 4 intents selected'),
         ).toBeInTheDocument()
         expect(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         ).toBeChecked()
     })
 
@@ -197,10 +287,58 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
 
         await user.type(searchInput, 'shipping')
 
-        expect(within(modal).getByText('Shipping/delay')).toBeInTheDocument()
+        expect(within(modal).getByText('shipping/delay')).toBeInTheDocument()
         expect(
-            within(modal).queryByText('Order/status'),
+            within(modal).queryByText('order/status'),
         ).not.toBeInTheDocument()
+    })
+
+    it('filters intents by raw intent key', async () => {
+        const user = userEvent.setup()
+        renderComponent()
+
+        const modal = screen.getByRole('dialog')
+        const searchInput = within(modal).getByRole('searchbox', {
+            name: 'Search intents',
+        })
+
+        await user.type(searchInput, 'order::status')
+
+        expect(within(modal).getByText('order/status')).toBeInTheDocument()
+        expect(
+            within(modal).queryByText('shipping/delay'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('orders intents alphabetically when ticket counts are equal', async () => {
+        const user = userEvent.setup()
+        mockUseResourceMetrics.mockReturnValue({
+            data: {
+                intents: [
+                    { intent: 'order::status', ticketCount: 500 },
+                    { intent: 'order::cancel', ticketCount: 500 },
+                    { intent: 'order::missing-item', ticketCount: 100 },
+                    { intent: 'shipping::delay', ticketCount: 50 },
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        })
+
+        renderComponent()
+
+        const modal = screen.getByRole('dialog')
+        await user.type(
+            within(modal).getByRole('searchbox', { name: 'Search intents' }),
+            'order',
+        )
+
+        const orderIntentCheckboxes = within(modal).getAllByRole('checkbox', {
+            name: /^order\//,
+        })
+
+        expect(orderIntentCheckboxes[0]).toHaveAccessibleName('order/cancel')
+        expect(orderIntentCheckboxes[1]).toHaveAccessibleName('order/status')
     })
 
     it('renders unavailable intents as disabled with explanatory caption', () => {
@@ -208,7 +346,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
 
         const modal = screen.getByRole('dialog')
         const disabledCheckbox = within(modal).getAllByRole('checkbox', {
-            name: 'Order/missing item',
+            name: 'order/missing-item',
         })[0]
 
         expect(disabledCheckbox).toBeDisabled()
@@ -225,10 +363,10 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         await user.click(within(modal).getByRole('checkbox', { name: 'Order' }))
 
         const orderStatusCheckboxes = within(modal).getAllByRole('checkbox', {
-            name: 'Order/status',
+            name: 'order/status',
         })
         const orderCancelCheckboxes = within(modal).getAllByRole('checkbox', {
-            name: 'Order/cancel',
+            name: 'order/cancel',
         })
 
         orderStatusCheckboxes.forEach((checkbox) =>
@@ -239,7 +377,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         )
         expect(
             within(modal).getAllByRole('checkbox', {
-                name: 'Order/missing item',
+                name: 'order/missing-item',
             })[0],
         ).not.toBeChecked()
     })
@@ -251,13 +389,13 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
 
         const modal = screen.getByRole('dialog')
         await user.click(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
         expect(mockPersistLinkedIntents).toHaveBeenCalledTimes(1)
         expect(mockPersistLinkedIntents).toHaveBeenCalledWith(
-            ['order-status'],
+            ['order::status'],
             expect.any(Function),
         )
     })

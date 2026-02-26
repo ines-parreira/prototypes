@@ -311,7 +311,9 @@ export const KnowledgeEditorSnippetLoader = ({
                 tickets: resourceImpact.data?.tickets,
                 handoverTickets: resourceImpact.data?.handoverTickets,
                 csat: resourceImpact.data?.csat,
-                intents: resourceImpact.data?.intents,
+                intents: resourceImpact.data?.intents?.map(
+                    ({ intent }) => intent,
+                ),
                 isLoading: resourceImpact.isLoading,
             }}
             recentTickets={recentTickets}

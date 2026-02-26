@@ -3,11 +3,6 @@ import { renderHook } from '@testing-library/react'
 import { useLinkedIntentsSidebar } from './useLinkedIntentsSidebar'
 
 type MockGuidanceStoreState = {
-    config: {
-        guidanceHelpCenter: {
-            id: number
-        }
-    }
     state: {
         guidance:
             | {
@@ -27,38 +22,6 @@ type MockGuidanceStoreState = {
     }
 }
 
-const mockIntentGroups = [
-    {
-        name: 'Order',
-        children: [
-            {
-                name: 'Order/status',
-                intent: 'order-status',
-                is_available: true,
-            },
-            {
-                name: 'Order/cancel',
-                intent: 'order-cancel',
-                is_available: true,
-            },
-        ],
-    },
-]
-
-const mockUseGetArticleTranslationIntents = jest.fn(
-    () =>
-        ({
-            data: { intents: mockIntentGroups },
-        }) as {
-            data: { intents: typeof mockIntentGroups } | undefined
-        },
-)
-
-jest.mock('models/helpCenter/queries', () => ({
-    useGetArticleTranslationIntents: (...args: unknown[]) =>
-        mockUseGetArticleTranslationIntents(...(args as [])),
-}))
-
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
     () => ({
@@ -68,7 +31,6 @@ jest.mock(
 )
 
 const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
-    config: { guidanceHelpCenter: { id: 456 } },
     state: {
         guidance: {
             id: 123,
@@ -76,7 +38,7 @@ const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
             isCurrent: true,
             publishedVersionId: 789,
             draftVersionId: 789,
-            intents: ['order-status'],
+            intents: ['order::status'],
         },
         historicalVersion: null,
         isUpdating: false,
@@ -89,49 +51,20 @@ let mockGuidanceStoreState = createMockGuidanceStoreState()
 describe('useLinkedIntentsSidebar', () => {
     beforeEach(() => {
         mockGuidanceStoreState = createMockGuidanceStoreState()
-
-        mockUseGetArticleTranslationIntents.mockReturnValue({
-            data: { intents: mockIntentGroups },
-        })
     })
 
     afterEach(() => {
         jest.clearAllMocks()
     })
 
-    it('returns labels based on available linked intents', () => {
+    it('returns labels based on linked intent ids', () => {
         const { result } = renderHook(() => useLinkedIntentsSidebar())
 
-        expect(result.current.getLinkedIntentLabelById('order-status')).toBe(
-            'Order/status',
+        expect(result.current.getLinkedIntentLabelById('order::status')).toBe(
+            'order/status',
         )
         expect(result.current.getLinkedIntentLabelById('unknown-intent')).toBe(
-            '',
-        )
-    })
-
-    it('prepends the group name when the intent name is not namespaced', () => {
-        mockUseGetArticleTranslationIntents.mockReturnValue({
-            data: {
-                intents: [
-                    {
-                        name: 'Order',
-                        children: [
-                            {
-                                name: 'cancel',
-                                intent: 'order-cancel',
-                                is_available: true,
-                            },
-                        ],
-                    },
-                ],
-            },
-        })
-
-        const { result } = renderHook(() => useLinkedIntentsSidebar())
-
-        expect(result.current.getLinkedIntentLabelById('order-cancel')).toBe(
-            'Order/cancel',
+            'unknown-intent',
         )
     })
 
@@ -173,23 +106,6 @@ describe('useLinkedIntentsSidebar', () => {
         expect(result.current.canUnlinkIntentsFromSidebar).toBe(false)
     })
 
-    it('passes disabled query options when intent path params are not ready', () => {
-        mockGuidanceStoreState.config.guidanceHelpCenter.id = 0
-
-        renderHook(() => useLinkedIntentsSidebar())
-
-        expect(mockUseGetArticleTranslationIntents).toHaveBeenCalledWith(
-            {
-                article_id: 123,
-                help_center_id: 0,
-                locale: 'en',
-            },
-            {
-                enabled: false,
-            },
-        )
-    })
-
     it('uses fallback values when guidance is missing', () => {
         mockGuidanceStoreState.state.guidance = undefined
 
@@ -197,15 +113,5 @@ describe('useLinkedIntentsSidebar', () => {
 
         expect(result.current.guidanceIntentIds).toEqual([])
         expect(result.current.isLinkIntentsButtonDisabled).toBe(false)
-        expect(mockUseGetArticleTranslationIntents).toHaveBeenCalledWith(
-            {
-                article_id: 0,
-                help_center_id: 456,
-                locale: '',
-            },
-            {
-                enabled: false,
-            },
-        )
     })
 })

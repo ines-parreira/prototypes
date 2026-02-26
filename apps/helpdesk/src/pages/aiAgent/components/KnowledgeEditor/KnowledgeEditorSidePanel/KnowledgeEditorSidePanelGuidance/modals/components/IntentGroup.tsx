@@ -13,6 +13,7 @@ type Props = {
     draftIntentIds: string[]
     isExpanded: boolean
     isSearching: boolean
+    intentTicketCountById: Record<string, number>
     onToggleGroup: (group: LinkedIntentGroup) => void
     onToggleExpanded: (groupName: string) => void
     onToggleIntent: (intent: ApiIntent) => void
@@ -24,6 +25,7 @@ export const IntentGroup = ({
     draftIntentIds,
     isExpanded,
     isSearching,
+    intentTicketCountById,
     onToggleGroup,
     onToggleExpanded,
     onToggleIntent,
@@ -79,7 +81,7 @@ export const IntentGroup = ({
                         <IntentRow
                             key={`${group.name}-${intent.intent}`}
                             intent={intent}
-                            groupName={group.name}
+                            ticketCount={intentTicketCountById[intent.intent]}
                             isChecked={draftIntentIds.includes(intent.intent)}
                             onToggle={onToggleIntent}
                             guidanceEditRoute={guidanceEditRoute}

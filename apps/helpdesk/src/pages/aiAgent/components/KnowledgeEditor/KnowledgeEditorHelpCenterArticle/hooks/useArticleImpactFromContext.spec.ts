@@ -72,7 +72,10 @@ describe('useArticleImpactFromContext', () => {
         tickets: { value: 10, onClick: undefined } as MetricProps,
         handoverTickets: { value: 5, onClick: undefined } as MetricProps,
         csat: { value: 4.5, onClick: undefined } as MetricProps,
-        intents: ['Intent 1', 'Intent 2'],
+        intents: [
+            { intent: 'Intent 1', ticketCount: 10 },
+            { intent: 'Intent 2', ticketCount: 5 },
+        ],
     }
 
     const mockDateRange = {
@@ -99,7 +102,7 @@ describe('useArticleImpactFromContext', () => {
             tickets: mockMetricsData.tickets,
             handoverTickets: mockMetricsData.handoverTickets,
             csat: mockMetricsData.csat,
-            intents: mockMetricsData.intents,
+            intents: ['Intent 1', 'Intent 2'],
             isLoading: false,
             subtitle: 'Last 28 days',
         })
@@ -260,7 +263,7 @@ describe('useArticleImpactFromContext', () => {
                     tickets: mockMetricsData.tickets,
                     handoverTickets: mockMetricsData.handoverTickets,
                     csat: mockMetricsData.csat,
-                    intents: mockMetricsData.intents,
+                    intents: ['Intent 1', 'Intent 2'],
                     isLoading: false,
                 }),
             )

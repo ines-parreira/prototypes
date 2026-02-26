@@ -7,13 +7,14 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
+import { formatIntentLabel } from '../../utils/formatIntentLabel'
 import type { ApiIntent } from '../KnowledgeEditorSidePanelSectionLinkedIntentsModal'
 
 import css from '../KnowledgeEditorSidePanelSectionLinkedIntentsModal.less'
 
 type Props = {
     intent: ApiIntent
-    groupName: string
+    ticketCount?: number
     isChecked: boolean
     onToggle: (intent: ApiIntent) => void
     guidanceEditRoute: (articleId: number) => string
@@ -21,7 +22,7 @@ type Props = {
 
 export const IntentRow = ({
     intent,
-    groupName,
+    ticketCount,
     isChecked,
     onToggle,
     guidanceEditRoute,
@@ -29,17 +30,19 @@ export const IntentRow = ({
     const isLinkedElsewhere = !intent.is_available && !!intent.used_by_article
 
     const checkboxField = (
-        <CheckBoxField
-            label={`${groupName}/${intent.name.toLowerCase()}`}
-            caption={
-                isLinkedElsewhere
-                    ? 'Already linked to another guidance'
-                    : undefined
-            }
-            value={isChecked}
-            onChange={() => onToggle(intent)}
-            isDisabled={!intent.is_available}
-        />
+        <div className={css.intentCheckbox}>
+            <CheckBoxField
+                label={formatIntentLabel(intent.intent)}
+                caption={
+                    isLinkedElsewhere
+                        ? 'Already linked to another guidance'
+                        : undefined
+                }
+                value={isChecked}
+                onChange={() => onToggle(intent)}
+                isDisabled={!intent.is_available}
+            />
+        </div>
     )
 
     return (
@@ -76,6 +79,28 @@ export const IntentRow = ({
                 </Tooltip>
             ) : (
                 checkboxField
+            )}
+            {ticketCount !== undefined && (
+                <span
+                    className={
+                        intent.is_available
+                            ? css.intentTicketCount
+                            : `${css.intentTicketCount} ${css.intentTicketCountDisabled}`
+                    }
+                >
+                    <Icon
+                        name="comm-chat-conversation"
+                        size="sm"
+                        color={
+                            intent.is_available
+                                ? 'var(--content-neutral-secondary)'
+                                : 'var(--content-neutral-tertiary)'
+                        }
+                    />
+                    <Text size="sm" className={css.intentTicketCountText}>
+                        {ticketCount}
+                    </Text>
+                </span>
             )}
         </div>
     )

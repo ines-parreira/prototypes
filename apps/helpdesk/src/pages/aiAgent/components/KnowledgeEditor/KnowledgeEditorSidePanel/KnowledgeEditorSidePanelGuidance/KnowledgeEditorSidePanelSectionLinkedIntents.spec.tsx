@@ -1,6 +1,8 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useResourceMetrics } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionLinkedIntents } from './KnowledgeEditorSidePanelSectionLinkedIntents'
 
@@ -49,17 +51,17 @@ const mockIntentGroups = [
         children: [
             {
                 name: 'status',
-                intent: 'order-status',
+                intent: 'order::status',
                 is_available: true,
             },
             {
                 name: 'cancel',
-                intent: 'order-cancel',
+                intent: 'order::cancel',
                 is_available: true,
             },
             {
                 name: 'missing item',
-                intent: 'order-missing-item',
+                intent: 'order::missing-item',
                 is_available: false,
                 used_by_article: {
                     id: 99,
@@ -74,7 +76,7 @@ const mockIntentGroups = [
         children: [
             {
                 name: 'delay',
-                intent: 'shipping-delay',
+                intent: 'shipping::delay',
                 is_available: true,
             },
         ],
@@ -96,6 +98,19 @@ const mockUseGetArticleTranslationIntents = jest.fn(
         },
 )
 
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+    () => ({
+        useResourceMetrics: jest.fn(),
+        getLast28DaysDateRange: jest.fn(() => ({
+            start_datetime: '2025-01-01T00:00:00.000Z',
+            end_datetime: '2025-01-28T00:00:00.000Z',
+        })),
+    }),
+)
+
+const mockUseResourceMetrics = useResourceMetrics as jest.Mock
+
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationIntents: (...args: unknown[]) =>
         mockUseGetArticleTranslationIntents(...(args as [])),
@@ -105,6 +120,11 @@ jest.mock('hooks/useNotify', () => ({
     useNotify: () => ({
         error: mockNotifyError,
     }),
+}))
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(() => 'UTC'),
 }))
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
@@ -196,6 +216,13 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
             isError: false,
             refetch: jest.fn(),
         })
+        mockUseResourceMetrics.mockReturnValue({
+            data: {
+                intents: [],
+            },
+            isLoading: false,
+            isError: false,
+        })
         mockUpdateGuidanceArticle.mockImplementation(
             async ({ intents }: { intents?: string[] | null }) =>
                 createUpdateResponse(intents ?? []),
@@ -219,11 +246,11 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
     })
 
     it('renders intents from guidance data', () => {
-        mockGuidanceStoreState.state.guidance.intents = ['order-status']
+        mockGuidanceStoreState.state.guidance.intents = ['order::status']
 
         renderComponent()
 
-        expect(screen.getByText('Order/status')).toBeInTheDocument()
+        expect(screen.getByText('order/status')).toBeInTheDocument()
         expect(screen.queryByText('No intents linked')).not.toBeInTheDocument()
     })
 
@@ -255,14 +282,14 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
 
         const modal = screen.getByRole('dialog')
         await user.click(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
         await waitFor(() => {
             expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
                 {
-                    intents: ['order-status'],
+                    intents: ['order::status'],
                     isCurrent: false,
                 },
                 {
@@ -272,7 +299,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
             )
         })
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        expect(screen.getByText('Order/status')).toBeInTheDocument()
+        expect(screen.getByText('order/status')).toBeInTheDocument()
     })
 
     it('discards modal draft selection when canceling', async () => {
@@ -287,7 +314,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         let modal = screen.getByRole('dialog')
 
         await user.click(
-            within(modal).getAllByRole('checkbox', { name: 'Order/cancel' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/cancel' })[0],
         )
         await user.click(within(modal).getByRole('button', { name: 'Cancel' }))
 
@@ -302,7 +329,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         modal = screen.getByRole('dialog')
 
         expect(
-            within(modal).getAllByRole('checkbox', { name: 'Order/cancel' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/cancel' })[0],
         ).not.toBeChecked()
     })
 
@@ -318,7 +345,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
 
         let modal = screen.getByRole('dialog')
         await user.click(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         )
 
         const dismissButton =
@@ -334,7 +361,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         modal = screen.getByRole('dialog')
 
         expect(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         ).not.toBeChecked()
     })
 
@@ -456,12 +483,12 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
 
         const modal = screen.getByRole('dialog')
         await user.click(
-            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+            within(modal).getAllByRole('checkbox', { name: 'order/status' })[0],
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
         await waitFor(() => {
-            expect(screen.getByText('Order/status')).toBeInTheDocument()
+            expect(screen.getByText('order/status')).toBeInTheDocument()
         })
 
         await user.click(
@@ -475,7 +502,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
                 name: 'Unlink intents from this guidance?',
             }),
         ).toBeInTheDocument()
-        expect(screen.getByText(/Order\/status/)).toBeInTheDocument()
+        expect(screen.getByText(/order\/status/)).toBeInTheDocument()
 
         await user.click(screen.getByRole('button', { name: 'Cancel' }))
 
@@ -484,7 +511,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
                 name: 'Unlink intents from this guidance?',
             }),
         ).not.toBeInTheDocument()
-        expect(screen.getByText(/Order\/status/)).toBeInTheDocument()
+        expect(screen.getByText(/order\/status/)).toBeInTheDocument()
 
         await user.click(
             within(getLinkedIntentsSectionRegion()).getByRole('button', {
@@ -505,6 +532,6 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
                 },
             )
         })
-        expect(screen.queryByText('Order/status')).not.toBeInTheDocument()
+        expect(screen.queryByText('order/status')).not.toBeInTheDocument()
     })
 })

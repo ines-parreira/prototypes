@@ -59,6 +59,11 @@ of truth is Help Center, not Clickhouse.
 */
 export const KNOWLEDGE_QUERY_LIMIT = 10000
 
+export type KnowledgeIntentMetric = {
+    intent: string
+    ticketCount: number
+}
+
 type ResourceMetricsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
@@ -78,7 +83,7 @@ type ResourceMetricsResult = {
         tickets?: ImpactProps['tickets']
         handoverTickets?: ImpactProps['handoverTickets']
         csat?: ImpactProps['csat']
-        intents?: ImpactProps['intents']
+        intents?: KnowledgeIntentMetric[] | null
     }
 }
 
@@ -99,7 +104,7 @@ type ResourceMetrics = {
     tickets: number | null
     handoverTickets: number | null
     csat: number | null
-    intents: string[] | null
+    intents: KnowledgeIntentMetric[] | null
 }
 
 type AllResourcesMetricsResult = {
@@ -382,7 +387,7 @@ const createResourceKey = (
 export const parseIntentsData = (
     allData: MetricDataRecord[] | undefined,
     isError: boolean,
-): string[] | undefined => {
+): KnowledgeIntentMetric[] | undefined => {
     if (!allData || isError) {
         return undefined
     }
@@ -408,7 +413,7 @@ export const parseIntentsData = (
     return sortedRecords
         .map((record) => {
             // Try V2 API field name first, fall back to V1
-            return (
+            const intent =
                 record[
                     TicketInsightsTaskDimensionV2.CustomFieldTop2LevelsValue
                 ] ??
@@ -416,11 +421,24 @@ export const parseIntentsData = (
                     TicketCustomFieldsDimension
                         .TicketCustomFieldsTop2LevelsValue
                 ]
-            )
+            const ticketCount =
+                Number(
+                    record[TicketInsightsTaskMeasureV2.TicketCount] ??
+                        record[TicketInsightsTaskMeasure.TicketCount],
+                ) || 0
+
+            return {
+                intent,
+                ticketCount,
+            }
         })
         .filter(
-            (value): value is string =>
-                typeof value === 'string' && value !== '',
+            (
+                value,
+            ): value is {
+                intent: string
+                ticketCount: number
+            } => typeof value.intent === 'string' && value.intent !== '',
         )
 }
 
@@ -433,7 +451,7 @@ export const parseIntentsData = (
 export const parseIntentsDataByResource = (
     allData: MetricDataRecord[] | undefined,
     isError: boolean,
-): Record<string, string[]> => {
+): Record<string, KnowledgeIntentMetric[]> => {
     if (!allData || isError) {
         return {}
     }
@@ -475,7 +493,7 @@ export const parseIntentsDataByResource = (
             acc[key] = sortedRecords
                 .map((record) => {
                     // Try V2 API field name first, fall back to V1
-                    return (
+                    const intent =
                         record[
                             TicketInsightsTaskDimensionV2
                                 .CustomFieldTop2LevelsValue
@@ -484,16 +502,30 @@ export const parseIntentsDataByResource = (
                             TicketCustomFieldsDimension
                                 .TicketCustomFieldsTop2LevelsValue
                         ]
-                    )
+                    const ticketCount =
+                        Number(
+                            record[TicketInsightsTaskMeasureV2.TicketCount] ??
+                                record[TicketInsightsTaskMeasure.TicketCount],
+                        ) || 0
+
+                    return {
+                        intent,
+                        ticketCount,
+                    }
                 })
                 .filter(
-                    (value): value is string =>
-                        typeof value === 'string' && value !== '',
+                    (
+                        value,
+                    ): value is {
+                        intent: string
+                        ticketCount: number
+                    } =>
+                        typeof value.intent === 'string' && value.intent !== '',
                 )
 
             return acc
         },
-        {} as Record<string, string[]>,
+        {} as Record<string, KnowledgeIntentMetric[]>,
     )
 }
 
@@ -702,7 +734,7 @@ export const useResourceMetrics = ({
         intentsMetric.isError
 
     // Parse intents data from the metric response
-    const intents: string[] | undefined = useMemo(() => {
+    const intents: KnowledgeIntentMetric[] | undefined = useMemo(() => {
         return parseIntentsData(
             intentsMetric.data?.allData,
             intentsMetric.isError,

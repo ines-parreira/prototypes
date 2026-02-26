@@ -276,9 +276,18 @@ describe('KnowledgeEditorGuidance', () => {
                     onClick: undefined,
                 },
                 intents: [
-                    'Order/Status',
-                    'Shipping/Inquiry',
-                    'Product/Question',
+                    {
+                        intent: 'Order/Status',
+                        ticketCount: 156,
+                    },
+                    {
+                        intent: 'Shipping/Inquiry',
+                        ticketCount: 84,
+                    },
+                    {
+                        intent: 'Product/Question',
+                        ticketCount: 42,
+                    },
                 ],
             },
         })
