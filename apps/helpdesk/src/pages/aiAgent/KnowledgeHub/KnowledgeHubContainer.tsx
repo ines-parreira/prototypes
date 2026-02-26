@@ -16,6 +16,7 @@ import {
     isSyncLessThan24Hours,
 } from 'pages/aiAgent/AiAgentScrapedDomainContent/utils'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { isUrlFromStoreDomain } from 'pages/aiAgent/hooks/useSyncUrl'
 import {
     HELP_CENTER_SELECT_MODAL_OPEN,
     OPEN_CREATE_GUIDANCE_ARTICLE_MODAL,
@@ -520,12 +521,24 @@ export const KnowledgeHubContainer = () => {
         return getNextSyncDate(urlLog?.latest_sync)
     }, [selectedFolder, urlIngestionLogs])
 
+    const isStoreDomainUrl = useMemo(() => {
+        if (selectedFolder?.type !== KnowledgeType.URL) {
+            return false
+        }
+        if (!selectedFolder.source) {
+            return false
+        }
+        return isUrlFromStoreDomain(selectedFolder.source, storeUrl)
+    }, [selectedFolder, storeUrl])
+
     const isSyncButtonDisabled = useMemo(() => {
         if (selectedFolder?.type === KnowledgeType.Domain) {
             return isSyncLessThan24h
         }
         if (selectedFolder?.type === KnowledgeType.URL) {
-            return isUrlFolderSyncing || isUrlSyncLessThan24h
+            return (
+                isStoreDomainUrl || isUrlFolderSyncing || isUrlSyncLessThan24h
+            )
         }
         return isSyncLessThan24h
     }, [
@@ -533,6 +546,7 @@ export const KnowledgeHubContainer = () => {
         isSyncLessThan24h,
         isUrlFolderSyncing,
         isUrlSyncLessThan24h,
+        isStoreDomainUrl,
     ])
 
     const isDeleteButtonDisabled = useMemo(() => {
@@ -550,6 +564,9 @@ export const KnowledgeHubContainer = () => {
             return `Your store website was synced less than 24h ago. You can sync again on ${nextSyncDate}.`
         }
         if (selectedFolder?.type === KnowledgeType.URL) {
+            if (isStoreDomainUrl) {
+                return 'URL cannot be from your store website'
+            }
             if (isUrlFolderSyncing) {
                 return 'This URL is currently syncing.'
             }
@@ -568,6 +585,7 @@ export const KnowledgeHubContainer = () => {
         isUrlFolderSyncing,
         isUrlSyncLessThan24h,
         nextUrlSyncDate,
+        isStoreDomainUrl,
     ])
 
     const handleTemplateSelect = useCallback(

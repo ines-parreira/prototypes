@@ -817,7 +817,9 @@ describe('KnowledgeHubContainer', () => {
                 ).toBeInTheDocument()
             })
 
-            dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+            act(() => {
+                dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+            })
 
             await waitFor(() => {
                 expect(
@@ -833,7 +835,9 @@ describe('KnowledgeHubContainer', () => {
                 screen.queryByRole('heading', { name: 'Create content' }),
             ).not.toBeInTheDocument()
 
-            dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+            act(() => {
+                dispatchDocumentEvent(OPEN_SYNC_WEBSITE_MODAL)
+            })
 
             expect(
                 screen.queryByRole('heading', { name: 'Create content' }),
@@ -873,7 +877,9 @@ describe('KnowledgeHubContainer', () => {
                 ).toBeInTheDocument()
             })
 
-            dispatchDocumentEvent(OPEN_SYNC_URL_MODAL)
+            act(() => {
+                dispatchDocumentEvent(OPEN_SYNC_URL_MODAL)
+            })
 
             await waitFor(() => {
                 expect(
@@ -894,7 +900,9 @@ describe('KnowledgeHubContainer', () => {
 
             renderComponent()
 
-            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+            act(() => {
+                dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+            })
 
             expect(mockRefetch).toHaveBeenCalled()
         })
@@ -1339,6 +1347,80 @@ describe('KnowledgeHubContainer', () => {
                 expect(syncButton).toHaveAttribute(
                     'title',
                     `Your store website was synced less than 24h ago. You can sync again on ${nextSync}.`,
+                )
+            })
+        })
+
+        it('disables sync button and shows tooltip when URL is from store domain', async () => {
+            const user = userEvent.setup()
+
+            mockUseAppSelector.mockImplementation((selector) => {
+                if (selector === getCurrentAccountId) return 123
+                if (selector === getShopifyIntegrationsSortedByName)
+                    return mockShopifyIntegrations
+                if (selector === getCurrentAccountState)
+                    return {
+                        get: (key: string) => {
+                            if (key === 'domain') return 'test-domain.com'
+                            return undefined
+                        },
+                    }
+                if (selector === getTimezone) return 'America/New_York'
+                return fromJS({
+                    id: 1,
+                    name: 'Store Alpha',
+                    type: 'shopify',
+                    meta: {
+                        shop_name: 'store-alpha',
+                        shop_domain: 'store-alpha.myshopify.com',
+                    },
+                })
+            })
+
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: 'SUCCESSFUL',
+                syncingUrls: [],
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://store-alpha.myshopify.com/faq',
+                        status: 'SUCCESSFUL',
+                        latest_sync: null,
+                    },
+                ],
+                totalCount: 1,
+                completedCount: 1,
+                successCount: 1,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Store FAQ',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://store-alpha.myshopify.com/faq',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await act(() => user.click(screen.getByText('Store FAQ')))
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+                expect(syncButton).toHaveAttribute(
+                    'title',
+                    'URL cannot be from your store website',
                 )
             })
         })
