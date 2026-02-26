@@ -7,9 +7,6 @@ import { Card } from '@gorgias/axiom'
 
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
-import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
-import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
-import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
@@ -18,6 +15,7 @@ import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorGuidanceProvider, useGuidanceStore } from './context'
 import type { GuidanceContextConfig, GuidanceModeType } from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
+import { useKnowledgeEditorGuidanceData } from './useKnowledgeEditorGuidanceData'
 
 import css from '../shared.less'
 
@@ -26,7 +24,6 @@ type Props = {
     shopType: string
     guidanceArticleId?: number
     guidanceTemplate?: GuidanceTemplate
-    guidanceArticles: FilteredKnowledgeHubArticle[]
     onDelete?: () => void
     onCreate?: () => void
     onUpdate?: () => void
@@ -123,7 +120,6 @@ export const KnowledgeEditorGuidance = ({
     shopType,
     guidanceArticleId,
     guidanceTemplate,
-    guidanceArticles,
     onClose,
     onClickPrevious,
     onClickNext,
@@ -137,27 +133,18 @@ export const KnowledgeEditorGuidance = ({
     onSharedPanelStateChange,
 }: Props) => {
     const {
-        helpCenter: guidanceHelpCenter,
-        isLoading: isGuidanceHelpCenterLoading,
-    } = useAiAgentHelpCenterState({
-        shopName: shopName,
-        helpCenterType: 'guidance',
-        enabled: isOpen,
+        guidanceHelpCenter,
+        isGuidanceHelpCenterLoading,
+        guidanceArticles,
+        guidanceArticle,
+        isGuidanceArticleLoading,
+        isError,
+        error,
+    } = useKnowledgeEditorGuidanceData({
+        shopName,
+        guidanceArticleId,
+        guidanceMode,
     })
-
-    const { guidanceArticle, isGuidanceArticleLoading, isError, error } =
-        useGuidanceArticle({
-            guidanceHelpCenterId: guidanceHelpCenter?.id ?? 0,
-            guidanceArticleId: guidanceArticleId ?? 0,
-            locale: guidanceHelpCenter?.default_locale ?? 'en-US',
-            versionStatus: 'latest_draft',
-            enabled:
-                isOpen &&
-                !!guidanceArticleId &&
-                !!guidanceHelpCenter?.id &&
-                guidanceMode !== 'create',
-        })
-
     const { error: notifyError } = useNotify()
 
     useEffect(() => {

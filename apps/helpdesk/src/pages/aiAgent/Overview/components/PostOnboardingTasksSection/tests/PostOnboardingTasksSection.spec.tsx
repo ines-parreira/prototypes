@@ -54,7 +54,6 @@ jest.mock('../../../hooks/usePostOnboardingKnowledgeEditor', () => ({
             shopType: 'shopify',
             guidanceArticleId: undefined,
             guidanceTemplate: undefined,
-            guidanceArticles: [],
             guidanceMode: 'create',
             isOpen: false,
             onClose: jest.fn(),
@@ -87,22 +86,6 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
     KnowledgeEditor: () => (
         <div data-testid="knowledge-editor">KnowledgeEditor</div>
     ),
-}))
-
-jest.mock('pages/aiAgent/hooks/useGuidanceArticles', () => ({
-    useGuidanceArticles: jest.fn(() => ({
-        guidanceArticles: [],
-        isGuidanceArticleListLoading: false,
-        isFetched: true,
-    })),
-}))
-
-jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
-    useAiAgentStoreConfigurationContext: jest.fn(() => ({
-        storeConfiguration: {
-            guidanceHelpCenterId: 123,
-        },
-    })),
 }))
 
 async function clickAccordionHeader(

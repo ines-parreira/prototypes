@@ -8,12 +8,9 @@ import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
-import type {
-    ArticleWithLocalTranslation,
-    Category,
-    HelpCenter,
-    Locale,
-} from 'models/helpCenter/types'
+import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
+import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
@@ -21,13 +18,12 @@ import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { ArticleEditorContent } from './ArticleEditorContent'
 import type { ArticleContextConfig, ArticleModeType } from './context'
 import { ArticleContextProvider, useArticleContext } from './context'
+import { useFaqHelpCenterData } from './useFaqHelpCenterData'
 
 import css from '../shared.less'
 
 type Props = {
-    helpCenter: HelpCenter
-    locales: Locale[]
-    categories: Category[]
+    helpCenterId: number
     shopName?: string
     onClickPrevious?: () => void
     onClickNext?: () => void
@@ -118,13 +114,20 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         ? (article.versionStatus ?? 'latest_draft')
         : 'latest_draft'
 
+    const {
+        helpCenter,
+        categories,
+        locales,
+        isLoading: isHelpCenterDataLoading,
+    } = useFaqHelpCenterData(props.helpCenterId)
+
     const getArticle = useGetHelpCenterArticle(
         articleId,
-        props.helpCenter.id,
-        props.helpCenter.default_locale,
+        helpCenter?.id ?? 0,
+        helpCenter?.default_locale ?? 'en-US',
         versionStatus,
         {
-            enabled: isExisting && articleId > 0,
+            enabled: isExisting && !!helpCenter && articleId > 0,
             throwOn404: true,
             refetchOnWindowFocus: false,
         },
@@ -149,6 +152,14 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         }
     }, [getArticle.isError, isExisting, getArticle.error, notifyError, onClose])
 
+    if (isHelpCenterDataLoading) {
+        return <KnowledgeEditorLoadingShell />
+    }
+
+    if (!helpCenter) {
+        return null
+    }
+
     const initialMode: ArticleModeType =
         article.type === 'new'
             ? 'create'
@@ -157,9 +168,9 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
               : 'read'
 
     const config: ArticleContextConfig = {
-        helpCenter: props.helpCenter,
-        supportedLocales: props.locales,
-        categories: props.categories,
+        helpCenter,
+        supportedLocales: locales,
+        categories,
         shopName: props.shopName,
         articleId: isExisting ? article.articleId : undefined,
         initialArticle: getArticle.data ?? undefined,
@@ -175,11 +186,17 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
     }
 
     return (
-        <ArticleContextProvider config={config}>
-            <ArticleEditorInner
-                isLoading={!!articleId && getArticle.isLoading}
-                onSharedPanelStateChange={props.onSharedPanelStateChange}
-            />
-        </ArticleContextProvider>
+        <SupportedLocalesProvider>
+            <CurrentHelpCenterContext.Provider value={helpCenter}>
+                <ArticleContextProvider config={config}>
+                    <ArticleEditorInner
+                        isLoading={!!articleId && getArticle.isLoading}
+                        onSharedPanelStateChange={
+                            props.onSharedPanelStateChange
+                        }
+                    />
+                </ArticleContextProvider>
+            </CurrentHelpCenterContext.Provider>
+        </SupportedLocalesProvider>
     )
 }

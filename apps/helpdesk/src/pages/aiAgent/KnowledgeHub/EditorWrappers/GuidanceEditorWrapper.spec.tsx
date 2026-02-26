@@ -37,7 +37,6 @@ describe('GuidanceEditorWrapper', () => {
         guidanceMode: 'create' as const,
         isOpen: true,
         onClose: jest.fn(),
-        guidanceArticles: [],
     }
 
     afterEach(() => {

@@ -4,7 +4,7 @@ import { useKnowledgeHubEditor } from './useKnowledgeHubEditor'
 type UseKnowledgeHubGuidanceEditorParams = {
     shopName: string
     shopType: string
-    filteredGuidanceArticles: Array<FilteredKnowledgeHubArticle>
+    filteredGuidanceArticles: FilteredKnowledgeHubArticle[]
 }
 
 export const useKnowledgeHubGuidanceEditor = ({
@@ -24,7 +24,6 @@ export const useKnowledgeHubGuidanceEditor = ({
         shopType: editor.shopType,
         guidanceArticleId: editor.currentArticleId,
         guidanceTemplate: editor.guidanceTemplate,
-        guidanceArticles: filteredGuidanceArticles,
         guidanceMode: editor.guidanceMode,
         isOpen: editor.isEditorOpen,
         onClose: editor.closeEditor,

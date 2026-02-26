@@ -5,7 +5,6 @@ import { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { toImmutable } from 'common/utils'
 import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import { mockStore } from 'utils/testing'
 
 import type { InitialArticleModeValue } from './context'
@@ -13,6 +12,17 @@ import { KnowledgeEditorHelpCenterArticle } from './KnowledgeEditorHelpCenterArt
 
 const mockNotifyError = jest.fn()
 let articleEditorCloseHandler: (() => void) | null = null
+
+const mockHelpCenter = getHelpCentersResponseFixture.data[0]
+
+jest.mock('./useFaqHelpCenterData', () => ({
+    useFaqHelpCenterData: jest.fn(() => ({
+        helpCenter: mockHelpCenter,
+        categories: [],
+        locales: [{ code: 'en-US', name: 'en-US' }],
+        isLoading: false,
+    })),
+}))
 
 jest.mock('@gorgias/axiom', () => ({
     SidePanel: ({
@@ -85,6 +95,20 @@ jest.mock('models/helpCenter/queries', () => ({
         error: null,
     })),
 }))
+
+jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
+    SupportedLocalesProvider: ({ children }: any) => <>{children}</>,
+}))
+
+jest.mock(
+    'pages/settings/helpCenter/contexts/CurrentHelpCenterContext',
+    () => ({
+        __esModule: true,
+        default: {
+            Provider: ({ children }: any) => <>{children}</>,
+        },
+    }),
+)
 
 jest.mock('./ArticleEditorContent', () => ({
     ArticleEditorContent: ({
@@ -170,9 +194,7 @@ const defaultState = {
 
 describe('KnowledgeEditorHelpCenterArticle', () => {
     const baseProps = {
-        helpCenter: getHelpCentersResponseFixture.data[0],
-        locales: getLocalesResponseFixture,
-        categories: [],
+        helpCenterId: mockHelpCenter.id,
         onClickPrevious: () => {},
         onClickNext: () => {},
         onClose: jest.fn(),
@@ -482,8 +504,8 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
                 1,
-                baseProps.helpCenter.id,
-                baseProps.helpCenter.default_locale,
+                baseProps.helpCenterId,
+                mockHelpCenter.default_locale,
                 GetArticleVersionStatus.Current,
                 {
                     enabled: true,
@@ -509,8 +531,8 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
                 1,
-                baseProps.helpCenter.id,
-                baseProps.helpCenter.default_locale,
+                baseProps.helpCenterId,
+                mockHelpCenter.default_locale,
                 'latest_draft',
                 {
                     enabled: true,
@@ -538,8 +560,8 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
 
             expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
                 0,
-                baseProps.helpCenter.id,
-                baseProps.helpCenter.default_locale,
+                baseProps.helpCenterId,
+                mockHelpCenter.default_locale,
                 'latest_draft',
                 {
                     enabled: false,

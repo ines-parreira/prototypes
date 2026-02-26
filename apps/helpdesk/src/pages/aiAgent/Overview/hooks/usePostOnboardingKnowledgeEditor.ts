@@ -6,7 +6,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -14,7 +13,6 @@ import { NotificationStatus } from 'state/notifications/types'
 type UsePostOnboardingKnowledgeEditorProps = {
     shopName: string
     shopType: string
-    guidanceArticles: FilteredKnowledgeHubArticle[]
 }
 
 /**
@@ -24,7 +22,6 @@ type UsePostOnboardingKnowledgeEditorProps = {
 export const usePostOnboardingKnowledgeEditor = ({
     shopName,
     shopType,
-    guidanceArticles,
 }: UsePostOnboardingKnowledgeEditorProps) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
@@ -155,7 +152,6 @@ export const usePostOnboardingKnowledgeEditor = ({
         shopType,
         guidanceArticleId: currentGuidanceArticleId,
         guidanceTemplate,
-        guidanceArticles,
         guidanceMode,
         isOpen: isEditorOpen,
         onClose: closeEditor,

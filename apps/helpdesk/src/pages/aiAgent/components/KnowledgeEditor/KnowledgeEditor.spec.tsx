@@ -64,7 +64,6 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 shopType="Test Shop Type"
                 guidanceArticleId={1}
-                guidanceArticles={[]}
                 onClose={jest.fn()}
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}
@@ -95,14 +94,7 @@ describe('KnowledgeEditor', () => {
         render(
             <KnowledgeEditor
                 variant="article"
-                helpCenter={
-                    {
-                        id: 1,
-                        default_locale: 'en-US',
-                    } as any
-                }
-                locales={[]}
-                categories={[]}
+                helpCenterId={1}
                 onClose={jest.fn()}
                 article={
                     {
@@ -238,7 +230,6 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 shopType="Test Shop Type"
                 guidanceArticleId={1}
-                guidanceArticles={[]}
                 onClose={jest.fn()}
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}
