@@ -2,13 +2,17 @@ import { useMemo } from 'react'
 
 import {
     fetchPostReporting,
+    fetchPostReportingV2,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { convertCampaignEventsOrdersPerformanceQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
     getCampaignOrderPerformanceData,
+    getDefaultApiStatsFilters,
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import type {
@@ -104,8 +108,20 @@ export const useGetTableStat = ({
         ordersQuery,
         { ...OVERRIDES, enabled: isEnabled },
     )
-    const eventsOrdersPerformance = usePostReporting<[CubeData], CubeData>(
+    const eventsOrdersPerformance = usePostReportingV2(
         eventsOrdersQuery,
+        convertCampaignEventsOrdersPerformanceQueryFactoryV2(
+            {
+                filters: getDefaultApiStatsFilters({
+                    startDate: attrs.startDate,
+                    endDate: attrs.endDate,
+                    campaignIds: attrs.campaignIds,
+                    campaignsOperator: attrs.campaignsOperator,
+                }),
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
         { ...OVERRIDES, enabled: isEnabled },
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
@@ -194,8 +210,20 @@ export const fetchGetTableStat = async ({
         ordersQuery,
         { ...OVERRIDES, enabled: isEnabled },
     )
-    const eventsOrdersPerformance = fetchPostReporting<CubeData, CubeData>(
+    const eventsOrdersPerformance = fetchPostReportingV2(
         eventsOrdersQuery,
+        convertCampaignEventsOrdersPerformanceQueryFactoryV2(
+            {
+                filters: getDefaultApiStatsFilters({
+                    startDate,
+                    endDate,
+                    campaignIds,
+                    campaignsOperator,
+                }),
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
         { ...OVERRIDES, enabled: isEnabled },
     )
     const storeTotal = fetchPostReporting<[CubeMetric], CubeMetric>(

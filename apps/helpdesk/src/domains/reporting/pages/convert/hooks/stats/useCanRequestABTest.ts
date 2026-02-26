@@ -2,12 +2,13 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
-import { getCampaignABTestEvents } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import type {
-    CubeFilterParams,
-    CubeMetric,
-} from 'domains/reporting/pages/convert/clients/types'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import { convertCampaignABTestEventsQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
+import {
+    getCampaignABTestEvents,
+    getDefaultApiStatsFilters,
+} from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
+import type { CubeFilterParams } from 'domains/reporting/pages/convert/clients/types'
 import {
     getMetricFromCubeData,
     transformToCampaignAbTestEvent,
@@ -39,8 +40,12 @@ export const useCanRequestABTest = (shopName: string) => {
         () => getCampaignABTestEvents(attrs),
         [attrs],
     )
-    const campaignABTestEventsData = usePostReporting<[CubeMetric], CubeMetric>(
+    const campaignABTestEventsData = usePostReportingV2(
         campaignABTestEventsQuery,
+        convertCampaignABTestEventsQueryFactoryV2({
+            filters: getDefaultApiStatsFilters(attrs),
+            timezone: 'UTC',
+        }),
         OVERRIDES,
     )
 

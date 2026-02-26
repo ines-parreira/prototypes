@@ -1,7 +1,10 @@
 import { assumeMock, renderHook } from '@repo/testing'
-import type { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import type {
+    TimeSeriesDataItem,
+    TimeSeriesResult,
+} from 'domains/reporting/hooks/useTimeSeries'
+import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
@@ -9,14 +12,15 @@ import {
 } from 'domains/reporting/pages/convert/clients/constants'
 import useCampaignPerformanceTimeSeries from 'domains/reporting/pages/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 
-jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReportingV2)
+jest.mock('domains/reporting/hooks/useTimeSeries')
+const useTimeSeriesMock = assumeMock(useTimeSeries)
 
 describe('useCampaignPerformanceTimeSeries', () => {
-    const defaultReporting = {
+    const defaultTimeSeries = {
+        data: [[]] as TimeSeriesDataItem[][],
         isFetching: false,
         isError: false,
-    } as UseQueryResult
+    } as TimeSeriesResult
 
     const hookArgs: [
         string,
@@ -36,14 +40,14 @@ describe('useCampaignPerformanceTimeSeries', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        usePostReportingMock.mockReturnValue(defaultReporting)
+        useTimeSeriesMock.mockReturnValue(defaultTimeSeries)
     })
 
     it('returns data', () => {
-        usePostReportingMock.mockReturnValueOnce({
-            ...defaultReporting,
+        useTimeSeriesMock.mockReturnValueOnce({
+            ...defaultTimeSeries,
             isError: true,
-        } as UseQueryResult)
+        })
 
         const { result } = renderHook(() =>
             useCampaignPerformanceTimeSeries(...hookArgs),
@@ -53,91 +57,96 @@ describe('useCampaignPerformanceTimeSeries', () => {
     })
 
     it('should return data', () => {
-        usePostReportingMock.mockReturnValueOnce({
-            ...defaultReporting,
+        useTimeSeriesMock.mockReturnValueOnce({
+            ...defaultTimeSeries,
             data: [
-                {
-                    dateTime: '2024-09-18T00:00:00.000',
-                    value: 1000,
-                    label: CampaignOrderEventsMeasure.impressions,
-                },
+                [
+                    {
+                        dateTime: '2024-09-18T00:00:00.000',
+                        value: 1000,
+                        label: CampaignOrderEventsMeasure.impressions,
+                    },
+                ],
             ],
-        } as UseQueryResult)
+        })
 
-        usePostReportingMock.mockReturnValueOnce({
-            ...defaultReporting,
+        useTimeSeriesMock.mockReturnValueOnce({
+            ...defaultTimeSeries,
             data: [
-                {
-                    dateTime: '2024-09-18T00:00:00.000',
-                    value: 1000,
-                    label: OrderConversionMeasure.campaignSalesCount,
-                },
+                [
+                    {
+                        dateTime: '2024-09-18T00:00:00.000',
+                        value: 1000,
+                        label: OrderConversionMeasure.campaignSalesCount,
+                    },
+                ],
             ],
-        } as UseQueryResult)
+        })
 
         const { result } = renderHook(() =>
             useCampaignPerformanceTimeSeries(...hookArgs),
         )
 
-        expect(usePostReportingMock).toHaveBeenCalledTimes(2)
-        expect(usePostReportingMock).toHaveBeenCalledWith(
-            [
-                expect.objectContaining({
-                    measures: ['CampaignOrderEvents.impressions'],
-                    order: [['CampaignOrderEvents.createdDatetime', 'asc']],
-                    timeDimensions: [
-                        {
-                            dateRange: [
-                                '2024-09-16T00:00:00.000',
-                                '2024-09-18T00:00:00.000',
-                            ],
-                            dimension: 'CampaignOrderEvents.createdDatetime',
-                            granularity: 'day',
-                        },
-                    ],
-                    timezone: 'UTC',
-                }),
-            ],
-            undefined,
-            expect.anything(),
+        expect(useTimeSeriesMock).toHaveBeenCalledTimes(2)
+        expect(useTimeSeriesMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                measures: ['CampaignOrderEvents.impressions'],
+                order: [['CampaignOrderEvents.createdDatetime', 'asc']],
+                timeDimensions: [
+                    {
+                        dateRange: [
+                            '2024-09-16T00:00:00.000',
+                            '2024-09-18T00:00:00.000',
+                        ],
+                        dimension: 'CampaignOrderEvents.createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
+                timezone: 'UTC',
+            }),
+            expect.objectContaining({
+                measures: ['impressions'],
+                order: [['createdDatetime', 'asc']],
+                timezone: 'UTC',
+            }),
         )
-        expect(usePostReportingMock).toHaveBeenCalledWith(
-            [
-                expect.objectContaining({
-                    measures: ['OrderConversion.campaignSalesCount'],
-                    order: [['OrderConversion.createdDatetime', 'asc']],
-                    timeDimensions: [
-                        {
-                            dateRange: [
-                                '2024-09-16T00:00:00.000',
-                                '2024-09-18T00:00:00.000',
-                            ],
-                            dimension: 'OrderConversion.createdDatetime',
-                            granularity: 'day',
-                        },
-                    ],
-                    timezone: 'UTC',
-                }),
-            ],
-            undefined,
-            expect.anything(),
+        expect(useTimeSeriesMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                measures: ['OrderConversion.campaignSalesCount'],
+                order: [['OrderConversion.createdDatetime', 'asc']],
+                timeDimensions: [
+                    {
+                        dateRange: [
+                            '2024-09-16T00:00:00.000',
+                            '2024-09-18T00:00:00.000',
+                        ],
+                        dimension: 'OrderConversion.createdDatetime',
+                        granularity: 'day',
+                    },
+                ],
+                timezone: 'UTC',
+            }),
         )
 
         expect(result.current).toEqual({
             data: {
                 impressionsSeries: [
-                    {
-                        dateTime: '2024-09-18T00:00:00.000',
-                        label: CampaignOrderEventsMeasure.impressions,
-                        value: 1000,
-                    },
+                    [
+                        {
+                            dateTime: '2024-09-18T00:00:00.000',
+                            label: CampaignOrderEventsMeasure.impressions,
+                            value: 1000,
+                        },
+                    ],
                 ],
                 ordersCountSeries: [
-                    {
-                        dateTime: '2024-09-18T00:00:00.000',
-                        label: OrderConversionMeasure.campaignSalesCount,
-                        value: 1000,
-                    },
+                    [
+                        {
+                            dateTime: '2024-09-18T00:00:00.000',
+                            label: OrderConversionMeasure.campaignSalesCount,
+                            value: 1000,
+                        },
+                    ],
                 ],
             },
             isError: false,

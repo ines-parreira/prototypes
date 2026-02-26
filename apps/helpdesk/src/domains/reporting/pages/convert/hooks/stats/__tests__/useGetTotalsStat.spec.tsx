@@ -1,7 +1,10 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import {
+    usePostReporting,
+    usePostReportingV2,
+} from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
@@ -12,6 +15,7 @@ import { getMetricFromCubeData } from 'domains/reporting/pages/convert/services/
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 
 describe('useGetTotalsStat', () => {
     const defaultReporting = {
@@ -54,10 +58,11 @@ describe('useGetTotalsStat', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         usePostReportingMock.mockReturnValue(defaultReporting)
+        usePostReportingV2Mock.mockReturnValue(defaultReporting)
     })
 
     it('should return isFetching=true when one the queries is fetching', () => {
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             isFetching: true,
         })
@@ -68,7 +73,7 @@ describe('useGetTotalsStat', () => {
     })
 
     it('should return isError=true when one the queries errored', () => {
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             isError: true,
         } as UseQueryResult)
@@ -87,6 +92,9 @@ describe('useGetTotalsStat', () => {
         usePostReportingMock.mock.calls.map((call) => {
             expect(call[1]?.enabled).toBe(false)
         })
+        usePostReportingV2Mock.mock.calls.map((call) => {
+            expect(call[2]?.enabled).toBe(false)
+        })
         expect(result.current.data).toMatchObject({
             campaignSalesCount: '0',
             engagement: '0',
@@ -98,8 +106,7 @@ describe('useGetTotalsStat', () => {
     })
 
     it('should return prepared data for totals section', () => {
-        // arrange
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: campaignEventsTotalsData,
         } as UseQueryResult)
@@ -117,15 +124,63 @@ describe('useGetTotalsStat', () => {
         // act
         const { result } = renderHook(() => useGetTotalsStat(...hookArgs))
 
-        // assert
-        expect(usePostReportingMock.mock.calls).toMatchSnapshot()
-        // verify select function is passed
-        expect(usePostReportingMock).toHaveBeenCalledWith(
-            expect.anything(),
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    measures: [
+                        'CampaignOrderEvents.impressions',
+                        'CampaignOrderEvents.engagement',
+                    ],
+                    timezone: 'America/Los_Angeles',
+                }),
+            ]),
             expect.objectContaining({
+                measures: ['impressions', 'engagement'],
+                timezone: 'America/Los_Angeles',
+            }),
+            expect.objectContaining({
+                enabled: true,
                 select: getMetricFromCubeData,
             }),
         )
-        expect(result.current).toMatchSnapshot()
+        expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    measures: [
+                        'OrderConversion.campaignSales',
+                        'OrderConversion.campaignSalesCount',
+                    ],
+                    timezone: 'America/Los_Angeles',
+                }),
+            ]),
+            expect.objectContaining({
+                enabled: true,
+                select: getMetricFromCubeData,
+            }),
+        )
+        expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    measures: ['OrderConversion.gmv'],
+                    timezone: 'America/Los_Angeles',
+                }),
+            ]),
+            expect.objectContaining({
+                enabled: true,
+                select: getMetricFromCubeData,
+            }),
+        )
+        expect(result.current).toEqual({
+            data: {
+                campaignSalesCount: '10',
+                engagement: '500',
+                gmv: '€3,000',
+                impressions: '1,000',
+                influencedRevenueShare: '66.67%',
+                revenue: '€2,000',
+            },
+            isError: false,
+            isFetching: false,
+        })
     })
 })

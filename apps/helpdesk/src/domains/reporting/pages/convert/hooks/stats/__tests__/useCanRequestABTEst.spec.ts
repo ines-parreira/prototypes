@@ -1,14 +1,14 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { CampaignOrderEventsMeasure } from 'domains/reporting/pages/convert/clients/constants'
 import { useCanRequestABTest } from 'domains/reporting/pages/convert/hooks/stats/useCanRequestABTest'
 import { getMetricFromCubeData } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 
 jest.useFakeTimers().setSystemTime(new Date('2024-04-08'))
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMock = assumeMock(usePostReportingV2)
 
 describe('useCanRequestABTEst', () => {
     const defaultReporting = {
@@ -62,6 +62,7 @@ describe('useCanRequestABTEst', () => {
 
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
         expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.anything(),
             expect.anything(),
             expect.objectContaining({
                 select: getMetricFromCubeData,

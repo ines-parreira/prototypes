@@ -110,6 +110,8 @@ export type DimensionName =
     | 'productId'
     | 'storeIntegrationId'
     | 'statusName'
+    | 'campaignId'
+    | 'abVariant'
 
 export type MeasureName =
     | 'ticketCount'
@@ -167,6 +169,12 @@ export type MeasureName =
     | 'onlineDurationSeconds'
     | 'offlineDurationSeconds'
     | 'medianPurchaseTime'
+    | 'campaignCTR'
+    | 'engagement'
+    | 'impressions'
+    | 'totalConversionRate'
+    | 'orderCount'
+    | 'firstCampaignDisplay'
 
 export type TimeDimensionName =
     | 'createdDatetime'

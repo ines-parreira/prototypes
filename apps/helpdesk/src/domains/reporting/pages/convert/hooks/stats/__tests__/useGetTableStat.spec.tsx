@@ -1,10 +1,12 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     fetchPostReporting,
+    fetchPostReportingV2,
     usePostReporting,
+    usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -25,7 +27,9 @@ import { getDataFromResult } from 'domains/reporting/pages/convert/services/Camp
 
 jest.mock('domains/reporting/models/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 const fetchPostReportingMock = assumeMock(fetchPostReporting)
+const fetchPostReportingV2Mock = assumeMock(fetchPostReportingV2)
 
 describe('GetTableStat', () => {
     const defaultReporting = {
@@ -204,6 +208,39 @@ describe('GetTableStat', () => {
         [
             [
                 {
+                    metricName: METRIC_NAMES.CONVERT_STORE_REVENUE_TOTAL,
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: 'OrderConversion.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.shopName',
+                            operator: 'equals',
+                            values: ['shopify:slow-formulas-for-sale'],
+                        },
+                    ],
+                    measures: ['OrderConversion.gmv'],
+                    timezone: 'America/Los_Angeles',
+                },
+            ],
+            {
+                enabled: true,
+                select: expect.any(Function),
+            },
+        ],
+    ]
+    const requestPayloadV2 = [
+        [
+            [
+                {
                     metricName:
                         METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE,
                     dimensions: ['CampaignOrderEvents.campaignId'],
@@ -233,36 +270,30 @@ describe('GetTableStat', () => {
                 },
             ],
             {
-                enabled: true,
-                select: expect.any(Function),
+                dimensions: ['campaignId'],
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-02-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-04-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'campaignId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['campaign1', 'campaign2'],
+                    },
+                ],
+                measures: ['engagement', 'totalConversionRate', 'campaignCTR'],
+                metricName:
+                    METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE,
+                scope: MetricScope.ConvertCampaignOrderEvents,
+                timezone: 'America/Los_Angeles',
             },
-        ],
-        [
-            [
-                {
-                    metricName: METRIC_NAMES.CONVERT_STORE_REVENUE_TOTAL,
-                    dimensions: [],
-                    filters: [
-                        {
-                            member: 'OrderConversion.periodStart',
-                            operator: 'afterDate',
-                            values: ['2023-02-01T00:00:00.000'],
-                        },
-                        {
-                            member: 'OrderConversion.periodEnd',
-                            operator: 'beforeDate',
-                            values: ['2023-04-01T00:00:00.000'],
-                        },
-                        {
-                            member: 'OrderConversion.shopName',
-                            operator: 'equals',
-                            values: ['shopify:slow-formulas-for-sale'],
-                        },
-                    ],
-                    measures: ['OrderConversion.gmv'],
-                    timezone: 'America/Los_Angeles',
-                },
-            ],
             {
                 enabled: true,
                 select: expect.any(Function),
@@ -372,6 +403,7 @@ describe('GetTableStat', () => {
         beforeEach(() => {
             jest.resetAllMocks()
             usePostReportingMock.mockReturnValue(defaultReporting)
+            usePostReportingV2Mock.mockReturnValue(defaultReporting)
         })
 
         it('should return isFetching=true when one the queries is fetching', () => {
@@ -412,7 +444,7 @@ describe('GetTableStat', () => {
                 data: campaignOrdersPerformanceData,
             } as UseQueryResult)
 
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: campaignEventsOrdersPerformanceData,
             } as UseQueryResult)
@@ -427,7 +459,7 @@ describe('GetTableStat', () => {
 
             // assert
             expect(usePostReportingMock.mock.calls).toEqual(requestPayload)
-            expect(usePostReportingMock.mock.calls).toMatchSnapshot()
+            expect(usePostReportingV2Mock.mock.calls).toEqual(requestPayloadV2)
             // verify select function is passed
             expect(usePostReportingMock).toHaveBeenCalledWith(
                 expect.anything(),
@@ -452,9 +484,7 @@ describe('GetTableStat', () => {
 
             // assert
             expect(usePostReportingMock.mock.calls).toEqual(requestPayload)
-            expect(usePostReportingMock.mock.calls).toMatchSnapshot()
             expect(result.current).toEqual(dataWithDefaultValuesResponse)
-            expect(result.current).toMatchSnapshot()
         })
 
         it('should not call query if campaignIds is null', () => {
@@ -477,7 +507,11 @@ describe('GetTableStat', () => {
 
     describe('fetchGetTableStat', () => {
         beforeEach(() => {
+            jest.resetAllMocks()
             fetchPostReportingMock.mockResolvedValue({
+                data: defaultReporting,
+            } as any)
+            fetchPostReportingV2Mock.mockResolvedValue({
                 data: defaultReporting,
             } as any)
         })
@@ -506,7 +540,7 @@ describe('GetTableStat', () => {
                     data: campaignOrdersPerformanceData,
                 },
             } as any)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: campaignEventsOrdersPerformanceData,
@@ -522,6 +556,9 @@ describe('GetTableStat', () => {
             const result = await fetchGetTableStat(hookArgs)
 
             expect(fetchPostReportingMock.mock.calls).toEqual(requestPayload)
+            expect(fetchPostReportingV2Mock.mock.calls).toEqual(
+                requestPayloadV2,
+            )
             expect(result).toEqual(preparedDataResponse)
         })
 

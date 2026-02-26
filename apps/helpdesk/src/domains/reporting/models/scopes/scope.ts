@@ -121,6 +121,7 @@ export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     offset?: number
     limit?: number
     total?: boolean
+    dimensions?: readonly Values<TMeta['dimensions']>[]
 }
 
 export type MetricQueryFactory<
@@ -169,6 +170,10 @@ class MetricQuery<
                     granularity: ctx.granularity,
                 },
             ]
+        }
+        // If query factory did not override dimensions, use the one from context
+        if (query.dimensions === undefined && ctx.dimensions) {
+            query.dimensions = ctx.dimensions
         }
 
         // If query limit is not defined, use context limit

@@ -38,6 +38,45 @@ exports[`useCanRequestABTEst should return data 1`] = `
       },
     ],
     {
+      "filters": [
+        {
+          "member": "periodStart",
+          "operator": "afterDate",
+          "values": [
+            "2024-03-01T00:00:00.000",
+          ],
+        },
+        {
+          "member": "periodEnd",
+          "operator": "beforeDate",
+          "values": [
+            "2024-03-31T23:59:59.999",
+          ],
+        },
+        {
+          "member": "campaignId",
+          "operator": "not-one-of",
+          "values": [
+            "",
+          ],
+        },
+        {
+          "member": "shopName",
+          "operator": "one-of",
+          "values": [
+            "shopify:test",
+          ],
+        },
+      ],
+      "measures": [
+        "orderCount",
+        "firstCampaignDisplay",
+      ],
+      "metricName": "convert-campaign-ab-test-events",
+      "scope": "convert-campaign-order-events",
+      "timezone": "UTC",
+    },
+    {
       "cacheTime": 0,
       "refetchOnWindowFocus": false,
       "select": [Function],

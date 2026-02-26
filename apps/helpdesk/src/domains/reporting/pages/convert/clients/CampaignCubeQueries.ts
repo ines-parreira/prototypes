@@ -84,7 +84,7 @@ export const getDefaultApiStatsFilters = ({
 }: {
     startDate: string
     endDate: string
-    campaignIds: string[]
+    campaignIds?: string[]
     campaignsOperator?: LogicalOperatorEnum
     shopName?: string
     abVariant?: string

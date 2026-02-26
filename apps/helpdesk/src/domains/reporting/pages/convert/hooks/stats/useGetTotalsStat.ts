@@ -1,10 +1,15 @@
 import { useMemo } from 'react'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import {
+    usePostReporting,
+    usePostReportingV2,
+} from 'domains/reporting/models/queries'
+import { convertCampaignEventsTotalsQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsTotalsData,
     getCampaignOrderTotalsData,
+    getDefaultApiStatsFilters,
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import type {
@@ -73,8 +78,12 @@ export const useGetTotalsStat = (
         [attrs],
     )
 
-    const eventsTotals = usePostReporting<[CubeMetric], CubeMetric>(
+    const eventsTotals = usePostReportingV2(
         campaignEventsTotalsQuery,
+        convertCampaignEventsTotalsQueryFactoryV2({
+            filters: getDefaultApiStatsFilters(attrs),
+            timezone,
+        }),
         { ...OVERRIDES, enabled: campaignIds !== null },
     )
     const orderTotals = usePostReporting<[CubeMetric], CubeMetric>(
