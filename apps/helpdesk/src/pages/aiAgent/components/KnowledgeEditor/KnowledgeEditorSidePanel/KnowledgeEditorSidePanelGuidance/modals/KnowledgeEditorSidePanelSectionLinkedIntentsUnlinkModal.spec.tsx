@@ -3,24 +3,67 @@ import userEvent from '@testing-library/user-event'
 
 import { KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal } from './KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal'
 
+const mockPersistLinkedIntents = jest.fn()
+
+type MockGuidanceStoreState = {
+    state: {
+        guidance: {
+            intents: string[]
+        }
+        isUpdating: boolean
+    }
+}
+
+const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
+    state: {
+        guidance: {
+            intents: ['order-status', 'order-cancel'],
+        },
+        isUpdating: false,
+    },
+})
+
+let mockGuidanceStoreState = createMockGuidanceStoreState()
+
+jest.mock(
+    'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
+    () => ({
+        useGuidanceStore: (selector: (state: unknown) => unknown) =>
+            selector(mockGuidanceStoreState),
+    }),
+)
+
+jest.mock('../hooks/usePersistLinkedIntents', () => ({
+    usePersistLinkedIntents: () => ({
+        persistLinkedIntents: mockPersistLinkedIntents,
+        isUpdating: mockGuidanceStoreState.state.isUpdating,
+        isAutoSaving: false,
+    }),
+}))
+
 const renderComponent = ({
-    isOpen = true,
+    intentId = 'order-status' as string | null,
     onClose = jest.fn(),
-    onUnlink = jest.fn(),
 }: {
-    isOpen?: boolean
+    intentId?: string | null
     onClose?: jest.Mock
-    onUnlink?: jest.Mock
 } = {}) =>
     render(
         <KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal
-            isOpen={isOpen}
+            intentId={intentId}
             onClose={onClose}
-            onUnlink={onUnlink}
         />,
     )
 
 describe('KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal', () => {
+    beforeEach(() => {
+        mockGuidanceStoreState = createMockGuidanceStoreState()
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('renders modal title, body and actions when open', () => {
         renderComponent()
 
@@ -44,8 +87,8 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal', () => {
         ).toBeInTheDocument()
     })
 
-    it('does not render modal when closed', () => {
-        renderComponent({ isOpen: false })
+    it('does not render modal when intentId is null', () => {
+        renderComponent({ intentId: null })
 
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     })
@@ -61,15 +104,18 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal', () => {
         expect(onClose).toHaveBeenCalledTimes(1)
     })
 
-    it('calls onUnlink when clicking unlink', async () => {
+    it('calls persistLinkedIntents with filtered intents when clicking unlink', async () => {
         const user = userEvent.setup()
-        const onUnlink = jest.fn()
 
-        renderComponent({ onUnlink })
+        renderComponent({ intentId: 'order-status' })
 
         await user.click(screen.getByRole('button', { name: 'Unlink' }))
 
-        expect(onUnlink).toHaveBeenCalledTimes(1)
+        expect(mockPersistLinkedIntents).toHaveBeenCalledTimes(1)
+        expect(mockPersistLinkedIntents).toHaveBeenCalledWith(
+            ['order-cancel'],
+            expect.any(Function),
+        )
     })
 
     it('calls onClose when clicking top-right close button', async () => {

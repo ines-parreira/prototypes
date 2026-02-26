@@ -1,8 +1,11 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionLinkedIntents } from './KnowledgeEditorSidePanelSectionLinkedIntents'
+
+const mockUpdateGuidanceArticle = jest.fn()
+const mockNotifyError = jest.fn()
 
 type MockGuidanceStoreState = {
     guidanceArticle: {
@@ -13,12 +16,20 @@ type MockGuidanceStoreState = {
         guidanceHelpCenter: {
             id: number
         }
+        onUpdateFn?: jest.Mock
     }
+    dispatch: jest.Mock
     state: {
         guidance: {
+            id: number
+            locale: string
+            title: string
+            content: string
+            templateKey: string | null
             isCurrent: boolean
             publishedVersionId: number | null
             draftVersionId: number | null
+            intents?: string[] | null
         }
         historicalVersion: {
             versionId: number
@@ -27,6 +38,8 @@ type MockGuidanceStoreState = {
             content: string
             publishedDatetime: string | null
         } | null
+        isUpdating: boolean
+        isAutoSaving: boolean
     }
 }
 
@@ -35,17 +48,17 @@ const mockIntentGroups = [
         name: 'Order',
         children: [
             {
-                name: 'Order/status',
+                name: 'status',
                 intent: 'order-status',
                 is_available: true,
             },
             {
-                name: 'Order/cancel',
+                name: 'cancel',
                 intent: 'order-cancel',
                 is_available: true,
             },
             {
-                name: 'Order/missing item',
+                name: 'missing item',
                 intent: 'order-missing-item',
                 is_available: false,
                 used_by_article: {
@@ -60,7 +73,7 @@ const mockIntentGroups = [
         name: 'Shipping',
         children: [
             {
-                name: 'Shipping/delay',
+                name: 'delay',
                 intent: 'shipping-delay',
                 is_available: true,
             },
@@ -88,6 +101,23 @@ jest.mock('models/helpCenter/queries', () => ({
         mockUseGetArticleTranslationIntents(...(args as [])),
 }))
 
+jest.mock('hooks/useNotify', () => ({
+    useNotify: () => ({
+        error: mockNotifyError,
+    }),
+}))
+
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: () => ({
+        updateGuidanceArticle: mockUpdateGuidanceArticle,
+    }),
+}))
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: () => ({ shopName: 'test-shop' }),
+}))
+
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
     () => ({
@@ -98,18 +128,40 @@ jest.mock(
 
 const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
     guidanceArticle: { id: 123, locale: 'en' },
-    config: { guidanceHelpCenter: { id: 456 } },
+    config: { guidanceHelpCenter: { id: 456 }, onUpdateFn: jest.fn() },
+    dispatch: jest.fn(),
     state: {
         guidance: {
+            id: 123,
+            locale: 'en',
+            title: 'Guidance title',
+            content: 'Guidance content',
+            templateKey: null,
             isCurrent: true,
             publishedVersionId: 789,
             draftVersionId: 789,
+            intents: [],
         },
         historicalVersion: null,
+        isUpdating: false,
+        isAutoSaving: false,
     },
 })
 
 let mockGuidanceStoreState = createMockGuidanceStoreState()
+
+const createUpdateResponse = (intents: string[]) => ({
+    title: mockGuidanceStoreState.state.guidance.title,
+    content: mockGuidanceStoreState.state.guidance.content,
+    locale: mockGuidanceStoreState.state.guidance.locale,
+    visibility_status: 'PUBLIC' as const,
+    created_datetime: '2025-01-01T00:00:00.000Z',
+    updated_datetime: '2025-01-02T00:00:00.000Z',
+    draft_version_id: 789,
+    published_version_id: 789,
+    is_current: true,
+    intents,
+})
 
 const renderComponent = () =>
     render(
@@ -124,12 +176,30 @@ const getLinkedIntentsSectionRegion = () =>
 describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
     beforeEach(() => {
         mockGuidanceStoreState = createMockGuidanceStoreState()
+        mockGuidanceStoreState.dispatch.mockImplementation((action) => {
+            if (
+                action.type === 'MARK_AS_SAVED' &&
+                action.payload?.guidance !== undefined
+            ) {
+                mockGuidanceStoreState.state.guidance = action.payload.guidance
+                return
+            }
+
+            if (action.type === 'SET_UPDATING') {
+                mockGuidanceStoreState.state.isUpdating = action.payload
+            }
+        })
+
         mockUseGetArticleTranslationIntents.mockReturnValue({
             data: { intents: mockIntentGroups },
             isLoading: false,
             isError: false,
             refetch: jest.fn(),
         })
+        mockUpdateGuidanceArticle.mockImplementation(
+            async ({ intents }: { intents?: string[] | null }) =>
+                createUpdateResponse(intents ?? []),
+        )
     })
 
     afterEach(() => {
@@ -148,6 +218,15 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         ).toBeInTheDocument()
     })
 
+    it('renders intents from guidance data', () => {
+        mockGuidanceStoreState.state.guidance.intents = ['order-status']
+
+        renderComponent()
+
+        expect(screen.getByText('Order/status')).toBeInTheDocument()
+        expect(screen.queryByText('No intents linked')).not.toBeInTheDocument()
+    })
+
     it('opens modal from section action', async () => {
         const user = userEvent.setup()
         renderComponent()
@@ -164,7 +243,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         ).toBeInTheDocument()
     })
 
-    it('saves selected intents and displays them in section', async () => {
+    it('saves selected intents through API and displays them in section', async () => {
         const user = userEvent.setup()
         renderComponent()
 
@@ -180,8 +259,20 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
+        await waitFor(() => {
+            expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                {
+                    intents: ['order-status'],
+                    isCurrent: false,
+                },
+                {
+                    articleId: 123,
+                    locale: 'en',
+                },
+            )
+        })
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-        expect(screen.getByText(/Order\/status/)).toBeInTheDocument()
+        expect(screen.getByText('Order/status')).toBeInTheDocument()
     })
 
     it('discards modal draft selection when canceling', async () => {
@@ -247,7 +338,8 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         ).not.toBeChecked()
     })
 
-    it('does not render the link intents button while viewing a historical version', () => {
+    it('renders a disabled link intents button and tooltip when viewing a historical version', async () => {
+        const user = userEvent.setup()
         mockGuidanceStoreState = {
             ...mockGuidanceStoreState,
             state: {
@@ -264,15 +356,21 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
 
         renderComponent()
 
+        const linkIntentsButton = within(
+            getLinkedIntentsSectionRegion(),
+        ).getByRole('button', { name: /link intents/i })
+        expect(linkIntentsButton).toBeDisabled()
+
+        await user.hover(linkIntentsButton.parentElement as HTMLElement)
+
         expect(
-            within(getLinkedIntentsSectionRegion()).queryByRole('button', {
-                name: /link intents/i,
-            }),
-        ).not.toBeInTheDocument()
+            await screen.findByText(
+                'You are viewing a past version. Switch to the latest version to link intents.',
+            ),
+        ).toBeInTheDocument()
     })
 
-    it('renders a disabled link intents button and tooltip when guidance was never published', async () => {
-        const user = userEvent.setup()
+    it('enables the link intents button when guidance was never published', () => {
         mockGuidanceStoreState = {
             ...mockGuidanceStoreState,
             state: {
@@ -290,19 +388,41 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         const linkIntentsButton = within(
             getLinkedIntentsSectionRegion(),
         ).getByRole('button', { name: /link intents/i })
+        expect(linkIntentsButton).toBeEnabled()
+    })
+
+    it('renders a disabled link intents button and tooltip when viewing a published version with a draft', async () => {
+        const user = userEvent.setup()
+        mockGuidanceStoreState = {
+            ...mockGuidanceStoreState,
+            state: {
+                ...mockGuidanceStoreState.state,
+                guidance: {
+                    ...mockGuidanceStoreState.state.guidance,
+                    isCurrent: true,
+                    publishedVersionId: 100,
+                    draftVersionId: 101,
+                },
+            },
+        }
+
+        renderComponent()
+
+        const linkIntentsButton = within(
+            getLinkedIntentsSectionRegion(),
+        ).getByRole('button', { name: /link intents/i })
         expect(linkIntentsButton).toBeDisabled()
 
         await user.hover(linkIntentsButton.parentElement as HTMLElement)
 
         expect(
             await screen.findByText(
-                'Intents can only be linked when guidance is published and enabled for AI Agent.',
+                'A draft of this guidance exists. Switch to the draft to link intents.',
             ),
         ).toBeInTheDocument()
     })
 
-    it('renders a disabled link intents button and draft tooltip when viewing a draft with a published version', async () => {
-        const user = userEvent.setup()
+    it('enables the link intents button when viewing a draft with a published version', () => {
         mockGuidanceStoreState = {
             ...mockGuidanceStoreState,
             state: {
@@ -321,15 +441,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         const linkIntentsButton = within(
             getLinkedIntentsSectionRegion(),
         ).getByRole('button', { name: /link intents/i })
-        expect(linkIntentsButton).toBeDisabled()
-
-        await user.hover(linkIntentsButton.parentElement as HTMLElement)
-
-        expect(
-            await screen.findByText(
-                "These intents are currently linked to the published version of this guidance. You'll be able to add more once this draft is published.",
-            ),
-        ).toBeInTheDocument()
+        expect(linkIntentsButton).toBeEnabled()
     })
 
     it('asks for confirmation before unlinking an intent from the sidebar', async () => {
@@ -348,7 +460,9 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
-        expect(screen.getByText(/Order\/status/)).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Order/status')).toBeInTheDocument()
+        })
 
         await user.click(
             within(getLinkedIntentsSectionRegion()).getByRole('button', {
@@ -379,6 +493,18 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         )
         await user.click(screen.getByRole('button', { name: 'Unlink' }))
 
-        expect(screen.queryByText(/Order\/status/)).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(mockUpdateGuidanceArticle).toHaveBeenLastCalledWith(
+                {
+                    intents: [],
+                    isCurrent: false,
+                },
+                {
+                    articleId: 123,
+                    locale: 'en',
+                },
+            )
+        })
+        expect(screen.queryByText('Order/status')).not.toBeInTheDocument()
     })
 })

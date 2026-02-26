@@ -271,6 +271,67 @@ declare namespace Components {
             publisher_user_id: number | null
             commit_message: string | null
             version: number | null
+            intents?:
+                | (
+                      | 'account::deletion'
+                      | 'account::login'
+                      | 'account::other'
+                      | 'account::registration'
+                      | 'account::update'
+                      | 'exchange::other'
+                      | 'exchange::request'
+                      | 'exchange::status'
+                      | 'feedback::negative'
+                      | 'feedback::other'
+                      | 'feedback::positive'
+                      | 'marketing::advertising'
+                      | 'marketing::collaboration'
+                      | 'marketing::other'
+                      | 'marketing::unsubscribe'
+                      | 'order::cancel'
+                      | 'order::damaged'
+                      | 'order::edit'
+                      | 'order::missing item'
+                      | 'order::other'
+                      | 'order::payment'
+                      | 'order::placement'
+                      | 'order::refund'
+                      | 'order::status'
+                      | 'order::wrong item'
+                      | 'other::no reply'
+                      | 'other::other'
+                      | 'other::spam'
+                      | 'product::availability'
+                      | 'product::customization'
+                      | 'product::details'
+                      | 'product::other'
+                      | 'product::quality issues'
+                      | 'product::usage'
+                      | 'promotion & discount::information'
+                      | 'promotion & discount::issue'
+                      | 'promotion & discount::other'
+                      | 'return::information'
+                      | 'return::other'
+                      | 'return::request'
+                      | 'return::status'
+                      | 'shipping::change address'
+                      | 'shipping::delay'
+                      | 'shipping::delivered not received'
+                      | 'shipping::information'
+                      | 'shipping::other'
+                      | 'subscription::cancel'
+                      | 'subscription::information'
+                      | 'subscription::modification'
+                      | 'subscription::other'
+                      | 'warranty::claim'
+                      | 'warranty::information'
+                      | 'warranty::other'
+                      | 'wholesale::information'
+                      | 'wholesale::other'
+                  )[]
+                | null
+            is_intent_usage_enabled?: boolean | null
+            use_supporting_content?: boolean | null
             rating: Rating
             /**
              * Gives details on how the translation fallback was chosen:
@@ -352,7 +413,62 @@ declare namespace Components {
         }
         export interface ArticleTranslationIntentDto {
             name: string
-            intent: string
+            intent:
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
             is_available: boolean
             used_by_article?: ArticleTranslationIntentUsedByArticleDto
         }
@@ -425,6 +541,67 @@ declare namespace Components {
             publisher_user_id: number | null
             commit_message: string | null
             version: number | null
+            intents?:
+                | (
+                      | 'account::deletion'
+                      | 'account::login'
+                      | 'account::other'
+                      | 'account::registration'
+                      | 'account::update'
+                      | 'exchange::other'
+                      | 'exchange::request'
+                      | 'exchange::status'
+                      | 'feedback::negative'
+                      | 'feedback::other'
+                      | 'feedback::positive'
+                      | 'marketing::advertising'
+                      | 'marketing::collaboration'
+                      | 'marketing::other'
+                      | 'marketing::unsubscribe'
+                      | 'order::cancel'
+                      | 'order::damaged'
+                      | 'order::edit'
+                      | 'order::missing item'
+                      | 'order::other'
+                      | 'order::payment'
+                      | 'order::placement'
+                      | 'order::refund'
+                      | 'order::status'
+                      | 'order::wrong item'
+                      | 'other::no reply'
+                      | 'other::other'
+                      | 'other::spam'
+                      | 'product::availability'
+                      | 'product::customization'
+                      | 'product::details'
+                      | 'product::other'
+                      | 'product::quality issues'
+                      | 'product::usage'
+                      | 'promotion & discount::information'
+                      | 'promotion & discount::issue'
+                      | 'promotion & discount::other'
+                      | 'return::information'
+                      | 'return::other'
+                      | 'return::request'
+                      | 'return::status'
+                      | 'shipping::change address'
+                      | 'shipping::delay'
+                      | 'shipping::delivered not received'
+                      | 'shipping::information'
+                      | 'shipping::other'
+                      | 'subscription::cancel'
+                      | 'subscription::information'
+                      | 'subscription::modification'
+                      | 'subscription::other'
+                      | 'warranty::claim'
+                      | 'warranty::information'
+                      | 'warranty::other'
+                      | 'wholesale::information'
+                      | 'wholesale::other'
+                  )[]
+                | null
+            is_intent_usage_enabled?: boolean | null
+            use_supporting_content?: boolean | null
         }
         export interface ArticleTranslationSeoMeta {
             title: string | null
@@ -445,6 +622,67 @@ declare namespace Components {
             published_datetime: string | null // date-time
             commit_message?: string
             publisher_user_id?: number
+            intents?:
+                | (
+                      | 'account::deletion'
+                      | 'account::login'
+                      | 'account::other'
+                      | 'account::registration'
+                      | 'account::update'
+                      | 'exchange::other'
+                      | 'exchange::request'
+                      | 'exchange::status'
+                      | 'feedback::negative'
+                      | 'feedback::other'
+                      | 'feedback::positive'
+                      | 'marketing::advertising'
+                      | 'marketing::collaboration'
+                      | 'marketing::other'
+                      | 'marketing::unsubscribe'
+                      | 'order::cancel'
+                      | 'order::damaged'
+                      | 'order::edit'
+                      | 'order::missing item'
+                      | 'order::other'
+                      | 'order::payment'
+                      | 'order::placement'
+                      | 'order::refund'
+                      | 'order::status'
+                      | 'order::wrong item'
+                      | 'other::no reply'
+                      | 'other::other'
+                      | 'other::spam'
+                      | 'product::availability'
+                      | 'product::customization'
+                      | 'product::details'
+                      | 'product::other'
+                      | 'product::quality issues'
+                      | 'product::usage'
+                      | 'promotion & discount::information'
+                      | 'promotion & discount::issue'
+                      | 'promotion & discount::other'
+                      | 'return::information'
+                      | 'return::other'
+                      | 'return::request'
+                      | 'return::status'
+                      | 'shipping::change address'
+                      | 'shipping::delay'
+                      | 'shipping::delivered not received'
+                      | 'shipping::information'
+                      | 'shipping::other'
+                      | 'subscription::cancel'
+                      | 'subscription::information'
+                      | 'subscription::modification'
+                      | 'subscription::other'
+                      | 'warranty::claim'
+                      | 'warranty::information'
+                      | 'warranty::other'
+                      | 'wholesale::information'
+                      | 'wholesale::other'
+                  )[]
+                | null
+            is_intent_usage_enabled?: boolean | null
+            use_supporting_content?: boolean | null
         }
         export interface ArticleTranslationVersionsListPageDto {
             meta: PageMetaDto
@@ -491,6 +729,67 @@ declare namespace Components {
             publisher_user_id: number | null
             commit_message: string | null
             version: number | null
+            intents?:
+                | (
+                      | 'account::deletion'
+                      | 'account::login'
+                      | 'account::other'
+                      | 'account::registration'
+                      | 'account::update'
+                      | 'exchange::other'
+                      | 'exchange::request'
+                      | 'exchange::status'
+                      | 'feedback::negative'
+                      | 'feedback::other'
+                      | 'feedback::positive'
+                      | 'marketing::advertising'
+                      | 'marketing::collaboration'
+                      | 'marketing::other'
+                      | 'marketing::unsubscribe'
+                      | 'order::cancel'
+                      | 'order::damaged'
+                      | 'order::edit'
+                      | 'order::missing item'
+                      | 'order::other'
+                      | 'order::payment'
+                      | 'order::placement'
+                      | 'order::refund'
+                      | 'order::status'
+                      | 'order::wrong item'
+                      | 'other::no reply'
+                      | 'other::other'
+                      | 'other::spam'
+                      | 'product::availability'
+                      | 'product::customization'
+                      | 'product::details'
+                      | 'product::other'
+                      | 'product::quality issues'
+                      | 'product::usage'
+                      | 'promotion & discount::information'
+                      | 'promotion & discount::issue'
+                      | 'promotion & discount::other'
+                      | 'return::information'
+                      | 'return::other'
+                      | 'return::request'
+                      | 'return::status'
+                      | 'shipping::change address'
+                      | 'shipping::delay'
+                      | 'shipping::delivered not received'
+                      | 'shipping::information'
+                      | 'shipping::other'
+                      | 'subscription::cancel'
+                      | 'subscription::information'
+                      | 'subscription::modification'
+                      | 'subscription::other'
+                      | 'warranty::claim'
+                      | 'warranty::information'
+                      | 'warranty::other'
+                      | 'wholesale::information'
+                      | 'wholesale::other'
+                  )[]
+                | null
+            is_intent_usage_enabled?: boolean | null
+            use_supporting_content?: boolean | null
             rating: Rating
         }
         export interface ArticleTranslationsListPageDto {
@@ -1146,6 +1445,67 @@ declare namespace Components {
                 publisher_user_id: number | null
                 commit_message: string | null
                 version: number | null
+                intents?:
+                    | (
+                          | 'account::deletion'
+                          | 'account::login'
+                          | 'account::other'
+                          | 'account::registration'
+                          | 'account::update'
+                          | 'exchange::other'
+                          | 'exchange::request'
+                          | 'exchange::status'
+                          | 'feedback::negative'
+                          | 'feedback::other'
+                          | 'feedback::positive'
+                          | 'marketing::advertising'
+                          | 'marketing::collaboration'
+                          | 'marketing::other'
+                          | 'marketing::unsubscribe'
+                          | 'order::cancel'
+                          | 'order::damaged'
+                          | 'order::edit'
+                          | 'order::missing item'
+                          | 'order::other'
+                          | 'order::payment'
+                          | 'order::placement'
+                          | 'order::refund'
+                          | 'order::status'
+                          | 'order::wrong item'
+                          | 'other::no reply'
+                          | 'other::other'
+                          | 'other::spam'
+                          | 'product::availability'
+                          | 'product::customization'
+                          | 'product::details'
+                          | 'product::other'
+                          | 'product::quality issues'
+                          | 'product::usage'
+                          | 'promotion & discount::information'
+                          | 'promotion & discount::issue'
+                          | 'promotion & discount::other'
+                          | 'return::information'
+                          | 'return::other'
+                          | 'return::request'
+                          | 'return::status'
+                          | 'shipping::change address'
+                          | 'shipping::delay'
+                          | 'shipping::delivered not received'
+                          | 'shipping::information'
+                          | 'shipping::other'
+                          | 'subscription::cancel'
+                          | 'subscription::information'
+                          | 'subscription::modification'
+                          | 'subscription::other'
+                          | 'warranty::claim'
+                          | 'warranty::information'
+                          | 'warranty::other'
+                          | 'wholesale::information'
+                          | 'wholesale::other'
+                      )[]
+                    | null
+                is_intent_usage_enabled?: boolean | null
+                use_supporting_content?: boolean | null
             } | null
             draft: ArticleTranslationResponseDto
         }
@@ -1622,6 +1982,83 @@ declare namespace Components {
                  * Used to change the categoryId of the article
                  */
                 category_id?: number | null
+                /**
+                 * The list of intents linked to this article translation.
+                 * example:
+                 * [
+                 *   "order::status",
+                 *   "order::refund"
+                 * ]
+                 */
+                intents?: (
+                    | 'account::deletion'
+                    | 'account::login'
+                    | 'account::other'
+                    | 'account::registration'
+                    | 'account::update'
+                    | 'exchange::other'
+                    | 'exchange::request'
+                    | 'exchange::status'
+                    | 'feedback::negative'
+                    | 'feedback::other'
+                    | 'feedback::positive'
+                    | 'marketing::advertising'
+                    | 'marketing::collaboration'
+                    | 'marketing::other'
+                    | 'marketing::unsubscribe'
+                    | 'order::cancel'
+                    | 'order::damaged'
+                    | 'order::edit'
+                    | 'order::missing item'
+                    | 'order::other'
+                    | 'order::payment'
+                    | 'order::placement'
+                    | 'order::refund'
+                    | 'order::status'
+                    | 'order::wrong item'
+                    | 'other::no reply'
+                    | 'other::other'
+                    | 'other::spam'
+                    | 'product::availability'
+                    | 'product::customization'
+                    | 'product::details'
+                    | 'product::other'
+                    | 'product::quality issues'
+                    | 'product::usage'
+                    | 'promotion & discount::information'
+                    | 'promotion & discount::issue'
+                    | 'promotion & discount::other'
+                    | 'return::information'
+                    | 'return::other'
+                    | 'return::request'
+                    | 'return::status'
+                    | 'shipping::change address'
+                    | 'shipping::delay'
+                    | 'shipping::delivered not received'
+                    | 'shipping::information'
+                    | 'shipping::other'
+                    | 'subscription::cancel'
+                    | 'subscription::information'
+                    | 'subscription::modification'
+                    | 'subscription::other'
+                    | 'warranty::claim'
+                    | 'warranty::information'
+                    | 'warranty::other'
+                    | 'wholesale::information'
+                    | 'wholesale::other'
+                )[]
+                /**
+                 * Whether intent-based usage is enabled for this article translation.
+                 * example:
+                 * true
+                 */
+                is_intent_usage_enabled?: boolean
+                /**
+                 * Whether the article content can be used as supporting content for AI responses.
+                 * example:
+                 * true
+                 */
+                use_supporting_content?: boolean
             }
             category_id?: number | null
             template_key?: string | null
@@ -1718,6 +2155,83 @@ declare namespace Components {
              * Used to change the categoryId of the article
              */
             category_id?: number | null
+            /**
+             * The list of intents linked to this article translation.
+             * example:
+             * [
+             *   "order::status",
+             *   "order::refund"
+             * ]
+             */
+            intents?: (
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
+            )[]
+            /**
+             * Whether intent-based usage is enabled for this article translation.
+             * example:
+             * true
+             */
+            is_intent_usage_enabled?: boolean
+            /**
+             * Whether the article content can be used as supporting content for AI responses.
+             * example:
+             * true
+             */
+            use_supporting_content?: boolean
         }
         export interface CreateArticleTranslationRatingDto {
             /**
@@ -2858,6 +3372,67 @@ declare namespace Components {
             publisher_user_id: number | null
             commit_message: string | null
             version: number | null
+            intents?:
+                | (
+                      | 'account::deletion'
+                      | 'account::login'
+                      | 'account::other'
+                      | 'account::registration'
+                      | 'account::update'
+                      | 'exchange::other'
+                      | 'exchange::request'
+                      | 'exchange::status'
+                      | 'feedback::negative'
+                      | 'feedback::other'
+                      | 'feedback::positive'
+                      | 'marketing::advertising'
+                      | 'marketing::collaboration'
+                      | 'marketing::other'
+                      | 'marketing::unsubscribe'
+                      | 'order::cancel'
+                      | 'order::damaged'
+                      | 'order::edit'
+                      | 'order::missing item'
+                      | 'order::other'
+                      | 'order::payment'
+                      | 'order::placement'
+                      | 'order::refund'
+                      | 'order::status'
+                      | 'order::wrong item'
+                      | 'other::no reply'
+                      | 'other::other'
+                      | 'other::spam'
+                      | 'product::availability'
+                      | 'product::customization'
+                      | 'product::details'
+                      | 'product::other'
+                      | 'product::quality issues'
+                      | 'product::usage'
+                      | 'promotion & discount::information'
+                      | 'promotion & discount::issue'
+                      | 'promotion & discount::other'
+                      | 'return::information'
+                      | 'return::other'
+                      | 'return::request'
+                      | 'return::status'
+                      | 'shipping::change address'
+                      | 'shipping::delay'
+                      | 'shipping::delivered not received'
+                      | 'shipping::information'
+                      | 'shipping::other'
+                      | 'subscription::cancel'
+                      | 'subscription::information'
+                      | 'subscription::modification'
+                      | 'subscription::other'
+                      | 'warranty::claim'
+                      | 'warranty::information'
+                      | 'warranty::other'
+                      | 'wholesale::information'
+                      | 'wholesale::other'
+                  )[]
+                | null
+            is_intent_usage_enabled?: boolean | null
+            use_supporting_content?: boolean | null
             /**
              * Gives details on how the translation fallback was chosen:
              * - `undefined`: the translation is the requested one
@@ -3332,6 +3907,83 @@ declare namespace Components {
              * Used to change the categoryId of the article
              */
             category_id?: number | null
+            /**
+             * The list of intents linked to this article translation.
+             * example:
+             * [
+             *   "order::status",
+             *   "order::refund"
+             * ]
+             */
+            intents?: (
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
+            )[]
+            /**
+             * Whether intent-based usage is enabled for this article translation.
+             * example:
+             * true
+             */
+            is_intent_usage_enabled?: boolean
+            /**
+             * Whether the article content can be used as supporting content for AI responses.
+             * example:
+             * true
+             */
+            use_supporting_content?: boolean
             /**
              * The ID of the user publishing this translation. Required when authenticating with an API key. When using token authentication, this field is ignored and the user ID is extracted from the token.
              * example:

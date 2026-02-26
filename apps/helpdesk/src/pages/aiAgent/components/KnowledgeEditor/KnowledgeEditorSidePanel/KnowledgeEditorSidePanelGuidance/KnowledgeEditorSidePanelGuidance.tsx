@@ -28,6 +28,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         guidanceHelpCenterId,
         publishedVersionId,
         draftVersionId,
+        linkedIntentsCount,
     } = useGuidanceStore(
         useShallow((storeState) => ({
             guidanceArticleId: storeState.guidanceArticle?.id,
@@ -35,6 +36,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
             publishedVersionId: storeState.state.guidance?.publishedVersionId,
             draftVersionId: storeState.state.guidance?.draftVersionId,
+            linkedIntentsCount: storeState.state.guidance?.intents?.length ?? 0,
         })),
     )
 
@@ -68,7 +70,10 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
             initialExpandedSections={initialExpandedSections}
             footer={<KnowledgeEditorSidePanelBackendIds ids={backendIds} />}
         >
-            <KnowledgeEditorSidePanelSectionGuidanceDetails sectionId="details" />
+            <KnowledgeEditorSidePanelSectionGuidanceDetails
+                sectionId="details"
+                linkedIntentsCount={linkedIntentsCount}
+            />
 
             {isLinkedIntentsEnabled && (
                 <KnowledgeEditorSidePanelSectionLinkedIntents sectionId="linked-intents" />

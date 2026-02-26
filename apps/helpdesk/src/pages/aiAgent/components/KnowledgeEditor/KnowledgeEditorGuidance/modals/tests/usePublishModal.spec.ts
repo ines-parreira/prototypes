@@ -494,6 +494,81 @@ describe('usePublishModal', () => {
             )
         })
 
+        it('should show formatted API message on 409 conflict error with a single intent', async () => {
+            const conflictError = {
+                isAxiosError: true,
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'The following intents are already used by other published articles in this help center: marketing::unsubscribe',
+                        },
+                    },
+                },
+            }
+            mockUpdateGuidanceArticle.mockRejectedValue(conflictError)
+
+            const { result } = renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await result.current.onPublish('Test commit message')
+            })
+
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'The following intents are already used by other published articles in this help center: Marketing/unsubscribe',
+            )
+        })
+
+        it('should format multiple intents in 409 conflict error', async () => {
+            const conflictError = {
+                isAxiosError: true,
+                response: {
+                    status: 409,
+                    data: {
+                        error: {
+                            msg: 'The following intents are already used by other published articles in this help center: marketing::unsubscribe, order::status',
+                        },
+                    },
+                },
+            }
+            mockUpdateGuidanceArticle.mockRejectedValue(conflictError)
+
+            const { result } = renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await result.current.onPublish('Test commit message')
+            })
+
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'The following intents are already used by other published articles in this help center: Marketing/unsubscribe, Order/status',
+            )
+        })
+
+        it('should show generic error for non-409 API errors', async () => {
+            const serverError = {
+                isAxiosError: true,
+                response: {
+                    status: 500,
+                    data: {
+                        error: {
+                            msg: 'Internal server error',
+                        },
+                    },
+                },
+            }
+            mockUpdateGuidanceArticle.mockRejectedValue(serverError)
+
+            const { result } = renderHook(() => usePublishModal())
+
+            await act(async () => {
+                await result.current.onPublish('Test commit message')
+            })
+
+            expect(mockNotifyError).toHaveBeenCalledWith(
+                'An error occurred while publishing guidance.',
+            )
+        })
+
         it('should not call onUpdateFn on failure', async () => {
             mockUpdateGuidanceArticle.mockRejectedValue(new Error('API Error'))
 

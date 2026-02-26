@@ -123,6 +123,44 @@ describe('guidanceReducer', () => {
             expect(result.hasAutoSavedInSession).toBe(false)
         })
 
+        it('should preserve comparisonVersion when switching to diff mode', () => {
+            const stateWithComparison = {
+                ...initialState,
+                comparisonVersion: {
+                    title: 'Previous title',
+                    content: 'Previous content',
+                },
+            }
+
+            const result = guidanceReducer(stateWithComparison, {
+                type: 'SET_MODE',
+                payload: 'diff',
+            })
+
+            expect(result.comparisonVersion).toEqual({
+                title: 'Previous title',
+                content: 'Previous content',
+            })
+        })
+
+        it('should clear comparisonVersion outside diff mode', () => {
+            const stateWithComparison = {
+                ...initialState,
+                guidanceMode: 'diff' as const,
+                comparisonVersion: {
+                    title: 'Previous title',
+                    content: 'Previous content',
+                },
+            }
+
+            const result = guidanceReducer(stateWithComparison, {
+                type: 'SET_MODE',
+                payload: 'edit',
+            })
+
+            expect(result.comparisonVersion).toBeNull()
+        })
+
         it('should preserve hasAutoSavedInSession when switching to create mode', () => {
             const stateWithAutoSaved = {
                 ...initialState,
@@ -550,6 +588,37 @@ describe('guidanceReducer', () => {
 
             expect(result.hasAutoSavedInSession).toBe(true)
         })
+
+        it('should update guidance and mark autosave state when payload has guidance only', () => {
+            const stateWithAutoSaveFlags = {
+                ...initialState,
+                isAutoSaving: true,
+                hasAutoSavedInSession: false,
+                autoSaveError: true,
+                savedSnapshot: {
+                    title: 'Initial title',
+                    content: 'Initial content',
+                },
+            }
+            const newGuidance: GuidanceArticle = {
+                ...mockGuidance,
+                intents: ['account::deletion'],
+            }
+
+            const result = guidanceReducer(stateWithAutoSaveFlags, {
+                type: 'MARK_AS_SAVED',
+                payload: { guidance: newGuidance },
+            })
+
+            expect(result.guidance).toEqual(newGuidance)
+            expect(result.savedSnapshot).toEqual({
+                title: 'Initial title',
+                content: 'Initial content',
+            })
+            expect(result.isAutoSaving).toBe(false)
+            expect(result.hasAutoSavedInSession).toBe(true)
+            expect(result.autoSaveError).toBe(false)
+        })
     })
 
     describe('SET_AUTO_SAVING', () => {
@@ -581,6 +650,36 @@ describe('guidanceReducer', () => {
             })
 
             expect(result).toBe(stateAutoSaving)
+        })
+
+        it('should clear auto save error when toggled to true', () => {
+            const stateWithError = {
+                ...initialState,
+                autoSaveError: true,
+            }
+
+            const result = guidanceReducer(stateWithError, {
+                type: 'SET_AUTO_SAVING',
+                payload: true,
+            })
+
+            expect(result.isAutoSaving).toBe(true)
+            expect(result.autoSaveError).toBe(false)
+        })
+
+        it('should return same state when false does not change values', () => {
+            const stateWithoutSaving = {
+                ...initialState,
+                isAutoSaving: false,
+                autoSaveError: true,
+            }
+
+            const result = guidanceReducer(stateWithoutSaving, {
+                type: 'SET_AUTO_SAVING',
+                payload: false,
+            })
+
+            expect(result).toBe(stateWithoutSaving)
         })
     })
 

@@ -1,3 +1,5 @@
+import { useShallow } from 'zustand/react/shallow'
+
 import {
     Box,
     Button,
@@ -8,21 +10,41 @@ import {
     Text,
 } from '@gorgias/axiom'
 
+import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
+
+import { usePersistLinkedIntents } from '../hooks/usePersistLinkedIntents'
+
 type Props = {
-    isOpen: boolean
+    intentId: string | null
     onClose: () => void
-    onUnlink: () => void
 }
 
 export const KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal = ({
-    isOpen,
+    intentId,
     onClose,
-    onUnlink,
 }: Props) => {
+    const { persistLinkedIntents, isUpdating: isUnlinking } =
+        usePersistLinkedIntents()
+
+    const guidanceIntentIds = useGuidanceStore(
+        useShallow((storeState) => storeState.state.guidance?.intents ?? []),
+    )
+
+    const isOpen = intentId !== null
+
     const handleModalOpenChange = (nextIsOpen: boolean) => {
-        if (!nextIsOpen) {
+        if (!nextIsOpen && !isUnlinking) {
             onClose()
         }
+    }
+
+    const handleConfirmUnlink = () => {
+        if (!intentId) return
+
+        void persistLinkedIntents(
+            guidanceIntentIds.filter((id) => id !== intentId),
+            () => onClose(),
+        )
     }
 
     return (
@@ -43,13 +65,19 @@ export const KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal = ({
             </OverlayContent>
             <OverlayFooter hideCancelButton>
                 <Box gap="xs" justifyContent="flex-end" width="100%">
-                    <Button variant="tertiary" onClick={onClose}>
+                    <Button
+                        variant="tertiary"
+                        onClick={onClose}
+                        isDisabled={isUnlinking}
+                    >
                         Cancel
                     </Button>
                     <Button
                         variant="primary"
                         intent="destructive"
-                        onClick={onUnlink}
+                        onClick={handleConfirmUnlink}
+                        isLoading={isUnlinking}
+                        isDisabled={isUnlinking}
                     >
                         Unlink
                     </Button>

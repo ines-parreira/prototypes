@@ -40,6 +40,12 @@ export const mapGuidanceToArticleApi = (
 export const mapUpdateGuidanceArticleToArticleApi = (
     updateGuidanceArticle: UpdateGuidanceArticle,
 ): UpdateArticleTranslationDto => {
+    const intents =
+        updateGuidanceArticle.intents === undefined ||
+        updateGuidanceArticle.intents === null
+            ? undefined
+            : (updateGuidanceArticle.intents as UpdateArticleTranslationDto['intents'])
+
     return {
         title: updateGuidanceArticle.title,
         content: updateGuidanceArticle.content,
@@ -49,6 +55,7 @@ export const mapUpdateGuidanceArticleToArticleApi = (
             : undefined,
         is_current: updateGuidanceArticle.isCurrent,
         commit_message: updateGuidanceArticle.commitMessage,
+        ...(intents !== undefined ? { intents } : {}),
     }
 }
 
@@ -67,6 +74,7 @@ export const mapArticleApiToGuidanceArticle = (
         isCurrent: article.translation.is_current,
         draftVersionId: article.translation.draft_version_id,
         publishedVersionId: article.translation.published_version_id,
+        intents: article.translation.intents,
     }
 }
 

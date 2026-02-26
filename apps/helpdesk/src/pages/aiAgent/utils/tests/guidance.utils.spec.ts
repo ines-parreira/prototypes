@@ -61,6 +61,58 @@ describe('guidance.utils', () => {
 
             expect(result).toEqual(expected)
         })
+
+        it('should map linked intents when updating guidance article', () => {
+            const updateGuidanceArticle: UpdateGuidanceArticle = {
+                intents: ['order::status'],
+            }
+
+            const result = mapUpdateGuidanceArticleToArticleApi(
+                updateGuidanceArticle,
+            )
+
+            expect(result).toEqual({
+                intents: ['order::status'],
+            })
+        })
+
+        it('should omit intents when they are undefined', () => {
+            const updateGuidanceArticle: UpdateGuidanceArticle = {
+                title: 'Updated Title',
+            }
+
+            const result = mapUpdateGuidanceArticleToArticleApi(
+                updateGuidanceArticle,
+            )
+
+            expect(result).toEqual({
+                title: 'Updated Title',
+                content: undefined,
+                visibility_status: undefined,
+                slug: 'updated-title',
+                is_current: undefined,
+                commit_message: undefined,
+            })
+        })
+
+        it('should omit intents when they are null', () => {
+            const updateGuidanceArticle = {
+                intents: null,
+            } as unknown as UpdateGuidanceArticle
+
+            const result = mapUpdateGuidanceArticleToArticleApi(
+                updateGuidanceArticle,
+            )
+
+            expect(result).toEqual({
+                title: undefined,
+                content: undefined,
+                visibility_status: undefined,
+                slug: undefined,
+                is_current: undefined,
+                commit_message: undefined,
+            })
+        })
     })
 
     describe('mapArticleApiToGuidanceArticle', () => {
@@ -79,6 +131,7 @@ describe('guidance.utils', () => {
                 isCurrent: article.translation.is_current,
                 draftVersionId: article.translation.draft_version_id,
                 publishedVersionId: article.translation.published_version_id,
+                intents: article.translation.intents,
             }
 
             const result = mapArticleApiToGuidanceArticle(article)

@@ -10,6 +10,7 @@ const mockToggleVisibility = jest.fn()
 const mockUseGuidanceStore = jest.fn()
 const mockDispatch = jest.fn()
 const mockUseFlag = jest.fn()
+const mockUpdateGuidanceArticle = jest.fn()
 const mockUseGetArticleTranslationIntents = jest.fn(
     (__params?: unknown, __options?: unknown) => ({
         data: {
@@ -122,6 +123,12 @@ jest.mock(
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationIntents: (params: unknown, options: unknown) =>
         mockUseGetArticleTranslationIntents(params, options),
+}))
+
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: () => ({
+        updateGuidanceArticle: mockUpdateGuidanceArticle,
+    }),
 }))
 
 jest.mock('@repo/feature-flags', () => ({

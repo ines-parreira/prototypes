@@ -90,9 +90,9 @@ export type GuidanceReducerAction =
     | {
           type: 'MARK_AS_SAVED'
           payload?: {
-              title: string
-              content: string
-              guidance: GuidanceArticle
+              title?: string
+              content?: string
+              guidance?: GuidanceArticle
           }
       }
     | { type: 'SET_AUTO_SAVING'; payload: boolean }

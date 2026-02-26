@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
+import { isGorgiasApiError } from 'models/api/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { fromArticleTranslationResponse, useGuidanceContext } from '../context'
@@ -50,8 +51,18 @@ export const usePublishModal = () => {
                     notifySuccess('Guidance published successfully.')
                     onUpdateFn?.()
                 }
-            } catch {
-                notifyError('An error occurred while publishing guidance.')
+            } catch (error) {
+                if (isGorgiasApiError(error) && error.response.status === 409) {
+                    // Convert API intent format (e.g. "marketing::unsubscribe") to local format ("Marketing/unsubscribe")
+                    const message = error.response.data.error.msg.replace(
+                        /(\w+)::(\w+)/g,
+                        (_, group: string, name: string) =>
+                            `${group.charAt(0).toUpperCase() + group.slice(1)}/${name}`,
+                    )
+                    notifyError(message)
+                } else {
+                    notifyError('An error occurred while publishing guidance.')
+                }
             } finally {
                 dispatch({ type: 'SET_UPDATING', payload: false })
                 dispatch({ type: 'CLOSE_MODAL' })

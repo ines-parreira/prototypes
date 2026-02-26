@@ -1,0 +1,149 @@
+:local {
+    .selectionCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .modalContent {
+        color: var(--content-neutral-default);
+        min-height: 0;
+    }
+
+    .modalDescription {
+        padding: var(--spacing-md) 0;
+    }
+
+    .searchField {
+        margin-top: var(--spacing-xs);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .intentsContainer {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        border-bottom: 1px solid var(--border-neutral-default);
+        padding: 0 var(--spacing-xs);
+    }
+
+    .suggestedSection {
+        padding: var(--spacing-xs) 0;
+        border-bottom: 1px solid var(--border-neutral-default);
+    }
+
+    .suggestedHeader {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        color: var(--content-accent-default);
+        padding: var(--spacing-xxs) 0;
+    }
+
+    .suggestedTitle {
+        color: var(--content-accent-default);
+    }
+
+    .suggestedList {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .group {
+        border-bottom: 1px solid var(--border-neutral-default);
+        padding: var(--spacing-xs) 0;
+    }
+
+    .group:last-child {
+        border-bottom: none;
+    }
+
+    .groupHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xxs);
+
+        label,
+        label span {
+            color: var(--content-neutral-tertiary) !important;
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            line-height: 16px !important;
+            letter-spacing: 0.12px !important;
+        }
+    }
+
+    .groupItems {
+        margin-top: var(--spacing-xxs);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxxs);
+    }
+
+    .intentRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xxs);
+        padding-right: var(--spacing-xxxs);
+    }
+
+    .errorState {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .loadingState {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        padding-bottom: var(--spacing-xs);
+    }
+
+    .intentRowSkeleton {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xxs);
+        padding-right: var(--spacing-xxxs);
+        min-height: 40px;
+    }
+
+    .intentInfoSkeleton {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+
+    .intentRowTooltipTrigger {
+        flex: 1;
+        min-width: 0;
+        cursor: not-allowed;
+    }
+
+    .linkedElsewhereTooltip {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+    }
+
+    .linkedElsewhereTooltipText {
+        color: inherit;
+    }
+
+    .linkedElsewhereTooltipLink {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        color: var(--content-inverted-default) !important;
+        text-decoration: none;
+        font-size: 12px;
+        line-height: 16px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

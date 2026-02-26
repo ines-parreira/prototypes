@@ -12,7 +12,7 @@ import {
 } from '../KnowledgeEditorSidePanelCommonFields'
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
-import { KnowledgeEditorSidePanelGuidanceDisableIntentsModal } from './KnowledgeEditorSidePanelGuidanceDisableIntentsModal'
+import { KnowledgeEditorSidePanelGuidanceDisableIntentsModal } from './modals/KnowledgeEditorSidePanelGuidanceDisableIntentsModal'
 
 import css from '../KnowledgeEditorSidePanelCommonFields.less'
 

@@ -13,6 +13,8 @@ import {
     TicketStatus,
 } from '../utils'
 
+const FIXED_NOW = new Date(2026, 0, 15, 12, 0, 0)
+
 describe('getTicketStatus', () => {
     beforeEach(() => {
         vi.useFakeTimers()
@@ -133,6 +135,7 @@ describe('getRemainingSnoozeTime', () => {
 describe('getSnoozeTooltipTitle', () => {
     beforeEach(() => {
         vi.useFakeTimers()
+        vi.setSystemTime(FIXED_NOW)
     })
 
     afterEach(() => {
@@ -151,25 +154,27 @@ describe('getSnoozeTooltipTitle', () => {
 
     it.each([
         {
-            date: moment().add(2, 'hours'),
+            getDate: () => moment().add(2, 'hours'),
             pattern: /^Snoozed until today at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'today',
         },
         {
-            date: moment().add(1, 'day'),
+            getDate: () => moment().add(1, 'day'),
             pattern: /^Snoozed until tomorrow at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'tomorrow',
         },
         {
-            date: moment().add(3, 'days'),
+            getDate: () => moment().add(3, 'days'),
             pattern:
                 /^Snoozed until [A-Za-z]{3} \d{1,2} at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'future date',
         },
     ])(
         'should return correct format when snoozed until $description',
-        ({ date, pattern }) => {
-            expect(getSnoozeTooltipTitle(date.toISOString())).toMatch(pattern)
+        ({ getDate, pattern }) => {
+            expect(getSnoozeTooltipTitle(getDate().toISOString())).toMatch(
+                pattern,
+            )
         },
     )
 })
@@ -177,6 +182,7 @@ describe('getSnoozeTooltipTitle', () => {
 describe('getClosedDateTitle', () => {
     beforeEach(() => {
         vi.useFakeTimers()
+        vi.setSystemTime(FIXED_NOW)
     })
 
     afterEach(() => {
@@ -189,29 +195,29 @@ describe('getClosedDateTitle', () => {
 
     it.each([
         {
-            date: moment().subtract(2, 'hours'),
+            getDate: () => moment().subtract(2, 'hours'),
             pattern: /^Closed today at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'today',
         },
         {
-            date: moment().subtract(1, 'day'),
+            getDate: () => moment().subtract(1, 'day'),
             pattern: /^Closed yesterday at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'yesterday',
         },
         {
-            date: moment().subtract(3, 'days'),
+            getDate: () => moment().subtract(3, 'days'),
             pattern: /^Closed 3 days ago at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'within 7 days (plural)',
         },
         {
-            date: moment().subtract(10, 'days'),
+            getDate: () => moment().subtract(10, 'days'),
             pattern: /^Closed on [A-Za-z]{3} \d{1,2} at \d{1,2}:\d{2}(AM|PM)$/,
             description: 'more than 7 days ago',
         },
     ])(
         'should return correct format when closed $description',
-        ({ date, pattern }) => {
-            expect(getClosedDateTitle(date.toISOString())).toMatch(pattern)
+        ({ getDate, pattern }) => {
+            expect(getClosedDateTitle(getDate().toISOString())).toMatch(pattern)
         },
     )
 })

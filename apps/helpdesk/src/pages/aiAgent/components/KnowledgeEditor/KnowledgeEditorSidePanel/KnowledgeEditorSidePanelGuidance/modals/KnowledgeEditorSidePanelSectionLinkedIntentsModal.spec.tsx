@@ -3,27 +3,26 @@ import { useState } from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {
-    KnowledgeEditorSidePanelSectionLinkedIntentsModal,
-    type LinkedIntent,
-} from './KnowledgeEditorSidePanelSectionLinkedIntentsModal'
+import { KnowledgeEditorSidePanelSectionLinkedIntentsModal } from './KnowledgeEditorSidePanelSectionLinkedIntentsModal'
+
+const mockPersistLinkedIntents = jest.fn()
 
 const mockIntentGroups = [
     {
         name: 'Order',
         children: [
             {
-                name: 'Order/status',
+                name: 'status',
                 intent: 'order-status',
                 is_available: true,
             },
             {
-                name: 'Order/cancel',
+                name: 'cancel',
                 intent: 'order-cancel',
                 is_available: true,
             },
             {
-                name: 'Order/missing item',
+                name: 'missing item',
                 intent: 'order-missing-item',
                 is_available: false,
                 used_by_article: {
@@ -38,7 +37,7 @@ const mockIntentGroups = [
         name: 'Shipping',
         children: [
             {
-                name: 'Shipping/delay',
+                name: 'delay',
                 intent: 'shipping-delay',
                 is_available: true,
             },
@@ -61,6 +60,41 @@ const mockUseGetArticleTranslationIntents = jest.fn(
         },
 )
 
+type MockGuidanceStoreState = {
+    guidanceArticle: {
+        id: number
+        locale: string
+    }
+    config: {
+        guidanceHelpCenter: {
+            id: number
+        }
+    }
+    state: {
+        guidance: {
+            id: number
+            locale: string
+            intents: string[] | null
+        }
+        isUpdating: boolean
+    }
+}
+
+const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
+    guidanceArticle: { id: 123, locale: 'en' },
+    config: { guidanceHelpCenter: { id: 456 } },
+    state: {
+        guidance: {
+            id: 123,
+            locale: 'en',
+            intents: [],
+        },
+        isUpdating: false,
+    },
+})
+
+let mockGuidanceStoreState = createMockGuidanceStoreState()
+
 jest.mock('models/helpCenter/queries', () => ({
     useGetArticleTranslationIntents: (...args: unknown[]) =>
         mockUseGetArticleTranslationIntents(...(args as [])),
@@ -70,35 +104,40 @@ jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context',
     () => ({
         useGuidanceStore: (selector: (state: unknown) => unknown) =>
-            selector({
-                guidanceArticle: { id: 123, locale: 'en' },
-                config: { guidanceHelpCenter: { id: 456 } },
-            }),
+            selector(mockGuidanceStoreState),
     }),
 )
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useParams: () => ({ shopName: 'test-shop' }),
+}))
+
+jest.mock('../hooks/usePersistLinkedIntents', () => ({
+    usePersistLinkedIntents: () => ({
+        persistLinkedIntents: mockPersistLinkedIntents,
+        isUpdating: mockGuidanceStoreState.state.isUpdating,
+        isAutoSaving: false,
+    }),
+}))
+
 const renderComponent = ({
     isOpen = true,
-    selectedIntentIds = [],
     onClose = jest.fn(),
-    onSave = jest.fn(),
 }: {
     isOpen?: boolean
-    selectedIntentIds?: string[]
     onClose?: jest.Mock
-    onSave?: jest.Mock
 } = {}) =>
     render(
         <KnowledgeEditorSidePanelSectionLinkedIntentsModal
             isOpen={isOpen}
-            selectedIntentIds={selectedIntentIds}
             onClose={onClose}
-            onSave={onSave}
         />,
     )
 
 describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
     beforeEach(() => {
+        mockGuidanceStoreState = createMockGuidanceStoreState()
         mockUseGetArticleTranslationIntents.mockReturnValue({
             data: { intents: mockIntentGroups },
             isLoading: false,
@@ -124,13 +163,27 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         expect(
             within(modal).getByText('0 of 4 intents selected'),
         ).toBeInTheDocument()
-        expect(within(modal).getByText('Suggested intents')).toBeInTheDocument()
+        expect(within(modal).getByText('Suggested')).toBeInTheDocument()
         expect(
             within(modal).getAllByRole('checkbox', { name: 'Order/status' }),
         ).toHaveLength(2)
         expect(
             within(modal).getAllByRole('checkbox', { name: 'Order/cancel' }),
         ).toHaveLength(2)
+    })
+
+    it('reads selected intents from guidance store', () => {
+        mockGuidanceStoreState.state.guidance.intents = ['order-status']
+
+        renderComponent()
+
+        const modal = screen.getByRole('dialog')
+        expect(
+            within(modal).getByText('1 of 4 intents selected'),
+        ).toBeInTheDocument()
+        expect(
+            within(modal).getAllByRole('checkbox', { name: 'Order/status' })[0],
+        ).toBeChecked()
     })
 
     it('filters intents by search input', async () => {
@@ -191,10 +244,10 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         ).not.toBeChecked()
     })
 
-    it('calls onSave with selected intents', async () => {
+    it('calls persistLinkedIntents with selected intent ids on save', async () => {
         const user = userEvent.setup()
-        const onSave = jest.fn()
-        renderComponent({ onSave })
+        const onClose = jest.fn()
+        renderComponent({ onClose })
 
         const modal = screen.getByRole('dialog')
         await user.click(
@@ -202,14 +255,11 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
         )
         await user.click(within(modal).getByRole('button', { name: 'Save' }))
 
-        expect(onSave).toHaveBeenCalledTimes(1)
-        expect(onSave).toHaveBeenCalledWith([
-            expect.objectContaining({
-                intent: 'order-status',
-                name: 'Order/status',
-                groupName: 'Order',
-            }),
-        ])
+        expect(mockPersistLinkedIntents).toHaveBeenCalledTimes(1)
+        expect(mockPersistLinkedIntents).toHaveBeenCalledWith(
+            ['order-status'],
+            expect.any(Function),
+        )
     })
 
     it('renders skeleton loading state when intents are loading', () => {
@@ -260,24 +310,16 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntentsModal', () => {
 
         const ModalHarness = () => {
             const [isOpen, setIsOpen] = useState(false)
-            const [linkedIntents, setLinkedIntents] = useState<LinkedIntent[]>(
-                [],
-            )
 
             return (
                 <>
                     <button onClick={() => setIsOpen(true)}>Open modal</button>
-                    <KnowledgeEditorSidePanelSectionLinkedIntentsModal
-                        isOpen={isOpen}
-                        selectedIntentIds={linkedIntents.map(
-                            ({ intent }) => intent,
-                        )}
-                        onClose={() => setIsOpen(false)}
-                        onSave={(nextLinkedIntents) => {
-                            setLinkedIntents(nextLinkedIntents)
-                            setIsOpen(false)
-                        }}
-                    />
+                    {isOpen && (
+                        <KnowledgeEditorSidePanelSectionLinkedIntentsModal
+                            isOpen={isOpen}
+                            onClose={() => setIsOpen(false)}
+                        />
+                    )}
                 </>
             )
         }

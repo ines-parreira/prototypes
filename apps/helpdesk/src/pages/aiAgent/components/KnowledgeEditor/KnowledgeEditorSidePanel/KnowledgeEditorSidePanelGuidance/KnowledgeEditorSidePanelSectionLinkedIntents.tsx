@@ -1,6 +1,5 @@
 import { useState } from 'react'
-
-import { useShallow } from 'zustand/react/shallow'
+import type { ReactNode } from 'react'
 
 import {
     Button,
@@ -12,15 +11,11 @@ import {
     TooltipTrigger,
 } from '@gorgias/axiom'
 
-import { useGuidanceStore } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/context'
-
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
-import {
-    KnowledgeEditorSidePanelSectionLinkedIntentsModal,
-    type LinkedIntent,
-} from './KnowledgeEditorSidePanelSectionLinkedIntentsModal'
+import { useLinkedIntentsSidebar } from './hooks/useLinkedIntentsSidebar'
 import { KnowledgeEditorSidePanelSectionLinkedIntentsTooltip } from './KnowledgeEditorSidePanelSectionLinkedIntentsTooltip'
-import { KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal } from './KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal'
+import { KnowledgeEditorSidePanelSectionLinkedIntentsModal } from './modals/KnowledgeEditorSidePanelSectionLinkedIntentsModal'
+import { KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal } from './modals/KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal'
 
 import css from './KnowledgeEditorSidePanelSectionLinkedIntents.less'
 
@@ -28,93 +23,38 @@ type Props = {
     sectionId: string
 }
 
-const LINK_INTENTS_UNPUBLISHED_TOOLTIP =
-    'Intents can only be linked when guidance is published and enabled for AI Agent.'
-const LINK_INTENTS_DRAFT_WITH_PUBLISHED_TOOLTIP =
-    "These intents are currently linked to the published version of this guidance. You'll be able to add more once this draft is published."
-
 export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
     sectionId,
 }: Props) => {
     const {
-        guidanceIsCurrent,
-        publishedVersionId,
-        historicalPublishedDatetime,
-    } = useGuidanceStore(
-        useShallow((storeState) => ({
-            guidanceIsCurrent: storeState.state.guidance?.isCurrent,
-            publishedVersionId: storeState.state.guidance?.publishedVersionId,
-            historicalPublishedDatetime:
-                storeState.state.historicalVersion?.publishedDatetime,
-        })),
-    )
-    const [isLinkedIntentsModalOpen, setIsLinkedIntentsModalOpen] =
-        useState(false)
-    const [linkedIntents, setLinkedIntents] = useState<LinkedIntent[]>([])
-    const [intentPendingUnlink, setIntentPendingUnlink] =
-        useState<LinkedIntent | null>(null)
+        guidanceIntentIds,
+        linkIntentsDisabledTooltip,
+        isLinkIntentsButtonDisabled,
+        canUnlinkIntentsFromSidebar,
+        isUpdating,
+        getLinkedIntentLabelById,
+    } = useLinkedIntentsSidebar()
 
-    const isViewingHistoricalVersion =
-        historicalPublishedDatetime !== null &&
-        historicalPublishedDatetime !== undefined
-    const hasPublishedVersion =
-        publishedVersionId !== null && publishedVersionId !== undefined
-    const isViewingDraft = guidanceIsCurrent === false
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [intentPendingUnlink, setIntentPendingUnlink] = useState<
+        string | null
+    >(null)
 
-    const linkIntentsDisabledTooltip = !hasPublishedVersion
-        ? LINK_INTENTS_UNPUBLISHED_TOOLTIP
-        : isViewingDraft
-          ? LINK_INTENTS_DRAFT_WITH_PUBLISHED_TOOLTIP
-          : undefined
-
-    const isLinkIntentsButtonDisabled = linkIntentsDisabledTooltip !== undefined
-    const canUnlinkIntentsFromSidebar =
-        !isViewingHistoricalVersion && !isLinkIntentsButtonDisabled
-
-    const handleCloseModal = () => {
-        setIsLinkedIntentsModalOpen(false)
-    }
-
-    const handleSaveLinkedIntents = (nextLinkedIntents: LinkedIntent[]) => {
-        setLinkedIntents(nextLinkedIntents)
-        setIsLinkedIntentsModalOpen(false)
-    }
-
-    const handleUnlinkIntentRequest = (intent: LinkedIntent) => {
-        setIntentPendingUnlink(intent)
-    }
-
-    const handleCloseUnlinkIntentModal = () => {
-        setIntentPendingUnlink(null)
-    }
-
-    const handleConfirmUnlinkIntent = () => {
-        if (!intentPendingUnlink) {
-            return
-        }
-
-        setLinkedIntents((previousLinkedIntents) =>
-            previousLinkedIntents.filter(
-                ({ intent }) => intent !== intentPendingUnlink.intent,
-            ),
-        )
-        setIntentPendingUnlink(null)
-    }
-
-    const linkIntentsButton = !isViewingHistoricalVersion ? (
+    const linkIntentsButton = (
         <Button
             variant="secondary"
             size="sm"
             leadingSlot={<Icon name="add-plus" />}
-            onClick={() => setIsLinkedIntentsModalOpen(true)}
+            onClick={() => setIsModalOpen(true)}
             isDisabled={isLinkIntentsButtonDisabled}
+            isLoading={intentPendingUnlink !== null && isUpdating}
         >
             Link intents
         </Button>
-    ) : null
+    )
 
-    const linkIntentsButtonWithTooltip =
-        linkIntentsButton && linkIntentsDisabledTooltip ? (
+    const linkIntentsButtonWithTooltip: ReactNode =
+        linkIntentsDisabledTooltip ? (
             <Tooltip placement="top">
                 <TooltipTrigger>
                     <span className={css.linkIntentsButtonWrapper} tabIndex={0}>
@@ -141,23 +81,23 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                 }}
                 sectionId={sectionId}
             >
-                {linkedIntents.length > 0 ? (
+                {guidanceIntentIds.length > 0 ? (
                     <div className={css.linkedIntentsContent}>
                         <div className={css.linkedIntentsList}>
-                            {linkedIntents.map((intent) => (
+                            {guidanceIntentIds.map((intentId) => (
                                 <Tag
-                                    key={intent.intent}
+                                    key={intentId}
                                     leadingSlot="link-horizontal"
                                     onClose={
                                         canUnlinkIntentsFromSidebar
                                             ? () =>
-                                                  handleUnlinkIntentRequest(
-                                                      intent,
+                                                  setIntentPendingUnlink(
+                                                      intentId,
                                                   )
                                             : undefined
                                     }
                                 >
-                                    {intent.groupName}/{intent.name}
+                                    {getLinkedIntentLabelById(intentId)}
                                 </Tag>
                             ))}
                         </div>
@@ -173,16 +113,15 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                 )}
             </KnowledgeEditorSidePanelSection>
 
-            <KnowledgeEditorSidePanelSectionLinkedIntentsModal
-                isOpen={isLinkedIntentsModalOpen}
-                selectedIntentIds={linkedIntents.map(({ intent }) => intent)}
-                onClose={handleCloseModal}
-                onSave={handleSaveLinkedIntents}
-            />
+            {isModalOpen && (
+                <KnowledgeEditorSidePanelSectionLinkedIntentsModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            )}
             <KnowledgeEditorSidePanelSectionLinkedIntentsUnlinkModal
-                isOpen={intentPendingUnlink !== null}
-                onClose={handleCloseUnlinkIntentModal}
-                onUnlink={handleConfirmUnlinkIntent}
+                intentId={intentPendingUnlink}
+                onClose={() => setIntentPendingUnlink(null)}
             />
         </>
     )

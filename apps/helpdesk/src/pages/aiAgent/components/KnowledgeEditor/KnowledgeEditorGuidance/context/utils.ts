@@ -15,6 +15,7 @@ export const fromArticleTranslation = (
     lastUpdated: article.translation.updated_datetime,
     templateKey: article.template_key ?? null,
     isCurrent: article.translation.is_current,
+    intents: article.translation.intents,
 })
 
 export const fromArticleTranslationResponse = (
@@ -35,4 +36,5 @@ export const fromArticleTranslationResponse = (
     visibility: response.visibility_status,
     lastUpdated: response.updated_datetime,
     isCurrent: response.is_current,
+    intents: response.intents,
 })
