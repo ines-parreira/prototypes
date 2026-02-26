@@ -67,7 +67,11 @@ describe('userAvailabilityTrackingScope', () => {
             const actual = availabilityTrackingPerAgentPerStatus.build(context)
 
             const expected = {
-                measures: ['totalDurationSeconds'],
+                measures: [
+                    'totalDurationSeconds',
+                    'onlineDurationSeconds',
+                    'offlineDurationSeconds',
+                ],
                 dimensions: ['agentId', 'statusName'],
                 timezone: 'utc',
                 filters: [

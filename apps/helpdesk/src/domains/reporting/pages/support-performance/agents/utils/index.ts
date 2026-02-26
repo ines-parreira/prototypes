@@ -1,4 +1,7 @@
-export { transformAvailabilityData } from './transformAvailabilityData'
+export {
+    transformAvailabilityData,
+    type StatusDimensionData,
+} from './transformAvailabilityData'
 export {
     calculateTotal,
     calculateAverage,

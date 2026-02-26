@@ -6,10 +6,7 @@ import type {
     AgentNameColumnKey,
 } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { getCustomUnavailabilityStatusColumnKey } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
-import {
-    AGENT_AVAILABILITY_COLUMNS,
-    fixedAgentAvailabilityColumnsInitialData,
-} from 'domains/reporting/pages/support-performance/agents/constants'
+import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
 
 const { ONLINE_TIME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
 
@@ -20,22 +17,35 @@ type BaseAgentAvailabilityData = {
     avatarUrl?: string
 }
 
+export type StatusBreakdown = {
+    total: number
+    online: number
+    offline: number
+}
+
 // Metric columns only (exclude agent_name which is not a metric)
 type AgentAvailabilityMetricColumn = Exclude<
     AgentAvailabilityColumn,
     AgentNameColumnKey
 >
 
-type AgentAvailabilityColumnData = Record<AgentAvailabilityMetricColumn, number>
-
-export type AgentAvailabilityData = BaseAgentAvailabilityData &
-    Partial<AgentAvailabilityColumnData>
+export type AgentAvailabilityData = BaseAgentAvailabilityData & {
+    [key: string]: number | string | StatusBreakdown | undefined
+}
 
 type DimensionData = Array<{ dimension: string | number; value: number | null }>
 
+export type StatusDimensionData = Array<{
+    agentId: string | number
+    statusName: string | number
+    totalDurationSeconds: string | number | null
+    onlineDurationSeconds: string | number | null
+    offlineDurationSeconds: string | number | null
+}>
+
 export const transformAvailabilityData = (
     onlineTimeData: DimensionData,
-    perStatusData: DimensionData,
+    perStatusData: StatusDimensionData,
     agents: User[],
     customStatuses: CustomUserAvailabilityStatus[],
 ): AgentAvailabilityData[] => {
@@ -55,7 +65,6 @@ export const transformAvailabilityData = (
             name: agent.name,
             email: agent.email,
             avatarUrl: agent.meta?.profile_picture_url || undefined,
-            ...fixedAgentAvailabilityColumnsInitialData,
         })
     })
 
@@ -69,32 +78,49 @@ export const transformAvailabilityData = (
         }
     })
 
-    // Add status breakdowns - dimension format: "agentId,statusName"
-    perStatusData.forEach(({ dimension, value }) => {
-        if (!dimension || value === null) return
-        const [agentId, statusName] = String(dimension).split(',')
-        const agentData = agentDataMap.get(agentId)
-        if (agentData && statusName) {
-            const normalizedStatusName = statusName.toLowerCase()
+    // Add status breakdowns with total, online, offline for each status
+    perStatusData.forEach(
+        ({
+            agentId,
+            statusName,
+            totalDurationSeconds,
+            onlineDurationSeconds,
+            offlineDurationSeconds,
+        }) => {
+            if (!agentId || !statusName) return
 
-            // Check if it's a custom status first (has an ID mapping)
-            const customStatusId =
-                customStatusNameToId.get(normalizedStatusName)
-            if (customStatusId) {
-                // Custom status - use the custom ID in column key
-                const columnKey = getCustomUnavailabilityStatusColumnKey(
-                    customStatusId,
-                ) as AgentAvailabilityMetricColumn
-                agentData[columnKey] = value
-            } else {
-                // System status - column key is simply "agent_status_{statusName}"
-                // This works because we aligned column keys with API names
-                const columnKey =
-                    `agent_status_${normalizedStatusName}` as AgentAvailabilityMetricColumn
-                agentData[columnKey] = value
+            const agentIdStr = String(agentId)
+            const statusNameStr = String(statusName)
+            const agentData = agentDataMap.get(agentIdStr)
+
+            if (agentData) {
+                const normalizedStatusName = statusNameStr.toLowerCase()
+
+                // Create breakdown object (API returns strings, convert to numbers)
+                const breakdown: StatusBreakdown = {
+                    total: Number(totalDurationSeconds) || 0,
+                    online: Number(onlineDurationSeconds) || 0,
+                    offline: Number(offlineDurationSeconds) || 0,
+                }
+
+                // Check if it's a custom status first (has an ID mapping)
+                const customStatusId =
+                    customStatusNameToId.get(normalizedStatusName)
+                if (customStatusId) {
+                    // Custom status - use the custom ID in column key
+                    const columnKey = getCustomUnavailabilityStatusColumnKey(
+                        customStatusId,
+                    ) as AgentAvailabilityMetricColumn
+                    agentData[columnKey] = breakdown
+                } else {
+                    // System status - column key is simply "agent_status_{statusName}"
+                    const columnKey =
+                        `agent_status_${normalizedStatusName}` as AgentAvailabilityMetricColumn
+                    agentData[columnKey] = breakdown
+                }
             }
-        }
-    })
+        },
+    )
 
     return [...agentDataMap.values()]
 }

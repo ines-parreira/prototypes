@@ -27,8 +27,6 @@ export const availabilityTrackingPerAgent = userAvailabilityTrackingScope
         const query = {
             measures: ['onlineDurationSeconds'] as const,
             dimensions: ['agentId'] as const,
-            // limit and offset will be set from ctx automatically
-            // if not overridden here
         }
         if (ctx.sortDirection) {
             return {
@@ -39,14 +37,17 @@ export const availabilityTrackingPerAgent = userAvailabilityTrackingScope
         return query
     })
 
-// Duration per agent per status (individual status columns)
 export const availabilityTrackingPerAgentPerStatus =
     userAvailabilityTrackingScope
         .defineMetricName(
             METRIC_NAMES.AGENTXP_AVAILABILITY_TRACKING_PER_AGENT_PER_STATUS,
         )
         .defineQuery(() => ({
-            measures: ['totalDurationSeconds'] as const,
+            measures: [
+                'totalDurationSeconds',
+                'onlineDurationSeconds',
+                'offlineDurationSeconds',
+            ] as const,
             dimensions: ['agentId', 'statusName'] as const,
             limit: 10000,
         }))

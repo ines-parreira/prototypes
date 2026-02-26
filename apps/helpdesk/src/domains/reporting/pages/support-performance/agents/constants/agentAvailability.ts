@@ -80,17 +80,3 @@ export const FIXED_AGENT_AVAILABILITY_COLUMN_CONFIG: AvailabilityColumnDictionar
             label: AGENT_AVAILABILITY_TABLE_LABELS[WRAPPING_UP_STATUS_COLUMN],
         },
     }
-
-// Initialize only metric columns (exclude agent_name and online_time which are not metrics)
-export const fixedAgentAvailabilityColumnsInitialData = [
-    AVAILABLE_STATUS_COLUMN,
-    UNAVAILABLE_STATUS_COLUMN,
-    ON_CALL_STATUS_COLUMN,
-    WRAPPING_UP_STATUS_COLUMN,
-].reduce(
-    (acc, column) => ({
-        ...acc,
-        [column]: 0,
-    }),
-    {} as Record<AgentAvailabilityColumn, number>,
-)
