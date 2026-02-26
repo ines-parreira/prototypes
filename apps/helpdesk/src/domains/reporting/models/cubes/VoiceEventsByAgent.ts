@@ -26,6 +26,7 @@ export enum VoiceEventsByAgentMember {
     PeriodEnd = 'VoiceEventsByAgent.periodEnd',
     IntegrationId = 'VoiceEventsByAgent.integrationId',
     AgentId = 'VoiceEventsByAgent.agentId',
+    Store = 'VoiceEventsByAgent.store',
 }
 
 export enum VoiceEventsByAgentSegment {
@@ -40,6 +41,7 @@ export const VoiceEventsByAgentFiltersMembers: StatsFiltersMembers = {
     integrations: VoiceEventsByAgentMember.IntegrationId,
     agents: VoiceEventsByAgentMember.AgentId,
     tags: TicketMember.Tags,
+    stores: VoiceEventsByAgentMember.Store,
 }
 
 export type VoiceEventsByAgentCube = Cube<
