@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux'
 
 import {
+    initialState as agentAvailabilityInitialState,
+    agentAvailabilitySlice,
+} from 'domains/reporting/state/ui/stats/agentAvailabilitySlice'
+import {
     agentPerformanceSlice,
     initialState as agentsPerformanceInitialState,
 } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
@@ -9,6 +13,7 @@ import {
     initialState as autoQAAgentsPerformanceInitialState,
 } from 'domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice'
 import {
+    AGENT_AVAILABILITY_SLICE_NAME,
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
@@ -35,6 +40,7 @@ import {
 
 export const initialState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: agentsPerformanceInitialState,
+    [AGENT_AVAILABILITY_SLICE_NAME]: agentAvailabilityInitialState,
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAAgentsPerformanceInitialState,
     [INTENT_SLICE_NAME]: intentInitialState,
     [PRODUCTS_PER_TICKET_SLICE_NAME]: productsPerTicketInitialState,
@@ -44,6 +50,7 @@ export const initialState = {
 
 export const statsTablesReducer = combineReducers({
     [AGENT_PERFORMANCE_SLICE_NAME]: agentPerformanceSlice.reducer,
+    [AGENT_AVAILABILITY_SLICE_NAME]: agentAvailabilitySlice.reducer,
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: autoQAAgentPerformanceSlice.reducer,
     [INTENT_SLICE_NAME]: intentSlice.reducer,
     [PRODUCTS_PER_TICKET_SLICE_NAME]: productsPerTicketSlice.reducer,

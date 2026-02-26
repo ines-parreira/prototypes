@@ -1,7 +1,9 @@
 import type { CampaignTableKeys } from 'domains/reporting/pages/convert/types/enums/CampaignTableKeys.enum'
+import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import type { AgentPerformanceState } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import type {
+    AGENT_AVAILABILITY_SLICE_NAME,
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
     INTENT_SLICE_NAME,
@@ -205,11 +207,13 @@ export type TableColumnSet =
     | CampaignTableKeys
     | IntentTableColumn
     | ProductInsightsTableColumns
+    | AgentAvailabilityColumn
 
 export type TableRowSet = AgentsTableRow
 
 export type StatsTablesState = {
     [AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AgentsTableColumn>
+    [AGENT_AVAILABILITY_SLICE_NAME]: AgentPerformanceState<AgentAvailabilityColumn>
     [AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME]: AgentPerformanceState<AutoQAAgentsTableColumn>
     [INTENT_SLICE_NAME]: IntentState<IntentTableColumn>
     [PRODUCTS_PER_TICKET_SLICE_NAME]: ProductsPerTicketState

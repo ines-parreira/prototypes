@@ -8,7 +8,7 @@ import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { AgentAvailabilityTable } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTable'
+import { AgentAvailabilityTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableWithDefaultState'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
@@ -55,7 +55,7 @@ export const AgentsTabbedChart = ({
             case AgentTab.Performance:
                 return <AgentsTableWithDefaultState />
             case AgentTab.Availability:
-                return <AgentAvailabilityTable />
+                return <AgentAvailabilityTableWithDefaultState />
             default:
                 return null
         }
@@ -66,6 +66,11 @@ export const AgentsTabbedChart = ({
         currentTab === AgentTab.Performance
             ? SECTION_TITLES.AGENT_PERFORMANCE
             : SECTION_TITLES.AGENT_AVAILABILITY
+
+    const titleExtra =
+        currentTab === AgentTab.Performance ? (
+            <AgentsPerformanceCardExtra />
+        ) : null
 
     if (!isAgentAvailabilityEnabled) {
         return (
@@ -84,7 +89,7 @@ export const AgentsTabbedChart = ({
     return (
         <ChartCard
             title={title}
-            titleExtra={<AgentsPerformanceCardExtra />}
+            titleExtra={titleExtra}
             headerSlot={
                 <Box paddingTop="lg">
                     <Tabs

@@ -126,6 +126,26 @@ const componentMock = () => <div />
 
 const defaultState = {
     billing: fromJS(billingState),
+    ui: {
+        stats: {
+            filters: {
+                cleanStatsFilters: {
+                    period: {
+                        start_datetime: '2024-01-01T00:00:00Z',
+                        end_datetime: '2024-01-31T23:59:59Z',
+                    },
+                },
+            },
+        },
+    },
+    stats: {
+        filters: {
+            period: {
+                start_datetime: '2024-01-01T00:00:00Z',
+                end_datetime: '2024-01-31T23:59:59Z',
+            },
+        },
+    },
 } as RootState
 
 describe('SupportPerformanceAgents', () => {
