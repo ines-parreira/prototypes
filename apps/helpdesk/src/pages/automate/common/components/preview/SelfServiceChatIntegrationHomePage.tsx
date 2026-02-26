@@ -16,13 +16,13 @@ import type {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationAvatars'
+import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ConversationAvatars'
 import {
     AddIcon,
     BoxIcon,
     ChevronRightIcon,
     PlaneIcon,
-} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+} from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/icon-utils'
 
 import { MAX_ACTIVE_FLOWS } from '../constants'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'

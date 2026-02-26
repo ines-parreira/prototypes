@@ -4,7 +4,7 @@ import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-sen
 import {
     CONSTRAST_COLORS,
     getTextColorBasedOnBackground,
-} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/color-utils'
+} from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/color-utils'
 
 import css from './SelfServiceChatIntegrationFooter.less'
 

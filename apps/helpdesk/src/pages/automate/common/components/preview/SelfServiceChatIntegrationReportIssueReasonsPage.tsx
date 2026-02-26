@@ -9,7 +9,7 @@ import {
 import List from 'gorgias-design-system/List/List'
 import ListItem from 'gorgias-design-system/List/ListItem'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import { ChevronRightIcon } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+import { ChevronRightIcon } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/icon-utils'
 
 import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import { useSelfServicePreviewContext } from './SelfServicePreviewContext'

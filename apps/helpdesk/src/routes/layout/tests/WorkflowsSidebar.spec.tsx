@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { WorkflowsSidebar } from '../sidebars/WorkflowsSidebar'
@@ -19,7 +19,7 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
     }),

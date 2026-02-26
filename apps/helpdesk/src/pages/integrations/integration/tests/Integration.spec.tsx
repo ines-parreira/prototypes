@@ -9,7 +9,7 @@ import { EmailProvider } from '@gorgias/helpdesk-queries'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -99,27 +99,27 @@ jest.mock(
 jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
 
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance',
     () => () => <div>GorgiasChatIntegrationAppearance</div>,
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
     () => () => <div>GorgiasChatIntegrationCampaigns</div>,
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationInstall',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationInstall',
     () => () => <div>GorgiasChatIntegrationInstall</div>,
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationList/GorgiasChatIntegrationList',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList',
     () => () => <div>GorgiasChatIntegrationList</div>,
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences',
     () => () => <div>GorgiasChatIntegrationPreferences</div>,
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies',
     () => () => <div>GorgiasChatIntegrationQuickReplies</div>,
 )
 
@@ -179,7 +179,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
     () => ({
         __esModule: true,
         default: jest.fn(),

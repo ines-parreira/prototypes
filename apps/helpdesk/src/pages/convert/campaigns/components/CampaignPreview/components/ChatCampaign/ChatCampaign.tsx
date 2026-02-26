@@ -16,8 +16,8 @@ import type { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAt
 import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import type { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
 import type { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
-import { AgentDisplayName } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
-import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
+import { AgentDisplayName } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/AgentDisplayName'
+import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatAvatar'
 import { extractGorgiasVideoDivFromHtmlContent } from 'utils'
 
 import { ContactCaptureFormPreview } from '../ContactCaptureFormPreview/ContactCaptureFormPreview'

@@ -4,7 +4,7 @@ import {
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
-import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import MessageContent from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/MessageContent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import useOrderDates from './hooks/useOrderDates'

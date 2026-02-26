@@ -5,7 +5,7 @@ import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
-import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview'
 
 const StyledIcon = styled.div`
     margin-left: auto;

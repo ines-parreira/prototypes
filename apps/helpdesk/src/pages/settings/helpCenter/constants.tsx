@@ -1,7 +1,7 @@
 import { isProduction, isStaging } from '@repo/utils'
 
 import { Language } from 'constants/languages'
-import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
+import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 
 import type {
     HelpCenterArticleItem,

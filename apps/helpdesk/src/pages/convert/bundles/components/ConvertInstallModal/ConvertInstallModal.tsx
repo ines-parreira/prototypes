@@ -18,7 +18,7 @@ import BundleManualInstallationCard from 'pages/convert/bundles/components/Bundl
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
 type Props = {
     isOpen: boolean

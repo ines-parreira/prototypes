@@ -31,7 +31,7 @@ import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelp
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import type { HelpCenterCreationWizard } from 'pages/settings/helpCenter/constants'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -60,7 +60,7 @@ jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
     useHelpCenterCreationWizard: jest.fn(),
 }))
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
     }),

@@ -5,7 +5,7 @@ import { useFilteredAutomatedInteractionTimeSeries } from 'domains/reporting/hoo
 import { getAutomateColorsForEventType } from 'domains/reporting/hooks/automate/utils'
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
     }),
@@ -13,7 +13,7 @@ jest.mock(
 
 describe('useFilteredAutomatedInteractionTimeSeries', () => {
     const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.requireMock(
-        'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+        'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     ).useIsArticleRecommendationsEnabledWhileSunset
 
     const mockTimeSeriesData = [

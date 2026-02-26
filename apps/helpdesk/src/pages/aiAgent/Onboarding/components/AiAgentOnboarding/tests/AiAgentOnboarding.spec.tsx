@@ -48,7 +48,7 @@ jest.mock('pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
+    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
         __esModule: true,
         default: ({ children }: { children: React.ReactNode }) => (

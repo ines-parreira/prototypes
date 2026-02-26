@@ -5,7 +5,7 @@ import { fromJS } from 'immutable'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
 
-import { StoreNameDropdown } from '../../../integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown'
+import { StoreNameDropdown } from '../../../integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import type { FormState } from '../infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/useCustomerSyncForm'
 import { getDefaultStore } from './helpers'
 

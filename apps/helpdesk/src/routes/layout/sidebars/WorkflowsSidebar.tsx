@@ -9,7 +9,7 @@ import type { AccordionValues } from 'components/Accordion/utils/types'
 import { Navigation } from 'components/Navigation/Navigation'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import SettingsNavbarItem from 'pages/settings/common/SettingsNavbar/Item'
 import Section from 'pages/settings/common/SettingsNavbar/Section'
 import {

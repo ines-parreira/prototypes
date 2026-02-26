@@ -25,7 +25,7 @@ const defaultState = {
 const store = mockStore(defaultState)
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
+    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
     () => () => {
         return <div data-testid="GorgiasChatIntegrationHeader" />
     },

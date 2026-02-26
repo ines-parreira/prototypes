@@ -11,7 +11,7 @@ import type {
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import type { Value } from 'pages/common/forms/SelectField/types'
-import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/StoreNameDropdown'
+import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 export type HelpCenterContactFormIntegrationTypes =

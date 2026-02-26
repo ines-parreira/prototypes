@@ -43,7 +43,7 @@ jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.fn()
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: () =>
             mockUseIsArticleRecommendationsEnabledWhileSunset(),

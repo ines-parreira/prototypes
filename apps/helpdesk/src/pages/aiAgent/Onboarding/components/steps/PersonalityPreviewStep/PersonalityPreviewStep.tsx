@@ -31,7 +31,7 @@ import {
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 export const PersonalityPreviewStep: React.FC<StepProps> = ({

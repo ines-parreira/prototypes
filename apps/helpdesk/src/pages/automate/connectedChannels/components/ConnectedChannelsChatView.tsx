@@ -20,8 +20,8 @@ import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceCh
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { AutomateFeatures } from 'pages/automate/common/types'
-import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset'
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/hooks/useShouldShowChatSettingsRevamp'
+import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'

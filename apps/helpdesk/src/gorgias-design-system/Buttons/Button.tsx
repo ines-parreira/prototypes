@@ -10,7 +10,7 @@ import {
     relativeDarken,
     relativeLighten,
 } from 'gorgias-design-system/utils'
-import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import type { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview'
 
 import SpinnerIcon from './icons/SpinnerIcon'
 

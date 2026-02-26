@@ -21,7 +21,7 @@ import spqManualInstallStep2 from 'assets/img/spq/spq-manual-install-step-2.png'
 import spqManualInstallStep3 from 'assets/img/spq/spq-manual-install-step-3.png'
 import aiFaqsDemoVideo from 'assets/video/ai-faqs-demo.mp4'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 

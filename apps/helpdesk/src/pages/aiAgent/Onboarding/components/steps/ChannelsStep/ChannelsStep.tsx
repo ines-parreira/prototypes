@@ -63,7 +63,7 @@ import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelf
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import ColorField from 'pages/common/forms/ColorField'
-import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import {
     getCurrentDomain,
     getDefaultIntegrationSettings,

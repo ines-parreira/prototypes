@@ -12,10 +12,10 @@ import type { ShopifyIntegration } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
+import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
-} from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+} from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
 import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
 import { useContactFormMailtoReplacementConfig } from './useContactFormMailtoReplacementConfig'

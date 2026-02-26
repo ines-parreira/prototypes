@@ -34,7 +34,7 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset',
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
     () => ({
         useIsArticleRecommendationsEnabledWhileSunset: jest.fn(),
     }),
@@ -116,7 +116,7 @@ const mockUseStoreIntegrations = jest.mocked(
     require('pages/automate/common/hooks/useStoreIntegrations').default,
 )
 const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.mocked(
-    require('pages/integrations/integration/components/gorgias_chat/hooks/useIsArticleRecommendationsEnabledWhileSunset')
+    require('pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset')
         .useIsArticleRecommendationsEnabledWhileSunset,
 )
 

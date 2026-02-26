@@ -10,7 +10,7 @@ import type {
 } from 'models/integration/types'
 import { GorgiasChatInstallationMethod } from 'models/integration/types'
 import * as useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
-import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
+import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
 
 import useIsManualInstallationMethodRequired from '../useIsManualInstallationMethodRequired'
 

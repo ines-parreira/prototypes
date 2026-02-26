@@ -8,7 +8,7 @@ import type {
 import type { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
 import type { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import type { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
-import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
+import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 
 import type { CampaignProduct } from '../../types/CampaignProduct'
 import { ChatCampaign } from './components/ChatCampaign'

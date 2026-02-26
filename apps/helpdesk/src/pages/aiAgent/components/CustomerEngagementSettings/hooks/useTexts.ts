@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { isTextsMultiLanguage } from 'config/integrations/gorgias_chat'
 import type { LanguageChat } from 'constants/languages'
-import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import { multiLanguageInitialTextsEmptyData } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import type {
     TextsMultiLanguage,
     TextsPerLanguage,

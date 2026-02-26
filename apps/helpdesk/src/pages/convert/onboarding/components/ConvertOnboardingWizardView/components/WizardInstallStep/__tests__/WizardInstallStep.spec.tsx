@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { shopifyIntegration } from 'fixtures/integrations'
 import { BundleInstallationMethod } from 'models/convert/bundle/types'
-import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
 import WizardInstallStep from '../WizardInstallStep'
 

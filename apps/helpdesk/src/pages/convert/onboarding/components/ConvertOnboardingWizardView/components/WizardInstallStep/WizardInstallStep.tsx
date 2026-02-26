@@ -6,7 +6,7 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
-import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { getIntegrationById } from 'state/integrations/selectors'
 
 import css from './WizardInstallStep.less'

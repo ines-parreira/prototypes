@@ -14,7 +14,7 @@ import {
 import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import ConvertInstallModal from '../ConvertInstallModal'

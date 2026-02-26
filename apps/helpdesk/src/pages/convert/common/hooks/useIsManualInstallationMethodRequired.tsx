@@ -7,8 +7,8 @@ import type {
 } from 'models/integration/types'
 import { GorgiasChatInstallationMethod } from 'models/integration/types'
 import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
-import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
-import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
+import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 
 const useIsManualInstallationMethodRequired = (
     chatIntegration: GorgiasChatIntegration | undefined,

@@ -19,7 +19,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import { Drawer } from 'pages/common/components/Drawer'
 import { NewToggleButton } from 'pages/common/forms/NewToggleButton'
 import TextArea from 'pages/common/forms/TextArea'
-import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
+import translationsAvailableKeys from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import type { Translations } from 'rest_api/gorgias_chat_protected_api/types'
 import { STATS_ROUTES } from 'routes/constants'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'

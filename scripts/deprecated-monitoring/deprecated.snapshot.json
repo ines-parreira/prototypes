@@ -4264,7 +4264,7 @@
             "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookLoginButton.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/components/CustomizeTranslationsButton.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/components/CustomizeTranslationsButton.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/DiscardNewChatPrompt.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepAutomate.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/GorgiasChatCreationWizardStepBasics.tsx",

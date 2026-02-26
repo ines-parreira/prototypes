@@ -15,7 +15,7 @@ import client from 'models/api/resources'
 import { useListBundles } from 'models/convert/bundle/queries'
 import { BundleInstallationMethodResponse } from 'models/convert/bundle/types'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ConvertBundleView from '../ConvertBundleView'
