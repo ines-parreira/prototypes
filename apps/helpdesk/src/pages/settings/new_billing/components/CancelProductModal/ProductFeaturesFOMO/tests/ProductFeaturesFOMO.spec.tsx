@@ -3,7 +3,11 @@ import { render } from '@testing-library/react'
 
 import { ProductType } from 'models/billing/types'
 
-import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
+import {
+    HELPDESK_CANCELLATION_SCENARIO,
+    SMS_CANCELLATION_SCENARIO,
+    VOICE_CANCELLATION_SCENARIO,
+} from '../../scenarios'
 import Feature from '../../UI/Feature'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 
@@ -33,8 +37,7 @@ describe('ProductFeaturesFOMO', () => {
             'keep full access to your account',
         )
         expect(container.textContent).toContain('After that date')
-        const periodEndText = getByText('February 14, 2024')
-        expect(periodEndText).toHaveClass('body-semibold')
+        expect(getByText('February 14, 2024')).toBeInTheDocument()
 
         const featureElements = getAllByTestId('feature')
         expect(featureElements).toHaveLength(
@@ -97,9 +100,75 @@ describe('ProductFeaturesFOMO', () => {
         expect(featureElements).toHaveLength(0)
     })
 
+    it('renders with given Voice features and period end', () => {
+        const { getAllByTestId, getByText, container } = render(
+            <ProductFeaturesFOMO
+                periodEnd="February 14, 2024"
+                features={VOICE_CANCELLATION_SCENARIO.features}
+                productType={ProductType.Voice}
+                productDisplayName="Voice"
+            />,
+        )
+
+        expect(container.textContent).toContain(
+            'Cancelling your Voice plan will permanently delete your current integration settings and call flows.',
+        )
+        expect(container.textContent).toContain(
+            'Your phone numbers will remain active and available.',
+        )
+        expect(container.textContent).toContain(
+            'Your plan will not renew after your current billing cycle ends on',
+        )
+        expect(container.textContent).toContain(
+            'keep full access to all Voice features',
+        )
+        expect(container.textContent).toContain('After that date')
+        expect(getByText('February 14, 2024')).toBeInTheDocument()
+
+        const featureElements = getAllByTestId('feature')
+        expect(featureElements).toHaveLength(
+            VOICE_CANCELLATION_SCENARIO.features.length,
+        )
+        VOICE_CANCELLATION_SCENARIO.features.forEach((feature, index) => {
+            expect(MockFeature).toHaveBeenNthCalledWith(index + 1, feature, {})
+        })
+    })
+
+    it('renders with given SMS features and period end', () => {
+        const { getAllByTestId, getByText, container } = render(
+            <ProductFeaturesFOMO
+                periodEnd="February 14, 2024"
+                features={SMS_CANCELLATION_SCENARIO.features}
+                productType={ProductType.SMS}
+                productDisplayName="SMS"
+            />,
+        )
+
+        expect(container.textContent).toContain(
+            'Cancelling your SMS plan will permanently delete your current integration settings.',
+        )
+        expect(container.textContent).toContain(
+            'Your phone numbers will remain active and available.',
+        )
+        expect(container.textContent).toContain(
+            'Your plan will not renew after your current billing cycle ends on',
+        )
+        expect(container.textContent).toContain(
+            'keep full access to all SMS features',
+        )
+        expect(container.textContent).toContain('After that date')
+        expect(getByText('February 14, 2024')).toBeInTheDocument()
+
+        const featureElements = getAllByTestId('feature')
+        expect(featureElements).toHaveLength(
+            SMS_CANCELLATION_SCENARIO.features.length,
+        )
+        SMS_CANCELLATION_SCENARIO.features.forEach((feature, index) => {
+            expect(MockFeature).toHaveBeenNthCalledWith(index + 1, feature, {})
+        })
+    })
+
     describe.each([
-        { productType: ProductType.Voice, productName: 'Voice' },
-        { productType: ProductType.SMS, productName: 'SMS' },
         { productType: ProductType.Convert, productName: 'Convert' },
         { productType: ProductType.Automation, productName: 'AI Agent' },
     ])('$productName warning text', ({ productType, productName }) => {
@@ -123,8 +192,7 @@ describe('ProductFeaturesFOMO', () => {
                 `keep full access to all ${productName} features`,
             )
             expect(container.textContent).toContain('After that date')
-            const periodEndText = getByText('February 14, 2024')
-            expect(periodEndText).toHaveClass('body-semibold')
+            expect(getByText('February 14, 2024')).toBeInTheDocument()
         })
     })
 })
