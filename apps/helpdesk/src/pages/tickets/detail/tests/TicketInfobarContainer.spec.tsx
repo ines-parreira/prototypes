@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactNode } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -67,6 +67,9 @@ jest.mock('auto_qa', () => ({
 
 jest.mock('@repo/customer', () => ({
     ShopifyCustomer: () => <div>ShopifyCustomer Component</div>,
+    ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock('tickets/ticket-timeline', () => ({

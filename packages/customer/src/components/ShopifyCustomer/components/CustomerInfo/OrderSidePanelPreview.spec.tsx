@@ -1,19 +1,63 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { userEvent } from '@testing-library/user-event'
+import { screen, waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { vi } from 'vitest'
 
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+
+import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+const usersHandler = http.get('/api/users/:id', () => HttpResponse.json({}))
+
+const server = setupServer(mockGetCurrentUser.handler, usersHandler)
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
+const shopOrderTagsHandler = http.get(
+    '/integrations/shopify/shop-tags/orders/list/',
+    () => HttpResponse.json({ data: { shop: { orderTags: { edges: [] } } } }),
+)
+
+const metafieldsHandler = http.get(
+    '/integrations/shopify/:integrationId/order/:orderId/metafields',
+    () => HttpResponse.json({ data: [], meta: {} }),
+)
+
 const mockOrder = {
+    id: 3519,
     name: '#3519',
     financial_status: 'paid' as const,
     fulfillment_status: 'fulfilled' as const,
 }
 
 const mockPendingOrder = {
+    id: 3520,
     name: '#3520',
     financial_status: 'pending' as const,
     fulfillment_status: null,
+}
+
+const mockOrderWithDetails = {
+    id: 12345,
+    name: '#12345',
+    financial_status: 'paid' as const,
+    fulfillment_status: 'fulfilled' as const,
+    tags: 'VIP, Summer',
+    note: 'Handle with care',
+    created_at: '2024-01-15T10:30:00Z',
 }
 
 describe('OrderSidePanelPreview', () => {
@@ -116,7 +160,7 @@ describe('OrderSidePanelPreview', () => {
         })
     })
 
-    it('should render action buttons', async () => {
+    it('should render action buttons for non-draft orders', async () => {
         render(
             <OrderSidePanelPreview
                 order={mockOrder}
@@ -138,11 +182,35 @@ describe('OrderSidePanelPreview', () => {
         })
     })
 
+    it('should not render action buttons for draft orders', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder={true}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /duplicate/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /refund/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /cancel/i }),
+        ).not.toBeInTheDocument()
+    })
+
     it('should call onOpenChange when close button is clicked', async () => {
-        const user = userEvent.setup()
         const onOpenChange = vi.fn()
 
-        render(
+        const { user } = render(
             <OrderSidePanelPreview
                 order={mockOrder}
                 isOpen={true}
@@ -159,10 +227,9 @@ describe('OrderSidePanelPreview', () => {
     })
 
     it('should call onDuplicate when duplicate button is clicked', async () => {
-        const user = userEvent.setup()
         const onDuplicate = vi.fn()
 
-        render(
+        const { user } = render(
             <OrderSidePanelPreview
                 order={mockOrder}
                 isOpen={true}
@@ -180,10 +247,9 @@ describe('OrderSidePanelPreview', () => {
     })
 
     it('should call onRefund when refund button is clicked', async () => {
-        const user = userEvent.setup()
         const onRefund = vi.fn()
 
-        render(
+        const { user } = render(
             <OrderSidePanelPreview
                 order={mockOrder}
                 isOpen={true}
@@ -201,10 +267,9 @@ describe('OrderSidePanelPreview', () => {
     })
 
     it('should call onCancel when cancel button is clicked', async () => {
-        const user = userEvent.setup()
         const onCancel = vi.fn()
 
-        render(
+        const { user } = render(
             <OrderSidePanelPreview
                 order={mockOrder}
                 isOpen={true}
@@ -219,5 +284,168 @@ describe('OrderSidePanelPreview', () => {
         await user.click(cancelButton)
 
         expect(onCancel).toHaveBeenCalledWith(mockOrder)
+    })
+})
+
+describe('OrderSidePanelPreview — Order Details section', () => {
+    beforeEach(() => {
+        server.use(shopOrderTagsHandler, metafieldsHandler)
+    })
+
+    it('renders "Order details" section header', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Order details')).toBeInTheDocument()
+        })
+    })
+
+    it('renders Tags label when order has tags and integrationId is provided', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                integrationId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Tags')).toBeInTheDocument()
+        })
+    })
+
+    it('renders tag chips when integrationId is provided', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                integrationId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('VIP')).toBeInTheDocument()
+            expect(screen.getByText('Summer')).toBeInTheDocument()
+        })
+    })
+
+    it('renders Add tags button when order has no tags', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrderWithDetails, tags: '' }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                integrationId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /add tags/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('renders store name when provided', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                storeName="My Shopify Store"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
+        })
+    })
+
+    it('renders order ID', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('12345')).toBeInTheDocument()
+        })
+    })
+
+    it('renders note when provided', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Handle with care')).toBeInTheDocument()
+        })
+    })
+
+    it('renders checkout URL for draft orders with invoice_url', async () => {
+        const invoiceUrl = 'https://checkout.example.com/order/123'
+
+        render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrderWithDetails, invoice_url: invoiceUrl }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                isDraftOrder={true}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Checkout URL')).toBeInTheDocument()
+            expect(screen.getByText(invoiceUrl)).toBeInTheDocument()
+        })
+    })
+
+    it('does not render checkout URL for non-draft orders', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrderWithDetails}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Order details')).toBeInTheDocument()
+        })
+
+        expect(screen.queryByText('Checkout URL')).not.toBeInTheDocument()
+    })
+
+    it('does not render note section when note is absent', async () => {
+        const orderWithoutNote = { ...mockOrderWithDetails, note: undefined }
+
+        render(
+            <OrderSidePanelPreview
+                order={orderWithoutNote}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText('Handle with care'),
+            ).not.toBeInTheDocument()
+        })
     })
 })

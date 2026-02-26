@@ -20,10 +20,19 @@ import {
     Tag,
 } from '@gorgias/axiom'
 
+import { OrderActions } from './OrderActions'
+import { OrderDetailsSection } from './OrderDetailsSection'
+
 type OrderData = {
+    id: number | string
     name: string
     financial_status: FinancialStatusValue
     fulfillment_status: FulfillmentStatusValue | null
+    tags?: string
+    note?: string
+    created_at?: string
+    order_status_url?: string
+    invoice_url?: string
 }
 
 type Props<T extends OrderData = OrderData> = {
@@ -31,18 +40,26 @@ type Props<T extends OrderData = OrderData> = {
     isOpen: boolean
     onOpenChange: (isOpen: boolean) => void
     productsMap?: Map<number, OrderCardProduct>
+    isDraftOrder?: boolean
     onDuplicate?: (order: T) => void
     onRefund?: (order: T) => void
     onCancel?: (order: T) => void
+    storeName?: string
+    integrationId?: number
+    ticketId?: string
 }
 
 export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     order,
     isOpen,
     onOpenChange,
+    isDraftOrder,
     onDuplicate,
     onRefund,
     onCancel,
+    storeName,
+    integrationId,
+    ticketId,
 }: Props<T>) {
     const handleClose = useCallback(() => {
         onOpenChange(false)
@@ -99,15 +116,23 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                         <Box flexShrink={0}>
                             <Icon
                                 name="vendor-shopify-colored"
-                                size="md"
+                                size="lg"
                                 intent="regular"
                             />
                         </Box>
 
-                        <Box flex={1} minWidth={0}>
-                            <Heading size="sm" overflow="ellipsis">
+                        <Box flex={1} minWidth={0} alignItems="center" gap="xs">
+                            <Heading size="lg" overflow="ellipsis">
                                 Order {order.name}
                             </Heading>
+                            <Box gap="xxxs">
+                                <Tag color={financialColor}>
+                                    {financialLabel}
+                                </Tag>
+                                <Tag color={fulfillmentColor}>
+                                    {fulfillmentLabel}
+                                </Tag>
+                            </Box>
                         </Box>
 
                         <Box
@@ -116,11 +141,6 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                             gap="xxxs"
                             flexShrink={0}
                         >
-                            <Tag color={financialColor}>{financialLabel}</Tag>
-                            <Tag color={fulfillmentColor}>
-                                {fulfillmentLabel}
-                            </Tag>
-
                             <Button
                                 as="button"
                                 icon="close"
@@ -133,37 +153,21 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                         </Box>
                     </Box>
 
-                    <Box
-                        flexDirection="row"
-                        alignItems="center"
-                        gap="xs"
-                        paddingTop="xs"
-                    >
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            leadingSlot="select-multiple"
-                            onClick={handleDuplicate}
-                        >
-                            Duplicate
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            leadingSlot="undo"
-                            onClick={handleRefund}
-                        >
-                            Refund
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            leadingSlot="stop-sign"
-                            onClick={handleCancel}
-                        >
-                            Cancel
-                        </Button>
-                    </Box>
+                    {!isDraftOrder && (
+                        <OrderActions
+                            onDuplicate={handleDuplicate}
+                            onRefund={handleRefund}
+                            onCancel={handleCancel}
+                        />
+                    )}
+
+                    <OrderDetailsSection
+                        order={order}
+                        isDraftOrder={isDraftOrder}
+                        integrationId={integrationId}
+                        ticketId={ticketId}
+                        storeName={storeName}
+                    />
                 </Box>
             </OverlayContent>
         </SidePanel>

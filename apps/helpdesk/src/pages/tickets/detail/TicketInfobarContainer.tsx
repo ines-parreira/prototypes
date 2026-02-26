@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { ShopifyCustomer } from '@repo/customer'
+import { ShopifyCustomer, ShopifyCustomerProvider } from '@repo/customer'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
@@ -18,6 +18,7 @@ import { TicketStatus } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
@@ -73,6 +74,7 @@ export const TicketInfobarContainer = ({
     const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
+    const { notify: dispatchNotification } = useNotify()
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
     const ticket = useAppSelector(getTicket)
@@ -293,7 +295,11 @@ export const TicketInfobarContainer = ({
                 </div>
             ) : activeTab === TicketInfobarTab.Shopify ? (
                 <div className={css.shopifyContainer}>
-                    <ShopifyCustomer onSyncProfile={handleSyncProfile} />
+                    <ShopifyCustomerProvider
+                        dispatchNotification={dispatchNotification}
+                    >
+                        <ShopifyCustomer onSyncProfile={handleSyncProfile} />
+                    </ShopifyCustomerProvider>
                     <CustomerSyncForm
                         isCustomerSyncFormOpen={isCustomerSyncFormOpen}
                         activeCustomer={customer}

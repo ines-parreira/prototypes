@@ -1,13 +1,15 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { OrderSidePanelPreview } from '@repo/customer'
+import { OrderSidePanelPreview, ShopifyCustomerProvider } from '@repo/customer'
 import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box } from '@gorgias/axiom'
+import { useGetIntegration } from '@gorgias/helpdesk-queries'
 
 import type { Order } from 'constants/integrations/types/shopify'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useNotify } from 'hooks/useNotify'
 import { useGetCustomer } from 'models/customer/queries'
 import { extractOrders } from 'timeline/helpers/orders'
 
@@ -80,6 +82,8 @@ export function TimelineContent({
 
     const { products: productsMap } = useOrderProducts(customer, orders)
 
+    const { notify: dispatchNotification } = useNotify()
+
     const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
         null,
     )
@@ -87,6 +91,20 @@ export function TimelineContent({
 
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
     const [isOrderOpen, setIsOrderOpen] = useState(false)
+
+    const selectedOrderIntegrationId = useMemo(() => {
+        if (!selectedOrder || !customer?.integrations) return undefined
+        const entry = Object.entries(customer.integrations).find(
+            ([, integration]) =>
+                integration.orders?.some((o) => o.id === selectedOrder.id),
+        )
+        return entry ? parseInt(entry[0], 10) : undefined
+    }, [selectedOrder, customer?.integrations])
+
+    const { data: selectedOrderIntegrationData } = useGetIntegration(
+        selectedOrderIntegrationId ?? 0,
+        { query: { enabled: !!selectedOrderIntegrationId } },
+    )
 
     const currentIndex = selectedTicket
         ? enrichedTickets.findIndex(
@@ -182,14 +200,23 @@ export function TimelineContent({
                 isFirstTicket={isFirstTicket}
                 isLastTicket={isLastTicket}
             />
-            <OrderSidePanelPreview
-                order={selectedOrder}
-                isOpen={isOrderOpen}
-                onOpenChange={setIsOrderOpen}
-                onDuplicate={handleDuplicateOrder}
-                onRefund={handleRefundOrder}
-                onCancel={handleCancelOrder}
-            />
+            <ShopifyCustomerProvider
+                dispatchNotification={dispatchNotification}
+            >
+                <OrderSidePanelPreview
+                    order={selectedOrder}
+                    isOpen={isOrderOpen}
+                    onOpenChange={setIsOrderOpen}
+                    productsMap={productsMap}
+                    isDraftOrder={false}
+                    onDuplicate={handleDuplicateOrder}
+                    onRefund={handleRefundOrder}
+                    onCancel={handleCancelOrder}
+                    storeName={selectedOrderIntegrationData?.data.name}
+                    integrationId={selectedOrderIntegrationId}
+                    ticketId={activeTicketId}
+                />
+            </ShopifyCustomerProvider>
         </Box>
     )
 }

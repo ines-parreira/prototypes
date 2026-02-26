@@ -10,6 +10,14 @@ export type {
     ShopperEcommerceData,
 } from '../../types'
 
+export type OrderDetailsData = {
+    id: number | string
+    tags?: string
+    note?: string
+    created_at?: string
+    invoice_url?: string
+}
+
 export type FieldRenderContext = {
     purchaseSummary: PurchaseSummaryData | undefined
     shopper: ShopperEcommerceData | undefined
@@ -53,5 +61,43 @@ export type FieldPreference = {
 }
 
 export type ShopifyFieldPreferences = {
+    fields: FieldPreference[]
+}
+
+export type OrderFieldRenderContext = {
+    order: OrderDetailsData
+    isDraftOrder: boolean | undefined
+    integrationId: number | undefined
+    ticketId: string | undefined
+    storeName: string | undefined
+    dateFormat: DateFormatType
+    timeFormat: TimeFormatType
+}
+
+type BaseOrderFieldConfig = {
+    id: string
+    label: string
+}
+
+export type ReadOnlyOrderFieldConfig = BaseOrderFieldConfig & {
+    type: 'readonly'
+    getValue: (context: OrderFieldRenderContext) => string | number | undefined
+    formatValue?: (
+        value: string | number | undefined,
+        context: OrderFieldRenderContext,
+    ) => ReactNode
+}
+
+export type ComponentOrderFieldConfig = BaseOrderFieldConfig & {
+    type: 'component'
+    render: (context: OrderFieldRenderContext) => ReactNode
+    getValue: (context: OrderFieldRenderContext) => string | number | undefined
+}
+
+export type OrderFieldConfig =
+    | ReadOnlyOrderFieldConfig
+    | ComponentOrderFieldConfig
+
+export type OrderDetailsFieldPreferences = {
     fields: FieldPreference[]
 }

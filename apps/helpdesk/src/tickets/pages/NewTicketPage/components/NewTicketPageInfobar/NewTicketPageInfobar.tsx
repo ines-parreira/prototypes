@@ -1,10 +1,11 @@
-import { ShopifyCustomer } from '@repo/customer'
+import { ShopifyCustomer, ShopifyCustomerProvider } from '@repo/customer'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { InfobarTicketDetailsContainer, TagsMultiSelect } from '@repo/tickets'
 
 import { Box, Heading } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
+import { useNotify } from 'hooks/useNotify'
 import {
     InfobarLayoutContainer,
     InfobarLayoutContent,
@@ -21,13 +22,18 @@ export function NewTicketPageInfobar({
     onTagsChange,
 }: NewTicketPageInfobarProps) {
     const { activeTab } = useTicketInfobarNavigation()
+    const { notify: dispatchNotification } = useNotify()
 
     return (
         <InfobarLayoutContainer>
             <InfobarLayoutContent>
                 {activeTab === TicketInfobarTab.Shopify && (
                     <Box flex={1} flexDirection="column">
-                        <ShopifyCustomer />
+                        <ShopifyCustomerProvider
+                            dispatchNotification={dispatchNotification}
+                        >
+                            <ShopifyCustomer />
+                        </ShopifyCustomerProvider>
                     </Box>
                 )}
                 {activeTab === TicketInfobarTab.Customer && (

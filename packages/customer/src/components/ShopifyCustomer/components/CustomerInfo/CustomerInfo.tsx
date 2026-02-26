@@ -103,6 +103,9 @@ export function CustomerInfo({
         useState<OrderEcommerceData | null>(null)
     const [isOrderOpen, setIsOrderOpen] = useState(false)
 
+    const isDraftOrder =
+        draftOrders?.some((order) => order.id === selectedOrder?.id) ?? false
+
     const handleSelectOrder = useCallback((order: OrderEcommerceData) => {
         setSelectedOrder(order)
         setIsOrderOpen(true)
@@ -174,9 +177,13 @@ export function CustomerInfo({
                 isOpen={isOrderOpen}
                 onOpenChange={setIsOrderOpen}
                 productsMap={productsMap}
+                isDraftOrder={isDraftOrder}
                 onDuplicate={handleDuplicateOrder}
                 onRefund={handleRefundOrder}
                 onCancel={handleCancelOrder}
+                storeName={selectedIntegration?.name}
+                integrationId={selectedIntegration?.id}
+                ticketId={ticketId}
             />
             <EditShopifyFieldsSidePanel
                 isOpen={isEditShopifyFieldsOpen}

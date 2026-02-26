@@ -113,6 +113,10 @@ export type OrderData = {
     fulfillment_status: FulfillmentStatus | null
     line_items: OrderLineItem[]
     customer: ShopperData
+    tags?: string
+    note?: string
+    order_status_url?: string
+    invoice_url?: string
 }
 
 export type OrderEcommerceData = {
