@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -23,12 +22,6 @@ const mockUseVersionBanner = jest.fn<VersionBannerState, []>()
 const mockUseVersionHistory = jest.fn<VersionHistoryData, []>()
 const mockUseGuidanceContext = jest.fn()
 const mockUseGuidanceStore = jest.fn()
-const mockUseFlag = jest.fn()
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
-    useFlag: (key: string) => mockUseFlag(key),
-}))
 
 jest.mock('./hooks/useVersionBanner', () => ({
     useVersionBanner: () => mockUseVersionBanner(),
@@ -127,7 +120,6 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         appQueryClient.clear()
-        mockUseFlag.mockReturnValue(false)
         mockUseVersionBanner.mockReturnValue(defaultMockState)
         mockUseVersionHistory.mockReturnValue({
             versions: [],
@@ -373,13 +365,6 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
         })
 
         describe('diff toggle', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === FeatureFlagKey.AddDiffingForVersionHistory,
-                )
-            })
-
             it('renders unchecked toggle when not in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
@@ -581,35 +566,6 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 renderComponent()
 
                 expect(screen.getByRole('switch')).toBeDisabled()
-            })
-
-            it('does not render diff toggle when feature flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-                mockUseGuidanceContext.mockReturnValue({
-                    state: {
-                        guidanceMode: 'read',
-                        historicalVersion: {
-                            versionId: 42,
-                            version: 3,
-                            title: 'Old title',
-                            content: 'Old content',
-                            publishedDatetime: '2025-03-15T14:30:00Z',
-                            commitMessage: 'Fixed typo in greeting',
-                        },
-                        guidance: { id: 1 },
-                    },
-                    dispatch: mockDispatch,
-                    config: {
-                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
-                    },
-                })
-
-                renderComponent()
-
-                expect(
-                    screen.queryByText('Compare to current'),
-                ).not.toBeInTheDocument()
-                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
 
             describe('when viewing draft version', () => {
@@ -952,6 +908,10 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
 
     describe('when not viewing historical version', () => {
         it('does not render the diff toggle', () => {
+            mockUseVersionBanner.mockReturnValue({
+                ...defaultMockState,
+                isViewingDraft: false,
+            })
             mockUseGuidanceContext.mockReturnValue({
                 state: {
                     guidanceMode: 'read',

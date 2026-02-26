@@ -1,15 +1,7 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { VersionBanner } from './VersionBanner'
-
-const mockUseFlag = jest.fn()
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
-    useFlag: (key: string) => mockUseFlag(key),
-}))
 
 jest.mock('@repo/utils', () => ({
     DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
@@ -66,7 +58,6 @@ function renderComponent(overrides?: Partial<typeof defaultProps>) {
 describe('VersionBanner', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
         mockUseGetUser.mockReturnValue({ data: undefined })
     })
 
@@ -378,13 +369,6 @@ describe('VersionBanner', () => {
         })
 
         describe('diff toggle button', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === FeatureFlagKey.AddDiffingForVersionHistory,
-                )
-            })
-
             it('renders unchecked toggle when onToggleDiff is provided and not in diff mode', () => {
                 renderComponent({
                     ...historicalVersionProps,
@@ -461,21 +445,6 @@ describe('VersionBanner', () => {
                 })
 
                 expect(screen.getByRole('switch')).toBeDisabled()
-            })
-
-            it('does not render diff toggle when feature flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-
-                renderComponent({
-                    ...historicalVersionProps,
-                    onToggleDiff: jest.fn(),
-                    isDiffMode: false,
-                })
-
-                expect(
-                    screen.queryByText('Compare to current'),
-                ).not.toBeInTheDocument()
-                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
         })
     })

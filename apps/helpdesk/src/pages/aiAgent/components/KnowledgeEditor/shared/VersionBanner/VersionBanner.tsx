@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 
 import { Banner, Box, Button, Text, ToggleField } from '@gorgias/axiom'
@@ -47,7 +46,6 @@ export function VersionBanner({
     onToggleDiff,
     className,
 }: VersionBannerProps) {
-    const isDiffingEnabled = useFlag(FeatureFlagKey.AddDiffingForVersionHistory)
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
 
@@ -121,7 +119,7 @@ export function VersionBanner({
                                 >
                                     Back to latest
                                 </Button>
-                                {isDiffingEnabled && onToggleDiff && (
+                                {onToggleDiff && (
                                     <Box
                                         flexDirection="row"
                                         alignItems="center"
@@ -178,7 +176,7 @@ export function VersionBanner({
                                 Edit, test, and publish your draft to update the
                                 published version.
                             </div>
-                            {isDiffingEnabled && onToggleDiff && (
+                            {onToggleDiff && (
                                 <Box
                                     flexDirection="row"
                                     justifyContent="flex-end"

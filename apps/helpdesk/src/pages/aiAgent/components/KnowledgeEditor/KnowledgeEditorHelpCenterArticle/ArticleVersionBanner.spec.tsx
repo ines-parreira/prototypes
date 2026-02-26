@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,13 +6,6 @@ import { ArticleVersionBanner } from './ArticleVersionBanner'
 import { useArticleContext } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
 import { useVersionHistory } from './hooks/useVersionHistory'
-
-const mockUseFlag = jest.fn()
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: jest.requireActual('@repo/feature-flags').FeatureFlagKey,
-    useFlag: (key: string) => mockUseFlag(key),
-}))
 
 jest.mock('@repo/utils', () => ({
     DateAndTimeFormatting: { CompactDateWithTime: 'CompactDateWithTime' },
@@ -98,7 +90,6 @@ describe('ArticleVersionBanner', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockReturnValue(false)
         mockSwitchVersion = jest.fn()
         mockUseVersionBanner.mockReturnValue(createMockVersionBanner())
         mockUseVersionHistory.mockReturnValue({
@@ -236,10 +227,6 @@ describe('ArticleVersionBanner', () => {
 
         describe('diff toggle when viewing draft', () => {
             beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === FeatureFlagKey.AddDiffingForVersionHistory,
-                )
                 mockUseVersionHistory.mockReturnValue({
                     isViewingHistoricalVersion: false,
                     onGoToLatest: jest.fn(),
@@ -566,13 +553,6 @@ describe('ArticleVersionBanner', () => {
         })
 
         describe('diff toggle', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key: string) =>
-                        key === FeatureFlagKey.AddDiffingForVersionHistory,
-                )
-            })
-
             it('should render unchecked toggle when not in diff mode', () => {
                 renderComponent()
 
@@ -733,17 +713,6 @@ describe('ArticleVersionBanner', () => {
                 renderComponent()
 
                 expect(screen.getByRole('switch')).toBeDisabled()
-            })
-
-            it('should not render diff toggle when feature flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-
-                renderComponent()
-
-                expect(
-                    screen.queryByText('Compare to current'),
-                ).not.toBeInTheDocument()
-                expect(screen.queryByRole('switch')).not.toBeInTheDocument()
             })
         })
     })
