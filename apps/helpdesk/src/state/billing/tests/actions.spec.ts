@@ -34,25 +34,6 @@ describe('billing actions', () => {
         mockServer.reset()
     })
 
-    it('fetch invoices', () => {
-        const invoices = [
-            {
-                metadata: {},
-                paid: true,
-                date: '2016-11-13T18:30:19+00:00',
-                amount_due: 1234,
-            },
-        ]
-
-        mockServer
-            .onGet('/api/billing/invoices/')
-            .reply(200, { data: invoices })
-
-        return store
-            .dispatch(actions.fetchInvoices())
-            .then(() => expect(store.getActions()).toMatchSnapshot())
-    })
-
     it('fetch payment method', () => {
         const paymentMethod = {
             active: false,

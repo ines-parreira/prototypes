@@ -1,21 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing actions fetch invoices 1`] = `
-[
-  {
-    "resp": [
-      {
-        "amount_due": 1234,
-        "date": "2016-11-13T18:30:19+00:00",
-        "metadata": {},
-        "paid": true,
-      },
-    ],
-    "type": "FETCH_INVOICES_SUCCESS",
-  },
-]
-`;
-
 exports[`billing actions fetch payment method 1`] = `
 [
   {

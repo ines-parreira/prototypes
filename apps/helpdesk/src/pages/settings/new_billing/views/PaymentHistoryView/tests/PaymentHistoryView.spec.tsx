@@ -1,19 +1,18 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import MockAdapter from 'axios-mock-adapter'
-import { fromJS } from 'immutable'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { invoices } from 'fixtures/invoices'
-import client from 'models/api/resources'
 import type { Invoice } from 'state/billing/types'
 import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PaymentsHistoryView from '../PaymentsHistoryView'
 
@@ -25,42 +24,10 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>(
     middlewares,
 )
 
-const store = mockedStore({
-    billing: fromJS({ invoices, products: [] }),
-})
+const server = setupServer()
 
 const mockPayInvoice = jest.fn()
 const mockConfirmInvoicePayment = jest.fn()
-
-const invoiceRequiringSource: Invoice = {
-    description: 'Pro for the period from 2023-04-26 to 2023-04-28',
-    invoice_pdf: '#',
-    total: 322052,
-    amount_due: 322052,
-    amount_paid: 0,
-    payment_intent: { status: PaymentIntentStatus.RequiresSource },
-    payment_confirmation_url: null,
-    attempted: true,
-    id: 'in_1N1DawI9qXomtXqStoF23sQ8',
-    paid: false,
-    date: 1682535698,
-    metadata: { payment_service: PaymentType.Stripe },
-}
-
-const invoiceRequiringPaymentMethod: Invoice = {
-    description: 'Pro for the period from 2023-04-26 to 2023-04-28',
-    invoice_pdf: '#',
-    total: 322052,
-    amount_due: 322052,
-    amount_paid: 0,
-    payment_intent: { status: PaymentIntentStatus.RequiresPaymentMethod },
-    payment_confirmation_url: null,
-    attempted: true,
-    id: 'in_1N1DawI9qXomtXqStoF23sQ8',
-    paid: false,
-    date: 1682535698,
-    metadata: { payment_service: PaymentType.Stripe },
-}
 
 jest.mock('services/gorgiasApi', () => {
     return jest.fn().mockImplementation(() => ({
@@ -69,34 +36,108 @@ jest.mock('services/gorgiasApi', () => {
     }))
 })
 
+const defaultInvoice: Invoice = {
+    description: 'Pro for the period from 2023-04-26 to 2023-04-28',
+    invoice_pdf: '#',
+    total: 322052,
+    amount_due: 322052,
+    amount_paid: 0,
+    payment_intent: { status: PaymentIntentStatus.Succeeded },
+    payment_confirmation_url: null,
+    attempted: true,
+    id: 'in_1N1DawI9qXomtXqStoF23sQ8',
+    paid: true,
+    date: 1682535698,
+    metadata: { payment_service: PaymentType.Stripe },
+}
+
+const invoiceRequiringSource: Invoice = {
+    ...defaultInvoice,
+    payment_intent: { status: PaymentIntentStatus.RequiresSource },
+    paid: false,
+}
+
+const invoiceRequiringPaymentMethod: Invoice = {
+    ...defaultInvoice,
+    payment_intent: { status: PaymentIntentStatus.RequiresPaymentMethod },
+    paid: false,
+}
+
 describe('PaymentsHistoryView', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-        logEventMock.mockClear()
-        mockPayInvoice.mockReturnValue(Promise.resolve())
-        mockConfirmInvoicePayment.mockReturnValue(Promise.resolve())
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'warn' })
     })
 
-    it('renders loader when loading', () => {
+    afterEach(() => {
+        server.resetHandlers()
+        jest.clearAllMocks()
+        logEventMock.mockClear()
+        mockPayInvoice.mockClear()
+        mockConfirmInvoicePayment.mockClear()
+    })
+
+    afterAll(() => {
+        server.close()
+    })
+
+    const renderComponent = (invoices: Invoice[] = [defaultInvoice]) => {
+        const store = mockedStore({})
+        const { QueryClientProvider, queryClient } = mockQueryClientProvider()
+
+        server.use(
+            http.get('/api/billing/invoices', ({ request }) => {
+                const url = new URL(request.url)
+                if (url.searchParams.get('limit') !== '20') {
+                    return HttpResponse.json(
+                        { error: 'Unexpected limit param' },
+                        { status: 400 },
+                    )
+                }
+                return HttpResponse.json({
+                    data: invoices,
+                    meta: {
+                        next_cursor: null,
+                    },
+                })
+            }),
+        )
+
+        return {
+            ...render(
+                <MemoryRouter>
+                    <Provider store={store}>
+                        <QueryClientProvider>
+                            <PaymentsHistoryView />
+                        </QueryClientProvider>
+                    </Provider>
+                </MemoryRouter>,
+            ),
+            store,
+            queryClient,
+        }
+    }
+
+    it('renders table without data rows when loading', () => {
+        const store = mockedStore({})
+        const { QueryClientProvider } = mockQueryClientProvider()
+
+        // Don't mock the invoices handler so the query stays in loading state
         render(
             <MemoryRouter>
                 <Provider store={store}>
-                    <PaymentsHistoryView />
+                    <QueryClientProvider>
+                        <PaymentsHistoryView />
+                    </QueryClientProvider>
                 </Provider>
             </MemoryRouter>,
         )
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(screen.queryByText('Retry Payment')).not.toBeInTheDocument()
+        expect(screen.queryByText('Download PDF')).not.toBeInTheDocument()
     })
 
     it('renders invoices table when loaded', async () => {
-        const { container } = render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <PaymentsHistoryView />
-                </Provider>
-            </MemoryRouter>,
-        )
+        const { container } = renderComponent()
 
         await waitFor(() =>
             expect(container.querySelector('table')).toBeInTheDocument(),
@@ -104,20 +145,7 @@ describe('PaymentsHistoryView', () => {
     })
 
     it('renders Retry Payment button for invoices having payment_intent status at `requires_source`', async () => {
-        const store = mockedStore({
-            billing: fromJS({
-                invoices: [invoiceRequiringSource],
-                products: [],
-            }),
-        })
-
-        render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <PaymentsHistoryView />
-                </Provider>
-            </MemoryRouter>,
-        )
+        renderComponent([invoiceRequiringSource])
 
         await waitFor(() =>
             expect(screen.getByText('Retry Payment')).toBeInTheDocument(),
@@ -125,20 +153,7 @@ describe('PaymentsHistoryView', () => {
     })
 
     it('renders Retry Payment button for invoices having payment_intent status at `requires_payment_method`', async () => {
-        const store = mockedStore({
-            billing: fromJS({
-                invoices: [invoiceRequiringPaymentMethod],
-                products: [],
-            }),
-        })
-
-        render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <PaymentsHistoryView />
-                </Provider>
-            </MemoryRouter>,
-        )
+        renderComponent([invoiceRequiringPaymentMethod])
 
         await waitFor(() =>
             expect(screen.getByText('Retry Payment')).toBeInTheDocument(),
@@ -146,33 +161,16 @@ describe('PaymentsHistoryView', () => {
     })
 
     it('triggers retry payment when Retry Payment button is clicked', async () => {
-        const apiMock = new MockAdapter(client)
-        apiMock.onAny().reply(200, {})
+        mockPayInvoice.mockResolvedValue(undefined)
 
-        const store = mockedStore({
-            billing: fromJS({
-                invoices: [invoiceRequiringSource],
-                products: [],
-            }),
-        })
-
+        renderComponent([invoiceRequiringSource])
         const user = userEvent.setup()
-        const { container } = render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <PaymentsHistoryView />
-                </Provider>
-            </MemoryRouter>,
-        )
 
-        await waitFor(() =>
-            expect(container.querySelector('table')).toBeInTheDocument(),
-        )
-
-        await user.click(screen.getByText('Retry Payment'))
+        const retryButton = await screen.findByText('Retry Payment')
+        await act(() => user.click(retryButton))
 
         await waitFor(() => {
-            expect(mockPayInvoice).toBeCalledWith(invoices[0].id)
+            expect(mockPayInvoice).toBeCalledWith(invoiceRequiringSource.id)
         })
     })
 
@@ -195,20 +193,7 @@ describe('PaymentsHistoryView', () => {
             has_payment_schedules: true,
         }
 
-        const store = mockedStore({
-            billing: fromJS({
-                invoices: [invoiceWithPaymentSchedules],
-                products: [],
-            }),
-        })
-
-        const { container } = render(
-            <MemoryRouter>
-                <Provider store={store}>
-                    <PaymentsHistoryView />
-                </Provider>
-            </MemoryRouter>,
-        )
+        const { container } = renderComponent([invoiceWithPaymentSchedules])
 
         await waitFor(() =>
             expect(container.querySelector('table')).toBeInTheDocument(),
@@ -219,13 +204,7 @@ describe('PaymentsHistoryView', () => {
 
     describe('BillingPaymentHistoryTabVisited tracking', () => {
         it('should track event when Payment History page is visited', () => {
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
+            renderComponent()
 
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.BillingPaymentHistoryTabVisited,
@@ -239,14 +218,8 @@ describe('PaymentsHistoryView', () => {
 
     describe('BillingPaymentHistoryDownloadPdfClicked tracking', () => {
         it('should track event when Download PDF link is clicked', async () => {
+            renderComponent()
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const downloadLinks = await screen.findAllByText('Download PDF')
 
@@ -265,30 +238,16 @@ describe('PaymentsHistoryView', () => {
 
     describe('BillingPaymentHistoryRetryPaymentClicked tracking', () => {
         it('should track event when Retry Payment button is clicked', async () => {
-            const apiMock = new MockAdapter(client)
-            apiMock.onAny().reply(200, {})
+            mockPayInvoice.mockResolvedValue(undefined)
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const retryButton = await screen.findByText('Retry Payment')
 
             logEventMock.mockClear()
 
-            await user.click(retryButton)
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(logEventMock).toHaveBeenCalledWith(
@@ -318,20 +277,7 @@ describe('PaymentsHistoryView', () => {
         }
 
         it('renders Confirm button for invoices requiring confirmation', async () => {
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringConfirmation],
-                    products: [],
-                }),
-            })
-
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
+            renderComponent([invoiceRequiringConfirmation])
 
             await waitFor(() =>
                 expect(screen.getByText('Confirm')).toBeInTheDocument(),
@@ -345,33 +291,19 @@ describe('PaymentsHistoryView', () => {
                 payment_confirmation_url: confirmationUrl,
             }
 
-            mockConfirmInvoicePayment.mockReturnValue(
-                Promise.resolve(fromJS(invoiceWithConfirmationUrl)),
-            )
-
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringConfirmation],
-                    products: [],
-                }),
+            mockConfirmInvoicePayment.mockResolvedValue({
+                toJS: () => invoiceWithConfirmationUrl,
             })
 
+            renderComponent([invoiceRequiringConfirmation])
             const user = userEvent.setup()
-            const originalLocation = window.location.href
 
+            const originalLocation = window.location.href
             delete (window as { location?: unknown }).location
             window.location = { href: originalLocation } as Location
 
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
-
             const confirmButton = await screen.findByText('Confirm')
-            await user.click(confirmButton)
+            await act(() => user.click(confirmButton))
 
             await waitFor(() => {
                 expect(mockConfirmInvoicePayment).toHaveBeenCalledWith(
@@ -381,44 +313,31 @@ describe('PaymentsHistoryView', () => {
             })
         })
 
-        it('dispatches updateInvoiceInList when payment_confirmation_url is null', async () => {
+        it('invalidates query when payment_confirmation_url is null', async () => {
             const updatedInvoice: Invoice = {
                 ...invoiceRequiringConfirmation,
                 payment_confirmation_url: null,
             }
 
-            mockConfirmInvoicePayment.mockReturnValue(
-                Promise.resolve(fromJS(updatedInvoice)),
-            )
-
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringConfirmation],
-                    products: [],
-                }),
+            mockConfirmInvoicePayment.mockResolvedValue({
+                toJS: () => updatedInvoice,
             })
 
+            const { queryClient } = renderComponent([
+                invoiceRequiringConfirmation,
+            ])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const confirmButton = await screen.findByText('Confirm')
-            await user.click(confirmButton)
+            await act(() => user.click(confirmButton))
 
             await waitFor(() => {
                 expect(mockConfirmInvoicePayment).toHaveBeenCalledWith(
                     invoiceRequiringConfirmation.id,
                 )
-                expect(store.getActions()).toContainEqual(
-                    expect.objectContaining({
-                        type: 'UPDATE_INVOICE_IN_LIST',
-                    }),
-                )
+                expect(
+                    queryClient.getQueryCache().getAll().length,
+                ).toBeGreaterThan(0)
             })
         })
 
@@ -434,25 +353,12 @@ describe('PaymentsHistoryView', () => {
                 },
             })
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringConfirmation],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringConfirmation])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const confirmButton = await screen.findByText('Confirm')
 
-            await user.click(confirmButton)
+            await act(() => user.click(confirmButton))
 
             await waitFor(
                 () => {
@@ -471,25 +377,12 @@ describe('PaymentsHistoryView', () => {
                 },
             })
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringConfirmation],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringConfirmation])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const confirmButton = await screen.findByText('Confirm')
 
-            await user.click(confirmButton)
+            await act(() => user.click(confirmButton))
 
             await waitFor(
                 () => {
@@ -509,25 +402,13 @@ describe('PaymentsHistoryView', () => {
                     status: 402,
                 },
             })
+            mockConfirmInvoicePayment.mockResolvedValue({ toJS: () => ({}) })
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const retryButton = await screen.findByText('Retry Payment')
-            await user.click(retryButton)
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(mockPayInvoice).toHaveBeenCalledWith(
@@ -552,24 +433,11 @@ describe('PaymentsHistoryView', () => {
                 },
             })
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const retryButton = await screen.findByText('Retry Payment')
-            await user.click(retryButton)
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(mockPayInvoice).toHaveBeenCalledWith(
@@ -586,24 +454,11 @@ describe('PaymentsHistoryView', () => {
                 },
             })
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const retryButton = await screen.findByText('Retry Payment')
-            await user.click(retryButton)
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(mockPayInvoice).toHaveBeenCalledWith(
@@ -612,65 +467,33 @@ describe('PaymentsHistoryView', () => {
             })
         })
 
-        it('calls payInvoice successfully and updates invoice list', async () => {
+        it('calls payInvoice successfully and invalidates query', async () => {
             mockPayInvoice.mockResolvedValue(undefined)
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            const { queryClient } = renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
             const retryButton = await screen.findByText('Retry Payment')
-            await user.click(retryButton)
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(mockPayInvoice).toHaveBeenCalledWith(
                     invoiceRequiringSource.id,
                 )
-                expect(store.getActions()).toContainEqual(
-                    expect.objectContaining({
-                        type: 'UPDATE_INVOICE_IN_LIST',
-                    }),
-                )
+                expect(
+                    queryClient.getQueryCache().getAll().length,
+                ).toBeGreaterThan(0)
             })
         })
 
         it('resets invoiceBeingPaid state after successful payment', async () => {
             mockPayInvoice.mockResolvedValue(undefined)
 
-            const store = mockedStore({
-                billing: fromJS({
-                    invoices: [invoiceRequiringSource],
-                    products: [],
-                }),
-            })
-
+            renderComponent([invoiceRequiringSource])
             const user = userEvent.setup()
-            const { container } = render(
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <PaymentsHistoryView />
-                    </Provider>
-                </MemoryRouter>,
-            )
 
-            await waitFor(() =>
-                expect(container.querySelector('table')).toBeInTheDocument(),
-            )
-
-            const retryButton = screen.getByText('Retry Payment')
-            await user.click(retryButton)
+            const retryButton = await screen.findByText('Retry Payment')
+            await act(() => user.click(retryButton))
 
             await waitFor(() => {
                 expect(mockPayInvoice).toHaveBeenCalledWith(

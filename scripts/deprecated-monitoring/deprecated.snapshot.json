@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-20T08:50:02.778Z",
-  "total": 4432,
+  "date": "2026-02-23T14:31:31.891Z",
+  "total": 4431,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1234,55 +1234,6 @@
       ]
     },
     {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "sanitizeHtmlDefault",
-      "comment": "*\n * @deprecated use sanitizeHtmlDefault from @repo/utils\n * @date 2026-01-23\n * @type migration to @repo/utils\n * sanitizeHtml with a sensible config.\n ",
-      "count": 35,
-      "filePath": "apps/helpdesk/src/utils/html.ts",
-      "usages": [
-        {
-          "name": "sanitizeHtmlDefault",
-          "files": [
-            "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
-            "apps/helpdesk/src/config/views.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/PerformanceTip.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/support-performance/components/SupportPerformanceTip.tsx",
-            "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTable.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActions/PlaygroundActionsItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPredefinedMessages/PlaygroundPredefinedMessages.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarSearchResultsList.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightCustomerRow.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightTicketRow.tsx",
-            "apps/helpdesk/src/pages/common/utils/labels.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/ContactCaptureForm/steps/Customization/Customization.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage/PostSubmissionMessage.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/ConvertInfoBanner/ConvertInfoBanner.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
-            "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
-            "apps/helpdesk/src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateLine.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchResults/SearchResultsArticleRow/SearchResultsArticleRow.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchResults/SearchResultsCategoryRow/SearchResultsCategoryRow.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiReasoningContent.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Error.tsx",
-            "apps/helpdesk/src/tickets/ticket-detail/components/MessageError.tsx",
-            "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageError.spec.tsx",
-            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
-            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts",
-            "apps/helpdesk/src/utils.ts",
-            "apps/helpdesk/src/utils/tests/html.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "BigNumberMetric",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * If you need to add a loading state, use Skeleton from '@gorgias/axiom' instead\n * @date 2025-09-15\n * @type reporting-ui-kit\n ",
@@ -1326,6 +1277,54 @@
             "apps/helpdesk/src/pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric.tsx",
             "apps/helpdesk/src/pages/automate/automate-metrics/DecreaseInResolutionTimeMetric.tsx",
             "apps/helpdesk/src/pages/automate/automate-metrics/TimeSavedByAgentsMetric.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "sanitizeHtmlDefault",
+      "comment": "*\n * @deprecated use sanitizeHtmlDefault from @repo/utils\n * @date 2026-01-23\n * @type migration to @repo/utils\n * sanitizeHtml with a sensible config.\n ",
+      "count": 34,
+      "filePath": "apps/helpdesk/src/utils/html.ts",
+      "usages": [
+        {
+          "name": "sanitizeHtmlDefault",
+          "files": [
+            "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
+            "apps/helpdesk/src/config/views.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/PerformanceTip.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/components/SupportPerformanceTip.tsx",
+            "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActions/PlaygroundActionsItem.tsx",
+            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPredefinedMessages/PlaygroundPredefinedMessages.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarSearchResultsList.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightCustomerRow.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightTicketRow.tsx",
+            "apps/helpdesk/src/pages/common/utils/labels.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/ContactCaptureForm/steps/Customization/Customization.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage/PostSubmissionMessage.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/ConvertInfoBanner/ConvertInfoBanner.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
+            "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
+            "apps/helpdesk/src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateLine.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchResults/SearchResultsArticleRow/SearchResultsArticleRow.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchResults/SearchResultsCategoryRow/SearchResultsCategoryRow.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiReasoningContent.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Error.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/MessageError.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageError.spec.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts",
+            "apps/helpdesk/src/utils.ts",
+            "apps/helpdesk/src/utils/tests/html.spec.ts"
           ]
         }
       ]

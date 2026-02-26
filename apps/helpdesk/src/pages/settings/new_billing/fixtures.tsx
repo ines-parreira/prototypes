@@ -26,6 +26,23 @@ import type {
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
+import type { Invoice } from 'state/billing/types'
+import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
+
+export const baseInvoice: Invoice = {
+    description: 'Pro plan for 2023-04',
+    invoice_pdf: 'https://example.com/invoice.pdf',
+    total: 500000,
+    amount_due: 322052,
+    amount_paid: 150000,
+    payment_intent: { status: PaymentIntentStatus.Succeeded },
+    payment_confirmation_url: null,
+    attempted: true,
+    id: 'inv_001',
+    paid: true,
+    date: 1682535698,
+    metadata: { payment_service: PaymentType.Stripe },
+}
 
 export const storeWithTrialingSubscription = {
     currentAccount: fromJS({

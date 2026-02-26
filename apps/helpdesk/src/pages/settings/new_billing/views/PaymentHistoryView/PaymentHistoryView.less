@@ -1,10 +1,14 @@
 :local {
     .container {
         color: var(--neutral-grey-6); // legacy
+
+        div[data-name='skeleton'] {
+            padding: 0 var(--spacing-xxxs);
+        }
     }
 
     .header {
-        margin-bottom: 16px;
+        margin-bottom: var(--layout-spacing-s);
     }
 
     .title {
@@ -34,9 +38,11 @@
         td {
             padding: 26px 0;
         }
+
         th:not(:first-child):not(:last-child) {
             padding: 16px 0 !important;
         }
+
         th:last-child {
             padding: 16px 32px !important;
         }
@@ -74,6 +80,22 @@
 
     .downloadLink {
         padding: 0px 8px;
+    }
+
+    .paginationControls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-top: 24px;
+        padding: 16px 0;
+    }
+
+    .pageInfo {
+        font-size: 14px;
+        font-weight: 500;
+        min-width: 80px;
+        text-align: center;
     }
 }
 
