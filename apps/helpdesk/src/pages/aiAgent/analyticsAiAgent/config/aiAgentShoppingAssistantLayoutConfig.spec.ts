@@ -9,12 +9,12 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 9 cards', () => {
+        it('should have kpis section with 10 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(9)
+            expect(kpisSection.items).toHaveLength(10)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -30,6 +30,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard,
                 AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard,
                 AnalyticsAiAgentShoppingAssistantChart.MedianPurchaseTimeCard,
+                AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard,
             ]
             expect(kpisSection.items.map((item) => item.chartId)).toEqual(
                 expectedChartIds,

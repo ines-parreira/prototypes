@@ -1,4 +1,5 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchConversionRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useConversionRateTrend'
 import { fetchDiscountCodesAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
 import { fetchDiscountCodesAverageValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAverageValueTrend'
 import { fetchDiscountCodesOfferedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
@@ -16,6 +17,7 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsShoppingAssistantComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
+import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
@@ -58,6 +60,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     DiscountCodesAppliedCard = 'discount_codes_applied_card',
     DiscountsOfferedCard = 'discounts_offered_card',
     MedianPurchaseTimeCard = 'median_purchase_time_card',
+    ConversionRateCard = 'conversion_rate_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -214,6 +217,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'less-is-better',
+            },
+            [AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard]: {
+                chartComponent: AnalyticsAiAgentConversionRateCard,
+                label: 'Conversion rate',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchConversionRateTrend,
+                        metricFormat: 'decimal-to-percent',
+                    },
+                ],
+                description:
+                    'The percentage of Shopping Assistant interactions after which an order was placed within 3 days.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
                 {

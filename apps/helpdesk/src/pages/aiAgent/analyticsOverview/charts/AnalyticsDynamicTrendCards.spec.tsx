@@ -9,6 +9,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
@@ -171,6 +172,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 42,
                 prevValue: 38,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentConversionRateCard',
+            Component: AnalyticsAiAgentConversionRateCard,
+            config: {
+                label: 'Conversion rate',
+                description:
+                    'The percentage of Shopping Assistant interactions after which an order was placed within 3 days.',
+                metricFormat: 'decimal-to-percent' as const,
+                value: 0.25,
+                prevValue: 0.2,
             },
         },
     ]
