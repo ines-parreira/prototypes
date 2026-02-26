@@ -524,8 +524,24 @@ export class RichFieldEditor extends Component<Props, State> {
         }, 0)
     }
 
-    _handleReturn = () => {
+    _handleReturn = (e: KeyboardEvent) => {
         const { editorState } = this.props
+
+        if (e.shiftKey) {
+            const selection = editorState.getSelection()
+            const contentState = editorState.getCurrentContent()
+            const blockType = contentState
+                .getBlockForKey(selection.getStartKey())
+                .getType()
+            if (
+                blockType === 'unordered-list-item' ||
+                blockType === 'ordered-list-item'
+            ) {
+                this.handleChildChange(RichUtils.insertSoftNewline(editorState))
+                return EditorHandledNotHandled.Handled
+            }
+        }
+
         const listReturnState = handleListReturn(editorState)
         if (listReturnState) {
             const selection = listReturnState
@@ -1278,6 +1294,7 @@ export class RichFieldEditor extends Component<Props, State> {
                 })}
             >
                 <div
+                    role="presentation"
                     className={classnames('editor-wrapper', {
                         drop: this.state.isDragging,
                     })}

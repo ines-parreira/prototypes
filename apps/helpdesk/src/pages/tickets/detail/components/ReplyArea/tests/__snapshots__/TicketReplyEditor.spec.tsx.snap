@@ -9,6 +9,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
   >
     <div
       class="editor-wrapper"
+      role="presentation"
     >
       <div
         class="withMinHeight"

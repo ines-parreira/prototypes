@@ -2281,7 +2281,9 @@ describe('RichFieldEditor', () => {
                 />,
             )
 
-            const result = instanceRef.current!._handleReturn()
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: false,
+            } as unknown as React.KeyboardEvent)
             expect(result).toBe('handled')
             expect(onChangeSpy).toHaveBeenCalled()
         })
@@ -2323,7 +2325,9 @@ describe('RichFieldEditor', () => {
                 />,
             )
 
-            const result = instanceRef.current!._handleReturn()
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: false,
+            } as unknown as React.KeyboardEvent)
             expect(result).toBe('handled')
             expect(onChangeSpy).toHaveBeenCalled()
 
@@ -2371,7 +2375,9 @@ describe('RichFieldEditor', () => {
             )
 
             onChangeSpy.mockClear()
-            const result = instanceRef.current!._handleReturn()
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: false,
+            } as unknown as React.KeyboardEvent)
             expect(result).toBe('not-handled')
         })
     })
@@ -3710,6 +3716,152 @@ describe('RichFieldEditor', () => {
             })
 
             expect(scrollToReactNode).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('_handleReturn', () => {
+        function createListEditorState(
+            type: 'unordered-list-item' | 'ordered-list-item',
+            text = 'List item',
+        ) {
+            const blockKey = 'block1'
+            const block = new ContentBlock({
+                key: blockKey,
+                type,
+                text,
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const content = DraftContentState.createFromBlockArray([block])
+            const state = EditorState.createWithContent(content)
+            const selection = SelectionState.createEmpty(blockKey).merge({
+                anchorOffset: text.length,
+                focusOffset: text.length,
+                hasFocus: true,
+            }) as SelectionState
+            return EditorState.forceSelection(state, selection)
+        }
+
+        it('should insert soft newline within the same unordered-list-item on Shift+Enter', () => {
+            const spyOnChange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+            const listEditorState = createListEditorState('unordered-list-item')
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={spyOnChange}
+                    ref={instanceRef}
+                />,
+            )
+            spyOnChange.mockClear()
+
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: true,
+            } as unknown as React.KeyboardEvent)
+
+            expect(result).toBe('handled')
+            expect(spyOnChange).toHaveBeenCalledTimes(1)
+            const [newEditorState] = spyOnChange.mock.calls[0] as [EditorState]
+            const blocks = newEditorState.getCurrentContent().getBlocksAsArray()
+            expect(blocks).toHaveLength(1)
+            expect(blocks[0].getType()).toBe('unordered-list-item')
+            expect(blocks[0].getText()).toContain('\n')
+        })
+
+        it('should insert soft newline within the same ordered-list-item on Shift+Enter', () => {
+            const spyOnChange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+            const listEditorState = createListEditorState('ordered-list-item')
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={spyOnChange}
+                    ref={instanceRef}
+                />,
+            )
+            spyOnChange.mockClear()
+
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: true,
+            } as unknown as React.KeyboardEvent)
+
+            expect(result).toBe('handled')
+            expect(spyOnChange).toHaveBeenCalledTimes(1)
+            const [newEditorState] = spyOnChange.mock.calls[0] as [EditorState]
+            const blocks = newEditorState.getCurrentContent().getBlocksAsArray()
+            expect(blocks).toHaveLength(1)
+            expect(blocks[0].getType()).toBe('ordered-list-item')
+            expect(blocks[0].getText()).toContain('\n')
+        })
+
+        it('should not insert soft newline on plain Enter in a non-empty list item', () => {
+            const spyOnChange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+            const listEditorState = createListEditorState(
+                'unordered-list-item',
+                'Some text',
+            )
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={spyOnChange}
+                    ref={instanceRef}
+                />,
+            )
+            spyOnChange.mockClear()
+
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: false,
+            } as unknown as React.KeyboardEvent)
+
+            expect(result).toBe('not-handled')
+            expect(spyOnChange).not.toHaveBeenCalled()
+        })
+
+        it('should not insert soft newline on Shift+Enter in a non-list block', () => {
+            const spyOnChange = jest.fn()
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+            const unstyledEditorState = EditorState.moveFocusToEnd(
+                EditorState.createWithContent(
+                    convertFromHTML('<p>Some text</p>'),
+                ),
+            )
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={unstyledEditorState}
+                    onChange={spyOnChange}
+                    ref={instanceRef}
+                />,
+            )
+            spyOnChange.mockClear()
+
+            const result = instanceRef.current!._handleReturn({
+                shiftKey: true,
+            } as unknown as React.KeyboardEvent)
+
+            expect(result).toBe('not-handled')
+            expect(spyOnChange).not.toHaveBeenCalled()
         })
     })
 })

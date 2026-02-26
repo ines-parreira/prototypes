@@ -12,6 +12,7 @@ exports[`<TicketReply /> should render the editor 1`] = `
     >
       <div
         class="editor-wrapper"
+        role="presentation"
       >
         <div
           class="withMinHeight"

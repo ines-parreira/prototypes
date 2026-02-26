@@ -6,6 +6,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
 >
   <div
     class="editor-wrapper"
+    role="presentation"
   >
     <div
       class="withMinHeight"
@@ -248,6 +249,7 @@ exports[`RichField should render a basic input 1`] = `
 >
   <div
     class="editor-wrapper"
+    role="presentation"
   >
     <div
       class="withMinHeight"
@@ -490,6 +492,7 @@ exports[`RichField should render default content state 1`] = `
 >
   <div
     class="editor-wrapper"
+    role="presentation"
   >
     <div
       class="withMinHeight"
@@ -732,6 +735,7 @@ exports[`RichField should render immutable variable 1`] = `
 >
   <div
     class="editor-wrapper"
+    role="presentation"
   >
     <div
       class="withMinHeight"
@@ -1016,6 +1020,7 @@ exports[`RichField should render mutable variable 1`] = `
   >
     <div
       class="editor-wrapper"
+      role="presentation"
     >
       <div
         class="withMinHeight"

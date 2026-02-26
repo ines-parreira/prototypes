@@ -360,6 +360,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
       >
         <div
           class="editor-wrapper"
+          role="presentation"
         >
           <div
             class="withMinHeight"
@@ -883,6 +884,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
       >
         <div
           class="editor-wrapper"
+          role="presentation"
         >
           <div
             class="withMinHeight"

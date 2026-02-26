@@ -345,6 +345,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       >
         <div
           class="editor-wrapper"
+          role="presentation"
         >
           <div
             class="withMinHeight"
@@ -836,6 +837,7 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       >
         <div
           class="editor-wrapper"
+          role="presentation"
         >
           <div
             class="withMinHeight"

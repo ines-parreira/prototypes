@@ -71,6 +71,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -373,6 +374,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -637,6 +639,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -1338,6 +1341,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"

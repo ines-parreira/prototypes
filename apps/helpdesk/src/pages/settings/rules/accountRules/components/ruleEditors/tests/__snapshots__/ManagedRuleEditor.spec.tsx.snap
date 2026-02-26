@@ -244,6 +244,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -644,6 +645,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -1003,6 +1005,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -1305,6 +1308,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -1802,6 +1806,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -2202,6 +2207,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -2561,6 +2567,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -2834,6 +2841,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -3292,6 +3300,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -3692,6 +3701,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           >
             <div
               class="editor-wrapper"
+              role="presentation"
             >
               <div
                 class="withMinHeight"
@@ -4051,6 +4061,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
@@ -4374,6 +4385,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
               >
                 <div
                   class="editor-wrapper"
+                  role="presentation"
                 >
                   <div
                     class="withMinHeight"
