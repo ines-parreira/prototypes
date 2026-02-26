@@ -8,6 +8,9 @@ import { isTicketMessage } from '../../hooks/messages/predicates'
 import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
+import { MessageBubble } from '../MessageBubble/MessageBubble'
+
+import css from './TicketThreadMessageItem.less'
 
 const Placement = {
     Left: 'left',
@@ -34,8 +37,17 @@ export function TicketThreadMessageItem({
     const content = useMemo(() => {
         switch (item._tag) {
             case TicketThreadItemTag.Messages.Message:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return (
+                    <MessageBubble>
+                        {item.data.stripped_text || item.data.body_text}
+                    </MessageBubble>
+                )
             case TicketThreadItemTag.Messages.InternalNote:
+                return (
+                    <MessageBubble>
+                        {item.data.stripped_text || item.data.body_text}
+                    </MessageBubble>
+                )
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.AiAgentMessage:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
@@ -79,6 +91,7 @@ export function TicketThreadMessageItem({
             alignSelf={
                 placement === Placement.Right ? 'flex-end' : 'flex-start'
             }
+            className={css.contentWrapper}
         >
             {content}
         </Box>

@@ -26,9 +26,7 @@ describe('TicketThreadItem', () => {
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(
-            screen.getByText(JSON.stringify(messageData)),
-        ).toBeInTheDocument()
+        expect(screen.getByText(messageData.body_text)).toBeInTheDocument()
     })
 
     it('renders an internal note item', () => {
@@ -38,9 +36,7 @@ describe('TicketThreadItem', () => {
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(
-            screen.getByText(JSON.stringify(messageData)),
-        ).toBeInTheDocument()
+        expect(screen.getByText(messageData.body_text)).toBeInTheDocument()
     })
 
     it('renders a ticket event item', () => {

@@ -12,11 +12,6 @@ function renderItem(item: TicketThreadMessageItem) {
 
 describe('TicketThreadMessageItem', () => {
     const messageTags = [
-        { tag: TicketThreadItemTag.Messages.Message, label: 'message' },
-        {
-            tag: TicketThreadItemTag.Messages.InternalNote,
-            label: 'internal note',
-        },
         {
             tag: TicketThreadItemTag.Messages.AiAgentMessage,
             label: 'AI agent message',
@@ -106,7 +101,7 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(JSON.stringify(data)).parentElement,
+            screen.getByText(messageData.body_text).parentElement,
         ).toHaveStyle({
             alignSelf: 'flex-end',
         })
@@ -127,10 +122,30 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(JSON.stringify(data)).parentElement,
+            screen.getByText(messageData.body_text).parentElement,
         ).toHaveStyle({
             alignSelf: 'flex-start',
         })
+    })
+
+    it('renders message item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.Message,
+            data: { ...messageData, stripped_text: 'hello' },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('hello')).toBeInTheDocument()
+    })
+
+    it('renders internal note item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.InternalNote,
+            data: { ...messageData, stripped_text: 'hello' },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('hello')).toBeInTheDocument()
     })
 
     it('renders merged messages item', () => {
