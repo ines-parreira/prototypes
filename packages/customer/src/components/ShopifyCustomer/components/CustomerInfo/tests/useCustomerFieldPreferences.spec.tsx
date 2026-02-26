@@ -4,7 +4,7 @@ import { renderHook } from '../../../../../tests/render.utils'
 import { DEFAULT_FIELDS, FIELD_DEFINITIONS } from '../fields'
 import { useCustomerFieldPreferences } from '../useCustomerFieldPreferences'
 
-const STORAGE_KEY = 'customerInfoFieldPreferences'
+const STORAGE_KEY = 'shopify-customer-info-fields'
 
 afterEach(() => {
     localStorage.removeItem(STORAGE_KEY)
@@ -34,6 +34,15 @@ describe('useCustomerFieldPreferences', () => {
             (f) => f.visible,
         )
         expect(result.current.fields).toHaveLength(visiblePrefs.length)
+    })
+
+    it('returns all default fields when stored value is not an array', () => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify('not-an-array'))
+
+        const { result } = renderHook(() => useCustomerFieldPreferences())
+
+        const fieldIds = result.current.fields.map((f) => f.id)
+        expect(fieldIds).toEqual(DEFAULT_FIELDS.map((f) => f.id))
     })
 
     it('persists updated preferences', () => {

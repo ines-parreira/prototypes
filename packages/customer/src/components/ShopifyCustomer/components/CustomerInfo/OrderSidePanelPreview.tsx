@@ -4,11 +4,11 @@ import type {
     FinancialStatusValue,
     FulfillmentStatusValue,
     OrderCardProduct,
-} from '@repo/ecommerce'
+} from '@repo/ecommerce/shopify/types'
 import {
     getFinancialStatusInfo,
     getFulfillmentStatusInfo,
-} from '@repo/ecommerce'
+} from '@repo/ecommerce/shopify/utils'
 
 import {
     Box,

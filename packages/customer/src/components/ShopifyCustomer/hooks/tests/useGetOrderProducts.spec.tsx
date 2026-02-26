@@ -160,8 +160,6 @@ describe('useGetOrderProducts', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.productsMap.get(101)).toEqual({
-            id: 101,
-            title: 'Test Product',
             image: {
                 alt: 'Alt',
                 src: 'https://example.com/img.jpg',
@@ -279,9 +277,7 @@ describe('useGetOrderProducts', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.productsMap.size).toBe(1)
-        expect(result.current.productsMap.get(101)?.title).toBe(
-            'Draft Order Product',
-        )
+        expect(result.current.productsMap.has(101)).toBe(true)
     })
 
     it('handles GraphQL schema format with featuredMedia and media', async () => {
@@ -295,8 +291,6 @@ describe('useGetOrderProducts', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.productsMap.get(101)).toEqual({
-            id: 101,
-            title: 'GraphQL Product',
             image: {
                 alt: 'GraphQL Alt',
                 src: 'https://example.com/graphql-img.jpg',
@@ -330,8 +324,6 @@ describe('useGetOrderProducts', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.productsMap.get(101)).toEqual({
-            id: 101,
-            title: 'GraphQL Product No Image',
             image: null,
             images: [],
         })

@@ -4,7 +4,10 @@
     "description": "Ecommerce",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        "./shopify/components": "./src/shopify/components/index.ts",
+        "./shopify/hooks": "./src/shopify/hooks/index.ts",
+        "./shopify/types": "./src/shopify/types/index.ts",
+        "./shopify/utils": "./src/shopify/utils/index.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
@@ -18,11 +21,16 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/utils": "workspace:*",
         "pluralize": "^8.0.0"
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@gorgias/ecommerce-storage-mocks": "catalog:rest-api-sdk",
+        "@gorgias/ecommerce-storage-queries": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",

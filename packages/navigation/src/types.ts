@@ -15,11 +15,15 @@ export type TicketInfobarNavigationState = {
     activeTab: TicketInfobarTab
     isExpanded: boolean
     isEditShopifyFieldsOpen: boolean
+    shopifyIntegrationId?: number
 }
 
 export type TicketInfobarNavigationContextValue =
     TicketInfobarNavigationState & {
-        onChangeTab: (tab: TicketInfobarTab) => void
+        onChangeTab: (
+            tab: TicketInfobarTab,
+            options?: { shopifyIntegrationId?: number },
+        ) => void
         onToggle: () => void
         onToggleEditShopifyFields: (open: boolean) => void
     }

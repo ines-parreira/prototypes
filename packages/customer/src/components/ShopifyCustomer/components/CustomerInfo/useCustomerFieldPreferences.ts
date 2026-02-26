@@ -5,7 +5,7 @@ import { useLocalStorage } from '@repo/hooks'
 import { DEFAULT_FIELDS, FIELD_DEFINITIONS } from './fields'
 import type { ShopifyFieldPreferences } from './types'
 
-const STORAGE_KEY = 'customerInfoFieldPreferences'
+const STORAGE_KEY = 'shopify-customer-info-fields'
 
 const ALL_FIELD_IDS = Object.keys(FIELD_DEFINITIONS)
 
@@ -28,13 +28,15 @@ export function useCustomerFieldPreferences() {
             defaultPreferences,
         )
 
-    const fields = useMemo(
-        () =>
-            preferences.fields
-                .filter((f) => f.visible && FIELD_DEFINITIONS[f.id])
-                .map((f) => FIELD_DEFINITIONS[f.id]),
-        [preferences],
-    )
+    const fields = useMemo(() => {
+        const fieldsList = Array.isArray(preferences?.fields)
+            ? preferences.fields
+            : defaultPreferences.fields
+
+        return fieldsList
+            .filter((f) => f.visible && FIELD_DEFINITIONS[f.id])
+            .map((f) => FIELD_DEFINITIONS[f.id])
+    }, [preferences])
 
     return { fields, preferences, setPreferences }
 }

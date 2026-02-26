@@ -14,6 +14,17 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { ShopifyCustomer } from '../'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 
+vi.mock('@repo/navigation', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    useTicketInfobarNavigation: () => ({
+        shopifyIntegrationId: undefined,
+        activeTab: undefined,
+        isExpanded: true,
+        onChangeTab: vi.fn(),
+        onToggle: vi.fn(),
+    }),
+}))
+
 const server = setupServer()
 
 beforeAll(() => {

@@ -12,6 +12,20 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { CustomerInfo } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 
+const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
+    shopifyIntegrationId: undefined,
+    activeTab: undefined,
+    isExpanded: true,
+    onChangeTab: vi.fn(),
+    onToggle: vi.fn(),
+})
+
+vi.mock('@repo/navigation', async (importOriginal) => ({
+    ...((await importOriginal()) as Record<string, unknown>),
+    useTicketInfobarNavigation: (...args: unknown[]) =>
+        mockUseTicketInfobarNavigation(...args),
+}))
+
 const server = setupServer()
 
 beforeAll(() => {
@@ -319,6 +333,73 @@ describe('CustomerInfo', () => {
             expect(
                 screen.getByRole('button', { name: /sync to other stores/i }),
             ).toBeInTheDocument()
+        })
+    })
+
+    it('selects the integration matching shopifyIntegrationId from navigation context', async () => {
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            shopifyIntegrationId: 2,
+            activeTab: undefined,
+            isExpanded: true,
+            onChangeTab: vi.fn(),
+            onToggle: vi.fn(),
+        })
+
+        const secondIntegration = {
+            id: 2,
+            name: 'Second Shopify Store',
+            type: 'shopify',
+            created_datetime: '2024-01-02T00:00:00Z',
+            meta: { shop_name: 'second-store' },
+        } as Integration
+
+        const multipleAssociatedShopifyCustomerIds = new Set([1, 2])
+        const multipleExternalIdMap = new Map([
+            [1, '456'],
+            [2, '789'],
+        ])
+
+        const mockListMultipleIntegrations = mockListIntegrationsHandler(
+            async () =>
+                HttpResponse.json({
+                    data: [mockShopifyIntegration, secondIntegration],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: '/api/integrations',
+                }),
+        )
+
+        const mockGetSecondEcommerceData =
+            mockGetEcommerceDataByExternalIdHandler(async () =>
+                HttpResponse.json(
+                    mockEcommerceData({
+                        data: mockShopperData,
+                    }),
+                ),
+            )
+
+        server.use(
+            mockListMultipleIntegrations.handler,
+            mockGetSecondEcommerceData.handler,
+        )
+
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={
+                    multipleAssociatedShopifyCustomerIds
+                }
+                externalIdMap={multipleExternalIdMap}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByRole('textbox')).toHaveValue(
+                'Second Shopify Store',
+            )
         })
     })
 

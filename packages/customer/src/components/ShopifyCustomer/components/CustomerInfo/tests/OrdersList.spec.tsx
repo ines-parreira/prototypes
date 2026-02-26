@@ -1,4 +1,4 @@
-import type { OrderProduct } from '@repo/ecommerce'
+import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
 import { screen } from '@testing-library/react'
 
 import { render } from '../../../../../tests/render.utils'
@@ -99,20 +99,16 @@ const mockSecondDraftOrderData: OrderEcommerceData = {
     },
 }
 
-const mockProductsMap = new Map<number, OrderProduct>([
+const mockProductsMap = new Map<number, OrderCardProduct>([
     [
         100,
         {
-            id: 100,
-            title: 'Test Product',
             image: {
-                alt: 'Test Product Image',
                 src: 'https://example.com/image.jpg',
                 variant_ids: [200],
             },
             images: [
                 {
-                    alt: 'Test Product Image',
                     src: 'https://example.com/image.jpg',
                     variant_ids: [200],
                 },

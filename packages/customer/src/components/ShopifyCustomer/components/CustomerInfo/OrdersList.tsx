@@ -1,5 +1,6 @@
-import { formatOrderDate, OrderCard } from '@repo/ecommerce'
-import type { OrderCardProduct } from '@repo/ecommerce'
+import { OrderCard } from '@repo/ecommerce/shopify/components'
+import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
+import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
 
 import { Box, Separator } from '@gorgias/axiom'
 

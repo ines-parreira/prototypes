@@ -1,4 +1,4 @@
-import { OrderCard } from '@repo/ecommerce'
+import { OrderCard } from '@repo/ecommerce/shopify/components'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 
 import { Box } from '@gorgias/axiom'

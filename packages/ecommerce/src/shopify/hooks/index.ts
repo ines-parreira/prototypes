@@ -1,0 +1,1 @@
+export { useProductsMap } from './useProductsMap'

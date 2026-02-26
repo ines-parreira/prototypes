@@ -1,6 +1,7 @@
 import type { KeyboardEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -33,6 +34,7 @@ import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/Infobar
 import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
+import { ShopifyOrdersWidgetContainer } from 'pages/common/components/infobar/Infobar/ShopifyOrdersWidget'
 import { TicketTimelineWidgetContainer } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/TicketTimelineWidgetContainer'
 import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
 import { useSelectedCustomer } from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
@@ -77,6 +79,7 @@ export const Infobar = ({
     isOnNewLayout,
 }: Props) => {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
+    const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
     const location = useLocation()
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
@@ -330,6 +333,12 @@ export const Infobar = ({
                 {hasUIVisionMS1 &&
                     !isCurrentlyOnCustomerPage(defaultCustomerId) && (
                         <TicketTimelineWidgetContainer />
+                    )}
+
+                {hasUIVisionMilestone2 &&
+                    hasShopifyIntegration &&
+                    !isCurrentlyOnCustomerPage(defaultCustomerId) && (
+                        <ShopifyOrdersWidgetContainer />
                     )}
 
                 {(!hasUIVisionMS1 ||
