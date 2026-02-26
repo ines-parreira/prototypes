@@ -12,7 +12,7 @@ import type { StepProps } from 'pages/aiAgent/Onboarding_V2/components/steps/typ
 import { useAiAgentScopesForAutomationPlan } from 'pages/aiAgent/Onboarding_V2/hooks/useAiAgentScopesForAutomationPlan'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
-import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
+import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useCreateOnboarding } from 'pages/aiAgent/Onboarding_V2/hooks/useCreateOnboarding'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { useSteps } from 'pages/aiAgent/Onboarding_V2/hooks/useSteps'
@@ -76,7 +76,7 @@ export const ToneOfVoiceStep: FC<StepProps> = ({
     const gorgiasDomain = useAppSelector(getCurrentDomain)
     const scopes = useAiAgentScopesForAutomationPlan(shopName)
 
-    useCheckStoreIntegration({ shouldCheck: !isFirstStep })
+    useCheckStoreIntegration(!isFirstStep)
     useCheckOnboardingCompleted()
     useCheckStoreAlreadyConfigured()
 

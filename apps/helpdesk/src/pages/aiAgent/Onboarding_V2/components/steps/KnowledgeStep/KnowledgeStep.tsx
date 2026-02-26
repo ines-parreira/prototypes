@@ -33,7 +33,7 @@ import type {
 import { KnowledgeStatus } from 'pages/aiAgent/Onboarding_V2/components/steps/types'
 import useCheckOnboardingCompleted from 'pages/aiAgent/Onboarding_V2/hooks/useCheckOnboardingCompleted'
 import { useCheckStoreAlreadyConfigured } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreAlreadyConfigured'
-import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
+import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetKnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgeSourceStatuses'
 import type { KnowledgeSourceStatuses } from 'pages/aiAgent/Onboarding_V2/hooks/useGetKnowledgeSourceStatuses'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'

@@ -46,11 +46,6 @@ const defaultState = {
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
 
-jest.mock('pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
-
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
@@ -199,7 +194,10 @@ describe('AiAgentOnboarding', () => {
     })
 
     it('should navigate to the next step when Next button is clicked', async () => {
-        renderComponent()
+        renderComponent(
+            `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
+            '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+        )
 
         jest.runAllTimers()
 

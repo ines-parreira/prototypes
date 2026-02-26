@@ -4,7 +4,7 @@ import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useCheckStoreIntegration from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
+import { useCheckStoreIntegration } from 'pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration'
 import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { notify as notifyAction } from 'state/notifications/actions'
@@ -64,9 +64,7 @@ describe('useCheckStoreIntegration', () => {
             isLoading: true,
         })
 
-        const { result } = renderHook(() =>
-            useCheckStoreIntegration({ shouldCheck: false }),
-        )
+        const { result } = renderHook(() => useCheckStoreIntegration(false))
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
         expect(result.current).toBeNull()

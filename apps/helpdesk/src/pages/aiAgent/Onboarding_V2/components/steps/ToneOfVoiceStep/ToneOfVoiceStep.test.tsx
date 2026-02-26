@@ -69,7 +69,7 @@ jest.mock('pages/aiAgent/Onboarding_V2/hooks/useSteps', () => ({
 
 jest.mock('pages/aiAgent/Onboarding_V2/hooks/useCheckStoreIntegration', () => ({
     __esModule: true,
-    default: () => null,
+    useCheckStoreIntegration: () => null,
 }))
 
 jest.mock(

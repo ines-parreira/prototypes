@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -9,9 +11,7 @@ import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
-    const shouldCheck = options?.shouldCheck ?? true
-
+export const useCheckStoreIntegration = (shouldCheck = true): null => {
     const { shopName, shopType } = useParams<{
         shopName: string
         shopType: string
@@ -24,17 +24,16 @@ const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
         getShopifyIntegrationByShopName(shopName),
     ).toJS()
 
-    // Return early if still loading
-    if (isLoading || !shouldCheck) {
-        return null
-    }
+    const isIntegrationEmpty = Object.keys(storeIntegration).length === 0
 
-    // If storeIntegration is empty, return the shopify integration step
-    if (
-        Object.keys(storeIntegration).length === 0 ||
-        !shopName ||
-        !data?.shopName
-    ) {
+    const shouldRedirect =
+        shouldCheck &&
+        !isLoading &&
+        (isIntegrationEmpty || !shopName || !data?.shopName)
+
+    useEffect(() => {
+        if (!shouldRedirect) return
+
         dispatch(
             notify({
                 status: NotificationStatus.Error,
@@ -48,9 +47,7 @@ const useCheckStoreIntegration = (options?: { shouldCheck: boolean }): null => {
                 ? `/app/ai-agent/${shopType}/${shopName}/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`
                 : `/app/ai-agent/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`
         history.push(redirectPath)
-    }
+    }, [shouldRedirect, shopType, shopName, dispatch, history])
 
     return null
 }
-
-export default useCheckStoreIntegration
