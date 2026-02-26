@@ -5,6 +5,7 @@ import type { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
 import type { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
 import type { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
 import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import type { PlaygroundChannelAvailability } from 'pages/aiAgent/PlaygroundV2/types'
 
 export type Verbosity = 'concise' | 'balanced' | 'detailed'
 
@@ -474,6 +475,19 @@ export type TriggerAIJourneyResponse = {
     }
 }
 
+export type KnowledgeOverrideRule = {
+    name: string
+    knowledge: {
+        sourceId: number
+        sourceSetId: number
+    }[]
+}
+
+export type ChatConfig = {
+    availability: PlaygroundChannelAvailability
+    integrationId: number
+}
+
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
     offlineEvalSettings?: {
@@ -490,6 +504,8 @@ export type AiAgentPlaygroundOptions = {
         session: {
             channel?: string
         }
+        knowledgeOverrideRules?: KnowledgeOverrideRule[]
+        chatConfig?: ChatConfig
     }
 }
 

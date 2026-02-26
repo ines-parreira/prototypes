@@ -23,7 +23,10 @@ import type {
     PlaygroundChannels,
     PlaygroundCustomer,
 } from '../types'
-import { buildOfflineEvalPayload } from '../utils/offline-eval-payload.utils'
+import {
+    buildKnowledgeOverrideRules,
+    buildOfflineEvalPayload,
+} from '../utils/offline-eval-payload.utils'
 import {
     getLastShopperMessage,
     getPlaygroundMessageMeta,
@@ -107,6 +110,15 @@ export const usePlaygroundApi = ({
                         gorgiasDomain,
                         channel,
                         areActionsAllowedToExecute: areActionsEnabled,
+                        draftKnowledge,
+                        chatConfig:
+                            channel === 'chat' && channelIntegrationId
+                                ? {
+                                      availability:
+                                          channelAvailability ?? 'online',
+                                      integrationId: channelIntegrationId,
+                                  }
+                                : undefined,
                     })
                     consolidatedTestSessionId =
                         await createTestSession(offlineEvalPayload)
@@ -192,20 +204,8 @@ export const usePlaygroundApi = ({
                     _playground_options: {
                         shopName: storeData.storeName,
                     },
-                    _knowledge_override_rules: draftKnowledge
-                        ? [
-                              {
-                                  name: 'overridesLiveKnowledgeWithDraftKnowledge',
-                                  knowledge: [
-                                      {
-                                          sourceId: draftKnowledge.sourceId,
-                                          sourceSetId:
-                                              draftKnowledge.sourceSetId,
-                                      },
-                                  ],
-                              },
-                          ]
-                        : [],
+                    _knowledge_override_rules:
+                        buildKnowledgeOverrideRules(draftKnowledge),
                     channel_integration_id: channelIntegrationId,
                 },
                 testSessionIdToUse ?? '',

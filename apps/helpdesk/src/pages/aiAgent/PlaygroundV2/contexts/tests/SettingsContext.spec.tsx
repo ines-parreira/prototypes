@@ -12,6 +12,7 @@ import {
 const mockResetToDefaultChannel = jest.fn()
 const mockResetToDefaultActionsEnabled = jest.fn()
 const mockOnChannelChange = jest.fn()
+const mockOnChannelAvailabilityChange = jest.fn()
 
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
     useTestSession: () => ({
@@ -41,7 +42,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundChannel', () => ({
         channel: 'chat',
         channelAvailability: 'online',
         onChannelChange: mockOnChannelChange,
-        onChannelAvailabilityChange: jest.fn(),
+        onChannelAvailabilityChange: mockOnChannelAvailabilityChange,
         resetToDefaultChannel: mockResetToDefaultChannel,
     }),
 }))
@@ -61,7 +62,7 @@ jest.mock('../CoreContext', () => {
             channel: 'chat',
             channelAvailability: 'online',
             onChannelChange: mockOnChannelChange,
-            onChannelAvailabilityChange: jest.fn(),
+            onChannelAvailabilityChange: mockOnChannelAvailabilityChange,
             resetToDefaultChannel: mockResetToDefaultChannel,
             areActionsEnabled: false,
             setAreActionsEnabled: jest.fn(),
@@ -92,6 +93,7 @@ describe('SettingsContext', () => {
         mockResetToDefaultChannel.mockClear()
         mockResetToDefaultActionsEnabled.mockClear()
         mockOnChannelChange.mockClear()
+        mockOnChannelAvailabilityChange.mockClear()
     })
     describe('useSettingsContext', () => {
         it('should throw error when used outside provider', () => {
@@ -221,6 +223,28 @@ describe('SettingsContext', () => {
             // Should call onChannelChange with 'sms'
             expect(result.current.mode).toBe('outbound')
             expect(mockOnChannelChange).toHaveBeenCalledWith('sms')
+        })
+
+        it('should call onChannelAvailabilityChange with initial chatAvailability on mount', () => {
+            renderHook(() => useSettingsContext(), { wrapper })
+
+            expect(mockOnChannelAvailabilityChange).toHaveBeenCalledWith(
+                DEFAULT_STATE.chatAvailability,
+            )
+        })
+
+        it('should call onChannelAvailabilityChange when chatAvailability changes', () => {
+            const { result } = renderHook(() => useSettingsContext(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.setSettings({ chatAvailability: 'offline' })
+            })
+
+            expect(mockOnChannelAvailabilityChange).toHaveBeenLastCalledWith(
+                'offline',
+            )
         })
 
         it('should initialize mode based on supportedModes prop', () => {

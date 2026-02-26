@@ -427,5 +427,121 @@ describe('usePlaygroundApi', () => {
             ])
             expect(mockSubmitPlaygroundTicket).not.toHaveBeenCalled()
         })
+
+        it('includes chatConfig in offline eval payload when channel is chat and channelIntegrationId is set', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'chat',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                channelAvailability: 'offline',
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        chatConfig: {
+                            availability: 'offline',
+                            integrationId: defaultParams.channelIntegrationId,
+                        },
+                    }),
+                }),
+            )
+        })
+
+        it('defaults chatConfig availability to online when channelAvailability is undefined', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'chat',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                channelAvailability: undefined,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        chatConfig: expect.objectContaining({
+                            availability: 'online',
+                        }),
+                    }),
+                }),
+            )
+        })
+
+        it('omits chatConfig from offline eval payload when channel is not chat', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.not.objectContaining({
+                        chatConfig: expect.anything(),
+                    }),
+                }),
+            )
+        })
+
+        it('includes knowledgeOverrideRules in offline eval payload when draftKnowledge is set', async () => {
+            const draftKnowledge = { sourceId: 10, sourceSetId: 20 }
+            mockedUseCoreContext.mockReturnValue({
+                draftKnowledge,
+                useV3: true,
+                areActionsEnabled: false,
+            } as any)
+
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        knowledgeOverrideRules: [
+                            {
+                                name: 'overridesLiveKnowledgeWithDraftKnowledge',
+                                knowledge: [
+                                    {
+                                        sourceId: 10,
+                                        sourceSetId: 20,
+                                    },
+                                ],
+                            },
+                        ],
+                    }),
+                }),
+            )
+        })
     })
 })

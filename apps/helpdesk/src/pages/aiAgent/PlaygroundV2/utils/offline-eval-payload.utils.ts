@@ -1,10 +1,34 @@
 import type {
     AiAgentPlaygroundOptions,
+    ChatConfig,
+    KnowledgeOverrideRule,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
 
-import type { PlaygroundChannels, PlaygroundCustomer } from '../types'
+import type {
+    DraftKnowledge,
+    PlaygroundChannels,
+    PlaygroundCustomer,
+} from '../types'
+
+export const buildKnowledgeOverrideRules = (
+    draftKnowledge: DraftKnowledge | undefined,
+): KnowledgeOverrideRule[] => {
+    if (!draftKnowledge) return []
+
+    return [
+        {
+            name: 'overridesLiveKnowledgeWithDraftKnowledge',
+            knowledge: [
+                {
+                    sourceId: draftKnowledge.sourceId,
+                    sourceSetId: draftKnowledge.sourceSetId,
+                },
+            ],
+        },
+    ]
+}
 
 /**
  * Builds the offlineEvalSettings payload for creating an offline evaluation session
@@ -16,15 +40,20 @@ export const buildOfflineEvalPayload = ({
     gorgiasDomain,
     channel,
     areActionsAllowedToExecute,
+    draftKnowledge,
+    chatConfig,
 }: {
     customer: PlaygroundCustomer
     storeData: StoreConfiguration
     gorgiasDomain: string
     channel: PlaygroundChannels
     areActionsAllowedToExecute: boolean
+    draftKnowledge?: DraftKnowledge
+    chatConfig?: ChatConfig
 }): AiAgentPlaygroundOptions => {
     const customerId = customer.id ?? DEFAULT_PLAYGROUND_CUSTOMER.id
     const customerName = customer.name ?? DEFAULT_PLAYGROUND_CUSTOMER.name
+    const knowledgeOverrideRules = buildKnowledgeOverrideRules(draftKnowledge)
 
     return {
         areActionsAllowedToExecute,
@@ -42,6 +71,10 @@ export const buildOfflineEvalPayload = ({
             session: {
                 channel,
             },
+            ...(knowledgeOverrideRules.length > 0 && {
+                knowledgeOverrideRules,
+            }),
+            chatConfig: chatConfig,
         },
     }
 }

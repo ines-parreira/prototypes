@@ -59,6 +59,7 @@ export const SettingsProvider = ({
 }: SettingsProviderProps) => {
     const {
         onChannelChange,
+        onChannelAvailabilityChange,
         resetToDefaultActionsEnabled,
         resetToDefaultChannel,
     } = useCoreContext()
@@ -92,6 +93,10 @@ export const SettingsProvider = ({
             onChannelChange('sms')
         }
     }, [settingsState.mode, onChannelChange])
+
+    useEffect(() => {
+        onChannelAvailabilityChange(settingsState.chatAvailability)
+    }, [settingsState.chatAvailability, onChannelAvailabilityChange])
 
     const value = useMemo(
         () => ({
