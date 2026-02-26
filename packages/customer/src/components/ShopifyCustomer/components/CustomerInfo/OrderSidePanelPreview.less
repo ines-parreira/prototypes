@@ -4,12 +4,34 @@
         border-radius: var(--spacing-xxs);
     }
 
+    .lineItemImage {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: var(--spacing-xxs);
+        flex-shrink: 0;
+        margin-right: var(--spacing-md);
+    }
+
     .row {
         grid-template-columns: minmax(80px, 0.8fr) minmax(140px, 1.2fr);
     }
 
     .label {
         color: var(--content-neutral-secondary);
+    }
+
+    .lineItemsCount {
+        min-width: 24px;
+    }
+
+    .totals {
+        border-top: 1px solid var(--border-neutral-default);
+    }
+
+    .totalRow {
+        border-top: 1px solid var(--border-neutral-default);
+        padding-top: var(--spacing-xs);
     }
 
     .checkoutUrl {

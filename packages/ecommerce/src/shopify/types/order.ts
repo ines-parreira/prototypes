@@ -1,12 +1,13 @@
 import type { FinancialStatus, FulfillmentStatus } from './status'
 
 export type OrderLineItem = {
-    id: number
+    id?: number
     title: string
     quantity: number
     price: string
-    product_id: number | null
-    variant_id: number | null
+    sku?: string | null
+    product_id?: number | null
+    variant_id?: number | null
     product_exists?: boolean
 }
 
@@ -49,8 +50,8 @@ export type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
 
 export type OrderCardLineItem = {
     title: string
-    product_id: number | null | undefined
-    variant_id: number | null | undefined
+    product_id?: number | null
+    variant_id?: number | null
 }
 
 export type OrderCardImage = {

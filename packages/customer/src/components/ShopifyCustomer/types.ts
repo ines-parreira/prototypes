@@ -109,6 +109,9 @@ export type OrderData = {
     updated_at: string
     currency: string
     total_price: string
+    subtotal_price?: string
+    total_tax?: string
+    total_shipping_price?: string
     financial_status: FinancialStatus
     fulfillment_status: FulfillmentStatus | null
     line_items: OrderLineItem[]

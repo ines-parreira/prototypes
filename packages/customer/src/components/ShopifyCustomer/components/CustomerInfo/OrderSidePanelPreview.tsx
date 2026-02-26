@@ -4,11 +4,13 @@ import type {
     FinancialStatusValue,
     FulfillmentStatusValue,
     OrderCardProduct,
+    OrderLineItem,
 } from '@repo/ecommerce/shopify/types'
 import {
     getFinancialStatusInfo,
     getFulfillmentStatusInfo,
 } from '@repo/ecommerce/shopify/utils'
+import { getMoneySymbol } from '@repo/utils'
 
 import {
     Box,
@@ -22,12 +24,19 @@ import {
 
 import { OrderActions } from './OrderActions'
 import { OrderDetailsSection } from './OrderDetailsSection'
+import { OrderLineItemsSection } from './OrderLineItemsSection'
 
 type OrderData = {
     id: number | string
     name: string
-    financial_status: FinancialStatusValue
-    fulfillment_status: FulfillmentStatusValue | null
+    financial_status: FinancialStatusValue | string
+    fulfillment_status: FulfillmentStatusValue | string | null
+    line_items?: OrderLineItem[]
+    currency?: string
+    total_price?: string
+    subtotal_price?: string
+    total_tax?: string
+    total_shipping_price?: string
     tags?: string
     note?: string
     created_at?: string
@@ -53,6 +62,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     order,
     isOpen,
     onOpenChange,
+    productsMap,
     isDraftOrder,
     onDuplicate,
     onRefund,
@@ -86,10 +96,16 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     if (!order) return null
 
     const { label: financialLabel, color: financialColor } =
-        getFinancialStatusInfo(order.financial_status)
+        getFinancialStatusInfo(order.financial_status as FinancialStatusValue)
 
     const { label: fulfillmentLabel, color: fulfillmentColor } =
-        getFulfillmentStatusInfo(order.fulfillment_status)
+        getFulfillmentStatusInfo(
+            order.fulfillment_status as FulfillmentStatusValue | null,
+        )
+
+    const moneySymbol = order.currency
+        ? getMoneySymbol(order.currency, true)
+        : ''
 
     return (
         <SidePanel
@@ -167,6 +183,16 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                         integrationId={integrationId}
                         ticketId={ticketId}
                         storeName={storeName}
+                    />
+
+                    <OrderLineItemsSection
+                        lineItems={order.line_items ?? []}
+                        productsMap={productsMap}
+                        moneySymbol={moneySymbol}
+                        subtotalPrice={order.subtotal_price}
+                        totalShippingPrice={order.total_shipping_price}
+                        totalTax={order.total_tax}
+                        totalPrice={order.total_price}
                     />
                 </Box>
             </OverlayContent>
