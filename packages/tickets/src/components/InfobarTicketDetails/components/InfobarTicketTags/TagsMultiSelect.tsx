@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useShortcuts } from '@repo/utils'
+import { shortcutManager, useShortcuts } from '@repo/utils'
 
 import type { ColorValue } from '@gorgias/axiom'
 import {
@@ -145,11 +145,24 @@ export function TagsMultiSelect({
         [onChange, value],
     )
 
+    const handleTagMenuOpenChange = useCallback(
+        (open: boolean) => {
+            setIsTagMenuOpen(open)
+            if (open) {
+                shortcutManager.denylist(['TicketHeader'])
+            } else {
+                shortcutManager.clear(['TicketHeader'])
+                setSearch('')
+            }
+        },
+        [setSearch],
+    )
+
     const actions = {
         OPEN_TAGS: {
             action: (e: Event) => {
                 e.preventDefault()
-                setIsTagMenuOpen((s) => !s)
+                handleTagMenuOpenChange(!isTagMenuOpen)
             },
         },
     }
@@ -183,10 +196,7 @@ export function TagsMultiSelect({
                             </>
                         )}
                         isOpen={isTagMenuOpen}
-                        onOpenChange={(open) => {
-                            setIsTagMenuOpen(open)
-                            if (!open) setSearch('')
-                        }}
+                        onOpenChange={handleTagMenuOpenChange}
                         isSearchable={true}
                         searchValue={search}
                         onSearchChange={setSearch}

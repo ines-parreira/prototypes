@@ -1,3 +1,4 @@
+import { shortcutManager } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -300,6 +301,36 @@ describe('TagsMultiSelect', () => {
         })
 
         await waitForQueriesSettled()
+    })
+
+    it('should denylist TicketHeader shortcuts when tag menu opens and clear when it closes', async () => {
+        const denylistSpy = vi.spyOn(shortcutManager, 'denylist')
+        const clearSpy = vi.spyOn(shortcutManager, 'clear')
+
+        const { user } = render(
+            <TagsMultiSelect value={[]} onChange={vi.fn()} />,
+        )
+
+        await waitForQueriesSettled()
+
+        await user.click(screen.getByRole('button', { name: /add tags/i }))
+
+        await waitFor(() => {
+            expect(screen.getByRole('searchbox')).toBeInTheDocument()
+        })
+
+        expect(denylistSpy).toHaveBeenCalledWith(['TicketHeader'])
+
+        await user.keyboard('{Escape}')
+
+        await waitFor(() => {
+            expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
+        })
+
+        expect(clearSpy).toHaveBeenCalledWith(['TicketHeader'])
+
+        denylistSpy.mockRestore()
+        clearSpy.mockRestore()
     })
 
     it('allows selecting a tag from the dropdown and removing it', async () => {
