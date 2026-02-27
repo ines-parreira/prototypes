@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 // oxlint-disable-next-line no-named-as-default
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -124,24 +124,22 @@ describe('<ManagedRuleEditor/>', () => {
         })
 
         it('should show subscription modal when toggling activation without automate access', async () => {
-            const user = userEvent.setup()
             mockUseAiAgentAccess.mockReturnValue({
                 hasAccess: false,
                 isLoading: false,
             })
 
+            const userInteractions = userEvent.setup()
             renderManagedRuleEditor(ManagedRulesSlugs.AutoReplyWismo)
 
             const toggleButton = screen.getByRole('switch')
-            await user.click(toggleButton)
+            await userInteractions.click(toggleButton)
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', {
-                        name: /upgrade and reactivate/i,
-                    }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                screen.getByRole('button', {
+                    name: /upgrade and reactivate/i,
+                }),
+            ).toBeInTheDocument()
         })
 
         it('should disable submit button without automate access', () => {

@@ -210,7 +210,7 @@ describe('SlashCommandSuggestions', () => {
                 screen
                     .getByText('Order')
                     .closest('[role="option"]')!
-                    .querySelector('svg'),
+                    .querySelector('svg[aria-label="arrow-chevron-right"]'),
             ).toBeInTheDocument()
         })
 
@@ -222,7 +222,7 @@ describe('SlashCommandSuggestions', () => {
                 screen
                     .getByText('Customer Email')
                     .closest('[role="option"]')!
-                    .querySelector('svg'),
+                    .querySelector('svg[aria-label="arrow-chevron-right"]'),
             ).not.toBeInTheDocument()
         })
 

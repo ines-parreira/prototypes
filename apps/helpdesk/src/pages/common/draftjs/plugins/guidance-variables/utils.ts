@@ -152,3 +152,11 @@ export const pickCategoryLogo = (
 
     return { src: logoShopify, alt: 'shopify logo' }
 }
+
+export const pickCategoryIconName = (
+    category: string,
+): 'gorgias-logo' | 'vendor-shopify-colored' => {
+    return category.toLowerCase() === 'ticket'
+        ? 'gorgias-logo'
+        : 'vendor-shopify-colored'
+}

@@ -5,7 +5,6 @@ import cn from 'classnames'
 
 import { Button, Icon } from '@gorgias/axiom'
 
-import logoShopify from 'assets/img/integrations/shopify.svg'
 import type {
     GuidanceVariable,
     GuidanceVariableGroup,
@@ -16,7 +15,10 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Search from 'pages/common/components/Search'
-import { findManyGuidanceVariables } from 'pages/common/draftjs/plugins/guidance-variables/utils'
+import {
+    findManyGuidanceVariables,
+    pickCategoryIconName,
+} from 'pages/common/draftjs/plugins/guidance-variables/utils'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 
@@ -431,20 +433,12 @@ export default function SlashCommandSuggestions({
                                                                         css.itemIcon
                                                                     }
                                                                 >
-                                                                    <img
-                                                                        src={
-                                                                            logoShopify
-                                                                        }
-                                                                        alt="shopify logo"
-                                                                        className={
-                                                                            css.shopifyLogo
-                                                                        }
-                                                                        width={
-                                                                            20
-                                                                        }
-                                                                        height={
-                                                                            20
-                                                                        }
+                                                                    <Icon
+                                                                        name={pickCategoryIconName(
+                                                                            variable.category,
+                                                                        )}
+                                                                        size="sm"
+                                                                        color="green"
                                                                     />
                                                                 </span>
                                                                 <span
@@ -575,16 +569,15 @@ export default function SlashCommandSuggestions({
                                                                 css.itemIcon
                                                             }
                                                         >
-                                                            <img
-                                                                src={
-                                                                    logoShopify
-                                                                }
-                                                                alt="shopify logo"
-                                                                className={
-                                                                    css.shopifyLogo
-                                                                }
-                                                                width={20}
-                                                                height={20}
+                                                            <Icon
+                                                                name={pickCategoryIconName(
+                                                                    'category' in
+                                                                        option
+                                                                        ? option.category
+                                                                        : option.name,
+                                                                )}
+                                                                size="sm"
+                                                                color="gray"
                                                             />
                                                         </span>
                                                         <span
@@ -705,16 +698,11 @@ export default function SlashCommandSuggestions({
                                                                 css.itemIcon
                                                             }
                                                         >
-                                                            <img
-                                                                src={
-                                                                    logoShopify
-                                                                }
-                                                                alt="shopify logo"
-                                                                className={
-                                                                    css.shopifyLogo
-                                                                }
-                                                                width={20}
-                                                                height={20}
+                                                            <Icon
+                                                                name={pickCategoryIconName(
+                                                                    variable.category,
+                                                                )}
+                                                                size="sm"
                                                             />
                                                         </span>
                                                         <span

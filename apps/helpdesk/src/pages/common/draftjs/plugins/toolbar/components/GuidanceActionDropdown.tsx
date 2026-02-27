@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
+import actionsIcon from 'assets/img/icons/guidance-actions.svg'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -141,6 +142,13 @@ const GuidanceActionDropdown = ({
                         className={css.item}
                     >
                         <div className={css.itemContent}>
+                            <img
+                                src={actionsIcon}
+                                alt="action"
+                                className={css.itemIcon}
+                                width={14}
+                                height={14}
+                            />
                             <span className={css.itemName}>{action.name}</span>
                         </div>
                     </DropdownItem>
