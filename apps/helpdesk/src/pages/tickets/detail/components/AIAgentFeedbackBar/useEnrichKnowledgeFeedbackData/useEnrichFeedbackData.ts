@@ -178,9 +178,9 @@ export const useGetResourceData = ({
     }, [
         isLoading,
         articles,
-        guidanceArticles,
         sourceItems,
         ingestedFiles,
+        guidanceArticles,
         actions,
         helpCenters,
         storeWebsiteQuestions,

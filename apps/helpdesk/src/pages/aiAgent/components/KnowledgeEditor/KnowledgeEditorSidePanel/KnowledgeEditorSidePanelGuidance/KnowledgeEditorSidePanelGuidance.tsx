@@ -8,6 +8,7 @@ import {
     useGuidanceImpactFromContext,
     useGuidanceRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelBackendIds } from '../KnowledgeEditorSidePanelBackendIds'
@@ -15,6 +16,8 @@ import { KnowledgeEditorSidePanelSectionImpact } from '../KnowledgeEditorSidePan
 import { KnowledgeEditorSidePanelSectionRecentTickets } from '../KnowledgeEditorSidePanelSectionRecentTickets'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 import { KnowledgeEditorSidePanelSectionLinkedIntents } from './KnowledgeEditorSidePanelSectionLinkedIntents'
+
+import sidePanelCss from '../KnowledgeEditorSidePanel.less'
 
 const KnowledgeEditorSidePanelGuidanceComponent = () => {
     const isLinkedIntentsEnabled = useFlag(
@@ -29,6 +32,10 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         publishedVersionId,
         draftVersionId,
         linkedIntentsCount,
+        guidanceMode,
+        showMissingKnowledgeCheckbox,
+        shouldAddToMissingKnowledge,
+        setShouldAddToMissingKnowledge,
     } = useGuidanceStore(
         useShallow((storeState) => ({
             guidanceArticleId: storeState.guidanceArticle?.id,
@@ -37,6 +44,12 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
             publishedVersionId: storeState.state.guidance?.publishedVersionId,
             draftVersionId: storeState.state.guidance?.draftVersionId,
             linkedIntentsCount: storeState.state.guidance?.intents?.length ?? 0,
+            guidanceMode: storeState.state.guidanceMode,
+            showMissingKnowledgeCheckbox:
+                storeState.config.showMissingKnowledgeCheckbox,
+            shouldAddToMissingKnowledge: storeState.shouldAddToMissingKnowledge,
+            setShouldAddToMissingKnowledge:
+                storeState.setShouldAddToMissingKnowledge,
         })),
     )
 
@@ -65,10 +78,24 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         backendIds['Draft Version ID'] = draftVersionId
     }
 
+    const isCreateMode = guidanceMode === 'create'
+
     return (
         <KnowledgeEditorSidePanel
             initialExpandedSections={initialExpandedSections}
-            footer={<KnowledgeEditorSidePanelBackendIds ids={backendIds} />}
+            footer={
+                <>
+                    {isCreateMode && showMissingKnowledgeCheckbox ? (
+                        <div className={sidePanelCss.footer}>
+                            <AddMissingKnowledgeCheckbox
+                                isChecked={shouldAddToMissingKnowledge}
+                                onChange={setShouldAddToMissingKnowledge}
+                            />
+                        </div>
+                    ) : null}
+                    <KnowledgeEditorSidePanelBackendIds ids={backendIds} />
+                </>
+            }
         >
             <KnowledgeEditorSidePanelSectionGuidanceDetails
                 sectionId="details"

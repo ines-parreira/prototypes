@@ -28,6 +28,7 @@ type Props = {
     onClickPrevious?: () => void
     onClickNext?: () => void
     onClose: () => void
+    showMissingKnowledgeCheckbox?: boolean
     article: (
         | {
               type: 'existing'
@@ -42,11 +43,15 @@ type Props = {
                   content: string
                   key: string
               }
-              onCreated: (article: ArticleWithLocalTranslation) => void
+              onCreated: (
+                  article: ArticleWithLocalTranslation,
+                  shouldAddToMissingKnowledge?: boolean,
+              ) => void
           }
     ) & {
         onUpdated?: () => void
         onDeleted?: () => void
+        onEdit?: () => void
     }
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
 }
@@ -183,6 +188,8 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         onCreatedFn: article.type === 'new' ? article.onCreated : undefined,
         onUpdatedFn: article.onUpdated,
         onDeletedFn: article.onDeleted,
+        onEditFn: article.onEdit,
+        showMissingKnowledgeCheckbox: props.showMissingKnowledgeCheckbox,
     }
 
     return (

@@ -26,6 +26,7 @@ type GuidanceStoreState = {
     config: GuidanceContextConfig
     guidanceArticle: GuidanceArticle | undefined
     playground: PlaygroundState
+    shouldAddToMissingKnowledge: boolean
 }
 
 type GuidanceStoreActions = {
@@ -33,6 +34,7 @@ type GuidanceStoreActions = {
     setConfig: (config: GuidanceContextConfig) => void
     setGuidanceArticle: (guidanceArticle: GuidanceArticle | undefined) => void
     setPlayground: (playground: PlaygroundState) => void
+    setShouldAddToMissingKnowledge: (value: boolean) => void
 }
 
 type GuidanceStoreValue = GuidanceStoreState & GuidanceStoreActions
@@ -96,6 +98,9 @@ const createGuidanceStore = (config: GuidanceContextConfig) => {
         config,
         guidanceArticle: config.guidanceArticle,
         playground: defaultPlaygroundState,
+        shouldAddToMissingKnowledge: config.showMissingKnowledgeCheckbox
+            ? true
+            : false,
         dispatch: (action) =>
             set((storeState) => ({
                 state: guidanceReducer(storeState.state, action),
@@ -104,6 +109,8 @@ const createGuidanceStore = (config: GuidanceContextConfig) => {
         setGuidanceArticle: (nextGuidanceArticle) =>
             set({ guidanceArticle: nextGuidanceArticle }),
         setPlayground: (nextPlayground) => set({ playground: nextPlayground }),
+        setShouldAddToMissingKnowledge: (value) =>
+            set({ shouldAddToMissingKnowledge: value }),
     }))
 }
 

@@ -41,9 +41,11 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         playground,
     } = useArticleContext()
 
+    const { onEditFn } = config
     const onClickEdit = useCallback(() => {
+        onEditFn?.()
         dispatch({ type: 'SET_MODE', payload: 'edit' })
-    }, [dispatch])
+    }, [dispatch, onEditFn])
 
     const onOpenPublishModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'publish' })

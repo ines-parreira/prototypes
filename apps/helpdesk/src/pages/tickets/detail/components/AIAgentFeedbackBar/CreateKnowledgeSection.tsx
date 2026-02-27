@@ -70,7 +70,7 @@ const CreateKnowledgeSection = ({
                 size="small"
                 ref={buttonRef}
             >
-                Create knowledge
+                Create content
             </DropdownButton>
             <Dropdown
                 onToggle={setToggleDropdown}

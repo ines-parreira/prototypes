@@ -36,6 +36,7 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { RecentItems } from 'hooks/useRecentItems/constants'
@@ -751,7 +752,12 @@ export const TicketDetailContainer = ({
         )
     }
 
-    return ticketView
+    return (
+        <>
+            {ticketView}
+            <DrillDownModal isLegacy={false} />
+        </>
+    )
 }
 
 const connector = connect(
@@ -794,6 +800,7 @@ function MobileViewWithSidebar({
         <>
             {ticketView}
             {mode && <KnowledgeSourceSidebarWrapper />}
+            <DrillDownModal isLegacy={false} />
         </>
     )
 }

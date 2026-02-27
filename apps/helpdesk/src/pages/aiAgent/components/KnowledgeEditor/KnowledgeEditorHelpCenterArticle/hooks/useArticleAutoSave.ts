@@ -26,7 +26,12 @@ type AutoSaveParams = {
 }
 
 export const useArticleAutoSave = () => {
-    const { state, dispatch, config } = useArticleContext()
+    const {
+        state,
+        dispatch,
+        config,
+        shouldAddToMissingKnowledge = true,
+    } = useArticleContext()
 
     const { helpCenter, template, onCreatedFn, onUpdatedFn } = config
 
@@ -104,7 +109,10 @@ export const useArticleAutoSave = () => {
                             },
                         })
                         dispatch({ type: 'SET_MODE', payload: 'edit' })
-                        onCreatedFn?.(response.data)
+                        onCreatedFn?.(
+                            response.data,
+                            shouldAddToMissingKnowledge,
+                        )
                     }
                 } else if (mode === 'edit' && translationMode === 'new') {
                     if (!articleId) {
@@ -218,6 +226,7 @@ export const useArticleAutoSave = () => {
             onCreatedFn,
             onUpdatedFn,
             notifyError,
+            shouldAddToMissingKnowledge,
         ],
     )
 

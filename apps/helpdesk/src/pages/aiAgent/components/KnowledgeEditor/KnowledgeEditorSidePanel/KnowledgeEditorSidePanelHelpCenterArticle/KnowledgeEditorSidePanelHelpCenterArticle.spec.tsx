@@ -21,6 +21,7 @@ jest.mock(
                     },
                 },
                 currentLocale: 'en',
+                articleMode: 'edit',
             },
             config: {
                 helpCenter: { id: 456 },
@@ -42,15 +43,18 @@ jest.mock('../KnowledgeEditorSidePanel', () => ({
     KnowledgeEditorSidePanel: ({
         children,
         initialExpandedSections,
+        footer,
     }: {
         children: React.ReactNode
         initialExpandedSections: string[]
+        footer?: React.ReactNode
     }) => (
         <div data-testid="knowledge-editor-side-panel">
             <div data-testid="initial-expanded-sections">
                 {initialExpandedSections.join(',')}
             </div>
             {children}
+            {footer && <div data-testid="footer">{footer}</div>}
         </div>
     ),
 }))

@@ -53,7 +53,7 @@ describe('CreateKnowledgeSection', () => {
 
         expect(screen.queryByText('Create Guidance')).not.toBeInTheDocument()
 
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        const button = screen.getByRole('button', { name: /Create content/i })
         fireEvent.click(button)
 
         expect(screen.getByText('Create Guidance')).toBeInTheDocument()
@@ -65,7 +65,7 @@ describe('CreateKnowledgeSection', () => {
     it('should open dropdown and closes it after clicking guidance link', () => {
         render(<CreateKnowledgeSection {...defaultProps} />)
 
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        const button = screen.getByRole('button', { name: /Create content/i })
         fireEvent.click(button)
 
         const guidanceLink = screen.getByText('Create Guidance')
@@ -90,7 +90,7 @@ describe('CreateKnowledgeSection', () => {
             />,
         )
 
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        const button = screen.getByRole('button', { name: /Create content/i })
         fireEvent.click(button)
 
         const guidanceLink = screen.getByText('Create Guidance')
@@ -120,7 +120,7 @@ describe('CreateKnowledgeSection', () => {
             />,
         )
 
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        const button = screen.getByRole('button', { name: /Create content/i })
         fireEvent.click(button)
 
         const articleLink = screen.getByText('Create Help Center article')
@@ -144,7 +144,7 @@ describe('CreateKnowledgeSection', () => {
 
         render(<CreateKnowledgeSection {...defaultProps} />)
 
-        const button = screen.getByRole('button', { name: /Create knowledge/i })
+        const button = screen.getByRole('button', { name: /Create content/i })
         fireEvent.click(button)
 
         expect(screen.getByText('Create Guidance')).toBeInTheDocument()
@@ -166,7 +166,7 @@ describe('CreateKnowledgeSection', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /Create knowledge/i,
+                name: /Create content/i,
             })
             fireEvent.click(button)
 

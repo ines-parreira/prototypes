@@ -631,7 +631,7 @@ describe('useArticleAutoSave', () => {
                 })
             })
 
-            expect(onCreatedFn).toHaveBeenCalledWith(createdArticle)
+            expect(onCreatedFn).toHaveBeenCalledWith(createdArticle, true)
         })
 
         it('does not save when help center id is missing', async () => {

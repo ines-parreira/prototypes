@@ -1,52 +1,18 @@
 :local {
-    .overlay {
-        position: fixed;
-        inset: 0;
-        background-color: var(
-            --overlay-background,
-            rgba(0, 0, 0, 0.4)
-        ); // legacy
-        z-index: 50;
-    }
-
     .sidebarContent {
-        position: absolute;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        max-width: 612px;
-        width: 100%;
-        background-color: var(--elevation-neutral-default); // legacy
-        border-left: 1px solid var(--neutral-grey-2); // legacy
-        box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.24);
         display: flex;
         flex-direction: column;
         flex: 1;
-        z-index: 1050;
+        height: 100%;
+        overflow: hidden;
     }
 
     .root {
-        display: flex;
-        flex-direction: column;
         flex: 1;
-        overflow-y: auto;
-        background-color: var(--elevation-neutral-default); // legacy
-        color: var(--neutral-grey-6); // legacy
-    }
-}
-
-.axiom :local {
-    .overlay {
-        background-color: var(--overlay-background-default);
-    }
-
-    .sidebarContent {
-        background-color: var(--elevation-neutral-default);
-        border-left: 1px solid var(--border-neutral-default);
-    }
-
-    .root {
-        background-color: var(--elevation-neutral-default);
+        display: flex;
         color: var(--content-neutral-default);
+        border-radius: 12px;
+        overflow: hidden;
+        min-height: 0;
     }
 }

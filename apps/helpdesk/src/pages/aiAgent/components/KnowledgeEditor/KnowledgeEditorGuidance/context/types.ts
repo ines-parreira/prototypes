@@ -136,10 +136,15 @@ export type GuidanceContextConfig = {
     onClickPrevious?: () => void
     onClickNext?: () => void
     onDeleteFn?: () => void
-    onCreateFn?: () => void
+    onCreateFn?: (
+        guidance: GuidanceArticle,
+        shouldAddToMissingKnowledge?: boolean,
+    ) => void
     onUpdateFn?: () => void
     onCopyFn?: () => void
+    onEditFn?: () => void
     handleVisibilityUpdate?: (visibility: string) => void
+    showMissingKnowledgeCheckbox?: boolean
 }
 
 export type PlaygroundState = {

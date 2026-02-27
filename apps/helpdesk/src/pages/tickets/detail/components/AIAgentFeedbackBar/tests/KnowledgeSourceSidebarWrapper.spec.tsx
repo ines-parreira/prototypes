@@ -219,7 +219,6 @@ describe('KnowledgeSourceSidebarWrapper', () => {
             expect(KnowledgeSourceSideBarMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     articles: [],
-                    guidanceArticles: [],
                     shopName: 'Test Shop',
                     shopType: 'shopify',
                     onSubmitNewMissingKnowledge: expect.any(Function),
@@ -439,24 +438,6 @@ describe('KnowledgeSourceSidebarWrapper', () => {
                 {},
             )
         })
-
-        it('should pass guidanceArticles from related resource data', () => {
-            const guidanceArticles = [{ id: 1, title: 'Resource Guidance' }]
-
-            useGetAllRelatedResourceDataMock.mockReturnValue({
-                ...MOCK_RELATED_RESOURCE_DATA,
-                guidanceArticles,
-            })
-
-            render(<KnowledgeSourceSidebarWrapper />)
-
-            expect(KnowledgeSourceSideBarMock).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    guidanceArticles,
-                }),
-                {},
-            )
-        })
     })
 
     describe('hook calls and data flow', () => {
@@ -491,15 +472,6 @@ describe('KnowledgeSourceSidebarWrapper', () => {
                 ticketId: 123,
                 accountId: 1,
                 userId: 789,
-            })
-        })
-
-        it('should call useUpsertFeedback with correct parameters', () => {
-            render(<KnowledgeSourceSidebarWrapper />)
-
-            expect(useUpsertFeedbackMock).toHaveBeenCalledWith({
-                objectId: '123',
-                objectType: 'TICKET',
             })
         })
 

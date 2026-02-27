@@ -25,9 +25,16 @@ type Props = {
     guidanceArticleId?: number
     guidanceTemplate?: GuidanceTemplate
     onDelete?: () => void
-    onCreate?: () => void
+    onCreate?: (
+        guidance: {
+            id: number
+            locale: string
+        },
+        shouldAddToMissingKnowledge?: boolean,
+    ) => void
     onUpdate?: () => void
     onCopy?: () => void
+    onEdit?: () => void
     onClose: () => void
     onClickPrevious?: () => void
     onClickNext?: () => void
@@ -35,6 +42,7 @@ type Props = {
     isOpen: boolean
     handleVisibilityUpdate?: (visibility: string) => void
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
+    showMissingKnowledgeCheckbox?: boolean
 }
 
 const KnowledgeEditorGuidanceInner = ({
@@ -128,9 +136,11 @@ export const KnowledgeEditorGuidance = ({
     onCreate,
     onUpdate,
     onCopy,
+    onEdit,
     isOpen,
     handleVisibilityUpdate,
     onSharedPanelStateChange,
+    showMissingKnowledgeCheckbox,
 }: Props) => {
     const {
         guidanceHelpCenter,
@@ -182,7 +192,9 @@ export const KnowledgeEditorGuidance = ({
             onCreateFn: onCreate,
             onUpdateFn: onUpdate,
             onCopyFn: onCopy,
+            onEditFn: onEdit,
             handleVisibilityUpdate,
+            showMissingKnowledgeCheckbox,
         }
     }, [
         shopName,
@@ -199,7 +211,9 @@ export const KnowledgeEditorGuidance = ({
         onCreate,
         onUpdate,
         onCopy,
+        onEdit,
         handleVisibilityUpdate,
+        showMissingKnowledgeCheckbox,
     ])
 
     if (!isOpen) {

@@ -4,6 +4,7 @@ import {
     useArticleImpactFromContext,
     useArticleRecentTicketsFromContext,
 } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
+import { AddMissingKnowledgeCheckbox } from 'pages/tickets/detail/components/AIAgentFeedbackBar/AddMissingKnowledgeCheckbox'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelBackendIds } from '../KnowledgeEditorSidePanelBackendIds'
@@ -13,11 +14,19 @@ import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './Knowl
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement } from './KnowledgeEditorSidePanelSectionHelpCenterArticleEngagement'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleSettings } from './KnowledgeEditorSidePanelSectionHelpCenterArticleSettings'
 
+import sidePanelCss from '../KnowledgeEditorSidePanel.less'
+
 export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
     const impact = useArticleImpactFromContext()
     const engagement = useArticleEngagementFromContext()
     const recentTickets = useArticleRecentTicketsFromContext()
-    const { state, config } = useArticleContext()
+    const {
+        state,
+        config,
+        shouldAddToMissingKnowledge = true,
+        setShouldAddToMissingKnowledge,
+    } = useArticleContext()
+    const { showMissingKnowledgeCheckbox = false } = config
 
     const initialExpandedSections: string[] = [
         'details',
@@ -46,10 +55,26 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
             state.article.translation.draft_version_id
     }
 
+    const isCreateMode = state.articleMode === 'create'
+
     return (
         <KnowledgeEditorSidePanel
             initialExpandedSections={initialExpandedSections}
-            footer={<KnowledgeEditorSidePanelBackendIds ids={backendIds} />}
+            footer={
+                <>
+                    {isCreateMode && showMissingKnowledgeCheckbox ? (
+                        <div className={sidePanelCss.footer}>
+                            <AddMissingKnowledgeCheckbox
+                                isChecked={shouldAddToMissingKnowledge}
+                                onChange={(checked) =>
+                                    setShouldAddToMissingKnowledge?.(checked)
+                                }
+                            />
+                        </div>
+                    ) : null}
+                    <KnowledgeEditorSidePanelBackendIds ids={backendIds} />
+                </>
+            }
         >
             <KnowledgeEditorSidePanelSectionHelpCenterArticleDetails sectionId="details" />
 

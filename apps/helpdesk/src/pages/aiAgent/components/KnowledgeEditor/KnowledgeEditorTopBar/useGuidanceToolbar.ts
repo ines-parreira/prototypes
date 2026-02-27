@@ -44,6 +44,9 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     const store = useGuidanceStoreApi()
     const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
     const onClose = useGuidanceStore((storeState) => storeState.config.onClose)
+    const onEditFn = useGuidanceStore(
+        (storeState) => storeState.config.onEditFn,
+    )
     const { onTest, isPlaygroundOpen } = useGuidanceStore(
         useShallow((storeState) => ({
             onTest: storeState.playground.onTest,
@@ -77,8 +80,9 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     )
 
     const onClickEdit = useCallback(() => {
+        onEditFn?.()
         dispatch({ type: 'SET_MODE', payload: 'edit' })
-    }, [dispatch])
+    }, [dispatch, onEditFn])
 
     const onOpenPublishModal = useCallback(() => {
         dispatch({ type: 'SET_MODAL', payload: 'publish' })

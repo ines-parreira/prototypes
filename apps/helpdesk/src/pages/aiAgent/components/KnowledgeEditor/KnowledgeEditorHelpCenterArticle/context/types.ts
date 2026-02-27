@@ -195,9 +195,16 @@ export type ArticleContextConfig = {
     onClose: () => void
     onClickPrevious?: () => void
     onClickNext?: () => void
-    onCreatedFn?: (article: ArticleWithLocalTranslation) => void
+    onCreatedFn?: (
+        article: ArticleWithLocalTranslation,
+        shouldAddToMissingKnowledge?: boolean,
+    ) => void
     onUpdatedFn?: () => void
     onDeletedFn?: () => void
+    onEditFn?: () => void
+
+    // UI options
+    showMissingKnowledgeCheckbox?: boolean
 }
 
 export type PlaygroundState = {
@@ -224,6 +231,8 @@ export type ArticleContextValue = {
 
     // Playground
     playground: PlaygroundState
+    shouldAddToMissingKnowledge?: boolean
+    setShouldAddToMissingKnowledge?: (value: boolean) => void
 }
 
 export const createInitialState = (

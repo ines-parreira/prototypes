@@ -4,6 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { AppContextProvider } from 'pages/AppContext'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -87,8 +88,8 @@ const KnowledgeSourceSidebarWrapper = () => {
         sourceItems,
         ingestedFiles,
         storeWebsiteQuestions,
-        enrichedData: {}, // Not needed at this level
-        setLoadingMutations: () => {}, // Not needed at this level
+        enrichedData: {},
+        setLoadingMutations: () => {},
     })
 
     const helpCenter = useMemo(() => {
@@ -119,27 +120,30 @@ const KnowledgeSourceSidebarWrapper = () => {
     }
 
     return (
-        <SupportedLocalesProvider>
-            <CurrentHelpCenterContext.Provider value={helpCenter}>
-                <UnsavedChangesModalProvider>
-                    <EditionManagerContextProvider>
-                        <KnowledgeSourceSideBar
-                            articles={articles}
-                            guidanceArticles={guidanceArticles}
-                            shopName={shopName}
-                            shopType={shopType}
-                            onSubmitNewMissingKnowledge={
-                                onSubmitNewMissingKnowledge
-                            }
-                            onKnowledgeResourceEditClick={
-                                onKnowledgeResourceEditClick
-                            }
-                            onKnowledgeResourceSaved={onKnowledgeResourceSaved}
-                        />
-                    </EditionManagerContextProvider>
-                </UnsavedChangesModalProvider>
-            </CurrentHelpCenterContext.Provider>
-        </SupportedLocalesProvider>
+        <AppContextProvider>
+            <SupportedLocalesProvider>
+                <CurrentHelpCenterContext.Provider value={helpCenter}>
+                    <UnsavedChangesModalProvider>
+                        <EditionManagerContextProvider>
+                            <KnowledgeSourceSideBar
+                                articles={articles}
+                                shopName={shopName}
+                                shopType={shopType}
+                                onSubmitNewMissingKnowledge={
+                                    onSubmitNewMissingKnowledge
+                                }
+                                onKnowledgeResourceEditClick={
+                                    onKnowledgeResourceEditClick
+                                }
+                                onKnowledgeResourceSaved={
+                                    onKnowledgeResourceSaved
+                                }
+                            />
+                        </EditionManagerContextProvider>
+                    </UnsavedChangesModalProvider>
+                </CurrentHelpCenterContext.Provider>
+            </SupportedLocalesProvider>
+        </AppContextProvider>
     )
 }
 

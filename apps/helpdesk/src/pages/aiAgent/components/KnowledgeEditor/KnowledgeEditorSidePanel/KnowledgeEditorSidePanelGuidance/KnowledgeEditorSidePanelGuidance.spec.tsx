@@ -42,6 +42,7 @@ const mockUseGuidanceContext = jest.fn(() => ({
             publishedVersionId: 789,
             draftVersionId: 790,
         },
+        guidanceMode: 'edit',
     },
     dispatch: mockDispatch,
     playground: {} as any,

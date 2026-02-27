@@ -1,31 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import type { ComponentProps } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { Drawer } from 'components/Drawer/Drawer'
 import type { useGetMultipleHelpCenterArticleLists } from 'models/helpCenter/queries'
-import type { useMultipleGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
-import { HelpCenterArticleModalView } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
+import { KnowledgeEditor } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { KnowledgeSourceSideBarMode } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/context'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import KnowledgeSourcePreview from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview'
-import { useUnsavedChangesModal } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'
 
-import KnowledgeSourceArticleEditor from './KnowledgeSourceArticleEditor'
-import { ManageGuidanceForm } from './ManageGuidanceForm'
 import type { SuggestedResourceValue } from './types'
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
-import { getHelpcenterIdAsString } from './utils'
-
-import css from './KnowledgeSourceSideBar.less'
 
 type KnowledgeSourceSideBarProps = {
     articles: NonNullable<
         ReturnType<typeof useGetMultipleHelpCenterArticleLists>['articles']
-    >
-    guidanceArticles: NonNullable<
-        ReturnType<typeof useMultipleGuidanceArticles>['guidanceArticles']
     >
 
     shopName: string
@@ -44,33 +31,30 @@ type KnowledgeSourceSideBarProps = {
     ) => void
 }
 
+type KnowledgeEditorProps = ComponentProps<typeof KnowledgeEditor>
+
 const KnowledgeSourceSideBar = ({
     articles,
-    guidanceArticles,
     shopName,
     shopType,
     onSubmitNewMissingKnowledge,
     onKnowledgeResourceEditClick,
     onKnowledgeResourceSaved,
 }: KnowledgeSourceSideBarProps) => {
-    const { selectedResource, mode, isClosing, closeModal, openEdit } =
-        useKnowledgeSourceSideBar()
+    const { selectedResource, mode, closeModal } = useKnowledgeSourceSideBar()
     const helpCenter = useCurrentHelpCenter()
-    const { setEditModal } = useEditionManager()
-    const { isPassingRulesCheck } = useAbilityChecker()
-    const { getHasUnsavedChanges, openUnsavedChangesModal } =
-        useUnsavedChangesModal()
 
-    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
-        can('update', 'ArticleEntity'),
-    )
-
-    const containerRef = useRef<HTMLDivElement>(null)
+    const handleEdit = useCallback(() => {
+        if (!selectedResource) return
+        onKnowledgeResourceEditClick(
+            selectedResource.id,
+            selectedResource.knowledgeResourceType,
+            selectedResource.helpCenterId || '',
+        )
+    }, [selectedResource, onKnowledgeResourceEditClick])
 
     const isPreviewMode =
         mode === KnowledgeSourceSideBarMode.PREVIEW && !!selectedResource
-    const isEditMode =
-        mode === KnowledgeSourceSideBarMode.EDIT && !!selectedResource
     const isCreateMode = mode === KnowledgeSourceSideBarMode.CREATE
 
     const isGuidance =
@@ -80,20 +64,6 @@ const KnowledgeSourceSideBar = ({
     const selectedResourceIdAsNumber = useMemo(
         () => Number(selectedResource?.id),
         [selectedResource?.id],
-    )
-
-    const shouldDisplayArticleEditor =
-        (isEditMode || isCreateMode) &&
-        canUpdateArticle &&
-        selectedResource?.knowledgeResourceType ===
-            AiAgentKnowledgeResourceTypeEnum.ARTICLE
-
-    const selectedGuidance = useMemo(
-        () =>
-            guidanceArticles.find(
-                (guidance) => guidance.id === selectedResourceIdAsNumber,
-            ),
-        [guidanceArticles, selectedResourceIdAsNumber],
     )
 
     const selectedArticle = useMemo(() => {
@@ -110,115 +80,146 @@ const KnowledgeSourceSideBar = ({
         }
     }, [articles, selectedResourceIdAsNumber])
 
-    const resourceUpdatedAt = useMemo(() => {
-        return (
-            selectedGuidance?.lastUpdated || selectedArticle?.updated_datetime
-        )
-    }, [selectedGuidance?.lastUpdated, selectedArticle?.updated_datetime])
-
-    useEffect(() => {
-        if (!!mode && shouldDisplayArticleEditor) {
-            setEditModal({
-                isOpened: true,
-                view: HelpCenterArticleModalView.BASIC,
-            })
-        }
-    }, [mode, setEditModal, shouldDisplayArticleEditor])
-
-    const onClose = useCallback(() => {
-        closeModal()
-        setEditModal({
-            isOpened: false,
-            view: null,
-        })
-    }, [setEditModal, closeModal])
-
-    const onEditClick = useCallback(() => {
-        if (!selectedResource) {
-            return
-        }
-
-        onKnowledgeResourceEditClick(
-            selectedResource.id,
-            selectedResource.knowledgeResourceType,
-            getHelpcenterIdAsString(selectedResource.helpCenterId),
-        )
-        openEdit(selectedResource)
-    }, [onKnowledgeResourceEditClick, openEdit, selectedResource])
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape' && !!mode) {
-                if (getHasUnsavedChanges()) {
-                    openUnsavedChangesModal()
-                } else {
-                    onClose()
-                }
+    const editorProps = useMemo((): KnowledgeEditorProps | null => {
+        if (isPreviewMode && isGuidance) {
+            return {
+                variant: 'guidance',
+                shopName,
+                shopType,
+                guidanceArticleId: selectedResourceIdAsNumber,
+                onClose: closeModal,
+                guidanceMode: 'read',
+                isOpen: true,
+                onDelete: () => closeModal(),
+                onUpdate: () => {
+                    onKnowledgeResourceSaved(
+                        selectedResource.id,
+                        selectedResource.knowledgeResourceType,
+                        selectedResource.helpCenterId || '',
+                        false,
+                    )
+                },
+                onEdit: handleEdit,
             }
         }
 
-        if (!!mode) {
-            document.addEventListener('keydown', handleKeyDown)
+        if (isPreviewMode && !isGuidance && selectedArticle && helpCenter) {
+            return {
+                variant: 'article',
+                helpCenterId: helpCenter.id,
+                shopName,
+                onClose: closeModal,
+                article: {
+                    type: 'existing',
+                    initialArticleMode: 'read',
+                    articleId: selectedResourceIdAsNumber,
+                    onDeleted: () => closeModal(),
+                    onUpdated: () => {
+                        onKnowledgeResourceSaved(
+                            selectedResource.id,
+                            selectedResource.knowledgeResourceType,
+                            selectedResource.helpCenterId || '',
+                            false,
+                        )
+                    },
+                    onEdit: handleEdit,
+                },
+            }
         }
 
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown)
+        if (isCreateMode && isGuidance) {
+            return {
+                variant: 'guidance',
+                shopName,
+                shopType,
+                onClose: closeModal,
+                guidanceMode: 'create',
+                isOpen: true,
+                showMissingKnowledgeCheckbox: true,
+                onCreate: (guidance, shouldAddToMissingKnowledge = true) => {
+                    const resourceSetId =
+                        selectedResource.helpCenterId ??
+                        String(helpCenter?.id ?? '')
+
+                    onKnowledgeResourceSaved(
+                        String(guidance.id),
+                        AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        resourceSetId,
+                        true,
+                    )
+
+                    if (!shouldAddToMissingKnowledge) {
+                        return
+                    }
+
+                    onSubmitNewMissingKnowledge({
+                        resourceId: String(guidance.id),
+                        resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                        resourceSetId,
+                        resourceLocale: guidance.locale,
+                    })
+                },
+            }
         }
-    }, [mode, onClose, getHasUnsavedChanges, openUnsavedChangesModal])
 
-    return (
-        <div ref={containerRef}>
-            <Drawer.Root
-                open={!!mode && !isClosing}
-                modal={false}
-                handleOnly
-                direction="right"
-                withPopovers={true}
-                container={containerRef.current}
-            >
-                <Drawer.Content className={css.sidebarContent}>
-                    <div className={css.root}>
-                        {isPreviewMode && (
-                            <KnowledgeSourcePreview
-                                {...selectedResource}
-                                lastUpdatedAt={resourceUpdatedAt}
-                                onClose={closeModal}
-                                onEdit={onEditClick}
-                                shopName={shopName}
-                                shopType={shopType}
-                            />
-                        )}
+        if (isCreateMode && !isGuidance && helpCenter) {
+            return {
+                variant: 'article',
+                helpCenterId: helpCenter.id,
+                shopName,
+                onClose: closeModal,
+                showMissingKnowledgeCheckbox: true,
+                article: {
+                    type: 'new',
+                    onCreated: (
+                        article,
+                        shouldAddToMissingKnowledge = true,
+                    ) => {
+                        onKnowledgeResourceSaved(
+                            String(article.id),
+                            AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                            String(helpCenter.id),
+                            true,
+                        )
 
-                        {(isEditMode || isCreateMode) && isGuidance && (
-                            <ManageGuidanceForm
-                                shopName={shopName}
-                                shopType={shopType}
-                                url={selectedResource.url}
-                                guidance={selectedGuidance}
-                                helpCenter={helpCenter}
-                                onSubmitNewMissingKnowledge={
-                                    onSubmitNewMissingKnowledge
-                                }
-                                onSaveClick={onKnowledgeResourceSaved}
-                            />
-                        )}
+                        if (!shouldAddToMissingKnowledge) {
+                            return
+                        }
 
-                        {shouldDisplayArticleEditor && (
-                            <KnowledgeSourceArticleEditor
-                                article={selectedArticle}
-                                isCreateMode={isCreateMode}
-                                onClose={onClose}
-                                onSubmitNewMissingKnowledge={
-                                    onSubmitNewMissingKnowledge
-                                }
-                                onSaveClick={onKnowledgeResourceSaved}
-                            />
-                        )}
-                    </div>
-                </Drawer.Content>
-            </Drawer.Root>
-        </div>
-    )
+                        onSubmitNewMissingKnowledge({
+                            resourceId: String(article.id),
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                            resourceSetId: String(article.help_center_id),
+                            resourceLocale: article.translation.locale,
+                        })
+                    },
+                },
+            }
+        }
+
+        return null
+    }, [
+        isPreviewMode,
+        isCreateMode,
+        isGuidance,
+        selectedResource,
+        selectedArticle,
+        selectedResourceIdAsNumber,
+        helpCenter,
+        shopName,
+        shopType,
+        closeModal,
+        handleEdit,
+        onSubmitNewMissingKnowledge,
+        onKnowledgeResourceSaved,
+    ])
+
+    if (!editorProps) {
+        return null
+    }
+
+    return <KnowledgeEditor {...editorProps} />
 }
 
 export default KnowledgeSourceSideBar

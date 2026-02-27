@@ -137,6 +137,20 @@ let mockedStore = mockStore({
     ticket: fromJS({
         tags: [],
     }),
+    ui: {
+        stats: {
+            drillDown: {
+                isOpen: false,
+                currentPage: 1,
+                metricData: null,
+                export: {
+                    isLoading: false,
+                    isError: false,
+                    isRequested: false,
+                },
+            },
+        },
+    },
 })
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
@@ -345,6 +359,20 @@ describe('TicketDetailContainer component', () => {
             ticket: fromJS({
                 tags: [],
             }),
+            ui: {
+                stats: {
+                    drillDown: {
+                        isOpen: false,
+                        currentPage: 1,
+                        metricData: null,
+                        export: {
+                            isLoading: false,
+                            isError: false,
+                            isRequested: false,
+                        },
+                    },
+                },
+            },
         })
         mockedStore.dispatch = jest.fn()
         useCustomFieldDefinitionsMock.mockReturnValue({

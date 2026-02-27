@@ -34,6 +34,8 @@ const setMockContextValue = (contextValue: any) => {
         setConfig: jest.fn(),
         setGuidanceArticle: jest.fn(),
         setPlayground: jest.fn(),
+        shouldAddToMissingKnowledge: true,
+        setShouldAddToMissingKnowledge: jest.fn(),
     }
 
     jest.mocked(useGuidanceContext).mockReturnValue(contextValue)

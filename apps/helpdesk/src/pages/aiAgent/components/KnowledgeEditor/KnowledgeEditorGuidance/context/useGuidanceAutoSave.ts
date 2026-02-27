@@ -33,15 +33,21 @@ type AutoSaveParams = {
 export const useGuidanceAutoSave = () => {
     const store = useGuidanceStoreApi()
     const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
-    const { guidanceTemplate, onCreateFn, onUpdateFn, guidanceHelpCenter } =
-        useGuidanceStore(
-            useShallow((storeState) => ({
-                guidanceTemplate: storeState.config.guidanceTemplate,
-                onCreateFn: storeState.config.onCreateFn,
-                onUpdateFn: storeState.config.onUpdateFn,
-                guidanceHelpCenter: storeState.config.guidanceHelpCenter,
-            })),
-        )
+    const {
+        guidanceTemplate,
+        onCreateFn,
+        onUpdateFn,
+        guidanceHelpCenter,
+        shouldAddToMissingKnowledge,
+    } = useGuidanceStore(
+        useShallow((storeState) => ({
+            guidanceTemplate: storeState.config.guidanceTemplate,
+            onCreateFn: storeState.config.onCreateFn,
+            onUpdateFn: storeState.config.onUpdateFn,
+            guidanceHelpCenter: storeState.config.guidanceHelpCenter,
+            shouldAddToMissingKnowledge: storeState.shouldAddToMissingKnowledge,
+        })),
+    )
 
     const { error: notifyError } = useNotify()
 
@@ -99,17 +105,21 @@ export const useGuidanceAutoSave = () => {
                     )
 
                     if (response && pendingSaveRef.current) {
+                        const createdGuidance = fromArticleTranslation(response)
                         const savedValues = pendingSaveRef.current
                         dispatch({
                             type: 'MARK_AS_SAVED',
                             payload: {
                                 title: savedValues.title,
                                 content: savedValues.content,
-                                guidance: fromArticleTranslation(response),
+                                guidance: createdGuidance,
                             },
                         })
                         dispatch({ type: 'SET_MODE', payload: 'edit' })
-                        onCreateFn?.()
+                        onCreateFn?.(
+                            createdGuidance,
+                            shouldAddToMissingKnowledge,
+                        )
                     }
                 } else {
                     if (!articleId) {
@@ -174,6 +184,7 @@ export const useGuidanceAutoSave = () => {
             onCreateFn,
             onUpdateFn,
             notifyError,
+            shouldAddToMissingKnowledge,
         ],
     )
 

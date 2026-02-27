@@ -4,6 +4,7 @@ import {
     useEffect,
     useMemo,
     useReducer,
+    useState,
 } from 'react'
 
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
@@ -36,6 +37,8 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
         articleReducer,
         createInitialState(config),
     )
+    const [shouldAddToMissingKnowledge, setShouldAddToMissingKnowledge] =
+        useState(true)
 
     // Sync article data when it loads
     useEffect(() => {
@@ -102,6 +105,8 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
                 sidePanelWidth,
                 shouldHideFullscreenButton,
             },
+            shouldAddToMissingKnowledge,
+            setShouldAddToMissingKnowledge,
         }),
         [
             state,
@@ -115,6 +120,7 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
             onClosePlayground,
             sidePanelWidth,
             shouldHideFullscreenButton,
+            shouldAddToMissingKnowledge,
         ],
     )
 
