@@ -252,7 +252,7 @@ export const OpportunitiesSidebar = ({
                     <Button
                         intent="regular"
                         variant="secondary"
-                        icon="system-bar-left"
+                        icon="system-bar-expand"
                         size="sm"
                         onClick={handleToggleSidebar}
                         aria-label="Hide sidebar"

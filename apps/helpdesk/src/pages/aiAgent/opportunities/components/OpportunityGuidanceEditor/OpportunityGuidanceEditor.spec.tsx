@@ -107,7 +107,7 @@ describe('OpportunityGuidanceEditor', () => {
             <OpportunityGuidanceEditor
                 {...defaultProps}
                 resource={resourceWithInsight}
-                isInGuidanceEditorModeOnly
+                isInReadOnlyMode
             />,
         )
 

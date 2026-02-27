@@ -25,12 +25,12 @@ jest.mock('../OpportunityGuidanceEditor/OpportunityGuidanceEditor', () => ({
         resource,
         shopName,
         onValuesChange,
-        isInGuidanceEditorModeOnly,
+        isInReadOnlyMode,
     }: any) => (
         <div data-testid="opportunity-guidance-editor">
             <div>Resource: {resource.title}</div>
             <div>Shop: {shopName}</div>
-            <div>Editor Mode: {String(isInGuidanceEditorModeOnly)}</div>
+            <div>Editor Mode: {String(isInReadOnlyMode)}</div>
             <input
                 placeholder="Title"
                 onChange={(e) =>
@@ -210,7 +210,7 @@ describe('OpportunityDetailsContent', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render OpportunityGuidanceEditor with isInGuidanceEditorModeOnly=false for conflicts', () => {
+        it('should render OpportunityGuidanceEditor with isInReadOnlyMode=false for conflicts', () => {
             const conflictOpportunity: Opportunity = {
                 ...mockOpportunity,
                 type: OpportunityType.RESOLVE_CONFLICT,

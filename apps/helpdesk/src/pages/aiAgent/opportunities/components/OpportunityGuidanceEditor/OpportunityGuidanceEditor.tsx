@@ -7,7 +7,6 @@ import {
     Box,
     Button,
     Heading,
-    Icon,
     Text,
     TextField,
     Tooltip,
@@ -29,71 +28,14 @@ interface OpportunityGuidanceEditorProps {
     resource: OpportunityResource
     shopName: string
     onValuesChange?: (fields: ResourceFormFields) => void
-    isInGuidanceEditorModeOnly?: boolean
+    isInReadOnlyMode?: boolean
 }
-
-interface FormFieldsComponentProps {
-    formFields: ResourceFormFields
-    handleFieldChange: (partialFields: Partial<ResourceFormFields>) => void
-    shopName: string
-    guidanceActions: ReturnType<
-        typeof useGetGuidancesAvailableActions
-    >['guidanceActions']
-    isInGuidanceEditorModeOnly: boolean
-}
-
-const FormFieldsComponent = ({
-    formFields,
-    handleFieldChange,
-    shopName,
-    guidanceActions,
-    isInGuidanceEditorModeOnly,
-}: FormFieldsComponentProps) => (
-    <Box flexDirection="column" gap="md">
-        <div className={css.titleField}>
-            <TextField
-                label="Guidance name"
-                value={formFields.title}
-                onChange={(value) => handleFieldChange({ title: value })}
-                isRequired
-                isDisabled={!formFields.isVisible}
-            />
-            <Text variant="regular" size="sm" className={css.caption}>
-                Use a short, scenario-based name. Example:{' '}
-                <Text variant="italic" size="sm">
-                    When customers request a return
-                </Text>
-            </Text>
-        </div>
-        <div
-            className={classNames(css.bodyField, {
-                [css.disabled]: !formFields.isVisible,
-                [css.editorModeOnly]: isInGuidanceEditorModeOnly,
-            })}
-        >
-            <GuidanceEditor
-                content={formFields.content}
-                handleUpdateContent={(content) =>
-                    handleFieldChange({ content })
-                }
-                label="Instructions"
-                shopName={shopName}
-                availableActions={guidanceActions}
-                showActionsButton
-            />
-            <Text variant="regular" size="sm" className={css.caption}>
-                Describe the steps AI Agent should follow in clear, specific
-                phrases.
-            </Text>
-        </div>
-    </Box>
-)
 
 export const OpportunityGuidanceEditor = ({
     resource,
     shopName,
     onValuesChange,
-    isInGuidanceEditorModeOnly = false,
+    isInReadOnlyMode = false,
 }: OpportunityGuidanceEditorProps) => {
     const { guidanceActions } = useGetGuidancesAvailableActions(
         shopName,
@@ -117,43 +59,41 @@ export const OpportunityGuidanceEditor = ({
         onValuesChange?.(updatedFields)
     }
 
-    const renderKnowledgeGapView = () => (
-        <Banner intent="info" isClosable={false}>
-            <Box flexDirection="row" gap="xs" alignItems="flex-start">
-                <Icon
-                    name="ai-agent-feedback"
-                    size="md"
-                    color="var(--content-accent-default)"
-                />
-                <Box
-                    flexDirection="column"
-                    gap="xs"
-                    alignItems="flex-start"
-                    width="100%"
-                >
+    if (isInReadOnlyMode) {
+        return (
+            <Banner
+                intent="info"
+                isClosable={false}
+                title={
                     <Text variant="bold" size="md">
                         Summary
                     </Text>
-                    <Text variant="regular" size="md">
-                        {resource.insight}
-                    </Text>
-                    <Button
-                        as="a"
-                        href={`${routes.knowledge}/sources?filter=guidance`}
-                        target="_blank"
-                        variant="secondary"
-                        trailingSlot="external-link"
-                        size="sm"
+                }
+                icon="ai-agent-feedback"
+                description={
+                    <Box
+                        flexDirection="column"
+                        gap="xs"
+                        alignItems="flex-start"
+                        className={css.insightText}
                     >
-                        Go to Guidance
-                    </Button>
-                </Box>
-            </Box>
-        </Banner>
-    )
-
-    if (isInGuidanceEditorModeOnly) {
-        return renderKnowledgeGapView()
+                        <Text variant="regular" size="md">
+                            {resource.insight}
+                        </Text>
+                        <Button
+                            as="a"
+                            href={`${routes.knowledge}/sources?filter=guidance`}
+                            target="_blank"
+                            variant="secondary"
+                            trailingSlot="external-link"
+                            size="sm"
+                        >
+                            Go to Guidance
+                        </Button>
+                    </Box>
+                }
+            />
+        )
     }
 
     return (
@@ -228,13 +168,45 @@ export const OpportunityGuidanceEditor = ({
                     [css.disabled]: !formFields.isVisible,
                 })}
             >
-                <FormFieldsComponent
-                    formFields={formFields}
-                    handleFieldChange={handleFieldChange}
-                    shopName={shopName}
-                    guidanceActions={guidanceActions}
-                    isInGuidanceEditorModeOnly={isInGuidanceEditorModeOnly}
-                />
+                <Box flexDirection="column" gap="md">
+                    <div className={css.titleField}>
+                        <TextField
+                            label="Guidance name"
+                            value={formFields.title}
+                            onChange={(value) =>
+                                handleFieldChange({ title: value })
+                            }
+                            isRequired
+                            isDisabled={!formFields.isVisible}
+                        />
+                        <Text
+                            variant="regular"
+                            size="sm"
+                            className={css.caption}
+                        >
+                            Use a short, scenario-based name. Example:{' '}
+                            <Text variant="italic" size="sm">
+                                When customers request a return
+                            </Text>
+                        </Text>
+                    </div>
+                    <div
+                        className={classNames(css.bodyField, {
+                            [css.disabled]: !formFields.isVisible,
+                        })}
+                    >
+                        <GuidanceEditor
+                            content={formFields.content}
+                            handleUpdateContent={(content) =>
+                                handleFieldChange({ content })
+                            }
+                            label="Instructions"
+                            shopName={shopName}
+                            availableActions={guidanceActions}
+                            showActionsButton
+                        />
+                    </div>
+                </Box>
             </div>
         </Box>
     )

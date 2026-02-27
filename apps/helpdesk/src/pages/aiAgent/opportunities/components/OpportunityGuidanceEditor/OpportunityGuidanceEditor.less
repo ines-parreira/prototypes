@@ -18,6 +18,10 @@
         }
     }
 
+    .insightText {
+        white-space: wrap !important;
+    }
+
     .disabledTitle {
         opacity: 0.5;
         pointer-events: none;
@@ -74,23 +78,21 @@
         padding: var(--spacing-xxs) var(--spacing-md);
     }
 
-    .bodyField:not(.editorModeOnly) :global([class*='Toolbar--actions']) {
+    .bodyField :global([class*='Toolbar--actions']) {
         width: 100% !important;
     }
 
-    .bodyField:not(.editorModeOnly) :global([class*='Toolbar--actions']) > * {
+    .bodyField :global([class*='Toolbar--actions']) > * {
         visibility: hidden;
         width: 0;
     }
 
-    .bodyField:not(.editorModeOnly)
-        :global([class*='Toolbar--actions'])
-        > [class*='rightSection'] {
+    .bodyField :global([class*='Toolbar--actions']) > [class*='rightSection'] {
         visibility: visible;
         width: auto;
     }
 
-    .bodyField:not(.editorModeOnly) :global([class*='rightSection']) {
+    .bodyField :global([class*='rightSection']) {
         justify-content: flex-start;
         padding: 0 !important;
     }
@@ -108,7 +110,7 @@
 @supports (selector(:has(*))) {
     html
         body:has([data-ai-opportunities])
-        :local(.bodyField:not(.editorModeOnly))
+        :local(.bodyField)
         :global([class*='rightSection']) {
         padding-left: 0 !important;
     }

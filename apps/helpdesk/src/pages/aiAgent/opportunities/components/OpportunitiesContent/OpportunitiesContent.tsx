@@ -6,6 +6,7 @@ import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 import { DeleteOpportunityModal } from 'pages/aiAgent/opportunities/components/DeleteOpportunityModal/DeleteOpportunityModal'
 import { DismissOpportunityModal } from 'pages/aiAgent/opportunities/components/DismissOpportunityModal/DismissOpportunityModal'
 import { OpportunityDetailsHeader } from 'pages/aiAgent/opportunities/components/OpportunityDetailsHeader/OpportunityDetailsHeader'
+import { OpportunitySidebarButton } from 'pages/aiAgent/opportunities/components/OpportunitySidebarButton/OpportunitySidebarButton'
 import { State } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type { OpportunityPageState } from 'pages/aiAgent/opportunities/hooks/useOpportunityPageState'
 import type {
@@ -234,7 +235,9 @@ export const OpportunitiesContent = ({
     if (opportunitiesPageState.state === State.RESTRICTED_NO_OPPORTUNITIES) {
         return (
             <div className={css.containerContent}>
-                <div className={css.header}></div>
+                <div className={css.header}>
+                    <OpportunitySidebarButton />
+                </div>
                 <RestrictedOpportunityMessage
                     opportunitiesPageState={opportunitiesPageState}
                     shopName={opportunityConfig.shopName}
@@ -246,7 +249,9 @@ export const OpportunitiesContent = ({
     if (opportunitiesPageState.showEmptyState) {
         return (
             <div className={css.containerContent}>
-                <div className={css.header}></div>
+                <div className={css.header}>
+                    <OpportunitySidebarButton />
+                </div>
                 <OpportunitiesEmptyState
                     opportunitiesPageState={opportunitiesPageState}
                 />
@@ -257,7 +262,9 @@ export const OpportunitiesContent = ({
     if (!selectedOpportunity) {
         return (
             <div className={css.containerContent}>
-                <div className={css.header}></div>
+                <div className={css.header}>
+                    <OpportunitySidebarButton />
+                </div>
                 <OpportunitiesEmptyState
                     opportunitiesPageState={
                         stateConfig[State.OPPORTUNITY_NOT_FOUND]

@@ -298,7 +298,7 @@ describe('OpportunitiesContent', () => {
             screen.getByRole('button', { name: /Dismiss/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', { name: /Mark as done/i }),
+            screen.getByRole('button', { name: /Resolve/i }),
         ).toBeInTheDocument()
     })
 
@@ -414,7 +414,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
 
         await act(async () => {
@@ -449,7 +449,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
 
         await act(async () => {
@@ -486,7 +486,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
         expect(approveButton).toBeInTheDocument()
     })
@@ -504,7 +504,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
         expect(approveButton).toBeInTheDocument()
     })
@@ -673,7 +673,7 @@ describe('OpportunitiesContent', () => {
             screen.queryByRole('button', { name: /Dismiss/i }),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByRole('button', { name: /Mark as done/i }),
+            screen.queryByRole('button', { name: /Resolve/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -707,7 +707,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
     })
@@ -725,7 +725,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
         expect(approveButton).toHaveAttribute('aria-disabled', 'true')
     })
@@ -743,7 +743,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
         expect(approveButton).not.toHaveAttribute('aria-disabled', 'true')
 
@@ -796,7 +796,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
 
         await act(async () => {
@@ -820,7 +820,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
 
         await act(async () => {
@@ -881,7 +881,7 @@ describe('OpportunitiesContent', () => {
         })
 
         const approveButton = screen.getByRole('button', {
-            name: /Mark as done/i,
+            name: /Resolve/i,
         })
 
         await act(async () => {
@@ -954,7 +954,7 @@ describe('OpportunitiesContent', () => {
 
             expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
             expect(
-                screen.getByRole('button', { name: /Mark as done/i }),
+                screen.getByRole('button', { name: /Resolve/i }),
             ).toBeInTheDocument()
         })
     })
@@ -1143,7 +1143,7 @@ describe('OpportunitiesContent', () => {
                 screen.queryByRole('button', { name: /Dismiss/i }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /Mark as done/i }),
+                screen.queryByRole('button', { name: /Resolve/i }),
             ).not.toBeInTheDocument()
         })
 

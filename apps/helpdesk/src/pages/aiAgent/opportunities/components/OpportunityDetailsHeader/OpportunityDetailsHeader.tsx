@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useRef } from 'react'
 
 import {
     Button,
@@ -13,7 +13,6 @@ import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/Trunc
 
 import { OpportunityType } from '../../enums'
 import { useGuidanceCount } from '../../hooks/useGuidanceCount'
-import { useOpportunitiesSidebar } from '../../hooks/useOpportunitiesSidebar'
 import type { useOpportunityCTAs } from '../../hooks/useOpportunityCTAs'
 import type {
     Opportunity,
@@ -21,6 +20,7 @@ import type {
     SidebarOpportunityItem,
 } from '../../types'
 import { OpportunitiesNavigation } from '../OpportunitiesNavigation/OpportunitiesNavigation'
+import { OpportunitySidebarButton } from '../OpportunitySidebarButton/OpportunitySidebarButton'
 
 import css from './OpportunityDetailsHeader.less'
 
@@ -53,8 +53,6 @@ export const OpportunityDetailsHeader = ({
 }: OpportunityDetailsHeaderProps) => {
     const approveButtonRef = useRef<HTMLButtonElement>(null)
 
-    const { isSidebarVisible, setIsSidebarVisible } = useOpportunitiesSidebar()
-
     const { handleApprove, handleResolve, isProcessing } = opportunityCTAs
 
     const { guidanceCount, isLoading: isLoadingGuidanceCount } =
@@ -85,10 +83,6 @@ export const OpportunityDetailsHeader = ({
         !isLoadingGuidanceCount &&
         guidanceCount >= MAX_GUIDANCES
 
-    const handleShowSidebar = useCallback(() => {
-        setIsSidebarVisible(true)
-    }, [setIsSidebarVisible])
-
     const getOpportunityTypeLabel = (type: OpportunityType): string => {
         switch (type) {
             case OpportunityType.RESOLVE_CONFLICT:
@@ -117,17 +111,7 @@ export const OpportunityDetailsHeader = ({
     return (
         <div className={css.header}>
             <div className={css.headerLeft}>
-                {!isSidebarVisible && (
-                    <Button
-                        intent="regular"
-                        variant="secondary"
-                        icon="system-bar-left"
-                        size="sm"
-                        onClick={handleShowSidebar}
-                        aria-label="Show sidebar"
-                        className={css.sidebarButton}
-                    />
-                )}
+                <OpportunitySidebarButton />
                 <SelectedOpportunityTitle />
             </div>
             {selectedOpportunity && (
@@ -178,7 +162,7 @@ export const OpportunityDetailsHeader = ({
                                             !isFormValid
                                         }
                                     >
-                                        Mark as done
+                                        Resolve
                                     </Button>
                                 </TooltipTrigger>
                                 <TooltipContent>
@@ -210,7 +194,7 @@ export const OpportunityDetailsHeader = ({
                                     !isFormValid
                                 }
                             >
-                                Mark as done
+                                Resolve
                             </Button>
                         ))}
                 </div>

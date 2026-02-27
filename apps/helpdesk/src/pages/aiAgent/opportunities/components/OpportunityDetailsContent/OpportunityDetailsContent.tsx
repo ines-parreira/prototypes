@@ -51,7 +51,7 @@ export const OpportunityDetailsContent = ({
                         onValuesChange={(fields) =>
                             onFormValuesChange(index, fields)
                         }
-                        isInGuidanceEditorModeOnly={
+                        isInReadOnlyMode={
                             selectedOpportunity.type ===
                             OpportunityType.FILL_KNOWLEDGE_GAP
                         }
