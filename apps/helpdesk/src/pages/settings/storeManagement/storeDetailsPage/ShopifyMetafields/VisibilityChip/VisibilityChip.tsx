@@ -1,11 +1,5 @@
-import { Text } from '@gorgias/axiom'
-
-import styles from './VisibilityChip.less'
+import { Tag } from '@gorgias/axiom'
 
 export default function VisibilityChip() {
-    return (
-        <div className={styles.metafieldHidden}>
-            <Text variant="bold">Hidden</Text>
-        </div>
-    )
+    return <Tag color="grey">Hidden</Tag>
 }

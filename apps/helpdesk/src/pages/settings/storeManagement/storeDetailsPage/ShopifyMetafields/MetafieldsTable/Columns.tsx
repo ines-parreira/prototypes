@@ -20,7 +20,7 @@ export const columns: ColumnDef<Field>[] = [
         const isVisible = info.row.original.isVisible ?? false
 
         return (
-            <Box gap="xxxs" minWidth="200px">
+            <Box gap="xxxs" minWidth="200px" alignItems="center">
                 <Text variant="bold">{info.getValue() as string}</Text>
                 {!isVisible && <VisibilityChip />}
             </Box>
