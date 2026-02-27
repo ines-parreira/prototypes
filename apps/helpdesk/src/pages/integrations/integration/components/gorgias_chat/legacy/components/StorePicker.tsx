@@ -3,30 +3,17 @@ import { useCallback, useMemo } from 'react'
 import classNames from 'classnames'
 
 import { ListItem, SelectField } from '@gorgias/axiom'
-import type { IconName } from '@gorgias/axiom'
 
 import type {
     GorgiasChatIntegration,
     StoreIntegration,
 } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
+import { getStoreIconNameFromType } from 'state/integrations/helpers'
 
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 
 import css from './StorePicker.less'
-
-const getStoreIconName = (type: StoreIntegration['type']): IconName => {
-    switch (type) {
-        case IntegrationType.Shopify:
-            return 'vendor-shopify-colored'
-        case IntegrationType.BigCommerce:
-            return 'vendor-bicommerce-colored'
-        case IntegrationType.Magento2:
-            return 'vendor-magento-colored'
-        default:
-            return 'shopping-bag'
-    }
-}
 
 type Props = {
     gorgiasChatIntegrations: GorgiasChatIntegration[]
@@ -116,14 +103,14 @@ export const StorePicker = ({
                     error={error}
                     leadingSlot={
                         selectedStore
-                            ? getStoreIconName(selectedStore?.type)
+                            ? getStoreIconNameFromType(selectedStore?.type)
                             : undefined
                     }
                 >
                     {(store) => (
                         <ListItem
                             id={store.id}
-                            leadingSlot={getStoreIconName(store.type)}
+                            leadingSlot={getStoreIconNameFromType(store.type)}
                             label={store.name}
                             caption={getCaption(store)}
                             textValue={store.name}

@@ -22,7 +22,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/revamp/AdvancedInstallationSidePanel/AdvancedInstallationSidePanel',
+    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/AdvancedInstallationCard/AdvancedInstallationSidePanel',
     () => ({
         __esModule: true,
         default: ({ isOpen, onOpenChange, integration }: any) =>

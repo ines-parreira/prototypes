@@ -1,0 +1,37 @@
+@import (reference) '~css/typography.less';
+
+:local {
+    .condition {
+        display: flex;
+        gap: 8px;
+
+        .deleteButtonDisabled:not(:disabled) {
+            cursor: not-allowed;
+            color: var(--border-neutral-default);
+        }
+    }
+
+    .pageUrlButton {
+        cursor: default;
+        pointer-events: none;
+    }
+
+    .unsupportedError {
+        display: flex;
+        justify-content: center;
+        gap: var(--spacing-xxxxs);
+    }
+
+    .textInput {
+        flex: 1;
+    }
+
+    .deleteButtonTooltip :global(.tooltip-inner) {
+        max-width: 180px;
+        text-align: center;
+    }
+
+    .helpIcon {
+        display: inline-block;
+    }
+}

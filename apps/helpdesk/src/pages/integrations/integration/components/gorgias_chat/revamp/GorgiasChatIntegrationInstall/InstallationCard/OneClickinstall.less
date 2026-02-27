@@ -1,0 +1,44 @@
+:local {
+    .modalFooter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: var(--spacing-xs);
+    }
+    .container {
+        .header {
+            display: flex;
+            column-gap: var(--spacing-sm);
+            align-items: center;
+            justify-content: space-between;
+
+            .leftSection {
+                display: flex;
+                align-items: center;
+
+                .installedIcon {
+                    margin-right: var(--spacing-xs);
+                }
+            }
+
+            .rightSection {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-xs);
+
+                .toggleCollapseButton {
+                    color: var(--content-neutral-default);
+                    font-size: var(--spacing-md);
+                    width: var(--spacing-md);
+                    height: var(--spacing-md);
+                    padding: 0;
+                    margin-left: var(--spacing-sm);
+                }
+            }
+        }
+    }
+
+    .title {
+        margin-bottom: var(--spacing-xs);
+    }
+}

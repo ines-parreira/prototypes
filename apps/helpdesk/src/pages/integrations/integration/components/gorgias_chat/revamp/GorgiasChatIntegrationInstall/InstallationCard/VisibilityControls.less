@@ -1,0 +1,86 @@
+:local {
+    .visibilityMethodDropdownPlaceholder {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+
+        margin-top: var(--spacing-xs);
+
+        transition: opacity 0.2s ease-in-out;
+
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        color: var(--content-neutral-secondary);
+
+        text-transform: capitalize;
+
+        &.hide {
+            transition: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .visibilityMethodDropdownPlaceholderIcon {
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .matchConditions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+
+        font-size: 12px;
+        color: var(--content-neutral-secondary);
+        line-height: 16px;
+    }
+
+    .matchConditionsDropdown :global(.dropdown-toggle) {
+        border: 0;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--content-neutral-secondary);
+    }
+
+    .visibilityControls {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        margin-top: var(--spacing-md);
+    }
+
+    .conditions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tip {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+
+        font-size: 12px;
+        line-height: 16px;
+
+        color: var(--content-neutral-secondary);
+    }
+
+    .tipIcon {
+        font-size: 16px;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: var(--spacing-sm);
+    }
+
+    .disabled {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+}
