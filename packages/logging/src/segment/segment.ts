@@ -4,6 +4,7 @@ import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
 
 import { devLog } from '../utils/devLog'
+import { deprecatedEvents } from './deprecated-events'
 import type { SegmentEvent } from './types'
 
 export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
@@ -15,6 +16,11 @@ const shouldSendEvent = () =>
     )
 
 export const logEvent = (event: SegmentEvent, props = {}) => {
+    if (deprecatedEvents.includes(event)) {
+        devLog('Deprecated Segment Event', event, props)
+        return
+    }
+
     devLog('Track Segment', event, props)
 
     if (!shouldSendEvent()) {

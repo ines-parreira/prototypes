@@ -1,4 +1,5 @@
-import { identifyUser, logEventWithSampling } from '../segment'
+import { deprecatedEvents } from '../deprecated-events'
+import { identifyUser, logEvent, logEventWithSampling } from '../segment'
 import { SegmentEvent } from '../types'
 
 const mockUser = {
@@ -24,6 +25,40 @@ describe('segmentTracker', () => {
     afterEach(() => {
         globalThis.analytics = analytics
         window.USER_IMPERSONATED = null
+    })
+
+    describe('logEvent', () => {
+        it('should track a non-deprecated event', () => {
+            logEvent(SegmentEvent.AiAgentCopiedToEditor, { prop: 'value' })
+
+            expect(window.analytics.track).toHaveBeenCalledTimes(1)
+            expect(window.analytics.track).toHaveBeenCalledWith(
+                SegmentEvent.AiAgentCopiedToEditor,
+                { prop: 'value' },
+            )
+        })
+
+        it('should not track a deprecated event', () => {
+            const deprecatedEvent = deprecatedEvents[0]
+            logEvent(deprecatedEvent, { prop: 'value' })
+
+            expect(window.analytics.track).not.toHaveBeenCalled()
+        })
+
+        it('should not track when the user is impersonated', () => {
+            window.USER_IMPERSONATED = true
+            logEvent(SegmentEvent.AiAgentCopiedToEditor)
+
+            expect(window.analytics.track).not.toHaveBeenCalled()
+        })
+
+        it('should not track when analytics is undefined', () => {
+            // @ts-ignore: analytics is optional
+            delete globalThis.analytics
+            logEvent(SegmentEvent.AiAgentCopiedToEditor)
+
+            expect(analytics.track).not.toHaveBeenCalled()
+        })
     })
 
     describe('identifyUser', () => {
@@ -97,6 +132,13 @@ describe('segmentTracker', () => {
                 SegmentEvent.AiAgentCopiedToEditor,
                 {},
             )
+        })
+
+        it('should not track a deprecated event even when sampled', () => {
+            const deprecatedEvent = deprecatedEvents[0]
+            logEventWithSampling(deprecatedEvent, {}, 1)
+
+            expect(window.analytics.track).not.toHaveBeenCalled()
         })
     })
 })
