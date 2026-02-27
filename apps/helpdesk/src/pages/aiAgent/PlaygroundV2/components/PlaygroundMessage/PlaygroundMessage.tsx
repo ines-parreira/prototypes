@@ -12,6 +12,7 @@ import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentP
 import { MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
+import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useMessagesContext } from 'pages/aiAgent/PlaygroundV2/contexts/MessagesContext'
 import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/SettingsContext'
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
@@ -43,6 +44,7 @@ const PlaygroundMessage = ({
         aiJourneySettings: { includeProductImage, selectedProduct, mediaUrls },
         currentJourney,
     } = useAIJourneyContext()
+    const { isPolling } = useCoreContext()
     const isAiAgentSender = message.sender === AI_AGENT_SENDER
     const messageType = message.type
 
@@ -94,7 +96,7 @@ const PlaygroundMessage = ({
         case MessageType.TICKET_EVENT:
             return <TicketEvent type={message.outcome} />
         case MessageType.PLACEHOLDER:
-            return (
+            return isPolling ? (
                 <MessageContainer
                     channel={channel}
                     sender={message.sender}
@@ -104,7 +106,7 @@ const PlaygroundMessage = ({
                 >
                     <PlaygroundPlaceholderMessage />
                 </MessageContainer>
-            )
+            ) : null
         case MessageType.MESSAGE:
         case MessageType.PROMPT:
         case MessageType.INTERNAL_NOTE:

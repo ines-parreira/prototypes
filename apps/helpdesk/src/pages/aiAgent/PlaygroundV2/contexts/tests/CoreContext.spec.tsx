@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react'
+import { useSearchParams } from '@repo/routing'
+import { act, renderHook, waitFor } from '@testing-library/react'
 
 import { CoreProvider, useCoreContext } from '../CoreContext'
 
@@ -54,8 +55,15 @@ jest.mock('../../hooks/useDraftKnowledge', () => ({
 }))
 
 describe('CoreContext (PlaygroundStateContext)', () => {
+    const mockedUseSearchParams = jest.mocked(useSearchParams)
+    const mockSetSearchParams = jest.fn()
+
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedUseSearchParams.mockReturnValue([
+            new URLSearchParams(),
+            mockSetSearchParams,
+        ])
         mockResetToDefaultChannel.mockClear()
         mockIsDraftKnowledgeReady.mockReturnValue(true)
     })
@@ -156,6 +164,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                     areActionsAllowedToExecute: true,
                 }),
                 false,
+                undefined,
             )
         })
 
@@ -175,7 +184,84 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                     areActionsAllowedToExecute: false,
                 }),
                 false,
+                undefined,
             )
+        })
+
+        it('should pass external session id from search params to useTestSession', () => {
+            const useTestSession = require('../../hooks/useTestSession')
+                .useTestSession as jest.Mock
+
+            mockedUseSearchParams.mockReturnValue([
+                new URLSearchParams('session-id=external-session-123'),
+                mockSetSearchParams,
+            ])
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(useTestSession).toHaveBeenCalledWith(
+                'https://test-base-url.com',
+                expect.objectContaining({
+                    areActionsAllowedToExecute: false,
+                }),
+                false,
+                'external-session-123',
+            )
+        })
+
+        it('should populate session-id in search params when testSessionId exists', async () => {
+            mockedUseSearchParams.mockReturnValue([
+                new URLSearchParams('use-v3=true'),
+                mockSetSearchParams,
+            ])
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            await waitFor(() => {
+                expect(mockSetSearchParams).toHaveBeenCalledTimes(1)
+            })
+
+            const [updatedParams] = mockSetSearchParams.mock.calls[0]
+            expect(updatedParams).toBeInstanceOf(URLSearchParams)
+            expect(updatedParams.get('session-id')).toBe('test-session-123')
+        })
+
+        it('should not populate session-id in search params when use-v3 is disabled', () => {
+            mockedUseSearchParams.mockReturnValue([
+                new URLSearchParams('use-v3=false'),
+                mockSetSearchParams,
+            ])
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(mockSetSearchParams).not.toHaveBeenCalled()
+        })
+
+        it('should not update search params when external session id already matches', () => {
+            mockedUseSearchParams.mockReturnValue([
+                new URLSearchParams('session-id=test-session-123'),
+                mockSetSearchParams,
+            ])
+
+            renderHook(() => useCoreContext(), {
+                wrapper: ({ children }) => (
+                    <CoreProvider>{children}</CoreProvider>
+                ),
+            })
+
+            expect(mockSetSearchParams).not.toHaveBeenCalled()
         })
 
         it('should pass testSessionId and baseUrl to usePlaygroundPolling', () => {
@@ -314,6 +400,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                     areActionsAllowedToExecute: false,
                 }),
                 false,
+                undefined,
             )
 
             act(() => {
@@ -326,6 +413,7 @@ describe('CoreContext (PlaygroundStateContext)', () => {
                     areActionsAllowedToExecute: true,
                 }),
                 false,
+                undefined,
             )
         })
 

@@ -172,6 +172,14 @@ describe('useTestSession hook', () => {
         expect(result.current.isTestSessionLoading).toBe(false)
     })
 
+    it('should use external session id as initial state when provided', () => {
+        const { result } = renderHook(() =>
+            useTestSession(undefined, undefined, undefined, 'external-123'),
+        )
+
+        expect(result.current.testSessionId).toBe('external-123')
+    })
+
     it('should update sessionId when data is received', () => {
         const createTestSessionMock = jest.fn()
         mockedUseCreateTestSessionMutation.mockReturnValue({

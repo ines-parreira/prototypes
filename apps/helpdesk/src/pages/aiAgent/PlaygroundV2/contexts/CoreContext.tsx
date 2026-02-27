@@ -3,6 +3,7 @@ import {
     createContext,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useRef,
     useState,
@@ -82,8 +83,12 @@ export const CoreProvider = ({
     const { baseUrl } = useAiAgentHttpIntegration()
     const channelState = usePlaygroundChannel()
 
-    const [searchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams()
     const useV3 = useRef(searchParams.get('use-v3') === 'true')
+    const externalSessionId = useRef(
+        searchParams.get('session-id') ?? undefined,
+    )
+    const syncedSessionId = useRef(externalSessionId.current)
 
     const sessionState = useTestSession(
         baseUrl,
@@ -91,12 +96,33 @@ export const CoreProvider = ({
             areActionsAllowedToExecute: areActionsEnabled ?? false,
         },
         useV3.current,
+        externalSessionId.current,
     )
+
     const pollingState = usePlaygroundPolling({
         testSessionId: sessionState.testSessionId ?? undefined,
         baseUrl: baseUrl,
         useV3: useV3.current,
     })
+
+    useEffect(() => {
+        if (!useV3.current) {
+            return
+        }
+
+        if (!sessionState.testSessionId) {
+            return
+        }
+
+        if (syncedSessionId.current === sessionState.testSessionId) {
+            return
+        }
+
+        const nextSearchParams = new URLSearchParams(searchParams)
+        nextSearchParams.set('session-id', sessionState.testSessionId)
+        setSearchParams(nextSearchParams)
+        syncedSessionId.current = sessionState.testSessionId
+    }, [searchParams, sessionState.testSessionId, setSearchParams])
 
     const { isDraftKnowledgeReady } = useDraftKnowledgeSync(draftKnowledge)
 

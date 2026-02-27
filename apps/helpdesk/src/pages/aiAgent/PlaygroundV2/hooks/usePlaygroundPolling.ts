@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetTestSessionLogs } from 'models/aiAgent/queries'
 import { reportError } from 'utils/errors'
@@ -16,7 +18,15 @@ export const usePlaygroundPolling = ({
     baseUrl?: string
     useV3?: boolean
 }) => {
-    const [isPolling, setIsPolling] = useState(false)
+    const [isPolling, setIsPolling] = useState(!!testSessionId)
+
+    useEffectOnce(() => {
+        // guarantees 1 fetch for the logs if the session id is provided
+        // when the playground is first started.
+        if (!!testSessionId) {
+            setIsPolling(false)
+        }
+    })
 
     const { data: testSessionLogs, error } = useGetTestSessionLogs(
         testSessionId ?? '',

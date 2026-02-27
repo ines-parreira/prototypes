@@ -38,15 +38,36 @@ describe('usePlaygroundPolling hook', () => {
         jest.useRealTimers()
     })
 
-    it('should not poll initially', () => {
+    it('should trigger one initial logs fetch when testSessionId is provided', () => {
         const { result } = renderHook(() =>
             usePlaygroundPolling({ testSessionId: '123' }),
         )
 
         expect(result.current.isPolling).toBe(false)
         expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', false, {
+            enabled: true,
+            refetchInterval: 5000,
+            baseUrl: undefined,
+        })
+        expect(mockedUseGetTestSessionLogs).toHaveBeenLastCalledWith(
+            '123',
+            false,
+            {
+                enabled: false,
+                refetchInterval: 5000,
+                baseUrl: undefined,
+            },
+        )
+    })
+
+    it('should not poll initially when testSessionId is not provided', () => {
+        const { result } = renderHook(() => usePlaygroundPolling({}))
+
+        expect(result.current.isPolling).toBe(false)
+        expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('', false, {
             enabled: false,
             refetchInterval: 5000,
+            baseUrl: undefined,
         })
     })
 
@@ -63,6 +84,7 @@ describe('usePlaygroundPolling hook', () => {
         expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith('123', false, {
             enabled: true,
             refetchInterval: 5000,
+            baseUrl: undefined,
         })
     })
 
@@ -74,7 +96,7 @@ describe('usePlaygroundPolling hook', () => {
         expect(mockedUseGetTestSessionLogs).toHaveBeenCalledWith(
             'abc',
             true,
-            expect.objectContaining({ enabled: false }),
+            expect.objectContaining({ enabled: false, baseUrl: undefined }),
         )
     })
 

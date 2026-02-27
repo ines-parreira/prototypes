@@ -11,9 +11,12 @@ export const useTestSession = (
     baseUrl?: string,
     payload?: AiAgentPlaygroundOptions,
     useV3?: boolean,
+    externalSessionId?: string,
 ) => {
     const { notify } = useNotify()
-    const [testSessionId, setTestSessionId] = useState<string | null>(null)
+    const [testSessionId, setTestSessionId] = useState<string | null>(
+        externalSessionId ?? null,
+    )
     const {
         mutateAsync: createTestSessionAsync,
         isLoading,

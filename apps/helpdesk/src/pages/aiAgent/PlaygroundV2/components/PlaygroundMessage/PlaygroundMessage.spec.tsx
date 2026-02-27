@@ -26,6 +26,7 @@ import PlaygroundMessage from './PlaygroundMessage'
 
 const mockUseMessagesContext = jest.fn()
 const mockUseAIJourneyContext = jest.fn()
+let mockIsPolling = false
 
 jest.mock('@repo/routing', () => ({
     ...jest.requireActual('@repo/routing'),
@@ -51,7 +52,7 @@ jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
 jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
     usePlaygroundPolling: () => ({
         testSessionLogs: undefined,
-        isPolling: false,
+        isPolling: mockIsPolling,
         startPolling: jest.fn(),
         stopPolling: jest.fn(),
     }),
@@ -95,6 +96,7 @@ const renderComponent = (
 }
 describe('PlaygroundMessage', () => {
     beforeEach(() => {
+        mockIsPolling = false
         mockUseMessagesContext.mockReturnValue({
             messages: [],
             onMessageSend: jest.fn(),
@@ -137,9 +139,16 @@ describe('PlaygroundMessage', () => {
     })
 
     it('should render placeholder message', () => {
+        mockIsPolling = true
         renderComponent({ message: playgroundPlaceholderMessageFixture })
 
         expect(screen.getByText('Thinking...')).toBeInTheDocument()
+    })
+
+    it('should not render placeholder message when polling is disabled', () => {
+        renderComponent({ message: playgroundPlaceholderMessageFixture })
+
+        expect(screen.queryByText('Thinking...')).not.toBeInTheDocument()
     })
 
     it('should render error message', () => {
