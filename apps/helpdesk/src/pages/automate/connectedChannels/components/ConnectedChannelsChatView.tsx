@@ -279,8 +279,14 @@ export const ConnectedChannelsChatView = ({
             return false
         }
 
-        return true
-    }, [selectedChannel, storeIntegration?.type, enabledInSettings])
+        return applicationsAutomationSettings?.[selectedChannel]
+            ?.articleRecommendation.enabled
+    }, [
+        selectedChannel,
+        storeIntegration?.type,
+        enabledInSettings,
+        applicationsAutomationSettings,
+    ])
 
     if (chatChannels.length === 0)
         return (
@@ -363,7 +369,7 @@ export const ConnectedChannelsChatView = ({
                     onToggle={updateSettings('orderManagement')}
                 />
 
-                {isArticleRecommendationEnabled && (
+                {enabledInSettings && (
                     <FeatureSettings
                         title="Article Recommendation"
                         label="Enable Article Recommendation"

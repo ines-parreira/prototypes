@@ -276,7 +276,7 @@ describe('ConnectedChannelsView', () => {
         })
         ;(
             useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
-        ).mockReturnValue({ enabled: true })
+        ).mockReturnValue({ enabledInSettings: true })
     })
     it('should render', () => {
         render(
@@ -485,10 +485,7 @@ describe('ConnectedChannelsView', () => {
         expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
     })
 
-    it.skip(`will call 'handleUpdate' when switching on the article recommendation - skipped due to sunset behavior`, () => {
-        // This test is skipped because the article recommendation feature is being sunset.
-        // The toggle is only visible when article recommendation is already enabled,
-        // so we cannot test "switching on" behavior.
+    it(`will call 'handleUpdate' when switching on the article recommendation`, () => {
         const handleUpdate = jest.fn()
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
@@ -525,6 +522,33 @@ describe('ConnectedChannelsView', () => {
             }),
             'Article Recommendation enabled',
         )
+    })
+
+    it('should show Article Recommendation toggle as unchecked when articleRecommendation.enabled is false in settings', () => {
+        ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
+            applicationsAutomationSettings: {
+                25: {
+                    ...applicationAutomationSettingsFixture,
+                    articleRecommendation: { enabled: false },
+                },
+            },
+            isFetchPending: false,
+            handleChatApplicationAutomationSettingsUpdate: jest.fn(),
+        })
+
+        renderWithQueryClientProvider(
+            <Router history={history}>
+                <Provider store={mockedStore}>
+                    <ConnectedChannelsChatView />
+                </Provider>
+            </Router>,
+        )
+
+        expect(
+            screen.getByRole('switch', {
+                name: /enable article recommendation/i,
+            }),
+        ).not.toBeChecked()
     })
 
     it(`will call 'handleUpdate' when switching on the order management`, () => {
@@ -896,7 +920,7 @@ describe('ConnectedChannelsView', () => {
             ).toBeInTheDocument()
         })
 
-        it('should show Article Recommendation section when storeIntegration is non-Shopify (BigCommerce) regardless of enabledInSettings', () => {
+        it('should show Article Recommendation section when storeIntegration is non-Shopify (BigCommerce) when enabledInSettings is true', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
                 selfServiceConfiguration: mockSelfServiceConfiguration,
                 storeIntegration: {
@@ -910,7 +934,7 @@ describe('ConnectedChannelsView', () => {
             })
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
-            ).mockReturnValue({ enabledInSettings: false })
+            ).mockReturnValue({ enabledInSettings: true })
 
             renderWithQueryClientProvider(
                 <Router history={history}>
@@ -927,7 +951,7 @@ describe('ConnectedChannelsView', () => {
             ).toBeInTheDocument()
         })
 
-        it('should show Article Recommendation section when storeIntegration is non-Shopify (Magento2) regardless of enabledInSettings', () => {
+        it('should show Article Recommendation section when storeIntegration is non-Shopify (Magento2) when enabledInSettings is true', () => {
             ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
                 selfServiceConfiguration: mockSelfServiceConfiguration,
                 storeIntegration: {
@@ -938,7 +962,7 @@ describe('ConnectedChannelsView', () => {
             })
             ;(
                 useIsArticleRecommendationsEnabledWhileSunset as jest.Mock
-            ).mockReturnValue({ enabledInSettings: false })
+            ).mockReturnValue({ enabledInSettings: true })
 
             renderWithQueryClientProvider(
                 <Router history={history}>
