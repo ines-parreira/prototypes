@@ -11,6 +11,7 @@ import type {
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
+import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
@@ -198,6 +199,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal-to-percent' as const,
                 value: 0.25,
                 prevValue: 0.2,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentClickThroughRateCard',
+            Component: AnalyticsAiAgentClickThroughRateCard,
+            config: {
+                label: 'Click through rate',
+                description:
+                    'The percentage of product recommendations clicked by customers.',
+                metricFormat: 'percent' as const,
+                value: 42.5,
+                prevValue: 38.0,
             },
         },
     ]

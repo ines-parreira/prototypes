@@ -15,27 +15,30 @@ import {
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
+const useTotalProductsClicksTrend = (filters: StatsFilters, timezone: string) =>
+    useMetricTrend(
+        totalProductClicksQueryFactory(filters, timezone),
+        totalProductClicksQueryFactory(
+            {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        ),
+        aiSalesAgentUniqueClicksQueryFactoryV2({ filters, timezone }),
+        aiSalesAgentUniqueClicksQueryFactoryV2({
+            filters: {
+                ...filters,
+                period: getPreviousPeriod(filters.period),
+            },
+            timezone,
+        }),
+    )
+
 const useProductClickRateTrend = (filters: StatsFilters, timezone: string) =>
     useGenericTrend(
         {
-            totalProductClicks: useMetricTrend(
-                totalProductClicksQueryFactory(filters, timezone),
-                totalProductClicksQueryFactory(
-                    {
-                        ...filters,
-                        period: getPreviousPeriod(filters.period),
-                    },
-                    timezone,
-                ),
-                aiSalesAgentUniqueClicksQueryFactoryV2({ filters, timezone }),
-                aiSalesAgentUniqueClicksQueryFactoryV2({
-                    filters: {
-                        ...filters,
-                        period: getPreviousPeriod(filters.period),
-                    },
-                    timezone,
-                }),
-            ),
+            totalProductClicks: useTotalProductsClicksTrend(filters, timezone),
             totalRecommendations: useTotalProductRecommendations(
                 filters,
                 timezone,
