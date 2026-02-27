@@ -1,3 +1,7 @@
+import {
+    AI_AGENT_TICKET_HANDOVER,
+    FLOW_HANDOVER_TICKET_CREATED,
+} from 'domains/reporting/hooks/automate/types'
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
@@ -83,6 +87,48 @@ export const aiAgentSupportInteractionsQueryFactory = (
     ],
 })
 
+export const aiAgentHandoversQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AutomationDatasetCube> => ({
+    measures: [
+        AutomationDatasetMeasure.AutomatedInteractions,
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+    ],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AI_AGENT_TICKET_HANDOVER],
+        },
+    ],
+    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_HANDOVERS,
+})
+
+export const flowsHandoversQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+): ReportingQuery<AutomationDatasetCube> => ({
+    measures: [
+        AutomationDatasetMeasure.AutomatedInteractions,
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+    ],
+    dimensions: [],
+    timezone,
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        {
+            member: AutomationDatasetFilterMember.EventType,
+            operator: ReportingFilterOperator.Equals,
+            values: [FLOW_HANDOVER_TICKET_CREATED],
+        },
+    ],
+    metricName: METRIC_NAMES.AUTOMATE_FLOWS_HANDOVERS,
+})
+
 export const billableTicketDatasetQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -154,7 +200,7 @@ export const flowsAutomatedInteractionsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AutomationDatasetCube> => ({
-    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    metricName: METRIC_NAMES.AUTOMATE_FLOWS_AUTOMATED_INTERACTIONS,
     measures: [AutomationDatasetMeasure.AutomatedInteractions],
     dimensions: [],
     timezone,
@@ -176,7 +222,8 @@ export const articleRecommendationAutomatedInteractionsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AutomationDatasetCube> => ({
-    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    metricName:
+        METRIC_NAMES.AUTOMATE_ARTICLE_RECOMMENDATION_AUTOMATED_INTERACTIONS,
     measures: [AutomationDatasetMeasure.AutomatedInteractions],
     dimensions: [],
     timezone,
@@ -194,7 +241,7 @@ export const orderManagementAutomatedInteractionsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AutomationDatasetCube> => ({
-    metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+    metricName: METRIC_NAMES.AUTOMATE_ORDER_MANAGEMENT_AUTOMATED_INTERACTIONS,
     measures: [AutomationDatasetMeasure.AutomatedInteractions],
     dimensions: [],
     timezone,

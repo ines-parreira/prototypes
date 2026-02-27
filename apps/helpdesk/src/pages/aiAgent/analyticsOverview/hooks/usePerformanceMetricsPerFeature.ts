@@ -1,21 +1,25 @@
 import { useMemo } from 'react'
 
 import { useTrendFromMultipleMetricsTrend } from 'domains/reporting/hooks/automate/automationTrends'
-import { FLOW_HANDOVER_TICKET_CREATED } from 'domains/reporting/hooks/automate/types'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
-import {
-    AutomationDatasetFilterMember,
-    AutomationDatasetMeasure,
-} from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
+import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
+    aiAgentHandoversQueryFactory,
     articleRecommendationAutomatedInteractionsQueryFactory,
-    automationDatasetQueryFactory,
     flowsAutomatedInteractionsQueryFactory,
+    flowsHandoversQueryFactory,
     orderManagementAutomatedInteractionsQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
-import { ReportingFilterOperator } from 'domains/reporting/models/types'
+import {
+    aiAgentAutomatedInteractionsQueryV2Factory,
+    aiAgentHandoversQueryV2Factory,
+    articleRecommendationAutomatedInteractionsQueryV2Factory,
+    flowsAutomatedInteractionsQueryV2Factory,
+    flowsHandoversQueryV2Factory,
+    orderManagementAutomatedInteractionsQueryV2Factory,
+} from 'domains/reporting/models/scopes/automatedInteractions'
 import { useAutomationRateByFeature } from 'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
@@ -61,6 +65,8 @@ export const usePerformanceMetricsPerFeature =
             userTimezone,
             aiAgentAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            aiAgentAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         )
 
         const flowsInteractions = useTrendFromMultipleMetricsTrend(
@@ -68,6 +74,8 @@ export const usePerformanceMetricsPerFeature =
             userTimezone,
             flowsAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            flowsAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         )
 
         const articleRecommendationInteractions =
@@ -76,6 +84,8 @@ export const usePerformanceMetricsPerFeature =
                 userTimezone,
                 articleRecommendationAutomatedInteractionsQueryFactory,
                 AutomationDatasetMeasure.AutomatedInteractions,
+                articleRecommendationAutomatedInteractionsQueryV2Factory,
+                'automatedInteractions',
             )
 
         const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
@@ -83,52 +93,26 @@ export const usePerformanceMetricsPerFeature =
             userTimezone,
             orderManagementAutomatedInteractionsQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            orderManagementAutomatedInteractionsQueryV2Factory,
+            'automatedInteractions',
         )
 
         const aiAgentHandovers = useTrendFromMultipleMetricsTrend(
             statsFilters,
             userTimezone,
-            (filters, timezone) => {
-                const baseQuery = automationDatasetQueryFactory(
-                    filters,
-                    timezone,
-                )
-                return {
-                    ...baseQuery,
-                    filters: [
-                        ...baseQuery.filters,
-                        {
-                            member: AutomationDatasetFilterMember.EventType,
-                            operator: ReportingFilterOperator.Equals,
-                            values: ['ai_agent_ticket_handover'],
-                        },
-                    ],
-                }
-            },
+            aiAgentHandoversQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            aiAgentHandoversQueryV2Factory,
+            'automatedInteractions',
         )
 
         const flowsHandovers = useTrendFromMultipleMetricsTrend(
             statsFilters,
             userTimezone,
-            (filters, timezone) => {
-                const baseQuery = automationDatasetQueryFactory(
-                    filters,
-                    timezone,
-                )
-                return {
-                    ...baseQuery,
-                    filters: [
-                        ...baseQuery.filters,
-                        {
-                            member: AutomationDatasetFilterMember.EventType,
-                            operator: ReportingFilterOperator.Equals,
-                            values: [FLOW_HANDOVER_TICKET_CREATED],
-                        },
-                    ],
-                }
-            },
+            flowsHandoversQueryFactory,
             AutomationDatasetMeasure.AutomatedInteractions,
+            flowsHandoversQueryV2Factory,
+            'automatedInteractions',
         )
 
         const ticketHandleTime = useTicketHandleTimeTrend(

@@ -1,3 +1,7 @@
+import {
+    AI_AGENT_TICKET_HANDOVER,
+    FLOW_HANDOVER_TICKET_CREATED,
+} from 'domains/reporting/hooks/automate/types'
 import { AutomateEventType } from 'domains/reporting/hooks/automate/utils'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
@@ -12,6 +16,7 @@ import {
 import { BillableTicketDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
+    aiAgentHandoversQueryFactory,
     aiAgentSupportInteractionsQueryFactory,
     articleRecommendationAutomatedInteractionsQueryFactory,
     automationDatasetQueryFactory,
@@ -19,6 +24,7 @@ import {
     billableTicketDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
     flowsAutomatedInteractionsQueryFactory,
+    flowsHandoversQueryFactory,
     orderManagementAutomatedInteractionsQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -286,7 +292,7 @@ describe('Automate metrics', () => {
                 timezone,
             )
             expect(result).toEqual({
-                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                metricName: METRIC_NAMES.AUTOMATE_FLOWS_AUTOMATED_INTERACTIONS,
                 dimensions: [],
                 filters: [
                     {
@@ -323,7 +329,8 @@ describe('Automate metrics', () => {
                     timezone,
                 )
             expect(result).toEqual({
-                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                metricName:
+                    METRIC_NAMES.AUTOMATE_ARTICLE_RECOMMENDATION_AUTOMATED_INTERACTIONS,
                 dimensions: [],
                 filters: [
                     {
@@ -357,7 +364,8 @@ describe('Automate metrics', () => {
                 timezone,
             )
             expect(result).toEqual({
-                metricName: METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+                metricName:
+                    METRIC_NAMES.AUTOMATE_ORDER_MANAGEMENT_AUTOMATED_INTERACTIONS,
                 dimensions: [],
                 filters: [
                     {
@@ -416,6 +424,70 @@ describe('Automate metrics', () => {
                     },
                 ],
                 measures: [AIAgentInteractionsBySkillMeasure.Count],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('aiAgentHandoversQueryFactory', () => {
+        it('creates a query for AI agent handovers', () => {
+            const result = aiAgentHandoversQueryFactory(filters, timezone)
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_HANDOVERS,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [AI_AGENT_TICKET_HANDOVER],
+                    },
+                ],
+                measures: [
+                    AutomationDatasetMeasure.AutomatedInteractions,
+                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+                ],
+                timezone: 'UTC',
+            })
+        })
+    })
+
+    describe('flowsHandoversQueryFactory', () => {
+        it('creates a query for flows handovers', () => {
+            const result = flowsHandoversQueryFactory(filters, timezone)
+            expect(result).toEqual({
+                metricName: METRIC_NAMES.AUTOMATE_FLOWS_HANDOVERS,
+                dimensions: [],
+                filters: [
+                    {
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: ['2021-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: ['2021-01-02T00:00:00.000'],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.EventType,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [FLOW_HANDOVER_TICKET_CREATED],
+                    },
+                ],
+                measures: [
+                    AutomationDatasetMeasure.AutomatedInteractions,
+                    AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+                ],
                 timezone: 'UTC',
             })
         })

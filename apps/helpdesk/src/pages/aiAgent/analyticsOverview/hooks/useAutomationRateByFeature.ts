@@ -16,6 +16,12 @@ import {
     flowsAutomatedInteractionsQueryFactory,
     orderManagementAutomatedInteractionsQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
+import {
+    aiAgentAutomatedInteractionsQueryV2Factory,
+    articleRecommendationAutomatedInteractionsQueryV2Factory,
+    flowsAutomatedInteractionsQueryV2Factory,
+    orderManagementAutomatedInteractionsQueryV2Factory,
+} from 'domains/reporting/models/scopes/automatedInteractions'
 
 export const useAutomationRateByFeature = (): {
     data: ChartDataItem[] | undefined
@@ -30,6 +36,8 @@ export const useAutomationRateByFeature = (): {
         userTimezone,
         aiAgentAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        aiAgentAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
     const flowsInteractions = useTrendFromMultipleMetricsTrend(
@@ -37,6 +45,8 @@ export const useAutomationRateByFeature = (): {
         userTimezone,
         flowsAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        flowsAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
     const articleRecommendationInteractions = useTrendFromMultipleMetricsTrend(
@@ -44,6 +54,8 @@ export const useAutomationRateByFeature = (): {
         userTimezone,
         articleRecommendationAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        articleRecommendationAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
     const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
@@ -51,6 +63,8 @@ export const useAutomationRateByFeature = (): {
         userTimezone,
         orderManagementAutomatedInteractionsQueryFactory,
         AutomationDatasetMeasure.AutomatedInteractions,
+        orderManagementAutomatedInteractionsQueryV2Factory,
+        'automatedInteractions',
     )
 
     const allAutomatedInteractions = useAllAutomatedInteractions(

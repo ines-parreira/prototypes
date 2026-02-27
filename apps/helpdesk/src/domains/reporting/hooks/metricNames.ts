@@ -173,6 +173,14 @@ export const METRIC_NAMES = {
     AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS:
         'automate-article-recommendation-interactions',
     AUTOMATE_AUTOMATION_DATASET: 'automate-automation-dataset',
+    AUTOMATE_FLOWS_AUTOMATED_INTERACTIONS:
+        'automate-flows-automated-interactions',
+    AUTOMATE_ARTICLE_RECOMMENDATION_AUTOMATED_INTERACTIONS:
+        'automate-article-recommendation-automated-interactions',
+    AUTOMATE_ORDER_MANAGEMENT_AUTOMATED_INTERACTIONS:
+        'automate-order-management-automated-interactions',
+    AUTOMATE_AI_AGENT_HANDOVERS: 'automate-ai-agent-handovers',
+    AUTOMATE_FLOWS_HANDOVERS: 'automate-flows-handovers',
     AUTOMATE_BILLABLE_TICKET_DATASET: 'automate-billable-ticket-dataset',
     AUTOMATE_BILLABLE_TICKET_DATASET_EXCLUDING_AI_AGENT:
         'automate-billable-ticket-dataset-excluding-ai-agent',
@@ -711,6 +719,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AutomatedInteractions]: [
         METRIC_NAMES.AUTOMATE_AUTOMATION_DATASET,
+        METRIC_NAMES.AUTOMATE_FLOWS_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AUTOMATE_ARTICLE_RECOMMENDATION_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AUTOMATE_ORDER_MANAGEMENT_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AUTOMATE_AI_AGENT_HANDOVERS,
+        METRIC_NAMES.AUTOMATE_FLOWS_HANDOVERS,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES,
     ],

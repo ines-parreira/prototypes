@@ -48,6 +48,7 @@ export const FLOW_ENDED_WITH_TICKET_HANDOVER = 'flow_ended_with_ticket_handover'
 export const FLOW_HANDOVER_TICKET_CREATED = 'flow_handover_ticket_created'
 export const FLOW_STEP_STARTED = 'flow_step_started'
 export const FLOW_STEP_ENDED = 'flow_step_ended'
+export const AI_AGENT_TICKET_HANDOVER = 'ai_agent_ticket_handover'
 
 export const DEFAULT_WORKFLOW_ANALYTICS_DATA = {
     views: 0,
