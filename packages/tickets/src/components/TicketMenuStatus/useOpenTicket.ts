@@ -7,6 +7,7 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
 import { NotificationStatus } from '../../utils/LegacyBridge/context'
+import { patchTicketInViewListCache } from '../../utils/optimisticUpdates/viewListCache'
 import { TicketStatus } from './utils'
 
 export function useOpenTicket(ticketId: number) {
@@ -45,6 +46,10 @@ export function useOpenTicket(ticketId: number) {
                     status: 'open',
                     snooze_datetime: null,
                 },
+            })
+            patchTicketInViewListCache(queryClient, ticketId, {
+                status: TicketStatus.Open,
+                snooze_datetime: null,
             })
             await queryClient.invalidateQueries({
                 queryKey,

@@ -8,6 +8,10 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 import { useTicketViewNavigation } from '../../../../hooks/useTicketViewNavigation'
 import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
+import {
+    patchTicketInViewListCache,
+    removeTicketFromViewListCache,
+} from '../../../../utils/optimisticUpdates/viewListCache'
 
 export function useTrashTicket(ticketId: number) {
     const { dispatchNotification, dispatchDismissNotification } =
@@ -47,6 +51,13 @@ export function useTrashTicket(ticketId: number) {
                     id: ticketId,
                     data,
                 })
+                if (data.trashed_datetime) {
+                    removeTicketFromViewListCache(queryClient, ticketId)
+                } else {
+                    patchTicketInViewListCache(queryClient, ticketId, {
+                        trashed_datetime: null,
+                    })
+                }
                 await queryClient.invalidateQueries({
                     queryKey,
                 })

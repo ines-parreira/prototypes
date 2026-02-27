@@ -40,6 +40,8 @@ export type { LegacyBridgeContextType } from './utils/LegacyBridge/context'
 
 export { isInternalNote } from './helpers/isInternalNote'
 
+export { useCurrentUserId } from './hooks/useCurrentUserId'
+
 export { useLiveTicketTranslationsUpdates } from './translations/hooks/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 export {
     useTicketMessageTranslationDisplay,

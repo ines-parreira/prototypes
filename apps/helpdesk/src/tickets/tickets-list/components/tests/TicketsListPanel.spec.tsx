@@ -16,6 +16,29 @@ jest.mock('@repo/tickets/feature-flags', () => ({
 }))
 const useHelpdeskV2MS4FlagMock = assumeMock(useHelpdeskV2MS4Flag)
 
+jest.mock('@repo/tickets', () => ({
+    useCurrentUserId: jest.fn(() => ({ currentUserId: 999 })),
+}))
+
+jest.mock('@repo/tickets/ticket-list', () => ({
+    TicketList: ({
+        activeTicketId,
+        viewId,
+        currentUserId,
+    }: {
+        activeTicketId?: number
+        viewId: number
+        currentUserId: number
+    }) => (
+        <div>
+            <p>TicketList</p>
+            <p>viewId: {viewId}</p>
+            <p>activeTicketId: {activeTicketId}</p>
+            <p>currentUserId: {currentUserId}</p>
+        </div>
+    ),
+}))
+
 jest.mock('ticket-list-view', () => ({
     TicketListView: ({
         activeTicketId,
@@ -57,17 +80,21 @@ describe('TicketsListPanel', () => {
                 <TicketsListPanel />
             </Panels>,
         )
+        expect(screen.getByText('TicketListView')).toBeInTheDocument()
+        expect(screen.getByText('viewId: 123456')).toBeInTheDocument()
         expect(screen.getByText('activeTicketId: 789987')).toBeInTheDocument()
     })
 
-    it('should render placeholder when MS4 flag is enabled', () => {
+    it('should render TicketList when MS4 flag is enabled', () => {
         useHelpdeskV2MS4FlagMock.mockReturnValue(true)
         render(
             <Panels size={1000}>
                 <TicketsListPanel />
             </Panels>,
         )
-        expect(screen.getByText('PLACEHOLDER')).toBeInTheDocument()
+        expect(screen.getByText('TicketList')).toBeInTheDocument()
+        expect(screen.getByText('viewId: 123456')).toBeInTheDocument()
+        expect(screen.getByText('currentUserId: 999')).toBeInTheDocument()
         expect(screen.queryByText('TicketListView')).not.toBeInTheDocument()
     })
 
@@ -79,6 +106,6 @@ describe('TicketsListPanel', () => {
             </Panels>,
         )
         expect(screen.getByText('TicketListView')).toBeInTheDocument()
-        expect(screen.queryByText('PLACEHOLDER')).not.toBeInTheDocument()
+        expect(screen.queryByText('TicketList')).not.toBeInTheDocument()
     })
 })

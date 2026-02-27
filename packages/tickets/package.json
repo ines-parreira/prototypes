@@ -5,7 +5,9 @@
     "private": true,
     "exports": {
         ".": "./src/index.ts",
-        "./feature-flags": "./src/feature-flags/index.ts"
+        "./feature-flags": "./src/feature-flags/index.ts",
+        "./ticket-thread": "./src/ticket-thread/index.ts",
+        "./ticket-list": "./src/ticket-list/index.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
@@ -24,6 +26,7 @@
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
+        "@gorgias/realtime-ably": "catalog:realtime-ably",
         "@internationalized/date": "catalog:axiom",
         "@repo/config": "workspace:*",
         "@repo/feature-flags": "workspace:*",
@@ -45,6 +48,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "react-virtuoso": "4.12.8",
         "zod": "catalog:zod",
         "zustand": "catalog:zustand"
     },
@@ -55,6 +59,7 @@
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
+        "@gorgias/realtime-ably": "catalog:realtime-ably",
         "@repo/config": "workspace:*",
         "@repo/feature-flags": "workspace:*",
         "@repo/hooks": "workspace:*",
@@ -88,6 +93,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "react-virtuoso": "4.12.8",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zod": "catalog:zod",

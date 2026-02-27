@@ -14,6 +14,7 @@ import {
 import { useTicketViewNavigation } from '../../../../hooks/useTicketViewNavigation'
 import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
+import { removeTicketFromViewListCache } from '../../../../utils/optimisticUpdates/viewListCache'
 
 export function useMergeTickets(ticketId: number) {
     const { dispatchNotification } = useTicketsLegacyBridge()
@@ -37,6 +38,7 @@ export function useMergeTickets(ticketId: number) {
                     message: 'Tickets merged successfully',
                 })
                 navigateToTicket(Number(params.target_id))
+                removeTicketFromViewListCache(queryClient, ticketId)
                 await queryClient.removeQueries({
                     queryKey: sourceTicketQueryKey,
                 })
@@ -53,6 +55,7 @@ export function useMergeTickets(ticketId: number) {
             navigateToTicket,
             mutateAsyncMergeTickets,
             sourceTicketQueryKey,
+            ticketId,
         ],
     )
 

@@ -7,6 +7,7 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../utils/LegacyBridge/context'
+import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/viewListCache'
 
 export function useMarkAsUnRead(ticketId: number) {
     const { dispatchNotification, onToggleUnread } = useTicketsLegacyBridge()
@@ -43,6 +44,9 @@ export function useMarkAsUnRead(ticketId: number) {
                 await mutateAsyncUpdateTicket({
                     id: ticketId,
                     data,
+                })
+                patchTicketInViewListCache(queryClient, ticketId, {
+                    is_unread: data.is_unread,
                 })
                 await queryClient.invalidateQueries({
                     queryKey,

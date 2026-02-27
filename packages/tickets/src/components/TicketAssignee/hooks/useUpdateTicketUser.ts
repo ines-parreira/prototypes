@@ -12,6 +12,7 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../utils/LegacyBridge/context'
+import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/viewListCache'
 
 export function useUpdateTicketUser(ticketId: number) {
     const { dispatchNotification } = useTicketsLegacyBridge()
@@ -53,6 +54,9 @@ export function useUpdateTicketUser(ticketId: number) {
                     data: {
                         assignee_user: user ? { id: user.id } : null,
                     },
+                })
+                patchTicketInViewListCache(queryClient, ticketId, {
+                    assignee_user: user as TicketUser | null,
                 })
                 await queryClient.invalidateQueries({
                     queryKey,

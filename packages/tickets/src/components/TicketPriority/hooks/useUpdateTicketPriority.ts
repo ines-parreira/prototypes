@@ -11,6 +11,7 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../utils/LegacyBridge/context'
+import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/viewListCache'
 
 export function useUpdateTicketPriority(ticketId: number) {
     const { dispatchNotification } = useTicketsLegacyBridge()
@@ -54,6 +55,7 @@ export function useUpdateTicketPriority(ticketId: number) {
                         priority,
                     },
                 })
+                patchTicketInViewListCache(queryClient, ticketId, { priority })
                 await queryClient.invalidateQueries({
                     queryKey,
                 })

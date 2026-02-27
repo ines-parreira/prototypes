@@ -8,6 +8,7 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 import { useTicketViewNavigation } from '../../hooks/useTicketViewNavigation'
 import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
 import { NotificationStatus } from '../../utils/LegacyBridge/context'
+import { patchTicketInViewListCache } from '../../utils/optimisticUpdates/viewListCache'
 import { useTicketFieldsValidation } from '../InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
 import { TicketStatus } from './utils'
 
@@ -58,6 +59,10 @@ export function useCloseTicket(ticketId: number) {
             await mutateAsyncUpdateTicket({
                 id: ticketId,
                 data: { status: 'closed' },
+            })
+            patchTicketInViewListCache(queryClient, ticketId, {
+                status: TicketStatus.Closed,
+                snooze_datetime: null,
             })
             await queryClient.invalidateQueries({
                 queryKey,

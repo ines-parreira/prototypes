@@ -1,0 +1,89 @@
+import { useMemo } from 'react'
+
+import { DurationInMs } from '@repo/utils'
+import { useInfiniteQuery } from '@tanstack/react-query'
+
+import { listViewItems } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import type {
+    ListViewItemsUpdatesOrderBy,
+    TicketCompact,
+} from '@gorgias/helpdesk-types'
+
+import type { ListViewMetaWithCursors } from '../utils/cursors'
+import { getNextCursorFromMeta } from '../utils/cursors'
+import { useRefreshStaleTickets } from './useRefreshStaleTickets'
+
+export type UseTicketsListParams = {
+    order_by?: ListViewItemsUpdatesOrderBy
+}
+
+const PAGE_SIZE = 25
+const STALE_TIME_MS = DurationInMs.ThirtySeconds
+
+export function getTicketsListQueryKey(
+    viewId: number,
+    params?: UseTicketsListParams,
+) {
+    return queryKeys.views.listViewItems(viewId, params)
+}
+
+export function useTicketsList(viewId: number, params?: UseTicketsListParams) {
+    const query = useInfiniteQuery({
+        queryKey: getTicketsListQueryKey(viewId, params),
+        queryFn: async ({ pageParam, signal }) => {
+            const response = await listViewItems(
+                viewId,
+                {
+                    order_by: params?.order_by,
+                    cursor: pageParam,
+                    limit: PAGE_SIZE,
+                },
+                { signal },
+            )
+            return response.data
+        },
+        getNextPageParam: (lastPage) => {
+            const meta = lastPage.meta as typeof lastPage.meta &
+                ListViewMetaWithCursors
+            return getNextCursorFromMeta(meta)
+        },
+        staleTime: STALE_TIME_MS,
+        refetchOnWindowFocus: true,
+    })
+
+    const tickets = useMemo(
+        () =>
+            query.data?.pages.flatMap((page) => page.data as TicketCompact[]) ??
+            [],
+        [query.data],
+    )
+
+    const upToCursor = useMemo(() => {
+        const pages = query.data?.pages
+        if (!pages?.length) return undefined
+
+        const lastPage = pages[pages.length - 1]
+        const meta = lastPage.meta as typeof lastPage.meta &
+            ListViewMetaWithCursors
+
+        return getNextCursorFromMeta(meta)
+    }, [query.data])
+
+    useRefreshStaleTickets({
+        viewId,
+        params,
+        upToCursor,
+        enabled: !query.isLoading,
+    })
+
+    return {
+        tickets,
+        fetchNextPage: query.fetchNextPage,
+        hasNextPage: query.hasNextPage,
+        isLoading: query.isLoading,
+        isFetching: query.isFetching,
+        error: query.error,
+        data: query.data,
+    }
+}
