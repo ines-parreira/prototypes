@@ -25,6 +25,7 @@ import {
 import { OrderActions } from './OrderActions'
 import { OrderDetailsSection } from './OrderDetailsSection'
 import { OrderLineItemsSection } from './OrderLineItemsSection'
+import { OrderShipmentSection } from './OrderShipmentSection'
 
 type OrderData = {
     id: number | string
@@ -42,6 +43,10 @@ type OrderData = {
     created_at?: string
     order_status_url?: string
     invoice_url?: string
+    fulfillments?: Array<{
+        tracking_url?: string | null
+        tracking_number?: string | null
+    }> | null
 }
 
 type Props<T extends OrderData = OrderData> = {
@@ -194,6 +199,8 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                         totalTax={order.total_tax}
                         totalPrice={order.total_price}
                     />
+
+                    <OrderShipmentSection fulfillments={order.fulfillments} />
                 </Box>
             </OverlayContent>
         </SidePanel>

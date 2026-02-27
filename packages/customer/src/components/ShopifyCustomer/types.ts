@@ -101,6 +101,11 @@ export type FinancialStatus =
 
 export type FulfillmentStatus = 'fulfilled' | 'partial' | 'restocked'
 
+export type OrderFulfillment = {
+    tracking_url?: string | null
+    tracking_number?: string | null
+}
+
 export type OrderData = {
     id: number | string
     order_number: number | string
@@ -120,6 +125,7 @@ export type OrderData = {
     note?: string
     order_status_url?: string
     invoice_url?: string
+    fulfillments?: OrderFulfillment[] | null
 }
 
 export type OrderEcommerceData = {
