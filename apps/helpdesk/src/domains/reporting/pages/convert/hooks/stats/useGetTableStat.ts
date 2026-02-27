@@ -1,13 +1,15 @@
 import { useMemo } from 'react'
 
 import {
-    fetchPostReporting,
     fetchPostReportingV2,
-    usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
 import { convertCampaignEventsPerformanceQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignEvents'
 import { convertCampaignEventsOrdersPerformanceQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
+import {
+    convertCampaignOrderPerformanceQueryFactoryV2,
+    convertStoreRevenueTotalQueryFactoryV2,
+} from 'domains/reporting/models/scopes/convertOrderConversion'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
@@ -18,8 +20,6 @@ import {
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import type {
     CampaignCubeFilterParams,
-    CubeData,
-    CubeMetric,
     GroupDimension,
 } from 'domains/reporting/pages/convert/clients/types'
 import {
@@ -101,11 +101,17 @@ export const useGetTableStat = ({
         [attrs],
     )
 
+    const filters = getDefaultApiStatsFilters({
+        startDate,
+        endDate,
+        campaignIds: attrs.campaignIds,
+        campaignsOperator,
+    })
     const eventsPerformance = usePostReportingV2(
         eventsQuery,
         convertCampaignEventsPerformanceQueryFactoryV2(
             {
-                filters: getDefaultApiStatsFilters(attrs),
+                filters,
                 timezone,
             },
             attrs.groupDimension,
@@ -115,8 +121,15 @@ export const useGetTableStat = ({
             enabled: isEnabled,
         },
     )
-    const ordersPerformance = usePostReporting<[CubeData], CubeData>(
+    const ordersPerformance = usePostReportingV2(
         ordersQuery,
+        convertCampaignOrderPerformanceQueryFactoryV2(
+            {
+                filters,
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
         { ...OVERRIDES, enabled: isEnabled },
     )
     const eventsOrdersPerformance = usePostReportingV2(
@@ -135,8 +148,17 @@ export const useGetTableStat = ({
         ),
         { ...OVERRIDES, enabled: isEnabled },
     )
-    const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
+    const storeTotal = usePostReportingV2(
         storeTotalQuery,
+        convertStoreRevenueTotalQueryFactoryV2({
+            filters: getDefaultApiStatsFilters({
+                shopName: attrs.shopName,
+                startDate,
+                endDate,
+                allowNoCampaign: true,
+            }),
+            timezone,
+        }),
         { select: getMetricFromCubeData, enabled: isEnabled },
     )
 
@@ -229,8 +251,20 @@ export const fetchGetTableStat = async ({
         ),
         { ...OVERRIDES, enabled: isEnabled },
     )
-    const ordersPerformance = fetchPostReporting<CubeData, CubeData>(
+    const ordersPerformance = fetchPostReportingV2(
         ordersQuery,
+        convertCampaignOrderPerformanceQueryFactoryV2(
+            {
+                filters: getDefaultApiStatsFilters({
+                    startDate,
+                    endDate,
+                    campaignIds,
+                    campaignsOperator,
+                }),
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
         { ...OVERRIDES, enabled: isEnabled },
     )
     const eventsOrdersPerformance = fetchPostReportingV2(
@@ -249,8 +283,17 @@ export const fetchGetTableStat = async ({
         ),
         { ...OVERRIDES, enabled: isEnabled },
     )
-    const storeTotal = fetchPostReporting<[CubeMetric], CubeMetric>(
+    const storeTotal = fetchPostReportingV2(
         storeTotalQuery,
+        convertStoreRevenueTotalQueryFactoryV2({
+            filters: getDefaultApiStatsFilters({
+                shopName: attrs.shopName,
+                startDate,
+                endDate,
+                allowNoCampaign: true,
+            }),
+            timezone,
+        }),
         {
             select: getMetricFromCubeData,
             enabled: isEnabled,

@@ -1,12 +1,15 @@
 import { useMemo } from 'react'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import { convertCampaignShareGraphQueryFactoryV2 } from 'domains/reporting/models/scopes/convertOrderConversion'
 import type { AggregationWindow } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { getRevenueShareGraphData } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
+import {
+    getDefaultApiStatsFilters,
+    getRevenueShareGraphData,
+} from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import type {
-    CubeData,
     CubeFilterParams,
     CubeMetric,
 } from 'domains/reporting/pages/convert/clients/types'
@@ -62,8 +65,13 @@ const useGetCampaignRevenueTimeSeries = (
         [attrs],
     )
 
-    const revenueChart = usePostReporting<[CubeData], CubeData>(
+    const revenueChart = usePostReportingV2(
         revenueChartQuery,
+        convertCampaignShareGraphQueryFactoryV2({
+            filters: getDefaultApiStatsFilters(attrs),
+            timezone,
+            granularity: timeGranularity,
+        }),
         {
             ...OVERRIDES,
             enabled: campaignIds !== null,

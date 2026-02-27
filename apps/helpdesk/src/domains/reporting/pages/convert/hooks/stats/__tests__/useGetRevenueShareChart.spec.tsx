@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     OrderConversionDimension,
@@ -11,7 +11,7 @@ import { useGetRevenueShareChart } from 'domains/reporting/pages/convert/hooks/s
 import { getDataFromResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMock = assumeMock(usePostReportingV2)
 
 describe('useGetTotalsStat', () => {
     const defaultReporting = {
@@ -93,7 +93,7 @@ describe('useGetTotalsStat', () => {
         const { result } = renderHook(() => useGetRevenueShareChart(...args))
 
         usePostReportingMock.mock.calls.map((call) => {
-            expect(call[1]?.enabled).toBe(false)
+            expect(call[2]?.enabled).toBe(false)
         })
         expect(result.current.data).toMatchObject({})
     })
@@ -116,14 +116,92 @@ describe('useGetTotalsStat', () => {
         )
 
         // assert
-        expect(usePostReportingMock.mock.calls).toMatchSnapshot()
-        // verify select function is passed
         expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    dimensions: [],
+                    filters: [
+                        {
+                            member: 'OrderConversion.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-01-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-03-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'OrderConversion.campaignId',
+                            operator: 'equals',
+                            values: ['campaign1', 'campaign2'],
+                        },
+                        {
+                            member: 'OrderConversion.shopName',
+                            operator: 'equals',
+                            values: ['shopify:square-wheels-company'],
+                        },
+                    ],
+                    measures: ['OrderConversion.campaignSales'],
+                    order: [['OrderConversion.createdDatetime', 'asc']],
+                    timeDimensions: [
+                        {
+                            dateRange: [
+                                '2023-01-01T00:00:00.000',
+                                '2023-03-01T00:00:00.000',
+                            ],
+                            dimension: 'OrderConversion.createdDatetime',
+                            granularity: 'day',
+                        },
+                    ],
+                    timezone: 'America/Los_Angeles',
+                }),
+            ]),
+            {
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-01-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-03-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'campaignId',
+                        operator: 'one-of',
+                        values: ['campaign1', 'campaign2'],
+                    },
+                    {
+                        member: 'shopName',
+                        operator: 'one-of',
+                        values: ['shopify:square-wheels-company'],
+                    },
+                ],
+                measures: ['campaignSales'],
+                metricName: 'convert-revenue-share-graph',
+                order: [['createdDatetime', 'asc']],
+                scope: 'convert-order-conversion',
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+                timezone: 'America/Los_Angeles',
+            },
+            expect.objectContaining({ enabled: true }),
+        )
+        expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.anything(),
             expect.anything(),
             expect.objectContaining({
                 select: getDataFromResult,
             }),
         )
-        expect(result.current).toMatchSnapshot()
+        expect(result.current).toEqual({
+            data: [{ x: 'Feb 28th', y: 33.33 }],
+            isError: false,
+            isFetching: false,
+        })
     })
 })

@@ -1,14 +1,18 @@
 import { useMemo } from 'react'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
+import {
+    convertCampaignShareGraphQueryFactoryV2,
+    convertRevenueGraphQueryFactoryV2,
+} from 'domains/reporting/models/scopes/convertOrderConversion'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
+    getDefaultApiStatsFilters,
     getRevenueGraphData,
     getRevenueShareGraphData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
 import type {
-    CubeData,
     CubeFilterParams,
     CubeMetric,
 } from 'domains/reporting/pages/convert/clients/types'
@@ -65,14 +69,32 @@ export const useGetRevenueShareChart = (
     )
     const revenueQuery = useMemo(() => getRevenueGraphData(attrs), [attrs])
 
-    const revenueShareChart = usePostReporting<[CubeData], CubeData>(
+    const revenueShareChart = usePostReportingV2(
         revenueShareChartQuery,
+        convertCampaignShareGraphQueryFactoryV2({
+            filters: getDefaultApiStatsFilters(attrs),
+            timezone,
+            granularity: timeGranularity,
+        }),
         { ...OVERRIDES, enabled: campaignIds !== null },
     )
-    const revenue = usePostReporting<[CubeData], CubeData>(revenueQuery, {
-        ...OVERRIDES,
-        enabled: campaignIds !== null,
-    })
+    const revenue = usePostReportingV2(
+        revenueQuery,
+        convertRevenueGraphQueryFactoryV2({
+            filters: getDefaultApiStatsFilters({
+                startDate: attrs.startDate,
+                endDate: attrs.endDate,
+                shopName: attrs.shopName,
+                allowNoCampaign: true,
+            }),
+            timezone,
+            granularity: timeGranularity,
+        }),
+        {
+            ...OVERRIDES,
+            enabled: campaignIds !== null,
+        },
+    )
 
     const data = useMemo(() => {
         const revenueData = transformToRevenueByDate(revenue.data)

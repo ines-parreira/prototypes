@@ -1,10 +1,11 @@
 import { useMemo } from 'react'
 
-import {
-    usePostReporting,
-    usePostReportingV2,
-} from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { convertCampaignEventsTotalsQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
+import {
+    convertCampaignOrderTotalsQueryFactoryV2,
+    convertStoreRevenueTotalQueryFactoryV2,
+} from 'domains/reporting/models/scopes/convertOrderConversion'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     getCampaignEventsTotalsData,
@@ -12,10 +13,7 @@ import {
     getDefaultApiStatsFilters,
     getStoreRevenueTotalData,
 } from 'domains/reporting/pages/convert/clients/CampaignCubeQueries'
-import type {
-    CubeFilterParams,
-    CubeMetric,
-} from 'domains/reporting/pages/convert/clients/types'
+import type { CubeFilterParams } from 'domains/reporting/pages/convert/clients/types'
 import {
     getMetricFromCubeData,
     transformToCampaignCalculatedTotals,
@@ -78,20 +76,34 @@ export const useGetTotalsStat = (
         [attrs],
     )
 
+    const filters = getDefaultApiStatsFilters(attrs)
     const eventsTotals = usePostReportingV2(
         campaignEventsTotalsQuery,
         convertCampaignEventsTotalsQueryFactoryV2({
-            filters: getDefaultApiStatsFilters(attrs),
+            filters,
             timezone,
         }),
         { ...OVERRIDES, enabled: campaignIds !== null },
     )
-    const orderTotals = usePostReporting<[CubeMetric], CubeMetric>(
+    const orderTotals = usePostReportingV2(
         campaignOrderTotalsQuery,
+        convertCampaignOrderTotalsQueryFactoryV2({
+            filters,
+            timezone,
+        }),
         { ...OVERRIDES, enabled: campaignIds !== null },
     )
-    const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
+    const storeTotal = usePostReportingV2(
         storeTotalQuery,
+        convertStoreRevenueTotalQueryFactoryV2({
+            filters: getDefaultApiStatsFilters({
+                shopName: attrs.shopName,
+                startDate,
+                endDate,
+                allowNoCampaign: true,
+            }),
+            timezone,
+        }),
         { ...OVERRIDES, enabled: campaignIds !== null },
     )
 

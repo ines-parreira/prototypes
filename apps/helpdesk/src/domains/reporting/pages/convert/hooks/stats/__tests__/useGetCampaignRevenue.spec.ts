@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { usePostReporting } from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     OrderConversionDimension,
@@ -11,7 +11,7 @@ import useGetCampaignRevenueTimeSeries from 'domains/reporting/pages/convert/hoo
 import { getDataFromResult } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
+const usePostReportingMock = assumeMock(usePostReportingV2)
 
 describe('useGetCampaignRevenueTimeSeries', () => {
     const defaultReporting = {
@@ -72,7 +72,7 @@ describe('useGetCampaignRevenueTimeSeries', () => {
         )
 
         usePostReportingMock.mock.calls.map((call) => {
-            expect(call[1]?.enabled).toBe(false)
+            expect(call[2]?.enabled).toBe(false)
         })
         expect(result.current.data).toMatchObject({})
     })
@@ -133,10 +133,43 @@ describe('useGetCampaignRevenueTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ]),
+            {
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2024-09-16T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2024-09-18T00:00:00.000'],
+                    },
+                    {
+                        member: 'campaignId',
+                        operator: 'one-of',
+                        values: ['campaign1', 'campaign2'],
+                    },
+                    {
+                        member: 'shopName',
+                        operator: 'one-of',
+                        values: ['shopify:awesome-shop'],
+                    },
+                ],
+                measures: ['campaignSales'],
+                metricName: 'convert-revenue-share-graph',
+                order: [['createdDatetime', 'asc']],
+                scope: 'convert-order-conversion',
+                time_dimensions: [
+                    { dimension: 'createdDatetime', granularity: 'day' },
+                ],
+                timezone: 'UTC',
+            },
             expect.objectContaining({ enabled: true }),
         )
         // verify select function is passed
         expect(usePostReportingMock).toHaveBeenCalledWith(
+            expect.anything(),
             expect.anything(),
             expect.objectContaining({
                 select: getDataFromResult,

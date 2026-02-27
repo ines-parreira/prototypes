@@ -1,10 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import {
-    usePostReporting,
-    usePostReportingV2,
-} from 'domains/reporting/models/queries'
+import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
@@ -14,7 +11,6 @@ import { useGetTotalsStat } from 'domains/reporting/pages/convert/hooks/stats/us
 import { getMetricFromCubeData } from 'domains/reporting/pages/convert/services/CampaignMetricsHelper'
 
 jest.mock('domains/reporting/models/queries')
-const usePostReportingMock = assumeMock(usePostReporting)
 const usePostReportingV2Mock = assumeMock(usePostReportingV2)
 
 describe('useGetTotalsStat', () => {
@@ -57,7 +53,6 @@ describe('useGetTotalsStat', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        usePostReportingMock.mockReturnValue(defaultReporting)
         usePostReportingV2Mock.mockReturnValue(defaultReporting)
     })
 
@@ -89,8 +84,8 @@ describe('useGetTotalsStat', () => {
 
         const { result } = renderHook(() => useGetTotalsStat(...args))
 
-        usePostReportingMock.mock.calls.map((call) => {
-            expect(call[1]?.enabled).toBe(false)
+        usePostReportingV2Mock.mock.calls.map((call) => {
+            expect(call[2]?.enabled).toBe(false)
         })
         usePostReportingV2Mock.mock.calls.map((call) => {
             expect(call[2]?.enabled).toBe(false)
@@ -111,12 +106,12 @@ describe('useGetTotalsStat', () => {
             data: campaignEventsTotalsData,
         } as UseQueryResult)
 
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: campaignOrdersTotalsData,
         } as UseQueryResult)
 
-        usePostReportingMock.mockReturnValueOnce({
+        usePostReportingV2Mock.mockReturnValueOnce({
             ...defaultReporting,
             data: storeTotalData,
         } as UseQueryResult)
@@ -143,7 +138,7 @@ describe('useGetTotalsStat', () => {
                 select: getMetricFromCubeData,
             }),
         )
-        expect(usePostReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
             expect.arrayContaining([
                 expect.objectContaining({
                     measures: [
@@ -154,17 +149,25 @@ describe('useGetTotalsStat', () => {
                 }),
             ]),
             expect.objectContaining({
+                measures: ['campaignSales', 'campaignSalesCount'],
+                timezone: 'America/Los_Angeles',
+            }),
+            expect.objectContaining({
                 enabled: true,
                 select: getMetricFromCubeData,
             }),
         )
-        expect(usePostReportingMock).toHaveBeenCalledWith(
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
             expect.arrayContaining([
                 expect.objectContaining({
                     measures: ['OrderConversion.gmv'],
                     timezone: 'America/Los_Angeles',
                 }),
             ]),
+            expect.objectContaining({
+                measures: ['gmv'],
+                timezone: 'America/Los_Angeles',
+            }),
             expect.objectContaining({
                 enabled: true,
                 select: getMetricFromCubeData,

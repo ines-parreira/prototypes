@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { convertCampaignImpressionTimeSeriesQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
+import { convertCampaignOrdersTimeSeriesQueryFactoryV2 } from 'domains/reporting/models/scopes/convertOrderConversion'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -62,6 +63,11 @@ const useCampaignPerformanceTimeSeries = (
 
     const campaignOrdersSeries = useTimeSeries(
         campaignOrdersTimeSeriesQueryFactory(attrs),
+        convertCampaignOrdersTimeSeriesQueryFactoryV2({
+            filters: getDefaultApiStatsFilters(attrs),
+            timezone,
+            granularity,
+        }),
     )
 
     const data = useMemo(() => {

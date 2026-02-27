@@ -180,6 +180,14 @@ export type MeasureName =
     | 'lastCampaignDisplay'
     | 'ticketsCreated'
     | 'uniqClicks'
+    | 'campaignSales'
+    | 'campaignSalesCount'
+    | 'clickSales'
+    | 'clickSalesCount'
+    | 'discountSales'
+    | 'discountSalesCount'
+    | 'ticketSales'
+    | 'ticketSalesCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'

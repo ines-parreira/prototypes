@@ -126,6 +126,11 @@ describe('useCampaignPerformanceTimeSeries', () => {
                 ],
                 timezone: 'UTC',
             }),
+            expect.objectContaining({
+                measures: ['campaignSalesCount'],
+                order: [['createdDatetime', 'asc']],
+                timezone: 'UTC',
+            }),
         )
 
         expect(result.current).toEqual({
