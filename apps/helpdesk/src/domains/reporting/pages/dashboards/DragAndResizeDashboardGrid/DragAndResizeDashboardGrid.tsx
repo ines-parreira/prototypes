@@ -17,6 +17,10 @@ import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndR
 import { calculateChartPositionsWithOccupied } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import type { OccupiedGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
+import {
+    GRID_BREAKPOINTS,
+    GRID_COLS,
+} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/gridBreakpoints'
 import { clampLayoutToConstraints } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/layoutUtils'
 import type {
     ChartLayoutMetadata,
@@ -240,8 +244,8 @@ export const DragAndResizeDashboardGrid = ({
             <ResponsiveGridLayout
                 width={width}
                 layouts={{ lg: initialLayout }}
-                breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-                cols={{ lg: 12, md: 8, sm: 6, xs: 4, xxs: 2 }}
+                breakpoints={GRID_BREAKPOINTS}
+                cols={GRID_COLS}
                 rowHeight={20}
                 containerPadding={[24, 24]}
                 dragConfig={{

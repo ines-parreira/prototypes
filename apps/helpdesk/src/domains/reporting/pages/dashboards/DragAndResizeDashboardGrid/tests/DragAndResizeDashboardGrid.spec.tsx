@@ -5,6 +5,10 @@ import { act, render, screen } from '@testing-library/react'
 
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
 import { DragAndResizeDashboardGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid'
+import {
+    GRID_BREAKPOINTS,
+    GRID_COLS,
+} from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/gridBreakpoints'
 import type {
     DashboardChartSchema,
     DashboardRowSchema,
@@ -164,12 +168,12 @@ describe('DragAndResizeDashboardGrid', () => {
         expect(gridLayout).toHaveAttribute('data-row-height', '20')
         expect(gridLayout).toHaveAttribute(
             'data-cols',
-            '{"lg":12,"md":8,"sm":6,"xs":4,"xxs":2}',
+            JSON.stringify(GRID_COLS),
         )
         expect(gridLayout).toHaveAttribute('data-container-padding', '[24,24]')
         expect(gridLayout).toHaveAttribute(
             'data-breakpoints',
-            '{"lg":1200,"md":996,"sm":768,"xs":480,"xxs":0}',
+            JSON.stringify(GRID_BREAKPOINTS),
         )
     })
 
@@ -901,7 +905,7 @@ describe('DragAndResizeDashboardGrid', () => {
 
             act(() => {
                 if (capturedOnBreakpointChange) {
-                    capturedOnBreakpointChange('md', 8)
+                    capturedOnBreakpointChange('sm', GRID_COLS.sm)
                 }
             })
 
@@ -942,7 +946,7 @@ describe('DragAndResizeDashboardGrid', () => {
 
             act(() => {
                 if (capturedOnBreakpointChange) {
-                    capturedOnBreakpointChange('md', 8)
+                    capturedOnBreakpointChange('sm', GRID_COLS.sm)
                 }
             })
 
@@ -977,7 +981,7 @@ describe('DragAndResizeDashboardGrid', () => {
 
             act(() => {
                 if (capturedOnBreakpointChange) {
-                    capturedOnBreakpointChange('sm', 6)
+                    capturedOnBreakpointChange('sm', GRID_COLS.sm)
                 }
             })
 
@@ -1056,7 +1060,7 @@ describe('DragAndResizeDashboardGrid', () => {
 
             act(() => {
                 if (capturedOnBreakpointChange) {
-                    capturedOnBreakpointChange('xs', 4)
+                    capturedOnBreakpointChange('sm', GRID_COLS.sm)
                 }
             })
 
@@ -1065,6 +1069,38 @@ describe('DragAndResizeDashboardGrid', () => {
             })
             expect(gridLayout).toHaveAttribute('data-is-draggable', 'false')
             expect(gridLayout).toHaveAttribute('data-is-resizable', 'false')
+        })
+
+        it('should enable drag when container reaches tablet/laptop width (≥768px)', () => {
+            const chart = createMockChart('chart-1')
+            const dashboard = createMockDashboard([chart])
+
+            render(<DragAndResizeDashboardGrid dashboard={dashboard} />)
+
+            // Simulate a mobile-width container first (drag disabled)
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('sm', GRID_COLS.sm)
+                }
+            })
+
+            const gridLayout = screen.getByRole('grid', {
+                name: /dashboard grid layout/i,
+            })
+            expect(gridLayout).toHaveAttribute('data-is-draggable', 'false')
+
+            act(() => {
+                if (capturedOnBreakpointChange) {
+                    capturedOnBreakpointChange('lg', GRID_COLS.lg)
+                }
+            })
+
+            expect(gridLayout).toHaveAttribute('data-is-draggable', 'true')
+            expect(gridLayout).toHaveAttribute('data-is-resizable', 'true')
+            expect(gridLayout.parentElement).toHaveAttribute(
+                'data-drag-enabled',
+                'true',
+            )
         })
     })
 
