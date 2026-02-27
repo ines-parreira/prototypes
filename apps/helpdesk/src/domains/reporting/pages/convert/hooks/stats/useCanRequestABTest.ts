@@ -44,7 +44,7 @@ export const useCanRequestABTest = (shopName: string) => {
         campaignABTestEventsQuery,
         convertCampaignABTestEventsQueryFactoryV2({
             filters: getDefaultApiStatsFilters(attrs),
-            timezone: 'UTC',
+            timezone: attrs.timezone || 'UTC',
         }),
         OVERRIDES,
     )

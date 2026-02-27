@@ -715,27 +715,28 @@ describe('useShoppingAssistantTopProductsMetrics', () => {
             wrapper: createWrapper(),
         })
 
-        expect(useMetricPerDimensionMock).toHaveBeenCalledTimes(2)
-        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledTimes(1)
+        expect(useMetricPerDimensionMock).toHaveBeenCalledTimes(1)
+        expect(useMetricPerDimensionV2Mock).toHaveBeenCalledTimes(2)
     })
 
     it('should handle empty allData array', async () => {
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                data: { allData: [] } as any,
-                isFetching: false,
-                isError: false,
-            })
+        useMetricPerDimensionMock.mockReturnValueOnce({
+            data: { allData: [] } as any,
+            isFetching: false,
+            isError: false,
+        })
+        useMetricPerDimensionV2Mock
             .mockReturnValueOnce({
                 data: null,
                 isFetching: false,
                 isError: false,
             })
-        useMetricPerDimensionV2Mock.mockReturnValueOnce({
-            data: null,
-            isFetching: false,
-            isError: false,
-        })
+
+            .mockReturnValueOnce({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
 
         const { result } = renderHook(
             () => useShoppingAssistantTopProductsMetrics(),

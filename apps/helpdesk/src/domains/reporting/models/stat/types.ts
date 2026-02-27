@@ -58,6 +58,8 @@ export enum APIOnlyFilterKey {
     ArticleId = 'articleId',
     ShopName = 'shopName',
     AbVariant = 'abVariant',
+    Source = 'source',
+    EventType = 'eventType',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -310,6 +312,8 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.ArticleId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.ShopName]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.AbVariant]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.Source]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.EventType]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

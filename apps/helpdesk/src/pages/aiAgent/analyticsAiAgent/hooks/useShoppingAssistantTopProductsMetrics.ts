@@ -27,6 +27,7 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { shoppingAssistantTopProductsQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/shoppingAssistantChannelMetrics'
 import { AISalesAgentProductBoughtQueryFactoryV2 } from 'domains/reporting/models/scopes/AISalesAgentOrders'
+import { aiSalesAgentProductClicksQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignEvents'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import type { ProductTableContentCell } from 'domains/reporting/pages/automate/aiSalesAgent/types/productTable'
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
@@ -57,8 +58,12 @@ export const useShoppingAssistantTopProductsMetrics =
                 ),
             )
 
-        const clickTotalData = useMetricPerDimension<StringWhichShouldBeNumber>(
+        const clickTotalData = useMetricPerDimensionV2(
             productClicksQueryFactory(cleanStatsFilters, userTimezone),
+            aiSalesAgentProductClicksQueryFactoryV2({
+                filters: cleanStatsFilters,
+                timezone: userTimezone,
+            }),
         )
 
         const boughtTotalData = useMetricPerDimensionV2(

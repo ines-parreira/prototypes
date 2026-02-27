@@ -2,6 +2,7 @@ import useMetricTrend, {
     fetchMetricTrend,
 } from 'domains/reporting/hooks/useMetricTrend'
 import { totalProductClicksQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import { aiSalesAgentUniqueClicksQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignEvents'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     fetchGenericTrend,
@@ -26,6 +27,14 @@ const useProductClickRateTrend = (filters: StatsFilters, timezone: string) =>
                     },
                     timezone,
                 ),
+                aiSalesAgentUniqueClicksQueryFactoryV2({ filters, timezone }),
+                aiSalesAgentUniqueClicksQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
             totalRecommendations: useTotalProductRecommendations(
                 filters,
@@ -48,6 +57,14 @@ const fetchProductClickRateTrend = (filters: StatsFilters, timezone: string) =>
                     },
                     timezone,
                 ),
+                aiSalesAgentUniqueClicksQueryFactoryV2({ filters, timezone }),
+                aiSalesAgentUniqueClicksQueryFactoryV2({
+                    filters: {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    timezone,
+                }),
             ),
             totalRecommendations: fetchTotalProductRecommendations(
                 filters,

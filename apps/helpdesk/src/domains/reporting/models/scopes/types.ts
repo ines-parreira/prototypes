@@ -175,6 +175,11 @@ export type MeasureName =
     | 'totalConversionRate'
     | 'orderCount'
     | 'firstCampaignDisplay'
+    | 'clicks'
+    | 'clicksRate'
+    | 'lastCampaignDisplay'
+    | 'ticketsCreated'
+    | 'uniqClicks'
 
 export type TimeDimensionName =
     | 'createdDatetime'

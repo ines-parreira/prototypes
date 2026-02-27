@@ -6,6 +6,7 @@ import {
     usePostReporting,
     usePostReportingV2,
 } from 'domains/reporting/models/queries'
+import { convertCampaignEventsPerformanceQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignEvents'
 import { convertCampaignEventsOrdersPerformanceQueryFactoryV2 } from 'domains/reporting/models/scopes/convertCampaignOrderEvents'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
@@ -100,9 +101,19 @@ export const useGetTableStat = ({
         [attrs],
     )
 
-    const eventsPerformance = usePostReporting<[CubeData], CubeData>(
+    const eventsPerformance = usePostReportingV2(
         eventsQuery,
-        { ...OVERRIDES, enabled: isEnabled },
+        convertCampaignEventsPerformanceQueryFactoryV2(
+            {
+                filters: getDefaultApiStatsFilters(attrs),
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
+        {
+            ...OVERRIDES,
+            enabled: isEnabled,
+        },
     )
     const ordersPerformance = usePostReporting<[CubeData], CubeData>(
         ordersQuery,
@@ -202,8 +213,20 @@ export const fetchGetTableStat = async ({
     const eventsOrdersQuery = getCampaignEventsOrdersPerformanceData(attrs)
     const storeTotalQuery = getStoreRevenueTotalData(attrs)
 
-    const eventsPerformance = fetchPostReporting<CubeData, CubeData>(
+    const eventsPerformance = fetchPostReportingV2(
         eventsQuery,
+        convertCampaignEventsPerformanceQueryFactoryV2(
+            {
+                filters: getDefaultApiStatsFilters({
+                    startDate,
+                    endDate,
+                    campaignIds,
+                    campaignsOperator,
+                }),
+                timezone,
+            },
+            attrs.groupDimension,
+        ),
         { ...OVERRIDES, enabled: isEnabled },
     )
     const ordersPerformance = fetchPostReporting<CubeData, CubeData>(

@@ -38,6 +38,7 @@ import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
+import { CAMPAIGN_EVENTS } from 'domains/reporting/pages/convert/clients/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { reportError } from 'utils/errors'
 
@@ -285,6 +286,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'articleId':
             case 'abVariant':
             case 'shopName':
+            case 'source':
+            case 'eventType':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {
@@ -627,6 +630,16 @@ const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
                 member: 'HelpCenterTrackingEvent.searchResultCount',
                 operator: ReportingFilterOperator.Equals,
                 values: ['0'],
+            },
+        ],
+    },
+    {
+        segment: 'CampaignEvents.campaignEventsOnly',
+        filters: [
+            {
+                member: 'CampaignEvents.eventType',
+                operator: ReportingFilterOperator.Equals,
+                values: CAMPAIGN_EVENTS,
             },
         ],
     },

@@ -8,9 +8,7 @@ import { Provider } from 'react-redux'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import {
-    fetchMetricPerDimension,
     fetchMetricPerDimensionV2,
-    useMetricPerDimension,
     useMetricPerDimensionV2,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
@@ -58,9 +56,7 @@ const statsFilters: StatsFilters = {
 const queryClient = mockQueryClient()
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
-const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
-const fetchMetricPerDimensionMock = assumeMock(fetchMetricPerDimension)
 const fetchMetricPerDimensionV2Mock = assumeMock(fetchMetricPerDimensionV2)
 
 jest.mock('models/integration/queries')
@@ -123,12 +119,6 @@ describe('productRecommendations', () => {
 
     describe('useProductRecommendations', () => {
         beforeEach(() => {
-            useMetricPerDimensionMock.mockReturnValue({
-                ...defaultReporting,
-                data: {
-                    ...exampleMetricData,
-                },
-            })
             useMetricPerDimensionV2Mock.mockReturnValue({
                 ...defaultReporting,
                 data: {
@@ -210,7 +200,7 @@ describe('productRecommendations', () => {
         })
 
         it('product handle is missing', async () => {
-            useMetricPerDimensionMock.mockReturnValue({
+            useMetricPerDimensionV2Mock.mockReturnValue({
                 ...defaultReporting,
                 data: {
                     ...exampleMetricData,
@@ -259,21 +249,8 @@ describe('productRecommendations', () => {
         })
 
         it('should fetch and map product recommendations successfully', async () => {
-            fetchMetricPerDimensionMock.mockResolvedValueOnce({
-                isFetching: false,
-                isError: false,
-                data: {
-                    value: 0,
-                    decile: 0,
-                    allData: [
-                        {
-                            [ConvertTrackingEventsDimension.ProductId]: '1',
-                            [ConvertTrackingEventsMeasure.UniqClicks]: '50',
-                        },
-                    ],
-                },
-            })
             fetchMetricPerDimensionV2Mock
+
                 .mockResolvedValueOnce({
                     isFetching: false,
                     isError: false,
@@ -285,6 +262,20 @@ describe('productRecommendations', () => {
                                 [AiSalesAgentConversationsDimension.ProductId]:
                                     '1',
                                 [AiSalesAgentConversationsMeasure.Count]: '100',
+                            },
+                        ],
+                    },
+                })
+                .mockResolvedValueOnce({
+                    isFetching: false,
+                    isError: false,
+                    data: {
+                        value: 0,
+                        decile: 0,
+                        allData: [
+                            {
+                                [ConvertTrackingEventsDimension.ProductId]: '1',
+                                [ConvertTrackingEventsMeasure.UniqClicks]: '50',
                             },
                         ],
                     },
@@ -333,7 +324,7 @@ describe('productRecommendations', () => {
         })
 
         it('should handle errors gracefully', async () => {
-            fetchMetricPerDimensionMock.mockRejectedValue(
+            fetchMetricPerDimensionV2Mock.mockRejectedValue(
                 new Error('API Error'),
             )
 
@@ -350,17 +341,11 @@ describe('productRecommendations', () => {
         })
 
         it('should return empty data when no products are found', async () => {
-            fetchMetricPerDimensionMock.mockResolvedValue({
-                isFetching: false,
-                isError: false,
-                data: { value: 0, decile: 0, allData: [] },
-            })
             fetchMetricPerDimensionV2Mock.mockResolvedValue({
                 isFetching: false,
                 isError: false,
                 data: { value: 0, decile: 0, allData: [] },
             })
-
             mockFetchIntegrationProductsByIds.mockResolvedValue([])
 
             const result = await fetchProductRecommendations(

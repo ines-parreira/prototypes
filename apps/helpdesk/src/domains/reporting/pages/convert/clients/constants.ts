@@ -106,3 +106,13 @@ export type PageInteractionsTimeDimension =
     | ValueOf<PageInteractionsMeasure.lastDatetime>
 
 export const CUBE_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS'
+
+export const CAMPAIGN_EVENTS = [
+    'campaign-clicked',
+    'campaign-link-clicked',
+    'chat-product-add-to-cart',
+    'chat-product-clicked',
+    'com.gorgias.convert.visitor-form.analytics-submitted',
+    'campaign-displayed',
+    'ticket-message-created',
+]

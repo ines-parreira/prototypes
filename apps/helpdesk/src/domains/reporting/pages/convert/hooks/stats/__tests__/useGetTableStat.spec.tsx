@@ -10,6 +10,7 @@ import {
 } from 'domains/reporting/models/queries'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
+    CAMPAIGN_EVENTS,
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
     EventsDimension,
@@ -128,46 +129,6 @@ describe('GetTableStat', () => {
         [
             [
                 {
-                    metricName:
-                        METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
-                    dimensions: ['CampaignEvents.campaignId'],
-                    filters: [
-                        {
-                            member: 'CampaignEvents.periodStart',
-                            operator: 'afterDate',
-                            values: ['2023-02-01T00:00:00.000'],
-                        },
-                        {
-                            member: 'CampaignEvents.periodEnd',
-                            operator: 'beforeDate',
-                            values: ['2023-04-01T00:00:00.000'],
-                        },
-                        {
-                            member: 'CampaignEvents.campaignId',
-                            operator: 'equals',
-                            values: ['campaign1', 'campaign2'],
-                        },
-                    ],
-                    measures: [
-                        'CampaignEvents.impressions',
-                        'CampaignEvents.firstCampaignDisplay',
-                        'CampaignEvents.lastCampaignDisplay',
-                        'CampaignEvents.clicks',
-                        'CampaignEvents.clicksRate',
-                        'CampaignEvents.ticketsCreated',
-                    ],
-                    segments: ['CampaignEvents.campaignEventsOnly'],
-                    timezone: 'America/Los_Angeles',
-                },
-            ],
-            {
-                enabled: true,
-                select: expect.any(Function),
-            },
-        ],
-        [
-            [
-                {
                     metricName: METRIC_NAMES.CONVERT_CAMPAIGN_ORDER_PERFORMANCE,
                     dimensions: ['OrderConversion.campaignId'],
                     filters: [
@@ -238,6 +199,82 @@ describe('GetTableStat', () => {
         ],
     ]
     const requestPayloadV2 = [
+        [
+            [
+                {
+                    metricName:
+                        METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
+                    dimensions: ['CampaignEvents.campaignId'],
+                    filters: [
+                        {
+                            member: 'CampaignEvents.periodStart',
+                            operator: 'afterDate',
+                            values: ['2023-02-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'CampaignEvents.periodEnd',
+                            operator: 'beforeDate',
+                            values: ['2023-04-01T00:00:00.000'],
+                        },
+                        {
+                            member: 'CampaignEvents.campaignId',
+                            operator: 'equals',
+                            values: ['campaign1', 'campaign2'],
+                        },
+                    ],
+                    measures: [
+                        'CampaignEvents.impressions',
+                        'CampaignEvents.firstCampaignDisplay',
+                        'CampaignEvents.lastCampaignDisplay',
+                        'CampaignEvents.clicks',
+                        'CampaignEvents.clicksRate',
+                        'CampaignEvents.ticketsCreated',
+                    ],
+                    segments: ['CampaignEvents.campaignEventsOnly'],
+                    timezone: 'America/Los_Angeles',
+                },
+            ],
+            {
+                dimensions: ['campaignId'],
+                measures: [
+                    'impressions',
+                    'firstCampaignDisplay',
+                    'lastCampaignDisplay',
+                    'clicks',
+                    'clicksRate',
+                    'ticketsCreated',
+                ],
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2023-02-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2023-04-01T00:00:00.000'],
+                    },
+                    {
+                        member: 'campaignId',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: ['campaign1', 'campaign2'],
+                    },
+                    {
+                        member: 'eventType',
+                        operator: LogicalOperatorEnum.ONE_OF,
+                        values: CAMPAIGN_EVENTS,
+                    },
+                ],
+                metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
+                scope: MetricScope.ConvertCampaignEvents,
+                timezone: 'America/Los_Angeles',
+            },
+            {
+                enabled: true,
+                select: expect.any(Function),
+            },
+        ],
         [
             [
                 {
@@ -434,7 +471,7 @@ describe('GetTableStat', () => {
 
         it('should return prepared data for campaign performance table', () => {
             // arrange
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: campaignEventsPerformanceData,
             } as UseQueryResult)
@@ -474,7 +511,7 @@ describe('GetTableStat', () => {
         it('should fill default values if data is missing', () => {
             // arrange
             // let's pretend only some metrics return data (tickets from mock and this one)
-            usePostReportingMock.mockReturnValueOnce({
+            usePostReportingV2Mock.mockReturnValueOnce({
                 ...defaultReporting,
                 data: campaignEventsPerformanceData,
             } as UseQueryResult)
@@ -528,7 +565,7 @@ describe('GetTableStat', () => {
         })
 
         it('should return prepared data for campaign performance table', async () => {
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: campaignEventsPerformanceData,
@@ -564,7 +601,7 @@ describe('GetTableStat', () => {
 
         it('should fill default values if data is missing', async () => {
             // let's pretend only some metrics return data (tickets from mock and this one)
-            fetchPostReportingMock.mockResolvedValueOnce({
+            fetchPostReportingV2Mock.mockResolvedValueOnce({
                 data: {
                     ...defaultReporting,
                     data: campaignEventsPerformanceData,
