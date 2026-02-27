@@ -74,13 +74,13 @@ export function TicketStatusMenu({ ticket }: TicketStatusMenuProps) {
         if (!snoozeDate) {
             return
         }
-
-        await snoozeTicket({
-            snooze_datetime: moment(snoozeDate).format(),
-            status: TicketStatus.Closed,
-        })
+        const snooze_datetime = moment(snoozeDate).format()
         setSnoozeDate(null)
         setIsOpen(false)
+        await snoozeTicket({
+            snooze_datetime,
+            status: TicketStatus.Closed,
+        })
     }, [snoozeTicket, snoozeDate, setIsOpen, setSnoozeDate])
 
     const handleCloseTicket = useCallback(async () => {

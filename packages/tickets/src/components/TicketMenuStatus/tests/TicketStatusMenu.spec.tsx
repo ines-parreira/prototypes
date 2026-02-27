@@ -225,6 +225,87 @@ describe('TicketStatus', () => {
             },
         )
 
+        it(
+            'should optimistically close the menu when Apply is clicked before the API resolves',
+            { timeout: 15000 },
+            async () => {
+                let resolveUpdate: () => void
+                const updatePromise = new Promise<void>((resolve) => {
+                    resolveUpdate = resolve
+                })
+
+                server.use(
+                    mockUpdateTicketHandler(async ({ data }) => {
+                        await updatePromise
+                        return HttpResponse.json(
+                            mockTicket({ ...data, id: ticketId }),
+                        )
+                    }).handler,
+                )
+
+                const dispatchNotification = vi.fn()
+                const legacyGoToNextTicket = vi.fn()
+                const { user } = render(
+                    <TicketStatusMenu ticket={openTicket} />,
+                    {
+                        initialEntries: ['/app/views/1/123'],
+                        path: '/app/views/:viewId/:ticketId',
+                        dispatchNotification,
+                        ticketViewNavigation: {
+                            shouldDisplay: true,
+                            shouldUseLegacyFunctions: true,
+                            previousTicketId: 122,
+                            nextTicketId: 124,
+                            legacyGoToPrevTicket: vi.fn(),
+                            isPreviousEnabled: true,
+                            legacyGoToNextTicket,
+                            isNextEnabled: true,
+                        },
+                    },
+                )
+
+                await openMenu(user)
+
+                const snoozeOption = await screen.findByText('Snooze')
+                await act(() => user.click(snoozeOption))
+
+                await screen.findByRole('grid')
+
+                const nextMonthButton = await screen.findByRole('button', {
+                    name: 'Next month',
+                })
+                await act(() => user.click(nextMonthButton))
+
+                const day15 = await screen.findByRole('button', {
+                    name: /15/,
+                })
+                await act(() => user.click(day15))
+
+                const applyButton = await screen.findByRole('button', {
+                    name: 'Apply',
+                })
+                await act(() => user.click(applyButton))
+
+                await waitFor(() => {
+                    expect(screen.queryByRole('grid')).not.toBeInTheDocument()
+                })
+
+                expect(dispatchNotification).not.toHaveBeenCalled()
+
+                resolveUpdate!()
+
+                await waitFor(() => {
+                    expect(dispatchNotification).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            status: NotificationStatus.Success,
+                            message: 'Ticket has been snoozed',
+                        }),
+                    )
+                    expect(legacyGoToNextTicket).toHaveBeenCalled()
+                })
+            },
+        )
+
         it('should display error notification when snooze fails', async () => {
             const dispatchNotification = vi.fn()
             const { user } = render(<TicketStatusMenu ticket={openTicket} />, {
