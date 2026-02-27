@@ -7,11 +7,16 @@ import type { FieldConfig, FieldRenderContext } from './types'
 type Props = {
     field: FieldConfig
     context: FieldRenderContext
+    className?: string
 }
 
-export function CustomerInfoFieldItem({ field, context }: Props) {
+export function CustomerInfoFieldItem({ field, context, className }: Props) {
     if (field.type === 'component') {
-        return <>{field.render(context)}</>
+        return (
+            <OverflowListItem className={className}>
+                {field.render(context)}
+            </OverflowListItem>
+        )
     }
 
     const value = field.getValue(context)
@@ -19,7 +24,7 @@ export function CustomerInfoFieldItem({ field, context }: Props) {
         field.formatValue?.(value, context) ?? String(value ?? '-')
 
     return (
-        <OverflowListItem>
+        <OverflowListItem className={className}>
             <FieldRow label={field.label}>
                 <Text size="sm">{displayValue}</Text>
             </FieldRow>
