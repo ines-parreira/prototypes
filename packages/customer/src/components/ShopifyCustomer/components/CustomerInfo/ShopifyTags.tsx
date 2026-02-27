@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import {
+    Box,
     Button,
     CheckBoxField,
     Icon,
@@ -11,6 +12,10 @@ import {
     OverflowListShowLess,
     OverflowListShowMore,
     Tag,
+    Text,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useShopifyShopTags } from '../../hooks/useShopifyShopTags'
@@ -166,12 +171,49 @@ export function ShopifyTags({
                     </OverflowListItem>
                 ))}
                 <OverflowListShowMore>
-                    {({ hiddenCount }) => (
-                        <div className={css.overflowButtonContent}>
-                            <span>+{hiddenCount}</span>
-                            <Icon name="arrow-chevron-down" />
-                        </div>
-                    )}
+                    {({ hiddenCount }) => {
+                        const safeCount = Math.min(
+                            hiddenCount,
+                            parsedTags.length,
+                        )
+                        const hiddenTags =
+                            safeCount > 0
+                                ? parsedTags.slice(
+                                      parsedTags.length - safeCount,
+                                  )
+                                : []
+
+                        return (
+                            <Tooltip placement="bottom">
+                                <TooltipTrigger>
+                                    <div
+                                        className={css.overflowButtonContent}
+                                        tabIndex={0}
+                                    >
+                                        <span>+{hiddenCount}</span>
+                                        <Icon name="arrow-chevron-down" />
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <Box
+                                        flexDirection="column"
+                                        alignItems="flex-start"
+                                        gap="xxxxs"
+                                    >
+                                        {hiddenTags.map((tag) => (
+                                            <Text
+                                                key={tag}
+                                                size="sm"
+                                                variant="bold"
+                                            >
+                                                {tag}
+                                            </Text>
+                                        ))}
+                                    </Box>
+                                </TooltipContent>
+                            </Tooltip>
+                        )
+                    }}
                 </OverflowListShowMore>
                 <OverflowListShowLess>
                     <div className={css.overflowButtonContent}>

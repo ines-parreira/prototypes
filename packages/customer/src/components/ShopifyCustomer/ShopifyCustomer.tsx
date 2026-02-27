@@ -49,7 +49,7 @@ export function ShopifyCustomer({ onSyncProfile }: Props) {
     }, [ticket?.data?.customer?.integrations])
 
     return (
-        <Box flexDirection="column">
+        <Box flexDirection="column" flexGrow={1}>
             <CustomerInfo
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}

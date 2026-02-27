@@ -6,7 +6,10 @@ import {
     mockEcommerceData,
     mockGetEcommerceDataByExternalIdHandler,
 } from '@gorgias/ecommerce-storage-mocks'
-import { mockListIntegrationsHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCurrentUserHandler,
+    mockListIntegrationsHandler,
+} from '@gorgias/helpdesk-mocks'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
@@ -16,8 +19,10 @@ const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
     shopifyIntegrationId: undefined,
     activeTab: undefined,
     isExpanded: true,
+    isEditShopifyFieldsOpen: false,
     onChangeTab: vi.fn(),
     onToggle: vi.fn(),
+    onToggleEditShopifyFields: vi.fn(),
 })
 
 vi.mock('@repo/navigation', async (importOriginal) => ({
@@ -93,8 +98,14 @@ const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(async () =>
     ),
 )
 
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+
 beforeEach(() => {
-    server.use(mockListIntegrations.handler, mockGetEcommerceData.handler)
+    server.use(
+        mockListIntegrations.handler,
+        mockGetEcommerceData.handler,
+        mockGetCurrentUser.handler,
+    )
 })
 
 describe('CustomerInfo', () => {
@@ -435,5 +446,66 @@ describe('CustomerInfo', () => {
         )
 
         expect(onSyncProfile).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders IntermediateEditPanel when isEditShopifyFieldsOpen is true', async () => {
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            shopifyIntegrationId: undefined,
+            activeTab: undefined,
+            isExpanded: true,
+            isEditShopifyFieldsOpen: true,
+            onChangeTab: vi.fn(),
+            onToggle: vi.fn(),
+            onToggleEditShopifyFields: vi.fn(),
+        })
+
+        render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Customer metrics')).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByRole('button', { name: /confirm/i }),
+        ).toBeInTheDocument()
+
+        expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    })
+
+    it('calls onToggleEditShopifyFields(false) when Confirm is clicked in IntermediateEditPanel', async () => {
+        const onToggleEditShopifyFields = vi.fn()
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            shopifyIntegrationId: undefined,
+            activeTab: undefined,
+            isExpanded: true,
+            isEditShopifyFieldsOpen: true,
+            onChangeTab: vi.fn(),
+            onToggle: vi.fn(),
+            onToggleEditShopifyFields,
+        })
+
+        const { user } = render(
+            <CustomerInfo
+                associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                externalIdMap={externalIdMap}
+                ticketId="123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /confirm/i }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
+
+        expect(onToggleEditShopifyFields).toHaveBeenCalledWith(false)
     })
 })

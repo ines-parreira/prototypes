@@ -14,7 +14,7 @@ import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
-import { EditShopifyFieldsSidePanel } from './EditShopifyFieldsSidePanel'
+import { IntermediateEditPanel } from './IntermediateEditPanel'
 import { NoShopifyProfile } from './NoShopifyProfile'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
@@ -132,6 +132,18 @@ export function CustomerInfo({
         [],
     )
 
+    if (isEditShopifyFieldsOpen) {
+        return (
+            <IntermediateEditPanel
+                fields={fields}
+                context={context}
+                preferences={preferences}
+                onSavePreferences={setPreferences}
+                onClose={() => onToggleEditShopifyFields(false)}
+            />
+        )
+    }
+
     if (
         filteredIntegrations.length === 0 &&
         !isLoadingIntegrations &&
@@ -164,6 +176,7 @@ export function CustomerInfo({
                     <CustomerInfoFieldList fields={fields} context={context} />
                 )}
             </Box>
+
             <OrdersList
                 orders={orders}
                 isLoadingOrders={isLoadingOrders}
@@ -172,6 +185,7 @@ export function CustomerInfo({
                 isLoadingDraftOrders={isLoadingDraftOrders}
                 onSelectOrder={handleSelectOrder}
             />
+
             <OrderSidePanelPreview
                 order={selectedOrder?.data ?? null}
                 isOpen={isOrderOpen}
@@ -184,13 +198,6 @@ export function CustomerInfo({
                 storeName={selectedIntegration?.name}
                 integrationId={selectedIntegration?.id}
                 ticketId={ticketId}
-            />
-            <EditShopifyFieldsSidePanel
-                isOpen={isEditShopifyFieldsOpen}
-                onOpenChange={onToggleEditShopifyFields}
-                preferences={preferences}
-                onSave={setPreferences}
-                context={context}
             />
         </>
     )

@@ -11,7 +11,7 @@ type Props = {
 
 export function CustomerInfoFieldItem({ field, context }: Props) {
     if (field.type === 'component') {
-        return <OverflowListItem>{field.render(context)}</OverflowListItem>
+        return <>{field.render(context)}</>
     }
 
     const value = field.getValue(context)
