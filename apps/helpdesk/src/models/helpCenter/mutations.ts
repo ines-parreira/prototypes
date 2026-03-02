@@ -274,7 +274,15 @@ export const useUpdateArticleTranslation = (
                 })
             }
             await queryClient.invalidateQueries({
-                queryKey: articleListKey,
+                predicate: (query) => {
+                    const key = query.queryKey as readonly unknown[]
+                    return (
+                        key[0] === 'help-center' &&
+                        key[1] === helpCenterId &&
+                        key[2] === 'articles' &&
+                        typeof key[3] !== 'number'
+                    )
+                },
             })
             await callbacks?.onSettled?.()
         },
