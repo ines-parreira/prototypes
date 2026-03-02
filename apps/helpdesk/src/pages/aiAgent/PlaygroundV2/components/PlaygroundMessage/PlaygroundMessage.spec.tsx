@@ -11,8 +11,8 @@ import {
     AgentSkill,
     AiAgentMessageType,
     MessageType,
-    type PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
+import type { PlaygroundTextMessage } from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
