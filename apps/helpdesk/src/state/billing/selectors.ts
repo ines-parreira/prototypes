@@ -1,4 +1,4 @@
-import type { List, Map } from 'immutable'
+import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import { createSelector } from 'reselect'
@@ -25,7 +25,6 @@ import type { RootState } from '../types'
 import type {
     BillingImmutableState,
     CurrentProductsUsages,
-    Invoice,
     ReduxBillingState,
 } from './types'
 
@@ -324,11 +323,6 @@ export const getAvailableAutomatePlansMap = createSelector(
 export const getHasAutomate = createSelector(
     getCurrentAutomatePlan,
     (plan) => !!plan,
-)
-
-export const getInvoices = createSelector(
-    DEPRECATED_getBillingState,
-    (billing) => billing.get('invoices', fromJS([])) as List<Invoice>,
 )
 
 export const creditCard = createSelector(

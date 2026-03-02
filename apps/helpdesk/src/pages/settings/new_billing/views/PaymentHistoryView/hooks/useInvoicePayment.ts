@@ -1,15 +1,8 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import type {
-    GetInvoices200,
-    GetInvoicesParams,
-    HttpError,
-    HttpResponse,
-} from '@gorgias/helpdesk-client'
-import { getInvoices } from '@gorgias/helpdesk-client'
-import { queryKeys } from '@gorgias/helpdesk-queries'
+import { queryKeys, useListAllInvoices } from '@gorgias/helpdesk-queries'
 
 import GorgiasApi from 'services/gorgiasApi'
 import type { Invoice } from 'state/billing/types'
@@ -42,18 +35,7 @@ export const useInvoicePayment = (): UseInvoicePaymentReturn => {
         isLoading,
         fetchNextPage,
         hasNextPage: hasNextPageFromQuery,
-    } = useInfiniteQuery<HttpResponse<GetInvoices200>, HttpError<unknown>>({
-        queryKey: [...queryKeys.billing.getInvoices(), 'paginated'],
-        queryFn: ({ pageParam, signal }) =>
-            getInvoices(
-                {
-                    limit: 20,
-                    cursor: pageParam,
-                } as GetInvoicesParams,
-                { signal },
-            ),
-        getNextPageParam: (lastPage) => lastPage?.data?.meta?.next_cursor,
-    })
+    } = useListAllInvoices({ limit: 20 })
 
     const pages = invoicesResponse?.pages ?? []
     const currentPage = pages[currentPageIndex]
@@ -98,7 +80,7 @@ export const useInvoicePayment = (): UseInvoicePaymentReturn => {
                     window.location.href = newInvoice.payment_confirmation_url
                 } else {
                     await queryClient.invalidateQueries({
-                        queryKey: queryKeys.billing.getInvoices(),
+                        queryKey: queryKeys.billing.listAllInvoices(),
                     })
                 }
             } finally {
@@ -115,7 +97,7 @@ export const useInvoicePayment = (): UseInvoicePaymentReturn => {
             try {
                 await gorgiasApi.payInvoice(invoice.id)
                 await queryClient.invalidateQueries({
-                    queryKey: queryKeys.billing.getInvoices(),
+                    queryKey: queryKeys.billing.listAllInvoices(),
                 })
             } catch (error) {
                 const responseError = error as { response?: { status: number } }
