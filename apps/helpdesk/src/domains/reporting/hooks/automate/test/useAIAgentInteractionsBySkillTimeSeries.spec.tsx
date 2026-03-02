@@ -86,7 +86,8 @@ describe('useAIAgentInteractionsBySkillTimeSeries', () => {
         )
 
         expect(result).toEqual({
-            metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+            metricName:
+                METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL_TIMESERIES,
             dimensions: [
                 AIAgentInteractionsBySkillDatasetDimension.BillableType,
             ],

@@ -73,7 +73,7 @@ export const aiAgentSupportInteractionsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
 ): ReportingQuery<AIAgentAutomatedInteractionsCube> => ({
-    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+    metricName: METRIC_NAMES.AUTOMATE_AI_AGENT_SUPPORT_INTERACTIONS_BY_SKILL,
     measures: [AIAgentInteractionsBySkillMeasure.Count],
     dimensions: [AIAgentInteractionsBySkillDatasetDimension.BillableType],
     timezone,

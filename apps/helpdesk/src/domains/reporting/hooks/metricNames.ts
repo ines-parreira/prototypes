@@ -170,6 +170,10 @@ export const METRIC_NAMES = {
     // Automation
     AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL:
         'automate-ai-agent-interactions-by-skill',
+    AUTOMATE_AI_AGENT_SUPPORT_INTERACTIONS_BY_SKILL:
+        'automate-ai-agent-support-interactions-by-skill',
+    AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL_TIMESERIES:
+        'automate-ai-agent-interactions-by-skill-timeseries',
     AUTOMATE_ARTICLE_RECOMMENDATION_INTERACTIONS:
         'automate-article-recommendation-interactions',
     AUTOMATE_AUTOMATION_DATASET: 'automate-automation-dataset',

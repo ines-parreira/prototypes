@@ -402,7 +402,7 @@ describe('Automate metrics', () => {
             )
             expect(result).toEqual({
                 metricName:
-                    METRIC_NAMES.AUTOMATE_AI_AGENT_INTERACTIONS_BY_SKILL,
+                    METRIC_NAMES.AUTOMATE_AI_AGENT_SUPPORT_INTERACTIONS_BY_SKILL,
                 dimensions: [
                     AIAgentInteractionsBySkillDatasetDimension.BillableType,
                 ],
