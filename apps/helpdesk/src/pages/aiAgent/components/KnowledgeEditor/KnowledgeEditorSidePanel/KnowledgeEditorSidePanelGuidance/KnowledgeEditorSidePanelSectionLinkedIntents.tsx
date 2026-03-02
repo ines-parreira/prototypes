@@ -23,6 +23,8 @@ type Props = {
     sectionId: string
 }
 
+const COLLAPSED_VISIBLE_INTENTS_COUNT = 3
+
 export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
     sectionId,
 }: Props) => {
@@ -39,6 +41,13 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
     const [intentPendingUnlink, setIntentPendingUnlink] = useState<
         string | null
     >(null)
+    const [areAllIntentsVisible, setAreAllIntentsVisible] = useState(false)
+
+    const hasOverflowingIntents =
+        guidanceIntentIds.length > COLLAPSED_VISIBLE_INTENTS_COUNT
+    const visibleIntentIds = areAllIntentsVisible
+        ? guidanceIntentIds
+        : guidanceIntentIds.slice(0, COLLAPSED_VISIBLE_INTENTS_COUNT)
 
     const linkIntentsButton = (
         <Button
@@ -84,7 +93,7 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                 {guidanceIntentIds.length > 0 ? (
                     <div className={css.linkedIntentsContent}>
                         <div className={css.linkedIntentsList}>
-                            {guidanceIntentIds.map((intentId) => (
+                            {visibleIntentIds.map((intentId) => (
                                 <Tag
                                     key={intentId}
                                     leadingSlot="link-horizontal"
@@ -101,6 +110,30 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                                 </Tag>
                             ))}
                         </div>
+                        {hasOverflowingIntents && (
+                            <Button
+                                variant="tertiary"
+                                size="sm"
+                                trailingSlot={
+                                    <Icon
+                                        name={
+                                            areAllIntentsVisible
+                                                ? 'arrow-chevron-up'
+                                                : 'arrow-chevron-down'
+                                        }
+                                    />
+                                }
+                                onClick={() =>
+                                    setAreAllIntentsVisible(
+                                        (isExpanded) => !isExpanded,
+                                    )
+                                }
+                            >
+                                {areAllIntentsVisible
+                                    ? 'View less'
+                                    : 'View all'}
+                            </Button>
+                        )}
                         {linkIntentsButtonWithTooltip}
                     </div>
                 ) : (

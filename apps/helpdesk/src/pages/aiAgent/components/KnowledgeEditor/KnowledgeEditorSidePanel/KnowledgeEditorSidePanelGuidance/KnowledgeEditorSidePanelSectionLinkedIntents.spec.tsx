@@ -254,6 +254,58 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
         expect(screen.queryByText('No intents linked')).not.toBeInTheDocument()
     })
 
+    it('shows only the first 3 intents and toggles the rest with see more/less', async () => {
+        const user = userEvent.setup()
+        mockGuidanceStoreState.state.guidance.intents = [
+            'order::status',
+            'order::cancel',
+            'order::missing-item',
+            'shipping::delay',
+        ]
+
+        renderComponent()
+
+        const linkedIntentsSection = getLinkedIntentsSectionRegion()
+
+        expect(
+            within(linkedIntentsSection).getByText('order/status'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).getByText('order/cancel'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).getByText('order/missing-item'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).queryByText('shipping/delay'),
+        ).not.toBeInTheDocument()
+
+        await user.click(
+            within(linkedIntentsSection).getByRole('button', {
+                name: /view all/i,
+            }),
+        )
+
+        expect(
+            within(linkedIntentsSection).getByText('shipping/delay'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).getByRole('button', {
+                name: /view less/i,
+            }),
+        ).toBeInTheDocument()
+
+        await user.click(
+            within(linkedIntentsSection).getByRole('button', {
+                name: /view less/i,
+            }),
+        )
+
+        expect(
+            within(linkedIntentsSection).queryByText('shipping/delay'),
+        ).not.toBeInTheDocument()
+    })
+
     it('opens modal from section action', async () => {
         const user = userEvent.setup()
         renderComponent()
