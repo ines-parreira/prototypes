@@ -31,7 +31,16 @@ export default function ShopifyMetafields() {
         <div className={styles.metafieldsLandingPageContent}>
             <div className={styles.explainerContainer}>
                 <Text variant="regular" as="p" size="md">
-                    Manage <span className={styles.metafields}>metafields</span>{' '}
+                    Manage{' '}
+                    <span className={styles.metafields}>
+                        <a
+                            href="https://link.gorgias.com/4761a5"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            metafields
+                        </a>
+                    </span>{' '}
                     from your Shopify store to Gorgias and choose which ones to
                     show in each customer&apos;s profile.
                 </Text>
