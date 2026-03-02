@@ -1,7 +1,6 @@
 import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
-
-import type { StatusBreakdown } from './transformAvailabilityData'
+import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 
 const { AGENT_NAME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
 type AgentAvailabilityData = {

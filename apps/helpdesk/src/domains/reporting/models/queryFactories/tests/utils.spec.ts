@@ -1,3 +1,4 @@
+import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
@@ -38,8 +39,6 @@ import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { AiSalesAgentOrdersFilterMember } from '../../cubes/ai-sales-agent/AiSalesAgentOrders'
 
 describe('utils', () => {
     describe('addOptionalFilter', () => {

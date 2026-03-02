@@ -1,8 +1,6 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import {
-    type Context,
-    defineScope,
-} from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
 
 const convertCampaignOrderEvents = defineScope({
     scope: MetricScope.ConvertCampaignOrderEvents,

@@ -142,7 +142,7 @@ describe('KnowledgeHubTable - Filters', () => {
             queries: { retry: false },
         },
         logger: {
-            log: console.log,
+            log: jest.fn(),
             warn: console.warn,
             error: () => {},
         },

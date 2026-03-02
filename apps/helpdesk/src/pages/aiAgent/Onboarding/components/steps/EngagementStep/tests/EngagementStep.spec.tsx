@@ -98,9 +98,9 @@ const renderWithProviders = (props = {}) => {
 describe('EngagementStep', () => {
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
+        let __client = getLDClient()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
+        __client = ldClientMock
 
         mockUseGmvUsdOver30Days.mockReturnValue({
             data: mockGmvData,

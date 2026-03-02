@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
+import { DrillDownHeaderCellWithTooltip } from 'domains/reporting/pages/common/drill-down/DrillDownHeaderCellWithTooltip'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
-
-import { DrillDownHeaderCellWithTooltip } from './DrillDownHeaderCellWithTooltip'
 
 describe('DrillDownHeaderCellWithTooltip', () => {
     it('should render title without tooltip', () => {

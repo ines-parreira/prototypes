@@ -11,24 +11,26 @@ const validateProviderName = (name: string) => {
 }
 
 const validateProviderUrl = (url: string) => {
-    url = url.trim()
-    if (!url) {
+    const trimmedUrl = url.trim()
+    if (!trimmedUrl) {
         return 'Provider URL is required'
     }
 
+    let providerUrl = trimmedUrl
+
     // add `https://` prefix if missing
-    if (!url.startsWith('https://')) {
-        url = `https://${url}`
+    if (!providerUrl.startsWith('https://')) {
+        providerUrl = `https://${providerUrl}`
     }
 
     // should have top-level domain (local urls are not valid)
-    if (!url.match(/\w+\.\w+/)) {
+    if (!providerUrl.match(/\w+\.\w+/)) {
         return 'Please enter a valid URL or domain'
     }
 
     // validate URL
     try {
-        new URL(url)
+        new URL(providerUrl)
         return null
     } catch {
         return 'Please enter a valid URL or domain'

@@ -19,10 +19,8 @@ import {
 } from '@floating-ui/react'
 import cn from 'classnames'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import { THEME_NAME, useTheme } from 'core/theme'
 

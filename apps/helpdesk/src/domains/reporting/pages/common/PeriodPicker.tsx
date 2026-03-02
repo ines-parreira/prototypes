@@ -8,10 +8,8 @@ import moment from 'moment-timezone'
 import { connect } from 'react-redux'
 import { Tooltip } from 'reactstrap'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonFillStyle as ButtonFillStyle,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonFillStyle as ButtonFillStyle } from '@gorgias/axiom'
 
 import { useTheme } from 'core/theme'
 import css from 'domains/reporting/pages/common/PeriodPicker.less'

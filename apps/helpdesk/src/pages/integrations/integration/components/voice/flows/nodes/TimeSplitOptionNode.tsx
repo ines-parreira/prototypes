@@ -5,7 +5,7 @@ import { TimeSplitConditionalRuleType } from '@gorgias/helpdesk-types'
 import type { NodeProps } from 'core/ui/flows'
 import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
-import { type TimeSplitOptionNode } from '../types'
+import type { TimeSplitOptionNode } from '../types'
 
 type TimeSplitOptionNodeProps = NodeProps<TimeSplitOptionNode>
 

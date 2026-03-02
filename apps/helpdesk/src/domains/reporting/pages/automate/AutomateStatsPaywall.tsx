@@ -1,12 +1,11 @@
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import css from 'domains/reporting/pages/automate/AutomateStatsPaywall.less'
 import { AutomateOverview } from 'domains/reporting/pages/automate/overview/AutomateOverview'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { TrialPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/TrialPaywallMiddleware'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
-
-import css from './AutomateStatsPaywall.less'
 
 const AutomateStatsPaywall: React.FC = () => {
     const { hasAccess, isLoading } = useAiAgentAccess()

@@ -9,10 +9,9 @@ import type {
     TrendMetric,
 } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AiSalesAgentMetricConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { useAiSalesAgentTrendCardComponent } from 'domains/reporting/pages/automate/aiSalesAgent/charts/useAiSalesAgentTrendCardComponent'
 import { WarningBannerContext } from 'domains/reporting/pages/automate/aiSalesAgent/components/WarningBannerProvider'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-
-import { useAiSalesAgentTrendCardComponent } from './useAiSalesAgentTrendCardComponent'
 
 const useTrendBuilder = (
     threeDaysAgo: moment.Moment,

@@ -1,8 +1,5 @@
-import {
-    METRIC_NAMES,
-    type MetricName,
-    MetricScope,
-} from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'

@@ -30,7 +30,7 @@ export const useDynamicLabelSize = (threshold = 0.625) => {
         return () => {
             resizeObserver.disconnect()
         }
-    }, [labelContainer, labelSpan])
+    }, [labelContainer, labelSpan, setDynamicLabelSize])
 
     return { labelSpan, labelContainer }
 }

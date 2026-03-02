@@ -1,10 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
-import {
-    loadStripe,
-    type Stripe,
-    type StripeAddressElementChangeEvent,
-} from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import type { Stripe, StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'

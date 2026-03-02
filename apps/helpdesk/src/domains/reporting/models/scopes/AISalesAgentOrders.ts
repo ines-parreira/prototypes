@@ -7,10 +7,9 @@ import {
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import { APIOnlyFilterKey } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { createScopeFilters } from './utils'
 
 const AISalesAgentOrdersScope = defineScope({
     scope: MetricScope.AISalesAgentOrders,

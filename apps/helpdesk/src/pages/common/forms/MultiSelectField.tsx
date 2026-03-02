@@ -1,4 +1,5 @@
-import { Component, type ComponentType, type CSSProperties } from 'react'
+import { Component } from 'react'
+import type { ComponentType, CSSProperties } from 'react'
 
 import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from './MultiSelectOptionsField/types'

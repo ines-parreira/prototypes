@@ -1,4 +1,4 @@
-import { type EmailIntegrationsData } from '../useFetchEmailIntegrationsData'
+import type { EmailIntegrationsData } from '../useFetchEmailIntegrationsData'
 
 type AllKeys = keyof EmailIntegrationsDataFixture
 type ConfiguredEmailIntegrationsData<

@@ -21,9 +21,9 @@ import VoiceQueueSelectField from '../../VoiceQueueSelectField'
 import VoiceQueueSummary from '../../VoiceQueueSummary'
 import { VoiceFlowNodeType } from '../constants'
 import { RouteToStepTypeField } from '../RouteToStepTypeField'
-import {
-    type EnqueueNode as EnqueueNodeType,
-    type RouteToInternalNumberNode as RouteToInternalNumberNodeType,
+import type {
+    EnqueueNode as EnqueueNodeType,
+    RouteToInternalNumberNode as RouteToInternalNumberNodeType,
 } from '../types'
 import { validateRouteToStep } from '../utils/validationUtils'
 import { EnqueueNode } from './EnqueueNode'

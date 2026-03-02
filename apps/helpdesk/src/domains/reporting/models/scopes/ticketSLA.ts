@@ -1,9 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { TicketSLAStatus } from 'domains/reporting/models/cubes/sla/TicketSLACube'
-import {
-    type Context,
-    defineScope,
-} from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 
 const ticketSLAScope = defineScope({

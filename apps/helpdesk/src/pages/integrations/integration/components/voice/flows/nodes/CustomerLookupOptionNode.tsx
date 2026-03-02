@@ -5,7 +5,7 @@ import type { CustomerFieldBranchOption } from '@gorgias/helpdesk-types'
 import type { NodeProps } from 'core/ui/flows'
 import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
-import { type CustomerLookupOptionNode } from '../types'
+import type { CustomerLookupOptionNode } from '../types'
 
 type CustomerLookupOptionNodeProps = NodeProps<CustomerLookupOptionNode>
 

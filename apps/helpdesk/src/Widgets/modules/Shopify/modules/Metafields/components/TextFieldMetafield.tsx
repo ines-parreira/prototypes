@@ -14,7 +14,7 @@ import {
 
 import CopyButton from 'components/CopyButton/CopyButton'
 
-import { type ExtendedShopifyMetafield } from './Metafield'
+import type { ExtendedShopifyMetafield } from './Metafield'
 import { getMetafieldTitleLabel } from './utils/getMetafieldTitleLabel'
 
 import css from './Metafield.less'

@@ -1,3 +1,4 @@
+import { fetchMetric, useMetric } from 'domains/reporting/hooks/useMetric'
 import type { Cubes } from 'domains/reporting/models/cubes'
 import type {
     BuiltQuery,
@@ -5,8 +6,6 @@ import type {
 } from 'domains/reporting/models/scopes/scope'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
-
-import { fetchMetric, useMetric } from './useMetric'
 
 /**
  * @deprecated Use MetricTrend from @repo/reporting instead

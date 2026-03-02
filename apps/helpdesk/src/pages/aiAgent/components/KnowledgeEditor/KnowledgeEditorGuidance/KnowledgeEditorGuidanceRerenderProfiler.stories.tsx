@@ -17,13 +17,15 @@ import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import {
     createInitialState,
-    type GuidanceContextConfig,
-    type GuidanceContextValue,
     guidanceReducer,
-    type GuidanceReducerAction,
-    type GuidanceState,
     KnowledgeEditorGuidanceProvider,
     useGuidanceStore,
+} from './context'
+import type {
+    GuidanceContextConfig,
+    GuidanceContextValue,
+    GuidanceReducerAction,
+    GuidanceState,
 } from './context'
 
 const SYNTHETIC_TYPING_STEPS = 25

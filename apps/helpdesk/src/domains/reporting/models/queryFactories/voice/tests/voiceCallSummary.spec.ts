@@ -7,6 +7,7 @@ import {
     VoiceCallSummaryMeasure,
     VoiceCallSummaryMember,
 } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import {
     liveVoiceCallSummaryQueryFactory,
@@ -17,8 +18,6 @@ import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-
-import { withDefaultLogicalOperator } from '../../utils'
 
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils')
 jest.mock('domains/reporting/models/queryFactories/voice/voiceCall')

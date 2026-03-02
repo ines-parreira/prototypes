@@ -1,6 +1,7 @@
 import _flatMap from 'lodash/flatMap'
 
 import type { CustomFieldValue } from 'custom-fields/types'
+import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import type {
@@ -21,8 +22,6 @@ import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { AiSalesAgentOrdersFilterMember } from '../cubes/ai-sales-agent/AiSalesAgentOrders'
 
 export type OptionalFilter =
     | string[]

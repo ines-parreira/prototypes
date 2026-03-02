@@ -3,8 +3,8 @@ import { isValidPhoneNumber as validatePhoneNumber } from 'libphonenumber-js'
 import {
     JourneyCampaignStateEnum,
     JourneyStatusEnum,
-    type JourneyTypeEnum,
 } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPES_MAP_TO_URL } from 'AIJourney/constants'
 

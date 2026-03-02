@@ -118,6 +118,7 @@ export const usePaginatedProductIntegration = ({
         isLoading,
         isError,
         searchTerm,
+        handleSearch,
         fetchNext,
         fetchPrev,
         nextCursor,

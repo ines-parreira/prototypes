@@ -1,9 +1,8 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { defineScope } from './scope'
-import { createScopeFilters } from './utils'
 
 const helpCenterScope = defineScope({
     scope: MetricScope.Helpcenter,

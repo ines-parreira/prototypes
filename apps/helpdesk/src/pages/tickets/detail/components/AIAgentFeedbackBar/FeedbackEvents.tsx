@@ -1,4 +1,5 @@
-import { type FC, Fragment } from 'react'
+import { Fragment } from 'react'
+import type { FC } from 'react'
 
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 

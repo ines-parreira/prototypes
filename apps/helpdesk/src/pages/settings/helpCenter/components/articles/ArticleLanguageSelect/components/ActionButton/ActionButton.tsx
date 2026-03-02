@@ -2,9 +2,9 @@ import { useId } from '@repo/hooks'
 
 import {
     LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 export type ActionButtonVariant = 'danger' | 'neutral'
 

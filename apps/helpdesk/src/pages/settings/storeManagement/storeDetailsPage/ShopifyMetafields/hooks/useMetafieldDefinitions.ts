@@ -1,7 +1,5 @@
-import {
-    type MetafieldDefinition,
-    useListMetafieldDefinitions,
-} from '@gorgias/helpdesk-queries'
+import { useListMetafieldDefinitions } from '@gorgias/helpdesk-queries'
+import type { MetafieldDefinition } from '@gorgias/helpdesk-queries'
 
 import type { Field } from '../MetafieldsTable/types'
 import type { SupportedCategories } from '../types'

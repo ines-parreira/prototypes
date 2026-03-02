@@ -1,20 +1,22 @@
 import type { TicketChannel } from 'business/types/ticket'
+import type {
+    MetricWithDecile,
+    ReportingMetricItemValue,
+} from 'domains/reporting/hooks/types'
+import {
+    fetchMetricPerDimensionV2,
+    useMetricPerDimensionV2,
+} from 'domains/reporting/hooks/useMetricPerDimension'
+import type { Cubes } from 'domains/reporting/models/cubes'
 import {
     TicketDimension,
     TicketMeasure,
 } from 'domains/reporting/models/cubes/TicketCube'
 import { workloadPerChannelDistributionQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/workloadPerChannel'
+import { workloadTicketsPerChannelQueryV2Factory } from 'domains/reporting/models/scopes/workloadTickets'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { humanizeChannel } from 'state/ticket/utils'
-
-import type { Cubes } from '../models/cubes'
-import { workloadTicketsPerChannelQueryV2Factory } from '../models/scopes/workloadTickets'
-import type { MetricWithDecile, ReportingMetricItemValue } from './types'
-import {
-    fetchMetricPerDimensionV2,
-    useMetricPerDimensionV2,
-} from './useMetricPerDimension'
 
 export const CHANNEL_DIMENSION = TicketDimension.Channel
 export const TICKET_COUNT_MEASURE = TicketMeasure.TicketCount

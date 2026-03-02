@@ -1,4 +1,5 @@
-import { Component, type ContextType, type ReactNode } from 'react'
+import { Component } from 'react'
+import type { ContextType, ReactNode } from 'react'
 
 import type { Map } from 'immutable'
 

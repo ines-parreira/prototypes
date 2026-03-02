@@ -28,17 +28,16 @@ import {
 } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import {
+    statFiltersClean,
+    statFiltersDirty,
+} from 'domains/reporting/state/ui/stats/actions'
+import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'domains/reporting/state/ui/stats/filtersSlice'
 import useAppSelector from 'hooks/useAppSelector'
 import { getFilterTeamsJS } from 'state/teams/selectors'
 import type { RootState } from 'state/types'
-
-import {
-    statFiltersClean,
-    statFiltersDirty,
-} from '../../../state/ui/stats/actions'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.AssignedTeam]

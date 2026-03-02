@@ -4,9 +4,9 @@ import type { ConvertOrderEventsCube } from 'domains/reporting/models/cubes/Conv
 import { FilterOperatorMap } from 'domains/reporting/models/queryFactories/utils'
 import {
     APIOnlyFilterKey,
-    type ApiStatsFilters,
     FilterKey,
 } from 'domains/reporting/models/stat/types'
+import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import type {
     ReportingParams,
     ReportingQuery,

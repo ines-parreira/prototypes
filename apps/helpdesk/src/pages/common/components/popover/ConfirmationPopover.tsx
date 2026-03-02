@@ -6,10 +6,8 @@ import classnames from 'classnames'
 import _get from 'lodash/get'
 import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import { GroupPositionContext } from 'pages/common/components/layout/Group'

@@ -58,6 +58,7 @@ import {
     InternalComplianceFilterWithSavedState,
     InternalComplianceFilterWithState,
 } from 'domains/reporting/pages/common/filters/InternalComplianceFilter'
+import { JourneysFilterWithState } from 'domains/reporting/pages/common/filters/JourneyTypeFilter'
 import {
     LanguageProficiencyFilterWithSavedState,
     LanguageProficiencyFilterWithState,
@@ -89,8 +90,6 @@ import {
     CampaignStatusesFilterFromContext,
     CampaignStatusesFilterFromSavedContext,
 } from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
-
-import { JourneysFilterWithState } from './JourneyTypeFilter'
 
 export const FilterComponentMap: Record<
     FilterKey | FilterComponentKey,

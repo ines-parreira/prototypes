@@ -6,10 +6,8 @@ import type { AxiosError } from 'axios'
 
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
-import {
-    type UpdateProductAdditionalInfoParams,
-    useUpdateProductAdditionalInfo,
-} from '../queries'
+import { useUpdateProductAdditionalInfo } from '../queries'
+import type { UpdateProductAdditionalInfoParams } from '../queries'
 import type { ProductAdditionalInfo } from '../types'
 
 interface UseUpdateProductAdditionalInfoWithTrackingProps {

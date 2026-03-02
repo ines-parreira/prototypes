@@ -13,4 +13,4 @@ export {
     AGENT_AVAILABILITY_TABLE_LABELS,
     FIXED_AGENT_AVAILABILITY_COLUMN_CONFIG,
     ORDERED_FIXED_AGENT_AVAILABILITY_COLUMNS,
-} from './agentAvailability'
+} from 'domains/reporting/pages/support-performance/agents/constants/agentAvailability'

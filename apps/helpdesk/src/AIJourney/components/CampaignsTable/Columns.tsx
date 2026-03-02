@@ -7,7 +7,7 @@ import type { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 import { MetricCell } from 'AIJourney/components'
 
 import type { UpdatableJourneyCampaignState } from '../../constants'
-import { type TableRow } from '../../pages/Campaigns/Campaigns'
+import type { TableRow } from '../../pages/Campaigns/Campaigns'
 import CampaignName from './CampaignName/CampaignName'
 import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'

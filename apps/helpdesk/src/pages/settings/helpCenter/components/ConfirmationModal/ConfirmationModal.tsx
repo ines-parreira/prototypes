@@ -1,9 +1,9 @@
 import classNames from 'classnames'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-    type LegacyButtonProps as ButtonProps,
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type {
+    LegacyButtonComponentProps as ButtonComponentProps,
+    LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'

@@ -1,9 +1,7 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import {
-    type Context,
-    defineScope,
-} from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import { CAMPAIGN_EVENTS } from 'domains/reporting/pages/convert/clients/constants'
 

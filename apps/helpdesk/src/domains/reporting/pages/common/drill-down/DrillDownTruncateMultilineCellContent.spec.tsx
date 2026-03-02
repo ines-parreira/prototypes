@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { DrillDownTruncateMultilineCellContent } from './DrillDownTruncateMultilineCellContent'
+import { DrillDownTruncateMultilineCellContent } from 'domains/reporting/pages/common/drill-down/DrillDownTruncateMultilineCellContent'
 
 describe('DrillDownTruncateMultilineCellContent', () => {
     beforeEach(() => {

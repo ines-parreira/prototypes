@@ -5,7 +5,7 @@ import {
     useSnoozedInteractionsPerIntent,
     useTotalInteractionsPerIntent,
 } from 'domains/reporting/hooks/ai-agent-insights/intentMetrics'
-import { type MetricWithDecile } from 'domains/reporting/hooks/types'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
 import {
     handoverInteractionsPerIntentQueryFactory,

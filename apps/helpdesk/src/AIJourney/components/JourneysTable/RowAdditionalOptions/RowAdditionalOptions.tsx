@@ -4,10 +4,8 @@ import { NotificationStatus } from '@repo/agent-status'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
-import {
-    JourneyStatusEnum,
-    type JourneyTypeEnum,
-} from '@gorgias/convert-client'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
+import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
@@ -140,7 +138,7 @@ export const RowAdditionalOptions = ({
                     break
             }
         },
-        [shopName, journeyId, history, journeyType],
+        [shopName, journeyId, history, journeyType, handleUpdateJourneyState],
     )
 
     const options = useMemo(() => {

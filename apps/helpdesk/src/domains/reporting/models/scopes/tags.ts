@@ -3,10 +3,12 @@ import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import {
     APIOnlyFilterKey,
-    type ApiStatsFilters,
     FilterKey,
-    type StatsFilters,
     TicketTimeReference,
+} from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    StatsFilters,
 } from 'domains/reporting/models/stat/types'
 
 const tagsScope = defineScope({

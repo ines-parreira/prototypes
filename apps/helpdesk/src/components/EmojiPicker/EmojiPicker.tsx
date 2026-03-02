@@ -5,7 +5,8 @@ import { Icon, IconName } from '@gorgias/axiom'
 
 import 'emoji-mart/css/emoji-mart.css'
 
-import { type ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { ChangeEvent } from 'react'
 
 import {
     autoUpdate,

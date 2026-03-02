@@ -3,18 +3,17 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { AgentAvailabilityTable } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTable'
 import { useAgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData'
-import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
-import { initialState as statsTablesInitialState } from 'domains/reporting/state/ui/stats/statsTablesReducer'
-import { OrderDirection } from 'models/api/types'
-import type { RootState } from 'state/types'
-
 import {
     mockAgents,
     mockCustomStatusWithData,
     mockStatsFilters,
     mockTransformedAgents,
     renderWithProviders,
-} from './fixtures'
+} from 'domains/reporting/pages/support-performance/agents/tests/fixtures'
+import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
+import { initialState as statsTablesInitialState } from 'domains/reporting/state/ui/stats/statsTablesReducer'
+import { OrderDirection } from 'models/api/types'
+import type { RootState } from 'state/types'
 
 jest.mock(
     'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData',

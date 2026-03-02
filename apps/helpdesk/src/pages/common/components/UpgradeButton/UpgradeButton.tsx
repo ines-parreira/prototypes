@@ -5,10 +5,8 @@ import { logEvent } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import type { ButtonIconPosition } from 'pages/common/components/button/ButtonIconLabel'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

@@ -1,10 +1,5 @@
-import {
-    createContext,
-    type MutableRefObject,
-    useContext,
-    useMemo,
-    useReducer,
-} from 'react'
+import { createContext, useContext, useMemo, useReducer } from 'react'
+import type { MutableRefObject } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -14,13 +9,15 @@ import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import {
     createInitialState,
-    type GuidanceContextConfig,
-    type GuidanceContextValue,
     guidanceReducer,
-    type GuidanceReducerAction,
-    type GuidanceState,
     KnowledgeEditorGuidanceProvider,
     useGuidanceStore,
+} from './context'
+import type {
+    GuidanceContextConfig,
+    GuidanceContextValue,
+    GuidanceReducerAction,
+    GuidanceState,
 } from './context'
 
 type RenderCounts = Record<string, number>

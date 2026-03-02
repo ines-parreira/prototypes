@@ -7,10 +7,8 @@ import { useHistory, useParams } from 'react-router-dom'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {
-    type CATEGORIES,
-    CATEGORIES_SORT_ORDER,
-} from 'pages/automate/actionsPlatform/constants'
+import { CATEGORIES_SORT_ORDER } from 'pages/automate/actionsPlatform/constants'
+import type { CATEGORIES } from 'pages/automate/actionsPlatform/constants'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
 import type { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import { TemplateCard } from 'pages/common/components/TemplateCard'

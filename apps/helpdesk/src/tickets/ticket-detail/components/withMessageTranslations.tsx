@@ -1,4 +1,5 @@
-import { type ComponentType, useMemo } from 'react'
+import { useMemo } from 'react'
+import type { ComponentType } from 'react'
 
 import {
     DisplayedContent,

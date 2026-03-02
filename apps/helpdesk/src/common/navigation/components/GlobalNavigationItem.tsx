@@ -7,7 +7,8 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import css from 'common/navigation/components/GlobalNavigationItem.less'
-import { TooltipDelay, type TooltipDelayValue } from 'core/ui/tooltip.utils'
+import { TooltipDelay } from 'core/ui/tooltip.utils'
+import type { TooltipDelayValue } from 'core/ui/tooltip.utils'
 import type { PolymorphicProps } from 'types'
 
 export type GlobalNavigationItemTooltipTrigger = 'hover'[]

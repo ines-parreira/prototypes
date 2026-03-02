@@ -17,9 +17,8 @@ import {
     AchievedAndBreachedVoiceCallsChart,
     CHART_FIELDS,
 } from 'domains/reporting/pages/sla/components/AchievedAndBreachedVoiceCallsChart'
+import { VoiceSLAStatus } from 'domains/reporting/pages/sla/constants'
 import { initialState as uiStatsInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
-
-import { VoiceSLAStatus } from '../../constants'
 
 const mockStore = configureMockStore([thunk])
 

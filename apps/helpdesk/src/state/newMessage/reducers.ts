@@ -817,7 +817,7 @@ export default function reducer(
             ]) as ContentState
 
             if (originalContent) {
-                state = state
+                return state
                     .setIn(['state', 'contentState'], originalContent)
                     .deleteIn(['state', 'originalContentState'])
                     .setIn(['state', 'forceUpdate'], true)

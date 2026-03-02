@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { ConfigureMetricsModal, type MetricConfigItem } from '@repo/reporting'
+import { ConfigureMetricsModal } from '@repo/reporting'
+import type { MetricConfigItem } from '@repo/reporting'
 
 import { Box, Button } from '@gorgias/axiom'
 

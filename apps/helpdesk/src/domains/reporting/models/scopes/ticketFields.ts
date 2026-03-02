@@ -8,8 +8,7 @@ import {
     FilterKey,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
-
-import { ApiOnlyOperatorEnum } from '../../pages/common/components/Filter/constants'
+import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 const ticketFieldsScope = defineScope({
     scope: MetricScope.TicketFields,

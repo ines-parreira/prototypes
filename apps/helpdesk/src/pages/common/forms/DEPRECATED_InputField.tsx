@@ -1,5 +1,6 @@
 // Please use src/pages/common/forms/input/InputField.tsx instead
-import { type ChangeEvent, Component, type ReactNode } from 'react'
+import { Component } from 'react'
+import type { ChangeEvent, ReactNode } from 'react'
 
 import classnames from 'classnames'
 import _omit from 'lodash/omit'

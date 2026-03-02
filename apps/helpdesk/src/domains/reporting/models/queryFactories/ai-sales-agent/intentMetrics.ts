@@ -1,10 +1,10 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
-    type TicketCustomFieldsCubeWithJoins,
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
+import type { TicketCustomFieldsCubeWithJoins } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'

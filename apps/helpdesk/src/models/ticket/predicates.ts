@@ -6,13 +6,13 @@ import moment from 'moment'
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
-import {
-    type GorgiasContactFormTicketMeta,
-    MessageMetadataType,
-    type Source,
-    type SourceAddress,
-    type TicketEvent,
-    type TicketMessage as TicketMessage_DEPRECATED,
+import { MessageMetadataType } from 'models/ticket/types'
+import type {
+    GorgiasContactFormTicketMeta,
+    Source,
+    SourceAddress,
+    TicketEvent,
+    TicketMessage as TicketMessage_DEPRECATED,
 } from 'models/ticket/types'
 
 export const isTicketMessage = (

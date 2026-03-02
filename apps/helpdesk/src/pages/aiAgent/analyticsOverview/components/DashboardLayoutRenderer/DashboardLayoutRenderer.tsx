@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { type MetricConfigItem, ShowMoreList } from '@repo/reporting'
+import { ShowMoreList } from '@repo/reporting'
+import type { MetricConfigItem } from '@repo/reporting'
 import { motion } from 'framer-motion'
 
 import { Box } from '@gorgias/axiom'

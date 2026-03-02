@@ -56,7 +56,7 @@ describe('<CustomerMetafields/>', () => {
                 },
             },
             logger: {
-                log: console.log,
+                log: jest.fn(),
                 warn: console.warn,
                 error: () => {},
             },

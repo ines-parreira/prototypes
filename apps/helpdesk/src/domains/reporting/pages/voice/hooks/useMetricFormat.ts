@@ -5,13 +5,12 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { voiceCallCountQueryFactory } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import { voiceCallsCountQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'domains/reporting/pages/common/utils'
-
-import { voiceCallsCountQueryFactoryV2 } from '../../../models/scopes/voiceCalls'
 
 type Args = {
     isPercentageEnabled: boolean

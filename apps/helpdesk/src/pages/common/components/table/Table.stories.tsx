@@ -137,7 +137,7 @@ const TableWithGauges: StoryObj<typeof TableWrapper> = {
                             category="Lorem ipsum dolor dolor sit, lorem ipsum dolor dolor sit."
                             progress={25}
                         >
-                            <BodyCell key="summary">
+                            <BodyCell key="summary-first">
                                 Lorem ipsum dolor dolor sit, lorem ipsum dolor
                                 dolor sit.
                             </BodyCell>
@@ -146,14 +146,14 @@ const TableWithGauges: StoryObj<typeof TableWrapper> = {
                             category="Lorem ipsum dolor dolor sit."
                             progress={0}
                         >
-                            <BodyCell key="summary">
+                            <BodyCell key="summary-second">
                                 Lorem ipsum dolor dolor sit.
                             </BodyCell>
                         </DistributionCategoryCell>
-                        <BodyCell key="summary">
+                        <BodyCell key="summary-third">
                             Lorem ipsum dolor dolor sit.
                         </BodyCell>
-                        <BodyCell key="summary">
+                        <BodyCell key="summary-fourth">
                             Lorem ipsum dolor dolor sit.
                         </BodyCell>
                     </TableBodyRow>

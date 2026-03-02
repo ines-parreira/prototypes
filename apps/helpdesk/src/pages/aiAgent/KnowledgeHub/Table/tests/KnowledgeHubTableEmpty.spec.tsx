@@ -108,7 +108,7 @@ describe('KnowledgeHubTable - Empty States', () => {
             queries: { retry: false },
         },
         logger: {
-            log: console.log,
+            log: jest.fn(),
             warn: console.warn,
             error: () => {},
         },

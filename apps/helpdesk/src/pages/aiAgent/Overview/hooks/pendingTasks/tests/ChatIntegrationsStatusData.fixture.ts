@@ -1,4 +1,4 @@
-import { type ChatIntegrationsStatusData } from '../useFetchChatIntegrationsStatusData'
+import type { ChatIntegrationsStatusData } from '../useFetchChatIntegrationsStatusData'
 
 type AllKeys = keyof ChatIntegrationsStatusDataFixture
 type ConfiguredChatIntegrationsStatusData<

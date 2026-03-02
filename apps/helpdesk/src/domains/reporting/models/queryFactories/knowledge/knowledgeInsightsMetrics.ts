@@ -4,11 +4,13 @@ import _groupBy from 'lodash/groupBy'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type { Cubes } from 'domains/reporting/models/cubes'
+import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsDimension } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { TicketInsightsTaskCubeWithJoins } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
@@ -36,7 +38,10 @@ import type {
 } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
+import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import {
+    DRILLDOWN_QUERY_LIMIT,
     KnowledgeStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
@@ -45,12 +50,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import type { Props as ImpactProps } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-
-import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from '../../../hooks/automate/types'
-import { setMetricData } from '../../../state/ui/stats/drillDownSlice'
-import { KnowledgeMetric } from '../../../state/ui/stats/types'
-import { DRILLDOWN_QUERY_LIMIT } from '../../../utils/reporting'
-import { TicketDimension } from '../../cubes/TicketCube'
 
 /*
 Knowledge Hub loads statistics of all resources of a shop (guidances, HC articles, urls, etc.).

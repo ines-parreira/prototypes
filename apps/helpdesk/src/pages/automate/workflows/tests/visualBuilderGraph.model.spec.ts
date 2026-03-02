@@ -1,7 +1,5 @@
-import {
-    SHIPMONK_APPLICATION_ID,
-    type WorkflowVariableList,
-} from '../models/variables.types'
+import { SHIPMONK_APPLICATION_ID } from '../models/variables.types'
+import type { WorkflowVariableList } from '../models/variables.types'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,

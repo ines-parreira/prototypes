@@ -6,8 +6,6 @@ import moment from 'moment-timezone'
 import {
     flexRender,
     HeaderRowGroup,
-    type Row,
-    type SortingState,
     TableBodyContent,
     TableCell,
     TableHeader,
@@ -17,6 +15,7 @@ import {
     TableToolbar,
     useTable,
 } from '@gorgias/axiom'
+import type { Row, SortingState } from '@gorgias/axiom'
 
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'

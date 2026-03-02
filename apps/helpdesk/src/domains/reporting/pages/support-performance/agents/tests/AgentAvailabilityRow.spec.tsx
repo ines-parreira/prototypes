@@ -1,13 +1,12 @@
 import { screen } from '@testing-library/react'
 
 import { AgentAvailabilityRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityRow'
-import type { AgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
-
 import {
     basicColumnsOrder,
     mockTransformedAgents,
     renderRowWithProviders,
-} from './fixtures'
+} from 'domains/reporting/pages/support-performance/agents/tests/fixtures'
+import type { AgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 
 const mockAgent = mockTransformedAgents[0]
 

@@ -1,11 +1,8 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import {
-    type Context,
-    defineScope,
-} from 'domains/reporting/models/scopes/scope'
-
-import { ApiOnlyOperatorEnum } from '../../pages/common/components/Filter/constants'
-import { createScopeFilters } from './utils'
+import { defineScope } from 'domains/reporting/models/scopes/scope'
+import type { Context } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 const voiceSLAScope = defineScope({
     scope: MetricScope.VoiceServiceLevelAgreement,

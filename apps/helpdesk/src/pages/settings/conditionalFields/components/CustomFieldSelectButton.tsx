@@ -3,8 +3,8 @@ import React, { useMemo } from 'react'
 import {
     LegacyButton as Button,
     LegacySelectField as SelectField,
-    type LegacySelectFieldTriggerProps as SelectFieldTriggerProps,
 } from '@gorgias/axiom'
+import type { LegacySelectFieldTriggerProps as SelectFieldTriggerProps } from '@gorgias/axiom'
 import type { RequirementType } from '@gorgias/helpdesk-queries'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

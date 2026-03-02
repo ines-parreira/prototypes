@@ -1,4 +1,5 @@
-import { renderHook, type RenderHookOptions } from '@repo/testing'
+import { renderHook } from '@repo/testing'
+import type { RenderHookOptions } from '@repo/testing'
 import { MemoryRouter } from 'react-router-dom'
 
 type RenderHookWithRouterOptions<TProps> = {

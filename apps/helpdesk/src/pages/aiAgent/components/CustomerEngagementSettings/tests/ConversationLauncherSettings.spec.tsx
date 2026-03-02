@@ -98,9 +98,9 @@ describe('ConversationLauncherSettings', () => {
 
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
-        let client = getLDClient()
+        let __client = getLDClient()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        client = ldClientMock
+        __client = ldClientMock
 
         // Default mock - shows setup button (no floatingChatInputConfiguration)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
-import { fromJS, type List, type Map } from 'immutable'
+import { fromJS } from 'immutable'
+import type { List, Map } from 'immutable'
 
 import {
     Button,

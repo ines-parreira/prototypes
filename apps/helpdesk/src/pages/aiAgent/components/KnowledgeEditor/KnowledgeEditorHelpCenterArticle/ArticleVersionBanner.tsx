@@ -2,10 +2,8 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
-import {
-    getHelpCenterArticleQuery,
-    type GetHelpCenterArticleQueryOptions,
-} from 'models/helpCenter/queries'
+import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
+import type { GetHelpCenterArticleQueryOptions } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 import { VersionBanner } from '../shared/VersionBanner'

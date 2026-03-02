@@ -1,10 +1,8 @@
 import type { ComponentProps } from 'react'
 import React, { useCallback, useState } from 'react'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonProps as ButtonProps,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonProps as ButtonProps } from '@gorgias/axiom'
 
 import PrivateReplyButton from './PrivateReplyButton'
 import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'

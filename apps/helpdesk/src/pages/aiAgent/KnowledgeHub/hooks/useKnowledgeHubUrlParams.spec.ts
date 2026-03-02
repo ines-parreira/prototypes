@@ -1,10 +1,12 @@
 import React from 'react'
 
 import { act, renderHook } from '@testing-library/react'
-import { createMemoryHistory, type History } from 'history'
+import { createMemoryHistory } from 'history'
+import type { History } from 'history'
 import { Router } from 'react-router-dom'
 
-import { type GroupedKnowledgeItem, KnowledgeType } from '../types'
+import { KnowledgeType } from '../types'
+import type { GroupedKnowledgeItem } from '../types'
 import { useKnowledgeHubUrlParams } from './useKnowledgeHubUrlParams'
 
 jest.mock('../../hooks/useAiAgentNavigation', () => ({

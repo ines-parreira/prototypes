@@ -3,10 +3,8 @@ import React, { forwardRef, useContext } from 'react'
 
 import classnames from 'classnames'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-} from '@gorgias/axiom'
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type { LegacyButtonComponentProps as ButtonComponentProps } from '@gorgias/axiom'
 
 import { GroupContext } from '../layout/Group'
 

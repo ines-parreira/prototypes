@@ -21,9 +21,9 @@ import {
     DEFAULT_TABLE_METRICS,
     EMPTY_TABLE_METRICS,
     LOADING_TABLE_METRICS,
-    type Metrics,
     useAIJourneyTableKpis,
 } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
+import type { Metrics } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from 'domains/reporting/models/stat/types'

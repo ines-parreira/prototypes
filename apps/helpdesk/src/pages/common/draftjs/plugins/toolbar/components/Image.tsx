@@ -1,4 +1,5 @@
-import { Component, type ImgHTMLAttributes } from 'react'
+import { Component } from 'react'
+import type { ImgHTMLAttributes } from 'react'
 
 import classnames from 'classnames'
 import type {

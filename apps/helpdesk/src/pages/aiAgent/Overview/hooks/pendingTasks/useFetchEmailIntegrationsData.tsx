@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { type Map } from 'immutable'
+import type { Map } from 'immutable'
 
 import type {
     EmailIntegration,

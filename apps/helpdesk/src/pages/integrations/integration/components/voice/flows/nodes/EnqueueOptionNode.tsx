@@ -1,7 +1,7 @@
 import type { NodeProps } from 'core/ui/flows'
 import { ActionLabel, NodeWrapper } from 'core/ui/flows'
 
-import { type EnqueueOptionNode } from '../types'
+import type { EnqueueOptionNode } from '../types'
 
 type EnqueueOptionNodeProps = NodeProps<EnqueueOptionNode>
 

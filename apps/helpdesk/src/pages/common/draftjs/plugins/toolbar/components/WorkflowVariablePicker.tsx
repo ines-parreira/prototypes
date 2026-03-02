@@ -3,9 +3,9 @@ import { useRef, useState } from 'react'
 
 import {
     LegacyButton as Button,
-    type LegacyButtonSize,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
+import type { LegacyButtonSize } from '@gorgias/axiom'
 
 import type { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 

@@ -5,12 +5,11 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-
-import { createScopeFilters } from './utils'
 
 export const AISalesAgentConversationsScope = defineScope({
     scope: MetricScope.AISalesAgentConversations,

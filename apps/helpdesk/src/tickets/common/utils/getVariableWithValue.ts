@@ -1,10 +1,7 @@
 import _find from 'lodash/find'
 
-import {
-    HIDDEN_VARIABLES,
-    PREVIOUS_VARIABLES,
-    type Variable,
-} from 'tickets/common/config'
+import { HIDDEN_VARIABLES, PREVIOUS_VARIABLES } from 'tickets/common/config'
+import type { Variable } from 'tickets/common/config'
 
 import createMetafieldVariable from './createMetafieldVariable'
 import getVariablesList from './getVariablesList'

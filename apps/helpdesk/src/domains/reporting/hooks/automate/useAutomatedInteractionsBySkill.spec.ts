@@ -1,13 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react'
 
-import * as useMetricPerDimensionModule from 'domains/reporting/hooks/useMetricPerDimension'
-import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
-import type { StatsFilters } from 'domains/reporting/models/stat/types'
-
 import {
     fetchAutomatedInteractionsBySkill,
     useAutomatedInteractionsBySkill,
-} from './useAutomatedInteractionsBySkill'
+} from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
+import * as useMetricPerDimensionModule from 'domains/reporting/hooks/useMetricPerDimension'
+import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
 

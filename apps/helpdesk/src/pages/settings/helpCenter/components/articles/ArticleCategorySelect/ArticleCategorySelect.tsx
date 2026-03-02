@@ -5,9 +5,8 @@ import { ListItem, Select, SelectTrigger, TextField } from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 
-import useCategoriesOptions, {
-    type CategoryOption,
-} from './hooks/useCategoriesOptions'
+import useCategoriesOptions from './hooks/useCategoriesOptions'
+import type { CategoryOption } from './hooks/useCategoriesOptions'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode

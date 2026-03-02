@@ -3,10 +3,10 @@ import React from 'react'
 
 import type { Popover } from 'reactstrap'
 
-import {
-    LegacyButton as Button,
-    type LegacyButtonComponentProps as ButtonComponentProps,
-    type LegacyButtonProps as ButtonProps,
+import { LegacyButton as Button } from '@gorgias/axiom'
+import type {
+    LegacyButtonComponentProps as ButtonComponentProps,
+    LegacyButtonProps as ButtonProps,
 } from '@gorgias/axiom'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'

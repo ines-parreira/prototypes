@@ -1,4 +1,5 @@
-import { Component, type ComponentProps } from 'react'
+import { Component } from 'react'
+import type { ComponentProps } from 'react'
 
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'

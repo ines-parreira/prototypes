@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { type SupportedCategories } from '../../types'
+import type { SupportedCategories } from '../../types'
 import { mockImportableFields } from './data'
 import MetafieldsImportList from './MetafieldsImportList'
 

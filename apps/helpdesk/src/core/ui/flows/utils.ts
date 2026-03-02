@@ -168,12 +168,14 @@ function addSubIntermediaryNodes<
         nodes: TNode[],
     ) => TNode[],
 ): TNode[] {
+    let nodesWithIntermediaries = modifiedNodes
+
     // retrieve updated paths from root to each incoming node, sorted by length desc
     let incomingNodesPathsFromRoot = convergence.convergingNodes
         .map((incomingNode) => {
             const path =
                 findPathFromRoot(
-                    modifiedNodes,
+                    nodesWithIntermediaries,
                     firstNodeId,
                     incomingNode,
                     getNextNodes,
@@ -188,7 +190,7 @@ function addSubIntermediaryNodes<
     // we try to see for each node in the path which other nodes are intersecting with it
     // we create intermediary nodes for those intersections
     const lcaForConvergence = findLowestCommonAncestor(
-        modifiedNodes,
+        nodesWithIntermediaries,
         convergence.convergingNodes,
         firstNodeId,
         getNextNodes,
@@ -208,7 +210,7 @@ function addSubIntermediaryNodes<
                 }
 
                 const LCA = findLowestCommonAncestor(
-                    modifiedNodes,
+                    nodesWithIntermediaries,
                     [nodeId, otherNodeId],
                     firstNodeId,
                     getNextNodes,
@@ -226,13 +228,13 @@ function addSubIntermediaryNodes<
                     },
                     getIntermediaryNodeId(currentNode),
                 )
-                modifiedNodes = insertIntermediaryNode(
+                nodesWithIntermediaries = insertIntermediaryNode(
                     subIntermediaryNode,
                     {
                         targetNodeId: intermediaryNode.id,
                         convergingNodes: intersectingHere,
                     },
-                    modifiedNodes,
+                    nodesWithIntermediaries,
                 )
 
                 // search for sub intermediary nodes if there are more than 2 intersecting nodes
@@ -241,8 +243,8 @@ function addSubIntermediaryNodes<
                         targetNodeId: intermediaryNode.id,
                         convergingNodes: intersectingHere,
                     }
-                    modifiedNodes = addSubIntermediaryNodes(
-                        modifiedNodes,
+                    nodesWithIntermediaries = addSubIntermediaryNodes(
+                        nodesWithIntermediaries,
                         lcaForConvergence || firstNodeId,
                         getNextNodes,
                         subConvergencePoint,
@@ -269,7 +271,7 @@ function addSubIntermediaryNodes<
         }
     }
 
-    return modifiedNodes
+    return nodesWithIntermediaries
 }
 
 export function insertConvergenceNodes<

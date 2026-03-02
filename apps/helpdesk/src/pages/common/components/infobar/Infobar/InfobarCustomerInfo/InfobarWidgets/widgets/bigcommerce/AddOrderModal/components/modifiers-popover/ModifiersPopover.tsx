@@ -42,7 +42,6 @@ export const ModifiersPopoverBody = ({
             />
             {(product.modifiers ?? []).map((modifier) => {
                 const fieldProps = {
-                    key: modifier.id,
                     value: modifierValues[modifier.id],
                     error: modifierErrors[modifier.id],
                     onSetValue: onSetModifierValue,
@@ -50,25 +49,31 @@ export const ModifiersPopoverBody = ({
 
                 if (isSelectModifier(modifier)) {
                     return (
-                        // the key is set in the fieldProps object but not detected by oxlint
-                        // eslint-disable-next-line react/jsx-key
-                        <ModifierSelect {...fieldProps} modifier={modifier} />
+                        <ModifierSelect
+                            key={modifier.id}
+                            {...fieldProps}
+                            modifier={modifier}
+                        />
                     )
                 }
 
                 if (isSwatchModifier(modifier)) {
                     return (
-                        // the key is set in the fieldProps object but not detected by oxlint
-                        // eslint-disable-next-line react/jsx-key
-                        <ModifierSwatch {...fieldProps} modifier={modifier} />
+                        <ModifierSwatch
+                            key={modifier.id}
+                            {...fieldProps}
+                            modifier={modifier}
+                        />
                     )
                 }
 
                 if (isCheckboxModifier(modifier)) {
                     return (
-                        // the key is set in the fieldProps object but not detected by oxlint
-                        // eslint-disable-next-line react/jsx-key
-                        <ModifierCheckbox {...fieldProps} modifier={modifier} />
+                        <ModifierCheckbox
+                            key={modifier.id}
+                            {...fieldProps}
+                            modifier={modifier}
+                        />
                     )
                 }
 
