@@ -91,7 +91,7 @@ export const isWhatsAppWindowOpen = (
 ): boolean => {
     const lastCustomerWhatsAppMessage = findLast(
         customerMessages,
-        ((message) => message.channel === TicketChannel.WhatsApp) ?? null,
+        (message) => message.channel === TicketChannel.WhatsApp,
     )
 
     if (!lastCustomerWhatsAppMessage) return false

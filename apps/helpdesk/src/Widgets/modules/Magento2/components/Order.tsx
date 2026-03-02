@@ -60,7 +60,7 @@ type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
 
 class BeforeContentContainer extends Component<BeforeContentProps> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { source, getIntegrationData } = this.props
 
@@ -117,7 +117,7 @@ export class Shipments extends Component<{
     shipments: List<any>
 }> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { shipments } = this.props
         const { integration } = this.context
@@ -196,7 +196,7 @@ export class CreditMemos extends Component<{
     creditMemos: List<any>
 }> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { creditMemos } = this.props
         const { integration } = this.context
@@ -262,7 +262,7 @@ type AfterContentProps = ConnectedProps<typeof connectorAfterContent> & {
 
 class AfterContentContainer extends Component<AfterContentProps> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { source, getIntegrationData } = this.props
         const { integrationId } = this.context
@@ -302,7 +302,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends Component<TitleWrapperProps> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { children, source } = this.props
         const { integration } = this.context

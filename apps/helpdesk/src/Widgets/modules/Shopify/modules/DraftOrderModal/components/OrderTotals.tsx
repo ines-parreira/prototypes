@@ -35,7 +35,7 @@ type Props = {
 
 export class OrderTotalsComponent extends Component<Props> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
         const { onPayloadChange, payload } = this.props
         const { integrationId } = this.context

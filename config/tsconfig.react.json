@@ -3,7 +3,7 @@
     "extends": "./tsconfig.common.json",
     "compilerOptions": {
         "jsx": "react-jsx",
-        "target": "ES6",
+        "target": "ES2022",
         "sourceMap": false
     }
 }

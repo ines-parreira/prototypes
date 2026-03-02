@@ -37,8 +37,7 @@ jest.mock('@repo/routing', () => ({
         replace: jest.fn(),
     },
 }))
-
-window.location = {
+;(window as unknown as { location: Location }).location = {
     pathname: '/integration/1',
 } as unknown as Location
 

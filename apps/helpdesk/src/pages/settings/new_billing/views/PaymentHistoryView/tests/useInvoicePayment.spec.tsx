@@ -565,7 +565,8 @@ describe('useInvoicePayment', () => {
 
             const originalLocation = window.location.href
             delete (window as { location?: unknown }).location
-            window.location = { href: originalLocation } as Location
+            window.location = { href: originalLocation } as unknown as string &
+                Location
 
             const { result } =
                 renderHookWithQueryClientProvider(useInvoicePayment)

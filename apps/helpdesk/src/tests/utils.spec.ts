@@ -591,7 +591,9 @@ describe('global utils', () => {
         it('should replace attachment url for a .io production environment', () => {
             ;(isProduction as jest.Mock).mockReturnValueOnce(true)
             const oldLocation = window.location
-            window.location = { hostname: 'acme.gorgias.io' } as Location
+            ;(window as unknown as { location: Location }).location = {
+                hostname: 'acme.gorgias.io',
+            } as Location
 
             expect(
                 utils.replaceAttachmentURL(
@@ -600,8 +602,8 @@ describe('global utils', () => {
             ).toBe(
                 'https://acme.gorgias.io/api/attachment/download/foo/bar.pdf',
             )
-
-            window.location = oldLocation
+            ;(window as unknown as { location: Location }).location =
+                oldLocation
         })
 
         it('should replace attachment url for staging environment', () => {

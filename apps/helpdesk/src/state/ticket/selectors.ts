@@ -437,7 +437,7 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
 
 export const getTicketCustomer = createImmutableSelector(
     getTicketState,
-    (state) => state.get('customer' || fromJS({})) as Map<any, any>,
+    (state) => state.get('customer') as Map<any, any>,
 )
 
 export const getHasAttemptedToCloseTicket = createImmutableSelector(

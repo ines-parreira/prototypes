@@ -39,13 +39,16 @@ describe('services', () => {
         it('should start all pollings', () => {
             store.dispatch = spy
             const oldLocation = window.location
-            window.location = { pathname: '/app/tickets/123456' } as Location
+            ;(window as unknown as { location: Location }).location = {
+                pathname: '/app/tickets/123456',
+            } as Location
             pollingManager.start()
             // should set intervals to fetch resources periodically
             expect(setInterval).toHaveBeenCalledTimes(2)
             // should fetch resources immediately
             expect(spy).toHaveBeenCalledTimes(1)
-            window.location = oldLocation
+            ;(window as unknown as { location: Location }).location =
+                oldLocation
         })
 
         it('should stop pollings', () => {

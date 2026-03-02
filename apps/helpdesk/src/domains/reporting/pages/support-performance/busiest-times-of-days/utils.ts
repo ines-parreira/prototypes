@@ -108,7 +108,7 @@ export function getAggregatedBusiestTimesOfDayData(
         if (day && hourFromDate !== undefined) {
             result[hourFromDate] = {
                 ...result[hourFromDate],
-                [day]: value + result[hourFromDate][day] ?? 0,
+                [day]: value + result[hourFromDate][day],
             }
         }
     })

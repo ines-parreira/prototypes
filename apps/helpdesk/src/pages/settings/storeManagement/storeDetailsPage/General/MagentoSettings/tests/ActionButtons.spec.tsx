@@ -33,7 +33,9 @@ describe('<ActionButtons />', () => {
 
     beforeEach(() => {
         jest.restoreAllMocks()
-        window.location = { href: '' } as Location
+        ;(window as unknown as { location: Location }).location = {
+            href: '',
+        } as Location
     })
 
     it('should render save and delete buttons by default', () => {

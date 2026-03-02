@@ -106,7 +106,7 @@ catalogs:
   bundler:
     'process': '^0.11.10'
   typescript:
-    'typescript': '5.3.3'
+    'typescript': '5.9.3'
   prettier:
     'prettier': '3.6.2'
     '@trivago/prettier-plugin-sort-imports': '^5.2.2'

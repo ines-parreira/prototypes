@@ -52,7 +52,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends Component<TitleWrapperProps> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { source, isEditing } = this.props
         const pointBalance = source.getIn([

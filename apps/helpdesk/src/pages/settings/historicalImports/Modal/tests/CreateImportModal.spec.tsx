@@ -70,7 +70,7 @@ describe('EmailImportModalWizzard', () => {
 
         mockLocationHref = ''
         delete (window as any).location
-        window.location = {
+        ;(window as unknown as { location: Location }).location = {
             ...originalLocation,
             origin: 'https://app.gorgias.com',
         } as Location
@@ -86,7 +86,8 @@ describe('EmailImportModalWizzard', () => {
 
     afterEach(() => {
         ;(console.error as jest.Mock).mockRestore()
-        window.location = originalLocation
+        ;(window as unknown as { location: Location }).location =
+            originalLocation
     })
 
     describe('Modal rendering', () => {

@@ -87,7 +87,7 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     static contextType = SearchRankScenarioContext
-    context!: ContextType<typeof SearchRankScenarioContext>
+    declare context: ContextType<typeof SearchRankScenarioContext>
 
     componentDidMount() {
         const {

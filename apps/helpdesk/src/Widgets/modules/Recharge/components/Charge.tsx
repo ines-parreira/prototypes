@@ -40,7 +40,7 @@ export class AfterTitle extends Component<{
     source: Map<any, any>
 }> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { isEditing = false, source } = this.props
         const { integrationId } = this.context
@@ -107,7 +107,7 @@ export class SubscriptionAfterTitle extends Component<{
     source: Map<any, any>
 }> {
     static contextType = ChargeContext
-    context!: ContextType<typeof ChargeContext>
+    declare context: ContextType<typeof ChargeContext>
     render() {
         const { isEditing = false, source } = this.props
         const { integrationId, chargeStatus } = this.context
@@ -245,7 +245,7 @@ type TitleWrapperProps = {
 
 export class TitleWrapperContainer extends Component<TitleWrapperProps> {
     static contextType = ChargeContext
-    context!: ContextType<typeof ChargeContext>
+    declare context: ContextType<typeof ChargeContext>
     render() {
         const { children, template, source, getIntegrationData } = this.props
         const { integrationId } = this.context

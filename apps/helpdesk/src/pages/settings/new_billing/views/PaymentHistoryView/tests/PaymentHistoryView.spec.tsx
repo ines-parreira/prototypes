@@ -300,7 +300,9 @@ describe('PaymentsHistoryView', () => {
 
             const originalLocation = window.location.href
             delete (window as { location?: unknown }).location
-            window.location = { href: originalLocation } as Location
+            ;(window as unknown as { location: Location }).location = {
+                href: originalLocation,
+            } as Location
 
             const confirmButton = await screen.findByText('Confirm')
             await act(() => user.click(confirmButton))

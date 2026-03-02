@@ -56,7 +56,7 @@ const statusColors: Record<string, ColorType> = {
 
 export class AfterTitle extends Component<AfterTitleProps> {
     static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+    declare context: ContextType<typeof OrderContext>
 
     render() {
         const { isEditing, source } = this.props

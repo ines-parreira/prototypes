@@ -41,7 +41,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends Component<TitleWrapperProps> {
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
     render() {
         const { children, source, isEditing } = this.props
 

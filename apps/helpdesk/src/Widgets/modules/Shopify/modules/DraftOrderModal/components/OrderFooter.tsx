@@ -57,7 +57,7 @@ export class OrderFooterComponent extends Component<Props, State> {
         options: [],
     }
     static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
+    declare context: ContextType<typeof IntegrationContext>
 
     _defaultTags = this.props.payload.get('tags') || ''
 

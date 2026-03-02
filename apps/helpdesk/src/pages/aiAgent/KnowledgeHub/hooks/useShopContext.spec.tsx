@@ -51,12 +51,15 @@ describe('useShopContext', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         delete (window as any).location
-        window.location = { href: 'http://localhost/app' } as Location
+        ;(window as unknown as { location: Location }).location = {
+            href: 'http://localhost/app',
+        } as Location
         mockExtractShopNameFromUrl.mockReturnValue(undefined)
     })
 
     afterEach(() => {
-        window.location = originalLocation
+        ;(window as unknown as { location: Location }).location =
+            originalLocation
     })
 
     it('returns shop name from first integration when URL extraction returns undefined', () => {

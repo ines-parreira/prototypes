@@ -29,7 +29,7 @@ const realLocation = window.location
 
 describe('<Create/>', () => {
     afterEach(() => {
-        window.location = realLocation
+        ;(window as unknown as { location: Location }).location = realLocation
     })
     it('should render a create view', () => {
         const { container } = render(

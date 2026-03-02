@@ -418,7 +418,7 @@
         "swc_mut_cjs_exports": "catalog:test",
         "ts-checker-rspack-plugin": "^1.1.1",
         "tsx": "^4.19.2",
-        "typescript": "5.3.3",
+        "typescript": "catalog:typescript",
         "url-loader": "1.1.2",
         "validator": "13.7.0",
         "vitest": "catalog:test",

@@ -43,7 +43,9 @@ describe('<ShopifySettings/>', () => {
 
     beforeEach(() => {
         jest.restoreAllMocks()
-        window.location = { href: '' } as Location
+        ;(window as unknown as { location: Location }).location = {
+            href: '',
+        } as Location
     })
 
     it('should display store information form with correct initial values', () => {

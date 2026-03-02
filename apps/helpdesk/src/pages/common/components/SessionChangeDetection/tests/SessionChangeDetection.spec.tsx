@@ -60,13 +60,13 @@ describe('<SessionChangeDetection />', () => {
         let location: Location
         beforeEach(() => {
             location = window.location
-            window.location = {
+            ;(window as unknown as { location: Location }).location = {
                 ...location,
                 reload: jest.fn(),
             }
         })
         afterEach(() => {
-            window.location = location
+            ;(window as unknown as { location: Location }).location = location
             jest.useRealTimers()
         })
 

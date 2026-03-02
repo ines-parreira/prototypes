@@ -227,7 +227,7 @@ type Props = {
 
 export class AddLinkContainer extends Component<Props> {
     static contextType = ToolbarContext
-    context!: ContextType<typeof ToolbarContext>
+    declare context: ContextType<typeof ToolbarContext>
     workflowVariables: WorkflowVariableList | undefined
     anchorRef = createRef<HTMLSpanElement>()
     buttonRef = createRef<HTMLButtonElement>()

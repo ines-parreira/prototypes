@@ -78,7 +78,7 @@ type AfterTitleProps = {
 
 export class AfterTitle extends Component<AfterTitleProps> {
     static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+    declare context: ContextType<typeof OrderContext>
 
     _getActions = () => {
         const { source, getIntegrationData } = this.props
@@ -206,7 +206,7 @@ type BeforeContentProps = {
 
 export class BeforeContent extends Component<BeforeContentProps> {
     static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+    declare context: ContextType<typeof OrderContext>
     render() {
         const { source, getIntegrationData } = this.props
         const { integrationId } = this.context

@@ -68,7 +68,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
         isUploading: false,
     }
 
-    id?: string
+    declare id?: string
 
     inputRef: RefObject<HTMLInputElement>
 

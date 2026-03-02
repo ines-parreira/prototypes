@@ -54,13 +54,18 @@ export const AIAgentTicketLevelFeedback = ({
                 feedback.feedbackType === 'TICKET_BAD_INTERACTION_REASON',
         )
 
-        const itemsToCheck = [...badInteractionReasons]
-        if (freeFormFeedback) {
-            itemsToCheck.push(freeFormFeedback)
-        }
-        if (ticketRating) {
-            itemsToCheck.push(ticketRating)
-        }
+        const itemsToCheck = [
+            ...badInteractionReasons,
+            freeFormFeedback,
+            ticketRating,
+        ].filter(
+            (
+                item,
+            ): item is
+                | (typeof badInteractionReasons)[number]
+                | NonNullable<typeof freeFormFeedback>
+                | NonNullable<typeof ticketRating> => !!item,
+        )
 
         const maxDate = itemsToCheck.reduce((acc, feedback) => {
             return Math.max(

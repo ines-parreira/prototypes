@@ -25,7 +25,7 @@ const realLocation = window.location
 
 describe('<OneClickIntegrationForm/>', () => {
     afterEach(() => {
-        window.location = realLocation
+        ;(window as unknown as { location: Location }).location = realLocation
         updateOrCreateIntegrationRequest.mockClear()
         deleteIntegration.mockClear()
     })

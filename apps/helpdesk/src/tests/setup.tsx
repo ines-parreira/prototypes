@@ -274,7 +274,7 @@ globalThis.analytics = {
 }
 
 // Jest 28 - migration changes
-global.TextEncoder = TextEncoder
+global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder
 global.TextDecoder = TextDecoder as typeof global.TextDecoder
 global.setImmediate = setImmediate
 

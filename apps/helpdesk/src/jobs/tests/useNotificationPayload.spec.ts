@@ -17,7 +17,7 @@ jest.mock('utils/notificationUtils')
 const buildJobMessageMock = assumeMock(buildJobMessage)
 
 buildJobMessageMock.mockImplementation(
-    (_a, _b, _c, _d, numberOfTickets) => `${numberOfTickets}` ?? '',
+    (_a, _b, _c, _d, numberOfTickets) => `${numberOfTickets}`,
 )
 
 describe('useBulkAction', () => {

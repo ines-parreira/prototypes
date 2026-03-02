@@ -16,7 +16,8 @@ export default class MoneyAmount extends Component<Props> {
 
     static _DEFAULT_CURRENCY_CODE = 'USD'
 
-    static _DEFAULT_CURRENCY_DISPLAY = 'symbol'
+    static _DEFAULT_CURRENCY_DISPLAY: Intl.NumberFormatOptions['currencyDisplay'] =
+        'symbol'
 
     render() {
         const {
