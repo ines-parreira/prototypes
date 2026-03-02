@@ -1015,9 +1015,24 @@ export class RichFieldEditor extends Component<Props, State> {
             })()
 
             if (shouldReset) {
-                const resetClass =
-                    css[`listResetDepth${depth}` as keyof typeof css]
-                if (resetClass) classes.push(resetClass)
+                const listStart = block.getData().get('listStart') as
+                    | number
+                    | undefined
+                if (listStart && listStart > 1) {
+                    const startClass =
+                        css[`listStartAt${listStart}` as keyof typeof css]
+                    if (startClass) {
+                        classes.push(startClass)
+                    } else {
+                        const resetClass =
+                            css[`listResetDepth${depth}` as keyof typeof css]
+                        if (resetClass) classes.push(resetClass)
+                    }
+                } else {
+                    const resetClass =
+                        css[`listResetDepth${depth}` as keyof typeof css]
+                    if (resetClass) classes.push(resetClass)
+                }
             }
         } else {
             const depth = block.getDepth()

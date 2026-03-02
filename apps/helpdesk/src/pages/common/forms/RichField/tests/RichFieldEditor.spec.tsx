@@ -3864,4 +3864,146 @@ describe('RichFieldEditor', () => {
             expect(spyOnChange).not.toHaveBeenCalled()
         })
     })
+
+    describe('_blockStyleFn', () => {
+        const makeListEditorState = (blocks: ContentBlock[]): EditorState => {
+            const listContent = DraftContentState.createFromBlockArray(blocks)
+            return EditorState.createWithContent(listContent)
+        }
+
+        it('should apply listStartAt class when first ordered-list block has listStart > 1', () => {
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'list-key-1',
+                type: 'ordered-list-item',
+                text: 'First item',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap({ listStart: 5 }),
+            })
+            const listEditorState = makeListEditorState([block])
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={jest.fn()}
+                    ref={instanceRef}
+                />,
+            )
+
+            const result = instanceRef.current!._blockStyleFn(block)
+
+            expect(result).toContain('listStartAt5')
+            expect(result).not.toContain('listResetDepth')
+        })
+
+        it('should fall back to listResetDepth class when first ordered-list block has listStart = 1', () => {
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'list-key-1',
+                type: 'ordered-list-item',
+                text: 'First item',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap({ listStart: 1 }),
+            })
+            const listEditorState = makeListEditorState([block])
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={jest.fn()}
+                    ref={instanceRef}
+                />,
+            )
+
+            const result = instanceRef.current!._blockStyleFn(block)
+
+            expect(result).toContain('listResetDepth0')
+            expect(result).not.toContain('listStartAt')
+        })
+
+        it('should fall back to listResetDepth class when first ordered-list block has no listStart', () => {
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const block = new ContentBlock({
+                key: 'list-key-1',
+                type: 'ordered-list-item',
+                text: 'First item',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const listEditorState = makeListEditorState([block])
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={jest.fn()}
+                    ref={instanceRef}
+                />,
+            )
+
+            const result = instanceRef.current!._blockStyleFn(block)
+
+            expect(result).toContain('listResetDepth0')
+            expect(result).not.toContain('listStartAt')
+        })
+
+        it('should not apply listStartAt class for non-first ordered-list item', () => {
+            const instanceRef: {
+                current: InstanceType<typeof RichFieldEditor> | null
+            } = { current: null }
+
+            const firstBlock = new ContentBlock({
+                key: 'list-key-1',
+                type: 'ordered-list-item',
+                text: 'First item',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap({ listStart: 5 }),
+            })
+            const secondBlock = new ContentBlock({
+                key: 'list-key-2',
+                type: 'ordered-list-item',
+                text: 'Second item',
+                depth: 0,
+                characterList: ImmutableList(),
+                data: ImmutableMap(),
+            })
+            const listEditorState = makeListEditorState([
+                firstBlock,
+                secondBlock,
+            ])
+
+            render(
+                <RichFieldEditor
+                    {...defaultProps}
+                    editorKey="editor"
+                    editorState={listEditorState}
+                    onChange={jest.fn()}
+                    ref={instanceRef}
+                />,
+            )
+
+            const result = instanceRef.current!._blockStyleFn(secondBlock)
+
+            expect(result).not.toContain('listStartAt')
+            expect(result).not.toContain('listResetDepth')
+        })
+    })
 })

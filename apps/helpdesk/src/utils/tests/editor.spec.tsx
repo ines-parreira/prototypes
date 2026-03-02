@@ -218,6 +218,37 @@ describe('editor utils', () => {
             expect(result).toContain('<ol type="i">')
         })
 
+        it('should include start attribute on <ol> when list starts from a custom number', () => {
+            const html = '<ol start="5"><li>First</li><li>Second</li></ol>'
+            const contentState = convertFromHTML(html)
+            const result = convertToHTML(contentState)
+            expect(result).toContain('start="5"')
+        })
+
+        it('should not include start attribute on <ol> when list starts from 1', () => {
+            const html = '<ol><li>First</li><li>Second</li></ol>'
+            const contentState = convertFromHTML(html)
+            const result = convertToHTML(contentState)
+            expect(result).not.toContain('start=')
+        })
+
+        it('should only set start attribute on the first <ol> tag, not on continuation items', () => {
+            const html = '<ol start="3"><li>A</li><li>B</li><li>C</li></ol>'
+            const contentState = convertFromHTML(html)
+            const result = convertToHTML(contentState)
+            const startMatches = result.match(/start="/g)
+            expect(startMatches).toHaveLength(1)
+        })
+
+        it('should roundtrip ordered list with custom start through convertFromHTML and convertToHTML', () => {
+            const html = '<ol start="7"><li>Item one</li><li>Item two</li></ol>'
+            const contentState = convertFromHTML(html)
+            const result = convertToHTML(contentState)
+            expect(result).toContain('start="7"')
+            expect(result).toContain('Item one')
+            expect(result).toContain('Item two')
+        })
+
         it('should convert video entity to html', () => {
             let contentState = ContentState.createFromText('')
             contentState = contentState.createEntity('video', 'MUTABLE', {
@@ -522,6 +553,37 @@ describe('editor utils', () => {
             expect(blocks[2].getDepth()).toBe(2)
             expect(blocks[3].getText()).toBe('Back to L0')
             expect(blocks[3].getDepth()).toBe(0)
+        })
+
+        it('should store listStart data on first block of <ol> with start > 1', () => {
+            const html = '<ol start="5"><li>First</li><li>Second</li></ol>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks[0].getData().get('listStart')).toBe(5)
+            expect(blocks[1].getData().get('listStart')).toBeUndefined()
+        })
+
+        it('should not store listStart when <ol> has no start attribute', () => {
+            const html = '<ol><li>First</li></ol>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            expect(block.getData().get('listStart')).toBeUndefined()
+        })
+
+        it('should not store listStart when <ol start="1">', () => {
+            const html = '<ol start="1"><li>First</li></ol>'
+            const contentState = convertFromHTML(html)
+            const block = contentState.getFirstBlock()
+            expect(block.getData().get('listStart')).toBeUndefined()
+        })
+
+        it('should not store listStart on non-first items in <ol start="N">', () => {
+            const html = '<ol start="4"><li>A</li><li>B</li><li>C</li></ol>'
+            const contentState = convertFromHTML(html)
+            const blocks = contentState.getBlocksAsArray()
+            expect(blocks[0].getData().get('listStart')).toBe(4)
+            expect(blocks[1].getData().get('listStart')).toBeUndefined()
+            expect(blocks[2].getData().get('listStart')).toBeUndefined()
         })
     })
 

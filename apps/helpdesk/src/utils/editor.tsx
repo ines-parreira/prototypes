@@ -126,9 +126,13 @@ const HTML_TO_BLOCK: Record<string, EditorBlockType> = Object.freeze({
 
 const OL_TYPES = ['1', 'a', 'i'] as const
 
-function getOrderedListNestElement(depth: number) {
+function getOrderedListNestElement(depth: number, start?: number) {
     const olType = OL_TYPES[depth % OL_TYPES.length]
-    return <ol type={olType} />
+    return start && start > 1 ? (
+        <ol type={olType} start={start} />
+    ) : (
+        <ol type={olType} />
+    )
 }
 
 const QUOTE_HTML_ELEMENT = (
@@ -173,10 +177,27 @@ export function convertToHTML(contentState: ContentState): string {
                 const quoteDepth = getQuoteDepth(contentBlock)
                 const blockTag = BLOCK_TO_HTML[type as EditorBlockType]
                 if (blockTag) {
-                    const resolvedNest =
-                        type === EditorBlockType.OrderedListItem
-                            ? getOrderedListNestElement(depth)
-                            : blockTag.nest
+                    const resolvedNest = (() => {
+                        if (type !== EditorBlockType.OrderedListItem)
+                            return blockTag.nest
+                        const listStart = contentBlock
+                            .getData()
+                            .get('listStart') as number | undefined
+                        if (listStart && listStart > 1) {
+                            const blockBefore = contentState.getBlockBefore(key)
+                            if (
+                                !blockBefore ||
+                                blockBefore.getType() !==
+                                    EditorBlockType.OrderedListItem
+                            ) {
+                                return getOrderedListNestElement(
+                                    depth,
+                                    listStart,
+                                )
+                            }
+                        }
+                        return getOrderedListNestElement(depth)
+                    })()
 
                     const isListItem =
                         type === EditorBlockType.OrderedListItem ||
@@ -452,6 +473,21 @@ export function convertFromHTML(html: string): ContentState {
                     node.parentNode?.nodeName === 'UL'
                         ? EditorBlockType.UnorderedListItem
                         : EditorBlockType.OrderedListItem
+
+                if (
+                    node.parentNode?.nodeName === 'OL' &&
+                    (node as HTMLElement).previousElementSibling === null
+                ) {
+                    const olStart = parseInt(
+                        (node.parentNode as HTMLOListElement).getAttribute(
+                            'start',
+                        ) || '1',
+                        10,
+                    )
+                    if (olStart > 1) {
+                        data.listStart = olStart
+                    }
+                }
             }
 
             if (node instanceof HTMLElement && node.dataset.depth) {

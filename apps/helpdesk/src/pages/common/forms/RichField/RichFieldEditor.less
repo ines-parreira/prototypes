@@ -168,6 +168,16 @@
         counter-reset: ol4;
     }
 
+    // Continuation ordered list start positions — generated via mixin (positions 2–100)
+    .generateListStartAt(@max, @i: 2) when (@i =< @max) {
+        .listStartAt@{i} {
+            counter-reset: ol0 (@i - 1);
+        }
+        .generateListStartAt(@max, @i + 1);
+    }
+
+    .generateListStartAt(100);
+
     // List depth indentation — each level adds 1.5em
     .listDepth0 {
         margin-left: 0;
