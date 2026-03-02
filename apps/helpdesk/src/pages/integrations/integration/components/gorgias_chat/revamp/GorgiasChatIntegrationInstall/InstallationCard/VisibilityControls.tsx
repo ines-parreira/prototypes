@@ -1,8 +1,9 @@
 import type { ForwardedRef } from 'react'
-import { forwardRef, useImperativeHandle, useMemo, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle } from 'react'
 
 import classNames from 'classnames'
 import { Map } from 'immutable'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -29,7 +30,8 @@ import {
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import type { UrlValidationResult } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
 import validateUrl from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
-import VisibilityCondition from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityCondition'
+
+import VisibilityCondition from './VisibilityCondition'
 
 import css from './VisibilityControls.less'
 
@@ -45,9 +47,11 @@ const visibilityMethodCaptions: Record<
         'Hide on specific pages',
 }
 
-const visibilityMethodCaptionsOptions = Object.entries(
-    visibilityMethodCaptions,
-).map(([value, label]) => ({ value, label, id: value }))
+const visibilityMethodCaptionsOptions = (
+    Object.keys(
+        visibilityMethodCaptions,
+    ) as GorgiasChatInstallationVisibilityMethod[]
+).map((value) => ({ value, label: visibilityMethodCaptions[value], id: value }))
 
 const matchConditionsCaptions: Record<
     GorgiasChatInstallationVisibilityMatchConditions,
@@ -58,9 +62,15 @@ const matchConditionsCaptions: Record<
         'At least one of the conditions',
 }
 
-const matchConditionsOptions = Object.entries(matchConditionsCaptions).map(
-    ([value, label]) => ({ value, label, id: value }),
-)
+const matchConditionsOptions = (
+    Object.keys(
+        matchConditionsCaptions,
+    ) as GorgiasChatInstallationVisibilityMatchConditions[]
+).map((value) => ({
+    value,
+    label: matchConditionsCaptions[value],
+    id: value,
+}))
 
 const makeCondition = () => ({
     id: uuidv4(),
@@ -68,12 +78,18 @@ const makeCondition = () => ({
     operator: GorgiasChatInstallationVisibilityConditionOperator.Contain,
 })
 
+type VisibilityFormValues = {
+    visibilityMethod: GorgiasChatInstallationVisibilityMethod
+    matchConditions: GorgiasChatInstallationVisibilityMatchConditions
+    conditions: GorgiasChatInstallationVisibilityCondition[]
+}
+
 export type VisibilityControlsHandle = {
     visibility: GorgiasChatInstallationVisibility
 }
 
 type Props = {
-    integration: Map<any, any>
+    integration: Map<string, unknown>
     open: () => void
     isOpen: boolean
     isUpdate: boolean
@@ -97,7 +113,7 @@ const VisibilityControls = (
     const installationMeta = integration.getIn(
         ['meta', 'installation'],
         Map(),
-    ) as Map<any, any>
+    ) as Map<string, unknown>
 
     const installation: Maybe<GorgiasChatMetaInstallation> = installationMeta
         ? installationMeta.toJS()
@@ -107,107 +123,94 @@ const VisibilityControls = (
         installation?.visibility?.method ||
         GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
 
-    const [visibilityMethod, setVisibilityMethod] =
-        useState<GorgiasChatInstallationVisibilityMethod>(
-            initialVisibilityMethod,
-        )
+    const {
+        control,
+        watch,
+        getValues,
+        formState: { isDirty },
+    } = useForm<VisibilityFormValues>({
+        mode: 'onChange',
+        defaultValues: {
+            visibilityMethod: initialVisibilityMethod,
+            matchConditions:
+                installation?.visibility?.match_conditions ||
+                GorgiasChatInstallationVisibilityMatchConditions.Some,
+            conditions: installation?.visibility?.conditions || [
+                makeCondition(),
+            ],
+        },
+    })
 
-    const initialMatchConditions =
-        installation?.visibility?.match_conditions ||
-        GorgiasChatInstallationVisibilityMatchConditions.Some
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'conditions',
+    })
 
-    const [matchConditions, setMatchConditions] =
-        useState<GorgiasChatInstallationVisibilityMatchConditions>(
-            initialMatchConditions,
-        )
+    const [visibilityMethod, matchConditions, watchedConditions] = watch([
+        'visibilityMethod',
+        'matchConditions',
+        'conditions',
+    ])
 
-    const [conditions, setConditions] = useState<
-        (GorgiasChatInstallationVisibilityCondition & {
-            validationResult?: UrlValidationResult
-        })[]
-    >(installation?.visibility?.conditions || [makeCondition()])
-
-    const [hasValidationError, setHasValidationError] = useState(false)
-
-    const visibility: GorgiasChatInstallationVisibility = useMemo(() => {
-        if (conditions.every(({ value }) => !value)) {
-            return {
-                method: GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage,
+    const computeVisibility =
+        useCallback((): GorgiasChatInstallationVisibility => {
+            const { visibilityMethod, matchConditions, conditions } =
+                getValues()
+            if (conditions.every(({ value }) => !value)) {
+                return {
+                    method: GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage,
+                }
             }
-        }
+            return {
+                method: visibilityMethod,
+                ...(visibilityMethod !==
+                GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
+                    ? {
+                          match_conditions: matchConditions,
+                          conditions: conditions.filter(({ value }) => !!value),
+                      }
+                    : undefined),
+            }
+        }, [getValues])
 
-        return {
-            method: visibilityMethod,
-            ...(visibilityMethod !==
-            GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
-                ? {
-                      match_conditions: matchConditions,
-                      conditions: conditions.filter(({ value }) => !!value),
-                  }
-                : undefined),
-        }
-    }, [visibilityMethod, matchConditions, conditions])
+    useImperativeHandle(
+        ref,
+        () => ({
+            get visibility() {
+                return computeVisibility()
+            },
+        }),
+        [computeVisibility],
+    )
 
-    useImperativeHandle(ref, () => ({ visibility }), [visibility])
+    const hasValidationError =
+        watchedConditions?.some(
+            ({ value, operator }) =>
+                !!value && validateUrl(value, operator) !== 'valid',
+        ) ?? false
 
-    const updateCondition = (
-        index: number,
-        values: Partial<GorgiasChatInstallationVisibilityCondition>,
-    ) => {
-        const newConditions = [...conditions]
-        newConditions[index] = {
-            ...newConditions[index],
-            ...values,
-            validationResult: validateUrl(
-                values.value ?? newConditions[index].value,
-                values.operator ?? newConditions[index].operator,
-            ),
-        }
-
-        const hasValidationError = newConditions.some(
-            ({ validationResult }) =>
-                validationResult && validationResult !== 'valid',
-        )
-
-        setHasValidationError(hasValidationError)
-
+    useEffect(() => {
         onValidate(!hasValidationError)
-
-        setConditions(newConditions)
-    }
-
-    const addCondition = () => {
-        setConditions([...conditions, makeCondition()])
-    }
-
-    const deleteCondition = (index: number) => {
-        setConditions(conditions.filter((_, i) => i !== index))
-    }
+    }, [hasValidationError, onValidate])
 
     const hasIncompatibleConditions =
         matchConditions ===
             GorgiasChatInstallationVisibilityMatchConditions.Every &&
-        conditions.filter(
+        watchedConditions?.filter(
             ({ operator }) =>
                 operator ===
                 GorgiasChatInstallationVisibilityConditionOperator.Equal,
         ).length > 1
 
-    const isDirty =
-        visibilityMethod !== initialVisibilityMethod ||
-        matchConditions !== initialMatchConditions ||
-        conditions.length !== installation?.visibility?.conditions?.length ||
-        conditions.some(
-            (condition, index) =>
-                condition.value !==
-                    installation?.visibility?.conditions?.[index].value ||
-                condition.operator !==
-                    installation?.visibility?.conditions?.[index].operator,
-        )
-
     const isShowOnEveryPage =
         visibilityMethod ===
         GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
+
+    const matchConditionsLabel =
+        visibilityMethod ===
+        GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages
+            ? 'Show'
+            : 'Hide'
 
     const hideUpdateInstallationButton =
         isShowOnEveryPage &&
@@ -234,66 +237,88 @@ const VisibilityControls = (
                 </span>
             </div>
             <Collapse isOpen={isOpen}>
-                <SelectField
-                    items={visibilityMethodCaptionsOptions}
-                    value={visibilityMethodCaptionsOptions.find(
-                        (opt) => opt.value === visibilityMethod,
+                <Controller
+                    control={control}
+                    name="visibilityMethod"
+                    render={({ field }) => (
+                        <SelectField
+                            items={visibilityMethodCaptionsOptions}
+                            value={visibilityMethodCaptionsOptions.find(
+                                (opt) => opt.value === field.value,
+                            )}
+                            onChange={(option) => field.onChange(option.value)}
+                        >
+                            {(option) => <ListItem label={option.label} />}
+                        </SelectField>
                     )}
-                    onChange={(option) => {
-                        setVisibilityMethod(
-                            option.value as GorgiasChatInstallationVisibilityMethod,
-                        )
-                    }}
-                >
-                    {(option) => <ListItem label={option.label} />}
-                </SelectField>
+                />
                 {!isShowOnEveryPage && (
                     <div className={css.visibilityControls}>
                         <div className={css.matchConditions}>
                             <span>
-                                {visibilityMethod ===
-                                GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages
-                                    ? 'Show'
-                                    : 'Hide'}{' '}
-                                on pages that match
+                                {matchConditionsLabel} on pages that match
                             </span>
-                            <SelectField
-                                items={matchConditionsOptions}
-                                value={matchConditionsOptions.find(
-                                    (opt) => opt.value === matchConditions,
+                            <Controller
+                                control={control}
+                                name="matchConditions"
+                                render={({ field }) => (
+                                    <SelectField
+                                        items={matchConditionsOptions}
+                                        value={matchConditionsOptions.find(
+                                            (opt) => opt.value === field.value,
+                                        )}
+                                        onChange={(option) =>
+                                            field.onChange(option.value)
+                                        }
+                                    >
+                                        {(option) => (
+                                            <ListItem label={option.label} />
+                                        )}
+                                    </SelectField>
                                 )}
-                                onChange={(option) => {
-                                    setMatchConditions(
-                                        option.value as GorgiasChatInstallationVisibilityMatchConditions,
-                                    )
-                                }}
-                            >
-                                {(option) => <ListItem label={option.label} />}
-                            </SelectField>
+                            />
                         </div>
                         <div className={css.conditions}>
-                            {conditions.map(
-                                (
-                                    { id, value, operator, validationResult },
-                                    index,
-                                ) => (
-                                    <VisibilityCondition
-                                        key={id}
-                                        value={value}
-                                        operator={operator}
-                                        onChange={(
-                                            values: Partial<GorgiasChatInstallationVisibilityCondition>,
-                                        ) => updateCondition(index, values)}
-                                        onDelete={() => deleteCondition(index)}
-                                        validationResult={
-                                            !!value
-                                                ? validationResult
-                                                : undefined
-                                        }
-                                        isDeletable={conditions.length > 1}
-                                    />
-                                ),
-                            )}
+                            {fields.map((field, index) => (
+                                <Controller
+                                    key={field.id}
+                                    control={control}
+                                    name={`conditions.${index}`}
+                                    rules={{
+                                        validate: (condition) => {
+                                            if (!condition.value) return true
+                                            const result = validateUrl(
+                                                condition.value,
+                                                condition.operator,
+                                            )
+                                            if (result === 'valid') return true
+                                            return result
+                                        },
+                                    }}
+                                    render={({
+                                        field: { value: condition, onChange },
+                                        fieldState: { error },
+                                    }) => (
+                                        <VisibilityCondition
+                                            value={condition.value}
+                                            operator={condition.operator}
+                                            onChange={(values) =>
+                                                onChange({
+                                                    ...condition,
+                                                    ...values,
+                                                })
+                                            }
+                                            onDelete={() => remove(index)}
+                                            validationResult={
+                                                condition.value
+                                                    ? (error?.message as UrlValidationResult)
+                                                    : undefined
+                                            }
+                                            isDeletable={fields.length > 1}
+                                        />
+                                    )}
+                                />
+                            ))}
                         </div>
                         {hasIncompatibleConditions && (
                             <Banner
@@ -318,7 +343,7 @@ const VisibilityControls = (
                         <Button
                             variant={ButtonVariant.Tertiary}
                             intent={ButtonIntent.Regular}
-                            onClick={addCondition}
+                            onClick={() => append(makeCondition())}
                             leadingSlot={IconName.AddPlus}
                         >
                             Add URL
@@ -326,7 +351,7 @@ const VisibilityControls = (
                     )}
                     {isUpdate && !hideUpdateInstallationButton && (
                         <Button
-                            onClick={() => onSubmit(visibility)}
+                            onClick={() => onSubmit(computeVisibility())}
                             intent={ButtonIntent.Regular}
                             variant={ButtonVariant.Primary}
                             isDisabled={

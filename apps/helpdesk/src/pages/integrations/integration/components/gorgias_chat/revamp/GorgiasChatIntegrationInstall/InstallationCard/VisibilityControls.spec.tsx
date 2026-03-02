@@ -1,55 +1,98 @@
 import { createRef } from 'react'
+import type { ReactNode } from 'react'
 
-import { act, render } from '@testing-library/react'
+import { act, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
+
+import type { BannerProps, IconProps, SelectFieldProps } from '@gorgias/axiom'
 
 import {
     GorgiasChatInstallationVisibilityConditionOperator,
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,
 } from 'models/integration/types'
+import type { GorgiasChatInstallationVisibilityCondition } from 'models/integration/types'
 
 import type { VisibilityControlsHandle } from './VisibilityControls'
 import VisibilityControls from './VisibilityControls'
 
-const mockButton = jest.fn((__props: any) => null)
-const mockSelectField = jest.fn((__props: any) => null)
-const mockBanner = jest.fn((__props: any) => null)
-const mockIcon = jest.fn((__props: any) => null)
-const mockVisibilityCondition = jest.fn((__props: any) => null)
-const mockCollapse = jest.fn(({ children }: any) => children)
+type SelectOption = {
+    value: string
+    label: string
+    id: string
+}
+
+type MockButtonProps = {
+    children?: ReactNode
+    onClick?: () => void
+    isDisabled?: boolean
+    variant?: string
+    intent?: string
+    leadingSlot?: string
+}
+
+type MockCollapseProps = {
+    isOpen: boolean
+    children?: ReactNode
+}
+
+type MockVisibilityConditionProps = {
+    value: string
+    operator: GorgiasChatInstallationVisibilityConditionOperator
+    onChange: (
+        values: Partial<GorgiasChatInstallationVisibilityCondition>,
+    ) => void
+    onDelete: () => void
+    validationResult?: string
+    isDeletable: boolean
+}
+
+const mockButton = jest.fn((__props: MockButtonProps) => null)
+const mockSelectField = jest.fn(
+    (__props: SelectFieldProps<SelectOption>) => null,
+)
+const mockBanner = jest.fn((__props: BannerProps) => null)
+const mockIcon = jest.fn((__props: IconProps) => null)
+const mockVisibilityCondition = jest.fn(
+    (__props: MockVisibilityConditionProps) => null,
+)
+const mockCollapse = jest.fn(({ children }: MockCollapseProps) => (
+    <>{children}</>
+))
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Button: (props: any) => mockButton(props),
+    Button: (props: MockButtonProps) => mockButton(props),
     ButtonIntent: { Regular: 'regular', Destructive: 'destructive' },
     ButtonVariant: {
         Primary: 'primary',
         Secondary: 'secondary',
         Tertiary: 'tertiary',
     },
-    Icon: (props: any) => mockIcon(props),
+    Icon: (props: IconProps) => mockIcon(props),
     IconName: {
         EditPencil: 'edit-pencil',
         TriangleWarning: 'triangle-warning',
         AddPlus: 'add-plus',
     },
-    Banner: (props: any) => mockBanner(props),
-    SelectField: (props: any) => mockSelectField(props),
-    ListItem: ({ label }: any) => <div>{label}</div>,
+    Banner: (props: BannerProps) => mockBanner(props),
+    SelectField: (props: SelectFieldProps<SelectOption>) =>
+        mockSelectField(props),
+    ListItem: ({ label }: { label: string }) => <div>{label}</div>,
 }))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityCondition',
     () => ({
         __esModule: true,
-        default: (props: any) => mockVisibilityCondition(props),
+        default: (props: MockVisibilityConditionProps) =>
+            mockVisibilityCondition(props),
     }),
 )
 
 jest.mock('pages/common/components/Collapse/Collapse', () => ({
     __esModule: true,
-    default: (props: any) => mockCollapse(props),
+    default: (props: MockCollapseProps) => mockCollapse(props),
 }))
 
 jest.mock(
@@ -132,28 +175,23 @@ describe('VisibilityControls', () => {
         it('should render visibility method dropdown with correct options', () => {
             renderComponent({ isOpen: true })
 
-            const selectCalls = mockSelectField.mock.calls as any[]
+            const selectCalls = mockSelectField.mock.calls
             const visibilityMethodSelect = selectCalls[0]
 
-            expect(visibilityMethodSelect[0].items).toHaveLength(3)
-            expect(visibilityMethodSelect[0].items[0].label).toBe(
-                'Show on every page',
-            )
-            expect(visibilityMethodSelect[0].items[1].label).toBe(
-                'Show on specific pages',
-            )
-            expect(visibilityMethodSelect[0].items[2].label).toBe(
-                'Hide on specific pages',
-            )
+            const items = Array.from(visibilityMethodSelect[0].items)
+            expect(items).toHaveLength(3)
+            expect(items[0].label).toBe('Show on every page')
+            expect(items[1].label).toBe('Show on specific pages')
+            expect(items[2].label).toBe('Hide on specific pages')
         })
 
         it('should select ShowOnEveryPage by default', () => {
             renderComponent({ isOpen: true })
 
-            const selectCalls = mockSelectField.mock.calls as any[]
+            const selectCalls = mockSelectField.mock.calls
             const visibilityMethodSelect = selectCalls[0]
 
-            expect(visibilityMethodSelect[0].value.value).toBe(
+            expect(visibilityMethodSelect[0].value!.value).toBe(
                 GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage,
             )
         })
@@ -170,10 +208,10 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration })
 
-            const selectCalls = mockSelectField.mock.calls as any[]
+            const selectCalls = mockSelectField.mock.calls
             const visibilityMethodSelect = selectCalls[0]
 
-            expect(visibilityMethodSelect[0].value.value).toBe(
+            expect(visibilityMethodSelect[0].value!.value).toBe(
                 GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
             )
         })
@@ -182,6 +220,67 @@ describe('VisibilityControls', () => {
             renderComponent({ isOpen: true })
 
             expect(mockVisibilityCondition).not.toHaveBeenCalled()
+        })
+
+        it('should update visibility method when dropdown selection changes', () => {
+            renderComponent({ isOpen: true })
+
+            const visibilityMethodSelectCall = mockSelectField.mock.calls[0]!
+            act(() => {
+                visibilityMethodSelectCall[0]!.onChange!({
+                    value: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                    label: 'Show on specific pages',
+                    id: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                })
+            })
+
+            expect(mockVisibilityCondition).toHaveBeenCalled()
+        })
+
+        it('should show "Show on pages that match" label for ShowOnSpecificPages', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: '',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            const { getByText } = renderComponent({ isOpen: true, integration })
+
+            expect(getByText(/Show on pages that match/)).toBeInTheDocument()
+        })
+
+        it('should show "Hide on pages that match" label for HideOnSpecificPages', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.HideOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: '',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            const { getByText } = renderComponent({ isOpen: true, integration })
+
+            expect(getByText(/Hide on pages that match/)).toBeInTheDocument()
         })
 
         it('should render conditions when visibility method is ShowOnSpecificPages', () => {
@@ -230,15 +329,53 @@ describe('VisibilityControls', () => {
             renderComponent({ isOpen: true, integration })
 
             const selectCalls = mockSelectField.mock.calls
-            expect(selectCalls).toHaveLength(2)
 
             const matchConditionsSelect = selectCalls[1]
-            expect(matchConditionsSelect[0].items).toHaveLength(2)
-            expect(matchConditionsSelect[0].items[0].label).toBe(
-                'All conditions',
-            )
-            expect(matchConditionsSelect[0].items[1].label).toBe(
-                'At least one of the conditions',
+            const matchItems = Array.from(matchConditionsSelect[0].items)
+            expect(matchItems).toHaveLength(2)
+            expect(matchItems[0].label).toBe('All conditions')
+            expect(matchItems[1].label).toBe('At least one of the conditions')
+        })
+
+        it('should update selected match condition when dropdown changes', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: '',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            renderComponent({ isOpen: true, integration })
+
+            const matchConditionsSelectCall = mockSelectField.mock.calls[1]!
+            act(() => {
+                matchConditionsSelectCall[0]!.onChange!({
+                    value: GorgiasChatInstallationVisibilityMatchConditions.Every,
+                    label: 'All conditions',
+                    id: GorgiasChatInstallationVisibilityMatchConditions.Every,
+                })
+            })
+
+            const updatedMatchConditionsSelect = mockSelectField.mock.calls
+                .filter(([props]) =>
+                    Array.from(props.items ?? []).some(
+                        (item: SelectOption) => item.label === 'All conditions',
+                    ),
+                )
+                .pop()
+
+            expect(updatedMatchConditionsSelect![0].value?.value).toBe(
+                GorgiasChatInstallationVisibilityMatchConditions.Every,
             )
         })
 
@@ -267,7 +404,7 @@ describe('VisibilityControls', () => {
             const selectCalls = mockSelectField.mock.calls
             const matchConditionsSelect = selectCalls[1]
 
-            expect(matchConditionsSelect[0].value.value).toBe(
+            expect(matchConditionsSelect[0].value!.value).toBe(
                 GorgiasChatInstallationVisibilityMatchConditions.Every,
             )
         })
@@ -468,7 +605,7 @@ describe('VisibilityControls', () => {
             expect(mockOnValidate).toHaveBeenCalledWith(false)
         })
 
-        it('should pass validation result to condition', () => {
+        it('should pass validation result to condition', async () => {
             const integration = fromJS({
                 meta: {
                     installation: {
@@ -494,11 +631,140 @@ describe('VisibilityControls', () => {
                 onChangeHandler({ value: 'https://example.com#hash' })
             })
 
-            expect(mockVisibilityCondition).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    validationResult: 'unsupported',
-                }),
+            await waitFor(() => {
+                expect(mockVisibilityCondition).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        validationResult: 'unsupported',
+                    }),
+                )
+            })
+        })
+
+        it('should append a new empty condition when Add URL button is clicked', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: '',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            renderComponent({ isOpen: true, integration })
+
+            const initialConditionCount =
+                mockVisibilityCondition.mock.calls.length
+
+            const addUrlButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Add URL',
             )
+            act(() => {
+                addUrlButton![0].onClick!()
+            })
+
+            expect(mockVisibilityCondition.mock.calls.length).toBeGreaterThan(
+                initialConditionCount,
+            )
+
+            const lastCall =
+                mockVisibilityCondition.mock.calls[
+                    mockVisibilityCondition.mock.calls.length - 1
+                ]
+            expect(lastCall[0]).toMatchObject({
+                value: '',
+                operator:
+                    GorgiasChatInstallationVisibilityConditionOperator.Contain,
+            })
+        })
+
+        it('should remove a condition when onDelete is called', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: 'https://first.com',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                                {
+                                    id: '2',
+                                    value: 'https://second.com',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            renderComponent({ isOpen: true, integration })
+
+            const onDeleteHandler =
+                mockVisibilityCondition.mock.calls[0][0].onDelete
+            act(() => {
+                onDeleteHandler()
+            })
+
+            const lastCall =
+                mockVisibilityCondition.mock.calls[
+                    mockVisibilityCondition.mock.calls.length - 1
+                ]
+            expect(lastCall[0].isDeletable).toBe(false)
+            expect(lastCall[0].value).toBe('https://second.com')
+        })
+
+        it('should accept empty condition value without validation error', async () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: '',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            renderComponent({ isOpen: true, integration })
+
+            const onChangeHandler =
+                mockVisibilityCondition.mock.calls[0][0].onChange
+
+            act(() => {
+                onChangeHandler({ value: 'invalid' })
+            })
+
+            act(() => {
+                onChangeHandler({ value: '' })
+            })
+
+            await waitFor(() => {
+                const lastCall =
+                    mockVisibilityCondition.mock.calls[
+                        mockVisibilityCondition.mock.calls.length - 1
+                    ]
+                expect(lastCall[0].validationResult).toBeUndefined()
+            })
+
+            expect(mockOnValidate).toHaveBeenCalledWith(true)
         })
 
         it('should not pass validation result when value is empty', () => {
@@ -652,9 +918,8 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeDefined()
@@ -680,9 +945,8 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, isUpdate: false, integration })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeUndefined()
@@ -708,13 +972,12 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeDefined()
-            expect(updateButton[0].isDisabled).toBe(true)
+            expect(updateButton![0].isDisabled).toBe(true)
         })
 
         it('should disable update button when canSubmit is false', () => {
@@ -737,13 +1000,12 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration, canSubmit: false })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeDefined()
-            expect(updateButton[0].isDisabled).toBe(true)
+            expect(updateButton![0].isDisabled).toBe(true)
         })
 
         it('should disable update button when has validation error', () => {
@@ -772,13 +1034,12 @@ describe('VisibilityControls', () => {
                 onChangeHandler({ value: 'invalid' })
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeDefined()
-            expect(updateButton[0].isDisabled).toBe(true)
+            expect(updateButton![0].isDisabled).toBe(true)
         })
 
         it('should disable update button when has incompatible conditions', () => {
@@ -809,13 +1070,12 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButton = buttonCalls.find(
-                (call) => call[0].children === 'Update installation',
+            const updateButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Update installation',
             )
 
             expect(updateButton).toBeDefined()
-            expect(updateButton[0].isDisabled).toBe(true)
+            expect(updateButton![0].isDisabled).toBe(true)
         })
 
         it('should enable update button when dirty and valid', () => {
@@ -844,11 +1104,47 @@ describe('VisibilityControls', () => {
                 onChangeHandler({ value: 'https://newurl.com' })
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
+            const buttonCalls = mockButton.mock.calls
             const updateButton = buttonCalls[buttonCalls.length - 1]
 
             expect(updateButton).toBeDefined()
             expect(updateButton[0].isDisabled).toBe(false)
+        })
+
+        it('should enable update button when condition operator changes', () => {
+            const integration = fromJS({
+                meta: {
+                    installation: {
+                        visibility: {
+                            method: GorgiasChatInstallationVisibilityMethod.ShowOnSpecificPages,
+                            conditions: [
+                                {
+                                    id: '1',
+                                    value: 'https://example.com',
+                                    operator:
+                                        GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                                },
+                            ],
+                        },
+                    },
+                },
+            })
+            renderComponent({ isOpen: true, integration })
+
+            const onChangeHandler =
+                mockVisibilityCondition.mock.calls[0][0].onChange
+            act(() => {
+                onChangeHandler({
+                    operator:
+                        GorgiasChatInstallationVisibilityConditionOperator.Equal,
+                })
+            })
+
+            const updateButton = mockButton.mock.calls
+                .filter(([props]) => props.children === 'Update installation')
+                .pop()
+
+            expect(updateButton![0].isDisabled).toBe(false)
         })
 
         it('should call onSubmit with updated visibility when update button is clicked', () => {
@@ -879,16 +1175,15 @@ describe('VisibilityControls', () => {
                 onChangeHandler({ value: 'https://newurl.com' })
             })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const updateButtons = buttonCalls
+            const updateButtons = mockButton.mock.calls
                 .slice(initialCallsCount)
-                .filter((call) => call[0].children === 'Update installation')
+                .filter(([props]) => props.children === 'Update installation')
             const updateButton = updateButtons[updateButtons.length - 1]
 
             expect(updateButton).toBeDefined()
 
             act(() => {
-                updateButton[0].onClick()
+                updateButton[0].onClick!()
             })
 
             expect(mockOnSubmit).toHaveBeenCalledWith(
@@ -925,23 +1220,21 @@ describe('VisibilityControls', () => {
             })
             renderComponent({ isOpen: true, integration })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const addButton = buttonCalls.find(
-                (call) => call[0].children === 'Add URL',
+            const addButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Add URL',
             )
 
             expect(addButton).toBeDefined()
-            expect(addButton[0].leadingSlot).toBe('add-plus')
-            expect(addButton[0].variant).toBe('tertiary')
-            expect(addButton[0].intent).toBe('regular')
+            expect(addButton![0].leadingSlot).toBe('add-plus')
+            expect(addButton![0].variant).toBe('tertiary')
+            expect(addButton![0].intent).toBe('regular')
         })
 
         it('should not render Add URL button when ShowOnEveryPage', () => {
             renderComponent({ isOpen: true })
 
-            const buttonCalls = mockButton.mock.calls as any[]
-            const addButton = buttonCalls.find(
-                (call) => call[0].children === 'Add URL',
+            const addButton = mockButton.mock.calls.find(
+                ([props]) => props.children === 'Add URL',
             )
 
             expect(addButton).toBeUndefined()
