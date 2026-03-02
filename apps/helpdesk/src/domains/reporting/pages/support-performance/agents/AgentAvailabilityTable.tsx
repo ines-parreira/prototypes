@@ -13,7 +13,6 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentAvailabilityRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityRow'
 import { AgentAvailabilitySummaryRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilitySummaryRow'
-import { getColumnValue } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableCell'
 import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import {
     getAvailabilityTableColumnsOrder,
@@ -24,7 +23,7 @@ import {
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
 import { TableRowsOrderWithTotal } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { useAgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData'
-import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
+import { sortAgentAvailability } from 'domains/reporting/pages/support-performance/agents/sortAgentAvailability'
 import {
     getAgentSorting,
     getAgentsPagination,
@@ -87,53 +86,10 @@ export const AgentAvailabilityTable = ({
 
     const sorting = useAppSelector(getAgentSorting)
 
-    // For "Online" column: use server-side sorted data if available
-    // For all status columns: use client-side sorting
-    const agents = useMemo(() => {
-        if (!sorting?.field || !transformedAgents.length) {
-            return transformedAgents
-        }
-
-        // Server-side sorting for "Online" column
-        if (
-            sorting.field === 'agent_online_time' &&
-            sorting.lastSortingMetric
-        ) {
-            const sortedIds = sorting.lastSortingMetric.map((item) =>
-                Number(item.agentId),
-            )
-
-            return [...transformedAgents].sort((a, b) => {
-                const aIndex = sortedIds.indexOf(a.id)
-                const bIndex = sortedIds.indexOf(b.id)
-                if (aIndex === -1) return 1
-                if (bIndex === -1) return -1
-                return aIndex - bIndex
-            })
-        }
-
-        // Client-side sorting for all status columns (fixed + custom)
-        // Status columns contain { total, online, offline } - sort by total
-        return [...transformedAgents].sort((a, b) => {
-            const aField = a[sorting.field] as
-                | number
-                | StatusBreakdown
-                | undefined
-            const bField = b[sorting.field] as
-                | number
-                | StatusBreakdown
-                | undefined
-
-            // Extract numeric value (handles both number and StatusBreakdown)
-            const aValue = getColumnValue(aField) ?? 0
-            const bValue = getColumnValue(bField) ?? 0
-
-            const comparison = aValue < bValue ? -1 : aValue > bValue ? 1 : 0
-            return sorting.direction === OrderDirection.Desc
-                ? -comparison
-                : comparison
-        })
-    }, [transformedAgents, sorting])
+    const agents = useMemo(
+        () => sortAgentAvailability(transformedAgents, sorting),
+        [transformedAgents, sorting],
+    )
 
     // Create sorting query function for header cells
     const getSortingQuery = (column: AgentAvailabilityColumn) => {

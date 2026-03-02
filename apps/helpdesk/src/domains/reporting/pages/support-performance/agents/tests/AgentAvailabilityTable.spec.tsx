@@ -3,6 +3,7 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { AgentAvailabilityTable } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTable'
 import { useAgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData'
+import { sortAgentAvailability } from 'domains/reporting/pages/support-performance/agents/sortAgentAvailability'
 import {
     mockAgents,
     mockCustomStatusWithData,
@@ -19,6 +20,9 @@ jest.mock(
     'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData',
 )
 jest.mock(
+    'domains/reporting/pages/support-performance/agents/sortAgentAvailability',
+)
+jest.mock(
     'domains/reporting/state/ui/stats/agentAvailabilitySlice',
     () =>
         ({
@@ -31,6 +35,7 @@ jest.mock(
 )
 
 const useAgentAvailabilityDataMock = assumeMock(useAgentAvailabilityData)
+const sortAgentAvailabilityMock = assumeMock(sortAgentAvailability)
 
 // Import the mocked selectors AFTER the jest.mock() call
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -62,6 +67,7 @@ describe('AgentAvailabilityTable', () => {
             currentPage: 1,
             perPage: 20,
         })
+        sortAgentAvailabilityMock.mockImplementation((agents) => agents)
     })
 
     afterEach(() => {
@@ -153,59 +159,36 @@ describe('AgentAvailabilityTable', () => {
     })
 
     describe('Sorting functionality', () => {
-        it('should display agents in sorted order', async () => {
-            // @ts-expect-error - Partial state for testing
-            const sortedState = {
-                stats: {
-                    filters: defaultStatsFilters,
-                },
-                ui: {
-                    stats: {
-                        filters: {
-                            cleanStatsFilters:
-                                mockStatsFilters.cleanStatsFilters,
-                            userTimezone: mockStatsFilters.userTimezone,
-                        },
-                        statsTables: {
-                            ...statsTablesInitialState,
-                            agentAvailability: {
-                                sorting: {
-                                    field: 'agent_online_time',
-                                    direction: OrderDirection.Desc,
-                                    isLoading: false,
-                                    lastSortingMetric: [
-                                        { agentId: '2', value: 7200 },
-                                        { agentId: '3', value: 5400 },
-                                        { agentId: '1', value: 3600 },
-                                    ],
-                                },
-                                pagination: {
-                                    currentPage: 1,
-                                    perPage: 20,
-                                },
-                                heatmapMode: false,
-                            },
-                        },
-                    },
-                },
-            } as Partial<RootState>
+        it('should render agents in the order returned by sortAgentAvailability', async () => {
+            const sortedOrder = [
+                mockTransformedAgents[1], // Bob
+                mockTransformedAgents[2], // Charlie
+                mockTransformedAgents[0], // Alice
+            ]
+            sortAgentAvailabilityMock.mockReturnValue(sortedOrder)
 
-            renderComponent(mockAgents, sortedState)
+            renderComponent()
 
             await waitFor(() => {
                 expect(screen.getByText('Bob Agent')).toBeInTheDocument()
             })
 
-            // Get all table rows and verify order
-            const table = screen.getByRole('table')
-            const rows = table.querySelectorAll('tbody tr')
-
-            // Skip summary rows (Total and Average are first two rows)
-            const agentRows = Array.from(rows).slice(2)
+            const agentRows = Array.from(
+                screen.getByRole('table').querySelectorAll('tbody tr'),
+            ).slice(2) // skip Total and Average summary rows
 
             expect(agentRows[0].textContent).toContain('Bob Agent')
             expect(agentRows[1].textContent).toContain('Charlie Agent')
             expect(agentRows[2].textContent).toContain('Alice Agent')
+        })
+
+        it('should pass agents and sorting state to sortAgentAvailability', () => {
+            renderComponent()
+
+            expect(sortAgentAvailabilityMock).toHaveBeenCalledWith(
+                mockTransformedAgents,
+                expect.objectContaining({ field: expect.any(String) }),
+            )
         })
 
         it('should display sortable column headers', async () => {

@@ -37,3 +37,13 @@ export type DurationMinMaxLimit = {
     min: number
     max: number
 }
+
+/**
+ * Status breakdown for an agent's availability
+ */
+
+export type StatusBreakdown = {
+    total: number
+    online: number
+    offline: number
+}

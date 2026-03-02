@@ -1,5 +1,6 @@
 export {
     transformAvailabilityData,
+    type AgentAvailabilityData,
     type StatusDimensionData,
 } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 export {
