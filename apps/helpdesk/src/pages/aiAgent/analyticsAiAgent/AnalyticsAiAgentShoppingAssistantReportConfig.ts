@@ -1,4 +1,5 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchAverageOrderValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useAverageOrderValueTrend'
 import { fetchConversionRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useConversionRateTrend'
 import { fetchDiscountCodesAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
 import { fetchDiscountCodesAverageValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAverageValueTrend'
@@ -19,6 +20,7 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
 import { AnalyticsShoppingAssistantComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentComboChart/AnalyticsShoppingAssistantComboChart'
@@ -62,6 +64,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     ResolvedInteractionsCard = 'resolved_interactions_card',
     RevenuePerInteractionCard = 'revenue_per_interaction_card',
     AverageDiscountAmountCard = 'average_discount_amount_card',
+    AverageOrderValueCard = 'average_order_value_card',
     DiscountUsageCard = 'discount_usage_card',
     DiscountCodesAppliedCard = 'discount_codes_applied_card',
     DiscountsOfferedCard = 'discounts_offered_card',
@@ -163,6 +166,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     metricFormat: 'currency',
                     interpretAs: 'more-is-better',
                 },
+            [AnalyticsAiAgentShoppingAssistantChart.AverageOrderValueCard]: {
+                chartComponent: AnalyticsAiAgentAverageOrderValueCard,
+                label: 'Average order value',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAverageOrderValueTrend,
+                        metricFormat: 'currency',
+                    },
+                ],
+                description:
+                    'The average value of orders placed within 3 days of a conversation with Shopping Assistant.',
+                chartType: ChartType.Card,
+                metricFormat: 'currency',
+                interpretAs: 'more-is-better',
+            },
             [AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard]: {
                 chartComponent: AnalyticsAiAgentDiscountUsageCard,
                 label: 'Discount usage',

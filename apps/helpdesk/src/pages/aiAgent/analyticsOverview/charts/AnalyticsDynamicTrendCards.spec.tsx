@@ -10,6 +10,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
+import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
@@ -115,6 +116,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'duration' as const,
                 value: 19800,
                 prevValue: 19400,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAverageOrderValueCard',
+            Component: AnalyticsAiAgentAverageOrderValueCard,
+            config: {
+                label: 'Average order value',
+                description:
+                    'The average value of orders placed within 3 days of a conversation with Shopping Assistant.',
+                metricFormat: 'currency' as const,
+                value: 85.5,
+                prevValue: 79.2,
             },
         },
         {
