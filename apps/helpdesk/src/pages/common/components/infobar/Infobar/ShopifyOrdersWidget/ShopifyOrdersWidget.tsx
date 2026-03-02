@@ -43,14 +43,7 @@ export function ShopifyOrdersWidget({
     onShowAll,
 }: Props) {
     return (
-        <Box
-            paddingLeft="xs"
-            paddingRight="xs"
-            paddingTop="md"
-            paddingBottom="md"
-            flexDirection="column"
-            gap="xs"
-        >
+        <Box padding="md" flexDirection="column" gap="xs">
             <Heading size="md">
                 <Box gap="xs" flexDirection="row" alignItems="center">
                     <Text size="md" variant="bold">
