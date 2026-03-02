@@ -54,7 +54,7 @@ const GorgiasChatIntegrationInstall = ({
                 breadcrumbItems={breadcrumbItems}
                 title="Settings"
                 onSave={() => {}}
-            ></ChatSettingsPageHeader>
+            />
             <GorgiasChatIntegrationHeader
                 integration={integration}
                 tab={Tab.Installation}

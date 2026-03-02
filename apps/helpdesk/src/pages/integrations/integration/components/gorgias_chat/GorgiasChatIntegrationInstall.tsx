@@ -1,12 +1,11 @@
+import GorgiasChatIntegrationInstallLegacy from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
 import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
+import GorgiasChatIntegrationInstallRevamp from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
-
-import GorgiasChatIntegrationInstallRevamp from '../../revamp/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall'
-import GorgiasChatIntegrationInstallLegacy from './GorgiasChatIntegrationInstall'
 
 type Props = React.ComponentProps<typeof GorgiasChatIntegrationInstallLegacy>
 
-function GorgiasChatIntegrationInstall(props: Props) {
+export const GorgiasChatIntegrationInstall = (props: Props) => {
     const { storeIntegration } = useStoreIntegration(props.integration)
     const { shouldShowRevampWhenAiAgentEnabled } =
         useShouldShowChatSettingsRevamp(
@@ -19,5 +18,3 @@ function GorgiasChatIntegrationInstall(props: Props) {
     }
     return <GorgiasChatIntegrationInstallLegacy {...props} />
 }
-
-export default GorgiasChatIntegrationInstall

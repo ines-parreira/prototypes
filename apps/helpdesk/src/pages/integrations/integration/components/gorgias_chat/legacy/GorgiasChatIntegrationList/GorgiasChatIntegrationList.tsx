@@ -74,7 +74,7 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
             <GorgiasChatIntegrationListRevamped
                 integrations={integrations}
                 loading={loading}
-            ></GorgiasChatIntegrationListRevamped>
+            />
         )
     }
 

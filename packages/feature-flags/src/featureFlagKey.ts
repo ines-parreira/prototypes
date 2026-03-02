@@ -95,6 +95,7 @@ export enum FeatureFlagKey {
     ChatHeaderPictureStyle = 'chat-header-picture-style',
     ChatLauncherCustomization = 'chat-launcher-customization',
     ChatSettingsRevamp = 'linear.project_expansion-chat-settings-revamp',
+    ChatSettingsScreensRevamp = 'chat-settings-screens-revamp',
     ChatMultiLanguages = 'chat-multi-languages',
     ChatPrivacyPolicyDisclaimer = 'chat-privacy-policy-disclaimer',
     ChatQuickRepliesSunset = 'chat-quick-replies-sunset',

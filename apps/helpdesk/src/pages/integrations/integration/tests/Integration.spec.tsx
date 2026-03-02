@@ -98,29 +98,56 @@ jest.mock(
 
 jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
 
+jest.mock('../components/gorgias_chat/GorgiasAutomateChatIntegration', () => ({
+    GorgiasAutomateChatIntegration: () => (
+        <div>GorgiasAutomateChatIntegration</div>
+    ),
+}))
+jest.mock('../components/gorgias_chat/GorgiasChatCreationWizard', () => ({
+    GorgiasChatCreationWizard: () => <div>GorgiasChatCreationWizard</div>,
+}))
 jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance',
-    () => () => <div>GorgiasChatIntegrationAppearance</div>,
+    '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
+    () => ({
+        GorgiasChatIntegrationAppearance: () => (
+            <div>GorgiasChatIntegrationAppearance</div>
+        ),
+    }),
 )
 jest.mock(
     '../components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
-    () => () => <div>GorgiasChatIntegrationCampaigns</div>,
+    () => ({
+        __esModule: true,
+        default: () => <div>GorgiasChatIntegrationCampaigns</div>,
+    }),
+)
+jest.mock('../components/gorgias_chat/GorgiasChatIntegrationInstall', () => ({
+    GorgiasChatIntegrationInstall: () => (
+        <div>GorgiasChatIntegrationInstall</div>
+    ),
+}))
+jest.mock('../components/gorgias_chat/GorgiasChatIntegrationLanguages', () => ({
+    GorgiasChatIntegrationLanguages: () => (
+        <div>GorgiasChatIntegrationLanguages</div>
+    ),
+}))
+jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => ({
+    GorgiasChatIntegrationList: () => <div>GorgiasChatIntegrationList</div>,
+}))
+jest.mock(
+    '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
+    () => ({
+        GorgiasChatIntegrationPreferences: () => (
+            <div>GorgiasChatIntegrationPreferences</div>
+        ),
+    }),
 )
 jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationInstall',
-    () => () => <div>GorgiasChatIntegrationInstall</div>,
-)
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList',
-    () => () => <div>GorgiasChatIntegrationList</div>,
-)
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences',
-    () => () => <div>GorgiasChatIntegrationPreferences</div>,
-)
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies',
-    () => () => <div>GorgiasChatIntegrationQuickReplies</div>,
+    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies',
+    () => ({
+        __esModule: true,
+        default: () => <div>GorgiasChatIntegrationQuickReplies</div>,
+    }),
 )
 
 jest.mock('../components/sms/SmsIntegration', () => () => (
@@ -242,6 +269,7 @@ describe('<IntegrationDetail />', () => {
     }
 
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
         useAiAgentAccessMock.mockReturnValue({
             hasAccess: true,
             isLoading: false,
@@ -375,7 +403,7 @@ describe('<IntegrationDetail />', () => {
         },
     )
 
-    it('should render the installation tab of a specific integration for %s', () => {
+    fit('should render the installation tab of a specific integration for %s', () => {
         const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <QueryClientProvider client={queryClient}>

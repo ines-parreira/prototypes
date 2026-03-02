@@ -15,7 +15,7 @@ import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/comp
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import GorgiasChatIntegrationAppearance from '../index'
+import { GorgiasChatIntegrationAppearance } from './GorgiasChatIntegrationAppearance'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -74,9 +74,12 @@ jest.mock('pages/common/forms/FileField', () => {
     }
 })
 
-jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => {
-    return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
-})
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationConnectedChannel',
+    () => () => {
+        return <div data-testid="GorgiasChatIntegrationConnectedChannel" />
+    },
+)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader',
@@ -85,9 +88,12 @@ jest.mock(
     },
 )
 
-jest.mock('../revamp/GorgiasChatIntegrationAppearance', () => () => {
-    return <div data-testid="revamp-appearance" />
-})
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance',
+    () => () => {
+        return <div data-testid="revamp-appearance" />
+    },
+)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',

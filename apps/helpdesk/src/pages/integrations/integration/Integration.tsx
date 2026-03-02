@@ -24,6 +24,8 @@ import {
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { GorgiasChatIntegrationAppearance } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance'
+import { GorgiasChatIntegrationInstall } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall'
 import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import {
@@ -68,16 +70,14 @@ import FacebookIntegrationList from './components/facebook/FacebookIntegrationLi
 // oxlint-disable-next-line no-named-as-default
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
-import { GorgiasAutomateChatIntegration } from './components/gorgias_chat/legacy/GorgiasAutomateChatIntegration'
-import GorgiasChatCreationWizard from './components/gorgias_chat/legacy/GorgiasChatCreationWizard'
-import GorgiasChatIntegrationAppearance from './components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance'
+import { GorgiasAutomateChatIntegration } from './components/gorgias_chat/GorgiasAutomateChatIntegration'
+import { GorgiasChatCreationWizard } from './components/gorgias_chat/GorgiasChatCreationWizard'
+import { GorgiasChatIntegrationLanguages } from './components/gorgias_chat/GorgiasChatIntegrationLanguages'
+import { GorgiasChatIntegrationList } from './components/gorgias_chat/GorgiasChatIntegrationList'
+import { GorgiasChatIntegrationPreferences } from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasTranslateText from './components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
-import GorgiasChatIntegrationInstall from './components/gorgias_chat/legacy/GorgiasChatIntegrationInstall'
-import GorgiasChatIntegrationLanguages from './components/gorgias_chat/legacy/GorgiasChatIntegrationLanguages'
-import GorgiasChatIntegrationList from './components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList'
-import GorgiasChatIntegrationPreferences from './components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences'
-import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies'
+import GorgiasChatIntegrationCampaignsLegacy from './components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
+import GorgiasChatIntegrationQuickRepliesLegacy from './components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
 import useIsQuickRepliesEnabled from './components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import useSelfServiceConfiguration from './components/gorgias_chat/legacy/hooks/useSelfServiceConfiguration'
 import HTTP from './components/http/HTTP'
@@ -406,7 +406,7 @@ export const IntegrationDetail = ({
 
                 if (extra === Tab.QuickReplies && isQuickRepliesEnabled) {
                     return (
-                        <GorgiasChatIntegrationQuickReplies
+                        <GorgiasChatIntegrationQuickRepliesLegacy
                             integration={integration}
                         />
                     )
@@ -414,7 +414,7 @@ export const IntegrationDetail = ({
 
                 if (extra === Tab.Campaigns) {
                     return (
-                        <GorgiasChatIntegrationCampaigns
+                        <GorgiasChatIntegrationCampaignsLegacy
                             integration={integration}
                         />
                     )
