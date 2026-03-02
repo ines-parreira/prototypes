@@ -1,7 +1,7 @@
-import type { Ticket } from '@gorgias/helpdesk-client'
+import { useEffect, useRef } from 'react'
 
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import type { Value } from 'pages/common/forms/SelectField/types'
+import { ListItem, SelectField } from '@gorgias/axiom'
+import type { Ticket } from '@gorgias/helpdesk-client'
 
 import { CustomerSearchDropdownSelectView } from '../../../components/CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import { TicketSearchDropdownSelectView } from '../../../components/TicketSearchDropdownSelect/TicketSearchDropdownSelectView'
@@ -9,6 +9,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../../constants'
+import { useCoreContext } from '../../contexts/CoreContext'
 import type { PlaygroundCustomer } from '../../types'
 import { extractTicketData } from '../../utils/ticket-extraction.utils'
 
@@ -22,15 +23,15 @@ export enum SenderTypeValues {
 
 const senderSelectOptions = [
     {
-        value: SenderTypeValues.NEW_CUSTOMER,
+        id: SenderTypeValues.NEW_CUSTOMER,
         label: 'New customer',
     },
     {
-        value: SenderTypeValues.EXISTING_TICKET,
+        id: SenderTypeValues.EXISTING_TICKET,
         label: 'Existing ticket',
     },
     {
-        value: SenderTypeValues.EXISTING_CUSTOMER,
+        id: SenderTypeValues.EXISTING_CUSTOMER,
         label: 'Existing customer',
     },
 ]
@@ -58,12 +59,37 @@ export const PlaygroundCustomerSelection = ({
     senderType,
     onSenderTypeChange,
 }: Props) => {
-    const handleSenderSelectChange = (value: Value) => {
-        if (typeof value !== 'string') {
-            return
+    const selectFieldRef = useRef<HTMLDivElement>(null)
+    const { shouldFocusCustomerSelection, setShouldFocusCustomerSelection } =
+        useCoreContext()
+
+    useEffect(() => {
+        if (shouldFocusCustomerSelection && selectFieldRef.current) {
+            const input = selectFieldRef.current.querySelector(
+                'input[type="text"]',
+            ) as HTMLInputElement
+            if (input) {
+                input.focus()
+                input.setAttribute('data-focus-visible', 'true')
+            }
         }
-        onSenderTypeChange(value)
-        if (value === SenderTypeValues.NEW_CUSTOMER) {
+    }, [shouldFocusCustomerSelection])
+
+    const handleBlur = () => {
+        if (shouldFocusCustomerSelection) {
+            setShouldFocusCustomerSelection(false)
+        }
+    }
+
+    const selectedOption = senderSelectOptions.find(
+        (option) => option.id === senderType,
+    )
+
+    const handleSenderSelectChange = (
+        value: (typeof senderSelectOptions)[number],
+    ) => {
+        onSenderTypeChange(value.id)
+        if (value.id === SenderTypeValues.NEW_CUSTOMER) {
             const playgroundCustomer: PlaygroundCustomer = {
                 email: CustomerHttpIntegrationDataMock.address,
                 id: CustomerHttpIntegrationDataMock.id,
@@ -84,15 +110,18 @@ export const PlaygroundCustomerSelection = ({
 
     return (
         <>
-            <SelectField
-                fullWidth
-                showSelectedOption
-                value={senderType}
-                onChange={handleSenderSelectChange}
-                options={senderSelectOptions}
-                className={css.senderSelect}
-                disabled={isDisabled}
-            />
+            <div ref={selectFieldRef} onBlur={handleBlur}>
+                <SelectField
+                    value={selectedOption}
+                    onChange={handleSenderSelectChange}
+                    items={senderSelectOptions}
+                    isDisabled={isDisabled}
+                >
+                    {(option: (typeof senderSelectOptions)[number]) => (
+                        <ListItem label={option.label} />
+                    )}
+                </SelectField>
+            </div>
             <div
                 className={css.conditionalContent}
                 data-visible={

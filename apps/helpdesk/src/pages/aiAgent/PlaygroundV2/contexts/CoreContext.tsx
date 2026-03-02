@@ -51,6 +51,8 @@ type CoreContextValue = {
     isDraftKnowledgeReady: boolean
     draftKnowledge?: DraftKnowledge
     useV3: boolean
+    shouldFocusCustomerSelection: boolean
+    setShouldFocusCustomerSelection: (value: boolean) => void
 }
 
 const CoreContext = createContext<CoreContextValue | undefined>(undefined)
@@ -85,6 +87,8 @@ export const CoreProvider = ({
 
     const [searchParams, setSearchParams] = useSearchParams()
     const useV3 = useRef(searchParams.get('use-v3') === 'true')
+    const [shouldFocusCustomerSelection, setShouldFocusCustomerSelection] =
+        useState(false)
     const externalSessionId = useRef(
         searchParams.get('session-id') ?? undefined,
     )
@@ -141,6 +145,8 @@ export const CoreProvider = ({
             resetToDefaultActionsEnabled,
             setAreActionsEnabled: setAreActionsEnabledInSettings,
             useV3: useV3.current,
+            shouldFocusCustomerSelection,
+            setShouldFocusCustomerSelection,
         }),
         [
             isDraftKnowledgeReady,
@@ -150,6 +156,7 @@ export const CoreProvider = ({
             channelState,
             areActionsEnabled,
             resetToDefaultActionsEnabled,
+            shouldFocusCustomerSelection,
         ],
     )
 

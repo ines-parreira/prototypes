@@ -1,13 +1,60 @@
 import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 
 import { useSearchCustomer, useSearchTickets } from 'models/aiAgent/queries'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../../constants'
+import { CoreProvider } from '../../contexts/CoreContext'
 import { TargetSelection } from './TargetSelection'
+
+jest.mock('@repo/routing', () => ({
+    ...jest.requireActual('@repo/routing'),
+    useSearchParams: jest.fn(() => [new URLSearchParams(), jest.fn()]),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useTestSession', () => ({
+    useTestSession: () => ({
+        testSessionId: 'test-session-id',
+        isTestSessionLoading: false,
+        createTestSession: jest.fn(),
+        clearTestSession: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundPolling', () => ({
+    usePlaygroundPolling: () => ({
+        testSessionLogs: undefined,
+        isPolling: false,
+        startPolling: jest.fn(),
+        stopPolling: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useAiAgentHttpIntegration', () => ({
+    useAiAgentHttpIntegration: () => ({
+        baseUrl: 'http://test.com',
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/usePlaygroundChannel', () => ({
+    usePlaygroundChannel: () => ({
+        channel: 'email',
+        channelAvailability: 'online',
+        onChannelChange: jest.fn(),
+        onChannelAvailabilityChange: jest.fn(),
+        resetToDefaultChannel: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/aiAgent/PlaygroundV2/hooks/useDraftKnowledge', () => ({
+    useDraftKnowledgeSync: jest.fn(() => ({
+        isDraftKnowledgeReady: true,
+    })),
+}))
 
 jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
@@ -24,11 +71,13 @@ const renderComponent = (
 ) => {
     return render(
         <QueryClientProvider client={mockQueryClient()}>
-            <TargetSelection
-                customer={DEFAULT_PLAYGROUND_CUSTOMER}
-                onChange={mockOnChange}
-                {...props}
-            />
+            <CoreProvider>
+                <TargetSelection
+                    customer={DEFAULT_PLAYGROUND_CUSTOMER}
+                    onChange={mockOnChange}
+                    {...props}
+                />
+            </CoreProvider>
         </QueryClientProvider>,
     )
 }
@@ -80,6 +129,7 @@ describe('TargetSelection', () => {
 
     describe('customer selection', () => {
         it('calls onChange with customer when switching to new customer', async () => {
+            const user = userEvent.setup()
             renderComponent({
                 customer: {
                     ...DEFAULT_PLAYGROUND_CUSTOMER,
@@ -87,29 +137,22 @@ describe('TargetSelection', () => {
                 },
             })
 
-            const selectDropdown = screen
-                .getAllByText('New customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdown) {
-                fireEvent.click(selectDropdown)
-            }
+            const selectInput = screen.getAllByDisplayValue('New customer')[0]
+            await user.click(selectInput)
 
-            const existingCustomerOption = await screen.findByRole('menuitem', {
+            const existingCustomerOption = await screen.findByRole('option', {
                 name: /existing customer/i,
             })
-            fireEvent.click(existingCustomerOption)
+            await user.click(existingCustomerOption)
 
-            const selectDropdownAgain = screen
-                .getAllByText('Existing customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdownAgain) {
-                fireEvent.click(selectDropdownAgain)
-            }
+            const selectInputAgain =
+                screen.getAllByDisplayValue('Existing customer')[0]
+            await user.click(selectInputAgain)
 
-            const newCustomerOption = await screen.findByRole('menuitem', {
+            const newCustomerOption = await screen.findByRole('option', {
                 name: /new customer/i,
             })
-            fireEvent.click(newCustomerOption)
+            await user.click(newCustomerOption)
 
             expect(mockOnChange).toHaveBeenCalledWith({
                 customer: DEFAULT_PLAYGROUND_CUSTOMER,
@@ -121,26 +164,22 @@ describe('TargetSelection', () => {
         it('initializes with NEW_CUSTOMER sender type', () => {
             renderComponent()
 
-            const selectedLabel = screen
-                .getAllByText('New customer')
-                .find((el) => el.className.includes('label'))
-            expect(selectedLabel).toBeInTheDocument()
+            expect(
+                screen.getAllByDisplayValue('New customer')[0],
+            ).toBeInTheDocument()
         })
 
         it('updates sender type when selection changes', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
-            const selectDropdown = screen
-                .getAllByText('New customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdown) {
-                fireEvent.click(selectDropdown)
-            }
+            const selectInput = screen.getAllByDisplayValue('New customer')[0]
+            await user.click(selectInput)
 
-            const existingTicketOption = await screen.findByRole('menuitem', {
+            const existingTicketOption = await screen.findByRole('option', {
                 name: /existing ticket/i,
             })
-            fireEvent.click(existingTicketOption)
+            await user.click(existingTicketOption)
 
             expect(
                 screen.getByPlaceholderText(
@@ -154,28 +193,24 @@ describe('TargetSelection', () => {
         it('passes DEFAULT_PLAYGROUND_CUSTOMER to PlaygroundCustomerSelection', () => {
             renderComponent()
 
-            const selectedLabel = screen
-                .getAllByText('New customer')
-                .find((el) => el.className.includes('label'))
-            expect(selectedLabel).toBeInTheDocument()
+            expect(
+                screen.getAllByDisplayValue('New customer')[0],
+            ).toBeInTheDocument()
         })
     })
 
     describe('integration with PlaygroundCustomerSelection', () => {
         it('shows ticket search when existing ticket is selected', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
-            const selectDropdown = screen
-                .getAllByText('New customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdown) {
-                fireEvent.click(selectDropdown)
-            }
+            const selectInput = screen.getAllByDisplayValue('New customer')[0]
+            await user.click(selectInput)
 
-            const existingTicketOption = await screen.findByRole('menuitem', {
+            const existingTicketOption = await screen.findByRole('option', {
                 name: /existing ticket/i,
             })
-            fireEvent.click(existingTicketOption)
+            await user.click(existingTicketOption)
 
             expect(
                 screen.getByPlaceholderText(
@@ -185,19 +220,16 @@ describe('TargetSelection', () => {
         })
 
         it('shows customer search when existing customer is selected', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
-            const selectDropdown = screen
-                .getAllByText('New customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdown) {
-                fireEvent.click(selectDropdown)
-            }
+            const selectInput = screen.getAllByDisplayValue('New customer')[0]
+            await user.click(selectInput)
 
-            const existingCustomerOption = await screen.findByRole('menuitem', {
+            const existingCustomerOption = await screen.findByRole('option', {
                 name: /existing customer/i,
             })
-            fireEvent.click(existingCustomerOption)
+            await user.click(existingCustomerOption)
 
             expect(
                 screen.getByPlaceholderText('Search customer email'),
@@ -205,35 +237,29 @@ describe('TargetSelection', () => {
         })
 
         it('hides conditional content when new customer is selected', async () => {
+            const user = userEvent.setup()
             renderComponent()
 
-            const selectDropdown = screen
-                .getAllByText('New customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdown) {
-                fireEvent.click(selectDropdown)
-            }
+            const selectInput = screen.getAllByDisplayValue('New customer')[0]
+            await user.click(selectInput)
 
-            const existingCustomerOption = await screen.findByRole('menuitem', {
+            const existingCustomerOption = await screen.findByRole('option', {
                 name: /existing customer/i,
             })
-            fireEvent.click(existingCustomerOption)
+            await user.click(existingCustomerOption)
 
             expect(
                 screen.getByPlaceholderText('Search customer email'),
             ).toBeInTheDocument()
 
-            const selectDropdownAgain = screen
-                .getAllByText('Existing customer')[0]
-                .closest('[data-toggle="dropdown"]')
-            if (selectDropdownAgain) {
-                fireEvent.click(selectDropdownAgain)
-            }
+            const selectInputAgain =
+                screen.getAllByDisplayValue('Existing customer')[0]
+            await user.click(selectInputAgain)
 
-            const newCustomerOption = await screen.findByRole('menuitem', {
+            const newCustomerOption = await screen.findByRole('option', {
                 name: /new customer/i,
             })
-            fireEvent.click(newCustomerOption)
+            await user.click(newCustomerOption)
 
             expect(
                 screen.queryByPlaceholderText('Search customer email'),

@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { getTicket } from '@gorgias/helpdesk-client'
 
@@ -12,6 +13,7 @@ import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../../constants'
+import { useCoreContext } from '../../contexts/CoreContext'
 import {
     PlaygroundCustomerSelection,
     SenderTypeValues,
@@ -26,9 +28,14 @@ jest.mock('@gorgias/helpdesk-client', () => ({
     getTicket: jest.fn(),
 }))
 
+jest.mock('../../contexts/CoreContext', () => ({
+    useCoreContext: jest.fn(),
+}))
+
 const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 const mockUseSearchTickets = jest.mocked(useSearchTickets)
 const mockGetTicket = jest.mocked(getTicket)
+const mockUseCoreContext = jest.mocked(useCoreContext)
 
 const mockOnCustomerChange = jest.fn()
 const mockOnTicketChange = jest.fn()
@@ -60,6 +67,11 @@ describe('PlaygroundCustomerSelection', () => {
         mockOnTicketChange.mockClear()
         mockOnSenderTypeChange.mockClear()
         mockGetTicket.mockClear()
+
+        mockUseCoreContext.mockReturnValue({
+            shouldFocusCustomerSelection: false,
+            setShouldFocusCustomerSelection: jest.fn(),
+        } as any)
 
         mockUseSearchCustomer.mockReturnValue({
             isLoading: false,
@@ -137,21 +149,41 @@ describe('PlaygroundCustomerSelection', () => {
         ).toBeInTheDocument()
     })
 
-    test('changes sender type and updates state', () => {
+    test('changes sender type and updates state', async () => {
+        const user = userEvent.setup({ delay: null })
         renderComponent()
 
-        const existingCustomerOption = screen.getByText('Existing customer')
-        fireEvent.click(existingCustomerOption)
+        const selectButton = screen.getByRole('button', {
+            name: /New customer/i,
+        })
+        await user.click(selectButton)
+
+        const existingCustomerOption = screen.getByRole('option', {
+            name: 'Existing customer',
+        })
+        await user.click(existingCustomerOption)
+
         expect(mockOnSenderTypeChange).toHaveBeenCalledWith(
             SenderTypeValues.EXISTING_CUSTOMER,
         )
     })
 
-    test('calls onCustomerChange with correct parameters for new customer', () => {
-        renderComponent()
+    test('calls onCustomerChange with correct parameters for new customer', async () => {
+        const user = userEvent.setup({ delay: null })
+        renderComponent({
+            senderType: SenderTypeValues.EXISTING_CUSTOMER,
+        })
 
-        const newCustomerOption = screen.getAllByText('New customer')[1]
-        fireEvent.click(newCustomerOption)
+        const selectButton = screen.getByRole('button', {
+            name: /Existing customer/i,
+        })
+        await user.click(selectButton)
+
+        const newCustomerOption = screen.getByRole('option', {
+            name: 'New customer',
+        })
+        await user.click(newCustomerOption)
+
         expect(mockOnCustomerChange).toHaveBeenCalledWith({
             email: CustomerHttpIntegrationDataMock.address,
             id: CustomerHttpIntegrationDataMock.id,
@@ -176,6 +208,7 @@ describe('PlaygroundCustomerSelection', () => {
     })
 
     test('real ticket search integration - searches and selects ticket', async () => {
+        const user = userEvent.setup({ delay: null })
         mockUseSearchTickets.mockReturnValue({
             isLoading: false,
             error: null,
@@ -203,29 +236,24 @@ describe('PlaygroundCustomerSelection', () => {
             senderType: SenderTypeValues.EXISTING_TICKET,
         })
 
-        // Type in the search input
         const searchInput = screen.getByPlaceholderText(
             'Search by ticket id or email subject',
         )
-        fireEvent.change(searchInput, 'test search')
+        await user.type(searchInput, 'test search')
 
-        // Fast-forward timers to trigger the debounced search
         jest.advanceTimersByTime(1000)
 
-        // Wait for the search results to appear
         await waitFor(() => {
             expect(
                 screen.getByText(/Test Ticket Subject.*Test Customer.*123/),
             ).toBeInTheDocument()
         })
 
-        // Click on the ticket in the dropdown
         const ticketOption = screen.getByText(
             /Test Ticket Subject.*Test Customer.*123/,
         )
-        fireEvent.click(ticketOption)
+        await user.click(ticketOption)
 
-        // Wait for the getTicket call and onTicketChange to be called
         await waitFor(() => {
             expect(mockGetTicket).toHaveBeenCalledWith(123)
             expect(mockOnTicketChange).toHaveBeenCalledWith({
@@ -238,5 +266,28 @@ describe('PlaygroundCustomerSelection', () => {
                 message: 'Test message content',
             })
         })
+    })
+
+    test('focuses input when shouldFocusCustomerSelection is true and resets on blur', async () => {
+        const user = userEvent.setup({ delay: null })
+        const mockSetShouldFocusCustomerSelection = jest.fn()
+
+        mockUseCoreContext.mockReturnValue({
+            shouldFocusCustomerSelection: true,
+            setShouldFocusCustomerSelection:
+                mockSetShouldFocusCustomerSelection,
+        } as any)
+
+        renderComponent()
+
+        const input = screen.getByRole('textbox')
+
+        await waitFor(() => {
+            expect(input).toHaveFocus()
+        })
+
+        await user.tab()
+
+        expect(mockSetShouldFocusCustomerSelection).toHaveBeenCalledWith(false)
     })
 })

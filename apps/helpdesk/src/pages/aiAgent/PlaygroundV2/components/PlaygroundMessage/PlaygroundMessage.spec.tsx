@@ -7,7 +7,12 @@ import configureMockStore from 'redux-mock-store'
 
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { AgentSkill, MessageType } from 'models/aiAgentPlayground/types'
+import {
+    AgentSkill,
+    AiAgentMessageType,
+    MessageType,
+    type PlaygroundTextMessage,
+} from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
@@ -906,6 +911,34 @@ describe('PlaygroundMessage', () => {
                     screen.queryByAltText(mockMediaUrls[0].name),
                 ).not.toBeInTheDocument()
             })
+        })
+    })
+
+    describe('AuthenticationWarningBanner rendering', () => {
+        it('should render authentication warning banner when message type is REQUEST_CUSTOMER_AUTHENTICATION in inbound mode', () => {
+            const authenticationMessage: PlaygroundTextMessage = {
+                ...playgroundMessageFixture,
+                sender: AI_AGENT,
+                aiAgentMessageType:
+                    AiAgentMessageType.REQUEST_CUSTOMER_AUTHENTICATION,
+            }
+
+            renderComponent({ message: authenticationMessage }, ['inbound'])
+
+            expect(
+                screen.getByText(/Authentication doesn't work in test mode/i),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /The AI Agent asked the customer to verify their identity/i,
+                ),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Select a customer')).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    /in the test configuration to test order-related flows/i,
+                ),
+            ).toBeInTheDocument()
         })
     })
 })

@@ -9,7 +9,7 @@ import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import error from 'assets/img/icons/error.svg'
 import type { PlaygroundMessage as PlaygroundMessageType } from 'models/aiAgentPlayground/types'
-import { MessageType } from 'models/aiAgentPlayground/types'
+import { AiAgentMessageType, MessageType } from 'models/aiAgentPlayground/types'
 import { AI_AGENT_SENDER } from 'pages/aiAgent/PlaygroundV2/constants'
 import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
@@ -22,6 +22,7 @@ import { linkifyHtml } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import type { PlaygroundChannels } from '../../types'
+import { AuthenticationWarningBanner } from '../AuthenticationWarningBanner/AuthenticationWarningBanner'
 
 import css from './PlaygroundMessage.less'
 
@@ -40,6 +41,7 @@ const PlaygroundMessage = ({
 }: Props) => {
     const { mode } = useSettingsContext()
     const { messages } = useMessagesContext()
+    const { setShouldFocusCustomerSelection } = useCoreContext()
     const {
         aiJourneySettings: { includeProductImage, selectedProduct, mediaUrls },
         currentJourney,
@@ -63,6 +65,13 @@ const PlaygroundMessage = ({
         currentJourney?.type === JourneyTypeEnum.Campaign &&
         mediaUrls &&
         mediaUrls.length > 0
+
+    const renderAuthenticationWarning =
+        isAiAgentSender &&
+        mode === 'inbound' &&
+        message.type === MessageType.MESSAGE &&
+        message.aiAgentMessageType ===
+            AiAgentMessageType.REQUEST_CUSTOMER_AUTHENTICATION
 
     const productImage = useRef({
         src: selectedProduct?.image?.src,
@@ -180,6 +189,13 @@ const PlaygroundMessage = ({
                                 products={attachments}
                             />
                         </div>
+                    )}
+                    {renderAuthenticationWarning && (
+                        <AuthenticationWarningBanner
+                            onSelectCustomerClick={() => {
+                                setShouldFocusCustomerSelection(true)
+                            }}
+                        />
                     )}
                     {children}
                 </MessageContainer>

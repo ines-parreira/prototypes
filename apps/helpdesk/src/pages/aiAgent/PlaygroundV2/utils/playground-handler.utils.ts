@@ -1,4 +1,5 @@
 import type {
+    AiAgentMessageType,
     PlaygroundTextMessage,
     PlaygroundTicketEventMessage,
     TestSessionLog,
@@ -35,6 +36,8 @@ export const handleAiAgentTestSessionLog = (
                 createdDatetime: log.createdDatetime,
                 executionId: log.aiAgentExecutionId,
                 isReasoningEligible,
+                aiAgentMessageType: log.data.meta
+                    ?.ai_agent_message_type as AiAgentMessageType,
             } satisfies PlaygroundTextMessage
         case TestSessionLogType.AI_AGENT_EXECUTION_FINISHED:
             return {

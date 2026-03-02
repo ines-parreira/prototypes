@@ -150,6 +150,7 @@ export type PlaygroundTextMessage = BaseMessage & {
     content: string
     attachments?: AiAgentAttachment[]
     executionId?: string
+    aiAgentMessageType?: AiAgentMessageType
 }
 
 export type PlaygroundPromptMessage = BaseMessage & {
@@ -202,6 +203,7 @@ export enum AiAgentMessageType {
     AI_AGENT_RESPONSE_RELEVANT_FALSE = 'ai_agent_response_relevant_false',
     ERROR = 'error',
     ENTRY_CUSTOMER_MESSAGE = 'entry_customer_message',
+    REQUEST_CUSTOMER_AUTHENTICATION = 'request_customer_authentication',
 }
 
 export type AiAgentResponse = {
@@ -306,6 +308,10 @@ export type TestSessionLogData = {
     isSalesOpportunityFieldId: number | null
     isSalesDiscountFieldId: number | null
     outcome: TicketOutcome
+    meta?: {
+        ai_agent_message_type?: string
+        type?: string
+    }
 }
 
 export enum TestSessionLogType {
