@@ -3,7 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { useDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
+import { useDrillDownDataV2 } from 'domains/reporting/hooks/useDrillDownData'
 import { formatVoiceDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import { getVoiceDrillDownColumns } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import VoiceCallDrillDownTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
@@ -15,7 +15,7 @@ jest.mock(
 )
 jest.mock('domains/reporting/hooks/useDrillDownData')
 
-const useDrillDownDataMock = assumeMock(useDrillDownData)
+const useDrillDownDataMock = assumeMock(useDrillDownDataV2)
 const VoiceCallTableContentMock = assumeMock(VoiceCallTableContent)
 
 describe('VoiceCallDrillDownTableContent', () => {
@@ -48,6 +48,7 @@ describe('VoiceCallDrillDownTableContent', () => {
 
         expect(useDrillDownDataMock).toHaveBeenCalledWith(
             expect.any(Function),
+            undefined,
             {
                 metricName: VoiceMetric.AverageTalkTime,
             },

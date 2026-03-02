@@ -331,7 +331,7 @@ export const liveDashBoardVoiceCallListQueryFactory = (
         order,
         sorting,
         undefined,
-        true,
+        false, // give consistent results with the other reporting data
     )
 }
 

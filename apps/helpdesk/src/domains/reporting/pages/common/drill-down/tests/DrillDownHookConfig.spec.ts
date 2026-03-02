@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 
 import {
     defaultEnrichmentFields,
-    useDrillDownData,
+    useDrillDownDataV2,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
 import { TicketTimeReference } from 'domains/reporting/models/stat/types'
@@ -33,7 +33,7 @@ import {
 
 jest.mock('domains/reporting/hooks/useDrillDownData')
 
-const useDrillDownDataMock = assumeMock(useDrillDownData)
+const useDrillDownDataV2Mock = assumeMock(useDrillDownDataV2)
 const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
 
 describe('getDrillDownHook', () => {
@@ -178,10 +178,24 @@ describe('getDrillDownHook', () => {
     it.each(voiceMetrics)(
         `should return the correct hook for the voice metric: $metricName`,
         (metricData) => {
+            const noEquivalentV2QueryMetrics: (
+                | VoiceMetric
+                | VoiceAgentsMetric
+            )[] = [
+                VoiceMetric.AverageWaitTime,
+                VoiceMetric.AverageTalkTime,
+                VoiceMetric.QueueAverageWaitTime,
+                VoiceMetric.QueueAverageTalkTime,
+                VoiceAgentsMetric.AgentAverageTalkTime,
+            ]
+
             const hook = getDrillDownHook(metricData)
             hook(metricData)
-            expect(useDrillDownDataMock).toHaveBeenCalledWith(
+            expect(useDrillDownDataV2Mock).toHaveBeenCalledWith(
                 expect.any(Function),
+                noEquivalentV2QueryMetrics.includes(metricData.metricName)
+                    ? undefined
+                    : expect.any(Function),
                 metricData,
                 formatVoiceDrillDownRowData,
             )

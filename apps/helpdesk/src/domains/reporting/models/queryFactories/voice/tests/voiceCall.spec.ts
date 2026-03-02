@@ -1097,7 +1097,10 @@ describe('voice queries factories', () => {
                         values: [periodEnd],
                     },
                 ],
-                segments: [VoiceCallSegment.inboundCalls],
+                segments: [
+                    VoiceCallSegment.inboundCalls,
+                    VoiceCallSegment.callsInFinalStatus,
+                ],
                 limit: undefined,
                 offset: undefined,
                 order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],

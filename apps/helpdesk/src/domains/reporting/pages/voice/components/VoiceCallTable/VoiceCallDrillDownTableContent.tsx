@@ -1,8 +1,6 @@
-import { useDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
-import { formatVoiceDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { getVoiceDrillDownColumns } from 'domains/reporting/pages/voice/components/VoiceCallTable/utils'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'
+import { useVoiceDrillDownHookV2 } from 'domains/reporting/pages/voice/VoiceConfigs/useVoiceDrillDownHookV2'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 type Props = {
@@ -10,11 +8,7 @@ type Props = {
 }
 
 export default function VoiceCallDrillDownTableContent({ metricData }: Props) {
-    const { data, isFetching } = useDrillDownData(
-        getDrillDownQuery(metricData),
-        metricData,
-        formatVoiceDrillDownRowData,
-    )
+    const { data, isFetching } = useVoiceDrillDownHookV2(metricData)
 
     return (
         <VoiceCallTableContent

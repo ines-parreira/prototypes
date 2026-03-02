@@ -276,6 +276,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'resourceSourceSetId':
             case 'callDirection':
             case 'callTerminationStatus':
+            case 'callSlaStatus':
             case 'isAnsweredByAgent':
             case 'isDuringBusinessHours':
             case 'displayStatus':
@@ -541,6 +542,16 @@ const SEGMENT_TO_FILTER_MAPPINGS: SegmentToFilterMapping[] = [
             },
             {
                 member: 'VoiceCall.answeredByFilteringAgent',
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+        ],
+    },
+    {
+        segment: 'VoiceCall.callSlaBreached',
+        filters: [
+            {
+                member: 'VoiceCall.callSlaStatus',
                 operator: ReportingFilterOperator.Equals,
                 values: ['1'],
             },

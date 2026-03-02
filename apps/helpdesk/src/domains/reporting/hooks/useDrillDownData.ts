@@ -4,6 +4,7 @@ import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
     useMetricPerDimension,
+    useMetricPerDimensionV2,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import type {
@@ -11,6 +12,7 @@ import type {
     MergedRecord,
 } from 'domains/reporting/hooks/withEnrichment'
 import { TicketSLADimension } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
@@ -134,6 +136,18 @@ export const useDrillDownQuery = (
         userTimezone,
         getDrillDownMetricOrder(metricData.metricName),
     )
+}
+
+export const useDrillDownQueryV2 = (queryV2?: (ctx: Context) => BuiltQuery) => {
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    if (!queryV2) {
+        return undefined
+    }
+
+    return queryV2({
+        filters: cleanStatsFilters,
+        timezone: userTimezone,
+    })
 }
 
 function withoutLimit<T extends ReportingQuery>(query: T): T {
@@ -322,6 +336,54 @@ export function useDrillDownData<T>(
     const currentPage = useAppSelector(getDrillDownCurrentPage)
     const query = useDrillDownQuery(queryFactory, metricData)
     const { data: someData, isFetching } = useMetricPerDimension(query)
+
+    const rowData = useMemo(() => someData?.allData || [], [someData])
+    const totalResults = rowData.length
+
+    const formattedRowData = rowData.map((row) =>
+        getDrillDownFormatter({
+            row,
+            metricField: query.dimensions[1] ?? query.measures[0],
+        }),
+    )
+    const slicedRowData = formattedRowData.slice(
+        Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
+        Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults),
+    )
+
+    return {
+        isFetching,
+        perPage: DRILL_DOWN_PER_PAGE,
+        currentPage,
+        totalResults,
+        pagesCount: Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+        onPageChange: (page: number) =>
+            dispatch(
+                setCurrentPage(
+                    Math.min(
+                        page,
+                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+                    ),
+                ),
+            ),
+        data: slicedRowData,
+    }
+}
+
+export function useDrillDownDataV2<T>(
+    queryFactory: DrillDownQueryFactory,
+    queryFactoryV2: ((ctx: Context) => BuiltQuery) | undefined,
+    metricData: DrillDownMetric,
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
+): DrillDownData<T> {
+    const dispatch = useAppDispatch()
+    const currentPage = useAppSelector(getDrillDownCurrentPage)
+    const query = useDrillDownQuery(queryFactory, metricData)
+    const queryV2 = useDrillDownQueryV2(queryFactoryV2)
+    const { data: someData, isFetching } = useMetricPerDimensionV2(
+        query,
+        queryV2,
+    )
 
     const rowData = useMemo(() => someData?.allData || [], [someData])
     const totalResults = rowData.length

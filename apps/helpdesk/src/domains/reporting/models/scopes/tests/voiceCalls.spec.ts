@@ -1,8 +1,11 @@
+import { assumeMock } from '@repo/testing'
+
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     VoiceCallDimension,
     VoiceCallSegment,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { getAccountBusinessHoursTimezone } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import {
     mapVoiceCallDirectionToScopeOrder,
@@ -18,10 +21,31 @@ import {
     voiceCallsCountPerFilteringAgent,
     voiceCallsCountPerFilteringAgentQueryFactoryV2,
     voiceCallsCountQueryFactoryV2,
+    voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2,
     voiceCallsSlaAchievementRate,
     voiceCallsSlaAchievementRateQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
+
+jest.mock('domains/reporting/models/queryFactories/voice/voiceCall', () => ({
+    ...jest.requireActual(
+        'domains/reporting/models/queryFactories/voice/voiceCall',
+    ),
+    getAccountBusinessHoursTimezone: jest.fn(),
+}))
+
+jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
+    ...jest.requireActual(
+        'domains/reporting/pages/voice/components/LiveVoice/utils',
+    ),
+    getLiveVoicePeriodFilter: jest.fn(),
+}))
+
+const getAccountBusinessHoursTimezoneMock = assumeMock(
+    getAccountBusinessHoursTimezone,
+)
+const getLiveVoicePeriodFilterMock = assumeMock(getLiveVoicePeriodFilter)
 
 describe('voiceCallsScope', () => {
     const filters: StatsFilters = {
@@ -447,6 +471,19 @@ describe('voiceCallsScope', () => {
                 })
             })
 
+            it('adds inbound callSlaStatus=1 for callSlaBreached segment', () => {
+                const result = voiceCallsCountQueryFactoryV2(
+                    context,
+                    VoiceCallSegment.callSlaBreached,
+                )
+
+                expect(result.filters).toContainEqual({
+                    member: 'callSlaStatus',
+                    operator: 'one-of',
+                    values: ['1'],
+                })
+            })
+
             it('does not add extra filters for callsInFinalStatus segment', () => {
                 const result = voiceCallsCountQueryFactoryV2(
                     context,
@@ -669,6 +706,83 @@ describe('voiceCallsScope', () => {
             )
 
             expect(result).toBeUndefined()
+        })
+    })
+
+    describe('voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2', () => {
+        const livePeriod = {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        }
+        const liveTimezone = 'Europe/Paris'
+
+        beforeEach(() => {
+            getAccountBusinessHoursTimezoneMock.mockReturnValue(liveTimezone)
+            getLiveVoicePeriodFilterMock.mockReturnValue(livePeriod)
+        })
+
+        it('returns query with all dimensions', () => {
+            const result =
+                voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(context)
+
+            expect(result.dimensions).toContain('agentId')
+            expect(result.dimensions).toContain('customerId')
+            expect(result.dimensions).toContain('callDirection')
+        })
+
+        it('uses timezone from getAccountBusinessHoursTimezone', () => {
+            const result =
+                voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(context)
+
+            expect(result.timezone).toBe(liveTimezone)
+        })
+
+        it('calls getLiveVoicePeriodFilter with the business hours timezone', () => {
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(context)
+
+            expect(getLiveVoicePeriodFilterMock).toHaveBeenCalledWith(
+                liveTimezone,
+            )
+        })
+
+        it('uses live period from getLiveVoicePeriodFilter instead of context period', () => {
+            const result =
+                voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(context)
+
+            expect(result.filters).toContainEqual({
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: [livePeriod.start_datetime],
+            })
+            expect(result.filters).toContainEqual({
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: [livePeriod.end_datetime],
+            })
+        })
+
+        it('does not apply segment filters when no segment provided', () => {
+            const result =
+                voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(context)
+
+            const callDirectionFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'callDirection',
+            )
+            expect(callDirectionFilter).toBeUndefined()
+        })
+
+        it('applies inbound segment filter when inboundCalls segment is provided', () => {
+            const result =
+                voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                    context,
+                    VoiceCallSegment.inboundCalls,
+                )
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
         })
     })
 })

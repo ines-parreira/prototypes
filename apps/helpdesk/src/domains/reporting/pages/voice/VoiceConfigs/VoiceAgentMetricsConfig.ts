@@ -7,6 +7,9 @@ import {
     declinedVoiceCallsPerAgentQueryFactory,
     transferredInboundVoiceCallsPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
+import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
+import { voiceCallsCountAllDimensionsQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
+import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
@@ -18,6 +21,7 @@ export const VoiceAgentsMetricsConfig: Record<
         showMetric: boolean
         domain: Domain.Voice
         drillDownQuery: DrillDownQueryFactory
+        drillDownQueryV2?: (ctx: Context) => BuiltQuery
         title: string
     }
 > = {
@@ -26,6 +30,10 @@ export const VoiceAgentsMetricsConfig: Record<
         domain: Domain.Voice,
         drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
             voiceCallListQueryFactory(statsFilters, timezone),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+            ),
         title: '',
     },
     [VoiceAgentsMetric.AgentInboundMissedCalls]: {
@@ -35,6 +43,11 @@ export const VoiceAgentsMetricsConfig: Record<
             voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
+                VoiceCallSegment.inboundUnansweredCallsByAgent,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.inboundUnansweredCallsByAgent,
             ),
         title: '',
@@ -48,6 +61,11 @@ export const VoiceAgentsMetricsConfig: Record<
                 timezone,
                 VoiceCallSegment.inboundAnsweredCallsByAgent,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundAnsweredCallsByAgent,
+            ),
         title: '',
     },
     [VoiceAgentsMetric.AgentInboundTransferredCalls]: {
@@ -58,6 +76,7 @@ export const VoiceAgentsMetricsConfig: Record<
                 statsFilters,
                 timezone,
             ),
+
         title: '',
     },
     [VoiceAgentsMetric.AgentInboundDeclinedCalls]: {
@@ -74,6 +93,11 @@ export const VoiceAgentsMetricsConfig: Record<
             voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
+                VoiceCallSegment.outboundCalls,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.outboundCalls,
             ),
         title: '',

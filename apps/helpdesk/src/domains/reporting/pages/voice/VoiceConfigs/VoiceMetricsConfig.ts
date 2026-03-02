@@ -11,6 +11,12 @@ import {
     voiceCallListWithSlaStatusQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
+import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
+import {
+    voiceCallsCountAllDimensionsQueryFactoryV2,
+    voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
@@ -34,6 +40,7 @@ export const VoiceMetricsConfig: Record<
         showMetric: boolean
         domain: Domain.Voice
         drillDownQuery: DrillDownQueryFactory
+        drillDownQueryV2?: (ctx: Context) => BuiltQuery
         title: string
     }
 > = {
@@ -80,6 +87,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundCalls,
+            ),
         title: '',
     },
     [VoiceMetric.QueueOutboundCalls]: {
@@ -88,6 +100,11 @@ export const VoiceMetricsConfig: Record<
         drillDownQuery: (statsFilters: StatsFilters) =>
             liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
+                VoiceCallSegment.outboundCalls,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.outboundCalls,
             ),
         title: '',
@@ -100,6 +117,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundUnansweredCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundUnansweredCalls,
+            ),
         title: '',
     },
     [VoiceMetric.QueueInboundMissedCalls]: {
@@ -108,6 +130,11 @@ export const VoiceMetricsConfig: Record<
         drillDownQuery: (statsFilters: StatsFilters) =>
             liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
+                VoiceCallSegment.inboundMissedCalls,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.inboundMissedCalls,
             ),
         title: '',
@@ -120,6 +147,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundAbandonedCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundAbandonedCalls,
+            ),
         title: '',
     },
     [VoiceMetric.QueueInboundCancelledCalls]: {
@@ -130,6 +162,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundCancelledCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundCancelledCalls,
+            ),
         title: '',
     },
     [VoiceMetric.QueueInboundCallbackRequestedCalls]: {
@@ -138,6 +175,11 @@ export const VoiceMetricsConfig: Record<
         drillDownQuery: (statsFilters: StatsFilters) =>
             liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
+                VoiceCallSegment.inboundCallbackRequestedCalls,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.inboundCallbackRequestedCalls,
             ),
         title: '',
@@ -168,6 +210,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundCalls,
+            ),
         title: SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
         hint: { title: SLA_ACHIEVEMENT_RATE_METRIC_HINT },
         interpretAs: 'more-is-better',
@@ -180,6 +227,11 @@ export const VoiceMetricsConfig: Record<
             voiceCallListQueryFactory(
                 statsFilters,
                 timezone,
+                VoiceCallSegment.callSlaBreached,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsCountAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
                 VoiceCallSegment.callSlaBreached,
             ),
         title: '',

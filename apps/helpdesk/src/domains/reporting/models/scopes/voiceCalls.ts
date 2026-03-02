@@ -4,7 +4,10 @@ import {
     VoiceCallSegment,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { getAdvancedVoicePeriodFilters } from 'domains/reporting/models/queryFactories/voice/voiceCall'
+import {
+    getAccountBusinessHoursTimezone,
+    getAdvancedVoicePeriodFilters,
+} from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import type {
@@ -13,6 +16,7 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import { APIOnlyFilterKey } from 'domains/reporting/models/stat/types'
 import { ApiOnlyOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
+import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 
 const voiceCallsScope = defineScope({
     scope: MetricScope.VoiceCalls,
@@ -68,6 +72,7 @@ const voiceCallsScope = defineScope({
         'storeId',
         'tags',
         'customFields',
+        'callSlaStatus',
     ],
 })
 
@@ -233,6 +238,10 @@ const withVoiceCallSegment = (
             additionalFilters[APIOnlyFilterKey.IsAnsweredByAgent] =
                 withLogicalOperator([true])
             break
+        case VoiceCallSegment.callSlaBreached:
+            additionalFilters[APIOnlyFilterKey.CallSlaStatus] =
+                withLogicalOperator(['1'])
+            break
         case VoiceCallSegment.callsInFinalStatus:
             // No additional filter needed for this segment, already included in backend
             break
@@ -316,6 +325,20 @@ export const voiceCallsCountAllDimensionsQueryFactoryV2 = (
         ...ctx,
         filters: withVoiceCallSegment(ctx.filters, segment),
     })
+
+export const voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    segment?: VoiceCallSegment,
+) => {
+    const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
+
+    return voiceCallsCountAllDimensions.build({
+        ...ctx,
+        timezone,
+        filters: withVoiceCallSegment({ ...ctx.filters, period }, segment),
+    })
+}
 
 export const mapVoiceCallDirectionToScopeOrder = (
     order: VoiceCallDimension | undefined,

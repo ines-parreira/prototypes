@@ -14,11 +14,13 @@ import {
     filterCSATDataBasedOnIntent,
     getDrillDownMetricOrder,
     useDrillDownData,
+    useDrillDownDataV2,
     useEnrichedDrillDownData,
     useEnrichedDrillDownDataUnpaginated,
 } from 'domains/reporting/hooks/useDrillDownData'
 import {
     useMetricPerDimension,
+    useMetricPerDimensionV2,
     useMetricPerDimensionWithEnrichment,
 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { HelpdeskMessageMeasure } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
@@ -40,8 +42,12 @@ import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/F
 import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
+    formatVoiceDrillDownRowData,
 } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
-import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import {
+    getDrillDownQuery,
+    getDrillDownQueryV2,
+} from 'domains/reporting/pages/common/drill-down/helpers'
 import { OrderConversionDimension } from 'domains/reporting/pages/convert/clients/constants'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -54,6 +60,7 @@ import {
     ConvertMetric,
     SlaMetric,
     TicketFieldsMetric,
+    VoiceMetric,
 } from 'domains/reporting/state/ui/stats/types'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
 import { agents } from 'fixtures/agents'
@@ -61,6 +68,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { OrderDirection } from 'models/api/types'
 import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
+
+import { VoiceCallDimension } from '../../models/cubes/VoiceCallCube'
 
 const initialState = {
     ui: {
@@ -91,6 +100,7 @@ const useMetricPerDimensionWithEnrichmentMock = assumeMock(
     useMetricPerDimensionWithEnrichment,
 )
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
+const useMetricPerDimensionV2Mock = assumeMock(useMetricPerDimensionV2)
 
 jest.mock(
     'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
@@ -1152,6 +1162,173 @@ describe('DrillDownData hooks', () => {
                         getDrillDownQuery(metricData),
                         metricData,
                         formatConvertCampaignSalesDrillDownRowData,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            act(() => {
+                result.current.onPageChange(2)
+            })
+
+            expect(dispatch).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    type: 'drillDown/setCurrentPage',
+                    payload: 2,
+                }),
+            )
+        })
+    })
+
+    describe('useDrillDownDataV2', () => {
+        const metricDimension = VoiceCallDimension.CallSlaStatus
+        const idField = VoiceCallDimension.CreatedAt
+        const exampleRow = {
+            [idField]: '1323',
+            [VoiceCallDimension.CustomerId]: 12,
+            [VoiceCallDimension.Duration]: '777',
+            [VoiceCallDimension.CallSlaStatus]: 'breached',
+        }
+        const rowData = [exampleRow]
+        const metricData: DrillDownMetric = {
+            metricName: VoiceMetric.VoiceCallsBreachedRate,
+            title: 'Breached calls',
+        }
+
+        beforeEach(() => {
+            useMetricPerDimensionV2Mock.mockReturnValue({
+                data: { allData: rowData } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+        })
+
+        it('should return formatted Data', () => {
+            const { result } = renderHook(
+                () =>
+                    useDrillDownDataV2(
+                        getDrillDownQuery(metricData),
+                        getDrillDownQueryV2(metricData),
+                        metricData,
+                        formatVoiceDrillDownRowData,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                perPage: DRILL_DOWN_PER_PAGE,
+                currentPage: 1,
+                pagesCount: Math.ceil(rowData.length / DRILL_DOWN_PER_PAGE),
+                totalResults: rowData.length,
+                onPageChange: expect.any(Function),
+                data: rowData.map((row) =>
+                    formatVoiceDrillDownRowData({
+                        row,
+                        metricField: metricDimension,
+                    }),
+                ),
+            })
+        })
+
+        it('should work for no V2 query', () => {
+            const { result } = renderHook(
+                () =>
+                    useDrillDownDataV2(
+                        getDrillDownQuery(metricData),
+                        undefined,
+                        metricData,
+                        formatVoiceDrillDownRowData,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                perPage: DRILL_DOWN_PER_PAGE,
+                currentPage: 1,
+                pagesCount: Math.ceil(rowData.length / DRILL_DOWN_PER_PAGE),
+                totalResults: rowData.length,
+                onPageChange: expect.any(Function),
+                data: rowData.map((row) =>
+                    formatVoiceDrillDownRowData({
+                        row,
+                        metricField: metricDimension,
+                    }),
+                ),
+            })
+        })
+
+        it('should return empty array when no data', () => {
+            useMetricPerDimensionV2Mock.mockReturnValue({
+                data: null,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useDrillDownDataV2(
+                        getDrillDownQuery(metricData),
+                        getDrillDownQueryV2(metricData),
+                        metricData,
+                        formatVoiceDrillDownRowData,
+                    ),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                perPage: DRILL_DOWN_PER_PAGE,
+                currentPage: 1,
+                pagesCount: 0,
+                totalResults: 0,
+                onPageChange: expect.any(Function),
+                data: [],
+            })
+        })
+
+        it('should switch to next page of data', () => {
+            useMetricPerDimensionV2Mock.mockReturnValue({
+                data: {
+                    allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
+                        exampleRow,
+                    ),
+                } as unknown as any,
+                isFetching: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useDrillDownDataV2(
+                        getDrillDownQuery(metricData),
+                        getDrillDownQueryV2(metricData),
+                        metricData,
+                        formatVoiceDrillDownRowData,
                     ),
                 {
                     wrapper: ({ children }) => (

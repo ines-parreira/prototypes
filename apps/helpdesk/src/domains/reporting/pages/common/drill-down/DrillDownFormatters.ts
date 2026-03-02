@@ -273,34 +273,47 @@ export const formatVoiceDrillDownRowData = ({
 }: DrillDownFormatterProps): VoiceCallDrillDownRowData => ({
     agentId:
         row[VoiceCallDimension.AgentId] ||
-        row[VoiceEventsByAgentDimension.AgentId],
-    callSlaStatus: row[VoiceCallDimension.CallSlaStatus],
-    customerId: row[VoiceCallDimension.CustomerId],
-    direction: row[VoiceCallDimension.Direction],
+        row[VoiceEventsByAgentDimension.AgentId] ||
+        row['agentId'],
+    callSlaStatus:
+        row[VoiceCallDimension.CallSlaStatus] || row['callSlaStatus'],
+    customerId: row[VoiceCallDimension.CustomerId] || row['customerId'],
+    direction: row[VoiceCallDimension.Direction] || row['direction'],
     integrationId:
         row[VoiceCallDimension.IntegrationId] ||
-        row[VoiceEventsByAgentDimension.IntegrationId],
+        row[VoiceEventsByAgentDimension.IntegrationId] ||
+        row['integrationId'],
     createdAt:
         row[VoiceCallDimension.CreatedAt] ||
-        row[VoiceEventsByAgentDimension.CreatedAt],
+        row[VoiceEventsByAgentDimension.CreatedAt] ||
+        row['createdDatetime'],
     status:
         row[VoiceCallDimension.Status] ||
-        row[VoiceEventsByAgentDimension.Status],
-    duration: row[VoiceCallDimension.Duration],
+        row[VoiceEventsByAgentDimension.Status] ||
+        row['status'],
+    duration: row[VoiceCallDimension.Duration] || row['duration'],
     ticketId:
         row[VoiceCallDimension.TicketId] ||
-        row[VoiceEventsByAgentDimension.TicketId],
-    phoneNumberDestination: row[VoiceCallDimension.PhoneNumberDestination],
-    phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
-    talkTime: row[VoiceCallDimension.TalkTime],
-    waitTime: row[VoiceCallDimension.WaitTime],
-    voicemailAvailable: row[VoiceCallDimension.VoicemailAvailable],
-    voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
-    callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
-    callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
-    displayStatus: row[VoiceCallDimension.DisplayStatus],
-    queueId: row[VoiceCallDimension.QueueId],
-    queueName: row[VoiceCallDimension.QueueName],
+        row[VoiceEventsByAgentDimension.TicketId] ||
+        row['ticketId'],
+    phoneNumberDestination:
+        row[VoiceCallDimension.PhoneNumberDestination] || row['destination'],
+    phoneNumberSource:
+        row[VoiceCallDimension.PhoneNumberSource] || row['source'],
+    talkTime: row[VoiceCallDimension.TalkTime] || row['talkTime'],
+    waitTime: row[VoiceCallDimension.WaitTime] || row['waitTime'],
+    voicemailAvailable:
+        row[VoiceCallDimension.VoicemailAvailable] || row['voicemailAvailable'],
+    voicemailUrl: row[VoiceCallDimension.VoicemailUrl] || row['voicemailUrl'],
+    callRecordingAvailable:
+        row[VoiceCallDimension.CallRecordingAvailable] ||
+        row['callRecordingAvailable'],
+    callRecordingUrl:
+        row[VoiceCallDimension.CallRecordingUrl] || row['callRecordingUrl'],
+    displayStatus:
+        row[VoiceCallDimension.DisplayStatus] || row['displayStatus'],
+    queueId: row[VoiceCallDimension.QueueId] || row['queueId'],
+    queueName: row[VoiceCallDimension.QueueName] || row['queueName'],
     transferType: row[VoiceEventsByAgentDimension.TransferType],
     transferTargetAgentId:
         row[VoiceEventsByAgentDimension.TransferTargetAgentId],

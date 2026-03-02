@@ -67,6 +67,57 @@ describe('DrillDownFormatters', () => {
             })
         })
 
+        it('should return the formatted row data V2', () => {
+            const row = {
+                agentId: 'agentId',
+                customerId: 'customerId',
+                direction: 'direction',
+                integrationId: 'integrationId',
+                createdDatetime: 'createdAt',
+                status: 'status',
+                duration: 'duration',
+                ticketId: 'ticketId',
+                destination: 'phoneNumberDestination',
+                source: 'phoneNumberSource',
+                talkTime: 'talkTime',
+                waitTime: 'waitTime',
+                voicemailAvailable: 'voicemailAvailable',
+                voicemailUrl: 'voicemailUrl',
+                callRecordingAvailable: 'callRecordingAvailable',
+                callRecordingUrl: 'callRecordingUrl',
+                callSlaStatus: 'callSlaStatus',
+                metricField: 'metricField',
+            }
+
+            const result = formatVoiceDrillDownRowData({
+                row,
+                metricField: 'metricField',
+            })
+
+            expect(result).toEqual({
+                agentId: 'agentId',
+                customerId: 'customerId',
+                direction: 'direction',
+                integrationId: 'integrationId',
+                createdAt: 'createdAt',
+                status: 'status',
+                duration: 'duration',
+                ticketId: 'ticketId',
+                phoneNumberDestination: 'phoneNumberDestination',
+                phoneNumberSource: 'phoneNumberSource',
+                talkTime: 'talkTime',
+                waitTime: 'waitTime',
+                voicemailAvailable: 'voicemailAvailable',
+                voicemailUrl: 'voicemailUrl',
+                callRecordingAvailable: 'callRecordingAvailable',
+                callRecordingUrl: 'callRecordingUrl',
+                callSid: 'undefined',
+                callSlaStatus: 'callSlaStatus',
+                metricValue: 'metricField',
+                rowData: row,
+            })
+        })
+
         it('should return the formatted row data from VoiceEventsByAgent', () => {
             const row = {
                 [VoiceEventsByAgentDimension.AgentId]: 'agentId',

@@ -24,6 +24,7 @@ import {
     customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ticket-insights/customFieldsTicketCount'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import {
     FilterKey,
@@ -905,4 +906,53 @@ export const getDrillDownMetricColumn = (
         metricValueFormat,
         showMetric,
     }
+}
+
+export const getDrillDownQueryV2 = (
+    metricData: DrillDownMetric,
+): ((ctx: Context) => BuiltQuery) | undefined => {
+    switch (metricData.metricName) {
+        case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.AverageWaitTime:
+        case VoiceMetric.QueueAverageTalkTime:
+        case VoiceMetric.QueueAverageWaitTime:
+        case VoiceMetric.QueueInboundCalls:
+        case VoiceMetric.QueueInboundUnansweredCalls:
+        case VoiceMetric.QueueInboundMissedCalls:
+        case VoiceMetric.QueueInboundAbandonedCalls:
+        case VoiceMetric.QueueInboundCancelledCalls:
+        case VoiceMetric.QueueInboundCallbackRequestedCalls:
+        case VoiceMetric.QueueOutboundCalls:
+        case VoiceMetric.QueueCallsAchievementRate:
+        case VoiceMetric.VoiceCallsAchievementRate:
+        case VoiceMetric.VoiceCallsBreachedRate:
+            return VoiceMetricsConfig[metricData.metricName].drillDownQueryV2
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
+        case VoiceAgentsMetric.AgentInboundTransferredCalls:
+        case VoiceAgentsMetric.AgentInboundDeclinedCalls:
+            return queryBuilderWithAgentFilterV2(
+                metricData.perAgentId,
+                VoiceAgentsMetricsConfig[metricData.metricName]
+                    .drillDownQueryV2,
+            )
+    }
+}
+
+const queryBuilderWithAgentFilterV2 = (
+    agentId: number,
+    queryBuilder?: (ctx: Context) => BuiltQuery,
+): ((ctx: Context) => BuiltQuery) | undefined => {
+    if (!queryBuilder) return undefined
+    return (ctx: Context) =>
+        queryBuilder({
+            ...ctx,
+            filters: {
+                ...ctx.filters,
+                agents: withDefaultLogicalOperator([agentId]),
+            },
+        })
 }
