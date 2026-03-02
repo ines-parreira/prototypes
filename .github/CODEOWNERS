@@ -34,16 +34,16 @@ apps/helpdesk/src/state/ui/contactForm @gorgias/ai-agent-orchestration-shopping-
 apps/helpdesk/src/state/entities/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
 apps/helpdesk/src/models/contactForm @gorgias/ai-agent-orchestration-shopping-assistant
 
-# Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
+# AI Journey scope @gorgias/ai-journey
 
-apps/helpdesk/src/models/convert/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/pages/convert/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/domains/reporting/pages/convert/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/domains/reporting/models/cubes/ai-sales-agent/ @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/domains/reporting/models/queryFactories/ai-sales-agent @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
+apps/helpdesk/src/models/convert/ @gorgias/ai-journey
+apps/helpdesk/src/pages/convert/ @gorgias/ai-journey
+apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/ @gorgias/ai-journey
+apps/helpdesk/src/domains/reporting/pages/convert/ @gorgias/ai-journey
+apps/helpdesk/src/domains/reporting/pages/automate/aiSalesAgent/ @gorgias/ai-journey
+apps/helpdesk/src/domains/reporting/models/cubes/ai-sales-agent/ @gorgias/ai-journey
+apps/helpdesk/src/domains/reporting/models/queryFactories/ai-sales-agent @gorgias/ai-journey
+apps/helpdesk/src/AIJourney/ @gorgias/ai-journey
 
 # CXP: Coaching & Trust scope @gorgias/cxp-coaching-trust
 
@@ -59,8 +59,8 @@ apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/cxp-coaching-trus
 apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/KnowledgeHub/ @gorgias/cxp-coaching-trust
 
-# Conv AI: AI Journey scope @gorgias/conv-ai-ai-journey
-apps/helpdesk/src/AIJourney/ @gorgias/conv-ai-ai-journey
+# AI Journey scope @gorgias/ai-journey
+apps/helpdesk/src/AIJourney/ @gorgias/ai-journey
 
 # Chat widget scope @gorgias/ai-agent-orchestration-shopping-assistant
 
