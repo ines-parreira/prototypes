@@ -1,3 +1,5 @@
+import type { DateTimeResultFormatType } from '@repo/utils'
+
 export type LegacyBridgeInfluencedOrder = {
     id: number
     integrationId: number
@@ -31,4 +33,5 @@ export type CurrentTicketRuleSuggestionData = {
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
+    datetimeFormat: DateTimeResultFormatType
 }

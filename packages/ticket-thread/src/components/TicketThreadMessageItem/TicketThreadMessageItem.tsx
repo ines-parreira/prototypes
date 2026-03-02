@@ -9,6 +9,7 @@ import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { TicketMessage } from '../TicketMessage/TicketMessage'
 
 import css from './TicketThreadMessageItem.less'
 
@@ -37,11 +38,7 @@ export function TicketThreadMessageItem({
     const content = useMemo(() => {
         switch (item._tag) {
             case TicketThreadItemTag.Messages.Message:
-                return (
-                    <MessageBubble>
-                        {item.data.stripped_text || item.data.body_text}
-                    </MessageBubble>
-                )
+                return <TicketMessage item={item} />
             case TicketThreadItemTag.Messages.InternalNote:
                 return (
                     <MessageBubble>

@@ -1,10 +1,34 @@
 import { render, screen } from '@testing-library/react'
 
+import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
 
-const messageData = { id: 1, body_text: 'hello' }
+vi.mock('../../../utils/LegacyBridge', () => ({
+    useTicketThreadLegacyBridge: vi.fn(),
+}))
+
+const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+
+beforeEach(() => {
+    mockUseTicketThreadLegacyBridge.mockReturnValue({
+        datetimeFormat: 'YYYY-MM-DD',
+        currentTicketShoppingAssistantData: {
+            influencedOrders: [],
+            shopifyOrders: [],
+            shopifyIntegrations: [],
+        },
+        currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
+    })
+})
+
+const messageData = mockTicketMessage({
+    body_text: 'hello',
+    stripped_text: 'hello',
+})
 const eventData = {
     object_type: 'Ticket',
     type: 'ticket-updated',
@@ -26,7 +50,7 @@ describe('TicketThreadItem', () => {
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(screen.getByText(messageData.body_text)).toBeInTheDocument()
+        expect(screen.getByText(messageData.body_text!)).toBeInTheDocument()
     })
 
     it('renders an internal note item', () => {
@@ -36,7 +60,7 @@ describe('TicketThreadItem', () => {
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(screen.getByText(messageData.body_text)).toBeInTheDocument()
+        expect(screen.getByText(messageData.body_text!)).toBeInTheDocument()
     })
 
     it('renders a ticket event item', () => {

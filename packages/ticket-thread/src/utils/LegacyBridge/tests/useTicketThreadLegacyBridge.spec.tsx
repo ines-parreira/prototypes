@@ -47,6 +47,7 @@ const wrapper = ({ children }: { children: ReactNode }) => (
     <TicketThreadLegacyBridgeProvider
         currentTicketShoppingAssistantData={currentTicketShoppingAssistantData}
         currentTicketRuleSuggestionData={{ shouldDisplayDemoSuggestion: false }}
+        datetimeFormat="MMM D, YYYY [at] h:mm A"
     >
         {children}
     </TicketThreadLegacyBridgeProvider>
@@ -88,6 +89,7 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 currentTicketShoppingAssistantData={
                     currentTicketShoppingAssistantData
                 }
+                datetimeFormat="MMM D, YYYY [at] h:mm A"
             >
                 <span>legacy child</span>
             </TicketThreadLegacyBridgeProvider>,

@@ -41,7 +41,6 @@ export function TicketThread({ submit }: TicketThreadProps) {
         ticketId: Number(ticketId),
         pendingMessages,
     })
-
     const shopperName = useMemo(
         () => ticket.customer?.name ?? 'Customer',
         [ticket.customer?.name],

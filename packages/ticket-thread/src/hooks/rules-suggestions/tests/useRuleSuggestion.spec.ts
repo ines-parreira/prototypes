@@ -35,6 +35,7 @@ describe('useRuleSuggestion', () => {
             currentTicketRuleSuggestionData: {
                 shouldDisplayDemoSuggestion: true,
             },
+            datetimeFormat: 'MMM D, YYYY [at] h:mm A',
         })
         mockUseListTicketMessages.mockReturnValue([])
     })
@@ -76,6 +77,7 @@ describe('useRuleSuggestion', () => {
             currentTicketRuleSuggestionData: {
                 shouldDisplayDemoSuggestion: false,
             },
+            datetimeFormat: 'MMM D, YYYY [at] h:mm A',
         })
         mockUseGetTicket.mockReturnValue({
             data: {

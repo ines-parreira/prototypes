@@ -1,10 +1,35 @@
 import { render, screen } from '@testing-library/react'
 
+import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+
 import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../TicketThreadMessageItem'
 
-const messageData = { id: 1, body_text: 'hello' }
+vi.mock('../../../utils/LegacyBridge', () => ({
+    useTicketThreadLegacyBridge: vi.fn(),
+}))
+
+const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+
+beforeEach(() => {
+    mockUseTicketThreadLegacyBridge.mockReturnValue({
+        datetimeFormat: 'YYYY-MM-DD',
+        currentTicketShoppingAssistantData: {
+            influencedOrders: [],
+            shopifyOrders: [],
+            shopifyIntegrations: [],
+        },
+        currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
+    })
+})
+
+const messageData = mockTicketMessage({
+    id: 1,
+    stripped_text: 'hello',
+    body_text: 'hello',
+})
 
 function renderItem(item: TicketThreadMessageItem) {
     return render(<TicketThreadMessageItemComponent item={item} />)
@@ -101,7 +126,7 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(messageData.body_text).parentElement,
+            screen.getByText(messageData.body_text!).parentElement,
         ).toHaveStyle({
             alignSelf: 'flex-end',
         })
@@ -122,7 +147,7 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(messageData.body_text).parentElement,
+            screen.getByText(messageData.body_text!).parentElement,
         ).toHaveStyle({
             alignSelf: 'flex-start',
         })

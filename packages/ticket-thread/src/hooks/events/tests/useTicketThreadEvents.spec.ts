@@ -37,6 +37,7 @@ describe('useTicketThreadEvents', () => {
             currentTicketRuleSuggestionData: {
                 shouldDisplayDemoSuggestion: true,
             },
+            datetimeFormat: 'MMM D, YYYY [at] h:mm A',
         })
     })
 
@@ -127,6 +128,7 @@ describe('useTicketThreadEvents', () => {
             currentTicketRuleSuggestionData: {
                 shouldDisplayDemoSuggestion: true,
             },
+            datetimeFormat: 'MMM D, YYYY [at] h:mm A',
         })
 
         const { result } = renderHook(() =>
