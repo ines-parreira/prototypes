@@ -50,12 +50,11 @@ describe('GuidanceEditorWrapper', () => {
             expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
         })
 
-        it('does not render KnowledgeEditor when isOpen is false', () => {
+        it('keeps KnowledgeEditor mounted when isOpen is false', () => {
             render(<GuidanceEditorWrapper {...defaultProps} isOpen={false} />)
 
-            expect(
-                screen.queryByTestId('knowledge-editor'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
         })
 
         it('passes all required props to KnowledgeEditor', () => {
@@ -217,12 +216,11 @@ describe('GuidanceEditorWrapper', () => {
     })
 
     describe('conditional rendering', () => {
-        it('returns null when isOpen is false', () => {
-            const { container } = render(
-                <GuidanceEditorWrapper {...defaultProps} isOpen={false} />,
-            )
+        it('renders editor when isOpen is false', () => {
+            render(<GuidanceEditorWrapper {...defaultProps} isOpen={false} />)
 
-            expect(container.firstChild).toBeNull()
+            expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
         })
 
         it('renders immediately when isOpen changes from false to true', () => {
@@ -230,16 +228,16 @@ describe('GuidanceEditorWrapper', () => {
                 <GuidanceEditorWrapper {...defaultProps} isOpen={false} />,
             )
 
-            expect(
-                screen.queryByTestId('knowledge-editor'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
 
             rerender(<GuidanceEditorWrapper {...defaultProps} isOpen={true} />)
 
             expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('true')
         })
 
-        it('removes editor when isOpen changes from true to false', () => {
+        it('keeps editor mounted when isOpen changes from true to false', () => {
             const { rerender } = render(
                 <GuidanceEditorWrapper {...defaultProps} isOpen={true} />,
             )
@@ -248,9 +246,8 @@ describe('GuidanceEditorWrapper', () => {
 
             rerender(<GuidanceEditorWrapper {...defaultProps} isOpen={false} />)
 
-            expect(
-                screen.queryByTestId('knowledge-editor'),
-            ).not.toBeInTheDocument()
+            expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
         })
     })
 

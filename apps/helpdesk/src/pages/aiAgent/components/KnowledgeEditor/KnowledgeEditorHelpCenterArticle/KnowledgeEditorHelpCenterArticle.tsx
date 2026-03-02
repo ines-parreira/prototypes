@@ -23,6 +23,7 @@ import { useFaqHelpCenterData } from './useFaqHelpCenterData'
 import css from '../shared.less'
 
 type Props = {
+    isOpen?: boolean
     helpCenterId: number
     shopName?: string
     onClickPrevious?: () => void
@@ -112,7 +113,7 @@ const ArticleEditorInner = ({
 }
 
 export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
-    const { article, onClose } = props
+    const { article, isOpen = true, onClose } = props
     const isExisting = article.type === 'existing'
     const articleId = isExisting ? article.articleId : 0
     const versionStatus: GetArticleVersionStatus = isExisting
@@ -124,7 +125,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         categories,
         locales,
         isLoading: isHelpCenterDataLoading,
-    } = useFaqHelpCenterData(props.helpCenterId)
+    } = useFaqHelpCenterData(props.helpCenterId, isOpen)
 
     const getArticle = useGetHelpCenterArticle(
         articleId,
@@ -132,7 +133,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         helpCenter?.default_locale ?? 'en-US',
         versionStatus,
         {
-            enabled: isExisting && !!helpCenter && articleId > 0,
+            enabled: isOpen && isExisting && !!helpCenter && articleId > 0,
             throwOn404: true,
             refetchOnWindowFocus: false,
         },
@@ -142,7 +143,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
 
     useEffect(() => {
         // Only show error if editor is actually open and attempting to display content
-        if (getArticle.isError && isExisting && getArticle.error) {
+        if (isOpen && getArticle.isError && isExisting && getArticle.error) {
             // Check if it's a 404 error
             const is404 =
                 isGorgiasApiError(getArticle.error) &&
@@ -155,7 +156,14 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
             notifyError(message)
             onClose()
         }
-    }, [getArticle.isError, isExisting, getArticle.error, notifyError, onClose])
+    }, [
+        isOpen,
+        getArticle.isError,
+        isExisting,
+        getArticle.error,
+        notifyError,
+        onClose,
+    ])
 
     if (isHelpCenterDataLoading) {
         return <KnowledgeEditorLoadingShell />

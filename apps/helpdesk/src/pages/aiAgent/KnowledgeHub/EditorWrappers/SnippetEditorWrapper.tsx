@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import { KnowledgeEditor } from '../../components/KnowledgeEditor/KnowledgeEditor'
 import type { SnippetType } from '../types'
 
@@ -24,7 +26,26 @@ export const SnippetEditorWrapper = ({
     onClickNext,
     handleVisibilityUpdate,
 }: SnippetEditorWrapperProps) => {
-    if (!isOpen || !currentArticleId || !snippetType) {
+    // Cache the last valid snippet so KnowledgeEditor keeps rendering
+    // with real data during the close animation (when props are cleared).
+    const [lastKnownSnippet, setLastKnownSnippet] = useState<{
+        id: number
+        type: SnippetType
+    } | null>(
+        currentArticleId && snippetType
+            ? { id: currentArticleId, type: snippetType }
+            : null,
+    )
+
+    useEffect(() => {
+        if (!currentArticleId || !snippetType) {
+            return
+        }
+
+        setLastKnownSnippet({ id: currentArticleId, type: snippetType })
+    }, [currentArticleId, snippetType])
+
+    if (!lastKnownSnippet) {
         return null
     }
 
@@ -32,8 +53,8 @@ export const SnippetEditorWrapper = ({
         <KnowledgeEditor
             variant="snippet"
             shopName={shopName}
-            snippetId={currentArticleId}
-            snippetType={snippetType}
+            snippetId={lastKnownSnippet.id}
+            snippetType={lastKnownSnippet.type}
             onClose={onClose}
             onUpdated={onUpdate}
             onClickPrevious={onClickPrevious}

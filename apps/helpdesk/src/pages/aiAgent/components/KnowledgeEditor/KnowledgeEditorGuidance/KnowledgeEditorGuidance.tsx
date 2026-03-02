@@ -154,6 +154,7 @@ export const KnowledgeEditorGuidance = ({
         shopName,
         guidanceArticleId,
         guidanceMode,
+        isOpen,
     })
     const { error: notifyError } = useNotify()
 

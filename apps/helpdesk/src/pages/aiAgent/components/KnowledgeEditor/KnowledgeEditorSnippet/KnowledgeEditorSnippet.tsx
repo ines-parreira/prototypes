@@ -58,6 +58,7 @@ export const KnowledgeEditorSnippet = ({
     } = useAiAgentHelpCenterState({
         shopName,
         helpCenterType: 'snippet',
+        enabled: isOpen,
     })
 
     const onRequestClose = useCallback(() => {

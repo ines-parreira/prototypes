@@ -67,6 +67,26 @@ describe('useFaqHelpCenterData', () => {
         )
     })
 
+    it('disables queries when hook is called with enabled=false', () => {
+        renderHook(() => useFaqHelpCenterData(123, false))
+
+        expect(mockUseGetHelpCenter).toHaveBeenCalledWith(
+            123,
+            {},
+            { enabled: false },
+        )
+        expect(mockUseGetHelpCenterCategoryTree).toHaveBeenCalledWith(
+            123,
+            0,
+            {
+                locale: 'en-US',
+                order_by: 'position',
+                order_dir: 'asc',
+            },
+            { enabled: false },
+        )
+    })
+
     it('fetches category tree with correct params', () => {
         renderHook(() => useFaqHelpCenterData(123))
 

@@ -34,13 +34,10 @@ export const FaqEditorWrapper = ({
     onClickNext,
     versionStatus,
 }: FaqEditorWrapperProps) => {
-    if (!isOpen) {
-        return null
-    }
-
     return (
         <KnowledgeEditor
             variant="article"
+            isOpen={isOpen}
             helpCenterId={faqHelpCenterId}
             shopName={shopName}
             onClickPrevious={onClickPrevious}

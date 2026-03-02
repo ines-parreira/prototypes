@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactNode } from 'react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { SidePanel } from '@gorgias/axiom'
 
@@ -20,6 +20,7 @@ type SnippetEditorProps = {
 
 type HelpCenterArticleEditorProps = {
     variant: 'article'
+    isOpen: boolean
 } & ComponentProps<typeof KnowledgeEditorHelpCenterArticle>
 
 type Props =
@@ -34,11 +35,23 @@ const DEFAULT_PANEL_BASE_WIDTH =
 export const KnowledgeEditor = (props: Props) => {
     const [sharedPanelState, setSharedPanelState] =
         useState<KnowledgeEditorSharedPanelState | null>(null)
+    // Cache props from the last open state so the editor keeps rendering
+    // valid content during the close animation. isOpen is excluded from
+    // the cached props and passed directly so children know the real state.
+    const lastOpenPropsRef = useRef<Props | null>(null)
     const [windowWidth] = useScreenSize()
 
     useEffect(() => {
         setSharedPanelState(null)
     }, [props.variant])
+
+    if (props.isOpen) {
+        lastOpenPropsRef.current = props
+    }
+
+    const resolvedProps = props.isOpen
+        ? props
+        : (lastOpenPropsRef.current ?? props)
 
     const onSharedPanelStateChange = useCallback(
         (state: KnowledgeEditorSharedPanelState) => {
@@ -47,23 +60,23 @@ export const KnowledgeEditor = (props: Props) => {
         [],
     )
 
-    let isOpen = true
     let fallbackOnClose: () => void
     let content: ReactNode
 
-    switch (props.variant) {
+    switch (resolvedProps.variant) {
         case 'snippet': {
             const {
                 variant: __variant,
+                isOpen: __isOpen,
                 onSharedPanelStateChange: __onSharedPanelStateChange,
                 ...snippetProps
-            } = props
+            } = resolvedProps
 
-            isOpen = props.isOpen
-            fallbackOnClose = props.onClose
+            fallbackOnClose = resolvedProps.onClose
             content = (
                 <KnowledgeEditorSnippet
                     {...snippetProps}
+                    isOpen={props.isOpen}
                     onSharedPanelStateChange={onSharedPanelStateChange}
                 />
             )
@@ -72,14 +85,16 @@ export const KnowledgeEditor = (props: Props) => {
         case 'article': {
             const {
                 variant: __variant,
+                isOpen: __isOpen,
                 onSharedPanelStateChange: __onSharedPanelStateChange,
                 ...articleProps
-            } = props
+            } = resolvedProps
 
-            fallbackOnClose = props.onClose
+            fallbackOnClose = resolvedProps.onClose
             content = (
                 <KnowledgeEditorHelpCenterArticle
                     {...articleProps}
+                    isOpen={props.isOpen}
                     onSharedPanelStateChange={onSharedPanelStateChange}
                 />
             )
@@ -88,15 +103,16 @@ export const KnowledgeEditor = (props: Props) => {
         default: {
             const {
                 variant: __variant,
+                isOpen: __isOpen,
                 onSharedPanelStateChange: __onSharedPanelStateChange,
                 ...guidanceProps
-            } = props
+            } = resolvedProps
 
-            isOpen = props.isOpen
-            fallbackOnClose = props.onClose
+            fallbackOnClose = resolvedProps.onClose
             content = (
                 <KnowledgeEditorGuidance
                     {...guidanceProps}
+                    isOpen={props.isOpen}
                     onSharedPanelStateChange={onSharedPanelStateChange}
                 />
             )
@@ -111,13 +127,9 @@ export const KnowledgeEditor = (props: Props) => {
             : DEFAULT_PANEL_BASE_WIDTH
     const width = sharedPanelState?.width ?? defaultWidth
 
-    if (!isOpen) {
-        return null
-    }
-
     return (
         <SidePanel
-            isOpen={isOpen}
+            isOpen={props.isOpen}
             onOpenChange={(open) => {
                 if (!open) {
                     onRequestClose()
@@ -127,7 +139,7 @@ export const KnowledgeEditor = (props: Props) => {
             withoutPadding
             width={width}
         >
-            {content}
+            <div style={{ height: '100%' }}>{content}</div>
         </SidePanel>
     )
 }

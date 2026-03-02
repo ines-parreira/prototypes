@@ -570,6 +570,36 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 },
             )
         })
+
+        it('disables article query when editor is closed', () => {
+            const mockUseGetHelpCenterArticle = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetHelpCenterArticle
+
+            render(
+                <KnowledgeEditorHelpCenterArticle
+                    {...baseProps}
+                    isOpen={false}
+                    article={{
+                        type: 'existing',
+                        initialArticleMode: 'read' as InitialArticleModeValue,
+                        articleId: 1,
+                    }}
+                />,
+            )
+
+            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
+                1,
+                baseProps.helpCenterId,
+                mockHelpCenter.default_locale,
+                'latest_draft',
+                {
+                    enabled: false,
+                    throwOn404: true,
+                    refetchOnWindowFocus: false,
+                },
+            )
+        })
     })
 
     describe('Error handling', () => {

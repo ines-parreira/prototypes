@@ -99,6 +99,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             expect(useAiAgentHelpCenterStateMock).toHaveBeenCalledWith({
                 shopName: 'my-shop',
                 helpCenterType: 'guidance',
+                enabled: true,
             })
         })
 
@@ -572,6 +573,33 @@ describe('useKnowledgeEditorGuidanceData', () => {
             expect(useGuidanceArticleMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     guidanceHelpCenterId: 0,
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('disables all queries when editor is closed', () => {
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 42,
+                    guidanceMode: 'edit',
+                    isOpen: false,
+                }),
+            )
+
+            expect(useAiAgentHelpCenterStateMock).toHaveBeenCalledWith({
+                shopName: 'my-shop',
+                helpCenterType: 'guidance',
+                enabled: false,
+            })
+            expect(useGuidanceArticlesMock).toHaveBeenCalledWith(
+                10,
+                { enabled: false },
+                { version_status: 'latest_draft' },
+            )
+            expect(useGuidanceArticleMock).toHaveBeenCalledWith(
+                expect.objectContaining({
                     enabled: false,
                 }),
             )

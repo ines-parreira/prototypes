@@ -9,9 +9,13 @@ import type {
     Locale,
 } from 'models/helpCenter/types'
 
-export function useFaqHelpCenterData(helpCenterId: number) {
+export function useFaqHelpCenterData(helpCenterId: number, enabled = true) {
     const { data: helpCenter, isLoading: isHelpCenterLoading } =
-        useGetHelpCenter(helpCenterId, {}, { enabled: !!helpCenterId })
+        useGetHelpCenter(
+            helpCenterId,
+            {},
+            { enabled: enabled && !!helpCenterId },
+        )
 
     const { data: categoryTree, isLoading: isCategoryTreeLoading } =
         useGetHelpCenterCategoryTree(
@@ -23,7 +27,7 @@ export function useFaqHelpCenterData(helpCenterId: number) {
                 order_by: 'position',
                 order_dir: 'asc',
             },
-            { enabled: !!helpCenter?.id },
+            { enabled: enabled && !!helpCenter?.id },
         )
 
     const categories = useMemo(() => {

@@ -21,18 +21,23 @@ jest.mock('@gorgias/axiom', () => ({
         onOpenChange: (open: boolean) => void
         width: string
         children: React.ReactNode
-    }) =>
-        isOpen ? (
-            <div data-testid="side-panel" data-width={width}>
+    }) => (
+        <div
+            data-testid="side-panel"
+            data-open={String(isOpen)}
+            data-width={width}
+        >
+            {isOpen && (
                 <button
                     data-testid="close-panel-button"
                     onClick={() => onOpenChange(false)}
                 >
                     Close
                 </button>
-                {children}
-            </div>
-        ) : null,
+            )}
+            {children}
+        </div>
+    ),
 }))
 
 jest.mock('./KnowledgeEditorGuidance/KnowledgeEditorGuidance', () => ({
@@ -94,6 +99,7 @@ describe('KnowledgeEditor', () => {
         render(
             <KnowledgeEditor
                 variant="article"
+                isOpen
                 helpCenterId={1}
                 onClose={jest.fn()}
                 article={
@@ -110,7 +116,7 @@ describe('KnowledgeEditor', () => {
         ).toBeInTheDocument()
     })
 
-    it('does not render when the active variant is closed', () => {
+    it('renders closed side panel when the active variant is closed', () => {
         render(
             <KnowledgeEditor
                 variant="snippet"
@@ -122,7 +128,41 @@ describe('KnowledgeEditor', () => {
             />,
         )
 
-        expect(screen.queryByTestId('side-panel')).not.toBeInTheDocument()
+        expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+        expect(screen.getByTestId('side-panel')).toHaveAttribute(
+            'data-open',
+            'false',
+        )
+    })
+
+    it('keeps side panel mounted while closing to allow animation', () => {
+        const { rerender } = render(
+            <KnowledgeEditor
+                variant="snippet"
+                shopName="Test Shop"
+                snippetId={1}
+                snippetType={SnippetType.URL}
+                onClose={jest.fn()}
+                isOpen
+            />,
+        )
+
+        rerender(
+            <KnowledgeEditor
+                variant="snippet"
+                shopName="Test Shop"
+                snippetId={1}
+                snippetType={SnippetType.URL}
+                onClose={jest.fn()}
+                isOpen={false}
+            />,
+        )
+
+        expect(screen.getByTestId('side-panel')).toBeInTheDocument()
+        expect(screen.getByTestId('side-panel')).toHaveAttribute(
+            'data-open',
+            'false',
+        )
     })
 
     it('passes shared panel state callback to snippet editor', () => {

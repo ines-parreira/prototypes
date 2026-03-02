@@ -10,6 +10,7 @@ import { FaqEditorWrapper } from './FaqEditorWrapper'
 jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
     KnowledgeEditor: ({
         variant,
+        isOpen,
         helpCenterId,
         article,
         onClose,
@@ -18,6 +19,7 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
     }: any) => (
         <div data-testid="faq-editor">
             <span data-testid="editor-variant">{variant}</span>
+            <span data-testid="is-open">{String(isOpen)}</span>
             <span data-testid="help-center-id">{helpCenterId}</span>
             <span data-testid="article-type">{article.type}</span>
             {article.type === 'existing' && (
@@ -79,10 +81,11 @@ describe('FaqEditorWrapper', () => {
             )
         })
 
-        it('does not render when isOpen is false', () => {
+        it('keeps editor mounted when isOpen is false', () => {
             renderComponent({ isOpen: false })
 
-            expect(screen.queryByTestId('faq-editor')).not.toBeInTheDocument()
+            expect(screen.getByTestId('faq-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
         })
 
         it('passes helpCenterId to editor', () => {
@@ -244,10 +247,11 @@ describe('FaqEditorWrapper', () => {
     })
 
     describe('conditional rendering', () => {
-        it('returns null when isOpen is false', () => {
-            const { container } = renderComponent({ isOpen: false })
+        it('renders editor when isOpen is false', () => {
+            renderComponent({ isOpen: false })
 
-            expect(container.firstChild).toBeNull()
+            expect(screen.getByTestId('faq-editor')).toBeInTheDocument()
+            expect(screen.getByTestId('is-open')).toHaveTextContent('false')
         })
 
         it('renders when isOpen is true', () => {

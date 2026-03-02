@@ -11,12 +11,14 @@ type UseKnowledgeEditorGuidanceDataParams = {
     shopName: string
     guidanceArticleId?: number
     guidanceMode: GuidanceModeType
+    isOpen?: boolean
 }
 
 export const useKnowledgeEditorGuidanceData = ({
     shopName,
     guidanceArticleId,
     guidanceMode,
+    isOpen = true,
 }: UseKnowledgeEditorGuidanceDataParams) => {
     const {
         helpCenter: guidanceHelpCenter,
@@ -24,12 +26,13 @@ export const useKnowledgeEditorGuidanceData = ({
     } = useAiAgentHelpCenterState({
         shopName: shopName,
         helpCenterType: 'guidance',
+        enabled: isOpen,
     })
 
     const { guidanceArticles: rawGuidanceArticles } = useGuidanceArticles(
         guidanceHelpCenter?.id ?? 0,
         {
-            enabled: !!guidanceHelpCenter?.id,
+            enabled: isOpen && !!guidanceHelpCenter?.id,
         },
         {
             version_status: 'latest_draft',
@@ -55,6 +58,7 @@ export const useKnowledgeEditorGuidanceData = ({
             locale: guidanceHelpCenter?.default_locale ?? 'en-US',
             versionStatus: 'latest_draft',
             enabled:
+                isOpen &&
                 !!guidanceArticleId &&
                 !!guidanceHelpCenter?.id &&
                 guidanceMode !== 'create',

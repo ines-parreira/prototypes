@@ -15,6 +15,9 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
                 <div data-testid="mock-guidance-editor">
                     Guidance Editor - ID: {props.guidanceArticleId || 'none'} -
                     Mode: {props.guidanceMode}
+                    <span data-testid="editor-open-state">
+                        Open: {String(props.isOpen)}
+                    </span>
                     {props.showMissingKnowledgeCheckbox && (
                         <span data-testid="show-missing-knowledge-checkbox">
                             Show Checkbox
@@ -73,6 +76,9 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
                 <div data-testid="mock-article-editor-hub">
                     Article Editor - ID: {article?.articleId || 'none'} - Type:{' '}
                     {article?.type}
+                    <span data-testid="editor-open-state">
+                        Open: {String(props.isOpen)}
+                    </span>
                     {props.showMissingKnowledgeCheckbox && (
                         <span data-testid="show-missing-knowledge-checkbox">
                             Show Checkbox
@@ -209,6 +215,7 @@ describe('KnowledgeSourceSideBar', () => {
         useKnowledgeSourceSideBarMock.mockReturnValue({
             selectedResource: null,
             mode: undefined,
+            isClosing: false,
             closeModal: mockCloseModal,
             openEdit: mockOpenEdit,
         })
@@ -347,6 +354,20 @@ describe('KnowledgeSourceSideBar', () => {
         expect(
             screen.queryByTestId('mock-article-editor-hub'),
         ).not.toBeInTheDocument()
+    })
+
+    it('passes isOpen=false to editor while sidebar is closing', () => {
+        useKnowledgeSourceSideBarMock.mockReturnValue({
+            selectedResource: guidanceResource,
+            mode: KnowledgeSourceSideBarMode.PREVIEW,
+            isClosing: true,
+            closeModal: mockCloseModal,
+            openEdit: mockOpenEdit,
+        })
+
+        render(<KnowledgeSourceSideBar {...baseProps} />)
+
+        expect(screen.getByText('Open: false')).toBeInTheDocument()
     })
 
     describe('when create button is clicked', () => {

@@ -192,6 +192,23 @@ describe('KnowledgeEditorSnippet', () => {
             expect(useAiAgentHelpCenterState).toHaveBeenCalledWith({
                 shopName: 'test-shop',
                 helpCenterType: 'snippet',
+                enabled: true,
+            })
+        })
+
+        it('disables help center query when editor is closed', () => {
+            render(
+                <KnowledgeEditorSnippet
+                    {...baseProps}
+                    isOpen={false}
+                    snippetType={SnippetType.URL}
+                />,
+            )
+
+            expect(useAiAgentHelpCenterState).toHaveBeenCalledWith({
+                shopName: 'test-shop',
+                helpCenterType: 'snippet',
+                enabled: false,
             })
         })
 

@@ -33,10 +33,6 @@ export const GuidanceEditorWrapper = ({
     onClickNext,
     handleVisibilityUpdate,
 }: GuidanceEditorWrapperProps) => {
-    if (!isOpen) {
-        return null
-    }
-
     return (
         <KnowledgeEditor
             variant="guidance"

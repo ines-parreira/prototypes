@@ -41,7 +41,8 @@ const KnowledgeSourceSideBar = ({
     onKnowledgeResourceEditClick,
     onKnowledgeResourceSaved,
 }: KnowledgeSourceSideBarProps) => {
-    const { selectedResource, mode, closeModal } = useKnowledgeSourceSideBar()
+    const { selectedResource, mode, closeModal, isClosing } =
+        useKnowledgeSourceSideBar()
     const helpCenter = useCurrentHelpCenter()
 
     const handleEdit = useCallback(() => {
@@ -56,6 +57,7 @@ const KnowledgeSourceSideBar = ({
     const isPreviewMode =
         mode === KnowledgeSourceSideBarMode.PREVIEW && !!selectedResource
     const isCreateMode = mode === KnowledgeSourceSideBarMode.CREATE
+    const isEditorOpen = !isClosing
 
     const isGuidance =
         selectedResource?.knowledgeResourceType ===
@@ -89,7 +91,7 @@ const KnowledgeSourceSideBar = ({
                 guidanceArticleId: selectedResourceIdAsNumber,
                 onClose: closeModal,
                 guidanceMode: 'read',
-                isOpen: true,
+                isOpen: isEditorOpen,
                 onDelete: () => closeModal(),
                 onUpdate: () => {
                     onKnowledgeResourceSaved(
@@ -106,6 +108,7 @@ const KnowledgeSourceSideBar = ({
         if (isPreviewMode && !isGuidance && selectedArticle && helpCenter) {
             return {
                 variant: 'article',
+                isOpen: isEditorOpen,
                 helpCenterId: helpCenter.id,
                 shopName,
                 onClose: closeModal,
@@ -134,7 +137,7 @@ const KnowledgeSourceSideBar = ({
                 shopType,
                 onClose: closeModal,
                 guidanceMode: 'create',
-                isOpen: true,
+                isOpen: isEditorOpen,
                 showMissingKnowledgeCheckbox: true,
                 onCreate: (guidance, shouldAddToMissingKnowledge = true) => {
                     const resourceSetId =
@@ -165,6 +168,7 @@ const KnowledgeSourceSideBar = ({
         if (isCreateMode && !isGuidance && helpCenter) {
             return {
                 variant: 'article',
+                isOpen: isEditorOpen,
                 helpCenterId: helpCenter.id,
                 shopName,
                 onClose: closeModal,
@@ -210,6 +214,7 @@ const KnowledgeSourceSideBar = ({
         shopName,
         shopType,
         closeModal,
+        isEditorOpen,
         handleEdit,
         onSubmitNewMissingKnowledge,
         onKnowledgeResourceSaved,
