@@ -38,6 +38,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: true,
+                aiAgentInteractionsShare: true,
                 automatedInteractions: true,
                 handover: true,
                 totalSales: true,
@@ -71,6 +72,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -92,6 +94,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -114,6 +117,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -161,6 +165,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -268,6 +273,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -309,6 +315,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -343,6 +350,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,
@@ -367,6 +375,7 @@ describe('useDownloadShoppingAssistantChannelData', () => {
             isError: false,
             loadingStates: {
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 handover: false,
                 totalSales: false,

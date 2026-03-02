@@ -248,7 +248,10 @@ export const ShoppingAssistantChannelTable = () => {
                 cell: (info) => {
                     const value = info.getValue() as number | null
                     const channel = info.row.original.channel
-                    if (loadingStates.automationRate && value === null) {
+                    if (
+                        loadingStates.aiAgentInteractionsShare &&
+                        value === null
+                    ) {
                         return (
                             <Skeleton
                                 key={`${channel}-aiAgentInteractionsShare`}

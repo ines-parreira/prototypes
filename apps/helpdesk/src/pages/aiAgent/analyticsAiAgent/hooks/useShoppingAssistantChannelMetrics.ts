@@ -37,6 +37,7 @@ export type ShoppingAssistantChannelPerformanceMetrics = {
     isError: boolean
     loadingStates: {
         automationRate: boolean
+        aiAgentInteractionsShare: boolean
         automatedInteractions: boolean
         handover: boolean
         totalSales: boolean
@@ -252,6 +253,7 @@ export const useShoppingAssistantChannelMetrics = (
             automationRate:
                 totalConversations.isFetching ||
                 automatedConversations.isFetching,
+            aiAgentInteractionsShare: totalConversations.isFetching,
             automatedInteractions: automatedConversations.isFetching,
             handover: handoverInteractions.isFetching,
             totalSales: gmvInfluenced.isFetching,

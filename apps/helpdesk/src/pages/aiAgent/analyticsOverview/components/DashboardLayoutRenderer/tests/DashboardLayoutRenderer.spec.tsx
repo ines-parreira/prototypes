@@ -1,6 +1,8 @@
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
+import { useListManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useListManagedDashboards'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
@@ -8,10 +10,24 @@ import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/compone
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
+const mockedUseListManagedDashboards = jest.mocked(useListManagedDashboards)
+const mockedUseFlag = jest.mocked(useFlag)
+
+jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useListManagedDashboards',
+    () => ({
+        useListManagedDashboards: jest.fn(() => ({
+            data: [],
+        })),
+    }),
+)
+
+const DashboardComponentMock = jest.fn(({ chart }: any) => (
+    <div data-chart-id={chart}>Chart: {chart}</div>
+))
+
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
-    DashboardComponent: ({ chart }: { chart: string }) => (
-        <div data-chart-id={chart}>Chart: {chart}</div>
-    ),
+    DashboardComponent: (props: any) => DashboardComponentMock(props),
 }))
 
 jest.mock(
@@ -67,112 +83,135 @@ const createKpisLayoutConfig = (
         ],
     }) as unknown as DashboardLayoutConfig
 
-const createChartsLayoutConfig = () =>
-    ({
-        sections: [
-            {
-                id: 'charts',
-                type: 'charts',
-                items: [
-                    { chartId: 'chart1', gridSize: 6, visibility: true },
-                    { chartId: 'chart2', gridSize: 6, visibility: true },
-                ],
-            },
-        ],
-    }) as unknown as DashboardLayoutConfig
-
-const createTableLayoutConfig = () =>
-    ({
-        sections: [
-            {
-                id: 'table',
-                type: 'table',
-                items: [{ chartId: 'table1', gridSize: 12, visibility: true }],
-            },
-        ],
-    }) as unknown as DashboardLayoutConfig
-
-const createMixedLayoutConfig = () =>
+const createKpiConfigWithFeatureFlag = (requiresFeatureFlag: boolean) =>
     ({
         sections: [
             {
                 id: 'kpis',
                 type: 'kpis',
                 items: [
-                    { chartId: 'kpi1', gridSize: 3, visibility: true },
-                    { chartId: 'kpi2', gridSize: 3, visibility: true },
+                    {
+                        chartId: 'kpi1' as any,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag,
+                    },
                 ],
-            },
-            {
-                id: 'charts',
-                type: 'charts',
-                items: [
-                    { chartId: 'chart1', gridSize: 6, visibility: true },
-                    { chartId: 'chart2', gridSize: 6, visibility: true },
-                ],
-            },
-            {
-                id: 'table',
-                type: 'table',
-                items: [{ chartId: 'table1', gridSize: 12, visibility: true }],
             },
         ],
     }) as unknown as DashboardLayoutConfig
 
-describe('DashboardLayoutRenderer', () => {
-    const reportConfigMock = {
-        charts: {
-            ['chart']: {
-                chartComponent: () => <div>Chart 1</div>,
-                label: 'Chart 1 Label',
-                csvProducer: null,
-                description: 'Description for chart 1',
-                chartType: ChartType.Card,
-            },
-            kpi1: { chartComponent: () => null, label: 'KPI 1' },
-            kpi2: { chartComponent: () => null, label: 'KPI 2' },
-            kpi3: { chartComponent: () => null, label: 'KPI 3' },
-            kpi4: { chartComponent: () => null, label: 'KPI 4' },
-            kpi5: { chartComponent: () => null, label: 'KPI 5' },
-            kpi6: { chartComponent: () => null, label: 'KPI 6' },
-            chart1: { chartComponent: () => null, label: 'Chart 1' },
-            chart2: { chartComponent: () => null, label: 'Chart 2' },
-            table1: { chartComponent: () => null, label: 'Table 1' },
-            [AnalyticsOverviewChart.AutomationRateCard]: {
-                chartComponent: () => null,
-                label: 'Automation Rate',
-            },
-            [AnalyticsOverviewChart.AutomatedInteractionsCard]: {
-                chartComponent: () => null,
-                label: 'Automated Interactions',
-            },
-            [AnalyticsOverviewChart.TimeSavedCard]: {
-                chartComponent: () => null,
-                label: 'Time Saved',
-            },
-            [AnalyticsOverviewChart.CostSavedCard]: {
-                chartComponent: () => null,
-                label: 'Cost Saved',
-            },
-            [AnalyticsOverviewChart.AutomationRateComboChart]: {
-                chartComponent: () => null,
-                label: 'Automation Rate Chart',
-            },
-            [AnalyticsOverviewChart.AutomationLineChart]: {
-                chartComponent: () => null,
-                label: 'Automation Line Chart',
-            },
-            [AnalyticsOverviewChart.PerformanceTable]: {
-                chartComponent: () => null,
-                label: 'Performance Table',
-            },
+const chartsLayoutConfig: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'charts',
+            type: 'charts',
+            items: [
+                { chartId: 'chart1' as any, gridSize: 6, visibility: true },
+                { chartId: 'chart2' as any, gridSize: 6, visibility: true },
+            ],
         },
-    } as unknown as ReportConfig<string>
+    ],
+}
+
+const tableLayoutConfig: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'table',
+            type: 'table',
+            items: [
+                { chartId: 'table1' as any, gridSize: 12, visibility: true },
+            ],
+        },
+    ],
+}
+
+const mixedLayoutConfig: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'kpis',
+            type: 'kpis',
+            items: [
+                { chartId: 'kpi1' as any, gridSize: 3, visibility: true },
+                { chartId: 'kpi2' as any, gridSize: 3, visibility: true },
+            ],
+        },
+        {
+            id: 'charts',
+            type: 'charts',
+            items: [
+                { chartId: 'chart1' as any, gridSize: 6, visibility: true },
+                { chartId: 'chart2' as any, gridSize: 6, visibility: true },
+            ],
+        },
+        {
+            id: 'table',
+            type: 'table',
+            items: [
+                { chartId: 'table1' as any, gridSize: 12, visibility: true },
+            ],
+        },
+    ],
+}
+
+const reportConfigMock = {
+    charts: {
+        ['chart']: {
+            chartComponent: () => <div>Chart 1</div>,
+            label: 'Chart 1 Label',
+            csvProducer: null,
+            description: 'Description for chart 1',
+            chartType: ChartType.Card,
+        },
+        kpi1: { chartComponent: () => null, label: 'KPI 1' },
+        kpi2: { chartComponent: () => null, label: 'KPI 2' },
+        kpi3: { chartComponent: () => null, label: 'KPI 3' },
+        kpi4: { chartComponent: () => null, label: 'KPI 4' },
+        kpi5: { chartComponent: () => null, label: 'KPI 5' },
+        kpi6: { chartComponent: () => null, label: 'KPI 6' },
+        chart1: { chartComponent: () => null, label: 'Chart 1' },
+        chart2: { chartComponent: () => null, label: 'Chart 2' },
+        table1: { chartComponent: () => null, label: 'Table 1' },
+        [AnalyticsOverviewChart.AutomationRateCard]: {
+            chartComponent: () => null,
+            label: 'Automation Rate',
+        },
+        [AnalyticsOverviewChart.AutomatedInteractionsCard]: {
+            chartComponent: () => null,
+            label: 'Automated Interactions',
+        },
+        [AnalyticsOverviewChart.TimeSavedCard]: {
+            chartComponent: () => null,
+            label: 'Time Saved',
+        },
+        [AnalyticsOverviewChart.CostSavedCard]: {
+            chartComponent: () => null,
+            label: 'Cost Saved',
+        },
+        [AnalyticsOverviewChart.AutomationRateComboChart]: {
+            chartComponent: () => null,
+            label: 'Automation Rate Chart',
+        },
+        [AnalyticsOverviewChart.AutomationLineChart]: {
+            chartComponent: () => null,
+            label: 'Automation Line Chart',
+        },
+        [AnalyticsOverviewChart.PerformanceTable]: {
+            chartComponent: () => null,
+            label: 'Performance Table',
+        },
+    },
+} as unknown as ReportConfig<string>
+
+describe('DashboardLayoutRenderer', () => {
+    beforeEach(() => {
+        DashboardComponentMock.mockClear()
+    })
 
     it('should render all charts in the correct order', () => {
         render(
             <DashboardLayoutRenderer
-                layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
+                defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -210,21 +249,45 @@ describe('DashboardLayoutRenderer', () => {
         ).toBeInTheDocument()
     })
 
-    it('should fallback to default layout when config is invalid', () => {
-        const invalidConfig = {
-            sections: [
+    it('should render default sections alongside saved sections when section IDs differ', () => {
+        mockedUseListManagedDashboards.mockReturnValueOnce({
+            data: [
                 {
-                    id: 'invalid',
-                    type: 'invalid-type' as any,
-                    items: [],
-                },
+                    id: 'test-dashboard',
+                    config: {
+                        id: 'test-dashboard',
+                        tabs: [
+                            {
+                                id: 'tab_main',
+                                name: 'Main',
+                                sections: [
+                                    {
+                                        section_id: 'kpis',
+                                        type: 'card',
+                                        items: [
+                                            {
+                                                chart_id:
+                                                    'unknown_chart_id_not_in_report_config',
+                                                metadata: {
+                                                    visible: true,
+                                                    grid_size: 3,
+                                                },
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                } as any,
             ],
-        } as DashboardLayoutConfig
+        })
 
         render(
             <DashboardLayoutRenderer
-                layoutConfig={invalidConfig}
+                defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
+                dashboardId="test-dashboard"
             />,
         )
 
@@ -259,7 +322,7 @@ describe('DashboardLayoutRenderer', () => {
 
         render(
             <DashboardLayoutRenderer
-                layoutConfig={customConfig}
+                defaultLayoutConfig={customConfig}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -274,35 +337,28 @@ describe('DashboardLayoutRenderer', () => {
         ).toBeInTheDocument()
     })
 
-    describe('KPIs section with tabKey', () => {
-        const { useFlag } = require('@repo/feature-flags')
+    describe('KPIs section', () => {
+        const sixKpisConfig = createKpisLayoutConfig([
+            'kpi1',
+            'kpi2',
+            'kpi3',
+            'kpi4',
+            'kpi5',
+            'kpi6',
+        ])
 
         beforeEach(() => {
-            useFlag.mockReturnValue(true)
+            mockedUseFlag.mockReturnValue(true)
         })
 
         afterEach(() => {
-            useFlag.mockReset()
-        })
-
-        it('should render KPI items without tabKey', () => {
-            render(
-                <DashboardLayoutRenderer
-                    layoutConfig={createKpisLayoutConfig()}
-                    reportConfig={reportConfigMock}
-                />,
-            )
-
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi2')).toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi3')).toBeInTheDocument()
-            expect(screen.getByText('Chart: kpi4')).toBeInTheDocument()
+            mockedUseFlag.mockReset()
         })
 
         it('should render KPI items with tabKey', () => {
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createKpisLayoutConfig()}
+                    defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
                     tabKey="test-tab"
                 />,
@@ -345,7 +401,7 @@ describe('DashboardLayoutRenderer', () => {
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={configWithHiddenItems}
+                    defaultLayoutConfig={configWithHiddenItems}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -365,23 +421,12 @@ describe('DashboardLayoutRenderer', () => {
                     `Chart: ${AnalyticsOverviewChart.AutomatedInteractionsCard}`,
                 ),
             ).toBeInTheDocument()
-            expect(
-                screen.queryByText(
-                    `Chart: ${AnalyticsOverviewChart.AutomationRateComboChart}`,
-                ),
-            ).not.toBeInTheDocument()
         })
 
         it('should not show button when exactly 4 KPIs', () => {
-            const fourKpisConfig = createKpisLayoutConfig([
-                'kpi1',
-                'kpi2',
-                'kpi3',
-                'kpi4',
-            ])
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={fourKpisConfig}
+                    defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -392,10 +437,12 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should not show button when less than 4 KPIs', () => {
-            const twoKpisConfig = createKpisLayoutConfig(['kpi1', 'kpi2'])
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={twoKpisConfig}
+                    defaultLayoutConfig={createKpisLayoutConfig([
+                        'kpi1',
+                        'kpi2',
+                    ])}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -406,17 +453,9 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should show button when more than 4 KPIs', () => {
-            const sixKpisConfig = createKpisLayoutConfig([
-                'kpi1',
-                'kpi2',
-                'kpi3',
-                'kpi4',
-                'kpi5',
-                'kpi6',
-            ])
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={sixKpisConfig}
+                    defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -427,17 +466,9 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should show only first 4 KPIs initially', () => {
-            const sixKpisConfig = createKpisLayoutConfig([
-                'kpi1',
-                'kpi2',
-                'kpi3',
-                'kpi4',
-                'kpi5',
-                'kpi6',
-            ])
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={sixKpisConfig}
+                    defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -450,23 +481,17 @@ describe('DashboardLayoutRenderer', () => {
 
         it('should expand to show all KPIs when button clicked', async () => {
             const user = userEventLib.setup()
-            const sixKpisConfig = createKpisLayoutConfig([
-                'kpi1',
-                'kpi2',
-                'kpi3',
-                'kpi4',
-                'kpi5',
-                'kpi6',
-            ])
+
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={sixKpisConfig}
+                    defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
 
-            const button = screen.getByRole('button', { name: /show 2 more/i })
-            await user.click(button)
+            await user.click(
+                screen.getByRole('button', { name: /show 2 more/i }),
+            )
 
             expect(screen.getByText('Chart: kpi5')).toBeInTheDocument()
             expect(screen.getByText('Chart: kpi6')).toBeInTheDocument()
@@ -477,30 +502,18 @@ describe('DashboardLayoutRenderer', () => {
 
         it('should collapse back to 4 KPIs when show less clicked', async () => {
             const user = userEventLib.setup()
-            const sixKpisConfig = createKpisLayoutConfig([
-                'kpi1',
-                'kpi2',
-                'kpi3',
-                'kpi4',
-                'kpi5',
-                'kpi6',
-            ])
+
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={sixKpisConfig}
+                    defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
 
-            const showMoreButton = screen.getByRole('button', {
-                name: /show 2 more/i,
-            })
-            await user.click(showMoreButton)
-
-            const showLessButton = screen.getByRole('button', {
-                name: /show less/i,
-            })
-            await user.click(showLessButton)
+            await user.click(
+                screen.getByRole('button', { name: /show 2 more/i }),
+            )
+            await user.click(screen.getByRole('button', { name: /show less/i }))
 
             expect(screen.queryByText('Chart: kpi5')).not.toBeInTheDocument()
             expect(screen.queryByText('Chart: kpi6')).not.toBeInTheDocument()
@@ -511,10 +524,10 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('Charts section', () => {
-        it('should render chart items with flex wrap', () => {
+        it('should render chart items', () => {
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createChartsLayoutConfig()}
+                    defaultLayoutConfig={chartsLayoutConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -522,46 +535,18 @@ describe('DashboardLayoutRenderer', () => {
             expect(screen.getByText('Chart: chart1')).toBeInTheDocument()
             expect(screen.getByText('Chart: chart2')).toBeInTheDocument()
         })
-
-        it('should apply correct minWidth for charts section', () => {
-            const { container } = render(
-                <DashboardLayoutRenderer
-                    layoutConfig={createChartsLayoutConfig()}
-                    reportConfig={reportConfigMock}
-                />,
-            )
-
-            const chartItems = container.querySelectorAll(
-                '[data-chart-id="chart1"], [data-chart-id="chart2"]',
-            )
-            expect(chartItems).toHaveLength(2)
-        })
     })
 
     describe('Table section', () => {
         it('should render table items', () => {
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createTableLayoutConfig()}
+                    defaultLayoutConfig={tableLayoutConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
 
             expect(screen.getByText('Chart: table1')).toBeInTheDocument()
-        })
-
-        it('should apply correct minWidth for table section', () => {
-            const { container } = render(
-                <DashboardLayoutRenderer
-                    layoutConfig={createTableLayoutConfig()}
-                    reportConfig={reportConfigMock}
-                />,
-            )
-
-            const tableItem = container.querySelector(
-                '[data-chart-id="table1"]',
-            )
-            expect(tableItem).toBeInTheDocument()
         })
     })
 
@@ -569,7 +554,7 @@ describe('DashboardLayoutRenderer', () => {
         it('should render all section types correctly', () => {
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createMixedLayoutConfig()}
+                    defaultLayoutConfig={mixedLayoutConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -594,7 +579,7 @@ describe('DashboardLayoutRenderer', () => {
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={manyKpisConfig}
+                    defaultLayoutConfig={manyKpisConfig}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -605,19 +590,18 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('MetricsConfigurator integration', () => {
-        const { useFlag } = require('@repo/feature-flags')
-
         beforeEach(() => {
-            useFlag.mockReset()
+            mockedUseFlag.mockReset()
         })
 
         it('should render MetricsConfigurator when feature flag is enabled', () => {
-            useFlag.mockReturnValue(true)
+            mockedUseFlag.mockReturnValue(true)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createKpisLayoutConfig()}
+                    defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    dashboardId="test-dashboard"
                 />,
             )
 
@@ -627,11 +611,11 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should not render MetricsConfigurator when feature flag is disabled', () => {
-            useFlag.mockReturnValue(false)
+            mockedUseFlag.mockReturnValue(false)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={createKpisLayoutConfig()}
+                    defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -642,14 +626,17 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should pass correct metrics to MetricsConfigurator', () => {
-            useFlag.mockReturnValue(true)
-
-            const kpisConfig = createKpisLayoutConfig(['kpi1', 'kpi2', 'kpi3'])
+            mockedUseFlag.mockReturnValue(true)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={kpisConfig}
+                    defaultLayoutConfig={createKpisLayoutConfig([
+                        'kpi1',
+                        'kpi2',
+                        'kpi3',
+                    ])}
                     reportConfig={reportConfigMock}
+                    dashboardId="test-dashboard"
                 />,
             )
 
@@ -660,35 +647,16 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     describe('requiresFeatureFlag filtering', () => {
-        const { useFlag } = require('@repo/feature-flags')
-
         beforeEach(() => {
-            useFlag.mockReset()
+            mockedUseFlag.mockReset()
         })
 
         it('should show item when requiresFeatureFlag=true and feature flag=true', () => {
-            useFlag.mockReturnValue(true)
-
-            const config: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'kpis',
-                        type: 'kpis',
-                        items: [
-                            {
-                                chartId: 'kpi1' as any,
-                                gridSize: 3,
-                                visibility: true,
-                                requiresFeatureFlag: true,
-                            },
-                        ],
-                    },
-                ],
-            }
+            mockedUseFlag.mockReturnValue(true)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={config}
+                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -696,59 +664,12 @@ describe('DashboardLayoutRenderer', () => {
             expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
         })
 
-        it('should show item when requiresFeatureFlag=false and feature flag=false', () => {
-            useFlag.mockReturnValue(false)
-
-            const config: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'kpis',
-                        type: 'kpis',
-                        items: [
-                            {
-                                chartId: 'kpi1' as any,
-                                gridSize: 3,
-                                visibility: true,
-                                requiresFeatureFlag: false,
-                            },
-                        ],
-                    },
-                ],
-            }
+        it('should show item when requiresFeatureFlag=false regardless of feature flag', () => {
+            mockedUseFlag.mockReturnValue(false)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={config}
-                    reportConfig={reportConfigMock}
-                />,
-            )
-
-            expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
-        })
-
-        it('should show item when requiresFeatureFlag=false and feature flag=true', () => {
-            useFlag.mockReturnValue(true)
-
-            const config: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'kpis',
-                        type: 'kpis',
-                        items: [
-                            {
-                                chartId: 'kpi1' as any,
-                                gridSize: 3,
-                                visibility: true,
-                                requiresFeatureFlag: false,
-                            },
-                        ],
-                    },
-                ],
-            }
-
-            render(
-                <DashboardLayoutRenderer
-                    layoutConfig={config}
+                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(false)}
                     reportConfig={reportConfigMock}
                 />,
             )
@@ -757,28 +678,11 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should hide item when requiresFeatureFlag=true and feature flag=false', () => {
-            useFlag.mockReturnValue(false)
-
-            const config: DashboardLayoutConfig = {
-                sections: [
-                    {
-                        id: 'kpis',
-                        type: 'kpis',
-                        items: [
-                            {
-                                chartId: 'kpi1' as any,
-                                gridSize: 3,
-                                visibility: true,
-                                requiresFeatureFlag: true,
-                            },
-                        ],
-                    },
-                ],
-            }
+            mockedUseFlag.mockReturnValue(false)
 
             render(
                 <DashboardLayoutRenderer
-                    layoutConfig={config}
+                    defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
                 />,
             )

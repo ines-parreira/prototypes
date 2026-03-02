@@ -35,6 +35,13 @@ jest.mock('common/navigation', () => ({
     GlobalNavigation: jest.fn(() => <div data-testid="global-navigation" />),
 }))
 
+jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useListManagedDashboards',
+    () => ({
+        useListManagedDashboards: jest.fn(),
+    }),
+)
+
 const mockUseIsMobileResolution = useIsMobileResolution as jest.MockedFunction<
     typeof useIsMobileResolution
 >

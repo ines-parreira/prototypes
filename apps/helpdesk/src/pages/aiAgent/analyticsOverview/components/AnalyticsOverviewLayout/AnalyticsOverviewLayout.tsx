@@ -17,6 +17,8 @@ import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { STATS_ROUTES } from 'routes/constants'
 
+const DASHBOARD_ID = 'ai-agent-overview'
+
 export const AnalyticsOverviewLayout = () => {
     useCleanStatsFilters()
     const contentRef = useRef<HTMLDivElement>(null)
@@ -64,8 +66,9 @@ export const AnalyticsOverviewLayout = () => {
             }
         >
             <DashboardLayoutRenderer
-                layoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
+                defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={AnalyticsOverviewReportConfig}
+                dashboardId={DASHBOARD_ID}
             />
         </AnalyticsPage>
     )

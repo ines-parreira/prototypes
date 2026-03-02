@@ -151,6 +151,37 @@ describe('ConfigureMetricsModal', () => {
         expect(onClose).toHaveBeenCalledTimes(1)
     })
 
+    it('should call onSave but not onClose when isLoading prop is provided', async () => {
+        const onSave = vi.fn()
+        const onClose = vi.fn()
+        renderComponent({ onSave, onClose, isLoading: false })
+
+        const toggles = screen.getAllByRole('switch')
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        await act(async () => {
+            await userEvent.click(saveButton)
+        })
+
+        expect(onSave).toHaveBeenCalled()
+        expect(onClose).not.toHaveBeenCalled()
+    })
+
+    it('should disable save button when isLoading is true', async () => {
+        renderComponent({ isLoading: true })
+
+        const toggles = screen.getAllByRole('switch')
+        await act(async () => {
+            await userEvent.click(toggles[0])
+        })
+
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        expect(saveButton).toBeDisabled()
+    })
+
     it('should reset changes when cancel is clicked', async () => {
         const onSave = vi.fn()
         renderComponent({ onSave })

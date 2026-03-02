@@ -93,6 +93,7 @@ describe('useShoppingAssistantChannelMetrics', () => {
         expect(result.current.isLoading).toBe(true)
         expect(result.current.loadingStates).toEqual({
             automationRate: true,
+            aiAgentInteractionsShare: true,
             automatedInteractions: true,
             handover: true,
             totalSales: true,

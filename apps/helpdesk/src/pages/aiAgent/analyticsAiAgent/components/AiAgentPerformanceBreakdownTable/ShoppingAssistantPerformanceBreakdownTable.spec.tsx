@@ -8,6 +8,7 @@ import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/
 import { useProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import * as useShoppingAssistantChannelMetricsModule from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
+import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
@@ -20,6 +21,7 @@ jest.mock(
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductRecommendations',
 )
+jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking')
 
 const mockUseStatsFilters = useStatsFilters as jest.MockedFunction<
     typeof useStatsFilters
@@ -31,6 +33,10 @@ const mockUseShoppingAssistantChannelMetrics =
 const mockUseProductRecommendations =
     useProductRecommendations as jest.MockedFunction<
         typeof useProductRecommendations
+    >
+const mockUseAiAgentAnalyticsDashboardTracking =
+    useAiAgentAnalyticsDashboardTracking as jest.MockedFunction<
+        typeof useAiAgentAnalyticsDashboardTracking
     >
 
 const createWrapper = () => {
@@ -61,8 +67,20 @@ const createWrapper = () => {
 }
 
 describe('ShoppingAssistantPerformanceBreakdownTable', () => {
+    beforeAll(() => {
+        // Mock getAnimations for jsdom
+        Element.prototype.getAnimations = jest.fn(() => [])
+    })
+
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseAiAgentAnalyticsDashboardTracking.mockReturnValue({
+            onTableTabInteraction: jest.fn(),
+            onAnalyticsReportViewed: jest.fn(),
+            onAnalyticsAiAgentTabSelected: jest.fn(),
+            onExport: jest.fn(),
+        })
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
@@ -94,6 +112,7 @@ describe('ShoppingAssistantPerformanceBreakdownTable', () => {
                 handover: false,
                 totalSales: false,
                 automationRate: false,
+                aiAgentInteractionsShare: false,
                 automatedInteractions: false,
                 ordersInfluenced: false,
             },

@@ -98,12 +98,7 @@
         "import/no-default-export": "warn",
         "import/no-named-as-default": "warn",
         "oxc/no-barrel-file": "warn",
-        "import/consistent-type-specifier-style": [
-            "error",
-            {
-                "mode": "prefer-top-level"
-            }
-        ],
+        "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/click-events-have-key-events": "off",

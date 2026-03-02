@@ -12,6 +12,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
+import { useListManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useListManagedDashboards'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AppContextProvider } from 'pages/AppContext'
@@ -51,6 +52,8 @@ const App = ({
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const dispatch = useAppDispatch()
+
+    useListManagedDashboards()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
 

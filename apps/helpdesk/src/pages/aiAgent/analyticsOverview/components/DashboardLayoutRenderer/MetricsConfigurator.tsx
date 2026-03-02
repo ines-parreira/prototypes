@@ -5,12 +5,53 @@ import type { MetricConfigItem } from '@repo/reporting'
 
 import { Box, Button } from '@gorgias/axiom'
 
+import { useUpdateManagedDashboard } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
+import type {
+    AnalyticsChartType,
+    DashboardLayoutConfig,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+
 type MetricsConfiguratorProps = {
     metrics: MetricConfigItem[]
+    dashboardId: string
+    currentLayoutConfig: DashboardLayoutConfig
 }
 
-export const MetricsConfigurator = ({ metrics }: MetricsConfiguratorProps) => {
+export const MetricsConfigurator = ({
+    metrics,
+    dashboardId,
+    currentLayoutConfig,
+}: MetricsConfiguratorProps) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const { updateSection, isLoading } = useUpdateManagedDashboard()
+
+    const handleSave = (updatedMetrics: MetricConfigItem[]) => {
+        const kpisSectionId =
+            currentLayoutConfig.sections.find((s) => s.type === 'kpis')?.id ??
+            'section_kpis'
+
+        updateSection(
+            dashboardId,
+            currentLayoutConfig,
+            kpisSectionId,
+            (section) => ({
+                ...section,
+                items: updatedMetrics.map((metric) => {
+                    const existingItem = section.items.find(
+                        (item) => item.chartId === metric.id,
+                    )
+                    return {
+                        chartId: metric.id as AnalyticsChartType,
+                        gridSize: existingItem?.gridSize ?? 3,
+                        visibility: metric.visibility,
+                        requiresFeatureFlag:
+                            !!existingItem?.requiresFeatureFlag,
+                    }
+                }),
+            }),
+            () => setIsEditModalOpen(false),
+        )
+    }
 
     return (
         <Box alignItems="center" gap="sm" justifyContent="flex-end" flex={1}>
@@ -28,9 +69,8 @@ export const MetricsConfigurator = ({ metrics }: MetricsConfiguratorProps) => {
                 onClose={() => setIsEditModalOpen(false)}
                 maxVisibleMetric={8}
                 metrics={metrics}
-                onSave={() => {
-                    // TODO - save the new configuration in #ANALYT-5234
-                }}
+                onSave={handleSave}
+                isLoading={isLoading}
             />
         </Box>
     )

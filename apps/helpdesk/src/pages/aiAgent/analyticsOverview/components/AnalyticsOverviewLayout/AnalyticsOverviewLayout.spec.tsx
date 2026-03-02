@@ -32,7 +32,7 @@ jest.mock(
     'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton',
     () => ({
         AnalyticsOverviewDownloadButton: () => (
-            <div data-testid="download-button">Download</div>
+            <div>AnalyticsOverviewDownloadButton</div>
         ),
     }),
 )
@@ -40,11 +40,7 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer',
     () => ({
-        DashboardLayoutRenderer: ({ reportConfig }: any) => (
-            <div data-testid="dashboard-renderer">
-                {reportConfig?.reportName || 'Dashboard'}
-            </div>
-        ),
+        DashboardLayoutRenderer: () => <div>DashboardLayoutRenderer</div>,
     }),
 )
 
@@ -53,11 +49,7 @@ jest.mock(
     () => {
         const React = require('react')
         const MockFiltersPanelWrapper = React.forwardRef(
-            (_props: any, ref: any) => (
-                <div ref={ref} data-testid="filters-panel">
-                    Filters
-                </div>
-            ),
+            (_props: any, ref: any) => <div ref={ref}>FiltersPanelWrapper</div>,
         )
         MockFiltersPanelWrapper.displayName = 'MockFiltersPanelWrapper'
         return {
@@ -68,7 +60,7 @@ jest.mock(
 )
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
-    DrillDownModal: () => <div data-testid="drill-down-modal" />,
+    DrillDownModal: () => <div>DrillDownModal</div>,
 }))
 
 jest.mock('hooks/candu/useInjectStyleToCandu', () => ({
@@ -129,19 +121,21 @@ describe('AnalyticsOverviewLayout', () => {
     it('should render download button', () => {
         renderComponent()
 
-        expect(screen.getByTestId('download-button')).toBeInTheDocument()
+        expect(
+            screen.getByText('AnalyticsOverviewDownloadButton'),
+        ).toBeInTheDocument()
     })
 
     it('should render filters panel', () => {
         renderComponent()
 
-        expect(screen.getByTestId('filters-panel')).toBeInTheDocument()
+        expect(screen.getByText('FiltersPanelWrapper')).toBeInTheDocument()
     })
 
-    it('should render dashboard renderer', () => {
+    it('should render dashboard renderer when config is loaded', () => {
         renderComponent()
 
-        expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
+        expect(screen.getByText('DashboardLayoutRenderer')).toBeInTheDocument()
     })
 
     it('should handle previous URL without /app/ prefix', () => {

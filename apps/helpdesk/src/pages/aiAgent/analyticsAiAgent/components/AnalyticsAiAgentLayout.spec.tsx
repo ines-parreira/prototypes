@@ -176,7 +176,7 @@ describe('AnalyticsAiAgentLayout', () => {
         expect(screen.getByTestId('filters-panel')).toBeInTheDocument()
     })
 
-    it('should render dashboard renderer', () => {
+    it('should render dashboard renderer when config is loaded', () => {
         renderComponent()
 
         expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
@@ -209,5 +209,25 @@ describe('AnalyticsAiAgentLayout', () => {
             tabName: 'support-agent',
             previousTab: 'all-agents',
         })
+    })
+
+    it('should render dashboard renderer for support-agent tab', () => {
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=support-agent')
+
+        expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
+    })
+
+    it('should render dashboard renderer for shopping-assistant tab', () => {
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=shopping-assistant')
+
+        expect(screen.getByTestId('dashboard-renderer')).toBeInTheDocument()
+    })
+
+    it('should render nothing for an unknown tab value', () => {
+        renderComponent('/app/stats/ai-agent?ai-agent-tab=unknown-tab')
+
+        expect(
+            screen.queryByTestId('dashboard-renderer'),
+        ).not.toBeInTheDocument()
     })
 })

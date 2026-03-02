@@ -93,29 +93,36 @@ export const AnalyticsAiAgentLayout = () => {
             case AiAgentAnalyticsQueryParams.AllAgents:
                 return (
                     <DashboardLayoutRenderer
-                        layoutConfig={ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT}
+                        defaultLayoutConfig={
+                            ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT
+                        }
                         reportConfig={AnalyticsAiAgentAllAgentsReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.AllAgents}
+                        dashboardId="ai-agent-all-agents"
                     />
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
                 return (
                     <DashboardLayoutRenderer
-                        layoutConfig={ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT}
+                        defaultLayoutConfig={
+                            ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT
+                        }
                         reportConfig={AnalyticsAiAgentSupportAgentReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.SupportAgent}
+                        dashboardId="ai-agent-support-agent"
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
                 return (
                     <DashboardLayoutRenderer
-                        layoutConfig={
+                        defaultLayoutConfig={
                             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT
                         }
                         reportConfig={
                             AnalyticsAiAgentShoppingAssistantReportConfig
                         }
                         tabKey={AiAgentAnalyticsQueryParams.ShoppingAssistant}
+                        dashboardId="ai-agent-shopping-assistant"
                     />
                 )
             default:

@@ -31,6 +31,7 @@ type Props = {
     metrics: MetricConfigItem[]
     onSave: (metrics: MetricConfigItem[]) => void
     maxVisibleMetric?: number
+    isLoading?: boolean
 }
 
 type DraggableRowProps = {
@@ -110,6 +111,7 @@ export const ConfigureMetricsModal = ({
     metrics,
     onSave,
     maxVisibleMetric = 4,
+    isLoading,
 }: Props) => {
     const [localMetrics, setLocalMetrics] =
         useState<MetricConfigItem[]>(metrics)
@@ -163,8 +165,12 @@ export const ConfigureMetricsModal = ({
 
     const handleSave = useCallback(() => {
         onSave(localMetrics)
-        onClose()
-    }, [localMetrics, onSave, onClose])
+        // Auto-close when isLoading prop is not provided (synchronous save).
+        // When isLoading is provided, the parent controls closing after async save completes.
+        if (isLoading === undefined) {
+            onClose()
+        }
+    }, [localMetrics, onSave, onClose, isLoading])
 
     const handleCancel = useCallback(() => {
         setLocalMetrics(metrics)
@@ -227,7 +233,8 @@ export const ConfigureMetricsModal = ({
                 <Button
                     variant="primary"
                     onClick={handleSave}
-                    isDisabled={!hasChanges}
+                    isDisabled={!hasChanges || !!isLoading}
+                    isLoading={isLoading ?? false}
                 >
                     Save
                 </Button>

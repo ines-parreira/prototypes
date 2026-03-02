@@ -97,7 +97,7 @@ catalogs:
   oxlint:
     oxlint:
       specifier: ^1.39.0
-      version: 1.39.0
+      version: 1.49.0
   prettier:
     '@trivago/prettier-plugin-sort-imports':
       specifier: ^5.2.2
@@ -361,7 +361,7 @@ importers:
     devDependencies:
       '@gorgias/config':
         specifier: ^0.6.0
-        version: 0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.9.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@7.0.1(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@1.39.0)
+        version: 0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.9.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@7.0.1(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@1.49.0)
       '@gorgias/static-analysis':
         specifier: 0.5.0
         version: 0.5.0
@@ -397,7 +397,7 @@ importers:
         version: 21.3.2(@swc/core@1.12.1(@swc/helpers@0.5.17))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1439,7 +1439,7 @@ importers:
         version: 7.7.0(encoding@0.1.13)(js-yaml@4.1.1)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       patch-package:
         specifier: 6.4.7
         version: 6.4.7
@@ -1541,7 +1541,7 @@ importers:
         version: 4.0.2(jest@29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.17))(@types/node@22.13.13)(typescript@5.9.3)))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1629,7 +1629,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1689,7 +1689,7 @@ importers:
         version: 2.2.6
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1750,7 +1750,7 @@ importers:
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1877,7 +1877,7 @@ importers:
         version: 2.0.3
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -1973,7 +1973,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       pluralize:
         specifier: ^8.0.0
         version: 8.0.0
@@ -2042,7 +2042,7 @@ importers:
         version: 3.3.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2120,7 +2120,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2202,7 +2202,7 @@ importers:
         version: 4.17.21
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2257,7 +2257,7 @@ importers:
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2327,7 +2327,7 @@ importers:
         version: 4.17.21
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2382,7 +2382,7 @@ importers:
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2473,7 +2473,7 @@ importers:
         version: 0.5.39
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2543,7 +2543,7 @@ importers:
         version: 4.17.21
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2606,7 +2606,7 @@ importers:
         version: 29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.17))(@types/node@22.13.13)(typescript@5.9.3))
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2706,7 +2706,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2857,7 +2857,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2902,7 +2902,7 @@ importers:
         version: 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -2956,7 +2956,7 @@ importers:
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -3041,7 +3041,7 @@ importers:
         version: 4.17.21
       oxlint:
         specifier: catalog:oxlint
-        version: 1.39.0
+        version: 1.49.0
       prettier:
         specifier: catalog:prettier
         version: 3.6.2
@@ -4503,8 +4503,8 @@ packages:
   '@gorgias/help-center-validators@0.2.25':
     resolution: {integrity: sha512-nRdO5C6+syb2nV6YGg+4Mx2557BcKSLGVSUvVPlL0h9hrUMrrCyQkXaToEoUzph0WoP4LhfqrqrFWPlFw1CIGw==, tarball: https://npm.pkg.github.com/download/@gorgias/help-center-validators/0.2.25/77b962e225bb888e067e243773ab42f016bd85d8}
 
-  '@gorgias/helpdesk-client@0.10.105':
-    resolution: {integrity: sha512-Z8h790xPyl01m4YxfFU4z7ZjASnKaXivBLkhmBBLzt1dIWFd/8Z4FTjvo8SXdaEcw3Sg+1zzx+bDbJi/t/DOng==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.105/dcfd409652482e2176b38b4e28f52778b0de8f26}
+  '@gorgias/helpdesk-client@0.10.109':
+    resolution: {integrity: sha512-oAtriUTCv8iybdKnVI2TY17KO5/5RgDQKr33xwlDlYOMLIicayPtQaQDGyZaZwNoxy7YgfM8kRbUukFFlD6Iqw==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.109/4d7e492864fff56f536561e939770eb0ebcb4cb1}
 
   '@gorgias/helpdesk-client@0.10.110':
     resolution: {integrity: sha512-8G1sh8IDXQmo+Fn+pDKcRCMQSW9MOg8fgdHXTQC3pr3TPMQlWVgzgrdNNT3YGBce9h2YYo8WDDspqcwQ5UhbDQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-client/0.10.110/67835754c44b8eedacefcbba45762cdffcb81211}
@@ -4515,14 +4515,14 @@ packages:
   '@gorgias/helpdesk-queries@0.10.0':
     resolution: {integrity: sha512-liUgTMhmJOD0qH2lJxs6kyW0bmZAOckgWfxE15OKBwN2U1LCw+BdPzyZuQbghrLaHfLm7QAvW87+/HSzVrJLoQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.10.0/b17ea5a608444152b411166c230e21904c070d19}
 
-  '@gorgias/helpdesk-queries@0.9.122':
-    resolution: {integrity: sha512-b6kjG+l8c99FvC7PQ1Y9rSetWRiuOOdl89pFzU6YDz9Fn3nsOyo7hMR8vw4SIhwTrR3T72lmGKa0z6Ny9tk5qA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.9.122/a50845ceac23db54db20143df69bf132f3d8397d}
+  '@gorgias/helpdesk-queries@0.9.126':
+    resolution: {integrity: sha512-H4ycnKlOFJmnUMm1L/zKdQZMvxRoy50VAWZ2YeJuMLcupDBJf4CaDL5F8ywjNJn/86RmUchZJLbersfBhxTOoA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-queries/0.9.126/a530ea2c5f3d492cb248997c2c56dce007c8abf8}
 
   '@gorgias/helpdesk-spec@0.15.0':
     resolution: {integrity: sha512-CSJb/WaiRUe0WTAqpOUlmdNK1IyyUSeci2seqdtl0b0vTVPkIdIS+95U31fwuoq6lMX1f+GKMHaV5iM4wZDWsQ==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-spec/0.15.0/4eb1c26bb23ffab1bf07d978d8b010a30300abf2}
 
-  '@gorgias/helpdesk-types@0.9.85':
-    resolution: {integrity: sha512-3UnjwlO5gjCTJzunNWtqrfAuNjvZ2fRu4wBEYRf7tZxu+e6DjbaOeG5J+8ndJL4QTun37zFnThzwNHdK0T0Tsg==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.9.85/1045309c3d7f1d5ca3e6231cb572303cb1054652}
+  '@gorgias/helpdesk-types@0.9.89':
+    resolution: {integrity: sha512-Eh5/lbPQ3bFqb8LpSwWTLFVtEydZPwdCrOV8HFDv/v/77B0x4mI3mXHYf3du3/l0hABb6XPiM3d//4dMF52ddA==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.9.89/f1a086bf594d6e6e0cd74101e37ff9da02a3f6e4}
 
   '@gorgias/helpdesk-types@0.9.90':
     resolution: {integrity: sha512-rm1F0EG+LKHx2jUiYySX1pouuXzSO5195I/ibHJGOvQZeniTBkt6wNBy3HIDlNvgGjGjEsRPj8OUivXrmyVPeg==, tarball: https://npm.pkg.github.com/download/@gorgias/helpdesk-types/0.9.90/d7c7e7aec3cbfb1a598a0c96f5290153e61cfe2e}
@@ -5447,50 +5447,6 @@ packages:
   '@oxlint/binding-win32-x64-msvc@1.49.0':
     resolution: {integrity: sha512-VteIelt78kwzSglOozaQcs6BCS4Lk0j+QA+hGV0W8UeyaqQ3XpbZRhDU55NW1PPvCy1tg4VXsTlEaPovqto7nQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
-    os: [win32]
-
-  '@oxlint/darwin-arm64@1.39.0':
-    resolution: {integrity: sha512-lT3hNhIa02xCujI6YGgjmYGg3Ht/X9ag5ipUVETaMpx5Rd4BbTNWUPif1WN1YZHxt3KLCIqaAe7zVhatv83HOQ==}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@oxlint/darwin-x64@1.39.0':
-    resolution: {integrity: sha512-UT+rfTWd+Yr7iJeSLd/7nF8X4gTYssKh+n77hxl6Oilp3NnG1CKRHxZDy3o3lIBnwgzJkdyUAiYWO1bTMXQ1lA==}
-    cpu: [x64]
-    os: [darwin]
-
-  '@oxlint/linux-arm64-gnu@1.39.0':
-    resolution: {integrity: sha512-qocBkvS2V6rH0t9AT3DfQunMnj3xkM7srs5/Ycj2j5ZqMoaWd/FxHNVJDFP++35roKSvsRJoS0mtA8/77jqm6Q==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [glibc]
-
-  '@oxlint/linux-arm64-musl@1.39.0':
-    resolution: {integrity: sha512-arZzAc1PPcz9epvGBBCMHICeyQloKtHX3eoOe62B3Dskn7gf6Q14wnDHr1r9Vp4vtcBATNq6HlKV14smdlC/qA==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [musl]
-
-  '@oxlint/linux-x64-gnu@1.39.0':
-    resolution: {integrity: sha512-ZVt5qsECpuNprdWxAPpDBwoixr1VTcZ4qAEQA2l/wmFyVPDYFD3oBY/SWACNnWBddMrswjTg9O8ALxYWoEpmXw==}
-    cpu: [x64]
-    os: [linux]
-    libc: [glibc]
-
-  '@oxlint/linux-x64-musl@1.39.0':
-    resolution: {integrity: sha512-pB0hlGyKPbxr9NMIV783lD6cWL3MpaqnZRM9MWni4yBdHPTKyFNYdg5hGD0Bwg+UP4S2rOevq/+OO9x9Bi7E6g==}
-    cpu: [x64]
-    os: [linux]
-    libc: [musl]
-
-  '@oxlint/win32-arm64@1.39.0':
-    resolution: {integrity: sha512-Gg2SFaJohI9+tIQVKXlPw3FsPQFi/eCSWiCgwPtPn5uzQxHRTeQEZKuluz1fuzR5U70TXubb2liZi4Dgl8LJQA==}
-    cpu: [arm64]
-    os: [win32]
-
-  '@oxlint/win32-x64@1.39.0':
-    resolution: {integrity: sha512-sbi25lfj74hH+6qQtb7s1wEvd1j8OQbTaH8v3xTcDjrwm579Cyh0HBv1YSZ2+gsnVwfVDiCTL1D0JsNqYXszVA==}
     cpu: [x64]
     os: [win32]
 
@@ -12342,16 +12298,6 @@ packages:
     peerDependencies:
       oxc-parser: '>=0.98.0'
 
-  oxlint@1.39.0:
-    resolution: {integrity: sha512-wSiLr0wjG+KTU6c1LpVoQk7JZ7l8HCKlAkVDVTJKWmCGazsNxexxnOXl7dsar92mQcRnzko5g077ggP3RINSjA==}
-    engines: {node: ^20.19.0 || >=22.12.0}
-    hasBin: true
-    peerDependencies:
-      oxlint-tsgolint: '>=0.10.0'
-    peerDependenciesMeta:
-      oxlint-tsgolint:
-        optional: true
-
   oxlint@1.49.0:
     resolution: {integrity: sha512-YZffp0gM+63CJoRhHjtjRnwKtAgUnXM6j63YQ++aigji2NVvLGsUlrXo9gJUXZOdcbfShLYtA6RuTu8GZ4lzOQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -16646,7 +16592,7 @@ snapshots:
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 7.0.1(eslint@8.1.0)
 
-  '@gorgias/config@0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.9.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@7.0.1(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@1.39.0)':
+  '@gorgias/config@0.6.0(@trivago/prettier-plugin-sort-imports@5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2))(@typescript-eslint/parser@6.21.0(eslint@8.1.0)(typescript@5.9.3))(eslint-plugin-jsx-a11y@6.4.1(eslint@8.1.0))(eslint-plugin-react-hooks@7.0.1(eslint@8.1.0))(eslint-plugin-react@7.26.1(eslint@8.1.0))(eslint@8.1.0)(oxlint@1.49.0)':
     dependencies:
       '@trivago/prettier-plugin-sort-imports': 5.2.2(@vue/compiler-sfc@3.5.17)(prettier@3.6.2)
       '@typescript-eslint/parser': 6.21.0(eslint@8.1.0)(typescript@5.9.3)
@@ -16654,7 +16600,7 @@ snapshots:
       eslint-plugin-jsx-a11y: 6.4.1(eslint@8.1.0)
       eslint-plugin-react: 7.26.1(eslint@8.1.0)
       eslint-plugin-react-hooks: 7.0.1(eslint@8.1.0)
-      oxlint: 1.39.0
+      oxlint: 1.49.0
 
   '@gorgias/convert-client@0.3.27':
     dependencies:
@@ -16796,9 +16742,9 @@ snapshots:
       immer: 10.1.1
       json-schema: 0.4.0
 
-  '@gorgias/helpdesk-client@0.10.105':
+  '@gorgias/helpdesk-client@0.10.109':
     dependencies:
-      '@gorgias/helpdesk-types': 0.9.85
+      '@gorgias/helpdesk-types': 0.9.89
       '@gorgias/sdk-client': 0.9.12
       axios: 1.13.5
     transitivePeerDependencies:
@@ -16835,10 +16781,10 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/helpdesk-queries@0.9.122(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/helpdesk-queries@0.9.126(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/helpdesk-client': 0.10.105
-      '@gorgias/helpdesk-types': 0.9.85
+      '@gorgias/helpdesk-client': 0.10.109
+      '@gorgias/helpdesk-types': 0.9.89
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -16848,7 +16794,7 @@ snapshots:
 
   '@gorgias/helpdesk-spec@0.15.0': {}
 
-  '@gorgias/helpdesk-types@0.9.85': {}
+  '@gorgias/helpdesk-types@0.9.89': {}
 
   '@gorgias/helpdesk-types@0.9.90': {}
 
@@ -16915,7 +16861,7 @@ snapshots:
     dependencies:
       '@gorgias/events': 0.13.5
       '@gorgias/helpdesk-client': 0.10.110
-      '@gorgias/helpdesk-queries': 0.9.122(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/helpdesk-queries': 0.9.126(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.27.4)(@babel/preset-env@7.10.2(@babel/core@7.27.4))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       ably: 2.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       lodash-es: 4.17.21
@@ -17857,30 +17803,6 @@ snapshots:
     optional: true
 
   '@oxlint/binding-win32-x64-msvc@1.49.0':
-    optional: true
-
-  '@oxlint/darwin-arm64@1.39.0':
-    optional: true
-
-  '@oxlint/darwin-x64@1.39.0':
-    optional: true
-
-  '@oxlint/linux-arm64-gnu@1.39.0':
-    optional: true
-
-  '@oxlint/linux-arm64-musl@1.39.0':
-    optional: true
-
-  '@oxlint/linux-x64-gnu@1.39.0':
-    optional: true
-
-  '@oxlint/linux-x64-musl@1.39.0':
-    optional: true
-
-  '@oxlint/win32-arm64@1.39.0':
-    optional: true
-
-  '@oxlint/win32-x64@1.39.0':
     optional: true
 
   '@pivanov/utils@0.0.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
@@ -20385,7 +20307,7 @@ snapshots:
   '@testing-library/dom@10.4.0':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       '@types/aria-query': 5.0.1
       aria-query: 5.3.0
       chalk: 4.1.2
@@ -20396,7 +20318,7 @@ snapshots:
   '@testing-library/dom@9.3.4':
     dependencies:
       '@babel/code-frame': 7.27.1
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       '@types/aria-query': 5.0.1
       aria-query: 5.1.3
       chalk: 4.1.2
@@ -20416,7 +20338,7 @@ snapshots:
 
   '@testing-library/react@14.0.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       '@testing-library/dom': 9.3.4
       '@types/react-dom': 18.2.22
       react: 18.2.0
@@ -21628,7 +21550,7 @@ snapshots:
 
   babel-plugin-macros@3.1.0:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       cosmiconfig: 7.1.0
       resolve: 1.22.10
 
@@ -21967,7 +21889,7 @@ snapshots:
 
   canvg@3.0.11:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       '@types/raf': 3.4.3
       core-js: 3.42.0
       raf: 3.4.1
@@ -22755,11 +22677,11 @@ snapshots:
 
   dom-helpers@3.4.0:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
 
   dom-helpers@5.2.1:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       csstype: 3.1.3
 
   dom-serializer@0.2.2:
@@ -22844,7 +22766,7 @@ snapshots:
 
   downshift@9.0.9(react@18.2.0):
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       compute-scroll-into-view: 3.1.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -24146,7 +24068,7 @@ snapshots:
 
   history@4.10.1:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.3.3
@@ -24155,7 +24077,7 @@ snapshots:
 
   history@5.3.0:
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
 
   hmac-drbg@1.0.1:
     dependencies:
@@ -26233,7 +26155,7 @@ snapshots:
 
   mini-create-react-context@0.4.1(prop-types@15.8.1)(react@18.2.0):
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       prop-types: 15.8.1
       react: 18.2.0
       tiny-warning: 1.0.3
@@ -26788,17 +26710,6 @@ snapshots:
     dependencies:
       magic-regexp: 0.10.0
       oxc-parser: 0.98.0
-
-  oxlint@1.39.0:
-    optionalDependencies:
-      '@oxlint/darwin-arm64': 1.39.0
-      '@oxlint/darwin-x64': 1.39.0
-      '@oxlint/linux-arm64-gnu': 1.39.0
-      '@oxlint/linux-arm64-musl': 1.39.0
-      '@oxlint/linux-x64-gnu': 1.39.0
-      '@oxlint/linux-x64-musl': 1.39.0
-      '@oxlint/win32-arm64': 1.39.0
-      '@oxlint/win32-x64': 1.39.0
 
   oxlint@1.49.0:
     optionalDependencies:
@@ -27638,7 +27549,7 @@ snapshots:
 
   react-popper@1.3.11(react@18.2.0):
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       '@hypnosphi/create-react-context': 0.3.1(prop-types@15.8.1)(react@18.2.0)
       deep-equal: 1.1.1
       popper.js: 1.16.1
@@ -27721,7 +27632,7 @@ snapshots:
 
   react-router-dom@5.2.0(react@18.2.0):
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -27732,7 +27643,7 @@ snapshots:
 
   react-router@5.2.0(react@18.2.0):
     dependencies:
-      '@babel/runtime': 7.28.4
+      '@babel/runtime': 7.28.6
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -28757,7 +28668,7 @@ snapshots:
     dependencies:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   string-width@8.2.0:
     dependencies:
@@ -29931,7 +29842,7 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.1
       string-width: 5.1.2
-      strip-ansi: 7.1.0
+      strip-ansi: 7.1.2
 
   wrappy@1.0.2: {}
 
