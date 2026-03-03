@@ -10,7 +10,6 @@ import { user } from 'fixtures/users'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
-import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'
@@ -55,7 +54,6 @@ jest.mock('state/billing/selectors', () => ({
 }))
 
 jest.mock('utils/sdk')
-jest.mock('utils/datadog')
 jest.mock('utils/errors')
 jest.mock('@repo/feature-flags')
 jest.mock('utils/hotjar')
@@ -117,7 +115,9 @@ describe('init', () => {
             })
 
             it('should init datadog rum', () => {
-                const expectedParams: Parameters<typeof initDatadogRum> = [
+                const expectedParams: Parameters<
+                    typeof logging.initDatadogRum
+                > = [
                     {
                         account,
                         user,
@@ -129,13 +129,15 @@ describe('init', () => {
 
                 initApp()
 
-                expect(initDatadogRum).toHaveBeenLastCalledWith(
+                expect(logging.initDatadogRum).toHaveBeenLastCalledWith(
                     ...expectedParams,
                 )
             })
 
             it('should init datadog logger', () => {
-                const expectedParams: Parameters<typeof initDatadogLogger> = [
+                const expectedParams: Parameters<
+                    typeof logging.initDatadogLogger
+                > = [
                     {
                         account,
                         user,
@@ -147,7 +149,7 @@ describe('init', () => {
 
                 initApp()
 
-                expect(initDatadogLogger).toHaveBeenLastCalledWith(
+                expect(logging.initDatadogLogger).toHaveBeenLastCalledWith(
                     ...expectedParams,
                 )
             })
@@ -156,8 +158,8 @@ describe('init', () => {
         it('should not init datadog rum and logger on development environment', () => {
             initApp()
 
-            expect(initDatadogRum).not.toHaveBeenCalled()
-            expect(initDatadogLogger).not.toHaveBeenCalled()
+            expect(logging.initDatadogRum).not.toHaveBeenCalled()
+            expect(logging.initDatadogLogger).not.toHaveBeenCalled()
         })
 
         it('should init error reporter when SENTRY_DSN is defined', () => {

@@ -28,10 +28,6 @@ import { WidgetEnvironment } from 'state/widgets/types'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
-export const DATADOG_CLIENT_TOKEN = 'pubc9857173f4901f3b10fc39dfcde707c6' // gitleaks:allow
-export const DATADOG_RUM_CLIENT_TOKEN = 'pube64f1e4ec3c5172711f0a2d03cb1a0ff' // gitleaks:allow
-export const DATADOG_RUM_APPLICATION_ID = 'a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df'
-
 /**
  * Action related
  */

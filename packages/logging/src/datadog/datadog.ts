@@ -2,13 +2,9 @@ import { datadogLogs } from '@datadog/browser-logs'
 import { datadogRum } from '@datadog/browser-rum'
 import type { GorgiasUIEnv } from '@repo/utils'
 
-import {
-    DATADOG_CLIENT_TOKEN,
-    DATADOG_RUM_APPLICATION_ID,
-    DATADOG_RUM_CLIENT_TOKEN,
-} from 'config'
-import type { User } from 'config/types/user'
-import type { Account } from 'state/currentAccount/types'
+export const DATADOG_CLIENT_TOKEN = 'pubc9857173f4901f3b10fc39dfcde707c6' // gitleaks:allow
+export const DATADOG_RUM_CLIENT_TOKEN = 'pube64f1e4ec3c5172711f0a2d03cb1a0ff' // gitleaks:allow
+export const DATADOG_RUM_APPLICATION_ID = 'a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df'
 
 export const DATADOG_SITE = 'datadoghq.com'
 export const DATADOG_LOGS_SERVICE = 'web-client'
@@ -16,10 +12,20 @@ export const DATADOG_LOGS_SESSION_SAMPLE_RATE = 100
 export const DATADOG_RUM_SERVICE = 'helpdesk-web-app'
 export const DATADOG_RUM_SESSION_SAMPLE_RATE = 5
 export const DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE = 0
+type DatadogEvent = { type: string }
+
+export type DatadogAccount = {
+    domain: string
+}
+
+export type DatadogUser = {
+    id: number | string
+    email: string
+}
 
 export type InitDatadogLoggerOptions = {
-    account: Account
-    user: User
+    account: DatadogAccount
+    user: DatadogUser
     clientVersion: string
     serverVersion: string
     environment: GorgiasUIEnv
@@ -52,8 +58,8 @@ export const initDatadogLogger = ({
 }
 
 export type InitDatadogRumOptions = {
-    account: Account
-    user: User
+    account: DatadogAccount
+    user: DatadogUser
     clientVersion: string
     serverVersion: string
     environment: GorgiasUIEnv
@@ -77,7 +83,7 @@ export const initDatadogRum = ({
         sessionReplaySampleRate: DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
         trackResources: true,
         trackLongTasks: true,
-        beforeSend: (event) => {
+        beforeSend: (event: DatadogEvent) => {
             /**
              * Error monitoring is handled by Sentry.
              * We don't need to send errors to Datadog.

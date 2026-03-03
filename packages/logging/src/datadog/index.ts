@@ -1,14 +1,4 @@
 export {
-    NotificationCenterEventTypes,
-    StatViewLinkClickedStat,
-    SegmentEvent,
-    identifyUser,
-    logEvent,
-    logEventWithSampling,
-    logPageChange,
-} from './segment'
-export type { SegmentEventToSend } from './segment'
-export {
     DATADOG_CLIENT_TOKEN,
     DATADOG_LOGS_SERVICE,
     DATADOG_LOGS_SESSION_SAMPLE_RATE,

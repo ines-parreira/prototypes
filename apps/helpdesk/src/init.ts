@@ -17,8 +17,8 @@ import moment from 'moment-timezone'
 import './polyfills'
 
 import { initLaunchDarkly } from '@repo/feature-flags'
+import { initDatadogLogger, initDatadogRum, logEvent } from '@repo/logging'
 import type { SegmentEvent } from '@repo/logging'
-import { logEvent } from '@repo/logging'
 import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
 
 import { store } from 'common/store'
@@ -32,7 +32,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
-import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import { initErrorReporter } from 'utils/errors'
 import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'

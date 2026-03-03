@@ -2,32 +2,54 @@ import { datadogLogs } from '@datadog/browser-logs'
 import { datadogRum } from '@datadog/browser-rum'
 import { GorgiasUIEnv } from '@repo/utils'
 
-import {
-    DATADOG_CLIENT_TOKEN,
-    DATADOG_RUM_APPLICATION_ID,
-    DATADOG_RUM_CLIENT_TOKEN,
-} from 'config'
-import { account } from 'fixtures/account'
-import { user } from 'fixtures/users'
 import type {
     InitDatadogLoggerOptions,
     InitDatadogRumOptions,
-} from 'utils/datadog'
+} from '../datadog'
 import {
+    DATADOG_CLIENT_TOKEN,
     DATADOG_LOGS_SERVICE,
     DATADOG_LOGS_SESSION_SAMPLE_RATE,
+    DATADOG_RUM_APPLICATION_ID,
+    DATADOG_RUM_CLIENT_TOKEN,
     DATADOG_RUM_SERVICE,
     DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
     DATADOG_RUM_SESSION_SAMPLE_RATE,
     DATADOG_SITE,
     initDatadogLogger,
     initDatadogRum,
-} from 'utils/datadog'
+} from '../datadog'
 
-jest.mock('@datadog/browser-logs')
-jest.mock('@datadog/browser-rum')
+const account = {
+    domain: 'acme.gorgias.help',
+}
+
+const user = {
+    id: 123,
+    email: 'agent@gorgias.com',
+}
+
+vi.mock('@datadog/browser-logs', () => ({
+    datadogLogs: {
+        init: vi.fn(),
+        setGlobalContext: vi.fn(),
+        setUser: vi.fn(),
+    },
+}))
+
+vi.mock('@datadog/browser-rum', () => ({
+    datadogRum: {
+        init: vi.fn(),
+        setGlobalContext: vi.fn(),
+        setUser: vi.fn(),
+    },
+}))
 
 describe('datadog', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     describe('initDatadogLogger', () => {
         const defaultClientVersion = 'v1.4.5'
         const defaultServerVersion = 'v2.0.1'
@@ -124,25 +146,32 @@ describe('datadog', () => {
         it('should filter out errors in beforeSend', () => {
             initDatadogRum(defaultOptions)
 
-            const initCall = (datadogRum.init as jest.Mock).mock.calls[0][0]
+            const initCall = vi.mocked(datadogRum.init).mock
+                .calls[0][0] as unknown as {
+                beforeSend: (
+                    event: { type: string },
+                    context?: unknown,
+                ) => boolean
+            }
             const beforeSend = initCall.beforeSend
 
-            const error = {
-                type: 'error',
-                error: {
-                    message: 'Some error message',
-                },
-            }
-            expect(beforeSend(error)).toBe(false)
+            expect(
+                beforeSend(
+                    {
+                        type: 'error',
+                    },
+                    {},
+                ),
+            ).toBe(false)
 
-            // Test that non-error events are not filtered
-            const nonErrorEvent = {
-                type: 'action',
-                action: {
-                    name: 'click',
-                },
-            }
-            expect(beforeSend(nonErrorEvent)).toBe(true)
+            expect(
+                beforeSend(
+                    {
+                        type: 'action',
+                    },
+                    {},
+                ),
+            ).toBe(true)
         })
     })
 })

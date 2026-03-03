@@ -17,12 +17,16 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@datadog/browser-logs": "^5.17.1",
+        "@datadog/browser-rum": "^5.17.1",
         "lodash": "catalog:lodash",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "push.js": "catalog:notifications"
     },
     "devDependencies": {
+        "@datadog/browser-logs": "^5.17.1",
+        "@datadog/browser-rum": "^5.17.1",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
