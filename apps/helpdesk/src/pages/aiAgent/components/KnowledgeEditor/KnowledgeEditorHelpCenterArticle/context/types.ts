@@ -52,7 +52,7 @@ export type ModalType =
 
 export type SettingsChanges = Pick<
     UpdateArticleTranslationDto,
-    'category_id' | 'visibility_status' | 'slug' | 'excerpt' | 'seo_meta'
+    'category_id' | 'customer_visibility' | 'slug' | 'excerpt' | 'seo_meta'
 >
 
 export type ArticleState = {

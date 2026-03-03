@@ -189,7 +189,9 @@ const HelpCenterArticleModalBasicViewContent = ({
                                 null) as Article | CreateArticleDto | null,
                     )
                 }
-                visibilityStatus={selectedArticle.translation.visibility_status}
+                customerVisibility={
+                    selectedArticle.translation.customer_visibility
+                }
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick
                 }

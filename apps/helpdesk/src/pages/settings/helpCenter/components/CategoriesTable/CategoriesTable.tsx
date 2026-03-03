@@ -128,7 +128,7 @@ export const CategoriesTable = ({
                         childCategories={category.children}
                         level={0}
                         isUnlisted={
-                            category.translation.visibility_status ===
+                            category.translation.customer_visibility ===
                             'UNLISTED'
                         }
                         category={category}

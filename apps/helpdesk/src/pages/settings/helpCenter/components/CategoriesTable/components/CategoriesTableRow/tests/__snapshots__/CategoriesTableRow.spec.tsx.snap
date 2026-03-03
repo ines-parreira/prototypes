@@ -421,7 +421,7 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
 <div>
   <tr
     class="row droppable-row"
-    data-handler-id="T2"
+    data-handler-id="T4"
     style="opacity: 1;"
   >
     <td

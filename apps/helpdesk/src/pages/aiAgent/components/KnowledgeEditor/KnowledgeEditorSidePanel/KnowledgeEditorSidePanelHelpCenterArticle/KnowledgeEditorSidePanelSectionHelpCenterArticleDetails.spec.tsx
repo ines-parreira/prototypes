@@ -7,10 +7,15 @@ import { useArticleDetailsFromContext } from 'pages/aiAgent/components/Knowledge
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionHelpCenterArticleDetails } from './KnowledgeEditorSidePanelSectionHelpCenterArticleDetails'
 
+const mockToggleAIAgentVisibility = jest.fn()
+
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks',
     () => ({
         useArticleDetailsFromContext: jest.fn(),
+        useToggleAIAgentVisibility: () => ({
+            toggleAIAgentVisibility: mockToggleAIAgentVisibility,
+        }),
     }),
 )
 
@@ -66,9 +71,11 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             state: {
                 article: {
                     available_locales: ['en-US'],
+                    translation: { visibility_status: 'PUBLIC' },
                 },
                 currentLocale: 'en-US',
                 historicalVersion: null,
+                isUpdating: false,
             },
             config: {
                 supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -227,9 +234,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         it('does not show info icon when article has single language', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    article: { available_locales: ['en-US'] },
+                    article: {
+                        available_locales: ['en-US'],
+                        translation: { visibility_status: 'PUBLIC' },
+                    },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -263,9 +274,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         it('shows info icon for multi-language articles', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    article: { available_locales: ['en-US', 'fr-FR'] },
+                    article: {
+                        available_locales: ['en-US', 'fr-FR'],
+                        translation: { visibility_status: 'PUBLIC' },
+                    },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [
@@ -303,9 +318,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         it('shows info icon with French locale', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    article: { available_locales: ['en-US', 'fr-FR'] },
+                    article: {
+                        available_locales: ['en-US', 'fr-FR'],
+                        translation: { visibility_status: 'PUBLIC' },
+                    },
                     currentLocale: 'fr-FR',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [
@@ -343,9 +362,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         it('uses locale code as fallback when locale name is not found', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    article: { available_locales: ['en-US', 'es-ES'] },
+                    article: {
+                        available_locales: ['en-US', 'es-ES'],
+                        translation: { visibility_status: 'PUBLIC' },
+                    },
                     currentLocale: 'es-ES',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -380,9 +403,13 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         it('does not show info icon when available_locales is empty', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    article: { available_locales: [] },
+                    article: {
+                        available_locales: [],
+                        translation: { visibility_status: 'PUBLIC' },
+                    },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -419,6 +446,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                     article: undefined,
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -440,25 +468,21 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
         })
     })
 
-    describe('AI Agent visibility tooltip (lines 43, 62, 63)', () => {
-        it('shows correct tooltip when article is unlisted (lines 43, 62, 63)', () => {
+    describe('AI Agent visibility tooltip', () => {
+        it('shows no tooltip when published article is unlisted', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     article: {
                         available_locales: ['en-US'],
-                        isCurrent: true,
+                        translation: { visibility_status: 'UNLISTED' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
                     helpCenter: { id: 1 },
-                    initialArticle: {
-                        translation: {
-                            visibility_status: 'UNLISTED',
-                        },
-                    },
                 },
             })
 
@@ -483,9 +507,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             renderComponent()
 
             const tooltip = screen.getByTestId('ai-agent-tooltip')
-            expect(tooltip).toHaveTextContent(
-                'Publish and make articles public to enable them for AI Agent.',
-            )
+            expect(tooltip).toHaveTextContent('')
         })
 
         it('shows correct tooltip when article is a draft', () => {
@@ -493,10 +515,11 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: {
                         available_locales: ['en-US'],
-                        isCurrent: false,
+                        translation: { visibility_status: 'PUBLIC' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -529,24 +552,20 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             )
         })
 
-        it('shows correct tooltip when article is published and public', () => {
+        it('shows no tooltip when article is published and public', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     article: {
                         available_locales: ['en-US'],
-                        isCurrent: true,
+                        translation: { visibility_status: 'PUBLIC' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
                     helpCenter: { id: 1 },
-                    initialArticle: {
-                        translation: {
-                            visibility_status: 'PUBLIC',
-                        },
-                    },
                 },
             })
 
@@ -571,25 +590,23 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
             renderComponent()
 
             const tooltip = screen.getByTestId('ai-agent-tooltip')
-            expect(tooltip).toHaveTextContent(
-                'When articles are published and public, they are always in use by AI Agent.',
-            )
+            expect(tooltip).toHaveTextContent('')
         })
 
-        it('treats undefined visibility_status as not unlisted (line 43)', () => {
+        it('treats undefined visibility_status as not unlisted', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     article: {
                         available_locales: ['en-US'],
-                        isCurrent: true,
+                        translation: {},
                     },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
                     helpCenter: { id: 1 },
-                    initialArticle: undefined,
                 },
             })
 
@@ -613,30 +630,24 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
 
             renderComponent()
 
-            const tooltip = screen.getByTestId('ai-agent-tooltip')
-            expect(tooltip).toHaveTextContent(
-                'When articles are published and public, they are always in use by AI Agent.',
-            )
+            const checked = screen.getByTestId('ai-agent-checked')
+            expect(checked).toHaveTextContent('true')
         })
 
-        it('checks AI Agent status correctly when unlisted (line 43)', () => {
+        it('checks AI Agent status correctly when unlisted', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
                     article: {
                         available_locales: ['en-US'],
-                        isCurrent: true,
+                        translation: { visibility_status: 'UNLISTED' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: null,
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
                     helpCenter: { id: 1 },
-                    initialArticle: {
-                        translation: {
-                            visibility_status: 'UNLISTED',
-                        },
-                    },
                 },
             })
 
@@ -671,6 +682,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: {
                         available_locales: ['en-US'],
+                        translation: { visibility_status: 'PUBLIC' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: {
@@ -683,6 +695,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         commitMessage: null,
                         impactDateRange: null,
                     },
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -718,6 +731,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: {
                         available_locales: ['en-US'],
+                        translation: { visibility_status: 'PUBLIC' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: {
@@ -730,6 +744,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         commitMessage: null,
                         impactDateRange: null,
                     },
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],
@@ -767,6 +782,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                 state: {
                     article: {
                         available_locales: ['en-US'],
+                        translation: { visibility_status: 'PUBLIC' },
                     },
                     currentLocale: 'en-US',
                     historicalVersion: {
@@ -779,6 +795,7 @@ describe('KnowledgeEditorSidePanelSectionHelpCenterArticleDetails', () => {
                         commitMessage: null,
                         impactDateRange: null,
                     },
+                    isUpdating: false,
                 },
                 config: {
                     supportedLocales: [{ code: 'en-US', name: 'English (US)' }],

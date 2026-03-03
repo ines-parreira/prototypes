@@ -3,12 +3,12 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import SelectVisibilityStatus from '../SelectVisibilityStatus'
+import SelectCustomerVisibility from '../SelectVisibilityStatus'
 
 const onChange = jest.fn()
 const setShowNotification = jest.fn()
 
-describe('<SelectVisibilityStatus />', () => {
+describe('<SelectCustomerVisibility />', () => {
     beforeEach(() => {
         onChange.mockClear()
         setShowNotification.mockClear()
@@ -16,7 +16,7 @@ describe('<SelectVisibilityStatus />', () => {
 
     it('should render with correct initial value', () => {
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status="PUBLIC"
                 onChange={onChange}
                 isParentUnlisted={false}
@@ -26,15 +26,13 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /visibility status/i,
-        })
-        expect(input).toHaveValue('Public')
+        const input = screen.getAllByDisplayValue('Public')[0]
+        expect(input).toBeInTheDocument()
     })
 
     it('should render unlisted as initial value', () => {
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status="UNLISTED"
                 onChange={onChange}
                 isParentUnlisted={false}
@@ -44,17 +42,15 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /visibility status/i,
-        })
-        expect(input).toHaveValue('Unlisted')
+        const input = screen.getAllByDisplayValue('Unlisted')[0]
+        expect(input).toBeInTheDocument()
     })
 
     it('should show the notification popup', async () => {
         const user = userEvent.setup()
 
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status="PUBLIC"
                 onChange={onChange}
                 isParentUnlisted={true}
@@ -74,7 +70,7 @@ describe('<SelectVisibilityStatus />', () => {
 
     it('should show "(currently Unlisted)" when parent is unlisted', () => {
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status="PUBLIC"
                 onChange={onChange}
                 isParentUnlisted={true}
@@ -84,15 +80,15 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /visibility status/i,
-        })
-        expect(input).toHaveValue('Public (currently Unlisted)')
+        const input = screen.getAllByDisplayValue(
+            'Public (currently Unlisted)',
+        )[0]
+        expect(input).toBeInTheDocument()
     })
 
     it('should be disabled when isDisabled is true', () => {
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status="PUBLIC"
                 onChange={onChange}
                 isParentUnlisted={false}
@@ -103,15 +99,13 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /visibility status/i,
-        })
+        const input = screen.getAllByDisplayValue('Public')[0]
         expect(input).toBeDisabled()
     })
 
     it('should default to PUBLIC when status prop is not provided', () => {
         render(
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 onChange={onChange}
                 isParentUnlisted={false}
                 setShowNotification={setShowNotification}
@@ -120,9 +114,7 @@ describe('<SelectVisibilityStatus />', () => {
             />,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /visibility status/i,
-        })
-        expect(input).toHaveValue('Public')
+        const input = screen.getAllByDisplayValue('Public')[0]
+        expect(input).toBeInTheDocument()
     })
 })

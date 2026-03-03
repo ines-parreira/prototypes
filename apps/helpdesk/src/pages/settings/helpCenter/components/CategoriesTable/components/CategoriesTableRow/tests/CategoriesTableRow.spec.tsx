@@ -7,7 +7,7 @@ import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import type { Category } from 'models/helpCenter/types'
+import type { Category, NonRootCategory } from 'models/helpCenter/types'
 import { CategoriesTableBasicRow } from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {
     CATEGORY_ROW_ACTIONS,
@@ -236,6 +236,76 @@ describe('<CategoriesTableRow />', () => {
         await findByText(category.translation.title)
 
         expect(container).toMatchSnapshot('Idle state')
+    })
+
+    it('should display visibility based on customer_visibility, not visibility_status', async () => {
+        const nonRootCategories =
+            getCategoriesFlatSorted.filter(isNonRootCategory)
+        const baseCategory = nonRootCategories[0]
+        const category: NonRootCategory = {
+            ...baseCategory,
+            translation: {
+                ...baseCategory.translation,
+                visibility_status: 'PUBLIC',
+                customer_visibility: 'UNLISTED',
+            },
+        }
+
+        const initialState: DeepPartial<RootState> = {
+            entities: {
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        categoriesById: {
+                            [category.id.toString()]: category,
+                        },
+                    },
+                },
+            },
+            ui: {
+                helpCenter: {
+                    currentId: 1,
+                    currentLanguage: 'en-US',
+                },
+            },
+        }
+
+        render(
+            <ReduxProvider store={mockStore(initialState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <CategoriesTableRow
+                        categoryId={category.id}
+                        category={category}
+                        position={0}
+                        level={0}
+                        isUnlisted={false}
+                        childCategories={[]}
+                        renderArticleList={() => <div />}
+                        onMoveEntity={() => {
+                            return null
+                        }}
+                        onDragStart={() => {
+                            return null
+                        }}
+                        title={category.translation.title}
+                        isCountBadgeLoading={false}
+                    />
+                </DndProvider>
+            </ReduxProvider>,
+        )
+
+        await screen.findByText(category.translation.title)
+
+        expect(screen.getByText('Unlisted')).toBeInTheDocument()
+        expect(screen.getByText('visibility_off')).toBeInTheDocument()
+        expect(screen.queryByText('Public')).not.toBeInTheDocument()
     })
 
     it('should render category that has children', async () => {

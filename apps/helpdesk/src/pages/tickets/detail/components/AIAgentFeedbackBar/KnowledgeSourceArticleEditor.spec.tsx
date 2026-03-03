@@ -88,6 +88,13 @@ jest.mock(
     },
 )
 
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterArticleAIAgentBanner',
+    () => ({
+        HelpCenterArticleAIAgentBanner: () => null,
+    }),
+)
+
 jest.mock('./HelpCenterArticleDiscardModal', () => {
     return {
         HelpCenterArticleDiscardModal:

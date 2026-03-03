@@ -2,14 +2,14 @@ import { useState } from 'react'
 
 import type { Meta, StoryObj } from '@storybook/react'
 
-import type { VisibilityStatus } from 'models/helpCenter/types'
+import type { CustomerVisibility } from 'models/helpCenter/types'
 
-import type { SelectVisibilityStatusProps } from './SelectVisibilityStatus'
-import SelectVisibilityStatus from './SelectVisibilityStatus'
+import type { SelectCustomerVisibilityProps } from './SelectVisibilityStatus'
+import SelectCustomerVisibility from './SelectVisibilityStatus'
 
 const storyConfig: Meta = {
-    title: 'Help Center/SelectVisibilityStatus',
-    component: SelectVisibilityStatus,
+    title: 'Help Center/SelectCustomerVisibility',
+    component: SelectCustomerVisibility,
     argTypes: {
         status: {
             table: {
@@ -49,7 +49,7 @@ const storyConfig: Meta = {
     },
 }
 
-type Story = StoryObj<typeof SelectVisibilityStatus>
+type Story = StoryObj<typeof SelectCustomerVisibility>
 
 const Template: Story = {
     render: function Template({
@@ -60,9 +60,9 @@ const Template: Story = {
         type,
     }) {
         const [newStatus, setStatus] = useState(status)
-        const onChange = (newStatus: VisibilityStatus) => setStatus(newStatus)
+        const onChange = (newStatus: CustomerVisibility) => setStatus(newStatus)
         return (
-            <SelectVisibilityStatus
+            <SelectCustomerVisibility
                 status={newStatus}
                 onChange={onChange}
                 type={type}
@@ -74,7 +74,7 @@ const Template: Story = {
     },
 }
 
-const defaultProps: Partial<SelectVisibilityStatusProps> = {
+const defaultProps: Partial<SelectCustomerVisibilityProps> = {
     status: 'PUBLIC',
 }
 
@@ -84,7 +84,7 @@ export const Public = {
 }
 Public.args = defaultProps
 
-const unlistedProps: Partial<SelectVisibilityStatusProps> = {
+const unlistedProps: Partial<SelectCustomerVisibilityProps> = {
     status: 'UNLISTED',
 }
 export const Unlisted = {
@@ -92,7 +92,7 @@ export const Unlisted = {
     args: unlistedProps,
 }
 
-const publicUnlistedProps: Partial<SelectVisibilityStatusProps> = {
+const publicUnlistedProps: Partial<SelectCustomerVisibilityProps> = {
     isParentUnlisted: true,
 }
 export const PublicButUnlisted = {
@@ -100,7 +100,7 @@ export const PublicButUnlisted = {
     args: publicUnlistedProps,
 }
 
-const showNotification: Partial<SelectVisibilityStatusProps> = {
+const showNotification: Partial<SelectCustomerVisibilityProps> = {
     status: 'PUBLIC',
     isParentUnlisted: true,
     showNotification: true,

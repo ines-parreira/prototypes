@@ -127,7 +127,7 @@ describe('<HelpCenterEditModalHeader />', () => {
             </Provider>,
         )
 
-        expect(screen.getByText('Help Center category')).toBeInTheDocument()
+        expect(screen.getByText('Category')).toBeInTheDocument()
     })
 
     it('should render a text input when onTitleChange is provided', () => {

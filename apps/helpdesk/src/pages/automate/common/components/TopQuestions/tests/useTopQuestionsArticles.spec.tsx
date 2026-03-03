@@ -300,7 +300,7 @@ describe('useTopQuestionsArticles', () => {
             categoryId: null,
             origin: ArticleOrigin.TOP_QUESTIONS_SECTION,
             publish: false,
-            visibilityStatus: 'PUBLIC',
+            customerVisibility: 'PUBLIC',
         })
 
         expect(mockUpsertArticleTemplateReviewMutateAsync).toHaveBeenCalledWith(

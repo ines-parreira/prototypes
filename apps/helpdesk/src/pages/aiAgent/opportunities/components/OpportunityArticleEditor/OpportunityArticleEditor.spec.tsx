@@ -102,4 +102,70 @@ describe('OpportunityArticleEditor', () => {
             }),
         )
     })
+
+    it('should render Disable button when article is visible', () => {
+        render(<OpportunityArticleEditor {...defaultProps} />)
+
+        expect(
+            screen.getByRole('button', { name: /disable/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should render Enable button when article is not visible', () => {
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                resource={{ ...mockResource, isVisible: false }}
+            />,
+        )
+
+        expect(
+            screen.getByRole('button', { name: /enable/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('should call onValuesChange with isVisible false when Disable is clicked', async () => {
+        const user = userEvent.setup()
+        const onValuesChange = jest.fn()
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                onValuesChange={onValuesChange}
+            />,
+        )
+
+        await user.click(screen.getByRole('button', { name: /disable/i }))
+
+        expect(onValuesChange).toHaveBeenCalledWith(
+            expect.objectContaining({ isVisible: false }),
+        )
+    })
+
+    it('should call onValuesChange with isVisible true when Enable is clicked', async () => {
+        const user = userEvent.setup()
+        const onValuesChange = jest.fn()
+        render(
+            <OpportunityArticleEditor
+                {...defaultProps}
+                resource={{ ...mockResource, isVisible: false }}
+                onValuesChange={onValuesChange}
+            />,
+        )
+
+        await user.click(screen.getByRole('button', { name: /enable/i }))
+
+        expect(onValuesChange).toHaveBeenCalledWith(
+            expect.objectContaining({ isVisible: true }),
+        )
+    })
+
+    it('should disable title input after clicking Disable', async () => {
+        const user = userEvent.setup()
+        render(<OpportunityArticleEditor {...defaultProps} />)
+
+        await user.click(screen.getByRole('button', { name: /disable/i }))
+
+        const titleInput = screen.getByRole('textbox', { name: /title/i })
+        expect(titleInput).toBeDisabled()
+    })
 })

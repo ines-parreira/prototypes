@@ -6,6 +6,9 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
     class="wrapper"
   >
     <div
+      class="banner"
+    />
+    <div
       class="mb16 titleInput"
     >
       <label
@@ -40,12 +43,19 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       class="split"
     >
       <div
-        class="categorySelect"
+        class="wrapper"
       >
         <label
-          class="ui-label-label-a11c"
+          class="ui-label-label-3864"
+          data-name="label"
         >
-          Category
+          <span
+            class="typography-medium-md ui-text-text-d239"
+            data-name="text"
+            style="text-align: left;"
+          >
+            Category
+          </span>
         </label>
         <template
           data-react-aria-hidden="true"
@@ -85,20 +95,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                 data-name="text-field"
                 data-rac=""
               >
-                <label
-                  class="ui-label-label-3864"
-                  data-name="label"
-                  for="react-aria-:ra:"
-                  id="react-aria-:rb:"
-                >
-                  <span
-                    class="typography-medium-md ui-text-text-d239"
-                    data-name="text"
-                    style="text-align: left;"
-                  >
-                    Help Center category
-                  </span>
-                </label>
                 <div
                   class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hastrailingslot-8e5a ui-input-hastrailingicon-8e5a"
                   data-name="input"
@@ -107,7 +103,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                     <input
                       aria-disabled="false"
                       aria-invalid="false"
-                      aria-labelledby="react-aria-:rb:"
                       class="ui-input-input-8e5a typography-regular-md"
                       data-rac=""
                       id="react-aria-:ra:"
@@ -166,6 +161,18 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         <div
           class="wrapper"
         >
+          <label
+            class="ui-label-label-3864"
+            data-name="label"
+          >
+            <span
+              class="typography-medium-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left;"
+            >
+              Customer visibility
+            </span>
+          </label>
           <template
             data-react-aria-hidden="true"
           >
@@ -188,7 +195,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
               <button
                 aria-expanded="false"
                 aria-haspopup="listbox"
-                aria-label="Select visibility status"
+                aria-label="Select customer visibility"
                 aria-labelledby="react-aria-:rn: react-aria-:ri:"
                 class="ui-selecttrigger-selecttrigger-671d"
                 data-name="select-trigger"
@@ -204,20 +211,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                   data-name="text-field"
                   data-rac=""
                 >
-                  <label
-                    class="ui-label-label-3864"
-                    data-name="label"
-                    for="react-aria-:rq:"
-                    id="react-aria-:rr:"
-                  >
-                    <span
-                      class="typography-medium-md ui-text-text-d239"
-                      data-name="text"
-                      style="text-align: left;"
-                    >
-                      Visibility status
-                    </span>
-                  </label>
                   <div
                     class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hasleadingslot-8e5a ui-input-hastrailingslot-8e5a ui-input-hasleadingicon-8e5a ui-input-hastrailingicon-8e5a"
                     data-name="input"
@@ -244,7 +237,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                       <input
                         aria-disabled="false"
                         aria-invalid="false"
-                        aria-labelledby="react-aria-:rr:"
                         class="ui-input-input-8e5a typography-regular-md"
                         data-rac=""
                         id="react-aria-:rq:"

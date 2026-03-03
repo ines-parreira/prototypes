@@ -76,18 +76,16 @@ export const OpportunityArticleEditor = ({
                                             isVisible: !formFields.isVisible,
                                         })
                                     }
-                                    icon={
-                                        formFields.isVisible ? 'hide' : 'show'
-                                    }
                                 >
-                                    {' '}
-                                    {formFields.isVisible ? 'Hide' : 'Show'}
+                                    {formFields.isVisible
+                                        ? 'Disable'
+                                        : 'Enable'}
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>
                                 {formFields.isVisible
-                                    ? 'Make article private to hide it from your Help Center and disable it for AI Agent.'
-                                    : 'Make article public to display it in your Help Center and enable it for AI Agent.'}
+                                    ? 'Disable knowledge for AI Agent'
+                                    : 'Enable knowledge for AI Agent'}
                             </TooltipContent>
                         </Tooltip>
                         <Button

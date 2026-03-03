@@ -3,15 +3,13 @@ import React, { useEffect, useState } from 'react'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 
-import { LegacyLabel as Label } from '@gorgias/axiom'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
+    CustomerVisibility,
     LocalArticleTranslation,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -31,8 +29,9 @@ import {
 } from '../../utils/helpCenter.utils'
 import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
 import { SearchEnginePreview } from '../SearchEnginePreview'
-import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import ArticleCategorySelect from './ArticleCategorySelect'
+import { HelpCenterArticleAIAgentBanner } from './HelpCenterArticleAIAgentBanner'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
@@ -41,6 +40,7 @@ type Props = {
     categoryId?: number | null
     translation: CreateArticleTranslationDto | LocalArticleTranslation
     domain: string
+    shopName: string | null
     onChange: (
         translation: CreateArticleTranslationDto | LocalArticleTranslation,
     ) => void
@@ -52,6 +52,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
     categoryId,
     translation,
     domain,
+    shopName,
     onChange,
     onCategoryChange,
 }: Props): JSX.Element => {
@@ -116,7 +117,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
         const { locale, slug } = translation
         const isUnlisted =
             isOneOfParentsUnlisted(categories, selectedCategoryId) ||
-            translation.visibility_status === 'UNLISTED'
+            translation.customer_visibility === 'UNLISTED'
 
         const unlistedId =
             'article_unlisted_id' in translation
@@ -144,6 +145,14 @@ export const HelpCenterEditAdvancedArticleForm = ({
 
     return (
         <div className={css.wrapper}>
+            {articleId && (
+                <div className={css.banner}>
+                    <HelpCenterArticleAIAgentBanner
+                        articleId={articleId}
+                        shopName={shopName}
+                    />
+                </div>
+            )}
             <InputField
                 isRequired
                 type="text"
@@ -155,23 +164,20 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 className={classNames(settingsCss.mb16, css.titleInput)}
             />
             <div className={css.split}>
-                <div className={css.categorySelect}>
-                    <Label>Category</Label>
-                    <ArticleCategorySelect
-                        locale={translation.locale}
-                        categoryId={categoryId ?? null}
-                        onChange={onChangeCategory}
-                    />
-                </div>
+                <ArticleCategorySelect
+                    locale={translation.locale}
+                    categoryId={categoryId ?? null}
+                    onChange={onChangeCategory}
+                />
                 <div>
-                    <SelectVisibilityStatus
-                        onChange={(status: VisibilityStatus) => {
+                    <SelectCustomerVisibility
+                        onChange={(status: CustomerVisibility) => {
                             onChange({
                                 ...translation,
-                                visibility_status: status,
+                                customer_visibility: status,
                             })
                         }}
-                        status={translation.visibility_status}
+                        status={translation.customer_visibility}
                         showNotification={showNotification}
                         setShowNotification={setShowNotification}
                         isParentUnlisted={isParentUnlisted}

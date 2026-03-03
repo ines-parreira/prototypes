@@ -125,7 +125,7 @@ export const useSettingsAutoSave = () => {
             dispatch({ type: 'SET_UPDATING', payload: true })
             dispatch({
                 type: 'SET_PENDING_SETTINGS',
-                payload: { visibility_status: status },
+                payload: { customer_visibility: status },
             })
         },
         [dispatch],
@@ -314,9 +314,9 @@ export const useSettingsAutoSave = () => {
                 onActionClick: onLocaleActionClick,
             },
             visibility: {
-                visibilityStatus:
-                    state.pendingSettingsChanges.visibility_status ??
-                    state.article?.translation.visibility_status ??
+                customerVisibility:
+                    state.pendingSettingsChanges.customer_visibility ??
+                    state.article?.translation.customer_visibility ??
                     'PUBLIC',
                 onChangeVisibility,
                 isParentUnlisted,

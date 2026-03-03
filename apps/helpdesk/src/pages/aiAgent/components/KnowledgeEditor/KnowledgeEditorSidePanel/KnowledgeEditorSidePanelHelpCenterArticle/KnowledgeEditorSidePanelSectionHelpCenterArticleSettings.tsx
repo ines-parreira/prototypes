@@ -2,7 +2,7 @@ import { Icon, IconSize } from '@gorgias/axiom'
 
 import { useSettingsAutoSave } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 import ArticleCategorySelect from 'pages/settings/helpCenter/components/articles/ArticleCategorySelect/ArticleCategorySelect'
-import SelectVisibilityStatus from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
+import SelectCustomerVisibility from 'pages/settings/helpCenter/components/SelectVisibilityStatus/SelectVisibilityStatus'
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
@@ -65,9 +65,9 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleSettings = ({
                 </div>
                 <div className={css.setting}>
                     <div>
-                        <SelectVisibilityStatus
+                        <SelectCustomerVisibility
                             onChange={visibility.onChangeVisibility}
-                            status={visibility.visibilityStatus}
+                            status={visibility.customerVisibility}
                             showNotification={false}
                             setShowNotification={() => {}}
                             isParentUnlisted={visibility.isParentUnlisted}

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom'
 import { Tag, Text } from '@gorgias/axiom'
 
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
-import { useArticleDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
+import {
+    useArticleDetailsFromContext,
+    useToggleAIAgentVisibility,
+} from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/hooks'
 import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
 
 import {
@@ -34,6 +37,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     } = useArticleDetailsFromContext()
 
     const { state, config } = useArticleContext()
+    const { toggleAIAgentVisibility } = useToggleAIAgentVisibility()
     const availableLocales = state.article?.available_locales ?? []
     const currentLocale = state.currentLocale
     const supportedLocales = config.supportedLocales
@@ -42,7 +46,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     const isPublished = article ? article.isCurrent : undefined
     const isDraft = !article?.isCurrent
     const isUnlisted =
-        config.initialArticle?.translation.visibility_status === 'UNLISTED'
+        state.article?.translation.visibility_status === 'UNLISTED'
+    const canToggleAIAgent = !isDraft && !isViewingHistoricalVersion
 
     const getCurrentLocaleName = (): string => {
         const locale = supportedLocales.find(
@@ -71,7 +76,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
         )
     }
 
-    const getAiAgentVisibilityTooltip = () => {
+    const getAiAgentVisibilityTooltip = (): string | undefined => {
         if (isViewingHistoricalVersion) {
             return 'Restore this version to be able to use it.'
         }
@@ -80,11 +85,7 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
             return 'Publish your draft edits in order to enable this version for AI Agent'
         }
 
-        if (isUnlisted) {
-            return 'Publish and make articles public to enable them for AI Agent.'
-        }
-
-        return 'When articles are published and public, they are always in use by AI Agent.'
+        return undefined
     }
 
     return (
@@ -128,7 +129,12 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
                                     !isDraft &&
                                     !isUnlisted
                                 }
-                                isDisabled={isViewingHistoricalVersion}
+                                onChange={
+                                    canToggleAIAgent
+                                        ? toggleAIAgentVisibility
+                                        : undefined
+                                }
+                                isDisabled={state.isUpdating}
                                 tooltip={getAiAgentVisibilityTooltip()}
                                 showMultiLanguageInfo={
                                     availableLocales.length > 1

@@ -577,7 +577,8 @@ describe('useArticleAutoSave', () => {
                         seo_meta: { title: null, description: null },
                         category_id: null,
                         is_current: false,
-                        visibility_status: 'UNLISTED',
+                        visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                     },
                 },
             ])

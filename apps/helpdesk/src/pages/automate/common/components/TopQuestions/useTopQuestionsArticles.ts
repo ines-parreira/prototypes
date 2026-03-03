@@ -130,7 +130,7 @@ export const useTopQuestionsArticles = (
             try {
                 createdArticle = await createArticleMutation({
                     articleTemplate,
-                    visibilityStatus: 'PUBLIC',
+                    customerVisibility: 'PUBLIC',
                     categoryId: null,
                     publish: false,
                     origin,

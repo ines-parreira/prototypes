@@ -273,6 +273,8 @@ export const useArticlesActions = () => {
                     seo_meta: article.translation.seo_meta,
                     is_current: article.translation.is_current,
                     visibility_status: article.translation.visibility_status,
+                    customer_visibility:
+                        article.translation.customer_visibility,
                     category_id: article.translation.category_id,
                 },
             )
@@ -301,6 +303,8 @@ export const useArticlesActions = () => {
                     is_current: article.translation.is_current,
                     category_id: article.translation.category_id,
                     visibility_status: article.translation.visibility_status,
+                    customer_visibility:
+                        article.translation.customer_visibility,
                 },
             )
 
@@ -548,6 +552,7 @@ export const useArticlesActions = () => {
                 slug: `${article.translation.slug}-copy`,
                 category_id: article.translation.category_id,
                 visibility_status: article.translation.visibility_status,
+                customer_visibility: article.translation.customer_visibility,
                 seo_meta: {
                     title: null,
                     description: null,
@@ -588,6 +593,7 @@ export const useArticlesActions = () => {
                                     },
                                     category_id: t.category_id,
                                     visibility_status: t.visibility_status,
+                                    customer_visibility: t.customer_visibility,
                                 },
                             ),
                         ),

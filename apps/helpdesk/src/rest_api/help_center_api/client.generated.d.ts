@@ -1979,6 +1979,10 @@ declare namespace Components {
                  */
                 visibility_status?: 'PUBLIC' | 'UNLISTED'
                 /**
+                 * The customer-facing visibility of the article.
+                 */
+                customer_visibility?: 'PUBLIC' | 'UNLISTED'
+                /**
                  * Used to change the categoryId of the article
                  */
                 category_id?: number | null
@@ -2151,6 +2155,10 @@ declare namespace Components {
              * The visibility status of the article.
              */
             visibility_status?: 'PUBLIC' | 'UNLISTED'
+            /**
+             * The customer-facing visibility of the article.
+             */
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
              * Used to change the categoryId of the article
              */
@@ -2333,6 +2341,10 @@ declare namespace Components {
                  */
                 visibility_status?: 'PUBLIC' | 'UNLISTED'
                 /**
+                 * The customer-facing visibility of the category.
+                 */
+                customer_visibility?: 'PUBLIC' | 'UNLISTED'
+                /**
                  * Category image URL
                  * example:
                  * https://cdn.shopify.com/image.jpg
@@ -2407,6 +2419,10 @@ declare namespace Components {
              * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
              */
             visibility_status?: 'PUBLIC' | 'UNLISTED'
+            /**
+             * The customer-facing visibility of the category.
+             */
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
              * Category image URL
              * example:
@@ -3904,6 +3920,10 @@ declare namespace Components {
              */
             visibility_status?: 'PUBLIC' | 'UNLISTED'
             /**
+             * The customer-facing visibility of the article.
+             */
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            /**
              * Used to change the categoryId of the article
              */
             category_id?: number | null
@@ -4051,6 +4071,10 @@ declare namespace Components {
              * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
              */
             visibility_status?: 'PUBLIC' | 'UNLISTED'
+            /**
+             * The customer-facing visibility of the category.
+             */
+            customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
              * Category image URL
              * example:

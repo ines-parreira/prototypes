@@ -39,6 +39,13 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterArticleAIAgentBanner',
+    () => ({
+        HelpCenterArticleAIAgentBanner: () => null,
+    }),
+)
+
+jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter',
 )
 

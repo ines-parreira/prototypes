@@ -305,63 +305,18 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             class="headerActions"
           >
             <div>
-              <div
-                class="dropdown"
+              <label
+                class="ui-label-label-3864"
+                data-name="label"
               >
-                <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
+                <span
+                  class="typography-medium-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
                 >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      aria-label="Parent category"
-                      class="label placeholder"
-                      data-testid="selected-parentCategory"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      Category parent
-                    </span>
-                    <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      id="parentCategory"
-                      style="min-width: 10px;"
-                      type="text"
-                      value=""
-                    />
-                    <i
-                      class="material-icons dropdownIcon"
-                    >
-                      arrow_drop_down
-                    </i>
-                  </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="options parentDropdown optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      Clear selection
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div
-              class="visibilitySelect wrapper"
-            >
+                  Category parent
+                </span>
+              </label>
               <template
                 data-react-aria-hidden="true"
               >
@@ -384,7 +339,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                   <button
                     aria-expanded="false"
                     aria-haspopup="listbox"
-                    aria-label="Select visibility status"
+                    aria-label="Parent category"
                     aria-labelledby="react-aria-:r7: react-aria-:r2:"
                     class="ui-selecttrigger-selecttrigger-671d"
                     data-name="select-trigger"
@@ -400,20 +355,121 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       data-name="text-field"
                       data-rac=""
                     >
-                      <label
-                        class="ui-label-label-3864"
-                        data-name="label"
-                        for="react-aria-:ra:"
-                        id="react-aria-:rb:"
+                      <div
+                        class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hastrailingslot-8e5a ui-input-hastrailingicon-8e5a"
+                        data-name="input"
                       >
-                        <span
-                          class="typography-medium-md ui-text-text-d239"
-                          data-name="text"
-                          style="text-align: left;"
-                        >
-                          Visibility status
-                        </span>
-                      </label>
+                        <label>
+                          <input
+                            aria-disabled="false"
+                            aria-invalid="false"
+                            class="ui-input-input-8e5a typography-regular-md"
+                            data-rac=""
+                            id="react-aria-:ra:"
+                            tabindex="0"
+                            title=""
+                            type="text"
+                            value="- no parent -"
+                          />
+                          <span
+                            class="ui-inputslot-slot-0bf5 ui-inputslot-md-0bf5 ui-inputslot-trailing-0bf5 ui-inputslot-icon-0bf5"
+                            data-name="input-slot"
+                          >
+                            <span
+                              class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-regularicon-b14f"
+                              data-name="icon"
+                            >
+                              <svg
+                                aria-label="arrow-chevron-down"
+                                role="img"
+                              >
+                                <use
+                                  href="#arrow-chevron-down"
+                                />
+                              </svg>
+                            </span>
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </button>
+                </span>
+                <div
+                  aria-hidden="true"
+                  data-a11y-ignore="aria-hidden-focus"
+                  data-react-aria-prevent-focus="true"
+                  data-testid="hidden-select-container"
+                  style="border: 0px; clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; width: 1px; white-space: nowrap; top: 0px; left: 0px;"
+                >
+                  <label>
+                    <select
+                      tabindex="-1"
+                      title=""
+                    >
+                      <option />
+                      <option
+                        value="no-parent"
+                      >
+                        - no parent -
+                      </option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div
+              class="visibilitySelect wrapper"
+            >
+              <label
+                class="ui-label-label-3864"
+                data-name="label"
+              >
+                <span
+                  class="typography-medium-md ui-text-text-d239"
+                  data-name="text"
+                  style="text-align: left;"
+                >
+                  Customer visibility
+                </span>
+              </label>
+              <template
+                data-react-aria-hidden="true"
+              >
+                <div
+                  class="ui-list-list-b1d8 ui-list-high-b1d8"
+                  data-name="list"
+                  style="max-width: 266px;"
+                />
+              </template>
+              <div
+                class="react-aria-Select"
+                data-name="select"
+                data-rac=""
+              >
+                <span
+                  class="react-aria-SelectValue"
+                  data-rac=""
+                  id="react-aria-:rn:"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    aria-label="Select customer visibility"
+                    aria-labelledby="react-aria-:rn: react-aria-:ri:"
+                    class="ui-selecttrigger-selecttrigger-671d"
+                    data-name="select-trigger"
+                    data-rac=""
+                    data-react-aria-pressable="true"
+                    id="react-aria-:ri:"
+                    slot="trigger"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    <div
+                      class="ui-textfield-field-b7d8"
+                      data-name="text-field"
+                      data-rac=""
+                    >
                       <div
                         class="ui-input-wrapper-8e5a ui-input-md-8e5a ui-input-hasleadingslot-8e5a ui-input-hastrailingslot-8e5a ui-input-hasleadingicon-8e5a ui-input-hastrailingicon-8e5a"
                         data-name="input"
@@ -440,10 +496,9 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                           <input
                             aria-disabled="false"
                             aria-invalid="false"
-                            aria-labelledby="react-aria-:rb:"
                             class="ui-input-input-8e5a typography-regular-md"
                             data-rac=""
-                            id="react-aria-:ra:"
+                            id="react-aria-:rq:"
                             tabindex="0"
                             title=""
                             type="text"

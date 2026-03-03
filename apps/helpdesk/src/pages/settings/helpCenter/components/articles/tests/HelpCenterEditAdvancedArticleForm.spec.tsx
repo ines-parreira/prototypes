@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
@@ -45,6 +46,10 @@ const mockedUseEditionManager = {
     setSelectedVisibility: jest.fn(),
 }
 
+jest.mock('../HelpCenterArticleAIAgentBanner', () => ({
+    HelpCenterArticleAIAgentBanner: () => null,
+}))
+
 jest.mock('../../../providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
         '../../../providers/EditionManagerContext',
@@ -63,6 +68,7 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
         categoryId: 1,
         translation,
         domain: 'acme.gorgias.rehab',
+        shopName: 'test-shop',
         onChange: mockedOnChange,
         onCategoryChange: mockedOnCategoryChange,
     }
@@ -76,6 +82,12 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+            getSingleHelpCenterResponseFixture,
+        )
+        ;(useHelpCenterIdParam as jest.Mock).mockReturnValue(
+            getSingleHelpCenterResponseFixture.id,
+        )
     })
 
     it('should display the component correctly', () => {
@@ -99,5 +111,29 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
             ...translation,
             slug: 'new-slug',
         })
+    })
+
+    it('should call onChange with customer_visibility when visibility selection changes', async () => {
+        const user = userEvent.setup()
+
+        render(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterEditAdvancedArticleForm {...props} />
+            </Provider>,
+        )
+
+        const visibilityTrigger = screen.getAllByDisplayValue('Public')[0]
+        await user.click(visibilityTrigger)
+
+        const unlistedOption = screen.getByRole('option', {
+            name: /unlisted/i,
+        })
+        await user.click(unlistedOption)
+
+        expect(mockedOnChange).toHaveBeenCalledWith(
+            expect.objectContaining({
+                customer_visibility: 'UNLISTED',
+            }),
+        )
     })
 })

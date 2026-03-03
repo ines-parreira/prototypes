@@ -501,19 +501,23 @@ describe('BulkActions', () => {
     })
 
     describe('AI Agent button states', () => {
-        it('should disable AI agent buttons with tooltip when only FAQ items are selected', () => {
+        it('should enable AI agent buttons when only published FAQ items are selected', () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
                     type: KnowledgeType.FAQ,
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '2',
                     type: KnowledgeType.FAQ,
                     title: 'FAQ 2',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
             const table = createMockTable(selectedItems)
@@ -533,17 +537,19 @@ describe('BulkActions', () => {
                 name: /disable for ai agent/i,
             })
 
-            expect(enableButton).toBeDisabled()
-            expect(disableButton).toBeDisabled()
+            expect(enableButton).not.toBeDisabled()
+            expect(disableButton).not.toBeDisabled()
         })
 
-        it('should disable AI agent buttons with tooltip when FAQ and Guidance items are selected', () => {
+        it('should enable AI agent buttons when published FAQ and published Guidance items are selected', () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
                     type: KnowledgeType.FAQ,
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '2',
@@ -571,23 +577,57 @@ describe('BulkActions', () => {
                 name: /disable for ai agent/i,
             })
 
-            expect(enableButton).toBeDisabled()
-            expect(disableButton).toBeDisabled()
+            expect(enableButton).not.toBeDisabled()
+            expect(disableButton).not.toBeDisabled()
         })
 
-        it('should disable AI agent buttons with tooltip when FAQ and Document items are selected', () => {
+        it('should enable AI agent buttons when published FAQ and Document items are selected', () => {
             const selectedItems: GroupedKnowledgeItem[] = [
                 {
                     id: '1',
                     type: KnowledgeType.FAQ,
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '2',
                     type: KnowledgeType.Document,
                     title: 'Doc 1',
                     lastUpdatedAt: '2024-01-01',
+                },
+            ]
+            const table = createMockTable(selectedItems)
+
+            render(
+                <BulkActions
+                    table={table}
+                    helpCenterIds={helpCenterIds}
+                    isSearchActive={false}
+                />,
+            )
+
+            const enableButton = screen.getByRole('button', {
+                name: /enable for ai agent/i,
+            })
+            const disableButton = screen.getByRole('button', {
+                name: /disable for ai agent/i,
+            })
+
+            expect(enableButton).not.toBeDisabled()
+            expect(disableButton).not.toBeDisabled()
+        })
+
+        it('should disable AI agent buttons when draft FAQ items are selected', () => {
+            const selectedItems: GroupedKnowledgeItem[] = [
+                {
+                    id: '1',
+                    type: KnowledgeType.FAQ,
+                    title: 'Draft FAQ 1',
+                    lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: null,
                 },
             ]
             const table = createMockTable(selectedItems)
@@ -970,7 +1010,7 @@ describe('BulkActions', () => {
                 expect(disableButton).toBeDisabled()
             })
 
-            it('should disable buttons with tooltip when draft guidance and FAQ are selected', () => {
+            it('should disable buttons with tooltip when draft guidance and draft FAQ are selected', () => {
                 const selectedItems: GroupedKnowledgeItem[] = [
                     {
                         id: '1',
@@ -983,8 +1023,10 @@ describe('BulkActions', () => {
                     {
                         id: '2',
                         type: KnowledgeType.FAQ,
-                        title: 'FAQ Article',
+                        title: 'Draft FAQ Article',
                         lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
                     },
                 ]
                 const table = createMockTable(selectedItems)
@@ -1008,7 +1050,7 @@ describe('BulkActions', () => {
                 expect(disableButton).toBeDisabled()
             })
 
-            it('should prioritize draft validation over FAQ and limit validation', () => {
+            it('should prioritize draft validation over limit validation', () => {
                 const existingGuidanceArticles: GroupedKnowledgeItem[] =
                     Array.from({ length: 100 }, (_, i) => ({
                         id: `existing-${i}`,
@@ -1032,8 +1074,10 @@ describe('BulkActions', () => {
                     {
                         id: '2',
                         type: KnowledgeType.FAQ,
-                        title: 'FAQ Item',
+                        title: 'Draft FAQ Item',
                         lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
                     },
                 ]
 

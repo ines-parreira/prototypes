@@ -198,7 +198,9 @@ const DroppableCategoriesTableRow = ({
                 onClick={onClick}
             >
                 <VisibilityCell
-                    status={category.translation.visibility_status}
+                    status={
+                        category.translation.customer_visibility ?? 'PUBLIC'
+                    }
                     isParentUnlisted={isUnlisted}
                 />
             </BodyCell>
@@ -328,7 +330,7 @@ export const CategoriesTableRow = ({
                                                         isUnlisted ||
                                                         currentCategory
                                                             .translation
-                                                            .visibility_status ===
+                                                            .customer_visibility ===
                                                             'UNLISTED'
                                                     }
                                                     category={currentCategory}

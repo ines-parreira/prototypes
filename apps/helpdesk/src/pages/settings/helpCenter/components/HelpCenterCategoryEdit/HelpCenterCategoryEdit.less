@@ -115,38 +115,6 @@
         }
     }
 
-    .parentDropdown {
-        padding: 4px 0 0 0;
-        max-height: 240px;
-
-        button {
-            padding: 5px 12px;
-        }
-
-        &:not(.hideFirstOption) button:last-child {
-            height: 40px;
-            border-top: 1px solid var(--neutral-grey-3); // legacy
-            color: var(--main-primary); // legacy
-            text-align: center;
-            position: sticky;
-            bottom: 0px;
-            background-color: var(--neutral-grey-2); // legacy
-            border-radius: 0;
-            padding: 5px 0px;
-        }
-
-        &.hideFirstOption {
-            button:first-child {
-                display: none;
-            }
-        }
-        &.hideClearSelection {
-            button:last-child {
-                display: none;
-            }
-        }
-    }
-
     .header {
         display: block;
     }
@@ -327,14 +295,6 @@
     .languageSelect {
         label {
             color: var(--content-neutral-default);
-        }
-    }
-
-    .parentDropdown {
-        &:not(.hideFirstOption) button:last-child {
-            border-top: 1px solid var(--border-neutral-default);
-            color: var(--surface-additional-blue);
-            background-color: var(--elevation-neutral-mid);
         }
     }
 

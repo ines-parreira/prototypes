@@ -62,6 +62,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                                         category_unlisted_id:
                                             '89e5b74877944c2e808e0f20237d07f2',
                                         visibility_status: 'PUBLIC',
+                                        customer_visibility: 'PUBLIC',
                                         description: '',
                                         title: 'Subcategory 1 1 1 1',
                                         slug: 'subcategory-1-1-1-1',
@@ -83,6 +84,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                                 category_unlisted_id:
                                     '8fd7106002744b0c9897a6c5140dcf94',
                                 visibility_status: 'PUBLIC',
+                                customer_visibility: 'PUBLIC',
                                 description: '',
                                 title: 'Subcategory 1 1 1',
                                 slug: 'subcategory-1-1-1',
@@ -104,6 +106,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                         category_unlisted_id:
                             '1843b227ed054091a25fa448865b2e36',
                         visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         description: '',
                         title: 'Subcategory 1 1',
                         slug: 'subcategory-1-1',
@@ -124,6 +127,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 parent_category_id: null,
                 category_unlisted_id: 'd6f44080d7f14bd0bb7439745104595b',
                 visibility_status: 'UNLISTED',
+                customer_visibility: 'UNLISTED',
                 description: '',
                 title: 'Category 1',
                 slug: 'category-1',
@@ -162,6 +166,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                         category_unlisted_id:
                             'e964a95a4d0a4bae9afb8f1a0a17d0e2',
                         visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         description: '',
                         title: 'Subcategory 2 1',
                         slug: 'subcategory-2-1',
@@ -182,6 +187,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 parent_category_id: null,
                 category_unlisted_id: 'b933cc9802304417be2fc92240e8d099',
                 visibility_status: 'PUBLIC',
+                customer_visibility: 'PUBLIC',
                 description: '',
                 title: 'Category 2',
                 slug: 'category-2',
@@ -220,6 +226,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                         category_unlisted_id:
                             '1765e0a546214cc1a2e3c65e9baa8fbf',
                         visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         description: '',
                         title: 'Subcategory 3 1',
                         slug: 'subcategory-3-1',
@@ -240,6 +247,7 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                 parent_category_id: null,
                 category_unlisted_id: 'f19300da20a34da4ad519846c8308e1a',
                 visibility_status: 'PUBLIC',
+                customer_visibility: 'PUBLIC',
                 description: '',
                 title: 'Category 3',
                 slug: 'category-3',

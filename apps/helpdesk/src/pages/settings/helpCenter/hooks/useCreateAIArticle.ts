@@ -1,8 +1,8 @@
 import { useCreateArticle } from 'models/helpCenter/queries'
 import type {
     AIArticle,
+    CustomerVisibility,
     LocaleCode,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 
 import type { ArticleOrigin } from '../types/articleOrigin.enum'
@@ -19,7 +19,7 @@ export const useCreateAIArticle = (
 
     type createArticleProps = {
         articleTemplate: AIArticle
-        visibilityStatus: VisibilityStatus
+        customerVisibility: CustomerVisibility
         categoryId: number | null
         publish: boolean
         origin?: ArticleOrigin
@@ -27,7 +27,7 @@ export const useCreateAIArticle = (
 
     const createArticle = ({
         articleTemplate,
-        visibilityStatus,
+        customerVisibility,
         categoryId,
         publish,
         origin,
@@ -35,7 +35,7 @@ export const useCreateAIArticle = (
         const payload = mapAILibraryArticleItemToArticle({
             article: articleTemplate,
             locale,
-            visibilityStatus,
+            customerVisibility,
             categoryId,
             publish,
             origin,

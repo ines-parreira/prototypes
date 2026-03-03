@@ -9,10 +9,10 @@ import type {
     CreateArticleDto,
     CreateArticleTranslationDto,
     CreateHelpCenterTranslationDto,
+    CustomerVisibility,
     HelpCenter,
     HelpCenterArticleItem,
     LocaleCode,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { ARTICLE_TEMPLATES_KEYS } from 'models/helpCenter/types'
 import type { StoreIntegration } from 'models/integration/types'
@@ -303,7 +303,7 @@ type AILibraryArticleItemParams = {
     article: AIArticle
     locale: LocaleCode
     categoryId?: number | null
-    visibilityStatus?: VisibilityStatus
+    customerVisibility?: CustomerVisibility
     publish: boolean
     origin?: ArticleOrigin
 }
@@ -311,7 +311,7 @@ type AILibraryArticleItemParams = {
 export const mapAILibraryArticleItemToArticle = (
     params: AILibraryArticleItemParams,
 ): CreateArticleDto | null => {
-    const { article, locale, categoryId, visibilityStatus, publish, origin } =
+    const { article, locale, categoryId, customerVisibility, publish, origin } =
         params
 
     if (!article.title || !article.html_content) return null
@@ -329,7 +329,7 @@ export const mapAILibraryArticleItemToArticle = (
             slug: slugify(article.title),
             locale,
             is_current: publish,
-            visibility_status: visibilityStatus || 'PUBLIC',
+            customer_visibility: customerVisibility || 'PUBLIC',
         },
     }
 

@@ -83,6 +83,7 @@ const createMockArticle = (
             excerpt: 'Test excerpt',
             category_id: 1,
             visibility_status: 'PUBLIC',
+            customer_visibility: 'PUBLIC',
             article_id: 1,
             article_unlisted_id: 'test-unlisted-id',
             seo_meta: { title: 'SEO Title', description: 'SEO Description' },
@@ -251,7 +252,7 @@ describe('useSettingsAutoSave', () => {
 
             expect(result.current.settingsProps.category.categoryId).toBe(1)
             expect(
-                result.current.settingsProps.visibility.visibilityStatus,
+                result.current.settingsProps.visibility.customerVisibility,
             ).toBe('PUBLIC')
             expect(result.current.settingsProps.slug?.slug).toBe('test-article')
             expect(result.current.settingsProps.excerpt.excerpt).toBe(
@@ -314,7 +315,7 @@ describe('useSettingsAutoSave', () => {
                     ...createMockContextValue().state,
                     pendingSettingsChanges: {
                         category_id: 2,
-                        visibility_status: 'UNLISTED',
+                        customer_visibility: 'UNLISTED',
                         slug: 'new-slug',
                         excerpt: 'New excerpt',
                         seo_meta: {
@@ -330,7 +331,7 @@ describe('useSettingsAutoSave', () => {
 
             expect(result.current.settingsProps.category.categoryId).toBe(2)
             expect(
-                result.current.settingsProps.visibility.visibilityStatus,
+                result.current.settingsProps.visibility.customerVisibility,
             ).toBe('UNLISTED')
             expect(result.current.settingsProps.slug?.slug).toBe('new-slug')
             expect(result.current.settingsProps.excerpt.excerpt).toBe(
@@ -405,7 +406,7 @@ describe('useSettingsAutoSave', () => {
             })
             expect(mockDispatch).toHaveBeenCalledWith({
                 type: 'SET_PENDING_SETTINGS',
-                payload: { visibility_status: 'UNLISTED' },
+                payload: { customer_visibility: 'UNLISTED' },
             })
         })
     })
@@ -990,7 +991,7 @@ describe('useSettingsAutoSave', () => {
 
             expect(result.current.settingsProps.category.categoryId).toBeNull()
             expect(
-                result.current.settingsProps.visibility.visibilityStatus,
+                result.current.settingsProps.visibility.customerVisibility,
             ).toBe('PUBLIC')
             expect(result.current.settingsProps.excerpt.excerpt).toBe('')
             expect(result.current.settingsProps.metaTitle.metaTitle).toBe('')

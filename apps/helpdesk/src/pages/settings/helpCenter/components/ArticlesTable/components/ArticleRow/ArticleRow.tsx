@@ -108,7 +108,7 @@ export const ArticleRow = ({
 
         const isArticleOrAncestorUnlisted =
             isAncestorUnlisted ||
-            article.translation.visibility_status === 'UNLISTED'
+            article.translation.customer_visibility === 'UNLISTED'
 
         return onClickSettings(ev, name, article, isArticleOrAncestorUnlisted)
     }
@@ -187,7 +187,7 @@ export const ArticleRow = ({
                 className={css['nested-cell']}
             >
                 <VisibilityCell
-                    status={article.translation.visibility_status}
+                    status={article.translation.customer_visibility ?? 'PUBLIC'}
                     isParentUnlisted={isAncestorUnlisted}
                     isArticle
                     isDraft={isNotPublished(article)}

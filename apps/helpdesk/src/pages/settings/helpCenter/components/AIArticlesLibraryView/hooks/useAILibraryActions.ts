@@ -7,8 +7,8 @@ import type {
     AIArticle,
     AILibraryArticleItem,
     ArticleTemplateReviewAction,
+    CustomerVisibility,
     HelpCenter,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { useKnowledgeTracking } from 'pages/aiAgent/hooks/useKnowledgeTracking'
 import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
@@ -29,7 +29,7 @@ export type onEditorSaveProps = {
     content: string
     saveAsDraft: boolean
     categoryId: number | null
-    visibilityStatus: VisibilityStatus
+    customerVisibility: CustomerVisibility
 }
 
 const useAILibraryActions = (
@@ -59,7 +59,7 @@ const useAILibraryActions = (
         content: string
         saveAsDraft: boolean
         categoryId: number | null
-        visibilityStatus: VisibilityStatus
+        customerVisibility: CustomerVisibility
     } | null>(null)
 
     const reviewArticle = useUpsertArticleTemplateReview({
@@ -108,8 +108,9 @@ const useAILibraryActions = (
 
             void createArticle({
                 articleTemplate,
-                visibilityStatus:
-                    editorPayloadDetails.current?.visibilityStatus || 'PUBLIC',
+                customerVisibility:
+                    editorPayloadDetails.current?.customerVisibility ||
+                    'PUBLIC',
                 categoryId: editorPayloadDetails.current?.categoryId || null,
                 publish: !editorPayloadDetails.current?.saveAsDraft,
                 origin: ArticleOrigin.AI_LIBRARY_TAB,
@@ -184,7 +185,7 @@ const useAILibraryActions = (
             content: article.html_content,
             saveAsDraft: false,
             categoryId: null,
-            visibilityStatus: 'PUBLIC',
+            customerVisibility: 'PUBLIC',
         }
 
         return reviewArticle.mutate([
@@ -200,14 +201,14 @@ const useAILibraryActions = (
         content,
         saveAsDraft,
         categoryId,
-        visibilityStatus,
+        customerVisibility,
     }: onEditorSaveProps) => {
         editorPayloadDetails.current = {
             title,
             content,
             saveAsDraft,
             categoryId,
-            visibilityStatus,
+            customerVisibility,
         }
 
         onEditorClose()

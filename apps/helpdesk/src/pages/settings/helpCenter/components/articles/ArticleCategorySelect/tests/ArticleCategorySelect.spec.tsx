@@ -48,13 +48,13 @@ describe('<ArticleCategorySelect />', () => {
         ])
     })
 
-    it('should display the category options on the screen', async () => {
+    it('should display the category label', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ArticleCategorySelect locale="en-US" categoryId={1} />
             </Provider>,
         )
-        await screen.findByText('Help Center category')
+        await screen.findByText('Category')
     })
 
     it('should show new options if locale changed', async () => {
@@ -112,9 +112,7 @@ describe('<ArticleCategorySelect />', () => {
             </Provider>,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /help center category/i,
-        })
+        const input = screen.getByRole('textbox')
         await user.click(input)
 
         const listbox = screen.getByRole('listbox')
@@ -151,9 +149,7 @@ describe('<ArticleCategorySelect />', () => {
             </Provider>,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /help center category/i,
-        })
+        const input = screen.getByRole('textbox')
         await user.click(input)
 
         const searchInput = await screen.findByRole('searchbox', {
@@ -197,9 +193,7 @@ describe('<ArticleCategorySelect />', () => {
             </Provider>,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /help center category/i,
-        })
+        const input = screen.getByRole('textbox')
         await user.click(input)
 
         const listbox = screen.getByRole('listbox')
@@ -223,9 +217,7 @@ describe('<ArticleCategorySelect />', () => {
             </Provider>,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /help center category/i,
-        })
+        const input = screen.getByRole('textbox')
         await user.click(input)
 
         const listbox = screen.getByRole('listbox')
@@ -244,9 +236,7 @@ describe('<ArticleCategorySelect />', () => {
             </Provider>,
         )
 
-        const input = screen.getByRole('textbox', {
-            name: /help center category/i,
-        })
+        const input = screen.getByRole('textbox')
         await user.click(input)
 
         const listbox = screen.getByRole('listbox')

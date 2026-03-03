@@ -85,6 +85,7 @@ export const useCreateArticle = (
                     is_current: translation.is_current ?? false,
                     visibility_status:
                         translation.visibility_status ?? 'UNLISTED',
+                    customer_visibility: translation.customer_visibility,
                     article_id: tempId,
                     article_unlisted_id: tempUnlistedId,
                     draft_version_id: null,

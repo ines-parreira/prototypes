@@ -18,8 +18,8 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import type {
     AILibraryArticleItem,
+    CustomerVisibility,
     LocaleCode,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
@@ -40,7 +40,7 @@ import { CloseModal } from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
 import { isOneOfParentsUnlisted } from '../../../HelpCenterCategoryEdit/utils'
-import SelectVisibilityStatus from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
+import SelectCustomerVisibility from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
 import type { onEditorSaveProps } from '../../hooks/useAILibraryActions'
 
 import css from './AIArticlesLibraryArticleEditor.less'
@@ -57,7 +57,7 @@ type Props = {
         content,
         saveAsDraft,
         categoryId,
-        visibilityStatus,
+        customerVisibility,
     }: onEditorSaveProps) => void
 }
 
@@ -80,8 +80,8 @@ const ArticleEditor: React.FC<Props> = ({
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null,
     )
-    const [visibilityStatus, setVisibilityStatus] =
-        useState<VisibilityStatus>('PUBLIC')
+    const [customerVisibility, setCustomerVisibility] =
+        useState<CustomerVisibility>('PUBLIC')
     const [showNotification, setShowNotification] = useState(false)
     const [isParentUnlisted, setIsParentUnlisted] = useState(false)
 
@@ -211,11 +211,11 @@ const ArticleEditor: React.FC<Props> = ({
                             />
                         </div>
                         <div>
-                            <SelectVisibilityStatus
+                            <SelectCustomerVisibility
                                 onChange={(status) => {
-                                    setVisibilityStatus(status)
+                                    setCustomerVisibility(status)
                                 }}
-                                status={visibilityStatus}
+                                status={customerVisibility}
                                 showNotification={showNotification}
                                 setShowNotification={setShowNotification}
                                 isParentUnlisted={isParentUnlisted}
@@ -267,7 +267,7 @@ const ArticleEditor: React.FC<Props> = ({
                                                 content: content!,
                                                 saveAsDraft: false,
                                                 categoryId: selectedCategoryId!,
-                                                visibilityStatus,
+                                                customerVisibility,
                                             })
                                         }
                                     >
@@ -290,7 +290,7 @@ const ArticleEditor: React.FC<Props> = ({
                                                 content: content!,
                                                 saveAsDraft: true,
                                                 categoryId: selectedCategoryId!,
-                                                visibilityStatus,
+                                                customerVisibility,
                                             })
                                         }
                                     >
@@ -304,7 +304,7 @@ const ArticleEditor: React.FC<Props> = ({
                                                 content: content!,
                                                 saveAsDraft: false,
                                                 categoryId: selectedCategoryId!,
-                                                visibilityStatus,
+                                                customerVisibility,
                                             })
                                         }
                                     >
@@ -351,7 +351,7 @@ const ArticleEditor: React.FC<Props> = ({
                                         content: content!,
                                         saveAsDraft: true,
                                         categoryId: selectedCategoryId!,
-                                        visibilityStatus,
+                                        customerVisibility,
                                     })
                                 }
                             >

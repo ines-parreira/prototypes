@@ -97,14 +97,8 @@ export const BulkActions = ({
             } as unknown as FilteredKnowledgeHubArticle
         })
 
-    const faqEnableValidationConfig = getAIAgentButtonConfig(
-        selectedItems,
-        'enable',
-    )
-    const faqDisableValidationConfig = getAIAgentButtonConfig(
-        selectedItems,
-        'disable',
-    )
+    const faqEnableValidationConfig = getAIAgentButtonConfig(selectedItems)
+    const faqDisableValidationConfig = getAIAgentButtonConfig(selectedItems)
 
     const guidanceLimitConfig = getBulkEnableButtonConfig(guidanceRows)
     const enableForAIButtonConfig =

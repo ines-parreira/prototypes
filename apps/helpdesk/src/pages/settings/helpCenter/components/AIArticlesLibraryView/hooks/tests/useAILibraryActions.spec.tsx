@@ -90,11 +90,52 @@ describe('useAILibraryActions', () => {
                 content: 'Content',
                 saveAsDraft: false,
                 categoryId: 1,
-                visibilityStatus: 'PUBLIC',
+                customerVisibility: 'PUBLIC',
             })
         })
 
-        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalled()
+        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalledWith([
+            undefined,
+            { help_center_id: getSingleHelpCenterResponseFixture.id },
+            {
+                action: 'publish',
+                template_key: AILibraryArticleItemsFixture[0].key,
+            },
+        ])
+    })
+
+    it('should use saveAsDraft action when saving as draft from editor', () => {
+        const { result } = renderHook(
+            () =>
+                useAILibraryActions(
+                    getSingleHelpCenterResponseFixture,
+                    AILibraryArticleItemsFixture,
+                    jest.fn(),
+                ),
+            {
+                wrapper,
+            },
+        )
+
+        act(() => {
+            result.current.onEditorSave({
+                article: AILibraryArticleItemsFixture[0],
+                title: 'Draft Title',
+                content: 'Draft Content',
+                saveAsDraft: true,
+                categoryId: 2,
+                customerVisibility: 'UNLISTED',
+            })
+        })
+
+        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalledWith([
+            undefined,
+            { help_center_id: getSingleHelpCenterResponseFixture.id },
+            {
+                action: 'saveAsDraft',
+                template_key: AILibraryArticleItemsFixture[0].key,
+            },
+        ])
     })
 
     it('should archive the article when calling onArchive', () => {
@@ -114,7 +155,15 @@ describe('useAILibraryActions', () => {
             result.current.onArchive(AILibraryArticleItemsFixture[0], 'reason')
         })
 
-        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalled()
+        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalledWith([
+            undefined,
+            { help_center_id: getSingleHelpCenterResponseFixture.id },
+            {
+                action: 'archive',
+                template_key: AILibraryArticleItemsFixture[0].key,
+                reason: 'reason',
+            },
+        ])
     })
 
     it('should publish the article when calling onPublish', () => {
@@ -134,7 +183,14 @@ describe('useAILibraryActions', () => {
             result.current.onPublish(AILibraryArticleItemsFixture[0])
         })
 
-        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalled()
+        expect(mockedUpsertArticleTemplateReview).toHaveBeenCalledWith([
+            undefined,
+            { help_center_id: getSingleHelpCenterResponseFixture.id },
+            {
+                action: 'publish',
+                template_key: AILibraryArticleItemsFixture[0].key,
+            },
+        ])
     })
 
     it('should open the editor when calling onEdit', () => {

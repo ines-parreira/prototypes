@@ -325,7 +325,7 @@ describe('BulkActions utils', () => {
 
     describe('getAIAgentButtonConfig', () => {
         it('returns Hidden mode when no items are selected', () => {
-            const result = getAIAgentButtonConfig([], 'enable')
+            const result = getAIAgentButtonConfig([])
 
             expect(result.mode).toBe(ButtonRenderMode.Hidden)
             expect(result.tooltipMessage).toBeUndefined()
@@ -351,7 +351,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -367,7 +367,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -383,7 +383,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -399,7 +399,7 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
@@ -423,95 +423,65 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
             expect(result.mode).toBe(ButtonRenderMode.Visible)
             expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode with enable message when only FAQ items are selected for enable action', () => {
+        it('returns Visible mode when only published FAQ items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
                     id: '1',
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.enableOnlyFAQ)
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode with disable message when only FAQ items are selected for disable action', () => {
+        it('returns Visible mode when multiple published FAQ items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
                     id: '1',
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
-                },
-            ]
-
-            const result = getAIAgentButtonConfig(items, 'disable')
-
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.disableOnlyFAQ)
-        })
-
-        it('returns DisabledWithTooltip mode with enable message when multiple FAQ items are selected for enable action', () => {
-            const items: GroupedKnowledgeItem[] = [
-                {
-                    type: KnowledgeType.FAQ,
-                    id: '1',
-                    title: 'FAQ 1',
-                    lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.FAQ,
                     id: '2',
                     title: 'FAQ 2',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.enableOnlyFAQ)
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode with disable message when multiple FAQ items are selected for disable action', () => {
+        it('returns Visible mode when published FAQ and published Guidance items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
                     id: '1',
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
-                },
-                {
-                    type: KnowledgeType.FAQ,
-                    id: '2',
-                    title: 'FAQ 2',
-                    lastUpdatedAt: '2024-01-01',
-                },
-            ]
-
-            const result = getAIAgentButtonConfig(items, 'disable')
-
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.disableOnlyFAQ)
-        })
-
-        it('returns DisabledWithTooltip mode when FAQ and Guidance items are selected', () => {
-            const items: GroupedKnowledgeItem[] = [
-                {
-                    type: KnowledgeType.FAQ,
-                    id: '1',
-                    title: 'FAQ 1',
-                    lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Guidance,
@@ -523,19 +493,21 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode when FAQ and Document items are selected', () => {
+        it('returns Visible mode when published FAQ and Document items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
                     id: '1',
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Document,
@@ -545,19 +517,21 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'disable')
+            const result = getAIAgentButtonConfig(items)
 
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
         })
 
-        it('returns DisabledWithTooltip mode when FAQ, Guidance, and Document items are selected', () => {
+        it('returns Visible mode when published FAQ, published Guidance, and Document items are selected', () => {
             const items: GroupedKnowledgeItem[] = [
                 {
                     type: KnowledgeType.FAQ,
                     id: '1',
                     title: 'FAQ 1',
                     lastUpdatedAt: '2024-01-01',
+                    draftVersionId: 1,
+                    publishedVersionId: 1,
                 },
                 {
                     type: KnowledgeType.Guidance,
@@ -575,10 +549,154 @@ describe('BulkActions utils', () => {
                 },
             ]
 
-            const result = getAIAgentButtonConfig(items, 'enable')
+            const result = getAIAgentButtonConfig(items)
 
-            expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
-            expect(result.tooltipMessage).toBe(TOOLTIP_MESSAGES.aiAgentMixedFAQ)
+            expect(result.mode).toBe(ButtonRenderMode.Visible)
+            expect(result.tooltipMessage).toBeUndefined()
+        })
+
+        describe('draft FAQ validation', () => {
+            it('returns DisabledWithTooltip when only never-published FAQ is selected', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'Draft FAQ 1',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftFAQ,
+                )
+            })
+
+            it('returns DisabledWithTooltip when FAQ has unpublished changes', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'Draft FAQ 1',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftFAQ,
+                )
+            })
+
+            it('returns DisabledWithTooltip when FAQ has no version IDs', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'FAQ 1',
+                        lastUpdatedAt: '2024-01-01',
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftFAQ,
+                )
+            })
+
+            it('returns DisabledWithTooltip when mix of published and draft FAQ is selected', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'Published FAQ',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
+                    },
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '2',
+                        title: 'Draft FAQ',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftFAQ,
+                )
+            })
+
+            it('returns DisabledWithTooltip when draft FAQ and published Guidance are selected', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'Draft FAQ',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
+                    },
+                    {
+                        type: KnowledgeType.Guidance,
+                        id: '2',
+                        title: 'Published Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: 1,
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftFAQ,
+                )
+            })
+
+            it('returns DisabledWithTooltip with combined message when draft FAQ and draft Guidance are selected', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        type: KnowledgeType.FAQ,
+                        id: '1',
+                        title: 'Draft FAQ',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 1,
+                        publishedVersionId: null,
+                    },
+                    {
+                        type: KnowledgeType.Guidance,
+                        id: '2',
+                        title: 'Draft Guidance',
+                        lastUpdatedAt: '2024-01-01',
+                        draftVersionId: 2,
+                        publishedVersionId: 1,
+                    },
+                ]
+
+                const result = getAIAgentButtonConfig(items)
+
+                expect(result.mode).toBe(ButtonRenderMode.DisabledWithTooltip)
+                expect(result.tooltipMessage).toBe(
+                    TOOLTIP_MESSAGES.aiAgentDraftAndFAQ,
+                )
+            })
         })
     })
 

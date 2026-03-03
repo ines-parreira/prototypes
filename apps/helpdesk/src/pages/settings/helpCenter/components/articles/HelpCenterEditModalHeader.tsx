@@ -7,8 +7,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import type {
     Article,
     CreateArticleDto,
+    CustomerVisibility,
     LocaleCode,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
@@ -29,7 +29,7 @@ import {
 import { getLocaleSelectOptions } from '../../utils/localeSelectOptions'
 import EditingState from '../EditingState/EditingState'
 import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
-import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import ArticleCategorySelect from './ArticleCategorySelect'
 import type { ActionType, OptionItem } from './ArticleLanguageSelect'
 import { ArticleLanguageSelect } from './ArticleLanguageSelect'
@@ -54,7 +54,7 @@ export type Props = {
     showCategorySelect?: boolean
     showInlineLanguageSelect?: boolean
     showVisibilitySelect?: boolean
-    visibilityStatus?: VisibilityStatus
+    customerVisibility?: CustomerVisibility
     lastUpdate?: string
     lastUpdateDetailed?: string
     domain: string
@@ -79,7 +79,7 @@ export const HelpCenterEditModalHeader = ({
     showVisibilitySelect = false,
     domain,
     articleMode,
-    visibilityStatus = 'PUBLIC',
+    customerVisibility = 'PUBLIC',
     lastUpdate,
     lastUpdateDetailed,
     helpCenterHasDefaultLayout,
@@ -105,9 +105,9 @@ export const HelpCenterEditModalHeader = ({
     const isUnlisted = useMemo(() => {
         return (
             isParentUnlisted ||
-            selectedArticle?.translation.visibility_status === 'UNLISTED'
+            selectedArticle?.translation.customer_visibility === 'UNLISTED'
         )
-    }, [isParentUnlisted, selectedArticle?.translation.visibility_status])
+    }, [isParentUnlisted, selectedArticle?.translation.customer_visibility])
 
     const getResizeModalButton = () => (
         <Tooltip>
@@ -357,7 +357,7 @@ export const HelpCenterEditModalHeader = ({
                 )}
                 {showVisibilitySelect && (
                     <div className={css.visiblitySelect}>
-                        <SelectVisibilityStatus
+                        <SelectCustomerVisibility
                             onChange={(status) => {
                                 setSelectedArticle(
                                     (prevSelectedArticle) =>
@@ -366,7 +366,8 @@ export const HelpCenterEditModalHeader = ({
                                                   ...prevSelectedArticle,
                                                   translation: {
                                                       ...prevSelectedArticle.translation,
-                                                      visibility_status: status,
+                                                      customer_visibility:
+                                                          status,
                                                   },
                                               }
                                             : null) as
@@ -375,7 +376,7 @@ export const HelpCenterEditModalHeader = ({
                                             | null,
                                 )
                             }}
-                            status={visibilityStatus}
+                            status={customerVisibility}
                             showNotification={showNotification}
                             setShowNotification={setShowNotification}
                             isParentUnlisted={isParentUnlisted}

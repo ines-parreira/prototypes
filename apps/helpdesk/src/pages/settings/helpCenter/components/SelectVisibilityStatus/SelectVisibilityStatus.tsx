@@ -6,19 +6,20 @@ import _upperFirst from 'lodash/upperFirst'
 
 import {
     Button,
+    Label,
     ListItem,
     Select,
     SelectTrigger,
     TextField,
 } from '@gorgias/axiom'
 
-import type { VisibilityStatus } from 'models/helpCenter/types'
+import type { CustomerVisibility } from 'models/helpCenter/types'
 
 import css from './SelectVisibilityStatus.less'
 
-export type SelectVisibilityStatusProps = {
-    status?: VisibilityStatus
-    onChange: (status: VisibilityStatus) => void
+export type SelectCustomerVisibilityProps = {
+    status?: CustomerVisibility
+    onChange: (status: CustomerVisibility) => void
     isParentUnlisted: boolean
     showNotification: boolean
     setShowNotification: (showNotification: boolean) => void
@@ -29,14 +30,14 @@ export type SelectVisibilityStatusProps = {
 
 type VisibilityOption = {
     id: string
-    value: VisibilityStatus
+    value: CustomerVisibility
     title: string
     icon: string
     description: string
     descriptionInheritUnlisted?: string
 }
 
-const SelectVisibilityStatus = ({
+const SelectCustomerVisibility = ({
     status = 'PUBLIC',
     onChange,
     className,
@@ -45,14 +46,14 @@ const SelectVisibilityStatus = ({
     setShowNotification,
     type,
     isDisabled = false,
-}: SelectVisibilityStatusProps) => {
+}: SelectCustomerVisibilityProps) => {
     const options: VisibilityOption[] = useMemo(
         () => [
             {
                 id: 'visibility-unlisted',
                 value: 'UNLISTED',
                 title: 'Unlisted',
-                description: `Accessible only via direct link, not indexed by search engines or AI Agent`,
+                description: `Accessible only via direct link, not indexed by search engines.`,
                 icon: 'hide',
             },
             {
@@ -88,13 +89,13 @@ const SelectVisibilityStatus = ({
 
     return (
         <div className={classnames(className, css.wrapper)}>
+            <Label>Customer visibility</Label>
             <Select<VisibilityOption>
                 trigger={({ ref, isOpen }) => (
                     <SelectTrigger>
                         <TextField
                             inputRef={ref as RefObject<HTMLInputElement>}
                             value={selectedText}
-                            label="Visibility status"
                             isDisabled={isDisabled}
                             isFocused={isOpen}
                             leadingSlot={selectedOption.icon}
@@ -109,7 +110,7 @@ const SelectVisibilityStatus = ({
                 items={options}
                 selectedItem={selectedOption}
                 onSelect={handleSelect}
-                aria-label="Select visibility status"
+                aria-label="Select customer visibility"
                 isDisabled={isDisabled}
                 maxWidth={266}
             >
@@ -156,4 +157,4 @@ const SelectVisibilityStatus = ({
     )
 }
 
-export default SelectVisibilityStatus
+export default SelectCustomerVisibility

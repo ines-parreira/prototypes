@@ -1,12 +1,20 @@
 import type { RefObject } from 'react'
 import { useMemo } from 'react'
 
-import { ListItem, Select, SelectTrigger, TextField } from '@gorgias/axiom'
+import {
+    Label,
+    ListItem,
+    Select,
+    SelectTrigger,
+    TextField,
+} from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import useCategoriesOptions from './hooks/useCategoriesOptions'
 import type { CategoryOption } from './hooks/useCategoriesOptions'
+
+import css from './ArticleCategorySelect.less'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
@@ -34,37 +42,41 @@ const ArticleCategorySelect = ({
     }
 
     return (
-        <Select<CategoryOption>
-            trigger={({ ref, selectedText, isOpen }) => (
-                <SelectTrigger>
-                    <TextField
-                        inputRef={ref as RefObject<HTMLInputElement>}
-                        value={selectedText}
-                        label="Help Center category"
-                        isDisabled={isDisabled}
-                        isFocused={isOpen}
-                        trailingSlot={
-                            isOpen ? 'arrow-chevron-up' : 'arrow-chevron-down'
-                        }
+        <div className={css.wrapper}>
+            <Label>Category</Label>
+            <Select<CategoryOption>
+                trigger={({ ref, selectedText, isOpen }) => (
+                    <SelectTrigger>
+                        <TextField
+                            inputRef={ref as RefObject<HTMLInputElement>}
+                            value={selectedText}
+                            isDisabled={isDisabled}
+                            isFocused={isOpen}
+                            trailingSlot={
+                                isOpen
+                                    ? 'arrow-chevron-up'
+                                    : 'arrow-chevron-down'
+                            }
+                        />
+                    </SelectTrigger>
+                )}
+                items={options}
+                selectedItem={selectedOption}
+                onSelect={handleSelect}
+                aria-label="Select article category"
+                isDisabled={isDisabled}
+                isSearchable={options.length > 1}
+                maxWidth={266}
+            >
+                {(option: CategoryOption) => (
+                    <ListItem
+                        id={option.id}
+                        label={option.textValue}
+                        textValue={option.textValue}
                     />
-                </SelectTrigger>
-            )}
-            items={options}
-            selectedItem={selectedOption}
-            onSelect={handleSelect}
-            aria-label="Select article category"
-            isDisabled={isDisabled}
-            isSearchable={options.length > 1}
-            maxWidth={266}
-        >
-            {(option: CategoryOption) => (
-                <ListItem
-                    id={option.id}
-                    label={option.textValue}
-                    textValue={option.textValue}
-                />
-            )}
-        </Select>
+                )}
+            </Select>
+        </div>
     )
 }
 

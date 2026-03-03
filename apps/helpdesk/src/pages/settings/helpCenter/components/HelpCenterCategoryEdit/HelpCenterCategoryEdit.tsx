@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, RefObject } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { SCREEN_SIZE, useAsyncFn, useScreenSize } from '@repo/hooks'
@@ -14,8 +14,13 @@ import {
 } from 'reactstrap'
 
 import {
+    Label as AxiomLabel,
     LegacyButton as Button,
     LegacyIconButton as IconButton,
+    ListItem,
+    Select,
+    SelectTrigger,
+    TextField,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -23,16 +28,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import type {
     Category,
     CreateCategoryDto,
+    CustomerVisibility,
     HelpCenter,
     LocalCategoryTranslation,
     LocaleCode,
     UpdateCategoryTranslationDto,
-    VisibilityStatus,
 } from 'models/helpCenter/types'
 import { Drawer } from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
-import type { Option, Value } from 'pages/common/forms/SelectField/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -59,25 +62,23 @@ import { getViewLanguage } from 'state/ui/helpCenter'
 import type { FileUpload } from '../../hooks/useFileUpload'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { getCategoryDropdownOption } from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
+import type { CategoryOption } from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
 import type { ActionType, OptionItem } from '../articles/ArticleLanguageSelect'
 import { ArticleLanguageSelect } from '../articles/ArticleLanguageSelect'
 import { CloseModal } from '../articles/CloseModal'
 import { ConfirmationModal } from '../ConfirmationModal'
 import { SearchEnginePreview } from '../SearchEnginePreview'
-import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import SelectCustomerVisibility from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import { CategoryImageEdit } from './components/CategoryImageEdit/CategoryImageEdit'
 import { eligibleParentCategories, isOneOfParentsUnlisted } from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
 
-const convertCategoryOptionToLegacyOption = (
-    categoryOption: ReturnType<typeof getCategoryDropdownOption>,
-): Option => {
-    return {
-        label: categoryOption.label,
-        text: categoryOption.textValue,
-        value: categoryOption.value as number,
-    }
+const NO_PARENT_OPTION: CategoryOption = {
+    id: 'no-parent',
+    value: null,
+    label: '- no parent -',
+    textValue: '- no parent -',
 }
 
 type Props = {
@@ -122,8 +123,8 @@ export const HelpCenterCategoryEdit = ({
     const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
     const [parentCategory, setParentCategory] = useState<number | undefined>()
-    const [visibilityStatus, setVisibilityStatus] =
-        useState<VisibilityStatus>('PUBLIC')
+    const [customerVisibility, setCustomerVisibility] =
+        useState<CustomerVisibility>('PUBLIC')
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
@@ -137,11 +138,6 @@ export const HelpCenterCategoryEdit = ({
     const screenSize = useScreenSize()
     const categories = useAppSelector(getParentCategories)
     const categoriesById = useAppSelector(getCategoriesById)
-    const [isFirstOptionHidden, setIsFirstOptionHidden] = useState(false)
-    const [isClearSelectionButtonHidden, setIsClearSelectionButtonHidden] =
-        useState(false)
-    const [parentOptions, setParentOptions] = useState<Option[]>([])
-    const clearSelectionText = 'Clear selection'
     const categoryOptionCandidates = useMemo(
         () => eligibleParentCategories(categories, viewLanguage, category),
         [categories, viewLanguage, category],
@@ -223,7 +219,9 @@ export const HelpCenterCategoryEdit = ({
             )
             setImageUrl(category.translation?.image_url ?? '')
             if (category.translation) {
-                setVisibilityStatus(category.translation.visibility_status)
+                setCustomerVisibility(
+                    category.translation.customer_visibility ?? 'PUBLIC',
+                )
             }
         } else {
             setTitle('')
@@ -232,7 +230,7 @@ export const HelpCenterCategoryEdit = ({
             setMetaTitle(null)
             setMetaDescription(null)
             setParentCategory(parentCategoryId)
-            setVisibilityStatus('PUBLIC')
+            setCustomerVisibility('PUBLIC')
             setImageUrl('')
         }
         setParentCategory(
@@ -252,19 +250,23 @@ export const HelpCenterCategoryEdit = ({
         }
     }, [isOpen])
 
-    useEffect(() => {
-        setParentOptions([
+    const parentCategoryOptions = useMemo(
+        () => [
+            NO_PARENT_OPTION,
             ...categoryOptionCandidates.map((category) =>
-                convertCategoryOptionToLegacyOption(
-                    getCategoryDropdownOption(category, categoriesById),
-                ),
+                getCategoryDropdownOption(category, categoriesById),
             ),
-            {
-                value: 0,
-                label: clearSelectionText,
-            },
-        ])
-    }, [categoryOptionCandidates, categoriesById])
+        ],
+        [categoryOptionCandidates, categoriesById],
+    )
+
+    const selectedParentOption = useMemo(
+        () =>
+            parentCategoryOptions.find(
+                (opt) => opt.value === (parentCategory ?? null),
+            ) ?? NO_PARENT_OPTION,
+        [parentCategoryOptions, parentCategory],
+    )
 
     useEffect(() => {
         if (parentCategory) {
@@ -372,7 +374,7 @@ export const HelpCenterCategoryEdit = ({
                     image_url: categoryImageUrl,
                     title,
                     parent_category_id: parentCategory,
-                    visibility_status: visibilityStatus,
+                    customer_visibility: customerVisibility,
                     slug,
                     description,
                     seo_meta: {
@@ -392,7 +394,7 @@ export const HelpCenterCategoryEdit = ({
                 description,
                 image_url: categoryImageUrl,
                 parent_category_id: parentCategory,
-                visibility_status: visibilityStatus,
+                customer_visibility: customerVisibility,
                 seo_meta: {
                     title: metaTitle,
                     description: metaDescription,
@@ -411,8 +413,8 @@ export const HelpCenterCategoryEdit = ({
             if (
                 !isCreate &&
                 hasChildren &&
-                category?.translation?.visibility_status === 'PUBLIC' &&
-                visibilityStatus === 'UNLISTED'
+                category?.translation?.customer_visibility === 'PUBLIC' &&
+                customerVisibility === 'UNLISTED'
             ) {
                 setPendingSaveCategory(true)
 
@@ -420,7 +422,13 @@ export const HelpCenterCategoryEdit = ({
             }
 
             await handleOnSave()
-        }, [category, visibilityStatus, articlesCount, isCreate, handleOnSave])
+        }, [
+            category,
+            customerVisibility,
+            articlesCount,
+            isCreate,
+            handleOnSave,
+        ])
 
     const handleDiscard = () => {
         onClose()
@@ -446,27 +454,20 @@ export const HelpCenterCategoryEdit = ({
         }
     }
 
-    const handleVisibilityChange = (status: VisibilityStatus) => {
+    const handleVisibilityChange = (status: CustomerVisibility) => {
         setHasPendingChanges(true)
-        setVisibilityStatus(status)
+        setCustomerVisibility(status)
     }
 
-    const handleChangeParent = (categoryId: Value) => {
-        setParentCategory(Number(categoryId))
+    const handleChangeParent = (option: CategoryOption) => {
+        const categoryId = option.value
+        setParentCategory(categoryId ?? undefined)
         setHasPendingChanges(true)
-        if (isOneOfParentsUnlisted(categories, Number(categoryId))) {
+        if (categoryId && isOneOfParentsUnlisted(categories, categoryId)) {
             setShowNotification(true)
         } else {
             setShowNotification(false)
         }
-    }
-    const handleOnSearchChange = (text: string) => {
-        setIsFirstOptionHidden(!!text)
-        setIsClearSelectionButtonHidden(
-            !!text &&
-                clearSelectionText.toLowerCase().indexOf(text.toLowerCase()) >
-                    -1,
-        )
     }
 
     const onPreviewCategory = () => {
@@ -475,7 +476,7 @@ export const HelpCenterCategoryEdit = ({
         const categoryId = category.id
         const unlistedId = category.translation.category_unlisted_id
         const isUnlisted =
-            category.translation.visibility_status === 'UNLISTED' ||
+            category.translation.customer_visibility === 'UNLISTED' ||
             isParentUnlisted
 
         const categoryUrl = hasDefaultLayout
@@ -504,7 +505,7 @@ export const HelpCenterCategoryEdit = ({
         const categoryId = category.id
         const unlistedId = category.translation.category_unlisted_id
         const isUnlisted =
-            category.translation.visibility_status === 'UNLISTED' ||
+            category.translation.customer_visibility === 'UNLISTED' ||
             isParentUnlisted
 
         copy(
@@ -544,7 +545,7 @@ export const HelpCenterCategoryEdit = ({
 
     const isUnlisted =
         (category?.translation &&
-            category.translation.visibility_status === 'UNLISTED') ||
+            category.translation.customer_visibility === 'UNLISTED') ||
         isParentUnlisted
 
     const showPreviewAndShareButton =
@@ -592,35 +593,45 @@ export const HelpCenterCategoryEdit = ({
                 </div>
                 <div className={css.headerActions}>
                     {hasDefaultLayout && (
-                        <SelectField
-                            allowCustomValue
-                            id="parentCategory"
-                            aria-label="Parent category"
-                            dropdownMenuClassName={classNames(
-                                css['parentDropdown'],
-                                {
-                                    [css['hideFirstOption']]:
-                                        isFirstOptionHidden,
-                                    [css['hideClearSelection']]:
-                                        isClearSelectionButtonHidden,
-                                },
-                            )}
-                            value={
-                                parentCategory && categoriesById[parentCategory]
-                                    ? categoriesById[parentCategory].translation
-                                          ?.title
-                                    : null
-                            }
-                            fullWidth
-                            options={parentOptions}
-                            placeholder="Category parent"
-                            onChange={handleChangeParent}
-                            onSearchChange={handleOnSearchChange}
-                        />
+                        <div>
+                            <AxiomLabel>Category parent</AxiomLabel>
+                            <Select<CategoryOption>
+                                trigger={({ ref, selectedText, isOpen }) => (
+                                    <SelectTrigger>
+                                        <TextField
+                                            inputRef={
+                                                ref as RefObject<HTMLInputElement>
+                                            }
+                                            value={selectedText}
+                                            isFocused={isOpen}
+                                            trailingSlot={
+                                                isOpen
+                                                    ? 'arrow-chevron-up'
+                                                    : 'arrow-chevron-down'
+                                            }
+                                        />
+                                    </SelectTrigger>
+                                )}
+                                items={parentCategoryOptions}
+                                selectedItem={selectedParentOption}
+                                onSelect={handleChangeParent}
+                                aria-label="Parent category"
+                                isSearchable={parentCategoryOptions.length > 1}
+                                maxWidth={266}
+                            >
+                                {(option: CategoryOption) => (
+                                    <ListItem
+                                        id={option.id}
+                                        label={option.textValue}
+                                        textValue={option.textValue}
+                                    />
+                                )}
+                            </Select>
+                        </div>
                     )}
-                    <SelectVisibilityStatus
+                    <SelectCustomerVisibility
                         onChange={handleVisibilityChange}
-                        status={visibilityStatus}
+                        status={customerVisibility}
                         className={css.visibilitySelect}
                         isParentUnlisted={isParentUnlisted}
                         showNotification={showNotification}

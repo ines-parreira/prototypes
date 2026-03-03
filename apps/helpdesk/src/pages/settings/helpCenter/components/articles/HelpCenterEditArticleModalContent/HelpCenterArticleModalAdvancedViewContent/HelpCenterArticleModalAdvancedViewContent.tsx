@@ -132,6 +132,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 }
                 categoryId={selectedCategoryId}
                 translation={selectedArticle.translation}
+                shopName={helpCenter.shop_name}
                 onCategoryChange={setSelectedCategoryId}
                 onChange={(
                     translation:

@@ -92,10 +92,19 @@ function hasDraftGuidance(selectedItems: GroupedKnowledgeItem[]): boolean {
     )
 }
 
-export function getAIAgentButtonConfig(
-    selectedItems: GroupedKnowledgeItem[],
-    action: 'enable' | 'disable',
-): {
+function hasDraftFAQ(selectedItems: GroupedKnowledgeItem[]): boolean {
+    return selectedItems.some(
+        (item) =>
+            item.type === KnowledgeType.FAQ &&
+            isDraft({
+                id: parseInt(item.id, 10),
+                draftVersionId: item.draftVersionId,
+                publishedVersionId: item.publishedVersionId,
+            }),
+    )
+}
+
+export function getAIAgentButtonConfig(selectedItems: GroupedKnowledgeItem[]): {
     mode: ButtonRenderMode
     tooltipMessage?: string
 } {
@@ -103,39 +112,27 @@ export function getAIAgentButtonConfig(
         return { mode: ButtonRenderMode.Hidden }
     }
 
-    const selectedTypes = new Set(selectedItems.map((item) => item.type))
-    const hasFAQ = selectedTypes.has(KnowledgeType.FAQ)
-    const hasOnlyFAQ = selectedTypes.size === 1 && hasFAQ
-    const hasDraft = hasDraftGuidance(selectedItems)
+    const hasDraftGuidanceItems = hasDraftGuidance(selectedItems)
+    const hasDraftFAQItems = hasDraftFAQ(selectedItems)
 
-    if (hasDraft && hasFAQ) {
+    if (hasDraftGuidanceItems && hasDraftFAQItems) {
         return {
             mode: ButtonRenderMode.DisabledWithTooltip,
             tooltipMessage: TOOLTIP_MESSAGES.aiAgentDraftAndFAQ,
         }
     }
 
-    if (hasDraft) {
+    if (hasDraftGuidanceItems) {
         return {
             mode: ButtonRenderMode.DisabledWithTooltip,
             tooltipMessage: TOOLTIP_MESSAGES.aiAgentOnlyDraft,
         }
     }
 
-    if (hasOnlyFAQ) {
+    if (hasDraftFAQItems) {
         return {
             mode: ButtonRenderMode.DisabledWithTooltip,
-            tooltipMessage:
-                action === 'enable'
-                    ? TOOLTIP_MESSAGES.enableOnlyFAQ
-                    : TOOLTIP_MESSAGES.disableOnlyFAQ,
-        }
-    }
-
-    if (hasFAQ) {
-        return {
-            mode: ButtonRenderMode.DisabledWithTooltip,
-            tooltipMessage: TOOLTIP_MESSAGES.aiAgentMixedFAQ,
+            tooltipMessage: TOOLTIP_MESSAGES.aiAgentDraftFAQ,
         }
     }
 
@@ -164,13 +161,9 @@ export const TOOLTIP_MESSAGES: TooltipConfig = {
     duplicateWithSnippets: 'De-select snippets to perform this action.',
     duplicateWithFAQ: 'De-select Help Center articles to perform this action.',
     delete: 'De-select snippets to perform this action.',
-    aiAgentOnlyFAQ: 'This action is not supported at the moment.',
-    aiAgentMixedFAQ: 'De-select Help Center articles to perform this action.',
-    enableOnlyFAQ:
-        'Publish and make articles public to enable them for AI Agent.',
-    disableOnlyFAQ:
-        'Change article visibility to unlisted to disable for AI Agent.',
     aiAgentOnlyDraft: 'De-select draft guidance to perform this action.',
     aiAgentDraftAndFAQ:
-        'De-select draft guidance and Help Center articles to perform this action.',
+        'De-select draft guidance and draft Help Center articles to perform this action.',
+    aiAgentDraftFAQ:
+        'De-select draft Help Center articles to perform this action. Only published articles can be used.',
 }

@@ -34,17 +34,21 @@ export const getCategoryDropdownOption = (
     categoriesById: Record<string, Category>,
 ): CategoryOption => {
     const title = category.translation?.title || ''
+    const isUnlisted = category.translation?.customer_visibility === 'UNLISTED'
+    const displayTitle = isUnlisted ? `${title} (Unlisted)` : title
     const parentsInfo = categoriesById[category.id]
         ? getParentsInfo(category, categoriesById)
         : ''
 
-    const label = parentsInfo ? `${title} (${parentsInfo})` : title
+    const label = parentsInfo
+        ? `${displayTitle} (${parentsInfo})`
+        : displayTitle
 
     return {
         id: `category-${category.id}`,
         value: category.id,
         label,
-        textValue: title,
+        textValue: displayTitle,
         category,
     }
 }

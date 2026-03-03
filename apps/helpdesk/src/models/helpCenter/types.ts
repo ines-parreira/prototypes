@@ -98,6 +98,10 @@ export type Article = ArticleWithLocalTranslationAndRating & {
 export type VisibilityStatus =
     Components.Schemas.LocalArticleTranslation['visibility_status']
 
+export type CustomerVisibility = NonNullable<
+    Components.Schemas.LocalArticleTranslation['customer_visibility']
+>
+
 // NAVIGATION
 
 export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto

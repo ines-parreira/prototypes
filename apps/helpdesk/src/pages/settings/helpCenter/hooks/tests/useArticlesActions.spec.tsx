@@ -352,6 +352,28 @@ describe('useArticlesActions()', () => {
     })
 
     describe('updateArticle()', () => {
+        it('sends customer_visibility in updateArticleTranslation payload', async () => {
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            await result.current.updateArticle('en-US', {
+                ...getSingleArticleEnglish,
+                translation: {
+                    ...getSingleArticleEnglish.translation,
+                    customer_visibility: 'UNLISTED',
+                },
+            })
+
+            expect(mockUpdateArticleTranslation).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.objectContaining({
+                    customer_visibility: 'UNLISTED',
+                    visibility_status: 'PUBLIC',
+                }),
+            )
+        })
+
         it('dispatches saveArticles and pushArticleSupportedLocales actions for article in category', async () => {
             const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
@@ -590,6 +612,32 @@ describe('useArticlesActions()', () => {
             await result.current.cloneArticle(getSingleArticleEnglish)
 
             expect(mockCreateArticleTranslation).toHaveBeenCalledTimes(1)
+        })
+
+        it('includes customer_visibility in the cloned article payload', async () => {
+            const { result } = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            const articleWithCustomerVisibility = {
+                ...getSingleArticleEnglish,
+                translation: {
+                    ...getSingleArticleEnglish.translation,
+                    customer_visibility: 'UNLISTED' as const,
+                },
+            }
+
+            await result.current.cloneArticle(articleWithCustomerVisibility)
+
+            expect(mockCreateArticle).toHaveBeenCalledWith(
+                expect.anything(),
+                expect.objectContaining({
+                    translation: expect.objectContaining({
+                        customer_visibility: 'UNLISTED',
+                        visibility_status: 'PUBLIC',
+                    }),
+                }),
+            )
         })
     })
 })
