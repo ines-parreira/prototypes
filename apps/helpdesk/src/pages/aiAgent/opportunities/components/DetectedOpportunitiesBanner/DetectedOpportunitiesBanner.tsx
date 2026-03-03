@@ -7,7 +7,7 @@ import { Box, Button, Card, Text } from '@gorgias/axiom'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OpportunityTicketDrillDownModal } from 'pages/aiAgent/opportunities/components/OpportunityTicketDrillDownModal'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
-import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
+import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import { useOpportunitiesTracking } from 'pages/aiAgent/opportunities/hooks/useOpportunitiesTracking'
 import { OpportunityPageReferrer } from 'pages/aiAgent/opportunities/types'
 

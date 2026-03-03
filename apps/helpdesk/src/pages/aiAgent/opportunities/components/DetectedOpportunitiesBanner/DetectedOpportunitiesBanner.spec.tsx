@@ -14,7 +14,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId',
+    'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId',
     () => ({
         useFindTopOpportunityByTicketId: jest.fn(),
     }),
@@ -54,7 +54,7 @@ describe('DetectedOpportunitiesBanner', () => {
     } = require('pages/aiAgent/hooks/useAiAgentNavigation')
     const {
         useFindTopOpportunityByTicketId,
-    } = require('pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId')
+    } = require('pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId')
 
     const mockWindowOpen = jest.fn()
     const mockRoutes = {

@@ -1,6 +1,11 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
+
+import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
+import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -16,10 +21,41 @@ export const useFindTopOpportunityByTicketId = (
         }
     },
 ) => {
+    const { currentAutomatePlan, hasAnyTrialActive, trialType } =
+        useTrialAccess()
+    const hasFullAccess = currentAutomatePlan?.plan_id.includes('usd-6')
+
+    const hasAccessToOpportunities = useMemo(
+        () =>
+            hasFullAccess ||
+            (hasAnyTrialActive && trialType === TrialType.ShoppingAssistant),
+        [hasFullAccess, hasAnyTrialActive, trialType],
+    )
+
+    const isTopOpportunitiesEnabled = useFlag(
+        FeatureFlagKey.IncreaseVisibilityOfOpportunity,
+        false,
+    )
+    const isUseKnowledgeServiceEnabled = useFlag(
+        FeatureFlagKey.OpportunitiesMilestone2,
+        false,
+    )
+
+    const isOpportunitiesEnabled = useMemo(
+        () => isTopOpportunitiesEnabled && isUseKnowledgeServiceEnabled,
+        [isTopOpportunitiesEnabled, isUseKnowledgeServiceEnabled],
+    )
+
+    const shouldFetch =
+        isOpportunitiesEnabled &&
+        !!hasAccessToOpportunities &&
+        !!ticketId &&
+        !!shopIntegrationId
+
     const { data, isLoading, isError, refetch } =
         useFindOpportunitiesByTicketIdOpportunity(shopIntegrationId, ticketId, {
             query: {
-                enabled: options?.query?.enabled ?? true,
+                enabled: !!shouldFetch && (options?.query?.enabled ?? true),
                 refetchOnWindowFocus:
                     options?.query?.refetchOnWindowFocus ?? false,
                 select: (response): Opportunity[] => {

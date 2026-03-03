@@ -11,7 +11,8 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { Dot } from '@gorgias/axiom'
+import { IntegrationType, useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'
@@ -20,6 +21,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
+import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
@@ -31,8 +33,13 @@ import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
-import { getAIAgentMessages, getTicket } from 'state/ticket/selectors'
+import {
+    getAIAgentMessages,
+    getIntegrationsData,
+    getTicket,
+} from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import * as actions from 'state/widgets/actions'
@@ -87,7 +94,6 @@ export const TicketInfobarContainer = ({
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
-
     const ticketId = parseInt(params.ticketId, 10)
     const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
         query: {
@@ -96,8 +102,25 @@ export const TicketInfobarContainer = ({
     })
     const shopperId = currentTicketData?.data?.customer?.id
 
+    const customerIntegrations = useAppSelector(getIntegrationsData)
+    const shopifyIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Shopify),
+    )
+    const shopIntegrationId = useMemo(
+        () =>
+            shopifyIntegrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            )?.id,
+        [shopifyIntegrations, customerIntegrations],
+    )
+
+    const { topOpportunity } = useFindTopOpportunityByTicketId(
+        shopIntegrationId ?? 0,
+        ticketId ? ticketId.toString() : '',
+    )
+
     const { onFeedbackTabOpened } = useFeedbackTracking({
-        ticketId: ticket.id,
+        ticketId,
         accountId,
         userId: currentUser.get('id'),
     })
@@ -254,6 +277,7 @@ export const TicketInfobarContainer = ({
                           name: TicketInfobarTab.AIFeedback,
                           icon: AI_FEEDBACK_TAB.ICON,
                           label: AI_FEEDBACK_TAB.LABEL,
+                          hasIndicator: !!topOpportunity,
                       },
                   ]
                 : []),
@@ -263,7 +287,7 @@ export const TicketInfobarContainer = ({
                 label: AUTO_QA_TAB.LABEL,
             },
         ]
-    }, [hasAIAgent, isEditWidgetPage])
+    }, [hasAIAgent, isEditWidgetPage, topOpportunity])
 
     return (
         <div
@@ -281,6 +305,7 @@ export const TicketInfobarContainer = ({
                             })}
                             onClick={() => handleChangeTab(tab.name)}
                         >
+                            {tab.hasIndicator && <Dot color="purple" />}
                             <i className="icon material-icons">{tab.icon}</i>
                             {tab.label}
                         </div>

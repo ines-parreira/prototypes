@@ -14,7 +14,7 @@ import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
-import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
+import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
@@ -118,7 +118,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId',
+    'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId',
     () => ({
         useFindTopOpportunityByTicketId: jest.fn(),
     }),
