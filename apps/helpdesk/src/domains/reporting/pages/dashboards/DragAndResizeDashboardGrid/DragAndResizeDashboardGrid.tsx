@@ -9,7 +9,6 @@ import {
 import type { Breakpoint, Layout } from 'react-grid-layout'
 
 import 'react-grid-layout/css/styles.css'
-import 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid.less'
 
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { getComponentConfig } from 'domains/reporting/pages/dashboards/config'
@@ -17,6 +16,7 @@ import { getChartConstraints } from 'domains/reporting/pages/dashboards/DragAndR
 import { calculateChartPositionsWithOccupied } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import type { OccupiedGrid } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/chartPlacementUtils'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
+import css from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeDashboardGrid.less'
 import {
     GRID_BREAKPOINTS,
     GRID_COLS,
@@ -238,6 +238,7 @@ export const DragAndResizeDashboardGrid = ({
     return (
         <div
             ref={containerRef as React.Ref<HTMLDivElement>}
+            className={css.dashboardGridContainer}
             style={{ width: '100%' }}
             data-drag-enabled={currentBreakpoint === 'lg'}
         >
