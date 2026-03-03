@@ -4,6 +4,7 @@ import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import type { QueryObserverResult } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,6 +12,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
+import type { HttpError } from '@gorgias/knowledge-service-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -18,6 +20,11 @@ import { UserRole } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { useGetFeedback } from 'models/knowledgeService/queries'
+import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
+import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
+import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -98,6 +105,26 @@ const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
 jest.mock('state/widgets/actions')
 
 jest.mock('state/ui/ticketAIAgentFeedback')
+
+jest.mock('@gorgias/axiom', () => ({
+    Dot: () => <span aria-label="notification dot" />,
+}))
+
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId',
+    () => ({
+        useFindTopOpportunityByTicketId: jest.fn(),
+    }),
+)
+
+jest.mock('models/knowledgeService/queries', () => ({
+    useGetFeedback: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/hooks/useShopIntegrationId', () => ({
+    useShopIntegrationId: jest.fn(),
+}))
+
 jest.mock(
     'state/ticket/selectors',
     () =>
@@ -130,6 +157,11 @@ jest.mock(
 )
 
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
+const mockedUseGetFeedback = assumeMock(useGetFeedback)
+const mockedUseShopIntegrationId = assumeMock(useShopIntegrationId)
+const mockedUseFindTopOpportunityByTicketId = assumeMock(
+    useFindTopOpportunityByTicketId,
+)
 const mockedSelectContext = assumeMock(selectContext)
 const mockedFetchWidgets = assumeMock(fetchWidgets)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
@@ -206,6 +238,15 @@ describe('<TicketInfobarContainer />', () => {
                 },
             },
         } as any)
+
+        mockedUseGetFeedback.mockReturnValue({ data: undefined } as any)
+        mockedUseShopIntegrationId.mockReturnValue(undefined)
+        mockedUseFindTopOpportunityByTicketId.mockReturnValue({
+            topOpportunity: null,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        })
     })
 
     it('should render infobar for active customer', () => {
@@ -574,5 +615,67 @@ describe('<TicketInfobarContainer />', () => {
         expect(
             screen.getByText('TimelineContent Component'),
         ).toBeInTheDocument()
+    })
+
+    describe('opportunity indicator', () => {
+        it('should show indicator on AI Feedback tab when top opportunity exists', () => {
+            mockedUseFindTopOpportunityByTicketId.mockReturnValue({
+                topOpportunity: {
+                    id: '123',
+                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
+                    resources: [],
+                    key: '',
+                    insight: '',
+                },
+                isLoading: false,
+                isError: false,
+                refetch: function (): Promise<
+                    QueryObserverResult<Opportunity[], HttpError<void>>
+                > {
+                    throw new Error('Function not implemented.')
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                {
+                    path: '/foo/:ticketId?',
+                    route: '/foo/123',
+                },
+            )
+
+            expect(
+                screen.getByLabelText('notification dot'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show indicator on AI Feedback tab when no opportunity exists', () => {
+            mockedUseFindTopOpportunityByTicketId.mockReturnValue({
+                topOpportunity: null,
+                isLoading: false,
+                isError: false,
+                refetch: function (): Promise<
+                    QueryObserverResult<Opportunity[], HttpError<void>>
+                > {
+                    throw new Error('Function not implemented.')
+                },
+            })
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                {
+                    path: '/foo/:ticketId?',
+                    route: '/foo/123',
+                },
+            )
+
+            expect(
+                screen.queryByLabelText('notification dot'),
+            ).not.toBeInTheDocument()
+        })
     })
 })

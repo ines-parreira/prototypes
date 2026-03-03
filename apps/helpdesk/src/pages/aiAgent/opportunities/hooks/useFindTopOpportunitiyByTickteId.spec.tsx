@@ -1,10 +1,13 @@
 import type React from 'react'
 
+import { useFlag } from '@repo/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 import type { FindOpportunitiesByTicketIdOpportunity200Item } from '@gorgias/knowledge-service-types'
+
+import useAppSelector from 'hooks/useAppSelector'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -17,6 +20,16 @@ jest.mock('@gorgias/knowledge-service-queries', () => ({
 }))
 jest.mock('../utils/mapOpportunityDetailToOpportunity', () => ({
     mapOpportunityDetailToOpportunity: jest.fn(),
+}))
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }))
 
 describe('useFindTopOpportunityByTicketId', () => {
@@ -133,9 +146,16 @@ describe('useFindTopOpportunityByTicketId', () => {
 
     const mockRefetch = jest.fn()
 
+    const mockUseFlag = useFlag as jest.Mock
+    const mockUseAppSelector = useAppSelector as jest.Mock
+
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+        mockUseFlag.mockReturnValue(true)
+        mockUseAppSelector.mockReturnValue({
+            automation: { plan_id: 'usd-6-monthly' },
+        })
     })
 
     describe('SDK hook invocation', () => {
@@ -703,6 +723,127 @@ describe('useFindTopOpportunityByTicketId', () => {
 
             expect(result.current.refetch).toBe(mockRefetch)
             expect(typeof result.current.refetch).toBe('function')
+        })
+    })
+
+    describe('shouldFetch conditions', () => {
+        it('should disable the query when feature flags are disabled', () => {
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockSDKHook.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+            mockUseFlag.mockReturnValue(false)
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                789,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: false }),
+                }),
+            )
+        })
+
+        it('should disable the query when the user does not have full access', () => {
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockSDKHook.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+            mockUseAppSelector.mockReturnValue({
+                automation: { plan_id: 'free' },
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                789,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: false }),
+                }),
+            )
+        })
+
+        it('should disable the query when shopIntegrationId is 0', () => {
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockSDKHook.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(0, '12345'), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                0,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: false }),
+                }),
+            )
+        })
+
+        it('should disable the query when ticketId is empty', () => {
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockSDKHook.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, ''), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                789,
+                '',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: false }),
+                }),
+            )
+        })
+
+        it('should enable the query when all conditions are met', () => {
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockSDKHook.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                789,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: true }),
+                }),
+            )
         })
     })
 })
