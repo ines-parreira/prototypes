@@ -12,6 +12,7 @@ import { fetchProductClickRateTrend } from 'domains/reporting/pages/automate/aiS
 import { fetchSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
+import { fetchTotalProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
 import { fetchTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
@@ -31,6 +32,7 @@ import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAg
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsShoppingAssistantPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsShoppingAssistantPerformanceTable'
+import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
@@ -73,6 +75,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     ConversionRateCard = 'conversion_rate_card',
     ClickThroughRateCard = 'click_through_rate_card',
     SuccessRateCard = 'sales_rate_card',
+    ProductRecommendationsCard = 'product_recommendations_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -310,6 +313,23 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
+            [AnalyticsAiAgentShoppingAssistantChart.ProductRecommendationsCard]:
+                {
+                    chartComponent: AnalyticsAiAgentProductRecommendationsCard,
+                    label: 'Product recommendations',
+                    csvProducer: [
+                        {
+                            type: DataExportFormat.Trend,
+                            fetch: fetchTotalProductRecommendations,
+                            metricFormat: 'decimal',
+                        },
+                    ],
+                    description:
+                        'The total number of product recommendations sent to customers by Shopping Assistant.',
+                    chartType: ChartType.Card,
+                    metricFormat: 'decimal',
+                    interpretAs: 'more-is-better',
+                },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
                 {
                     chartComponent: TotalSalesByProductComboChart,

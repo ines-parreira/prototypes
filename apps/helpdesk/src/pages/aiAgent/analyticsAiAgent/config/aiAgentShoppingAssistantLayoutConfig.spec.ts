@@ -35,6 +35,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
                 AnalyticsAiAgentShoppingAssistantChart.BuyThroughRateCard,
                 AnalyticsAiAgentShoppingAssistantChart.ClickThroughRateCard,
                 AnalyticsAiAgentShoppingAssistantChart.SuccessRateCard,
+                AnalyticsAiAgentShoppingAssistantChart.ProductRecommendationsCard,
             ]
             expect(kpisSection.items.map((item) => item.chartId)).toEqual(
                 expectedChartIds,
