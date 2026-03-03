@@ -17,6 +17,7 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@repo/hooks": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
         "react": "catalog:react",
         "react-dom": "catalog:react"

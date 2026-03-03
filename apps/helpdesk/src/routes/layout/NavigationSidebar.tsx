@@ -1,4 +1,9 @@
-import { SidebarContent, SidebarFooter, SidebarRoot } from '@repo/navigation'
+import {
+    SidebarContent,
+    SidebarFooter,
+    SidebarRoot,
+    useSidebar,
+} from '@repo/navigation'
 import { history } from '@repo/routing'
 
 import { Box, Button } from '@gorgias/axiom'
@@ -17,6 +22,7 @@ import { SidebarProductHeader } from 'routes/layout/SidebarProductHeader'
 
 export function NavigationSidebar() {
     const currentProduct = useCurrentRouteProduct()
+    const { isCollapsed, toggleCollapse } = useSidebar()
 
     const CurrentContent = currentProduct.sidebar
     const isSticky =
@@ -24,22 +30,36 @@ export function NavigationSidebar() {
 
     return (
         <SidebarRoot>
-            <Box justifyContent="space-between" alignItems="center">
+            <Box
+                justifyContent="space-between"
+                alignItems="center"
+                flexDirection={isCollapsed ? 'column-reverse' : 'row'}
+                gap="md"
+            >
                 {isSticky ? (
-                    <Box gap="xxxxs" alignItems="center">
-                        <Button
-                            icon="arrow-left"
-                            size="sm"
-                            variant="secondary"
-                            onClick={() =>
-                                history.push(
-                                    productConfig[Product.Home].defaultPath,
-                                )
-                            }
-                        />
+                    <Box
+                        gap="xxxxs"
+                        alignItems="center"
+                        flexDirection={isCollapsed ? 'column' : 'row'}
+                    >
+                        {!isCollapsed && (
+                            <Button
+                                icon="arrow-left"
+                                size="sm"
+                                variant="secondary"
+                                onClick={() =>
+                                    history.push(
+                                        productConfig[Product.Home].defaultPath,
+                                    )
+                                }
+                            />
+                        )}
                         <SidebarProductHeader
                             selectedItem={{
                                 name: currentProduct.name,
+                                icon: isCollapsed
+                                    ? currentProduct.icon
+                                    : undefined,
                             }}
                         />
                     </Box>
@@ -47,23 +67,39 @@ export function NavigationSidebar() {
                     <SidebarProductHeader selectedItem={currentProduct} />
                 )}
 
-                <Box gap="xxxs">
+                <Box
+                    gap="xxxs"
+                    flexDirection={isCollapsed ? 'column-reverse' : 'row'}
+                >
                     <NavigationSidebarSpotlightButton />
+
                     <Button
-                        icon="system-bar-expand"
-                        variant="tertiary"
+                        icon={
+                            isCollapsed
+                                ? 'system-bar-collapse'
+                                : 'system-bar-expand'
+                        }
                         size="sm"
+                        variant="tertiary"
+                        onClick={toggleCollapse}
+                        aria-label={
+                            isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
+                        }
                     />
                 </Box>
             </Box>
 
             <SidebarContent>
-                <CurrentContent />
+                {!isCollapsed && <CurrentContent />}
             </SidebarContent>
 
             <SidebarFooter>
                 <UserItem />
-                <Box gap="xxxxs" alignItems="center">
+                <Box
+                    gap="xxxxs"
+                    alignItems="center"
+                    flexDirection={isCollapsed ? 'column' : 'row'}
+                >
                     <Button
                         onClick={() => {
                             history.push(

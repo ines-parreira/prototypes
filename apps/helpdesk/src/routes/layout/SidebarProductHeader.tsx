@@ -1,3 +1,5 @@
+import { useSidebar } from '@repo/navigation'
+
 import { Button, Menu, MenuSection } from '@gorgias/axiom'
 
 import { Product, productConfig } from 'routes/layout/productConfig'
@@ -15,16 +17,26 @@ type SidebarProductHeaderProps = {
 export function SidebarProductHeader({
     selectedItem,
 }: SidebarProductHeaderProps) {
+    const { isCollapsed } = useSidebar()
+
     return (
         <Menu
             trigger={
-                <Button
-                    variant="tertiary"
-                    leadingSlot={selectedItem.icon}
-                    trailingSlot="arrow-chevron-down"
-                >
-                    {selectedItem.name}
-                </Button>
+                isCollapsed ? (
+                    <Button
+                        icon={selectedItem.icon}
+                        variant="tertiary"
+                        size="sm"
+                    />
+                ) : (
+                    <Button
+                        variant="tertiary"
+                        leadingSlot={selectedItem.icon}
+                        trailingSlot="arrow-chevron-down"
+                    >
+                        {selectedItem.name}
+                    </Button>
+                )
             }
         >
             <MenuSection id={'home'}>

@@ -19,3 +19,9 @@ export type {
     SidebarContentProps,
     SidebarFooterProps,
 } from './components/Sidebar'
+
+export {
+    SidebarContext,
+    SidebarProvider,
+    useSidebar,
+} from './contexts/SidebarContext'

@@ -1,5 +1,7 @@
+import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { Product, productConfig } from 'routes/layout/productConfig'
 
@@ -33,6 +35,16 @@ jest.mock('routes/layout/sidebars', () => ({
     SettingsSidebar: () => <div>SettingsSidebar</div>,
 }))
 
+const mockToggleCollapse = jest.fn()
+
+const wrapper = ({ children }: any) => (
+    <SidebarContext.Provider
+        value={{ isCollapsed: false, toggleCollapse: mockToggleCollapse }}
+    >
+        {children}
+    </SidebarContext.Provider>
+)
+
 describe('NavigationSidebar', () => {
     describe('non-sticky products', () => {
         beforeEach(() => {
@@ -42,27 +54,66 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render SidebarProductHeader for non-sticky products', () => {
-            render(<NavigationSidebar />)
+            render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('Inbox')).toHaveTextContent('Inbox')
         })
 
         it('should render action buttons in header', () => {
-            render(<NavigationSidebar />)
+            render(<NavigationSidebar />, { wrapper })
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(2)
         })
 
         it('should render InboxSidebar content', () => {
-            render(<NavigationSidebar />)
+            render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('InboxSidebar')).toBeInTheDocument()
         })
 
-        it('should render footer with UserItem and buttons', () => {
-            render(<NavigationSidebar />)
+        it('should render footer with UserItem and buttons - expanded state', () => {
+            render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('UserItem')).toBeInTheDocument()
             expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(1)
+        })
+
+        it('should render footer with UserItem and buttons - collapsed state', () => {
+            render(<NavigationSidebar />, {
+                wrapper: ({ children }) => (
+                    <SidebarContext.Provider
+                        value={{
+                            isCollapsed: true,
+                            toggleCollapse: mockToggleCollapse,
+                        }}
+                    >
+                        {children}
+                    </SidebarContext.Provider>
+                ),
+            })
+            expect(screen.getByText('UserItem')).toBeInTheDocument()
+            expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
+            const buttons = screen.getAllByRole('button')
+            expect(buttons.length).toBeGreaterThanOrEqual(1)
+        })
+
+        it('should render collapse toggle button', () => {
+            render(<NavigationSidebar />, { wrapper })
+            const collapseButton = screen.getByRole('button', {
+                name: /collapse sidebar/i,
+            })
+            expect(collapseButton).toBeInTheDocument()
+        })
+
+        it('should call toggleCollapse when collapse button is clicked', async () => {
+            const user = userEvent.setup()
+            render(<NavigationSidebar />, { wrapper })
+
+            const collapseButton = screen.getByRole('button', {
+                name: /collapse sidebar/i,
+            })
+            await user.click(collapseButton)
+
+            expect(mockToggleCollapse).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -74,12 +125,12 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render product name button for sticky products', () => {
-            render(<NavigationSidebar />)
+            render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('Settings')).toBeInTheDocument()
         })
 
         it('should render SettingsSidebar content', () => {
-            render(<NavigationSidebar />)
+            render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('SettingsSidebar')).toBeInTheDocument()
         })
     })
@@ -117,7 +168,7 @@ describe('NavigationSidebar', () => {
                 useCurrentRouteProductMock.mockReturnValue(
                     productConfig[product],
                 )
-                render(<NavigationSidebar />)
+                render(<NavigationSidebar />, { wrapper })
                 expect(screen.getByText(expectedSidebar)).toBeInTheDocument()
             },
         )

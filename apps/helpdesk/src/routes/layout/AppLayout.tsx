@@ -1,14 +1,22 @@
 import { useWindowSize } from '@repo/hooks'
 import { Handle, Panel, PanelGroup, Panels } from '@repo/layout'
+import { SidebarProvider } from '@repo/navigation'
 
 import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 
 import css from './AppLayout.less'
 
-const sidebarPanelConfig = {
+const expandedSidebarPanelConfig = {
     defaultSize: 238,
     minSize: 200,
     maxSize: 350,
+    prioritise: true,
+}
+
+const collapsedSidebarPanelConfig = {
+    defaultSize: 48,
+    minSize: 48,
+    maxSize: 48,
     prioritise: true,
 }
 
@@ -28,9 +36,23 @@ export function AppLayout({ children, hasPanel }: AppLayoutProps) {
 
     return (
         <Panels size={width}>
-            <Panel name="sidebar" config={sidebarPanelConfig}>
-                <NavigationSidebar />
-            </Panel>
+            <SidebarProvider>
+                {({ isCollapsed }) => (
+                    <Panel
+                        {...(isCollapsed
+                            ? {
+                                  name: 'sidebar-collapsed',
+                                  config: collapsedSidebarPanelConfig,
+                              }
+                            : {
+                                  name: 'sidebar-expanded',
+                                  config: expandedSidebarPanelConfig,
+                              })}
+                    >
+                        <NavigationSidebar />
+                    </Panel>
+                )}
+            </SidebarProvider>
             <Handle className={css.handle} />
             <PanelGroup subtractSize={10} className={css.panelGroup}>
                 {hasPanel ? (

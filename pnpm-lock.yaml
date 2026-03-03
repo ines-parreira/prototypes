@@ -2358,6 +2358,9 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.181.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@repo/hooks':
+        specifier: workspace:*
+        version: link:../hooks
     devDependencies:
       '@repo/config':
         specifier: workspace:*
