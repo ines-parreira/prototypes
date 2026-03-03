@@ -1,6 +1,7 @@
 export { CustomerInfo } from './components/ShopifyCustomer/components/CustomerInfo'
 export { OrderSidePanelPreview } from './components/ShopifyCustomer/components/CustomerInfo/OrderSidePanelPreview'
 export { ShopifyCustomer } from './components/ShopifyCustomer'
+export { TemplateResolverProvider } from './components/ShopifyCustomer/components/CustomerInfo/CustomActions'
 export { ShopifyCustomerProvider } from './components/ShopifyCustomer/ShopifyCustomerProvider'
 export { NotificationStatus } from './components/ShopifyCustomer/ShopifyCustomerContext'
 export type { ShopifyCustomerContextType } from './components/ShopifyCustomer/ShopifyCustomerContext'
