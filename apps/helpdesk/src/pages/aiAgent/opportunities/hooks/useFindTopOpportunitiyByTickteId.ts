@@ -1,11 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
-
-import useAppSelector from 'hooks/useAppSelector'
-import { getCurrentPlansByProduct } from 'state/billing/selectors'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -21,34 +16,10 @@ export const useFindTopOpportunityByTicketId = (
         }
     },
 ) => {
-    const currentPlansByProduct = useAppSelector(getCurrentPlansByProduct)
-    const hasFullAccess =
-        currentPlansByProduct?.automation?.plan_id.includes('usd-6')
-
-    const isTopOpportunitiesEnabled = useFlag(
-        FeatureFlagKey.IncreaseVisibilityOfOpportunity,
-        false,
-    )
-    const isUseKnowledgeServiceEnabled = useFlag(
-        FeatureFlagKey.OpportunitiesMilestone2,
-        false,
-    )
-
-    const isOpportunitiesEnabled = useMemo(
-        () => isTopOpportunitiesEnabled && isUseKnowledgeServiceEnabled,
-        [isTopOpportunitiesEnabled, isUseKnowledgeServiceEnabled],
-    )
-
-    const shouldFetch =
-        isOpportunitiesEnabled &&
-        !!hasFullAccess &&
-        !!ticketId &&
-        !!shopIntegrationId
-
     const { data, isLoading, isError, refetch } =
         useFindOpportunitiesByTicketIdOpportunity(shopIntegrationId, ticketId, {
             query: {
-                enabled: !!shouldFetch && (options?.query?.enabled ?? true),
+                enabled: options?.query?.enabled ?? true,
                 refetchOnWindowFocus:
                     options?.query?.refetchOnWindowFocus ?? false,
                 select: (response): Opportunity[] => {

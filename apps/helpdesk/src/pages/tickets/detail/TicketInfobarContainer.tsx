@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
-import { Dot } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { AutoQA } from 'auto_qa'
@@ -21,9 +20,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { useGetFeedback } from 'models/knowledgeService/queries'
-import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
-import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunitiyByTickteId'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
@@ -86,6 +82,7 @@ export const TicketInfobarContainer = ({
     const location = useLocation()
     const hasAIAgent = useHasAIAgent()
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
+
     const ticketId = parseInt(params.ticketId, 10)
     const { data: currentTicketData } = useGetTicket(ticketId!, undefined, {
         query: {
@@ -93,20 +90,6 @@ export const TicketInfobarContainer = ({
         },
     })
     const shopperId = currentTicketData?.data?.customer?.id
-
-    const { data: feedback } = useGetFeedback({
-        objectId: ticketId.toString(),
-        objectType: 'TICKET',
-    })
-
-    const shopName =
-        feedback?.executions?.[0]?.storeConfiguration?.shopName ?? ''
-    const shopIntegrationId = useShopIntegrationId(shopName)
-
-    const { topOpportunity } = useFindTopOpportunityByTicketId(
-        shopIntegrationId ?? 0,
-        ticketId ? ticketId.toString() : '',
-    )
 
     const { onFeedbackTabOpened } = useFeedbackTracking({
         ticketId: ticket.id,
@@ -264,7 +247,6 @@ export const TicketInfobarContainer = ({
                           name: TicketInfobarTab.AIFeedback,
                           icon: AI_FEEDBACK_TAB.ICON,
                           label: AI_FEEDBACK_TAB.LABEL,
-                          hasIndicator: !!topOpportunity,
                       },
                   ]
                 : []),
@@ -274,7 +256,7 @@ export const TicketInfobarContainer = ({
                 label: AUTO_QA_TAB.LABEL,
             },
         ]
-    }, [hasAIAgent, isEditWidgetPage, topOpportunity])
+    }, [hasAIAgent, isEditWidgetPage])
 
     return (
         <div
@@ -292,7 +274,6 @@ export const TicketInfobarContainer = ({
                             })}
                             onClick={() => handleChangeTab(tab.name)}
                         >
-                            {tab.hasIndicator && <Dot color="purple" />}
                             <i className="icon material-icons">{tab.icon}</i>
                             {tab.label}
                         </div>
