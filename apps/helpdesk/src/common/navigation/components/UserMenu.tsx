@@ -2,14 +2,11 @@ import { useMemo, useState } from 'react'
 
 import {
     useAgentPhoneStatus,
+    useCustomAgentUnavailableStatusesFlag,
     UserInfoHeaderContainer,
     useUserAvailabilityStatus,
 } from '@repo/agent-status'
-import {
-    FeatureFlagKey,
-    useFlag,
-    useHelpdeskV2BaselineFlag,
-} from '@repo/feature-flags'
+import { useHelpdeskV2BaselineFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
 import cn from 'classnames'
@@ -62,9 +59,7 @@ export default function UserMenu({ onClose }: Props) {
         ActiveScreen.Main,
     )
 
-    const isAgentUnavailabilityEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
 
     const { status } = useUserAvailabilityStatus({
         userId: currentUserId,

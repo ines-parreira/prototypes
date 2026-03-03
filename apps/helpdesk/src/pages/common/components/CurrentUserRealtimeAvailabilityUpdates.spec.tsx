@@ -1,5 +1,7 @@
-import { UserRealtimeAvailabilityUpdates } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    useCustomAgentUnavailableStatusesFlag,
+    UserRealtimeAvailabilityUpdates,
+} from '@repo/agent-status'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -8,39 +10,39 @@ import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import { CurrentUserRealtimeAvailabilityUpdates } from './CurrentUserRealtimeAvailabilityUpdates'
 
-jest.mock('@repo/feature-flags')
 jest.mock('hooks/useAppSelector')
 jest.mock('@repo/agent-status', () => ({
     ...jest.requireActual('@repo/agent-status'),
     UserRealtimeAvailabilityUpdates: jest.fn(() => (
         <div data-testid="realtime-updates" />
     )),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-const useFlagMock = assumeMock(useFlag)
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 describe('CurrentUserRealtimeAvailabilityUpdates', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        useFlagMock.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         useAppSelectorMock.mockReturnValue(null)
     })
 
     it('should return null when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         useAppSelectorMock.mockReturnValue(123)
 
         const { container } = render(<CurrentUserRealtimeAvailabilityUpdates />)
 
         expect(container.firstChild).toBeNull()
-        expect(useFlag).toHaveBeenCalledWith(
-            FeatureFlagKey.CustomAgentUnavailableStatuses,
-        )
+        expect(useCustomAgentUnavailableStatusesFlag).toHaveBeenCalled()
     })
 
     it('should return null when current user ID is not available', () => {
-        useFlagMock.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue(null)
 
         const { container } = render(<CurrentUserRealtimeAvailabilityUpdates />)
@@ -50,7 +52,7 @@ describe('CurrentUserRealtimeAvailabilityUpdates', () => {
     })
 
     it('should return null when current user ID is undefined', () => {
-        useFlagMock.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue(undefined)
 
         const { container } = render(<CurrentUserRealtimeAvailabilityUpdates />)
@@ -59,7 +61,7 @@ describe('CurrentUserRealtimeAvailabilityUpdates', () => {
     })
 
     it('should render UserRealtimeAvailabilityUpdates when feature flag is enabled and user ID exists', () => {
-        useFlagMock.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useAppSelectorMock.mockReturnValue(456)
 
         const { getByTestId } = render(

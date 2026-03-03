@@ -1,3 +1,4 @@
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -6,6 +7,11 @@ import { fromJS } from 'immutable'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { SettingsSidebar } from '../sidebars/SettingsSidebar'
+
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -22,6 +28,10 @@ jest.mock('common/navigation', () => ({
     Navbar: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
+const mockUseCustomAgentUnavailableStatusesFlag = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
+
 const mockUseFlag = assumeMock(useFlag)
 
 describe('SettingsSidebar', () => {
@@ -36,7 +46,7 @@ describe('SettingsSidebar', () => {
     }
 
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
     })
 
     afterEach(() => {
@@ -92,12 +102,7 @@ describe('SettingsSidebar', () => {
     })
 
     it('should render Agent unavailability when feature flag is enabled', () => {
-        mockUseFlag.mockImplementation((key) => {
-            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                return true
-            }
-            return false
-        })
+        mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
         renderWithStoreAndQueryClientAndRouter(
             <SettingsSidebar />,
@@ -107,7 +112,7 @@ describe('SettingsSidebar', () => {
     })
 
     it('should not render Agent unavailability when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
 
         renderWithStoreAndQueryClientAndRouter(
             <SettingsSidebar />,

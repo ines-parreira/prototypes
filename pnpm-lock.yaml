@@ -1582,6 +1582,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/feature-flags':
+        specifier: workspace:*
+        version: link:../feature-flags
       '@repo/forms':
         specifier: workspace:*
         version: link:../forms

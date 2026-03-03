@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import type { TabsProps } from '@gorgias/axiom'
@@ -22,9 +22,7 @@ export const AgentsTabbedChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const isAgentAvailabilityEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentAvailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
     const history = useHistory()
     const location = useLocation()
 

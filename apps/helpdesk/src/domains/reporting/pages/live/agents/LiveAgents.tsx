@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
-import { LiveAgentsRealtimeListener } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    LiveAgentsRealtimeListener,
+    useCustomAgentUnavailableStatusesFlag,
+} from '@repo/agent-status'
 import { produce } from 'immer'
 import moment from 'moment-timezone'
 
@@ -40,9 +42,7 @@ export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
-    const isAgentAvailabilityEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentAvailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
     const { cleanStatsFilters: statsFilters, userTimezone } = useAppSelector(
         getCleanStatsFiltersWithTimezone,
     )

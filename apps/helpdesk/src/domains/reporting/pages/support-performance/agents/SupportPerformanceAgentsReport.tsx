@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { useGridSize } from '@repo/hooks'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
@@ -23,9 +23,7 @@ export const AGENTS_PAGE_TITLE = 'Agents'
 export default function SupportPerformanceAgentsReport() {
     const { path } = useRouteMatch()
     const getGridCellSize = useGridSize()
-    const isAgentAvailabilityEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentAvailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
     useCleanStatsFilters()
 
     return (

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -119,8 +119,13 @@ jest.mock('domains/reporting/hooks/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 
 const componentMock = () => <div />
 
@@ -185,7 +190,7 @@ describe('SupportPerformanceAgents', () => {
         hasAccess: false,
         isLoading: false,
     })
-    useFlagMock.mockReturnValue(false)
+    useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
     it('should render the page title and section title', () => {
         renderWithStore(
@@ -326,12 +331,7 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should render availability export data button on availability route when feature flag is enabled', () => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                return true
-            }
-            return false
-        })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
 
         renderWithStore(
             <MemoryRouter
@@ -351,7 +351,7 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should not render availability route when feature flag is disabled', () => {
-        useFlagMock.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
         renderWithStore(
             <MemoryRouter

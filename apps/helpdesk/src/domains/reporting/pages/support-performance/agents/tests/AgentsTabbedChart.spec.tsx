@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -12,8 +12,13 @@ import { AgentsTabbedChart } from 'domains/reporting/pages/support-performance/a
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
 import { SECTION_TITLES } from 'domains/reporting/pages/support-performance/agents/constants'
 
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 
 jest.mock(
     'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra.tsx',
@@ -51,12 +56,12 @@ describe('AgentsTabbedChart', () => {
         AgentAvailabilityTableWithDefaultStateMock.mockImplementation(() => (
             <div>Availability Table Content</div>
         ))
-        useFlagMock.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
     })
 
     describe('when feature flag is disabled', () => {
         it('should render only performance table without tabs', () => {
-            useFlagMock.mockReturnValue(false)
+            useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
             const history = createMemoryHistory({
                 initialEntries: [
                     '/stats/support-performance-agents/performance',
@@ -80,12 +85,7 @@ describe('AgentsTabbedChart', () => {
 
     describe('when feature flag is enabled', () => {
         beforeEach(() => {
-            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                    return true
-                }
-                return false
-            })
+            useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         })
 
         it('should render tabs when feature flag is enabled', () => {

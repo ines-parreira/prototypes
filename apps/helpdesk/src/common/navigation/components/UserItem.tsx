@@ -1,7 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { AgentAvatar } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    AgentAvatar,
+    useCustomAgentUnavailableStatusesFlag,
+} from '@repo/agent-status'
 
 import useAppSelector from 'hooks/useAppSelector'
 import LegacyAvatar from 'pages/common/components/Avatar/Avatar'
@@ -19,9 +21,7 @@ export default function UserItem() {
     const currentUser = useAppSelector(getCurrentUser)
     const isAvailable = useAppSelector(getIsAvailable)
 
-    const isAgentStatusEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentStatusEnabled = useCustomAgentUnavailableStatusesFlag()
 
     const buttonRef = useRef<HTMLButtonElement | null>(null)
     const [isOpen, setIsOpen] = useState(false)

@@ -28,6 +28,7 @@ export {
     useListUserAvailabilities,
     useAvailabilityStatusColor,
     useUserAvailabilityRealtimeHandler,
+    useCustomAgentUnavailableStatusesFlag,
 } from './hooks'
 
 export type { AgentStatusWithSystem, DurationOption } from './types'

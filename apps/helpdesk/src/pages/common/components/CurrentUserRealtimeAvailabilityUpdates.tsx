@@ -1,5 +1,7 @@
-import { UserRealtimeAvailabilityUpdates } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    useCustomAgentUnavailableStatusesFlag,
+    UserRealtimeAvailabilityUpdates,
+} from '@repo/agent-status'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUserId } from 'state/currentUser/selectors'
@@ -21,9 +23,7 @@ import { getCurrentUserId } from 'state/currentUser/selectors'
  * ```
  */
 export function CurrentUserRealtimeAvailabilityUpdates() {
-    const isFeatureEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isFeatureEnabled = useCustomAgentUnavailableStatusesFlag()
     const currentUserId = useAppSelector(getCurrentUserId)
 
     if (!isFeatureEnabled || !currentUserId) {

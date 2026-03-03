@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
@@ -23,7 +22,6 @@ import UserMenu from '../UserMenu'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
     useHelpdeskV2BaselineFlag: jest.fn(),
 }))
 
@@ -58,10 +56,7 @@ jest.mock('core/theme', () => ({
 const useThemeMock = assumeMock(useTheme)
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
-const { useFlag, useHelpdeskV2BaselineFlag } = jest.requireMock(
-    '@repo/feature-flags',
-)
-const useFlagMock = useFlag as jest.Mock
+const { useHelpdeskV2BaselineFlag } = jest.requireMock('@repo/feature-flags')
 const useHelpdeskV2BaselineFlagMock = useHelpdeskV2BaselineFlag as jest.Mock
 
 jest.mock('../AvailabilityToggle', () => () => <div>AvailabilityToggle</div>)
@@ -94,12 +89,18 @@ jest.mock('@repo/agent-status', () => ({
         agentPhoneUnavailabilityStatus: undefined,
         isLoading: false,
     })),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-const { useUserAvailabilityStatus, useAgentPhoneStatus } =
-    jest.requireMock('@repo/agent-status')
+const {
+    useUserAvailabilityStatus,
+    useAgentPhoneStatus,
+    useCustomAgentUnavailableStatusesFlag,
+} = jest.requireMock('@repo/agent-status')
 const useUserAvailabilityStatusMock = useUserAvailabilityStatus as jest.Mock
 const useAgentPhoneStatusMock = useAgentPhoneStatus as jest.Mock
+const useCustomAgentUnavailableStatusesFlagMock =
+    useCustomAgentUnavailableStatusesFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -116,9 +117,7 @@ describe('UserMenu', () => {
     beforeEach(() => {
         onClose = jest.fn()
         useAxiomMigrationMock.mockReturnValue({ hasFlag: false })
-        useFlagMock.mockImplementation(() => {
-            return false
-        })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         useHelpdeskV2BaselineFlagMock.mockReturnValue({
             hasUIVisionBetaBaselineFlag: false,
             hasUIVisionBeta: false,
@@ -186,12 +185,7 @@ describe('UserMenu', () => {
     })
 
     it('should not render the agent status components when CustomAgentUnavailableStatuses feature flag is disabled', () => {
-        useFlagMock.mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                return false
-            }
-            return false
-        })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         render(<UserMenu onClose={onClose} />, { wrapper })
 
         expect(screen.getByText('AvailabilityToggle')).toBeInTheDocument()
@@ -213,12 +207,7 @@ describe('UserMenu', () => {
             },
             isLoading: false,
         })
-        useFlagMock.mockImplementation((key: string) => {
-            if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                return true
-            }
-            return false
-        })
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         render(<UserMenu onClose={onClose} />, { wrapper })
         expect(screen.getByText('UserInfoHeaderContainer')).toBeInTheDocument()
         expect(
@@ -399,8 +388,7 @@ describe('UserMenu', () => {
     })
 
     it('should render the status dropdown and screen when feature flag is enabled', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: {
                 id: 'available',
@@ -426,8 +414,7 @@ describe('UserMenu', () => {
     })
 
     it('should render status button with correct label when status is not available', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
 
         useUserAvailabilityStatusMock.mockReturnValue({
             status: undefined,
@@ -450,8 +437,7 @@ describe('UserMenu', () => {
     })
 
     it('should not render status button when feature flag is disabled', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
 
         render(<UserMenu onClose={onClose} />, {
             wrapper,
@@ -468,8 +454,7 @@ describe('UserMenu', () => {
     })
 
     it('should disable status button when agent is on a call', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: {
                 id: 'available',
@@ -498,8 +483,7 @@ describe('UserMenu', () => {
     })
 
     it('should hide chevron icon when status button is disabled due to phone status', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: undefined,
             isLoading: false,
@@ -530,8 +514,7 @@ describe('UserMenu', () => {
     })
 
     it('should display phone unavailability status text over regular status', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: {
                 id: 'available',
@@ -559,8 +542,7 @@ describe('UserMenu', () => {
     })
 
     it('should navigate back to main menu from status screen', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: {
                 id: 'available',
@@ -597,8 +579,7 @@ describe('UserMenu', () => {
     })
 
     it('should navigate back to main menu when status is updated', () => {
-        const useFlag = require('@repo/feature-flags').useFlag
-        useFlag.mockReturnValue(true)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: {
                 id: 'available',

@@ -3,9 +3,13 @@ import { MemoryRouter } from 'react-router-dom'
 
 import SettingsNavbar from './SettingsNavbar'
 
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
+}))
+
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
-        CustomAgentUnavailableStatuses: 'custom-agent-unavailable-statuses',
         HistoricalImports: 'historical-imports',
     },
     useFlag: jest.fn(),
@@ -109,6 +113,9 @@ jest.mock('./AutomateUpgradeBadge', () => ({
 }))
 
 const mockUseFlag = jest.mocked(require('@repo/feature-flags').useFlag)
+const mockUseCustomAgentUnavailableStatusesFlag = jest.mocked(
+    require('@repo/agent-status').useCustomAgentUnavailableStatusesFlag,
+)
 const mockUseAiAgentAccess = jest.mocked(
     require('hooks/aiAgent/useAiAgentAccess').useAiAgentAccess,
 )
@@ -123,6 +130,7 @@ const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.mocked(
 describe('SettingsNavbar', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
             isLoading: false,
@@ -479,6 +487,7 @@ describe('SettingsNavbar', () => {
             mockUseFlag.mockImplementation(() => {
                 return true
             })
+            mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
             renderComponent()
 

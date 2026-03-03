@@ -1,4 +1,5 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
+import { useFlag } from '@repo/feature-flags'
 import { logEvent } from '@repo/logging'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -23,6 +24,10 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
+}))
+jest.mock('@repo/agent-status', () => ({
+    ...jest.requireActual('@repo/agent-status'),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(() => false),
 }))
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -56,6 +61,8 @@ const mockUseLocation = useLocation as jest.Mock
 const mockLogEvent = logEvent as jest.Mock
 const mockUseAiAgentAccess = useAiAgentAccess as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
+const mockUseCustomAgentUnavailableStatusesFlag =
+    useCustomAgentUnavailableStatusesFlag as jest.Mock
 
 describe('SettingsNavbar', () => {
     const mockCurrentUser = fromJS({
@@ -293,12 +300,7 @@ describe('SettingsNavbar', () => {
 
     describe('Agent Unavailability menu item', () => {
         it('should show Agent Unavailability menu item when CustomAgentUnavailableStatuses flag is enabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                    return true
-                }
-                return false
-            })
+            mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
             renderComponent()
 
@@ -306,7 +308,7 @@ describe('SettingsNavbar', () => {
         })
 
         it('should hide Agent Unavailability menu item when CustomAgentUnavailableStatuses flag is disabled', () => {
-            mockUseFlag.mockImplementation(() => false)
+            mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
 
             renderComponent()
 
@@ -316,12 +318,7 @@ describe('SettingsNavbar', () => {
         })
 
         it('should render Agent Unavailability link with correct href', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                    return true
-                }
-                return false
-            })
+            mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
             renderComponent()
 
@@ -336,12 +333,7 @@ describe('SettingsNavbar', () => {
         })
 
         it('should not render Agent Unavailability for non-admin users', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.CustomAgentUnavailableStatuses) {
-                    return true
-                }
-                return false
-            })
+            mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
             const nonAdminStore = mockStore({
                 currentAccount: mockAccount,

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -64,9 +65,7 @@ const SettingsNavbar = () => {
     const { enabledInSettings: isArticleRecEnabledWhileSunset } =
         useIsArticleRecommendationsEnabledWhileSunset()
 
-    const isAgentUnavailabilityEnabled = useFlag(
-        FeatureFlagKey.CustomAgentUnavailableStatuses,
-    )
+    const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
 
     const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
 

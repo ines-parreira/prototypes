@@ -1,3 +1,4 @@
+import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -20,19 +21,16 @@ const getIsAvailableMock = assumeMock(getIsAvailable)
 
 jest.mock('../UserMenu', () => () => <div>UserMenu</div>)
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-
 jest.mock('@repo/agent-status', () => ({
     AgentAvatar: ({ name }: { name: string }) => (
         <div data-testid="agent-avatar">{name}</div>
     ),
+    useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-const { useFlag } = jest.requireMock('@repo/feature-flags')
-const useFlagMock = useFlag as jest.Mock
+const useCustomAgentUnavailableStatusesFlagMock = assumeMock(
+    useCustomAgentUnavailableStatusesFlag,
+)
 
 describe('UserItem', () => {
     beforeEach(() => {
@@ -40,12 +38,12 @@ describe('UserItem', () => {
             fromJS({ id: 123, name: 'John Doe' }),
         )
         getIsAvailableMock.mockReturnValue(true)
-        useFlagMock.mockReturnValue(false)
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
     })
 
     describe('with feature flag disabled (legacy behavior)', () => {
         beforeEach(() => {
-            useFlagMock.mockReturnValue(false)
+            useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
         })
 
         it('should render the legacy user avatar', () => {
@@ -87,7 +85,7 @@ describe('UserItem', () => {
 
     describe('with feature flag enabled (AgentAvatar)', () => {
         beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
+            useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         })
 
         it('should render AgentAvatar instead of legacy avatar', () => {
