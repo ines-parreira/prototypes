@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { fireEvent, render } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import type { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
@@ -102,17 +102,23 @@ describe('<HelpCenterEditModalHeader />', () => {
         helpCenterHasDefaultLayout: true,
     }
 
-    it('should display the component correctly - without the category selector', () => {
-        const { container } = render(
+    it('should render the article title and close button', () => {
+        render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader {...props} />
             </Provider>,
         )
-        expect(container).toMatchSnapshot('without the category selector')
+
+        expect(
+            screen.getByText(getSingleArticleEnglish.translation.title),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /close edit modal/i }),
+        ).toBeInTheDocument()
     })
 
-    it('should display the component correctly - with the category selector', () => {
-        const { container } = render(
+    it('should render the category select when showCategorySelect is true', () => {
+        render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader
                     {...props}
@@ -120,11 +126,12 @@ describe('<HelpCenterEditModalHeader />', () => {
                 />
             </Provider>,
         )
-        expect(container).toMatchSnapshot('with the category selector')
+
+        expect(screen.getByText('Help Center category')).toBeInTheDocument()
     })
 
-    it('should render an input when onEditTitle is defined', () => {
-        const { container } = render(
+    it('should render a text input when onTitleChange is provided', () => {
+        render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader
                     {...props}
@@ -133,7 +140,11 @@ describe('<HelpCenterEditModalHeader />', () => {
             </Provider>,
         )
 
-        expect(container).toMatchSnapshot()
+        expect(
+            screen.getByRole('textbox', {
+                name: getSingleArticleEnglish.translation.title,
+            }),
+        ).toBeInTheDocument()
     })
 
     it('should render a `preview article button` when article is published', () => {

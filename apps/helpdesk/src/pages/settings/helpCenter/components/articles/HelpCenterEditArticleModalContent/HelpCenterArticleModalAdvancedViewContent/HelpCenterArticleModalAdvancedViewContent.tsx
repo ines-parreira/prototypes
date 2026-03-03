@@ -1,4 +1,4 @@
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type {
     Article,
@@ -7,7 +7,6 @@ import type {
     LocalArticleTranslation,
     LocaleCode,
 } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
 import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
@@ -101,26 +100,21 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 title="Article Settings"
                 onClose={onArticleModalClose}
                 toggleModalBtn={
-                    <>
-                        <Tooltip placement="bottom" target="back-edit-button">
-                            View editor
-                        </Tooltip>
-                        <IconButton
+                    <Tooltip>
+                        <Button
                             onClick={() =>
                                 setEditModal({
                                     isOpened: true,
                                     view: HelpCenterArticleModalView.BASIC,
                                 })
                             }
-                            id="back-edit-button"
-                            fillStyle="ghost"
-                            intent="secondary"
-                            size="medium"
+                            variant="tertiary"
+                            size="md"
+                            icon="edit-pencil"
                             aria-label="basic editor modal"
-                        >
-                            edit
-                        </IconButton>
-                    </>
+                        />
+                        <TooltipContent title="View editor" />
+                    </Tooltip>
                 }
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick

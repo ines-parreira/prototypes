@@ -1,7 +1,7 @@
 import type { ChangeEvent, ReactChild } from 'react'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type {
@@ -10,7 +10,6 @@ import type {
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
 import {
@@ -111,34 +110,20 @@ export const HelpCenterEditModalHeader = ({
     }, [isParentUnlisted, selectedArticle?.translation.visibility_status])
 
     const getResizeModalButton = () => (
-        <>
-            <Tooltip placement="bottom" target="fullscreen-button">
-                {isFullscreen ? 'Halfscreen mode' : 'Fullscreen mode'}
-            </Tooltip>
-            <div id="fullscreen-button">
-                {isFullscreen ? (
-                    <IconButton
-                        onClick={onResize}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="halfscreen modal"
-                    >
-                        fullscreen_exit
-                    </IconButton>
-                ) : (
-                    <IconButton
-                        onClick={onResize}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="fullscreen modal"
-                    >
-                        fullscreen
-                    </IconButton>
-                )}
-            </div>
-        </>
+        <Tooltip>
+            <Button
+                onClick={onResize}
+                variant="tertiary"
+                size="md"
+                icon={isFullscreen ? 'arrow-collapse' : 'arrow-expand'}
+                aria-label={
+                    isFullscreen ? 'halfscreen modal' : 'fullscreen modal'
+                }
+            />
+            <TooltipContent
+                title={isFullscreen ? 'Exit full screen' : 'Enter full screen'}
+            />
+        </Tooltip>
     )
 
     const localeOptions = useMemo(
@@ -261,24 +246,17 @@ export const HelpCenterEditModalHeader = ({
                             disabled={!canUpdateArticle}
                         />
                         {lastUpdate && (
-                            <>
-                                <div className={css.lastUpdateTime}>
-                                    Last updated on{' '}
-                                    <span id="last-update">{lastUpdate}</span>
-                                </div>
-                                <Tooltip
-                                    delay={100}
-                                    target={`last-update`}
-                                    placement="bottom"
-                                    innerProps={{
-                                        popperClassName: css.tooltip,
-                                        innerClassName: css['tooltip-inner'],
-                                    }}
-                                    arrowClassName={css['tooltip-arrow']}
-                                >
-                                    {lastUpdateDetailed}
+                            <div className={css.lastUpdateTime}>
+                                Last updated on{' '}
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <span>{lastUpdate}</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent
+                                        caption={lastUpdateDetailed}
+                                    />
                                 </Tooltip>
-                            </>
+                            </div>
                         )}
                     </div>
                 ) : (
@@ -293,64 +271,49 @@ export const HelpCenterEditModalHeader = ({
                             list={localeOptions}
                             onSelect={onLanguageSelect}
                             onActionClick={onArticleLanguageSelectActionClick}
+                            className={css.headerLanguageSelect}
                         />
                     )}
                     {onResize && getResizeModalButton()}
                     {showPreviewArticleButton && (
-                        <>
-                            <Tooltip placement="bottom" target="preview-button">
-                                Open article
-                            </Tooltip>
-                            <IconButton
+                        <Tooltip>
+                            <Button
                                 onClick={() =>
                                     window
                                         .open(publishedPreviewUrl, '_blank')
                                         ?.focus()
                                 }
-                                fillStyle="ghost"
-                                intent="secondary"
-                                size="medium"
-                                id="preview-button"
+                                variant="tertiary"
+                                size="md"
+                                icon="external-link"
                                 aria-label="preview article"
-                            >
-                                open_in_new
-                            </IconButton>
-                        </>
+                            />
+                            <TooltipContent title="Open article" />
+                        </Tooltip>
                     )}
                     {showCopyURLButton && (
-                        <>
-                            <Tooltip
-                                placement="bottom"
-                                target="copy-url-button"
-                            >
-                                Copy article URL
-                            </Tooltip>
-                            <IconButton
-                                id="copy-url-button"
+                        <Tooltip>
+                            <Button
                                 onClick={handleCopyURL}
-                                fillStyle="ghost"
-                                intent="secondary"
-                                size="medium"
+                                variant="tertiary"
+                                size="md"
+                                icon="link-horizontal"
                                 aria-label="copy url"
-                            >
-                                link
-                            </IconButton>
-                        </>
+                            />
+                            <TooltipContent title="Copy article URL" />
+                        </Tooltip>
                     )}
                     {toggleModalBtn}
-                    <Tooltip placement="bottom" target="close-edit-mode-button">
-                        Close
+                    <Tooltip>
+                        <Button
+                            onClick={onClose}
+                            variant="tertiary"
+                            size="md"
+                            icon="exit"
+                            aria-label="close edit modal"
+                        />
+                        <TooltipContent title="Close" />
                     </Tooltip>
-                    <IconButton
-                        onClick={onClose}
-                        fillStyle="ghost"
-                        id="close-edit-mode-button"
-                        intent="secondary"
-                        size="medium"
-                        aria-label="close edit modal"
-                    >
-                        keyboard_tab
-                    </IconButton>
                 </div>
             </div>
             <div className={css.break} />

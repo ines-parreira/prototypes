@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 
 import { SCREEN_SIZE, useScreenSize } from '@repo/hooks'
 
-import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type {
     Article,
@@ -11,7 +11,6 @@ import type {
     LocaleCode,
 } from 'models/helpCenter/types'
 import { isArticleWithExistingTranslation } from 'models/helpCenter/types'
-import IconButton from 'pages/common/components/button/IconButton'
 import {
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -196,14 +195,8 @@ const HelpCenterArticleModalBasicViewContent = ({
                 }
                 onCopyLinkToClipboard={onCopyLinkToClipboard}
                 toggleModalBtn={
-                    <>
-                        <Tooltip
-                            placement="bottom-end"
-                            target="settings-button"
-                        >
-                            View settings
-                        </Tooltip>
-                        <IconButton
+                    <Tooltip>
+                        <Button
                             onClick={() =>
                                 setEditModal({
                                     isOpened: true,
@@ -211,15 +204,13 @@ const HelpCenterArticleModalBasicViewContent = ({
                                 })
                             }
                             isDisabled={!canUpdateArticle}
-                            fillStyle="ghost"
-                            intent="secondary"
-                            id="settings-button"
-                            size="medium"
+                            variant="tertiary"
+                            size="md"
+                            icon="settings"
                             aria-label="advanced editor modal"
-                        >
-                            settings
-                        </IconButton>
-                    </>
+                        />
+                        <TooltipContent title="View settings" />
+                    </Tooltip>
                 }
                 autoFocus={autoFocus}
                 domain={helpCenterDomain}
