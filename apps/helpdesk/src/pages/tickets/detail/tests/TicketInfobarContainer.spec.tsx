@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react'
 
+import type { ShopperData } from '@repo/customer'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
@@ -21,11 +22,13 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { executeAction } from 'state/infobar/actions'
 import { getAIAgentMessages } from 'state/ticket/selectors'
 import type { RootState, StoreState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
 import { renderWithRouter } from 'utils/testing'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import {
     AI_FEEDBACK_TAB,
@@ -65,12 +68,40 @@ jest.mock('auto_qa', () => ({
     AutoQA: () => <div>AutoQA Component</div>,
 }))
 
+let capturedOnCreateOrder:
+    | ((integrationId: number, shopperData: ShopperData) => void)
+    | undefined
+
 jest.mock('@repo/customer', () => ({
     ShopifyCustomer: () => <div>ShopifyCustomer Component</div>,
-    ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
-        <>{children}</>
-    ),
+    ShopifyCustomerProvider: ({
+        children,
+        onCreateOrder,
+    }: {
+        children: ReactNode
+        onCreateOrder?: (
+            integrationId: number,
+            shopperData: ShopperData,
+        ) => void
+    }) => {
+        capturedOnCreateOrder = onCreateOrder
+        return <>{children}</>
+    },
 }))
+
+jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
+    __esModule: true,
+    default: (props: Record<string, any>) =>
+        props.isOpen ? (
+            <>
+                <button onClick={props.onSubmit}>Submit order</button>
+                <button onClick={props.onClose}>Close order</button>
+            </>
+        ) : null,
+}))
+
+jest.mock('state/infobar/actions')
+const executeActionMock = assumeMock(executeAction)
 
 jest.mock('tickets/ticket-timeline', () => ({
     TimelineContent: () => <div>TimelineContent Component</div>,
@@ -165,6 +196,7 @@ describe('<TicketInfobarContainer />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        capturedOnCreateOrder = undefined
         store = mockStore(state)
         store.dispatch = jest.fn()
 
@@ -574,5 +606,67 @@ describe('<TicketInfobarContainer />', () => {
         expect(
             screen.getByText('TimelineContent Component'),
         ).toBeInTheDocument()
+    })
+
+    it('should dispatch executeAction with correct payload when create order is submitted', async () => {
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Shopify,
+            onChangeTab,
+        })
+
+        executeActionMock.mockReturnValue(jest.fn())
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/123',
+            },
+        )
+
+        const testIntegrationId = 42
+        const testShopperData: ShopperData = {
+            id: 789,
+            first_name: 'Jane',
+            last_name: 'Doe',
+            created_at: '2024-01-01T00:00:00Z',
+            updated_at: '2024-01-01T00:00:00Z',
+            state: 'enabled',
+            note: '',
+            verified_email: true,
+            multipass_identifier: null,
+            tax_exempt: false,
+            email: 'jane@example.com',
+            phone: null,
+            currency: 'USD',
+            addresses: [],
+            tax_exemptions: [],
+            admin_graphql_api_id: 'gid://shopify/Customer/789',
+            default_address: null,
+            tags: '',
+        }
+
+        capturedOnCreateOrder?.(testIntegrationId, testShopperData)
+
+        await screen.findByText('Submit order')
+
+        await userEvent.click(screen.getByText('Submit order'))
+
+        expect(executeActionMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                actionName: ShopifyActionType.CreateOrder,
+                integrationId: testIntegrationId,
+                payload: expect.objectContaining({
+                    customer_id: testShopperData.id,
+                }),
+            }),
+        )
+        expect(executeActionMock).toHaveBeenCalledWith(
+            expect.not.objectContaining({
+                customerId: expect.anything(),
+            }),
+        )
     })
 })

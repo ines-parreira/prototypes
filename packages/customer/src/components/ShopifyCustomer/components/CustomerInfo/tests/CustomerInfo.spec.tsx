@@ -5,6 +5,8 @@ import { setupServer } from 'msw/node'
 import {
     mockEcommerceData,
     mockGetEcommerceDataByExternalIdHandler,
+    mockListEcommerceDataHandler,
+    mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
 import {
     mockGetCurrentUserHandler,
@@ -14,6 +16,7 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 
 const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
     shopifyIntegrationId: undefined,
@@ -94,6 +97,34 @@ const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(async () =>
     HttpResponse.json(
         mockEcommerceData({
             data: mockShopperData,
+            relationships: {
+                shopper_identity_id: 'shopper-identity-1',
+            },
+        }),
+    ),
+)
+
+const mockOrderData = mockEcommerceData({
+    external_id: 'order-1',
+    data: {
+        id: 99001,
+        order_number: 3001,
+        name: '#3001',
+        created_at: '2024-01-15T10:00:00Z',
+        updated_at: '2024-01-15T10:00:00Z',
+        currency: 'USD',
+        total_price: '50.00',
+        financial_status: 'paid',
+        fulfillment_status: null,
+        line_items: [],
+        customer: mockShopperData,
+    },
+})
+
+const mockListOrders = mockListEcommerceDataHandler(async () =>
+    HttpResponse.json(
+        mockPaginatedDataEcommerceData({
+            data: [mockOrderData],
         }),
     ),
 )
@@ -104,6 +135,7 @@ beforeEach(() => {
     server.use(
         mockListIntegrations.handler,
         mockGetEcommerceData.handler,
+        mockListOrders.handler,
         mockGetCurrentUser.handler,
     )
 })
@@ -507,5 +539,53 @@ describe('CustomerInfo', () => {
         await user.click(screen.getByRole('button', { name: /confirm/i }))
 
         expect(onToggleEditShopifyFields).toHaveBeenCalledWith(false)
+    })
+
+    it('calls onCreateOrder with integration id and shopper data when Create order is clicked', async () => {
+        const onCreateOrder = vi.fn()
+
+        mockUseTicketInfobarNavigation.mockReturnValue({
+            shopifyIntegrationId: undefined,
+            activeTab: undefined,
+            isExpanded: true,
+            isEditShopifyFieldsOpen: false,
+            onChangeTab: vi.fn(),
+            onToggle: vi.fn(),
+            onToggleEditShopifyFields: vi.fn(),
+        })
+
+        const { user } = render(
+            <ShopifyCustomerContext.Provider
+                value={{
+                    dispatchNotification: vi.fn(),
+                    onCreateOrder,
+                }}
+            >
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />
+            </ShopifyCustomerContext.Provider>,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /john doe/i }),
+            ).toBeInTheDocument()
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /create order/i }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: /create order/i }))
+
+        expect(onCreateOrder).toHaveBeenCalledWith(
+            mockShopifyIntegration.id,
+            expect.objectContaining(mockShopperData),
+        )
     })
 })

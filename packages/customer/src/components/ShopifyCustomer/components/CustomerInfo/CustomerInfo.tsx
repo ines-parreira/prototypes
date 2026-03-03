@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useContext, useState } from 'react'
 
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/user'
@@ -10,6 +10,7 @@ import { useGetDraftOrders } from '../../hooks/useGetDraftOrders'
 import { useGetOrders } from '../../hooks/useGetOrders'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
+import { ShopifyCustomerContext } from '../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
@@ -51,6 +52,8 @@ export function CustomerInfo({
         externalIdMap,
         onStoreChange,
     })
+
+    const { onCreateOrder } = useContext(ShopifyCustomerContext)
 
     const { shopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
@@ -110,6 +113,12 @@ export function CustomerInfo({
         setSelectedOrder(order)
         setIsOrderOpen(true)
     }, [])
+
+    const handleCreateOrder = useCallback(() => {
+        if (selectedIntegration?.id && shopper?.data && onCreateOrder) {
+            onCreateOrder(selectedIntegration.id, shopper.data)
+        }
+    }, [selectedIntegration?.id, shopper?.data, onCreateOrder])
 
     const handleDuplicateOrder = useCallback(
         (order: OrderEcommerceData['data']) => {
@@ -184,6 +193,7 @@ export function CustomerInfo({
                 draftOrders={draftOrders}
                 isLoadingDraftOrders={isLoadingDraftOrders}
                 onSelectOrder={handleSelectOrder}
+                onCreateOrder={handleCreateOrder}
             />
 
             <OrderSidePanelPreview

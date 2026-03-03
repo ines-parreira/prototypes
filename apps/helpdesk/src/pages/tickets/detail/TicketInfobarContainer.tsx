@@ -27,6 +27,8 @@ import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentF
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
@@ -41,8 +43,11 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TimelineContent } from 'tickets/ticket-timeline'
 import { isTeamLead } from 'utils'
+import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
+import { useCreateOrder } from './hooks/useCreateOrder'
 
 import css from './TicketInfobarContainer.less'
 
@@ -145,6 +150,8 @@ export const TicketInfobarContainer = ({
     const handleSyncProfile = useCallback(() => {
         setIsCustomerSyncFormOpen(true)
     }, [])
+
+    const createOrder = useCreateOrder()
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) =>
@@ -297,6 +304,7 @@ export const TicketInfobarContainer = ({
                 <div className={css.shopifyContainer}>
                     <ShopifyCustomerProvider
                         dispatchNotification={dispatchNotification}
+                        onCreateOrder={createOrder.open}
                     >
                         <ShopifyCustomer onSyncProfile={handleSyncProfile} />
                     </ShopifyCustomerProvider>
@@ -305,6 +313,33 @@ export const TicketInfobarContainer = ({
                         activeCustomer={customer}
                         setIsCustomerSyncFormOpen={setIsCustomerSyncFormOpen}
                     />
+                    <CustomerContext.Provider
+                        value={{
+                            customerId: ticket.customer?.id ?? null,
+                        }}
+                    >
+                        <IntegrationContext.Provider
+                            value={{
+                                integration: fromJS({}),
+                                integrationId:
+                                    createOrder.data?.integrationId ?? null,
+                            }}
+                        >
+                            <DraftOrderModal
+                                isOpen={createOrder.isOpen}
+                                title="Create order"
+                                onChange={createOrder.onChange}
+                                onBulkChange={createOrder.onBulkChange}
+                                onSubmit={createOrder.onSubmit}
+                                onClose={createOrder.onClose}
+                                data={{
+                                    actionName: ShopifyActionType.CreateOrder,
+                                    customer:
+                                        createOrder.data?.customerImmutable,
+                                }}
+                            />
+                        </IntegrationContext.Provider>
+                    </CustomerContext.Provider>
                 </div>
             ) : (
                 <div

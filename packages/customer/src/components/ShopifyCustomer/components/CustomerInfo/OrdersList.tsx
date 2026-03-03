@@ -15,6 +15,7 @@ type OrdersListProps = {
     draftOrders: OrderEcommerceData[] | undefined
     isLoadingDraftOrders: boolean
     onSelectOrder?: (order: OrderEcommerceData) => void
+    onCreateOrder?: () => void
 }
 
 export function OrdersList({
@@ -24,6 +25,7 @@ export function OrdersList({
     draftOrders,
     isLoadingDraftOrders,
     onSelectOrder,
+    onCreateOrder,
 }: OrdersListProps) {
     if (isLoadingOrders || isLoadingDraftOrders) {
         return null
@@ -43,6 +45,7 @@ export function OrdersList({
                 <OrdersHeader
                     ordersCount={orders?.length ?? 0}
                     isLoading={isLoadingOrders}
+                    onCreateOrder={onCreateOrder}
                 />
 
                 {hasOrders && (

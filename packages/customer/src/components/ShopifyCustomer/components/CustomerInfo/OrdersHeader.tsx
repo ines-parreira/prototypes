@@ -3,9 +3,14 @@ import { Box, Button, Heading, Tag, Text } from '@gorgias/axiom'
 type OrdersHeaderProps = {
     ordersCount: number
     isLoading: boolean
+    onCreateOrder?: () => void
 }
 
-export function OrdersHeader({ ordersCount, isLoading }: OrdersHeaderProps) {
+export function OrdersHeader({
+    ordersCount,
+    isLoading,
+    onCreateOrder,
+}: OrdersHeaderProps) {
     return (
         <Box
             flexDirection="row"
@@ -20,7 +25,12 @@ export function OrdersHeader({ ordersCount, isLoading }: OrdersHeaderProps) {
                     {!isLoading && <Tag color="grey">{ordersCount}</Tag>}
                 </Box>
             </Heading>
-            <Button size="sm" variant="secondary" leadingSlot="add-plus">
+            <Button
+                size="sm"
+                variant="secondary"
+                leadingSlot="add-plus"
+                onClick={onCreateOrder}
+            >
                 Create order
             </Button>
         </Box>

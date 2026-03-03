@@ -326,4 +326,22 @@ describe('OrdersList', () => {
         expect(screen.getByText('#1001')).toBeInTheDocument()
         expect(screen.getByText('#D2001')).toBeInTheDocument()
     })
+
+    it('calls onCreateOrder when Create order button is clicked', async () => {
+        const onCreateOrder = vi.fn()
+        const { user } = render(
+            <OrdersList
+                orders={[mockOrderData]}
+                isLoadingOrders={false}
+                productsMap={mockProductsMap}
+                draftOrders={[]}
+                isLoadingDraftOrders={false}
+                onCreateOrder={onCreateOrder}
+            />,
+        )
+
+        await user.click(screen.getByRole('button', { name: /create order/i }))
+
+        expect(onCreateOrder).toHaveBeenCalledTimes(1)
+    })
 })
