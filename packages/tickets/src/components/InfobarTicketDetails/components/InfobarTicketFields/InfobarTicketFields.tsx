@@ -46,7 +46,7 @@ export function InfobarTicketFields({
             isExpanded={isExpanded}
             onExpandedChange={setIsExpanded}
             key={`ticket-fields-overflow-list-${isExpanded}`}
-            gap="xxxxs"
+            gap="xxxs"
         >
             {ticketFields.map((ticketField) => (
                 <InfobarTicketField

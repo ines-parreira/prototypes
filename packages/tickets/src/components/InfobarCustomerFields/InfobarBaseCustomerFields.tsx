@@ -65,7 +65,7 @@ export function InfobarBaseCustomerFields({
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Location" className={css.infoFieldRow}>
                         <Text
-                            size="sm"
+                            size="md"
                             overflow="ellipsis"
                             className={cn(css.fieldValue, css.infoFieldValue)}
                         >
@@ -78,7 +78,7 @@ export function InfobarBaseCustomerFields({
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Local time" className={css.infoFieldRow}>
                         <Text
-                            size="sm"
+                            size="md"
                             overflow="ellipsis"
                             className={cn(css.fieldValue, css.infoFieldValue)}
                         >

@@ -30,7 +30,7 @@ export function OtherChannelField({
             <FieldRow
                 label={showLabel ? formatChannelTypeLabel(channel.type) : null}
             >
-                <Text size="sm" overflow="ellipsis" className={css.fieldValue}>
+                <Text size="md" overflow="ellipsis" className={css.fieldValue}>
                     {channel.address}
                 </Text>
             </FieldRow>

@@ -9,7 +9,7 @@ type TriggerLabelProps = {
 
 export function TriggerLabel({ label, tooltipText }: TriggerLabelProps) {
     const textElement = (
-        <Text size="sm" overflow="ellipsis" className={css.fieldValue}>
+        <Text size="md" overflow="ellipsis" className={css.fieldValue}>
             {label}
         </Text>
     )

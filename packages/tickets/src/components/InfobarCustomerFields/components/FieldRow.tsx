@@ -25,7 +25,7 @@ export const FieldRow = ({
         <div className={cn(css.row, className)}>
             {label ? (
                 <Label
-                    size="sm"
+                    size="md"
                     overflow="ellipsis"
                     isRequired={isRequired}
                     htmlFor={fieldId}

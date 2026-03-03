@@ -29,7 +29,7 @@ export function InfobarCustomerFields({
             className={css.overflowList}
             nonExpandedLineCount={7}
             key={customer.id}
-            gap="xxxxs"
+            gap="xxxs"
         >
             <InfobarCustomCustomerFields customer={customer} />
             <InfobarBaseCustomerFields
