@@ -985,9 +985,6 @@ describe('AiAgentOverview', () => {
                 if (key === FeatureFlagKey.OpportunitiesMilestone2) {
                     return true
                 }
-                if (key === FeatureFlagKey.SurfaceOpportunities) {
-                    return true
-                }
                 return false
             })
         })
@@ -1093,39 +1090,6 @@ describe('AiAgentOverview', () => {
                     </Provider>
                 </MemoryRouter>,
             )
-
-            expect(
-                queryByText('Top Opportunities Section'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not render TopOpportunitiesSection when SurfaceOpportunities feature flag is disabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.IncreaseVisibilityOfOpportunity) {
-                    return true
-                }
-                if (key === FeatureFlagKey.OpportunitiesMilestone2) {
-                    return true
-                }
-                return false
-            })
-
-            mockUseKnowledgeServiceOpportunities.mockReturnValue({
-                opportunities: [
-                    {
-                        id: '1',
-                        key: 'opp-1',
-                        type: 'FILL_KNOWLEDGE_GAP',
-                        insight: 'Test insight',
-                        ticketCount: 5,
-                    },
-                ],
-                isLoading: false,
-                allowedOpportunityIds: undefined,
-                totalPending: 20,
-            } as any)
-
-            const { queryByText } = renderComponent()
 
             expect(
                 queryByText('Top Opportunities Section'),

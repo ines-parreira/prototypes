@@ -1,4 +1,3 @@
-import type { ArticleTemplateReviewAction } from 'models/helpCenter/types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import type { OpportunityType } from './enums'
@@ -60,10 +59,6 @@ export interface OpportunityConfig {
     useKnowledgeService: boolean
     onArchive: (articleKey: string) => void
     onPublish: (articleKey: string) => void
-    markArticleAsReviewed: (
-        templateKey: string,
-        reviewAction: ArticleTemplateReviewAction,
-    ) => void
     onOpportunityAccepted?: (context: {
         opportunityId: string
         opportunityType: string

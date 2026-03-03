@@ -63,7 +63,6 @@ const mockOpportunityConfig: OpportunityConfig = {
     useKnowledgeService: true,
     onArchive: jest.fn(),
     onPublish: jest.fn(),
-    markArticleAsReviewed: jest.fn(),
     onOpportunityAccepted: jest.fn(),
     onOpportunityDismissed: jest.fn(),
 }
@@ -268,46 +267,6 @@ describe('useOpportunityCTAs', () => {
                 })
             })
         })
-
-        it('should call reviewArticle when not using knowledge service', async () => {
-            const reviewArticleMock = jest.fn()
-            ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValue({
-                mutate: reviewArticleMock,
-                isLoading: false,
-            })
-
-            const configWithoutKnowledgeService = {
-                ...mockOpportunityConfig,
-                useKnowledgeService: false,
-            }
-
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: configWithoutKnowledgeService,
-                    }),
-                { wrapper },
-            )
-
-            await result.current.handleApprove()
-
-            await waitFor(() => {
-                expect(reviewArticleMock).toHaveBeenCalledWith([
-                    undefined,
-                    { help_center_id: 789 },
-                    {
-                        action: 'archive',
-                        template_key: 'ai_123',
-                        reason: 'Archived as opportunity',
-                    },
-                ])
-                expect(
-                    mockOpportunityConfig.onOpportunityAccepted,
-                ).toHaveBeenCalled()
-            })
-        })
     })
 
     describe('handleResolve', () => {
@@ -474,25 +433,6 @@ describe('useOpportunityCTAs', () => {
             )
 
             expect(result.current.isProcessing).toBe(false)
-        })
-
-        it('should include review article loading state', () => {
-            ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValue({
-                mutate: jest.fn(),
-                isLoading: true,
-            })
-
-            const { result } = renderHook(
-                () =>
-                    useOpportunityCTAs({
-                        selectedOpportunity: mockOpportunity,
-                        editorFormResources: [mockFormData],
-                        opportunityConfig: mockOpportunityConfig,
-                    }),
-                { wrapper },
-            )
-
-            expect(result.current.isProcessing).toBe(true)
         })
     })
 

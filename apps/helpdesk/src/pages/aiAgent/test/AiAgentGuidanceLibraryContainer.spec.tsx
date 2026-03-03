@@ -117,7 +117,7 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         expect(screen.getByText(template.name)).toBeInTheDocument()
         expect(screen.getByText(aiGuidance.name)).toBeInTheDocument()
-        expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
+        expect(screen.getByText('Create Custom Guidance')).toBeInTheDocument()
     })
 
     it('should render ai guidances banner and guidance templates', () => {
@@ -135,10 +135,10 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
             ),
         ).toBeInTheDocument()
         expect(screen.getByText(template.name)).toBeInTheDocument()
-        expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
+        expect(screen.getByText('Create Custom Guidance')).toBeInTheDocument()
     })
 
-    it('should redirect to new ai guidance page on click', () => {
+    it('should redirect to new guidance page on click', () => {
         const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
         mockedUseGuidanceAiSuggestions.mockReturnValue({

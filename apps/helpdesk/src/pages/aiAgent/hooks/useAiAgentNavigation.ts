@@ -167,7 +167,9 @@ const useNavigationItems = (
 
     const isSmsChannelEnabled = useFlag(FeatureFlagKey.AiAgentSmsChannel)
 
-    const isOpportunitiesEnabled = useFlag(FeatureFlagKey.SurfaceOpportunities)
+    const isOpportunitiesEnabled = useFlag(
+        FeatureFlagKey.OpportunitiesMilestone2,
+    )
 
     const shouldRenderShoppingAssistantPages =
         !isShoppingAssistantDeactivationEnforced ||

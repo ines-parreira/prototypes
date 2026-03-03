@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -15,7 +15,6 @@ import type {
 } from 'pages/aiAgent/opportunities/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
-import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getViewLanguage } from 'state/ui/helpCenter'
@@ -24,7 +23,6 @@ import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarConte
 import { useKnowledgeServiceOpportunities } from '../../hooks/useKnowledgeServiceOpportunities'
 import { useOpportunitiesTracking } from '../../hooks/useOpportunitiesTracking'
 import { useSelectedOpportunity } from '../../hooks/useSelectedOpportunity'
-import { mapAiArticlesToOpportunities } from '../../utils/mapAiArticlesToOpportunities'
 import { OpportunitiesContent } from '../OpportunitiesContent/OpportunitiesContent'
 import { OpportunitiesSidebar } from '../OpportunitiesSidebar/OpportunitiesSidebar'
 
@@ -66,17 +64,6 @@ export const OpportunitiesLayout = () => {
     const accountId = useAppSelector(getCurrentAccountId)
 
     const {
-        articles: aiArticles,
-        isLoading: isLoadingAiArticles,
-        markArticleAsReviewed,
-    } = useHelpCenterAIArticlesLibrary(
-        storeConfiguration?.helpCenterId ?? 0,
-        locale,
-        shopName,
-        !useKnowledgeService,
-    )
-
-    const {
         opportunities: knowledgeServiceOpportunities,
         isLoading: isLoadingKnowledgeService,
         isFetchingNextPage,
@@ -90,18 +77,8 @@ export const OpportunitiesLayout = () => {
         useKnowledgeService,
     )
 
-    const opportunities: SidebarOpportunityItem[] = useMemo(() => {
-        if (useKnowledgeService) {
-            return knowledgeServiceOpportunities
-        }
-        if (!storeConfiguration?.helpCenterId) return []
-        return mapAiArticlesToOpportunities(aiArticles)
-    }, [
-        aiArticles,
-        knowledgeServiceOpportunities,
-        storeConfiguration?.helpCenterId,
-        useKnowledgeService,
-    ])
+    const opportunities: SidebarOpportunityItem[] =
+        knowledgeServiceOpportunities
 
     const {
         selectedOpportunity,
@@ -166,22 +143,12 @@ export const OpportunitiesLayout = () => {
     }
 
     const handleArchiveArticle = async (articleKey: string) => {
-        if (!useKnowledgeService) {
-            markArticleAsReviewed(articleKey, 'archive')
-        } else {
-            await refetchOpportunities()
-        }
-
+        await refetchOpportunities()
         selectNextOpportunity(articleKey)
     }
 
     const handlePublishArticle = async (articleKey: string) => {
-        if (!useKnowledgeService) {
-            markArticleAsReviewed(articleKey, 'publish')
-        } else {
-            await refetchOpportunities()
-        }
-
+        await refetchOpportunities()
         selectNextOpportunity(articleKey)
     }
 
@@ -207,9 +174,7 @@ export const OpportunitiesLayout = () => {
         }
     }, [])
 
-    const isLoading =
-        isStoreConfigLoading ||
-        (useKnowledgeService ? isLoadingKnowledgeService : isLoadingAiArticles)
+    const isLoading = isStoreConfigLoading || isLoadingKnowledgeService
 
     const opportunityConfig: OpportunityConfig = {
         shopName,
@@ -219,7 +184,6 @@ export const OpportunitiesLayout = () => {
         useKnowledgeService,
         onArchive: handleArchiveArticle,
         onPublish: handlePublishArticle,
-        markArticleAsReviewed,
         onOpportunityAccepted,
         onOpportunityDismissed,
     }

@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
 
@@ -14,10 +13,6 @@ import type {
     OpportunityConfig,
     ResourceFormFields,
 } from 'pages/aiAgent/opportunities/types'
-import {
-    aiArticleKeys,
-    useUpsertArticleTemplateReview,
-} from 'pages/settings/helpCenter/queries'
 import {
     FeedbackObjectType,
     FeedbackTargetType,
@@ -46,16 +41,12 @@ export const useOpportunityCTAs = ({
     opportunityConfig,
 }: UseOpportunityCTAsProps) => {
     const dispatch = useAppDispatch()
-    const queryClient = useQueryClient()
     const [isProcessing, setIsProcessing] = useState(false)
 
     const {
         shopIntegrationId,
-        helpCenterId,
         useKnowledgeService,
         onArchive,
-        onPublish,
-        markArticleAsReviewed,
         onOpportunityAccepted,
         onOpportunityDismissed,
     } = opportunityConfig
@@ -66,27 +57,6 @@ export const useOpportunityCTAs = ({
         objectType: FeedbackObjectType.OPPORTUNITY,
         objectId: selectedOpportunity?.id || '',
         executionId: '00000000-0000-0000-0000-000000000000',
-    })
-
-    const reviewArticle = useUpsertArticleTemplateReview({
-        onSuccess: async (__data, [__client, __pathParameters, body]) => {
-            await queryClient.invalidateQueries({
-                queryKey: aiArticleKeys.list(helpCenterId),
-            })
-
-            markArticleAsReviewed(`ai_${body.template_key}`, body.action)
-
-            if (body.action === 'archive') {
-                onArchive(`ai_${body.template_key}`)
-            } else if (body.action === 'publish') {
-                onPublish(`ai_${body.template_key}`)
-            }
-        },
-        onError: async (__error, [__client, __pathParameters, __body]) => {
-            await queryClient.invalidateQueries({
-                queryKey: aiArticleKeys.list(helpCenterId),
-            })
-        },
     })
 
     const handleOpportunityProcessError = useCallback(
@@ -159,40 +129,27 @@ export const useOpportunityCTAs = ({
     )
 
     const handleApprove = useCallback(async () => {
-        if (!selectedOpportunity) return
+        if (!selectedOpportunity || !useKnowledgeService || !shopIntegrationId)
+            return
 
         const resource = editorFormResources[0]
         if (!resource) return
 
         setIsProcessing(true)
         try {
-            if (useKnowledgeService && shopIntegrationId) {
-                await processOpportunity.mutateAsync({
-                    shopIntegrationId,
-                    opportunityId: parseInt(selectedOpportunity.id, 10),
-                    data: buildApprovePayload({
-                        isVisible: resource.isVisible,
-                        title: resource.title,
-                        content: resource.content,
-                    }),
-                })
-                onArchive(selectedOpportunity.key)
+            await processOpportunity.mutateAsync({
+                shopIntegrationId,
+                opportunityId: parseInt(selectedOpportunity.id, 10),
+                data: buildApprovePayload({
+                    isVisible: resource.isVisible,
+                    title: resource.title,
+                    content: resource.content,
+                }),
+            })
+            onArchive(selectedOpportunity.key)
 
-                const feedback = buildAcknowledgeFeedback(
-                    selectedOpportunity.id,
-                )
-                handleFeedback({ feedbackToUpsert: feedback })
-            } else {
-                reviewArticle.mutate([
-                    undefined,
-                    { help_center_id: helpCenterId },
-                    {
-                        action: 'archive',
-                        template_key: `ai_${selectedOpportunity.id}`,
-                        reason: 'Archived as opportunity',
-                    },
-                ])
-            }
+            const feedback = buildAcknowledgeFeedback(selectedOpportunity.id)
+            handleFeedback({ feedbackToUpsert: feedback })
 
             dispatch(
                 notify({
@@ -216,8 +173,6 @@ export const useOpportunityCTAs = ({
         }
     }, [
         selectedOpportunity,
-        helpCenterId,
-        reviewArticle,
         editorFormResources,
         dispatch,
         onOpportunityAccepted,
@@ -298,28 +253,21 @@ export const useOpportunityCTAs = ({
 
     const handleDismiss = useCallback(
         async (feedbackData?: { feedbackToUpsert: FeedbackMutation[] }) => {
-            if (!selectedOpportunity) return
+            if (
+                !selectedOpportunity ||
+                !useKnowledgeService ||
+                !shopIntegrationId
+            )
+                return
 
             setIsProcessing(true)
             try {
-                if (useKnowledgeService && shopIntegrationId) {
-                    await processOpportunity.mutateAsync({
-                        shopIntegrationId,
-                        opportunityId: parseInt(selectedOpportunity.id, 10),
-                        data: buildDismissPayload(),
-                    })
-                    onArchive(selectedOpportunity.key)
-                } else {
-                    reviewArticle.mutate([
-                        undefined,
-                        { help_center_id: helpCenterId },
-                        {
-                            action: 'archive',
-                            template_key: `ai_${selectedOpportunity.id}`,
-                            reason: 'Dismissed with feedback',
-                        },
-                    ])
-                }
+                await processOpportunity.mutateAsync({
+                    shopIntegrationId,
+                    opportunityId: parseInt(selectedOpportunity.id, 10),
+                    data: buildDismissPayload(),
+                })
+                onArchive(selectedOpportunity.key)
 
                 if (feedbackData) {
                     handleFeedback(feedbackData)
@@ -348,8 +296,6 @@ export const useOpportunityCTAs = ({
         },
         [
             selectedOpportunity,
-            helpCenterId,
-            reviewArticle,
             useKnowledgeService,
             processOpportunity,
             onArchive,
@@ -365,6 +311,6 @@ export const useOpportunityCTAs = ({
         handleApprove,
         handleResolve,
         handleDismiss,
-        isProcessing: isProcessing || reviewArticle.isLoading,
+        isProcessing,
     }
 }

@@ -137,21 +137,9 @@ const AIAgentSimplifiedFeedback = () => {
         false,
     )
 
-    const shouldSurfaceOpportunities = useFlag(
-        FeatureFlagKey.SurfaceOpportunities,
-        false,
-    )
-
     const isOpportunitiesEnabled = useMemo(
-        () =>
-            isTopOpportunitiesEnabled &&
-            isUseKnowledgeServiceEnabled &&
-            shouldSurfaceOpportunities,
-        [
-            isTopOpportunitiesEnabled,
-            isUseKnowledgeServiceEnabled,
-            shouldSurfaceOpportunities,
-        ],
+        () => isTopOpportunitiesEnabled && isUseKnowledgeServiceEnabled,
+        [isTopOpportunitiesEnabled, isUseKnowledgeServiceEnabled],
     )
 
     const { storeConfiguration } = useStoreConfiguration({

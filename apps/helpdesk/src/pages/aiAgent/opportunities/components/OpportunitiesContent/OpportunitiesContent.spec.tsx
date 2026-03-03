@@ -12,7 +12,6 @@ import thunk from 'redux-thunk'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import { ResourceType } from 'pages/aiAgent/opportunities/types'
-import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 
 import OpportunitiesSidebarContext from '../../context/OpportunitiesSidebarContext'
@@ -66,7 +65,6 @@ jest.mock('pages/aiAgent/components/GuidanceEditor/GuidanceEditor', () => ({
         />
     ),
 }))
-jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/knowledgeService/mutations')
 jest.mock('../../hooks/useProcessOpportunity')
 
@@ -144,8 +142,6 @@ const mockRestrictedPageState: OpportunityPageState = {
 }
 
 describe('OpportunitiesContent', () => {
-    const mockReviewArticleMutate = jest.fn()
-    const mockMarkArticleAsReviewed = jest.fn()
     const mockOnArchive = jest.fn()
     const mockOnPublish = jest.fn()
     const mockOnOpportunityAccepted = jest.fn()
@@ -189,8 +185,7 @@ describe('OpportunitiesContent', () => {
         onArchive: mockOnArchive,
         onPublish: mockOnPublish,
         shopIntegrationId: 1,
-        markArticleAsReviewed: mockMarkArticleAsReviewed,
-        useKnowledgeService: false,
+        useKnowledgeService: true,
     }
 
     const defaultProps = {
@@ -242,17 +237,11 @@ describe('OpportunitiesContent', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockReviewArticleMutate.mockClear()
-        mockMarkArticleAsReviewed.mockClear()
         mockOnArchive.mockClear()
         mockOnPublish.mockClear()
         mockOnOpportunityAccepted.mockClear()
         ;(useGetGuidancesAvailableActions as jest.Mock).mockReturnValue({
             guidanceActions: [],
-            isLoading: false,
-        })
-        ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValue({
-            mutate: mockReviewArticleMutate,
             isLoading: false,
         })
 
@@ -322,54 +311,6 @@ describe('OpportunitiesContent', () => {
                     /Dismissing this knowledge gap opportunity will delete/,
                 ),
             ).toBeInTheDocument()
-        })
-    })
-
-    it('should archive article when confirming dismiss', async () => {
-        renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const dismissButton = screen.getByRole('button', { name: /Dismiss/i })
-        act(() => {
-            userEvent.click(dismissButton)
-        })
-
-        await waitFor(() => {
-            expect(screen.getByText('Dismiss opportunity?')).toBeInTheDocument()
-        })
-
-        const firstCheckbox = screen.getAllByRole('checkbox')[0]
-        act(() => {
-            userEvent.click(firstCheckbox)
-        })
-
-        await waitFor(() => {
-            const confirmButton = screen.getAllByRole('button', {
-                name: /Dismiss/i,
-            })[1]
-            expect(confirmButton).not.toHaveAttribute('aria-disabled', 'true')
-        })
-
-        const confirmButton = screen.getAllByRole('button', {
-            name: /Dismiss/i,
-        })[1]
-        act(() => {
-            userEvent.click(confirmButton)
-        })
-
-        await waitFor(() => {
-            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
-                undefined,
-                { help_center_id: 1 },
-                {
-                    action: 'archive',
-                    template_key: 'ai_1',
-                    reason: 'Dismissed with feedback',
-                },
-            ])
         })
     })
 
@@ -491,24 +432,6 @@ describe('OpportunitiesContent', () => {
         expect(approveButton).toBeInTheDocument()
     })
 
-    it('should show loading state when review article is loading', () => {
-        ;(useUpsertArticleTemplateReview as jest.Mock).mockReturnValueOnce({
-            mutate: mockReviewArticleMutate,
-            isLoading: true,
-        })
-
-        renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const approveButton = screen.getByRole('button', {
-            name: /Resolve/i,
-        })
-        expect(approveButton).toBeInTheDocument()
-    })
-
     it('should render form with initial values from opportunity', () => {
         renderComponent({
             selectedOpportunity: conflictOpportunity,
@@ -517,116 +440,6 @@ describe('OpportunitiesContent', () => {
         })
 
         expect(screen.getByDisplayValue('Test opportunity')).toBeInTheDocument()
-    })
-
-    it('should handle review article success callback', async () => {
-        renderComponent({
-            selectedOpportunity: {
-                id: '1',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                insight: 'Test',
-                resources: [
-                    {
-                        title: 'Test',
-                        content: 'Test',
-                        type: ResourceType.GUIDANCE,
-                        isVisible: true,
-                    },
-                ],
-            },
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
-            .mock.calls[0][0].onSuccess
-
-        await onSuccessCallback(null, [
-            null,
-            null,
-            { template_key: 'test-key', action: 'archive' },
-        ])
-
-        await waitFor(() => {
-            expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
-                'ai_test-key',
-                'archive',
-            )
-            expect(mockOnArchive).toHaveBeenCalledWith('ai_test-key')
-        })
-    })
-
-    it('should handle publish action in review success callback', async () => {
-        renderComponent({
-            selectedOpportunity: {
-                id: '1',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                insight: 'Test',
-                resources: [
-                    {
-                        title: 'Test',
-                        content: 'Test',
-                        type: ResourceType.GUIDANCE,
-                        isVisible: true,
-                    },
-                ],
-            },
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const onSuccessCallback = (useUpsertArticleTemplateReview as jest.Mock)
-            .mock.calls[0][0].onSuccess
-
-        await onSuccessCallback(null, [
-            null,
-            null,
-            { template_key: 'test-key', action: 'publish' },
-        ])
-
-        await waitFor(() => {
-            expect(mockMarkArticleAsReviewed).toHaveBeenCalledWith(
-                'ai_test-key',
-                'publish',
-            )
-            expect(mockOnPublish).toHaveBeenCalledWith('ai_test-key')
-        })
-    })
-
-    it('should invalidate queries on review error', async () => {
-        const invalidateQueries = jest.fn()
-        const originalInvalidate = queryClient.invalidateQueries
-        queryClient.invalidateQueries = invalidateQueries
-
-        renderComponent({
-            selectedOpportunity: {
-                id: '1',
-                type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                insight: 'Test',
-                resources: [
-                    {
-                        title: 'Test',
-                        content: 'Test',
-                        type: ResourceType.GUIDANCE,
-                        isVisible: true,
-                    },
-                ],
-            },
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const onErrorCallback = (useUpsertArticleTemplateReview as jest.Mock)
-            .mock.calls[0][0].onError
-
-        await onErrorCallback(new Error('Test error'), [
-            null,
-            null,
-            { action: 'archive' },
-        ])
-
-        await waitFor(() => {
-            expect(invalidateQueries).toHaveBeenCalled()
-        })
-
-        queryClient.invalidateQueries = originalInvalidate
     })
 
     it('should render correct details for RESOLVE_CONFLICT type', () => {
@@ -805,38 +618,6 @@ describe('OpportunitiesContent', () => {
 
         await waitFor(() => {
             expect(mockProcessOpportunity).toHaveBeenCalled()
-        })
-    })
-
-    it('should handle undefined onOpportunityDismissed callback', async () => {
-        renderComponent({
-            selectedOpportunity,
-            opportunities: [selectedOpportunity],
-            opportunityConfig: {
-                ...mockOpportunityConfig,
-                useKnowledgeService: false,
-            },
-            opportunitiesPageState: mockOpportunityPageState,
-        })
-
-        const approveButton = screen.getByRole('button', {
-            name: /Resolve/i,
-        })
-
-        await act(async () => {
-            await userEvent.click(approveButton)
-        })
-
-        await waitFor(() => {
-            expect(mockReviewArticleMutate).toHaveBeenCalledWith([
-                undefined,
-                { help_center_id: 1 },
-                {
-                    action: 'archive',
-                    template_key: 'ai_1',
-                    reason: 'Archived as opportunity',
-                },
-            ])
         })
     })
 
@@ -1021,7 +802,7 @@ describe('OpportunitiesContent', () => {
             })
 
             await waitFor(() => {
-                expect(mockReviewArticleMutate).toHaveBeenCalled()
+                expect(mockProcessOpportunity).toHaveBeenCalled()
                 expect(mockUpsertFeedback).toHaveBeenCalledWith({
                     data: expect.objectContaining({
                         feedbackToUpsert: expect.any(Array),
@@ -1077,7 +858,7 @@ describe('OpportunitiesContent', () => {
             })
 
             await waitFor(() => {
-                expect(mockReviewArticleMutate).toHaveBeenCalled()
+                expect(mockProcessOpportunity).toHaveBeenCalled()
                 expect(notify).toHaveBeenCalledWith({
                     message: 'Successfully dismissed opportunity',
                     status: 'success',

@@ -81,21 +81,9 @@ export const AiAgentOverview = () => {
         false,
     )
 
-    const shouldSurfaceOpportunities = useFlag(
-        FeatureFlagKey.SurfaceOpportunities,
-        false,
-    )
-
     const isOpportunitiesEnabled = useMemo(
-        () =>
-            isTopOpportunitiesEnabled &&
-            isUseKnowledgeServiceEnabled &&
-            shouldSurfaceOpportunities,
-        [
-            isTopOpportunitiesEnabled,
-            isUseKnowledgeServiceEnabled,
-            shouldSurfaceOpportunities,
-        ],
+        () => isTopOpportunitiesEnabled && isUseKnowledgeServiceEnabled,
+        [isTopOpportunitiesEnabled, isUseKnowledgeServiceEnabled],
     )
 
     const shopIntegrationId = useShopIntegrationId(shopName)

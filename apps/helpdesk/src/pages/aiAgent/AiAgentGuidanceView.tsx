@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -43,10 +42,6 @@ export const AiAgentGuidanceView = ({
     } = useGuidanceArticleMutation({
         guidanceHelpCenterId: helpCenterId,
     })
-
-    const enableGuidanceOpportunities = useFlag(
-        FeatureFlagKey.SurfaceOpportunities,
-    )
 
     const [search, setSearch] = useState('')
 
@@ -210,13 +205,11 @@ export const AiAgentGuidanceView = ({
                 onSearch={setSearch}
                 searchQuery={search}
             />
-            {!enableGuidanceOpportunities && (
-                <GuidanceTopRecommendations
-                    isLoading={isLoadingAiGuidances}
-                    aiGuidances={guidanceAISuggestions}
-                    shopName={shopName}
-                />
-            )}
+            <GuidanceTopRecommendations
+                isLoading={isLoadingAiGuidances}
+                aiGuidances={guidanceAISuggestions}
+                shopName={shopName}
+            />
 
             <GuidanceList
                 guidanceArticles={guidanceArticles}
