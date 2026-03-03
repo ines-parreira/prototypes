@@ -47,11 +47,6 @@ apps/helpdesk/src/AIJourney/ @gorgias/ai-journey
 
 # CXP: Coaching & Trust scope @gorgias/cxp-coaching-trust
 
-apps/helpdesk/src/domains/reporting/hooks/automate/ @gorgias/cxp-coaching-trust
-apps/helpdesk/src/domains/reporting/models/cubes/automate/ @gorgias/cxp-coaching-trust
-apps/helpdesk/src/domains/reporting/models/cubes/automate_v2/ @gorgias/cxp-coaching-trust
-apps/helpdesk/src/domains/reporting/models/queryFactories/automate_v2/ @gorgias/cxp-coaching-trust
-apps/helpdesk/src/domains/reporting/pages/automate/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/cxp-coaching-trust
