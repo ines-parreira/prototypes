@@ -1,9 +1,15 @@
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ShopifyOrdersWidgetContainer } from '../ShopifyOrdersWidgetContainer'
 import { useShopifyOrdersSummary } from '../useShopifyOrdersSummary'
@@ -24,23 +30,56 @@ jest.mock('../useWidgetOrderProducts', () => ({
     useWidgetOrderProducts: jest.fn(),
 }))
 
-jest.mock('@repo/ecommerce/shopify/components', () => ({
-    OrderCard: ({ order }: { order: { name: string } }) => (
-        <div>{order.name}</div>
-    ),
-}))
-
 jest.mock('@repo/ecommerce/shopify/utils', () => ({
     ...jest.requireActual('@repo/ecommerce/shopify/utils'),
     formatOrderDate: (date: string) => date,
 }))
+
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+
+const server = setupServer(
+    mockGetCurrentUser.handler,
+    http.get('/api/users/:id', () => HttpResponse.json({})),
+    http.get('/integrations/shopify/shop-tags/orders/list/', () =>
+        HttpResponse.json({
+            data: { shop: { orderTags: { edges: [] } } },
+        }),
+    ),
+    http.get(
+        '/integrations/shopify/:integrationId/order/:orderId/metafields',
+        () => HttpResponse.json({ data: [], meta: {} }),
+    ),
+)
+
+const queryClient = mockQueryClient()
 
 const mockUseAppSelector = assumeMock(useAppSelector)
 const mockUseTicketInfobarNavigation = assumeMock(useTicketInfobarNavigation)
 const mockUseShopifyOrdersSummary = assumeMock(useShopifyOrdersSummary)
 const mockUseWidgetOrderProducts = assumeMock(useWidgetOrderProducts)
 
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    queryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 const mockOnChangeTab = jest.fn()
+
+function renderComponent() {
+    return render(
+        <QueryClientProvider client={queryClient}>
+            <ShopifyOrdersWidgetContainer />
+        </QueryClientProvider>,
+    )
+}
 
 function createOrder(overrides: Record<string, any> = {}) {
     return {
@@ -96,7 +135,7 @@ describe('ShopifyOrdersWidgetContainer', () => {
             integrationId: undefined,
         })
 
-        const { container } = render(<ShopifyOrdersWidgetContainer />)
+        const { container } = renderComponent()
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -109,12 +148,37 @@ describe('ShopifyOrdersWidgetContainer', () => {
             integrationId: 42,
         })
 
-        render(<ShopifyOrdersWidgetContainer />)
+        renderComponent()
 
         expect(screen.getByText('Orders')).toBeInTheDocument()
         expect(screen.getByText('3')).toBeInTheDocument()
         expect(screen.getByText('1 unfulfilled')).toBeInTheDocument()
         expect(screen.getByText('#1001')).toBeInTheDocument()
+    })
+
+    it('should open the order side panel when an order is clicked', async () => {
+        const user = userEvent.setup()
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: createOrder(),
+            totalCount: 1,
+            unfulfilledCount: 0,
+            integrationId: 42,
+        })
+
+        renderComponent()
+
+        expect(
+            screen.queryByRole('heading', { name: /Order #1001/ }),
+        ).not.toBeInTheDocument()
+
+        await user.click(screen.getByText('#1001'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: /Order #1001/ }),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should navigate to Shopify tab with integration id when "Show all" is clicked', async () => {
@@ -127,7 +191,7 @@ describe('ShopifyOrdersWidgetContainer', () => {
             integrationId: 42,
         })
 
-        render(<ShopifyOrdersWidgetContainer />)
+        renderComponent()
 
         await user.click(screen.getByRole('button', { name: /show all/i }))
 

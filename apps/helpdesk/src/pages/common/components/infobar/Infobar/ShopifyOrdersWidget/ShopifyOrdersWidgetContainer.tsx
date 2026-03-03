@@ -1,3 +1,6 @@
+import { useCallback, useState } from 'react'
+
+import { OrderSidePanelPreview } from '@repo/customer'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { isEmpty } from 'lodash'
 
@@ -29,6 +32,12 @@ export function ShopifyOrdersWidgetContainer() {
         order: lastOrder,
     })
 
+    const [isOrderOpen, setIsOrderOpen] = useState(false)
+
+    const handleSelectOrder = useCallback(() => {
+        setIsOrderOpen(true)
+    }, [])
+
     if (!lastOrder) return null
 
     const handleShowAll = () => {
@@ -45,6 +54,14 @@ export function ShopifyOrdersWidgetContainer() {
                 unfulfilledCount={unfulfilledCount}
                 productsMap={productsMap}
                 onShowAll={handleShowAll}
+                onClick={handleSelectOrder}
+            />
+            <OrderSidePanelPreview
+                order={lastOrder}
+                isOpen={isOrderOpen}
+                onOpenChange={setIsOrderOpen}
+                productsMap={productsMap}
+                integrationId={integrationId}
             />
         </div>
     )

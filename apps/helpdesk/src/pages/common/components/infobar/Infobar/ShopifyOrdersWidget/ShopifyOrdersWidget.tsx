@@ -17,6 +17,7 @@ type Props = {
     unfulfilledCount: number
     productsMap?: Map<number, OrderCardProduct>
     onShowAll: () => void
+    onClick?: () => void
 }
 
 function toOrderCardOrder(order: Order): OrderCardOrder {
@@ -41,6 +42,7 @@ export function ShopifyOrdersWidget({
     unfulfilledCount,
     productsMap,
     onShowAll,
+    onClick,
 }: Props) {
     return (
         <Box padding="md" flexDirection="column" gap="xs">
@@ -62,6 +64,7 @@ export function ShopifyOrdersWidget({
                 order={toOrderCardOrder(lastOrder)}
                 displayedDate={formatOrderDate(lastOrder.created_at)}
                 productsMap={productsMap}
+                onClick={onClick}
             />
 
             <Box>
