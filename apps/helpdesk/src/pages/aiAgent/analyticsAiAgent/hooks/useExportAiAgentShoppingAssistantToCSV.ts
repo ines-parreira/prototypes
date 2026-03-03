@@ -5,13 +5,12 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
+import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
 import { saveZippedFiles } from 'utils/file'
 
 const REPORT_NAME = 'ai-agent-shopping-assistant'
@@ -23,28 +22,12 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const { cleanStatsFilters } = useStatsFilters()
 
     const shoppingAssistantDashboard = useMemo(
-        (): DashboardSchema => ({
-            id: -1,
-            name: REPORT_NAME,
-            analytics_filter_id: null,
-            emoji: null,
-            children: ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections
-                .filter((section) => section.type === 'kpis')
-                .map((section) => ({
-                    type: DashboardChildType.Section,
-                    children: section.items
-                        .filter(
-                            (item) =>
-                                item.visibility &&
-                                (!item.requiresFeatureFlag ||
-                                    isAnalyticsDashboardsTrendCardsEnabled),
-                        )
-                        .map((item) => ({
-                            type: DashboardChildType.Chart,
-                            config_id: item.chartId,
-                        })),
-                })),
-        }),
+        () =>
+            buildKpiDashboard(
+                REPORT_NAME,
+                ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
+                isAnalyticsDashboardsTrendCardsEnabled,
+            ),
         [isAnalyticsDashboardsTrendCardsEnabled],
     )
 

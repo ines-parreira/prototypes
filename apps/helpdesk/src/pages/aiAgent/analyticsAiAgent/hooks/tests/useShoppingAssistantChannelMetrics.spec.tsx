@@ -8,8 +8,7 @@ import * as shoppingAssistantChannelMetricsHooks from 'domains/reporting/hooks/a
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-
-import { useShoppingAssistantChannelMetrics } from './useShoppingAssistantChannelMetrics'
+import { useShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 
 jest.mock('domains/reporting/hooks/ai-sales-agent/channelMetrics')
 jest.mock(

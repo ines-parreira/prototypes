@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import { useDownloadTotalSalesByProductData } from './useDownloadTotalSalesByProductData'
-import { useTotalSalesByProduct } from './useTotalSalesByProduct'
+import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
+import { useTotalSalesByProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesByProduct'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useTotalSalesByProduct')
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesByProduct')
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseTotalSalesByProduct = jest.mocked(useTotalSalesByProduct)

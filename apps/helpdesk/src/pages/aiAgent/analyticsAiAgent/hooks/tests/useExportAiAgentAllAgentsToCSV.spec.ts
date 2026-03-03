@@ -1,24 +1,28 @@
+import { useFlag } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
+import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
+import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
-import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
-import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
-import { useDownloadSupportInteractionsTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData'
-import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
+import { useExportAiAgentAllAgentsToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentAllAgentsToCSV'
+import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
 import * as fileUtils from 'utils/file'
 
-jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
+jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
+jest.mock('pages/aiAgent/analyticsOverview/utils/buildKpiDashboard')
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData',
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData',
 )
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData',
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData',
 )
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData',
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData',
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData',
@@ -28,23 +32,25 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockedUseDashboardData = jest.mocked(useDashboardData)
+const mockUseFlag = jest.mocked(useFlag)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseDownloadSupportInteractionsByIntentData = jest.mocked(
-    useDownloadSupportInteractionsByIntentData,
+const mockedUseDashboardData = jest.mocked(useDashboardData)
+const mockedBuildKpiDashboard = jest.mocked(buildKpiDashboard)
+const mockedUseDownloadAutomatedInteractionsBySkillData = jest.mocked(
+    useDownloadAutomatedInteractionsBySkillData,
 )
-const mockedUseDownloadSupportInteractionsTimeSeriesData = jest.mocked(
-    useDownloadSupportInteractionsTimeSeriesData,
+const mockedUseDownloadAiAgentAutomationRateTimeSeriesData = jest.mocked(
+    useDownloadAiAgentAutomationRateTimeSeriesData,
 )
-const mockedUseDownloadSupportAgentChannelPerformanceData = jest.mocked(
-    useDownloadSupportAgentChannelPerformanceData,
+const mockedUseDownloadChannelPerformanceData = jest.mocked(
+    useDownloadChannelPerformanceData,
 )
 const mockedUseDownloadIntentPerformanceData = jest.mocked(
     useDownloadIntentPerformanceData,
 )
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
-describe('useExportAiAgentSupportAgentToCSV', () => {
+describe('useExportAiAgentAllAgentsToCSV', () => {
     const mockPeriod = {
         start_datetime: '2024-01-01T00:00:00Z',
         end_datetime: '2024-01-31T23:59:59Z',
@@ -52,6 +58,8 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseFlag.mockReturnValue(true)
 
         mockedUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
@@ -63,49 +71,50 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
 
         mockedUseDashboardData.mockReturnValue({
             files: {
-                'ai-agent-support-agent - trends.csv': 'trends content',
+                'ai-agent-all-agents - trends.csv': 'trends content',
             },
-            fileName: 'ai-agent-support-agent - trends.csv',
+            fileName: 'ai-agent-all-agents - trends.csv',
             isLoading: false,
         })
 
-        mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
+        mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {
-                'support-interactions-by-intent.csv':
-                    'intent,interactions\nOrder Status,500',
+                'automated-interactions-by-skill.csv':
+                    'skill,interactions\nSkill A,100',
             },
+            fileName: 'automated-interactions-by-skill.csv',
             isLoading: false,
         })
 
-        mockedUseDownloadSupportInteractionsTimeSeriesData.mockReturnValue({
+        mockedUseDownloadAiAgentAutomationRateTimeSeriesData.mockReturnValue({
             files: {
-                'support-interactions-timeseries.csv':
-                    'date,interactions\n2024-01-01,100',
+                'automation-rate-timeseries.csv':
+                    'date,automation_rate\n2024-01-01,85%',
             },
+            fileName: 'automation-rate-timeseries.csv',
             isLoading: false,
         })
 
-        mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
             files: {
-                'support-agent-channel-performance.csv':
-                    'channel,automation_rate\nEmail,75%',
+                'channel-performance.csv': 'channel,automation_rate\nChat,85%',
             },
-            fileName: 'support-agent-channel-performance.csv',
+            fileName: 'channel-performance.csv',
             isLoading: false,
         })
 
         mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {
-                'intent-performance-breakdown.csv':
-                    'Intent L1,Handover interactions\nOrder,50',
+                'intent-performance.csv':
+                    'intent,automation_rate\nIntent A,90%',
             },
-            fileName: 'intent-performance-breakdown.csv',
+            fileName: 'intent-performance.csv',
             isLoading: false,
         })
     })
 
     it('should return isLoading as false when all data is loaded', () => {
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(false)
     })
@@ -117,41 +126,43 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isLoading: true,
         })
 
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when support interactions by intent data is loading', () => {
-        mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
-            files: {},
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when support interactions time series is loading', () => {
-        mockedUseDownloadSupportInteractionsTimeSeriesData.mockReturnValue({
-            files: {},
-            isLoading: true,
-        })
-
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
-
-        expect(result.current.isLoading).toBe(true)
-    })
-
-    it('should return isLoading as true when channel performance data is loading', () => {
-        mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
+    it('should return isLoading as true when automated interactions by skill data is loading', () => {
+        mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
         })
 
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when automation rate time series data is loading', () => {
+        mockedUseDownloadAiAgentAutomationRateTimeSeriesData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when channel performance data is loading', () => {
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(true)
     })
@@ -163,13 +174,13 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isLoading: true,
         })
 
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should call saveZippedFiles when triggerDownload is called', async () => {
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         await act(async () => {
             await result.current.triggerDownload()
@@ -178,12 +189,12 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         expect(mockedSaveZippedFiles).toHaveBeenCalled()
         expect(mockedSaveZippedFiles).toHaveBeenCalledWith(
             expect.any(Object),
-            expect.stringContaining('ai-agent-support-agent'),
+            expect.stringContaining('ai-agent-all-agents'),
         )
     })
 
     it('should include all expected files in the ZIP', async () => {
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         await act(async () => {
             await result.current.triggerDownload()
@@ -196,47 +207,58 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
             fileNames.some((name) =>
-                name.includes('support-interactions-by-intent'),
+                name.includes('automated-interactions-by-skill'),
             ),
         ).toBe(true)
         expect(
             fileNames.some((name) =>
-                name.includes('support-interactions-timeseries'),
+                name.includes('automation-rate-timeseries'),
             ),
         ).toBe(true)
         expect(
-            fileNames.some((name) =>
-                name.includes('support-agent-channel-performance'),
-            ),
+            fileNames.some((name) => name.includes('channel-performance')),
         ).toBe(true)
         expect(
-            fileNames.some((name) =>
-                name.includes('intent-performance-breakdown'),
-            ),
+            fileNames.some((name) => name.includes('intent-performance')),
         ).toBe(true)
     })
 
+    it('should call buildKpiDashboard with the layout and feature flag value', () => {
+        mockUseFlag.mockReturnValue(true)
+        renderHook(() => useExportAiAgentAllAgentsToCSV())
+        expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
+            'ai-agent-all-agents',
+            expect.any(Object),
+            true,
+        )
+    })
+
     it('should handle empty download data files', async () => {
-        mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
-            files: {},
-            isLoading: false,
-        })
-        mockedUseDownloadSupportInteractionsTimeSeriesData.mockReturnValue({
-            files: {},
-            isLoading: false,
-        })
-        mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
+        mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
+
+        mockedUseDownloadAiAgentAutomationRateTimeSeriesData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: false,
+        })
+
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: false,
+        })
+
         mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
 
-        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         await act(async () => {
             await result.current.triggerDownload()

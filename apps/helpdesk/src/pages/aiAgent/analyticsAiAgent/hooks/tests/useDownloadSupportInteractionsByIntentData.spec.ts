@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
-import { useSupportInteractionsByIntent } from './useSupportInteractionsByIntent'
+import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
+import { useSupportInteractionsByIntent } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useSupportInteractionsByIntent')
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useSupportInteractionsByIntent')
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseSupportInteractionsByIntent = jest.mocked(

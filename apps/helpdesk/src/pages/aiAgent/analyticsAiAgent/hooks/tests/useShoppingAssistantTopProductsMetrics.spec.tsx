@@ -20,10 +20,9 @@ import {
 } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
+import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import { reportError } from 'utils/errors'
-
-import { useShoppingAssistantTopProductsMetrics } from './useShoppingAssistantTopProductsMetrics'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

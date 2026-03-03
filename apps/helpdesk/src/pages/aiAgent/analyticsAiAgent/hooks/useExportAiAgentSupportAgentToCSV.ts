@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
 import { saveZippedFiles } from 'utils/file'
 
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
@@ -15,29 +16,24 @@ import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSuppo
 
 const REPORT_NAME = 'ai-agent-support-agent'
 
-const aiAgentSupportAgentDashboard: DashboardSchema = {
-    id: -1,
-    name: REPORT_NAME,
-    analytics_filter_id: null,
-    emoji: null,
-    children: ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections
-        .filter((section) => section.type === 'kpis')
-        .map((section) => ({
-            type: DashboardChildType.Section,
-            children: section.items
-                .filter((item) => item.visibility)
-                .map((item) => ({
-                    type: DashboardChildType.Chart,
-                    config_id: item.chartId,
-                })),
-        })),
-}
-
 export const useExportAiAgentSupportAgentToCSV = () => {
+    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
+    )
     const { cleanStatsFilters } = useStatsFilters()
 
+    const supportAgentDashboard = useMemo(
+        () =>
+            buildKpiDashboard(
+                REPORT_NAME,
+                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT,
+                isAnalyticsDashboardsTrendCardsEnabled,
+            ),
+        [isAnalyticsDashboardsTrendCardsEnabled],
+    )
+
     const { files: trendCardsFiles, isLoading: isKpiLoading } =
-        useDashboardData(aiAgentSupportAgentDashboard, true)
+        useDashboardData(supportAgentDashboard, true)
 
     const supportInteractionsByIntentData =
         useDownloadSupportInteractionsByIntentData()

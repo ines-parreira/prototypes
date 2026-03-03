@@ -1,21 +1,20 @@
 import { renderHook } from '@testing-library/react'
 
+import { useAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
-
-import { useDownloadGmvInfluenceTimeSeriesData } from './useDownloadGmvInfluenceTimeSeriesData'
+import { useDownloadSupportInteractionsTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(
-    'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries',
+    'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData',
 )
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
-const mockedUseGmvInfluenceOverTimeSeries = jest.mocked(
-    useGmvInfluenceOverTimeSeries,
+const mockedUseAiAgentSupportInteractionsTimeSeriesData = jest.mocked(
+    useAiAgentSupportInteractionsTimeSeriesData,
 )
 
-describe('useDownloadGmvInfluenceTimeSeriesData', () => {
+describe('useDownloadSupportInteractionsTimeSeriesData', () => {
     const mockPeriod = {
         start_datetime: '2024-01-01T00:00:00Z',
         end_datetime: '2024-01-31T23:59:59Z',
@@ -34,77 +33,77 @@ describe('useDownloadGmvInfluenceTimeSeriesData', () => {
     })
 
     it('should return isLoading as true when data is fetching', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: undefined,
             isFetching: true,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as false when data is loaded', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
-            data: [[{ dateTime: '2024-01-01', value: 1000 }]],
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
+            data: [[{ dateTime: '2024-01-01', value: 100 }]],
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.isLoading).toBe(false)
     })
 
     it('should return empty files when data is undefined', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: undefined,
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.files).toEqual({})
     })
 
     it('should return empty files when data is empty array', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: [],
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.files).toEqual({})
     })
 
     it('should return empty files when first series is undefined', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: [undefined],
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.files).toEqual({})
     })
 
     it('should return empty files when all values are zero', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: [
                 [
                     { dateTime: '2024-01-01', value: 0 },
@@ -117,7 +116,7 @@ describe('useDownloadGmvInfluenceTimeSeriesData', () => {
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         expect(result.current.files).toEqual({})
@@ -126,65 +125,65 @@ describe('useDownloadGmvInfluenceTimeSeriesData', () => {
     it('should return CSV file with time series data', () => {
         const mockTimeSeriesData = [
             [
-                { dateTime: '2024-01-01', value: 5000 },
-                { dateTime: '2024-01-02', value: 6000 },
-                { dateTime: '2024-01-03', value: 7000 },
+                { dateTime: '2024-01-01', value: 100 },
+                { dateTime: '2024-01-02', value: 150 },
+                { dateTime: '2024-01-03', value: 200 },
             ],
         ]
 
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: mockTimeSeriesData,
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         const fileNames = Object.keys(result.current.files)
         expect(fileNames.length).toBe(1)
         expect(
-            fileNames.some((name) => name.includes('total-sales-timeseries')),
+            fileNames.some((name) =>
+                name.includes('support-interactions-timeseries'),
+            ),
         ).toBe(true)
 
         const csvContent = Object.values(result.current.files)[0]
         expect(csvContent).toContain('date')
-        expect(csvContent).toContain('total_sales')
+        expect(csvContent).toContain('support_interactions')
     })
 
     it('should include date range in filename', () => {
-        const mockTimeSeriesData = [[{ dateTime: '2024-01-01', value: 1000 }]]
+        const mockTimeSeriesData = [[{ dateTime: '2024-01-01', value: 100 }]]
 
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: mockTimeSeriesData,
             isFetching: false,
             isError: false,
         } as any)
 
         const { result } = renderHook(() =>
-            useDownloadGmvInfluenceTimeSeriesData(),
+            useDownloadSupportInteractionsTimeSeriesData(),
         )
 
         const fileNames = Object.keys(result.current.files)
         expect(fileNames.length).toBe(1)
-        expect(fileNames[0]).toContain('total-sales-timeseries')
+        expect(fileNames[0]).toContain('support-interactions-timeseries')
         expect(fileNames[0]).toContain('.csv')
     })
 
-    it('should call useGmvInfluenceOverTimeSeries with correct params', () => {
-        mockedUseGmvInfluenceOverTimeSeries.mockReturnValue({
+    it('should call useAiAgentSupportInteractionsTimeSeriesData with correct params', () => {
+        mockedUseAiAgentSupportInteractionsTimeSeriesData.mockReturnValue({
             data: undefined,
             isFetching: false,
             isError: false,
         } as any)
 
-        renderHook(() => useDownloadGmvInfluenceTimeSeriesData())
+        renderHook(() => useDownloadSupportInteractionsTimeSeriesData())
 
-        expect(mockedUseGmvInfluenceOverTimeSeries).toHaveBeenCalledWith(
-            { period: mockPeriod },
-            'UTC',
-            'day',
-        )
+        expect(
+            mockedUseAiAgentSupportInteractionsTimeSeriesData,
+        ).toHaveBeenCalledWith({ period: mockPeriod }, 'UTC', 'day')
     })
 })

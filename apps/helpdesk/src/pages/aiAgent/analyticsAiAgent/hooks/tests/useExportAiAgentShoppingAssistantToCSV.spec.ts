@@ -3,21 +3,18 @@ import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type {
-    DashboardChartSchema,
-    DashboardSectionSchema,
-} from 'domains/reporting/pages/dashboards/types'
-import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
 import { useExportAiAgentShoppingAssistantToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentShoppingAssistantToCSV'
+import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
+jest.mock('pages/aiAgent/analyticsOverview/utils/buildKpiDashboard')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData',
 )
@@ -38,6 +35,7 @@ jest.mock('utils/file', () => ({
 const mockUseFlag = jest.mocked(useFlag)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
+const mockedBuildKpiDashboard = jest.mocked(buildKpiDashboard)
 const mockedUseDownloadTotalSalesByProductData = jest.mocked(
     useDownloadTotalSalesByProductData,
 )
@@ -240,38 +238,15 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         ).toBe(true)
     })
 
-    const featureFlaggedChartIds =
-        ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections
-            .flatMap((section) => section.items)
-            .filter((item) => item.requiresFeatureFlag)
-            .map((item) => item.chartId)
-
-    describe.each(featureFlaggedChartIds)(
-        'feature flag gating for %s',
-        (chartId) => {
-            const getPassedConfigIds = () => {
-                renderHook(() => useExportAiAgentShoppingAssistantToCSV())
-                const [dashboardArg] = mockedUseDashboardData.mock.calls[0]
-                return (
-                    dashboardArg.children as DashboardSectionSchema[]
-                ).flatMap((section) =>
-                    (section.children as DashboardChartSchema[]).map(
-                        (child) => child.config_id,
-                    ),
-                )
-            }
-
-            it('should include card in dashboard when feature flag is enabled', () => {
-                mockUseFlag.mockReturnValue(true)
-                expect(getPassedConfigIds()).toContain(chartId)
-            })
-
-            it('should exclude card from dashboard when feature flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-                expect(getPassedConfigIds()).not.toContain(chartId)
-            })
-        },
-    )
+    it('should call buildKpiDashboard with the layout and feature flag value', () => {
+        mockUseFlag.mockReturnValue(true)
+        renderHook(() => useExportAiAgentShoppingAssistantToCSV())
+        expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
+            'ai-agent-shopping-assistant',
+            expect.any(Object),
+            true,
+        )
+    })
 
     it('should handle empty download data files', async () => {
         mockedUseDownloadTotalSalesByProductData.mockReturnValue({

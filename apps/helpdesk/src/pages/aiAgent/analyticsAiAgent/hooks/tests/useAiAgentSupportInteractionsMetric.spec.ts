@@ -3,12 +3,11 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { useSupportInteractionsTotal } from 'domains/reporting/hooks/ai-agent-insights/supportInteractionsMetrics'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
+import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
 import {
     TICKET_FIELD_ID_NOT_AVAILABLE,
     useGetCustomTicketsFieldsDefinitionData,
 } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-
-import { useAiAgentSupportInteractionsMetric } from './useAiAgentSupportInteractionsMetric'
 
 jest.mock(
     'domains/reporting/hooks/ai-agent-insights/supportInteractionsMetrics',

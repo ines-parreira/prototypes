@@ -2,8 +2,7 @@ import { renderHook } from '@testing-library/react'
 
 import { useAIAgentAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTimeSeriesData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import { useDownloadAiAgentAutomationRateTimeSeriesData } from './useDownloadAiAgentAutomationRateTimeSeriesData'
+import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock(

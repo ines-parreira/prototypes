@@ -7,9 +7,8 @@ import * as channelMetricsHooks from 'domains/reporting/hooks/ai-sales-agent/cha
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { TicketCustomFieldsMeasure } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { useSupportAgentChannelPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentChannelPerformanceMetrics'
 import * as customFieldsHooks from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-
-import { useSupportAgentChannelPerformanceMetrics } from './useSupportAgentChannelPerformanceMetrics'
 
 jest.mock('domains/reporting/hooks/ai-sales-agent/channelMetrics')
 jest.mock(

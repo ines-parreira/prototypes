@@ -1,12 +1,13 @@
 import { renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import { useDownloadShoppingAssistantChannelPerformanceData } from './useDownloadShoppingAssistantChannelPerformanceData'
-import { useShoppingAssistantChannelMetrics } from './useShoppingAssistantChannelMetrics'
+import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
+import { useShoppingAssistantChannelMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useShoppingAssistantChannelMetrics')
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantChannelMetrics',
+)
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseShoppingAssistantChannelMetrics = jest.mocked(

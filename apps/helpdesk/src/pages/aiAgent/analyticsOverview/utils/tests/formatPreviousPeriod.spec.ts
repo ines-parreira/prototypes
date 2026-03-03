@@ -1,6 +1,5 @@
 import type { Period } from 'domains/reporting/models/stat/types'
-
-import { formatPreviousPeriod } from './formatPreviousPeriod'
+import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 describe('formatPreviousPeriod', () => {
     it('should format a valid period with previous period', () => {

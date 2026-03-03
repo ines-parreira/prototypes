@@ -12,10 +12,9 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
+import { useTotalSalesByProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesByProduct'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
 import { reportError } from 'utils/errors'
-
-import { useTotalSalesByProduct } from './useTotalSalesByProduct'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')

@@ -8,8 +8,7 @@ import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cub
 import { AiSalesAgentOrdersDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-
-import { useChannelPerformanceMetrics } from './useChannelPerformanceMetrics'
+import { useChannelPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useChannelPerformanceMetrics'
 
 jest.mock('domains/reporting/hooks/ai-sales-agent/channelMetrics')
 

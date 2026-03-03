@@ -1,12 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-
-import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
-import { useIntentPerformanceMetrics } from './useIntentPerformanceMetrics'
+import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
+import { useIntentPerformanceMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useIntentPerformanceMetrics')
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useIntentPerformanceMetrics')
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseIntentPerformanceMetrics = jest.mocked(

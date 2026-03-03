@@ -1,43 +1,38 @@
 import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
+import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
+import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
+import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
+import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
+import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
 import { saveZippedFiles } from 'utils/file'
-
-import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from '../config/aiAgentAllAgentsLayoutConfig'
-import { useDownloadAiAgentAutomationRateTimeSeriesData } from './useDownloadAiAgentAutomationRateTimeSeriesData'
-import { useDownloadAutomatedInteractionsBySkillData } from './useDownloadAutomatedInteractionsBySkillData'
-import { useDownloadChannelPerformanceData } from './useDownloadChannelPerformanceData'
-import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 
 const REPORT_NAME = 'ai-agent-all-agents'
 
-const aiAgentAllAgentsDashboard: DashboardSchema = {
-    id: -1,
-    name: REPORT_NAME,
-    analytics_filter_id: null,
-    emoji: null,
-    children: ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections
-        .filter((section) => section.type === 'kpis')
-        .map((section) => ({
-            type: DashboardChildType.Section,
-            children: section.items
-                .filter((item) => item.visibility)
-                .map((item) => ({
-                    type: DashboardChildType.Chart,
-                    config_id: item.chartId,
-                })),
-        })),
-}
-
 export const useExportAiAgentAllAgentsToCSV = () => {
+    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
+    )
     const { cleanStatsFilters } = useStatsFilters()
 
+    const allAgentsDashboard = useMemo(
+        () =>
+            buildKpiDashboard(
+                REPORT_NAME,
+                ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT,
+                isAnalyticsDashboardsTrendCardsEnabled,
+            ),
+        [isAnalyticsDashboardsTrendCardsEnabled],
+    )
+
     const { files: trendCardsFiles, isLoading: isKpiLoading } =
-        useDashboardData(aiAgentAllAgentsDashboard, true)
+        useDashboardData(allAgentsDashboard, true)
 
     const automatedInteractionsBySkillData =
         useDownloadAutomatedInteractionsBySkillData()

@@ -2,12 +2,13 @@ import { renderHook } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ProductTableKeys } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
-
-import { useDownloadShoppingAssistantTopProductsData } from './useDownloadShoppingAssistantTopProductsData'
-import { useShoppingAssistantTopProductsMetrics } from './useShoppingAssistantTopProductsMetrics'
+import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
+import { useShoppingAssistantTopProductsMetrics } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('./useShoppingAssistantTopProductsMetrics')
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantTopProductsMetrics',
+)
 
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseShoppingAssistantTopProductsMetrics = jest.mocked(
