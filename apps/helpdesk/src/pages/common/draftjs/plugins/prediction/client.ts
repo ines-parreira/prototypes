@@ -110,7 +110,9 @@ export class PhrasePredictionClient {
     }
 }
 
-export default new PhrasePredictionClient(
+const phrasePredictionClient = new PhrasePredictionClient(
     window.PHRASE_PREDICTION_URL,
     window.PHRASE_FEEDBACK_URL,
 )
+
+export default phrasePredictionClient

@@ -55,4 +55,6 @@ class UserActivityManager {
     }
 }
 
-export default new UserActivityManager()
+const userActivityManager = new UserActivityManager()
+
+export default userActivityManager

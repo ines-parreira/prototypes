@@ -74,4 +74,6 @@ export class BrowserNotification {
     newMessageThrottled = _throttle(this.newMessage, 10000, { trailing: false })
 }
 
-export default new BrowserNotification()
+const browserNotification = new BrowserNotification()
+
+export default browserNotification

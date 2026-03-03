@@ -19,7 +19,7 @@ export type HelpCenterContactFormIntegrationTypes =
     | ShopifyIntegration
     | Magento2Integration
 
-export default (props: {
+const SelectStore = (props: {
     handleStoreChange: (
         integration: HelpCenterContactFormIntegrationTypes,
     ) => void
@@ -71,3 +71,5 @@ export default (props: {
         />
     )
 }
+
+export default SelectStore

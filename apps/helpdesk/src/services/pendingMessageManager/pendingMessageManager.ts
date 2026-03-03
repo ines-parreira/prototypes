@@ -154,6 +154,8 @@ export class PendingMessageManager {
     }
 }
 
-export default new PendingMessageManager(
+const pendingMessageManager = new PendingMessageManager(
     "Are you sure? Your message won't be sent",
 )
+
+export default pendingMessageManager

@@ -42,7 +42,7 @@ const filterByEmailCapture = ({ emailCaptureEnforcement }: FilterProps) => {
     return true
 }
 
-export default {
+const translationsAvailableKeys = {
     // TODO. Drop me with the feature flag `ChatMultiLanguages`.
     generalLegacySoloLanguage: {
         'sspTexts.sendUsAMessage': { maxLength: 30 },
@@ -159,3 +159,5 @@ export default {
         'texts.privacyPolicyDisclaimer': { maxLength: 600, isRichText: true },
     },
 }
+
+export default translationsAvailableKeys

@@ -110,4 +110,6 @@ const serviceWorkerConfig = merge(base, {
     ],
 })
 
-export default [sharedWorkerConfig, serviceWorkerConfig]
+const workerConfigs = [sharedWorkerConfig, serviceWorkerConfig]
+
+export default workerConfigs

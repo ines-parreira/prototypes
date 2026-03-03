@@ -23,4 +23,6 @@ window.addEventListener('focusin', () => {
     }
 })
 
-export default {}
+const mobileScrollManager = {}
+
+export default mobileScrollManager

@@ -1,4 +1,4 @@
-export default [
+const ticketLanguages = [
     'af',
     'ar',
     'bg',
@@ -53,3 +53,5 @@ export default [
     'zh-cn',
     'zh-tw',
 ]
+
+export default ticketLanguages

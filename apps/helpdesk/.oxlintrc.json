@@ -93,7 +93,7 @@
         "import/default": "off",
         "import/namespace": "off",
         "import/no-duplicates": "error",
-        "import/no-anonymous-default-export": "warn",
+        "import/no-anonymous-default-export": "error",
         "import/no-named-as-default-member": "warn",
         "import/no-default-export": "warn",
         "import/no-named-as-default": "warn",

@@ -35,4 +35,6 @@ export const prediction: Decorator = {
     },
 }
 
-export default [prediction]
+const predictionDecorators = [prediction]
+
+export default predictionDecorators

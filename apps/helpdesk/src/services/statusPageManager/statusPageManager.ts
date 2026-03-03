@@ -426,4 +426,6 @@ Find out more on our <a href="${
     }
 }
 
-export default new StatusPageManager()
+const statusPageManager = new StatusPageManager()
+
+export default statusPageManager

@@ -195,4 +195,6 @@ export class TicketReplyCache {
     }
 }
 
-export default new TicketReplyCache()
+const ticketReplyCache = new TicketReplyCache()
+
+export default ticketReplyCache

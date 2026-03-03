@@ -1,6 +1,6 @@
 import { assetsUrl } from 'utils'
 
-export default {
+const paywallConfig = {
     greyButtonText: 'Learn more',
     greyButtonUrl: 'https://docs.gorgias.com/en-US/articles/voice-57524',
     primaryButtonText: 'Add voice',
@@ -39,3 +39,5 @@ export default {
         },
     ],
 }
+
+export default paywallConfig

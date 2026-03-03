@@ -363,4 +363,6 @@ export class SocketManager {
     }
 }
 
-export default new SocketManager()
+const socketManager = new SocketManager()
+
+export default socketManager
