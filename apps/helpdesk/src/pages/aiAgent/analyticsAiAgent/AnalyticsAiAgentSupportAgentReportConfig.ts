@@ -12,9 +12,11 @@ import {
 import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
 import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
 import { AnalyticsSupportAgentPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
+import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
+import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
 import { STATS_ROUTES } from 'routes/constants'
@@ -39,6 +41,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
     CostSavedCard = 'cost_saved_card',
     SupportInteractionsCard = 'support_interactions_card',
     DecreaseInFRTCard = 'decrease_in_first_resolution_time_card',
+    AverageCsatCard = 'average_csat_card',
     SupportAgentTrendComboChart = 'support_agent_trend_combo_chart',
     SupportInteractionsComboChart = 'support_interactions_combo_chart',
     SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
@@ -113,6 +116,22 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                     'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentSupportAgentChart.AverageCsatCard]: {
+                chartComponent: AnalyticsAiAgentSupportAgentCsatCard,
+                label: 'Average CSAT',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentSupportAgentCsatTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart]: {

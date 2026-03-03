@@ -29,6 +29,7 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_INTERACTIONS_PER_CHANNEL:
         'ai-agent-support-interactions-per-channel',
     AI_AGENT_SUPPORT_INTERACTIONS_TOTAL: 'ai-agent-support-interactions-total',
+    AI_AGENT_CSAT_AVERAGE_SCORE: 'ai-agent-csat-average-score',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -643,6 +644,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.SatisfactionSurveys]: [
         METRIC_NAMES.SATISFACTION_AVERAGE_SCORE,
+        METRIC_NAMES.AI_AGENT_CSAT_AVERAGE_SCORE,
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES,
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_CHANNEL_TIME_SERIES,
         METRIC_NAMES.SATISFACTION_AVERAGE_CSAT_SCORE_PER_INTEGRATION_TIME_SERIES,

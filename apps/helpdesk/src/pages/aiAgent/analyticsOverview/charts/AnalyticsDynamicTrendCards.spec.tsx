@@ -19,7 +19,9 @@ import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiA
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
+import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
+import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
@@ -237,6 +239,30 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 150,
                 prevValue: 120,
+            },
+        },
+        {
+            name: 'AnalyticsOverviewAverageCsatCard',
+            Component: AnalyticsOverviewAverageCsatCard,
+            config: {
+                label: 'Average CSAT',
+                description:
+                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                metricFormat: 'decimal' as const,
+                value: 4.2,
+                prevValue: 4.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSupportAgentCsatCard',
+            Component: AnalyticsAiAgentSupportAgentCsatCard,
+            config: {
+                label: 'Average CSAT',
+                description:
+                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                metricFormat: 'decimal' as const,
+                value: 4.5,
+                prevValue: 4.3,
             },
         },
     ]

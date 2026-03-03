@@ -32,6 +32,13 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig<Anal
                         gridSize: 3,
                         visibility: true,
                     },
+                    {
+                        chartId:
+                            AnalyticsAiAgentSupportAgentChart.AverageCsatCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                 ],
             },
             {

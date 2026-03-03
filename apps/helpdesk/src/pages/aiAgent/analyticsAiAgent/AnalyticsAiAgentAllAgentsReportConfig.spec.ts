@@ -118,31 +118,28 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
         ).toEqual([FilterKey.Period, FilterKey.AggregationWindow])
     })
 
+    it('should have average CSAT card config', () => {
+        const config =
+            AnalyticsAiAgentAllAgentsReportConfig.charts[
+                AnalyticsAiAgentAllAgentsChart.AverageCsatCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Average CSAT')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentAllAgentsReportConfig.charts
+        const enumKeys = Object.values(AnalyticsAiAgentAllAgentsChart)
 
-        expect(Object.keys(charts)).toHaveLength(7)
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.AutomationRateCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.TotalSalesCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.TimeSavedCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentAllAgentsChart.PerformanceTable],
-        ).toBeDefined()
+        expect(Object.keys(charts)).toHaveLength(enumKeys.length)
+
+        for (const key of enumKeys) {
+            expect(charts[key]).toBeDefined()
+        }
     })
 
     it('should have fetch function for automation rate trend', async () => {
@@ -245,6 +242,21 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
             expect(result).toHaveProperty('fileName')
             expect(result).toHaveProperty('files')
         }
+    })
+
+    it('should have fetch function for average CSAT trend', async () => {
+        const config =
+            AnalyticsAiAgentAllAgentsReportConfig.charts[
+                AnalyticsAiAgentAllAgentsChart.AverageCsatCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
     })
 
     it('should have fetch function for performance breakdown', async () => {

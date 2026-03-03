@@ -15,7 +15,9 @@ import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/char
 import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
+import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
+import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { STATS_ROUTES } from 'routes/constants'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
@@ -43,6 +45,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     AutomatedInteractionsCard = 'automated_interactions_card',
     TotalSalesCard = 'total_sales_card',
     TimeSavedCard = 'time_saved_card',
+    AverageCsatCard = 'average_csat_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -116,6 +119,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'The time agent would have spent resolving customer inquiries without AI Agent.',
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.AverageCsatCard]: {
+                chartComponent: AnalyticsOverviewAverageCsatCard,
+                label: 'Average CSAT',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentSupportAgentCsatTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {

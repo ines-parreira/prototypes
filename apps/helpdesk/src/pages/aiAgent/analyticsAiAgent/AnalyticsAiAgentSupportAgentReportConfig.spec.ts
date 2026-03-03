@@ -78,6 +78,19 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Card)
     })
 
+    it('should have average CSAT card config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.AverageCsatCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Average CSAT')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
     it('should have support agent trend combo chart config', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
@@ -121,7 +134,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentSupportAgentReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(8)
+        expect(Object.keys(charts)).toHaveLength(9)
         expect(
             charts[AnalyticsAiAgentSupportAgentChart.TimeSavedCard],
         ).toBeDefined()
@@ -151,6 +164,9 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         ).toBeDefined()
         expect(
             charts[AnalyticsAiAgentSupportAgentChart.PerformanceTable],
+        ).toBeDefined()
+        expect(
+            charts[AnalyticsAiAgentSupportAgentChart.AverageCsatCard],
         ).toBeDefined()
     })
 
@@ -203,6 +219,21 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
                 AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
+    it('should have fetch function for average CSAT trend', async () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.AverageCsatCard
             ]
 
         expect(config.csvProducer).toBeDefined()
