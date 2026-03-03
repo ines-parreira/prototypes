@@ -197,6 +197,7 @@ export enum FeatureFlagKey {
     ShoppingAssistantTrialRevampMilestone = 'shopping-assistant-trial-revamp-milestone',
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     ShowAiReasoningInPlayground = 'linear.project_playground.show_ai_reasoning_in_playground',
+    ShowReasoningForCanceledTasks = 'linear.project_reasoning-for-action.show-reasoning-for-canceled-tasks',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',
     SimplifyAIAgentOnboardingWizard = 'linear.CRMGROW-2513.simplify-ai-agent-onboarding-wizard',
     StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
