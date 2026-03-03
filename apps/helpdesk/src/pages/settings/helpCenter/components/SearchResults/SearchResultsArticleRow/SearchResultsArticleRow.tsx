@@ -21,6 +21,7 @@ import { sanitizeHtmlDefault } from 'utils/html'
 import { useArticleRowActions } from '../../../hooks/useArticleRowActions'
 import { useRatingScore } from '../../../hooks/useRatingScore'
 import { useSupportedLocales } from '../../../providers/SupportedLocales'
+import { isNotPublished } from '../../../utils/helpCenter.utils'
 import { TableActions } from '../../TableActions'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
 import { SearchResultsLoadingContent } from '../SearchResultsLoadingContent'
@@ -189,9 +190,12 @@ export const SearchResultsArticleRow: FC<Props> = ({
             >
                 {entity !== null && (
                     <VisibilityCell
-                        status={entity.translation.visibility_status}
+                        status={
+                            entity.translation.customer_visibility ?? 'PUBLIC'
+                        }
                         isParentUnlisted={isAncestorUnlisted}
                         isArticle
+                        isDraft={isNotPublished(entity)}
                     />
                 )}
             </BodyCell>

@@ -212,7 +212,8 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                     {!isLoading(category.category) && (
                         <VisibilityCell
                             status={
-                                category.category.translation.visibility_status
+                                category.category.translation
+                                    .customer_visibility ?? 'PUBLIC'
                             }
                             isParentUnlisted={isAncestorUnlisted}
                         />
