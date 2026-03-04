@@ -1,12 +1,12 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import type { ShopperData } from '@repo/customer'
+import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import type { QueryObserverResult } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -27,13 +27,11 @@ import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
-import { executeAction } from 'state/infobar/actions'
 import { getAIAgentMessages, getIntegrationsData } from 'state/ticket/selectors'
 import type { RootState, StoreState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import { fetchWidgets, selectContext } from 'state/widgets/actions'
 import { renderWithRouter } from 'utils/testing'
-import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import {
     AI_FEEDBACK_TAB,
@@ -41,6 +39,16 @@ import {
     CUSTOMER_DETAILS_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
+
+let mockCapturedRenderEditShippingAddressModal:
+    | ((props: EditShippingAddressModalRenderProps) => ReactNode)
+    | undefined
+let mockCapturedConnectedModalProps:
+    | {
+          onChange: (name: string, value: unknown) => void
+          onSubmit: () => void
+      }
+    | undefined
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -73,40 +81,36 @@ jest.mock('auto_qa', () => ({
     AutoQA: () => <div>AutoQA Component</div>,
 }))
 
-let capturedOnCreateOrder:
-    | ((integrationId: number, shopperData: ShopperData) => void)
-    | undefined
-
 jest.mock('@repo/customer', () => ({
-    ShopifyCustomer: () => <div>ShopifyCustomer Component</div>,
-    ShopifyCustomerProvider: ({
-        children,
-        onCreateOrder,
-    }: {
-        children: ReactNode
-        onCreateOrder?: (
-            integrationId: number,
-            shopperData: ShopperData,
-        ) => void
-    }) => {
-        capturedOnCreateOrder = onCreateOrder
-        return <>{children}</>
+    ShopifyCustomer: ({ renderEditShippingAddressModal }: any) => {
+        mockCapturedRenderEditShippingAddressModal =
+            renderEditShippingAddressModal
+        return <div>ShopifyCustomer Component</div>
     },
+    ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
+        <>{children}</>
+    ),
+}))
+
+jest.mock(
+    'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal',
+    () => ({
+        __esModule: true,
+        default: (props: any) => {
+            mockCapturedConnectedModalProps = props
+            return null
+        },
+    }),
+)
+
+jest.mock('state/infobar/actions', () => ({
+    executeAction: jest.fn().mockReturnValue({ type: 'MOCK_EXECUTE_ACTION' }),
 }))
 
 jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
     __esModule: true,
-    default: (props: Record<string, any>) =>
-        props.isOpen ? (
-            <>
-                <button onClick={props.onSubmit}>Submit order</button>
-                <button onClick={props.onClose}>Close order</button>
-            </>
-        ) : null,
+    default: () => null,
 }))
-
-jest.mock('state/infobar/actions')
-const executeActionMock = assumeMock(executeAction)
 
 jest.mock('tickets/ticket-timeline', () => ({
     TimelineContent: () => <div>TimelineContent Component</div>,
@@ -194,6 +198,7 @@ const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const ticketsStore: Partial<RootState> = {
     currentUser: fromJS(user),
     ticket: fromJS(ticket),
+    integrations: fromJS({ integrations: [] }),
 }
 
 const mockStore = configureMockStore([thunk])
@@ -222,7 +227,8 @@ describe('<TicketInfobarContainer />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        capturedOnCreateOrder = undefined
+        mockCapturedRenderEditShippingAddressModal = undefined
+        mockCapturedConnectedModalProps = undefined
         store = mockStore(state)
         store.dispatch = jest.fn()
 
@@ -612,6 +618,45 @@ describe('<TicketInfobarContainer />', () => {
         ).toBeInTheDocument()
     })
 
+    describe('renderEditShippingAddressModal', () => {
+        it('dispatches executeAction, calls onClose and onSuccess with address payload on submit', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Shopify,
+                onChangeTab,
+            })
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            const onClose = jest.fn()
+            const onSuccess = jest.fn()
+            const addressPayload = { address1: '456 New St', city: 'Austin' }
+
+            render(
+                mockCapturedRenderEditShippingAddressModal!({
+                    isOpen: true,
+                    orderId: '123',
+                    customerId: '456',
+                    integrationId: 1,
+                    currentShippingAddress: {},
+                    onClose,
+                    onSuccess,
+                }) as React.ReactElement,
+            )
+
+            mockCapturedConnectedModalProps!.onChange('payload', addressPayload)
+            mockCapturedConnectedModalProps!.onSubmit()
+
+            expect(store.dispatch).toHaveBeenCalled()
+            expect(onClose).toHaveBeenCalledTimes(1)
+            expect(onSuccess).toHaveBeenCalledWith(addressPayload)
+        })
+    })
+
     it('should render TimelineContent component when Timeline tab is active and shopperId is present', () => {
         useTicketInfobarNavigationMock.mockReturnValue({
             activeTab: TicketInfobarTab.Timeline,
@@ -640,68 +685,6 @@ describe('<TicketInfobarContainer />', () => {
         expect(
             screen.getByText('TimelineContent Component'),
         ).toBeInTheDocument()
-    })
-
-    it('should dispatch executeAction with correct payload when create order is submitted', async () => {
-        useTicketInfobarNavigationMock.mockReturnValue({
-            activeTab: TicketInfobarTab.Shopify,
-            onChangeTab,
-        })
-
-        executeActionMock.mockReturnValue(jest.fn())
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/123',
-            },
-        )
-
-        const testIntegrationId = 42
-        const testShopperData: ShopperData = {
-            id: 789,
-            first_name: 'Jane',
-            last_name: 'Doe',
-            created_at: '2024-01-01T00:00:00Z',
-            updated_at: '2024-01-01T00:00:00Z',
-            state: 'enabled',
-            note: '',
-            verified_email: true,
-            multipass_identifier: null,
-            tax_exempt: false,
-            email: 'jane@example.com',
-            phone: null,
-            currency: 'USD',
-            addresses: [],
-            tax_exemptions: [],
-            admin_graphql_api_id: 'gid://shopify/Customer/789',
-            default_address: null,
-            tags: '',
-        }
-
-        capturedOnCreateOrder?.(testIntegrationId, testShopperData)
-
-        await screen.findByText('Submit order')
-
-        await userEvent.click(screen.getByText('Submit order'))
-
-        expect(executeActionMock).toHaveBeenCalledWith(
-            expect.objectContaining({
-                actionName: ShopifyActionType.CreateOrder,
-                integrationId: testIntegrationId,
-                payload: expect.objectContaining({
-                    customer_id: testShopperData.id,
-                }),
-            }),
-        )
-        expect(executeActionMock).toHaveBeenCalledWith(
-            expect.not.objectContaining({
-                customerId: expect.anything(),
-            }),
-        )
     })
 
     describe('opportunity indicator', () => {

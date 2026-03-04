@@ -204,7 +204,7 @@ export function TimelineContent({
                 dispatchNotification={dispatchNotification}
             >
                 <OrderSidePanelPreview
-                    order={selectedOrder}
+                    order={selectedOrder as any}
                     isOpen={isOrderOpen}
                     onOpenChange={setIsOrderOpen}
                     productsMap={productsMap}

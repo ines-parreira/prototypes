@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { Box } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
+import type { EditShippingAddressModalRenderProps } from './components/CustomerInfo'
 import { CustomerInfo } from './components/CustomerInfo'
 
 type CustomerIntegrationData = {
@@ -17,9 +19,15 @@ type CustomerIntegrationData = {
 
 type Props = {
     onSyncProfile?: () => void
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
 }
 
-export function ShopifyCustomer({ onSyncProfile }: Props) {
+export function ShopifyCustomer({
+    onSyncProfile,
+    renderEditShippingAddressModal,
+}: Props) {
     const { ticketId } = useParams<{ ticketId: string }>()
     const { data: ticket, isLoading: isLoadingTicket } = useGetTicket(
         Number(ticketId),
@@ -57,6 +65,7 @@ export function ShopifyCustomer({ onSyncProfile }: Props) {
                 onSyncProfile={onSyncProfile}
                 ticketId={ticketId}
                 customerId={customerId}
+                renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
         </Box>
     )

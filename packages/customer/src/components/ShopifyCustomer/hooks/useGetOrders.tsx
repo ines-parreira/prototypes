@@ -14,27 +14,30 @@ type Params = {
 export function useGetOrders({ integrationId, shopperIdentityId }: Params) {
     const isEnabled = !!integrationId && !!shopperIdentityId
 
-    const { data: ordersResponse, isLoading: isLoadingOrders } =
-        useListEcommerceData(
-            ObjectType.Order,
-            SourceType.Shopify,
-            {
+    const {
+        data: ordersResponse,
+        isLoading: isLoadingOrders,
+        refetch: refetchOrders,
+    } = useListEcommerceData(
+        ObjectType.Order,
+        SourceType.Shopify,
+        {
+            params: {
+                integration_id: integrationId,
+                limit: 10,
+            },
+        },
+        {
+            query: {
+                enabled: isEnabled,
+            },
+            http: {
                 params: {
-                    integration_id: integrationId,
-                    limit: 10,
+                    shopper_identity_ids: shopperIdentityId,
                 },
             },
-            {
-                query: {
-                    enabled: isEnabled,
-                },
-                http: {
-                    params: {
-                        shopper_identity_ids: shopperIdentityId,
-                    },
-                },
-            },
-        )
+        },
+    )
 
     const orders = ordersResponse?.data?.data as
         | OrderEcommerceData[]
@@ -43,5 +46,6 @@ export function useGetOrders({ integrationId, shopperIdentityId }: Params) {
     return {
         orders,
         isLoadingOrders,
+        refetchOrders,
     }
 }

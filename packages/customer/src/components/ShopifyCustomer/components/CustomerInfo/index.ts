@@ -1,4 +1,5 @@
 export { CustomerInfo } from './CustomerInfo'
+export type { EditShippingAddressModalRenderProps } from './ShippingAddressSection'
 export { NoShopifyProfile } from './NoShopifyProfile'
 export { OrdersList } from './OrdersList'
 export { ShopifyTags } from './ShopifyTags'

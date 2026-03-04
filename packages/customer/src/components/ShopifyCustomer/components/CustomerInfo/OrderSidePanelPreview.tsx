@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import type { ReactNode } from 'react'
 
 import type {
     FinancialStatusValue,
@@ -26,6 +27,11 @@ import { OrderActions } from './OrderActions'
 import { OrderDetailsSection } from './OrderDetailsSection'
 import { OrderLineItemsSection } from './OrderLineItemsSection'
 import { OrderShipmentSection } from './OrderShipmentSection'
+import type {
+    EditShippingAddressModalRenderProps,
+    ShippingAddress,
+} from './ShippingAddressSection'
+import { ShippingAddressSection } from './ShippingAddressSection'
 
 type OrderData = {
     id: number | string
@@ -47,7 +53,10 @@ type OrderData = {
         tracking_url?: string | null
         tracking_number?: string | null
     }> | null
+    shipping_address?: ShippingAddress | null
 }
+
+export type { EditShippingAddressModalRenderProps }
 
 type Props<T extends OrderData = OrderData> = {
     order: T | null
@@ -61,6 +70,10 @@ type Props<T extends OrderData = OrderData> = {
     storeName?: string
     integrationId?: number
     ticketId?: string
+    customerId?: string
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
 }
 
 export function OrderSidePanelPreview<T extends OrderData = OrderData>({
@@ -75,6 +88,8 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     storeName,
     integrationId,
     ticketId,
+    customerId,
+    renderEditShippingAddressModal,
 }: Props<T>) {
     const handleClose = useCallback(() => {
         onOpenChange(false)
@@ -201,6 +216,18 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                     />
 
                     <OrderShipmentSection fulfillments={order.fulfillments} />
+                    <Box mt="sm">
+                        <ShippingAddressSection
+                            key={String(order.id)}
+                            shippingAddress={order.shipping_address}
+                            orderId={String(order.id)}
+                            customerId={customerId}
+                            integrationId={integrationId}
+                            renderEditShippingAddressModal={
+                                renderEditShippingAddressModal
+                            }
+                        />
+                    </Box>
                 </Box>
             </OverlayContent>
         </SidePanel>

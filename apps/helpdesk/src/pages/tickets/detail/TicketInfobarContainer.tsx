@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { ShopifyCustomer, ShopifyCustomerProvider } from '@repo/customer'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -33,6 +34,7 @@ import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { executeAction } from 'state/infobar/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
 import {
@@ -51,6 +53,7 @@ import { WidgetEnvironment } from 'state/widgets/types'
 import { TimelineContent } from 'tickets/ticket-timeline'
 import { isTeamLead } from 'utils'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
+import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
@@ -175,6 +178,64 @@ export const TicketInfobarContainer = ({
     }, [])
 
     const createOrder = useCreateOrder()
+    const editModalParamsRef = useRef<Record<string, unknown>>({})
+
+    const renderEditShippingAddressModal = useCallback(
+        ({
+            isOpen,
+            orderId,
+            customerId,
+            integrationId,
+            currentShippingAddress,
+            onClose,
+            onSuccess,
+        }: EditShippingAddressModalRenderProps) => (
+            <IntegrationContext.Provider
+                value={{
+                    integrationId: integrationId ?? null,
+                    integration: fromJS({}),
+                }}
+            >
+                <ConnectedEditOrderShippingAddressModal
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    onChange={(name, value) => {
+                        editModalParamsRef.current[name] = value
+                    }}
+                    onBulkChange={(values, callback) => {
+                        values.forEach(({ name, value }) => {
+                            editModalParamsRef.current[name] = value
+                        })
+                        callback?.()
+                    }}
+                    onSubmit={() => {
+                        const addressPayload = editModalParamsRef.current
+                            .payload as Record<string, unknown>
+                        dispatch(
+                            executeAction({
+                                actionName:
+                                    ShopifyActionType.EditShippingAddress,
+                                integrationId: integrationId ?? null,
+                                payload: editModalParamsRef.current,
+                            }),
+                        )
+                        onClose()
+                        onSuccess(addressPayload)
+                    }}
+                    data={{
+                        actionName: ShopifyActionType.EditShippingAddress,
+                        order_id: orderId,
+                        customer_id: customerId,
+                        current_shipping_address: fromJS(
+                            currentShippingAddress,
+                        ),
+                    }}
+                    title="Edit Shipping Address"
+                />
+            </IntegrationContext.Provider>
+        ),
+        [dispatch],
+    )
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) =>
@@ -331,7 +392,12 @@ export const TicketInfobarContainer = ({
                         dispatchNotification={dispatchNotification}
                         onCreateOrder={createOrder.open}
                     >
-                        <ShopifyCustomer onSyncProfile={handleSyncProfile} />
+                        <ShopifyCustomer
+                            onSyncProfile={handleSyncProfile}
+                            renderEditShippingAddressModal={
+                                renderEditShippingAddressModal
+                            }
+                        />
                     </ShopifyCustomerProvider>
                     <CustomerSyncForm
                         isCustomerSyncFormOpen={isCustomerSyncFormOpen}

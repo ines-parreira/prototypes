@@ -1,4 +1,5 @@
 import { useCallback, useContext, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/user'
@@ -17,6 +18,7 @@ import { StorePicker } from '../StorePicker'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { IntermediateEditPanel } from './IntermediateEditPanel'
 import { NoShopifyProfile } from './NoShopifyProfile'
+import type { EditShippingAddressModalRenderProps } from './OrderSidePanelPreview'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
 import type { FieldRenderContext } from './types'
@@ -30,6 +32,9 @@ type Props = {
     onSyncProfile?: () => void
     ticketId?: string
     customerId?: number
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
 }
 
 export function CustomerInfo({
@@ -40,6 +45,7 @@ export function CustomerInfo({
     onSyncProfile,
     ticketId,
     customerId,
+    renderEditShippingAddressModal,
 }: Props) {
     const {
         filteredIntegrations,
@@ -208,6 +214,8 @@ export function CustomerInfo({
                 storeName={selectedIntegration?.name}
                 integrationId={selectedIntegration?.id}
                 ticketId={ticketId}
+                customerId={selectedExternalId}
+                renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
         </>
     )

@@ -1,6 +1,6 @@
 {
-  "date": "2026-02-27T13:29:12.090Z",
-  "total": 4430,
+  "date": "2026-03-02T12:39:18.870Z",
+  "total": 4429,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -531,7 +531,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "SelectField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SelectField />` from @gorgias/axiom instead.\n * @date 2026-01-13\n * @type ui-kit-migration\n ",
-      "count": 83,
+      "count": 82,
       "filePath": "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
       "usages": [
         {
@@ -542,7 +542,6 @@
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatFallbackSettingsFields.tsx",
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/HandoverCustomizationChatSettingsComponent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PendingTasksSection/StorePicker.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundCustomerSelection/PlaygroundCustomerSelection.tsx",
             "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.tsx",
             "apps/helpdesk/src/pages/automate/common/components/AutomateExploreDataModal.tsx",
             "apps/helpdesk/src/pages/automate/common/components/TopQuestions/TopQuestionsSection.tsx",
