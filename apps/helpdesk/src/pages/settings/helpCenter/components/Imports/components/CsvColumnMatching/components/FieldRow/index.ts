@@ -1,1 +1,1 @@
-export * from './FieldRow'
+export { FieldRow, Props } from './FieldRow'

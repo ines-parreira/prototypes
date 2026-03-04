@@ -29,30 +29,275 @@ export {
     IvrMenuActionType,
     AddressType,
 } from '../constants'
-
-export * from './misc'
-export * from './email'
-export * from './gmail'
-export * from './outlook'
-export * from './aircall'
-export * from './gorgiasChat'
-export * from './facebook'
-export * from './http'
-export * from './shopify'
-export * from './recharge'
-export * from './smile'
-export * from './magento2'
-export * from './zendesk'
-export * from './yotpo'
-export * from './klaviyo'
-export * from './phone'
-export * from './sms'
-export * from './twitter'
-export * from './bigcommerce'
-export * from './whatsapp'
-export * from './app'
-export * from './ecommerce'
-
+export {
+    AutoResponder,
+    IntegrationAuthentication,
+    IntegrationDataItem,
+    IntegrationDataItemType,
+    IntegrationExtra,
+    IntegrationFromType,
+    isStoreIntegration,
+    OAuth2,
+    ProductCardDetails,
+    StoreIntegration,
+} from './misc'
+export {
+    DNSRecordType,
+    DomainDNSRecord,
+    EmailDomain,
+    EmailIntegration,
+    EmailIntegrationMeta,
+    EmailMigrationBannerStatus,
+    EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
+    EmailMigrationOutboundVerification,
+    EmailMigrationOutboundVerificationStatus,
+    EmailMigrationSenderVerificationIntegration,
+    EmailMigrationStatus,
+    EmailSignature,
+    isEmailIntegration,
+    MigrationIntegration,
+    OutboundVerificationStatusValue,
+    OutboundVerificationType,
+} from './email'
+export {
+    GmailIntegration,
+    GmailIntegrationMeta,
+    isGmailIntegration,
+} from './gmail'
+export {
+    isOutlookIntegration,
+    OutlookIntegration,
+    OutlookIntegrationMeta,
+} from './outlook'
+export { AircallIntegration, isAircallIntegration } from './aircall'
+export {
+    GetApplicationsResponse,
+    GetInstallationSnippetParams,
+    GetInstallationSnippetResponse,
+    GorgiasChatApplicationBaseInfo,
+    GorgiasChatAutoResponderReply,
+    GorgiasChatAvatarImageType,
+    GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
+    GorgiasChatBackgroundColorStyle,
+    GorgiasChatCreationWizardInstallationMethod,
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
+    GorgiasChatEmailCaptureType,
+    GorgiasChatInstallationMethod,
+    GorgiasChatInstallationVisibility,
+    GorgiasChatInstallationVisibilityCondition,
+    GorgiasChatInstallationVisibilityConditionOperator,
+    GorgiasChatInstallationVisibilityMatchConditions,
+    GorgiasChatInstallationVisibilityMethod,
+    GorgiasChatIntegration,
+    GorgiasChatIntegrationMeta,
+    GorgiasChatLauncherType,
+    GorgiasChatMetaInstallation,
+    GorgiasChatMinimumSnippetVersion,
+    GorgiasChatPosition,
+    GorgiasChatPositionAlignmentEnum,
+    GorgiasChatStatusEnum,
+    isGorgiasChatIntegration,
+    latestSnippetVersion,
+    SelfServiceConfiguration,
+} from './gorgiasChat'
+export {
+    FacebokIntegrationPreferences,
+    FacebookIntegration,
+    FacebookIntegrationMeta,
+    FacebookIntegrationSettings,
+    isFacebookIntegration,
+} from './facebook'
+export {
+    HTTPForm,
+    HttpIntegration,
+    HTTPIntegrationEvent,
+    HttpIntegrationMeta,
+    isHttpIntegration,
+} from './http'
+export {
+    isShopifyIntegration,
+    ShopifyCollection,
+    ShopifyCollectionResponse,
+    ShopifyCustomerSegment,
+    ShopifyCustomerTags,
+    ShopifyIntegration,
+    ShopifyIntegrationMeta,
+    ShopifyOrderTags,
+    ShopifySegmentResponse,
+    ShopifyTags,
+} from './shopify'
+export {
+    isRechargeIntegration,
+    RechargeIntegration,
+    RechargeIntegrationMeta,
+} from './recharge'
+export {
+    isSmileIntegration,
+    SmileIntegration,
+    SmileIntegrationMeta,
+} from './smile'
+export {
+    isMagento2Integration,
+    Magento2Integration,
+    Magento2IntegrationMeta,
+} from './magento2'
+export {
+    isZendeskIntegration,
+    ZendeskIntegration,
+    ZendeskIntegrationMeta,
+} from './zendesk'
+export {
+    isYotpoIntegration,
+    YotpoIntegration,
+    YotpoIntegrationMeta,
+} from './yotpo'
+export {
+    isKlaviyoIntegration,
+    KlaviyoIntegration,
+    KlaviyoIntegrationMeta,
+} from './klaviyo'
+export {
+    isPhoneIntegration,
+    isStandardPhoneIntegration,
+    IvrForwardCall,
+    IvrForwardCallMenuAction,
+    IvrMenuAction,
+    IvrPlayVoiceMessageAction,
+    IvrSendToSmsMenuAction,
+    IvrSmsDeflection,
+    LocalWaitMusicCustomRecording,
+    LocalWaitMusicPreferences,
+    PhoneIntegration,
+    PhoneIntegrationIvrSettings,
+    PhoneIntegrationMeta,
+    PhoneIntegrationPreferences,
+    PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
+    PhoneIntegrationVoicemailSettings,
+    PhoneRingingBehaviour,
+    VoiceMessage,
+    VoiceMessageNone,
+    VoiceMessageRecording,
+    VoiceMessageTextToSpeech,
+} from './phone'
+export { isSmsIntegration, SmsIntegration, SmsIntegrationMeta } from './sms'
+export {
+    isTwitterIntegration,
+    TwitterIntegration,
+    TwitterIntegrationMeta,
+} from './twitter'
+export {
+    BigCommerceActionType,
+    BigCommerceAddressResponse,
+    BigCommerceAvailablePaymentOptionsData,
+    BigCommerceBillingAddress,
+    BigCommerceCart,
+    BigCommerceCartErrorResponse,
+    BigCommerceCartLineItem,
+    BigCommerceCartLineItems,
+    BigCommerceCartRedirect,
+    BigCommerceCartResponse,
+    BigCommerceCheckout,
+    BigCommerceCheckoutErrorResponse,
+    BigCommerceCheckoutResponse,
+    BigCommerceConsignment,
+    BigCommerceCoupon,
+    BigCommerceCouponError,
+    BigCommerceCouponErrorMessage,
+    BigCommerceCreateConsignmentPayload,
+    BigCommerceCustomAddress,
+    BigCommerceCustomCartLineItem,
+    BigCommerceCustomer,
+    BigCommerceCustomerAddress,
+    BigCommerceCustomerAddressType,
+    BigCommerceCustomProduct,
+    BigCommerceDiscount,
+    BigCommerceDuplicateOrderErrorResponse,
+    BigCommerceDuplicateOrderResponse,
+    BigCommerceErrorList,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceIntegration,
+    BigCommerceIntegrationMeta,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
+    BigCommerceNestedCart,
+    BigCommerceNestedCartResponse,
+    BigCommerceNestedCheckout,
+    BigCommerceNestedCheckoutResponse,
+    BigCommerceOrder,
+    BigCommerceOrderProduct,
+    BigCommerceOrderShipping,
+    BigCommerceProduct,
+    BigCommerceProductCheckboxModifier,
+    bigCommerceProductCheckboxModifierTypes,
+    BigCommerceProductModifiers,
+    BigCommerceProductModifiersBase,
+    BigCommerceProductSelectModifier,
+    bigCommerceProductSelectModifierTypes,
+    BigCommerceProductsListType,
+    BigCommerceProductSwatchModifier,
+    bigCommerceProductSwatchModifierTypes,
+    BigCommerceProductVariant,
+    BigCommerceRefundableItemType,
+    BigCommerceRefundItemsPayload,
+    BigCommerceRefundItemsPayloadComponent,
+    BigCommerceRefundMethod,
+    BigCommerceRefundMethodComponent,
+    BigCommerceRefundOrderPayload,
+    BigCommerceRefundOrderState,
+    BigCommerceRefundType,
+    BigCommerceShippingOption,
+    BigCommerceTaxCheckout,
+    BigCommerceUpsertConsignmentPayload,
+    BigCommerceWebhook,
+    CalculateOrderRefundDataErrorResponse,
+    CalculateOrderRefundDataNestedResponse,
+    CalculateOrderRefundDataResponse,
+    CalculateOrderRefundQuotesDataErrorResponse,
+    CalculateOrderRefundQuotesDataResponse,
+    CreateOrderValidationResult,
+    GiftWrappingItemRefundData,
+    HandlingItemRefundData,
+    IndividualItemsLevelRefundData,
+    isBigCommerceIntegration,
+    OrderLevelRefundData,
+    OrderPaymentMethodType,
+    OrderStatusIDType,
+    OrderStatusList,
+    ProductItemRefundData,
+    ProductModifiersChangedError,
+    ShippingItemRefundData,
+} from './bigcommerce'
+export {
+    isWhatsAppIntegration,
+    WhatsAppCodeVerificationMethod,
+    WhatsAppIntegration,
+    WhatsAppIntegrationMeta,
+    WhatsAppMigrationProgress,
+    WhatsAppPhoneNumberStatus,
+    WhatsAppPhoneNumberVerificationStatus,
+} from './whatsapp'
+export {
+    AppData,
+    AppDetail,
+    AppErrorLog,
+    AppIntegration,
+    AppIntegrationMeta,
+    AppListData,
+    AppListItem,
+    Category,
+    DisconnectResponse,
+    isAppDetail,
+    isAppIntegration,
+    isAppListItem,
+    isCategory,
+    PricingPlan,
+    TrialPeriod,
+} from './app'
+export { EcommerceIntegration, EcommerceIntegrationMeta } from './ecommerce'
 export type Integration =
     | EmailIntegration
     | GmailIntegration

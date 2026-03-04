@@ -1,1 +1,1 @@
-export * from './CustomDomain'
+export { CustomDomain, CustomDomainProps } from './CustomDomain'

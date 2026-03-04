@@ -1,1 +1,1 @@
-export * from './DropText'
+export { DropText } from './DropText'

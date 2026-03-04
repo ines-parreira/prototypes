@@ -1,1 +1,1 @@
-export * from './SearchEnginePreview'
+export { SearchEnginePreview } from './SearchEnginePreview'

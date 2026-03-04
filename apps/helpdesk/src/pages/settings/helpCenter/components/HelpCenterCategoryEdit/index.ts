@@ -1,1 +1,1 @@
-export * from './HelpCenterCategoryEdit'
+export { HelpCenterCategoryEdit } from './HelpCenterCategoryEdit'

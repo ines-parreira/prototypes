@@ -1,1 +1,1 @@
-export * from './SearchResultsArticleRow'
+export { SearchResultsArticleRow } from './SearchResultsArticleRow'

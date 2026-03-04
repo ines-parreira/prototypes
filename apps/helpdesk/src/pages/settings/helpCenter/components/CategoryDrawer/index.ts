@@ -1,1 +1,1 @@
-export * from './CategoryDrawer'
+export { CategoryDrawer } from './CategoryDrawer'

@@ -1,1 +1,1 @@
-export * from './ChatCampaign'
+export { ChatCampaign } from './ChatCampaign'

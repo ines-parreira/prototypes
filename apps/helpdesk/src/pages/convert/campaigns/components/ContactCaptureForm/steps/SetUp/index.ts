@@ -1,1 +1,1 @@
-export * from './SetUp'
+export { SetUp } from './SetUp'

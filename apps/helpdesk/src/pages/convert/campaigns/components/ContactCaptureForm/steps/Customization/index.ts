@@ -1,1 +1,1 @@
-export * from './Customization'
+export { Customization } from './Customization'

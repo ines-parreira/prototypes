@@ -1,1 +1,1 @@
-export * from './AdvancedTriggerFactory'
+export { AdvancedTriggerFactory } from './AdvancedTriggerFactory'

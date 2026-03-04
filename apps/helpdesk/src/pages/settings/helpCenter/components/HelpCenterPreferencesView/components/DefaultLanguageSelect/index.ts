@@ -1,1 +1,1 @@
-export * from './DefaultLanguageSelect'
+export { DefaultLanguageSelect } from './DefaultLanguageSelect'

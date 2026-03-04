@@ -1,1 +1,1 @@
-export * from './CampaignChatHiddenWarning'
+export { CampaignChatHiddenWarning } from './CampaignChatHiddenWarning'

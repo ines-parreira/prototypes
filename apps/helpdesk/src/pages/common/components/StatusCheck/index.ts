@@ -1,1 +1,1 @@
-export * from './StatusCheck'
+export { StatusCheck } from './StatusCheck'

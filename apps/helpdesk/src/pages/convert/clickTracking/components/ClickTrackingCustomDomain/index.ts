@@ -1,1 +1,1 @@
-export * from './ClickTrackingCustomDomain'
+export { ClickTrackingCustomDomain } from './ClickTrackingCustomDomain'

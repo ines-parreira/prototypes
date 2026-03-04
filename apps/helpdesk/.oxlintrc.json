@@ -97,7 +97,7 @@
         "import/no-named-as-default-member": "warn",
         "import/no-default-export": "warn",
         "import/no-named-as-default": "warn",
-        "oxc/no-barrel-file": "warn",
+        "oxc/no-barrel-file": "error",
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",

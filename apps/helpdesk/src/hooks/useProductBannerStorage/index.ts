@@ -1,3 +1,2 @@
-export * from './useProductBannerStorage'
-
-export * from './constants'
+export { useProductBannerStorage } from './useProductBannerStorage'
+export { PRODUCT_BANNER_KEY } from './constants'

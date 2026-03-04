@@ -1,1 +1,1 @@
-export * from './CampaignPreviewPopover'
+export { CampaignPreviewPopover } from './CampaignPreviewPopover'

@@ -1,2 +1,2 @@
 export { default } from './SummaryItem'
-export * from './SummaryItem'
+export { SummaryItemProps } from './SummaryItem'

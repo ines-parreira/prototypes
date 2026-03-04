@@ -1,1 +1,1 @@
-export * from './SocialNavigationLinks'
+export { SocialNavigationLinks } from './SocialNavigationLinks'

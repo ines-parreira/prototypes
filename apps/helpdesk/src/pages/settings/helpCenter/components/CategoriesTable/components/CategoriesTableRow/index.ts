@@ -1,1 +1,4 @@
-export * from './CategoriesTableRow'
+export {
+    CategoriesTableRow,
+    CategoriesTableRowProps,
+} from './CategoriesTableRow'

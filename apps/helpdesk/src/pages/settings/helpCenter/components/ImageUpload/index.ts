@@ -1,2 +1,2 @@
-export * from './ImageUpload'
-export * from './hooks'
+export { ImageUpload, ImageUploadProps } from './ImageUpload'
+export { useLocalImage } from './hooks'

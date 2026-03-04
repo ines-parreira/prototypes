@@ -1,1 +1,1 @@
-export * from './AdvancedTriggersSelect'
+export { AdvancedTriggersSelect } from './AdvancedTriggersSelect'

@@ -1,1 +1,1 @@
-export * from './SearchResultsCategoryRow'
+export { SearchResultsCategoryRow } from './SearchResultsCategoryRow'

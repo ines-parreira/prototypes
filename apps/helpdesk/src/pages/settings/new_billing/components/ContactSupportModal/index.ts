@@ -1,2 +1,2 @@
 export { default } from './ContactSupportModal'
-export * from './ContactSupportModal'
+export type { ContactSupportModalProps } from './ContactSupportModal'

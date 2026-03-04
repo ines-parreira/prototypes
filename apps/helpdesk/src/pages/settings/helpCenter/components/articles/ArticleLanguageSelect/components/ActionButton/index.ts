@@ -1,1 +1,5 @@
-export * from './ActionButton'
+export {
+    ActionButton,
+    ActionButtonProps,
+    ActionButtonVariant,
+} from './ActionButton'

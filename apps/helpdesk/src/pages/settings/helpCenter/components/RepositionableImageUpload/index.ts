@@ -1,1 +1,4 @@
-export * from './RepositionableImageUpload'
+export {
+    RepositionableImageUpload,
+    RepositionableImageUploadProps,
+} from './RepositionableImageUpload'

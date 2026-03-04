@@ -1,1 +1,4 @@
-export * from './ChatIntegrationPreview'
+export {
+    ChatIntegrationPreviewContext,
+    ChatTheme,
+} from './ChatIntegrationPreview'

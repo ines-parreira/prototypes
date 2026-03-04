@@ -1,1 +1,1 @@
-export * from './ConnectToShopSection'
+export { ConnectToShopSection } from './ConnectToShopSection'

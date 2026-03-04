@@ -1,1 +1,1 @@
-export * from './ImportedLanguagesTags'
+export { ImportedLanguagesTags } from './ImportedLanguagesTags'

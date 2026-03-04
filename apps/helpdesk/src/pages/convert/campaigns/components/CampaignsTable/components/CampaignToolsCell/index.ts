@@ -1,1 +1,1 @@
-export * from './CampaignToolsCell'
+export { CampaignToolsCell } from './CampaignToolsCell'

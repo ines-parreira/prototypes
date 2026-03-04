@@ -1,1 +1,1 @@
-export * from './BaseCampaignDetails'
+export { BaseCampaignDetails } from './BaseCampaignDetails'

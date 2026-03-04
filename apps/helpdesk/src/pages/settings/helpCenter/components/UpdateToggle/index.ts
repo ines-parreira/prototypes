@@ -1,1 +1,1 @@
-export * from './UpdateToggle'
+export { UpdateToggle } from './UpdateToggle'

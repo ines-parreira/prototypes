@@ -1,1 +1,1 @@
-export * from './CampaignFooter'
+export { CampaignFooter } from './CampaignFooter'

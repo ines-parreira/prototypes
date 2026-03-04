@@ -1,2 +1,2 @@
 export { default } from './BillingFrequency'
-export * from './BillingFrequency'
+export { BillingFrequencyProps } from './BillingFrequency'
