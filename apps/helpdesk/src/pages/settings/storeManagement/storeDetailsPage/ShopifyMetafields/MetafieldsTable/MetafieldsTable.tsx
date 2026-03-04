@@ -190,7 +190,11 @@ export default function MetafieldsTable<TData, TValue>({
                         columnCount={columns.length}
                         table={table}
                         renderEmptyStateComponent={() => (
-                            <Box alignItems="center" justifyContent="center">
+                            <Box
+                                alignItems="center"
+                                justifyContent="center"
+                                width="100%"
+                            >
                                 <EmptyMetafieldsState
                                     handleOpenCategoriesModal={
                                         handleOpenCategoriesModal
