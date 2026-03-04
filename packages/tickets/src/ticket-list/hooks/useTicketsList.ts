@@ -83,7 +83,6 @@ export function useTicketsList(viewId: number, params?: UseTicketsListParams) {
         hasNextPage: query.hasNextPage,
         isLoading: query.isLoading,
         isFetching: query.isFetching,
-        isFetchingNextPage: query.isFetchingNextPage,
         error: query.error,
         data: query.data,
     }

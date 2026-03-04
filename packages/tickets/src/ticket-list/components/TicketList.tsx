@@ -1,95 +1,33 @@
-import { forwardRef, useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { Virtuoso } from 'react-virtuoso'
-import type { Components } from 'react-virtuoso'
 
-import { Box, Text } from '@gorgias/axiom'
 import type {
     Language,
     TicketCompact,
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
+import type { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity as useAgentActivityHook } from '@gorgias/realtime-ably'
 
 import { useCurrentUserLanguagePreferences } from '../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../translations/hooks/useTicketsTranslatedProperties'
 import { useSortOrder } from '../hooks/useSortOrder'
 import { useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
-import { TicketListItemSkeleton } from './TicketListItem/components/TicketListItemSkeleton'
-import { TicketListItem } from './TicketListItem/TicketListItem'
+import { TicketListItem } from './TicketListItem'
 
-import css from './TicketList.module.less'
+type AgentActivity = ReturnType<
+    ReturnType<typeof useAgentActivity>['getTicketActivity']
+>
 
 type ListContext = {
-    viewId: number
     activeTicketId?: number
     currentUserId?: number
-    isLoading: boolean
-    isFetchingNextPage: boolean
     translationMap: Record<number, TicketTranslationCompact>
     shouldShowTranslatedContent: (language?: Language | null) => boolean
-    selectedTicketIds?: Set<number>
-    onSelectTicket?: (
-        ticketId: number,
-        selected: boolean,
-        shiftKey?: boolean,
-    ) => void
-    hasSelectedAll?: boolean
+    getTicketActivity: (ticketId: number) => AgentActivity
 }
-
-const List: NonNullable<Components<TicketCompact, ListContext>['List']> =
-    forwardRef(({ children, context, ...props }, ref) => (
-        <div
-            role="feed"
-            aria-label="Tickets"
-            aria-busy={context?.isLoading}
-            ref={ref}
-            {...props}
-        >
-            {children}
-        </div>
-    ))
-
-const Item: NonNullable<Components<TicketCompact, ListContext>['Item']> = ({
-    children,
-    context: __context,
-    ...props
-}) => (
-    <div role="article" {...props}>
-        {children}
-    </div>
-)
-
-function EmptyPlaceholder({ context }: { context?: ListContext }) {
-    if (context?.isLoading) {
-        return (
-            <>
-                {Array.from({ length: 10 }, (_, i) => (
-                    <TicketListItemSkeleton key={i} />
-                ))}
-            </>
-        )
-    }
-    return <Text color="content-neutral-secondary">No tickets found</Text>
-}
-
-function Footer({ context }: { context?: ListContext }) {
-    if (!context?.isFetchingNextPage) return null
-    return (
-        <>
-            {Array.from({ length: 3 }, (_, i) => (
-                <TicketListItemSkeleton key={i} />
-            ))}
-        </>
-    )
-}
-
-const virtuosoComponents = {
-    EmptyPlaceholder,
-    Footer,
-    List,
-    Item,
-} as unknown as Components<TicketCompact, ListContext>
 
 function itemContent(
     _index: number,
@@ -98,20 +36,16 @@ function itemContent(
 ) {
     return (
         <TicketListItem
-            viewId={context.viewId}
             ticket={ticket}
             isActive={ticket.id === context.activeTicketId}
             currentUserId={context.currentUserId}
-            isSelected={
-                context.hasSelectedAll ||
-                context.selectedTicketIds?.has(ticket.id) ||
-                false
-            }
-            onSelect={context.onSelectTicket}
-            translation={context.translationMap?.[ticket.id]}
+            translation={context.translationMap[ticket.id]}
             showTranslatedContent={context.shouldShowTranslatedContent(
                 ticket.language,
             )}
+            agentActivity={
+                ticket.id ? context.getTicketActivity(ticket.id) : undefined
+            }
         />
     )
 }
@@ -120,36 +54,16 @@ type Props = {
     viewId: number
     activeTicketId?: number
     currentUserId?: number
-    selectedTicketIds?: Set<number>
-    onSelectTicket?: (
-        ticketId: number,
-        selected: boolean,
-        shiftKey?: boolean,
-    ) => void
-    hasSelectedAll?: boolean
 }
 
-export function TicketList({
-    viewId,
-    activeTicketId,
-    currentUserId,
-    selectedTicketIds,
-    onSelectTicket,
-    hasSelectedAll,
-}: Props) {
+export function TicketList({ viewId, activeTicketId, currentUserId }: Props) {
     const [sortOrder] = useSortOrder(viewId)
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder }),
         [sortOrder],
     )
-    const {
-        tickets,
-        fetchNextPage,
-        hasNextPage,
-        isLoading,
-        isFetchingNextPage,
-        error,
-    } = useTicketsList(viewId, ticketsListParams)
+    const { tickets, fetchNextPage, hasNextPage, isLoading, error } =
+        useTicketsList(viewId, ticketsListParams)
 
     const { viewVisibleTickets } = useViewVisibleTickets()
 
@@ -158,31 +72,22 @@ export function TicketList({
         ticket_ids: ticketIds,
     })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
+    const { getTicketActivity } = useAgentActivityHook()
 
     const context = useMemo<ListContext>(
         () => ({
-            viewId,
             activeTicketId,
             currentUserId,
-            isLoading,
-            isFetchingNextPage,
             translationMap,
             shouldShowTranslatedContent,
-            selectedTicketIds,
-            onSelectTicket,
-            hasSelectedAll,
+            getTicketActivity,
         }),
         [
-            viewId,
             activeTicketId,
             currentUserId,
-            isLoading,
-            isFetchingNextPage,
             translationMap,
             shouldShowTranslatedContent,
-            selectedTicketIds,
-            onSelectTicket,
-            hasSelectedAll,
+            getTicketActivity,
         ],
     )
 
@@ -193,51 +98,38 @@ export function TicketList({
                 range.endIndex + 1,
             )
             viewVisibleTickets(visibleTickets)
-
-            if (
-                hasNextPage &&
-                !isFetchingNextPage &&
-                range.endIndex >= tickets.length - 8
-            ) {
-                fetchNextPage()
-            }
         },
-        [
-            tickets,
-            viewVisibleTickets,
-            hasNextPage,
-            isFetchingNextPage,
-            fetchNextPage,
-        ],
+        [tickets, viewVisibleTickets],
     )
 
     const handleEndReached = useCallback(() => {
-        if (hasNextPage && !isFetchingNextPage) {
+        if (hasNextPage) {
             fetchNextPage()
         }
-    }, [hasNextPage, isFetchingNextPage, fetchNextPage])
+    }, [hasNextPage, fetchNextPage])
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
 
     if (error) {
+        console.error('TicketList error:', error)
         return <div>Error loading tickets</div>
     }
 
+    if (tickets.length === 0) {
+        return <div>No tickets found</div>
+    }
+
     return (
-        <Box
-            height="100%"
-            width="100%"
-            flexDirection="column"
-            padding="xs"
-            className={css.ticketListContainer}
-        >
-            <Virtuoso<TicketCompact, ListContext>
-                data={isLoading ? [] : tickets}
-                context={context}
-                increaseViewportBy={{ top: 300, bottom: 1000 }}
-                components={virtuosoComponents}
-                itemContent={itemContent}
-                rangeChanged={handleRangeChanged}
-                endReached={handleEndReached}
-            />
-        </Box>
+        <Virtuoso<TicketCompact, ListContext>
+            style={{ height: '100%' }}
+            data={tickets}
+            context={context}
+            increaseViewportBy={{ top: 0, bottom: 1000 }}
+            itemContent={itemContent}
+            rangeChanged={handleRangeChanged}
+            endReached={handleEndReached}
+        />
     )
 }

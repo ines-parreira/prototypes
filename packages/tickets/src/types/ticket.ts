@@ -3,6 +3,30 @@ export enum TicketStatus {
     Closed = 'closed',
 }
 
+export enum TicketChannel {
+    Aircall = 'aircall',
+    Api = 'api',
+    Chat = 'chat',
+    ContactForm = 'contact_form',
+    Email = 'email',
+    Facebook = 'facebook',
+    FacebookMention = 'facebook-mention',
+    FacebookMessenger = 'facebook-messenger',
+    FacebookRecommendations = 'facebook-recommendations',
+    HelpCenter = 'help-center',
+    InstagramAdComment = 'instagram-ad-comment',
+    InstagramComment = 'instagram-comment',
+    InstagramDirectMessage = 'instagram-direct-message',
+    InstagramMention = 'instagram-mention',
+    InternalNote = 'internal-note',
+    Phone = 'phone',
+    Sms = 'sms',
+    Twitter = 'twitter',
+    TwitterDirectMessage = 'twitter-direct-message',
+    WhatsApp = 'whatsapp',
+    YotpoReview = 'yotpo-review',
+}
+
 export enum TicketVia {
     GorgiasChat = 'gorgias_chat',
     ContactForm = 'contact_form',

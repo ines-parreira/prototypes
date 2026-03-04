@@ -1,10 +1,9 @@
 import { IconName } from '@gorgias/axiom'
-import {
-    LegacyChannelSlug,
-    TicketMessageSourceType,
-} from '@gorgias/helpdesk-types'
+import { TicketMessageSourceType } from '@gorgias/helpdesk-types'
 
-export type TicketMessageSource = TicketMessageSourceType | LegacyChannelSlug
+import { TicketChannel } from '../../types/ticket'
+
+export type TicketMessageSource = TicketMessageSourceType | TicketChannel
 
 export const ticketMessageSourceToIconName = (
     ticketMessageSource: TicketMessageSource,
@@ -15,7 +14,7 @@ export const ticketMessageSourceToIconName = (
         case TicketMessageSourceType.Email:
         case TicketMessageSourceType.HelpCenterContactForm:
         case TicketMessageSourceType.ContactForm:
-        case LegacyChannelSlug.ContactForm:
+        case TicketChannel.ContactForm:
             return IconName.CommMail
         // case TicketMessageSourceType.EmailForward:
         //     return IconName.Forward
@@ -32,12 +31,12 @@ export const ticketMessageSourceToIconName = (
             return IconName.CommPhone
         case TicketMessageSourceType.Sms:
             return IconName.CommChatDots
-        case LegacyChannelSlug.HelpCenter:
+        case TicketChannel.HelpCenter:
             return IconName.CircleHelp
         case TicketMessageSourceType.SystemMessage:
             return IconName.Settings
-        case LegacyChannelSlug.FacebookMention:
-        case LegacyChannelSlug.FacebookRecommendations:
+        case TicketChannel.FacebookMention:
+        case TicketChannel.FacebookRecommendations:
         case TicketMessageSourceType.FacebookComment:
         case TicketMessageSourceType.FacebookReviewComment:
         case TicketMessageSourceType.Facebook:
@@ -54,7 +53,7 @@ export const ticketMessageSourceToIconName = (
         case TicketMessageSourceType.FacebookMessenger:
             return IconName.ChannelFbMessenger
 
-        case LegacyChannelSlug.Twitter:
+        case TicketChannel.Twitter:
         case TicketMessageSourceType.TwitterTweet:
         case TicketMessageSourceType.TwitterQuotedTweet:
         case TicketMessageSourceType.TwitterMentionTweet:
@@ -70,7 +69,7 @@ export const ticketMessageSourceToIconName = (
         case TicketMessageSourceType.InstagramAdMedia:
         case TicketMessageSourceType.InstagramComment:
         case TicketMessageSourceType.InstagramMedia:
-        case LegacyChannelSlug.InstagramMention:
+        case TicketChannel.InstagramMention:
         case TicketMessageSourceType.InstagramMentionMedia:
         case TicketMessageSourceType.InstagramMentionComment:
             return IconName.ChannelInstagram
@@ -95,7 +94,7 @@ export const ticketMessageSourceToIconName = (
              */
             // icon.name = 'yotpo-review-private-comment'
             return IconName.ChannelYotpo
-        case LegacyChannelSlug.Whatsapp:
+        case TicketChannel.WhatsApp:
         case TicketMessageSourceType.WhatsappMessage:
             return IconName.ChannelWhatsapp
         case TicketMessageSourceType.TiktokShop:

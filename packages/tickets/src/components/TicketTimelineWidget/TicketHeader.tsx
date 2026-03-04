@@ -12,7 +12,7 @@ type TicketHeaderProps = Pick<Ticket, 'subject'> & {
 export function TicketHeader({ subject, time, iconName }: TicketHeaderProps) {
     return (
         <CardHeader
-            leadingSlot={
+            icon={
                 iconName ? (
                     <span className={css.iconWrapper}>
                         <Icon name={iconName} size="md" />

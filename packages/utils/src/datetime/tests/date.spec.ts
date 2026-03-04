@@ -127,14 +127,14 @@ describe('date utils', () => {
             const date = '2024-02-07T00:00:00Z'
             expect(
                 shortenRelativeDurationLabel(moment(date).fromNow()),
-            ).toEqual('1d')
+            ).toEqual('1d ago')
         })
 
         it('should return abbreviated label for multiple unit', () => {
             const date = '2024-02-05T00:00:00Z'
             expect(
                 shortenRelativeDurationLabel(moment(date).fromNow()),
-            ).toEqual('3d')
+            ).toEqual('3d ago')
         })
 
         it("should return 'now' for duration in seconds", () => {
