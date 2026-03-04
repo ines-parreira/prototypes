@@ -2665,6 +2665,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@repo/types':
         specifier: workspace:*
         version: link:../types

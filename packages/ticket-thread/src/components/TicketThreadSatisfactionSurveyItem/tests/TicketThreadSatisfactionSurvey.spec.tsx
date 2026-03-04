@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import type { TicketThreadSatisfactionSurveyItem } from '../../../hooks/satisfaction-survey/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { render } from '../../../tests/render.utils'
 import { TicketThreadSatisfactionSurvey } from '../TicketTheadSatisfactionSurvey'
 
 const satisfactionSurveyData = { score: 5 }

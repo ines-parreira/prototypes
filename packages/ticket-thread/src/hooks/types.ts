@@ -29,7 +29,7 @@ export const TicketThreadItemTag = {
         SocialMediaTwitterTweet: 'social-media-twitter-tweet',
         SocialMediaTwitterDirectMessage: 'social-media-twitter-direct-message',
         SocialMediaWhatsAppMessage: 'social-media-whatsapp-message',
-        MergedMessages: 'merged-messages',
+        GroupedMessages: 'grouped-messages',
     },
     Events: {
         TicketEvent: 'ticket-event',
@@ -38,6 +38,7 @@ export const TicketThreadItemTag = {
         SatisfactionSurveyRespondedEvent: 'satisfaction-survey-responded-event',
         PrivateReplyEvent: 'private-reply-event',
         ShoppingAssistantEvent: 'shopping-assistant-event',
+        GroupedEvents: 'grouped-events',
     },
     VoiceCalls: {
         VoiceCall: 'voice-call',

@@ -15,7 +15,7 @@ import { shouldRenderRuleSuggestion } from './transforms'
 
 const SINGLE_MESSAGE_TAGS = new Set<string>(
     Object.values(TicketThreadItemTag.Messages).filter(
-        (tag) => tag !== TicketThreadItemTag.Messages.MergedMessages,
+        (tag) => tag !== TicketThreadItemTag.Messages.GroupedMessages,
     ),
 )
 
@@ -25,13 +25,13 @@ function isSingleMessageItem(
     return SINGLE_MESSAGE_TAGS.has(item._tag)
 }
 
-function isMergedMessagesItem(
+function isGroupedMessagesItem(
     item: TicketThreadItem,
 ): item is Extract<
     TicketThreadItem,
-    { _tag: typeof TicketThreadItemTag.Messages.MergedMessages }
+    { _tag: typeof TicketThreadItemTag.Messages.GroupedMessages }
 > {
-    return item._tag === TicketThreadItemTag.Messages.MergedMessages
+    return item._tag === TicketThreadItemTag.Messages.GroupedMessages
 }
 
 function getMessageMetadata(item: TicketThreadItem): {
@@ -45,7 +45,7 @@ function getMessageMetadata(item: TicketThreadItem): {
         }
     }
 
-    if (isMergedMessagesItem(item)) {
+    if (isGroupedMessagesItem(item)) {
         const firstMessage = item.data.at(0)
         if (!firstMessage) {
             return null

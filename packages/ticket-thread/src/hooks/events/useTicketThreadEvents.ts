@@ -1,13 +1,11 @@
 import { useMemo } from 'react'
 
-import type { Event } from '@gorgias/helpdesk-queries'
-import { ObjectType, useListEvents } from '@gorgias/helpdesk-queries'
-
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge'
-import { getQueryOptions } from '../shared/queryOption'
 import {
+    isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
     isSatisfactionSurveyRespondedEvent,
+    isViaRuleEvent,
 } from './predicates'
 import {
     shouldRenderTicketThreadEvent,
@@ -15,15 +13,44 @@ import {
     toTaggedEvent,
 } from './transforms'
 import type {
-    TicketThreadEventItem,
+    TicketThreadAuditLogAttribution,
     TicketThreadShoppingAssistantEventSources,
+    TicketThreadSingleEventItem,
 } from './types'
+import { useListAllTicketEvents } from './useListAllEvents'
 
 type UseTicketThreadEventsParams = TicketThreadShoppingAssistantEventSources
 
 type UseTicketThreadEventsResult = {
-    events: TicketThreadEventItem[]
+    events: TicketThreadSingleEventItem[]
     hasSatisfactionSurveyRespondedEvent: boolean
+}
+
+function getAuditLogAttribution(
+    event: unknown,
+    allTicketEvents: readonly unknown[],
+): TicketThreadAuditLogAttribution {
+    if (!isAuditLogEvent(event)) {
+        return 'none'
+    }
+
+    const isRuleSuggestionEvent =
+        event.type === 'rule-suggestion-suggested' ||
+        (event.type === 'rule-executed' && !!event.data?.slug)
+
+    if (event.type === 'rule-executed' || isRuleSuggestionEvent) {
+        return 'none'
+    }
+
+    if (isViaRuleEvent(event, allTicketEvents)) {
+        return 'via-rule'
+    }
+
+    if (event.user_id != null) {
+        return 'author'
+    }
+
+    return 'none'
 }
 
 export function useTicketThreadEvents({
@@ -36,21 +63,11 @@ export function useTicketThreadEvents({
             shopifyIntegrations,
         },
     } = useTicketThreadLegacyBridge()
-    const { data: events } = useListEvents(
-        {
-            object_id: ticketId,
-            object_type: ObjectType.Ticket,
-        },
-        {
-            query: {
-                ...getQueryOptions(ticketId),
-                select: (data): Event[] => data?.data?.data ?? [],
-            },
-        },
-    )
+    const { data: events } = useListAllTicketEvents(ticketId)
 
     return useMemo(() => {
         let hasSatisfactionSurveyRespondedEvent = false
+        const rawTicketEvents = events ?? []
 
         const shoppingAssistantEvents = toShoppingAssistantEvents({
             ticketId,
@@ -59,15 +76,24 @@ export function useTicketThreadEvents({
             shopifyIntegrations,
         })
 
-        const items = [...(events ?? []), ...shoppingAssistantEvents]
+        const items = [...rawTicketEvents, ...shoppingAssistantEvents]
             .filter((event) => !isNonRenderablePrivateReplyEvent(event))
             .filter(shouldRenderTicketThreadEvent)
-            .map((event): TicketThreadEventItem => {
+            .map((event): TicketThreadSingleEventItem => {
                 if (isSatisfactionSurveyRespondedEvent(event)) {
                     hasSatisfactionSurveyRespondedEvent = true
                 }
 
-                return toTaggedEvent(event)
+                if (!isAuditLogEvent(event)) {
+                    return toTaggedEvent(event)
+                }
+
+                return toTaggedEvent(event, {
+                    auditLogAttribution: getAuditLogAttribution(
+                        event,
+                        rawTicketEvents,
+                    ),
+                })
             })
 
         return { events: items, hasSatisfactionSurveyRespondedEvent }

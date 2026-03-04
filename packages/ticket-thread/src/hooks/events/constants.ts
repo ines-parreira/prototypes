@@ -32,12 +32,12 @@ export const AUDIT_LOG_EVENT_TYPES = [
     'ticket-unmarked-spam',
     'ticket-untrashed',
     'rule-executed',
-    'satisfaction-survey-responded',
     'satisfaction-survey-sent',
 ] as const
 
 export const SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE =
     'satisfaction-survey-responded' as const
+export const SYSTEM_RULE_TYPE = 'system' as const
 
 export const PRIVATE_REPLY_ACTIONS = [
     'facebookPrivateReply',

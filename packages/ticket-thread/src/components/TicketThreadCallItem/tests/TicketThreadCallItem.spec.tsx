@@ -1,10 +1,11 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { TicketThreadItemTag } from '../../../hooks/types'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
 } from '../../../hooks/voice-calls/types'
+import { render } from '../../../tests/render.utils'
 import { TicketThreadCallItem } from '../TicketThreadCallIItem'
 
 const voiceCallData = { id: 1, status: 'completed' }

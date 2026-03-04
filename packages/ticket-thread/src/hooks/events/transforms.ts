@@ -1,7 +1,9 @@
 import type { Prettify } from '@repo/types'
+import { slidingWindow } from '@repo/utils'
 
 import type { Event } from '@gorgias/helpdesk-queries'
 
+import type { TicketThreadItem } from '../types'
 import { TicketThreadItemTag } from '../types'
 import { InfluencedOrderSource } from './constants'
 import {
@@ -14,12 +16,16 @@ import {
     isShopifyIntegration,
     isShopifyOrder,
     isShoppingAssistantEvent,
+    isSingleEventItem,
 } from './predicates'
 import type { ShoppingAssistantEventSchema, TicketEventSchema } from './schemas'
 import type {
-    TicketThreadEventItem,
+    TicketThreadAuditLogAttribution,
+    TicketThreadAuditLogEvent,
+    TicketThreadAuditLogEventItem,
     TicketThreadEventSource,
     TicketThreadShoppingAssistantEventSources,
+    TicketThreadSingleEventItem,
 } from './types'
 
 function sourceToInfluencedOrderSource(
@@ -98,7 +104,10 @@ export function toShoppingAssistantEvents({
 
 export function toTaggedEvent(
     event: TicketThreadEventSource,
-): TicketThreadEventItem {
+    options?: {
+        auditLogAttribution?: TicketThreadAuditLogAttribution
+    },
+): TicketThreadSingleEventItem {
     const datetime = event.created_datetime ?? ''
 
     if (isShoppingAssistantEvent(event)) {
@@ -134,11 +143,17 @@ export function toTaggedEvent(
     }
 
     if (isAuditLogEvent(event)) {
+        const auditLogEvent = event as TicketThreadAuditLogEvent
+
         return {
             _tag: TicketThreadItemTag.Events.AuditLogEvent,
-            data: event,
+            type: auditLogEvent.type,
+            data: auditLogEvent,
             datetime,
-        }
+            meta: {
+                attribution: options?.auditLogAttribution ?? 'none',
+            },
+        } as TicketThreadAuditLogEventItem
     }
 
     return {
@@ -146,6 +161,41 @@ export function toTaggedEvent(
         data: event as Prettify<Event & TicketEventSchema>,
         datetime,
     }
+}
+
+export function groupConsecutiveEvents(
+    items: TicketThreadItem[],
+): TicketThreadItem[] {
+    const groupedItems: TicketThreadItem[] = []
+
+    for (const [item, previousItem] of slidingWindow(items)) {
+        if (
+            previousItem &&
+            isSingleEventItem(previousItem) &&
+            isSingleEventItem(item)
+        ) {
+            const previousGroupedItem = groupedItems[groupedItems.length - 1]
+
+            if (
+                previousGroupedItem?._tag ===
+                TicketThreadItemTag.Events.GroupedEvents
+            ) {
+                previousGroupedItem.data.push(item)
+            } else {
+                groupedItems[groupedItems.length - 1] = {
+                    _tag: TicketThreadItemTag.Events.GroupedEvents,
+                    data: [previousItem, item],
+                    datetime: previousItem.datetime,
+                }
+            }
+
+            continue
+        }
+
+        groupedItems.push(item)
+    }
+
+    return groupedItems
 }
 
 export function shouldRenderTicketThreadEvent(

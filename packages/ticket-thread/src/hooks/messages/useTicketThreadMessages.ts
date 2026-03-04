@@ -10,7 +10,7 @@ import {
     isSignalMessage,
     isTicketMessage,
 } from './predicates'
-import { mergeConsecutiveMessages, toTaggedMessage } from './transforms'
+import { groupConsecutiveMessages, toTaggedMessage } from './transforms'
 import type { TicketThreadMessageItem } from './types'
 
 type UseTicketThreadMessagesParams = {
@@ -52,19 +52,19 @@ export function useTicketThreadMessages({
             isActivePendingMessage,
         )
 
-        const mergedMessages = mergeConsecutiveMessages(
+        const groupedMessages = groupConsecutiveMessages(
             sortMessagesByDate([
                 ...persistedMessages,
                 ...failedPendingMessages,
             ]).map(toTaggedMessage),
         )
-        const mergedActivePendingMessages = mergeConsecutiveMessages(
+        const groupedActivePendingMessages = groupConsecutiveMessages(
             sortMessagesByDate(activePendingMessages).map(toTaggedMessage),
         )
 
         return {
-            messages: mergedMessages,
-            activePendingMessages: mergedActivePendingMessages,
+            messages: groupedMessages,
+            activePendingMessages: groupedActivePendingMessages,
         }
     }, [messages, pendingMessages])
 }

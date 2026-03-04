@@ -17,39 +17,75 @@ import type {
     TicketEventSchema,
 } from './schemas'
 
+type EventWithSchema<TSchema> = TSchema extends unknown
+    ? Omit<Event, 'type' | 'data'> & TSchema
+    : never
+
 export type TicketThreadTicketEventItem = {
     _tag: typeof TicketThreadItemTag.Events.TicketEvent
-    data: Prettify<Event & TicketEventSchema>
+    data: Prettify<EventWithSchema<TicketEventSchema>>
     datetime: string
 }
 
 export type TicketThreadPhoneEventItem = {
     _tag: typeof TicketThreadItemTag.Events.PhoneEvent
-    data: Prettify<Event & PhoneEventSchema>
+    data: Prettify<EventWithSchema<PhoneEventSchema>>
     datetime: string
 }
+
+type TicketThreadAuditLogEventData = EventWithSchema<AuditLogEventSchema>
 
 export type TicketThreadAuditLogEventItem = {
     _tag: typeof TicketThreadItemTag.Events.AuditLogEvent
-    data: Prettify<Event & AuditLogEventSchema>
     datetime: string
-}
+    meta: {
+        attribution: TicketThreadAuditLogAttribution
+    }
+} & (TicketThreadAuditLogEventData extends infer TEvent
+    ? TEvent extends TicketThreadAuditLogEventData
+        ? {
+              type: TEvent['type']
+              data: TEvent
+          }
+        : never
+    : never)
+
+export type TicketThreadAuditLogEvent = TicketThreadAuditLogEventData
+export type TicketThreadAuditLogEventByType<
+    TType extends TicketThreadAuditLogEvent['type'],
+> = Extract<TicketThreadAuditLogEventItem, { type: TType }>
+
+export type TicketThreadAuditLogAttribution = 'none' | 'via-rule' | 'author'
 
 export type TicketThreadSatisfactionSurveyRespondedEventItem = {
     _tag: typeof TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent
-    data: Prettify<Event & SatisfactionSurveyRespondedEventSchema>
+    data: Prettify<EventWithSchema<SatisfactionSurveyRespondedEventSchema>>
     datetime: string
 }
 
 export type TicketThreadPrivateReplyEventItem = {
     _tag: typeof TicketThreadItemTag.Events.PrivateReplyEvent
-    data: Prettify<Event & PrivateReplyActionEventSchema>
+    data: Prettify<EventWithSchema<PrivateReplyActionEventSchema>>
     datetime: string
 }
 
 export type TicketThreadShoppingAssistantEventItem = {
     _tag: typeof TicketThreadItemTag.Events.ShoppingAssistantEvent
     data: ShoppingAssistantEventSchema
+    datetime: string
+}
+
+export type TicketThreadSingleEventItem =
+    | TicketThreadTicketEventItem
+    | TicketThreadPhoneEventItem
+    | TicketThreadAuditLogEventItem
+    | TicketThreadSatisfactionSurveyRespondedEventItem
+    | TicketThreadPrivateReplyEventItem
+    | TicketThreadShoppingAssistantEventItem
+
+export type TicketThreadGroupedEventsItem = {
+    _tag: typeof TicketThreadItemTag.Events.GroupedEvents
+    data: TicketThreadSingleEventItem[]
     datetime: string
 }
 
@@ -63,9 +99,5 @@ export type TicketThreadShoppingAssistantEventSources = {
 }
 
 export type TicketThreadEventItem =
-    | TicketThreadTicketEventItem
-    | TicketThreadPhoneEventItem
-    | TicketThreadAuditLogEventItem
-    | TicketThreadSatisfactionSurveyRespondedEventItem
-    | TicketThreadPrivateReplyEventItem
-    | TicketThreadShoppingAssistantEventItem
+    | TicketThreadSingleEventItem
+    | TicketThreadGroupedEventsItem

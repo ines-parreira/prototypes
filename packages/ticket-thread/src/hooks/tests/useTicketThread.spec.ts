@@ -1,18 +1,17 @@
-import { renderHook } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
 
+import { renderHook } from '../../tests/render.utils'
+import { server } from '../../tests/server'
 import { useContactReasonPrediction } from '../contact-reason-prediction/useContactReasonPrediction'
 import { useTicketThreadEvents } from '../events/useTicketThreadEvents'
 import { useTicketThreadMessages } from '../messages/useTicketThreadMessages'
 import { useRuleSuggestion } from '../rules-suggestions/useRuleSuggestion'
 import { useTicketThreadSatisfactionSurveys } from '../satisfaction-survey/useTicketThreadSatisfactionSurveys'
+import { TicketThreadItemTag } from '../types'
 import { useTicketThread } from '../useTicketThread'
 import { useTicketThreadVoiceCalls } from '../voice-calls/useTicketThreadVoiceCalls'
-
-vi.mock('@gorgias/helpdesk-queries', () => ({
-    useGetTicket: vi.fn(),
-}))
 
 vi.mock('../messages/useTicketThreadMessages', () => ({
     useTicketThreadMessages: vi.fn(),
@@ -33,7 +32,6 @@ vi.mock('../contact-reason-prediction/useContactReasonPrediction', () => ({
     useContactReasonPrediction: vi.fn(),
 }))
 
-const mockUseGetTicket = vi.mocked(useGetTicket)
 const mockUseTicketThreadMessages = vi.mocked(useTicketThreadMessages)
 const mockUseTicketThreadEvents = vi.mocked(useTicketThreadEvents)
 const mockUseTicketThreadVoiceCalls = vi.mocked(useTicketThreadVoiceCalls)
@@ -45,7 +43,15 @@ const mockUseContactReasonPrediction = vi.mocked(useContactReasonPrediction)
 
 describe('useTicketThread', () => {
     beforeEach(() => {
-        mockUseGetTicket.mockReturnValue({ data: { id: 7 } } as any)
+        server.use(
+            mockGetTicketHandler(async () =>
+                HttpResponse.json(
+                    mockTicket({
+                        id: 7,
+                    }),
+                ),
+            ).handler,
+        )
         mockUseTicketThreadMessages.mockReturnValue({
             messages: [],
             activePendingMessages: [],
@@ -171,5 +177,74 @@ describe('useTicketThread', () => {
         )
 
         expect(result.current.ticketThreadItems).toEqual([message])
+    })
+
+    it('merges consecutive event items in the final ticket thread output', () => {
+        const firstEvent = {
+            _tag: TicketThreadItemTag.Events.TicketEvent,
+            datetime: '2024-03-21T11:01:00Z',
+            data: { id: 1 },
+        }
+        const secondEvent = {
+            _tag: TicketThreadItemTag.Events.PhoneEvent,
+            datetime: '2024-03-21T11:02:00Z',
+            data: { id: 2 },
+        }
+
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [firstEvent, secondEvent] as any,
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
+        )
+
+        expect(result.current.ticketThreadItems).toEqual([
+            {
+                _tag: TicketThreadItemTag.Events.GroupedEvents,
+                data: [firstEvent, secondEvent],
+                datetime: firstEvent.datetime,
+            },
+        ])
+    })
+
+    it('does not merge events separated by insertion items', () => {
+        const firstEvent = {
+            _tag: TicketThreadItemTag.Events.TicketEvent,
+            datetime: '2024-03-21T11:01:00Z',
+            data: { id: 1 },
+        }
+        const secondEvent = {
+            _tag: TicketThreadItemTag.Events.PhoneEvent,
+            datetime: '2024-03-21T11:02:00Z',
+            data: { id: 2 },
+        }
+        const contactMarker = {
+            _tag: TicketThreadItemTag.ContactReasonSuggestion,
+            data: null,
+        }
+
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [firstEvent, secondEvent] as any,
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+        mockUseContactReasonPrediction.mockReturnValue({
+            insertContactReasonPrediction: (items) => [
+                items[0],
+                contactMarker,
+                ...items.slice(1),
+            ],
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: true }),
+        )
+
+        expect(result.current.ticketThreadItems).toEqual([
+            firstEvent,
+            contactMarker,
+            secondEvent,
+        ])
     })
 })

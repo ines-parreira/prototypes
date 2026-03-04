@@ -1,44 +1,163 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
-import type { TicketThreadEventItem } from '../../../hooks/events/types'
+import {
+    InfluencedOrderSource,
+    PHONE_EVENTS,
+    PRIVATE_REPLY_ACTIONS,
+    SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+} from '../../../hooks/events/constants'
+import type {
+    TicketThreadGroupedEventsItem as TicketThreadGroupedEventsItemType,
+    TicketThreadSingleEventItem as TicketThreadSingleEventItemType,
+} from '../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
-import { TicketThreadEventItem as TicketThreadEventItemComponent } from '../TicketTheadEventItem'
+import { render } from '../../../tests/render.utils'
+import { TicketThreadSingleEventItem } from '../TicketTheadEventItem'
+import { TicketThreadGroupedEventsItem } from '../TicketTheadGroupedEventsItem'
 
-const eventData = { type: 'ticket-updated', data: { action_name: 'setStatus' } }
+const ticketEventData = {
+    object_type: 'Ticket',
+    type: 'ticket-updated',
+} as const
+const phoneEventData = { object_type: 'Ticket', type: PHONE_EVENTS[0] } as const
+const satisfactionSurveyRespondedEventData = {
+    object_type: 'Ticket',
+    type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+} as const
+const privateReplyEventData = {
+    object_type: 'Ticket',
+    type: 'ticket-updated',
+    data: {
+        action_name: PRIVATE_REPLY_ACTIONS[0],
+    },
+} as const
+const shoppingAssistantEventData = {
+    orderId: 100,
+    orderNumber: 200,
+    shopName: 'Acme Shop',
+    created_datetime: '2024-03-21T11:00:00Z',
+    influencedBy: InfluencedOrderSource.SHOPPING_ASSISTANT,
+} as const
+const auditLogEventData = {
+    object_type: 'Ticket',
+    type: 'ticket-created',
+    data: {},
+    created_datetime: '2024-03-21T11:00:00Z',
+} as const
 
-function renderItem(item: TicketThreadEventItem) {
-    return render(<TicketThreadEventItemComponent item={item} />)
+function renderItem(item: TicketThreadSingleEventItemType) {
+    return render(<TicketThreadSingleEventItem item={item} />)
+}
+
+function renderGroupedItem(item: TicketThreadGroupedEventsItemType) {
+    return render(<TicketThreadGroupedEventsItem item={item} />)
 }
 
 describe('TicketThreadEventItem', () => {
-    const eventTags = [
-        { tag: TicketThreadItemTag.Events.TicketEvent, label: 'ticket event' },
-        { tag: TicketThreadItemTag.Events.PhoneEvent, label: 'phone event' },
+    const eventItems: Array<{
+        label: string
+        item: TicketThreadSingleEventItemType
+        renderedText: string
+    }> = [
         {
-            tag: TicketThreadItemTag.Events.AuditLogEvent,
+            label: 'ticket event',
+            item: {
+                _tag: TicketThreadItemTag.Events.TicketEvent,
+                data: ticketEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: JSON.stringify(ticketEventData),
+        },
+        {
+            label: 'phone event',
+            item: {
+                _tag: TicketThreadItemTag.Events.PhoneEvent,
+                data: phoneEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: JSON.stringify(phoneEventData),
+        },
+        {
             label: 'audit log event',
+            item: {
+                _tag: TicketThreadItemTag.Events.AuditLogEvent,
+                type: 'ticket-created',
+                data: auditLogEventData,
+                datetime: '2024-03-21T11:00:00Z',
+                meta: { attribution: 'none' },
+            },
+            renderedText: 'Ticket was created',
         },
         {
-            tag: TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent,
             label: 'satisfaction survey responded event',
+            item: {
+                _tag: TicketThreadItemTag.Events
+                    .SatisfactionSurveyRespondedEvent,
+                data: satisfactionSurveyRespondedEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: JSON.stringify(satisfactionSurveyRespondedEventData),
         },
         {
-            tag: TicketThreadItemTag.Events.PrivateReplyEvent,
             label: 'private reply event',
+            item: {
+                _tag: TicketThreadItemTag.Events.PrivateReplyEvent,
+                data: privateReplyEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: JSON.stringify(privateReplyEventData),
         },
         {
-            tag: TicketThreadItemTag.Events.ShoppingAssistantEvent,
             label: 'shopping assistant event',
+            item: {
+                _tag: TicketThreadItemTag.Events.ShoppingAssistantEvent,
+                data: shoppingAssistantEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: JSON.stringify(shoppingAssistantEventData),
         },
     ]
 
-    it.each(eventTags)('renders $label item', ({ tag }) => {
-        renderItem({
-            _tag: tag,
-            data: eventData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadEventItem)
+    it.each(eventItems)('renders $label item', ({ item, renderedText }) => {
+        renderItem(item)
 
-        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+        expect(screen.getByText(renderedText)).toBeInTheDocument()
+    })
+
+    it('renders grouped events', () => {
+        const firstEventData = {
+            object_type: 'Ticket',
+            type: 'ticket-updated',
+        } as const
+        const secondEventData = {
+            object_type: 'Ticket',
+            type: PHONE_EVENTS[1],
+        } as const
+        const groupedItem: TicketThreadGroupedEventsItemType = {
+            _tag: TicketThreadItemTag.Events.GroupedEvents,
+            datetime: '2024-03-21T11:00:00Z',
+            data: [
+                {
+                    _tag: TicketThreadItemTag.Events.TicketEvent,
+                    data: firstEventData,
+                    datetime: '2024-03-21T11:00:00Z',
+                },
+                {
+                    _tag: TicketThreadItemTag.Events.PhoneEvent,
+                    data: secondEventData,
+                    datetime: '2024-03-21T11:00:01Z',
+                },
+            ],
+        }
+
+        const { container } = renderGroupedItem(groupedItem)
+
+        expect(
+            screen.getByText(JSON.stringify(firstEventData)),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(JSON.stringify(secondEventData)),
+        ).toBeInTheDocument()
+        expect(container.firstChild).toHaveStyle({ gap: '4px' })
     })
 })

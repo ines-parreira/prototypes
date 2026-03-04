@@ -2,7 +2,8 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import type { TicketThreadItem } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { TicketThreadCallItem } from '../TicketThreadCallItem/TicketThreadCallIItem'
-import { TicketThreadEventItem } from '../TicketThreadEventItem/TicketTheadEventItem'
+import { TicketThreadSingleEventItem } from '../TicketThreadEventItem/TicketTheadEventItem'
+import { TicketThreadGroupedEventsItem } from '../TicketThreadEventItem/TicketTheadGroupedEventsItem'
 import { TicketThreadMessageItem } from '../TicketThreadMessageItem/TicketThreadMessageItem'
 import { TicketThreadSatisfactionSurvey } from '../TicketThreadSatisfactionSurveyItem/TicketTheadSatisfactionSurvey'
 import { TicketThreadSuggestionItem } from '../TicketThreadSuggestions/TicketThreadSuggestionItem'
@@ -30,7 +31,7 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Messages.SocialMediaTwitterTweet:
         case TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage:
         case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
-        case TicketThreadItemTag.Messages.MergedMessages:
+        case TicketThreadItemTag.Messages.GroupedMessages:
             return <TicketThreadMessageItem item={item} />
         case TicketThreadItemTag.Events.TicketEvent:
         case TicketThreadItemTag.Events.PhoneEvent:
@@ -38,7 +39,9 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent:
         case TicketThreadItemTag.Events.ShoppingAssistantEvent:
-            return <TicketThreadEventItem item={item} />
+            return <TicketThreadSingleEventItem item={item} />
+        case TicketThreadItemTag.Events.GroupedEvents:
+            return <TicketThreadGroupedEventsItem item={item} />
         case TicketThreadItemTag.VoiceCalls.VoiceCall:
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
             return <TicketThreadCallItem item={item} />

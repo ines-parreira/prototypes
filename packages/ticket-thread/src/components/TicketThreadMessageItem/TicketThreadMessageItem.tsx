@@ -45,7 +45,6 @@ export function TicketThreadMessageItem({
                         {item.data.stripped_text || item.data.body_text}
                     </MessageBubble>
                 )
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.AiAgentMessage:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.AiAgentInternalNote:
@@ -76,7 +75,7 @@ export function TicketThreadMessageItem({
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
-            case TicketThreadItemTag.Messages.MergedMessages:
+            case TicketThreadItemTag.Messages.GroupedMessages:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             default:
                 return assertNever(item)

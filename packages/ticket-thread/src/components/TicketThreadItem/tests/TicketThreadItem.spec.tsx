@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { render } from '../../../tests/render.utils'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
 
@@ -71,6 +72,30 @@ describe('TicketThreadItem', () => {
         } as TicketThreadItem)
 
         expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+    })
+
+    it('renders a merged events item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Events.GroupedEvents,
+            datetime: '2024-03-21T11:00:00Z',
+            data: [
+                {
+                    _tag: TicketThreadItemTag.Events.TicketEvent,
+                    data: eventData,
+                    datetime: '2024-03-21T11:00:00Z',
+                },
+                {
+                    _tag: TicketThreadItemTag.Events.PhoneEvent,
+                    data: { ...eventData, type: 'phone' },
+                    datetime: '2024-03-21T11:00:01Z',
+                },
+            ],
+        } as TicketThreadItem)
+
+        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+        expect(
+            screen.getByText(JSON.stringify({ ...eventData, type: 'phone' })),
+        ).toBeInTheDocument()
     })
 
     it('renders a voice call item', () => {

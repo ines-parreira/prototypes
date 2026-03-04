@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import type { TicketThreadContactReasonSuggestionItem } from '../../../hooks/contact-reason-prediction/types'
 import type { TicketThreadRuleSuggestionItem } from '../../../hooks/rules-suggestions/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { render } from '../../../tests/render.utils'
 import { TicketThreadSuggestionItem } from '../TicketThreadSuggestionItem'
 
 const ruleSuggestionData = { rule_suggestion: { id: 1 } }

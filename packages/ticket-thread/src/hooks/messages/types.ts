@@ -144,12 +144,12 @@ export type TicketThreadSingleMessageItem =
     | TicketThreadSocialMediaTwitterDirectMessageItem
     | TicketThreadSocialMediaWhatsAppMessageItem
 
-export type TicketThreadMergedMessagesItem = {
-    _tag: typeof TicketThreadItemTag.Messages.MergedMessages
+export type TicketThreadGroupedMessagesItem = {
+    _tag: typeof TicketThreadItemTag.Messages.GroupedMessages
     data: TicketThreadSingleMessageItem[]
     datetime: string
 }
 
 export type TicketThreadMessageItem =
     | TicketThreadSingleMessageItem
-    | TicketThreadMergedMessagesItem
+    | TicketThreadGroupedMessagesItem

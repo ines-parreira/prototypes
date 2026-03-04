@@ -1,7 +1,7 @@
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketThreadItemTag } from '../../types'
-import { mergeConsecutiveMessages, toTaggedMessage } from '../transforms'
+import { groupConsecutiveMessages, toTaggedMessage } from '../transforms'
 
 function createMessage(overrides: Partial<TicketMessage>): TicketMessage {
     return {
@@ -24,7 +24,7 @@ function createMessage(overrides: Partial<TicketMessage>): TicketMessage {
     } as TicketMessage
 }
 
-describe('mergeConsecutiveMessages', () => {
+describe('groupConsecutiveMessages', () => {
     it('merges consecutive compatible messages', () => {
         const first = toTaggedMessage(createMessage({ id: 1 }))
         const second = toTaggedMessage(
@@ -34,11 +34,11 @@ describe('mergeConsecutiveMessages', () => {
             }),
         )
 
-        const merged = mergeConsecutiveMessages([first, second])
+        const merged = groupConsecutiveMessages([first, second])
 
         expect(merged).toHaveLength(1)
         expect(merged[0]).toMatchObject({
-            _tag: TicketThreadItemTag.Messages.MergedMessages,
+            _tag: TicketThreadItemTag.Messages.GroupedMessages,
         })
     })
 
@@ -52,7 +52,7 @@ describe('mergeConsecutiveMessages', () => {
             }),
         )
 
-        const merged = mergeConsecutiveMessages([first, second])
+        const merged = groupConsecutiveMessages([first, second])
 
         expect(merged).toHaveLength(2)
         expect(merged[0]).toMatchObject({
@@ -83,11 +83,11 @@ describe('mergeConsecutiveMessages', () => {
             }),
         )
 
-        const merged = mergeConsecutiveMessages([first, second, third])
+        const merged = groupConsecutiveMessages([first, second, third])
 
         expect(merged).toHaveLength(1)
         expect(merged[0]).toMatchObject({
-            _tag: TicketThreadItemTag.Messages.MergedMessages,
+            _tag: TicketThreadItemTag.Messages.GroupedMessages,
         })
         expect((merged[0] as any).data).toHaveLength(3)
     })

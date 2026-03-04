@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { useContactReasonPrediction } from './contact-reason-prediction/useContactReasonPrediction'
+import { groupConsecutiveEvents } from './events/transforms'
 import { useTicketThreadEvents } from './events/useTicketThreadEvents'
 import { useTicketThreadMessages } from './messages/useTicketThreadMessages'
 import { useRuleSuggestion } from './rules-suggestions/useRuleSuggestion'
@@ -61,7 +62,7 @@ export function useTicketThread({
         items = insertRuleSuggestion(items)
         items = insertContactReasonPrediction(items)
 
-        return items
+        return groupConsecutiveEvents(items)
     }, [
         messages,
         activePendingMessages,

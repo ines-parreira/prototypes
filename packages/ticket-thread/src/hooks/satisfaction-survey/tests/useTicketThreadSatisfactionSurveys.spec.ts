@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react'
-
+import { renderHook } from '../../../tests/render.utils'
 import { TicketThreadItemTag } from '../../types'
 import { useTicketThreadSatisfactionSurveys } from '../useTicketThreadSatisfactionSurveys'
 

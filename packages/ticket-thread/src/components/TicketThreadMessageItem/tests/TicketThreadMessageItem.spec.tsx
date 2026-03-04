@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { render } from '../../../tests/render.utils'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../TicketThreadMessageItem'
 
@@ -183,7 +184,7 @@ describe('TicketThreadMessageItem', () => {
         ]
 
         renderItem({
-            _tag: TicketThreadItemTag.Messages.MergedMessages,
+            _tag: TicketThreadItemTag.Messages.GroupedMessages,
             data: mergedData,
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadMessageItem)

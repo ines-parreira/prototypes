@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react'
+import {
+    renderHook as renderHookPrimitive,
+    screen,
+} from '@testing-library/react'
 
-import { render, renderHook, screen } from '@testing-library/react'
-
+import { render, renderHook } from '../../../tests/render.utils'
 import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
 import type { CurrentTicketShoppingAssistantData } from '../types'
 import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
@@ -43,23 +45,13 @@ const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
     ],
 }
 
-const wrapper = ({ children }: { children: ReactNode }) => (
-    <TicketThreadLegacyBridgeProvider
-        currentTicketShoppingAssistantData={currentTicketShoppingAssistantData}
-        currentTicketRuleSuggestionData={{ shouldDisplayDemoSuggestion: false }}
-        datetimeFormat="MMM D, YYYY [at] h:mm A"
-    >
-        {children}
-    </TicketThreadLegacyBridgeProvider>
-)
-
 describe('useTicketThreadLegacyBridge', () => {
     it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
         const originalError = console.error
         console.error = vi.fn()
 
         expect(() => {
-            renderHook(() => useTicketThreadLegacyBridge())
+            renderHookPrimitive(() => useTicketThreadLegacyBridge())
         }).toThrow(
             'useTicketThreadLegacyBridge must be used within TicketThreadLegacyBridgeProvider',
         )
@@ -69,7 +61,10 @@ describe('useTicketThreadLegacyBridge', () => {
 
     it('returns legacy bridge data from the provider', () => {
         const { result } = renderHook(() => useTicketThreadLegacyBridge(), {
-            wrapper,
+            currentTicketShoppingAssistantData,
+            currentTicketRuleSuggestionData: {
+                shouldDisplayDemoSuggestion: false,
+            },
         })
 
         expect(result.current.currentTicketShoppingAssistantData).toEqual(
@@ -89,6 +84,9 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 currentTicketShoppingAssistantData={
                     currentTicketShoppingAssistantData
                 }
+                currentTicketRuleSuggestionData={{
+                    shouldDisplayDemoSuggestion: false,
+                }}
                 datetimeFormat="MMM D, YYYY [at] h:mm A"
             >
                 <span>legacy child</span>

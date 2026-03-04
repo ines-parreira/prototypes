@@ -172,7 +172,7 @@ export function toTaggedMessage(
 const GROUPING_CHANNELS = ['facebook-messenger', 'chat'] as const
 type GroupingChannels = (typeof GROUPING_CHANNELS)[number]
 
-function shouldMergeConsecutiveMessages(
+function shouldGroupConsecutiveMessages(
     msg1: TicketThreadSingleMessageItem,
     msg2: TicketThreadSingleMessageItem,
 ): boolean {
@@ -207,7 +207,7 @@ function shouldMergeConsecutiveMessages(
 }
 
 /**
- * Merge consecutive messages into a single merged messages item if they meet the following criteria
+ * Group consecutive messages into a single merged messages item if they meet the following criteria
  * - The messages are from the same channel (chat or facebook-messenger only)
  * - The messages are from the same sender
  * - The messages are both public
@@ -217,7 +217,7 @@ function shouldMergeConsecutiveMessages(
  * @param msg2
  * @returns
  */
-export function mergeConsecutiveMessages(
+export function groupConsecutiveMessages(
     messages: TicketThreadSingleMessageItem[],
 ): TicketThreadMessageItem[] {
     const items: TicketThreadMessageItem[] = []
@@ -230,15 +230,17 @@ export function mergeConsecutiveMessages(
     for (const [message, previousMessage] of slidingWindow(messages)) {
         if (
             previousMessage &&
-            shouldMergeConsecutiveMessages(previousMessage, message)
+            shouldGroupConsecutiveMessages(previousMessage, message)
         ) {
             const prevItem = items[items.length - 1]
 
-            if (prevItem._tag === TicketThreadItemTag.Messages.MergedMessages) {
+            if (
+                prevItem._tag === TicketThreadItemTag.Messages.GroupedMessages
+            ) {
                 prevItem.data.push(message)
             } else {
                 items[items.length - 1] = {
-                    _tag: TicketThreadItemTag.Messages.MergedMessages,
+                    _tag: TicketThreadItemTag.Messages.GroupedMessages,
                     data: [prevItem, message],
                     datetime: prevItem.datetime,
                 }
