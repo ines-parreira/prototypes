@@ -13,7 +13,7 @@ export function OrderCardHeader({
 }: OrderCardHeaderProps) {
     return (
         <CardHeader
-            icon={
+            leadingSlot={
                 <span className={css.iconWrapper}>
                     <Icon name="vendor-shopify-colored" size="md" />
                 </span>

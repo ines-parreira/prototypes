@@ -123,7 +123,7 @@ export const shortenRelativeDurationLabel = (duration: string | null) => {
         if (isFuture) {
             return `in ${formattedNumber}${shortenEntity}`
         }
-        return `${formattedNumber}${shortenEntity} ago`
+        return `${formattedNumber}${shortenEntity}`
     }
     return duration
 }

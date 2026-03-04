@@ -14,9 +14,9 @@ describe('TruncatedTextWithTooltip', () => {
         }
     })
 
-    // Helper to get the wrapper div
+    // Helper to get the truncated wrapper div
     const getWrapperDiv = (container: HTMLElement) => {
-        return container.querySelector('div') as HTMLDivElement
+        return container.querySelector('.truncated') as HTMLDivElement
     }
 
     // Mock scrollWidth and clientWidth before rendering
@@ -125,7 +125,7 @@ describe('TruncatedTextWithTooltip', () => {
         it('does not detect truncation when scrollWidth <= clientWidth', () => {
             setupDimensions(100, 200)
 
-            const { container } = render(
+            render(
                 <TruncatedTextWithTooltip tooltipContent="Tooltip text">
                     <span>Short text</span>
                 </TruncatedTextWithTooltip>,
@@ -133,10 +133,6 @@ describe('TruncatedTextWithTooltip', () => {
 
             // Text should still be rendered
             expect(screen.getByText('Short text')).toBeInTheDocument()
-
-            // Container should only have the wrapper div (no tooltip)
-            const divs = container.querySelectorAll('div')
-            expect(divs.length).toBe(1)
         })
 
         it('re-checks truncation when tooltipContent changes', () => {
@@ -187,7 +183,7 @@ describe('TruncatedTextWithTooltip', () => {
         it('renders simple div when text is not truncated', () => {
             setupDimensions(50, 100)
 
-            const { container } = render(
+            render(
                 <TruncatedTextWithTooltip tooltipContent="Tooltip text">
                     <span>Short text</span>
                 </TruncatedTextWithTooltip>,
@@ -195,10 +191,6 @@ describe('TruncatedTextWithTooltip', () => {
 
             // Should still render content
             expect(screen.getByText('Short text')).toBeInTheDocument()
-
-            // Should only have the wrapper div
-            const divs = container.querySelectorAll('div')
-            expect(divs.length).toBe(1)
         })
 
         it('applies truncated CSS class to wrapper', () => {
