@@ -171,7 +171,7 @@ describe('AddGuidanceTemplateModal', () => {
 
             await act(() =>
                 user.click(
-                    screen.getByRole('heading', { name: 'Custom Guidance' }),
+                    screen.getByRole('button', { name: /Custom Guidance/ }),
                 ),
             )
 
@@ -192,7 +192,7 @@ describe('AddGuidanceTemplateModal', () => {
 
             await act(() =>
                 user.click(
-                    screen.getByRole('heading', { name: 'Custom Guidance' }),
+                    screen.getByRole('button', { name: /Custom Guidance/ }),
                 ),
             )
 
@@ -215,12 +215,12 @@ describe('AddGuidanceTemplateModal', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('heading', { name: 'Custom Guidance' }),
+                    screen.getByRole('button', { name: /Custom Guidance/ }),
                 ).toBeInTheDocument()
             })
         })
 
-        it('displays up to 8 templates', async () => {
+        it('displays all templates', async () => {
             const manyTemplates = Array.from({ length: 12 }, (_, i) => ({
                 id: `${i + 1}`,
                 name: `Template ${i + 1}`,
@@ -239,8 +239,7 @@ describe('AddGuidanceTemplateModal', () => {
 
             await waitFor(() => {
                 expect(screen.getByText('Template 1')).toBeInTheDocument()
-                expect(screen.getByText('Template 8')).toBeInTheDocument()
-                expect(screen.queryByText('Template 9')).not.toBeInTheDocument()
+                expect(screen.getByText('Template 12')).toBeInTheDocument()
             })
         })
 

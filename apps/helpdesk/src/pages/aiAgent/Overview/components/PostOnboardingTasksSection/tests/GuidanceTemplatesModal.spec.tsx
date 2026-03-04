@@ -24,12 +24,6 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/common/components/TemplateCard', () => ({
-    CustomCard: ({ title }: any) => (
-        <div data-testid="custom-card">{title}</div>
-    ),
-}))
-
 const mockGuidanceTemplates: GuidanceTemplate[] = [
     {
         id: '1',
@@ -85,7 +79,9 @@ describe('GuidanceTemplatesModal', () => {
     it('renders the custom card option', () => {
         render(<GuidanceTemplatesModal {...defaultProps} />)
 
-        expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /Custom Guidance/ }),
+        ).toBeInTheDocument()
     })
 
     it('calls onTemplateClick when a template card is clicked', async () => {

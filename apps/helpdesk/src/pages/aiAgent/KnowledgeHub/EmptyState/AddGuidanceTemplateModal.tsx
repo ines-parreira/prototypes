@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { Heading, Icon, Modal, Text } from '@gorgias/axiom'
+import { Button, Heading, Modal, Text } from '@gorgias/axiom'
 
 import { GuidanceTemplateCard } from 'pages/aiAgent/components/GuidanceTemplateCard/GuidanceTemplateCard'
 import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
@@ -11,8 +11,6 @@ import { useListenToDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 import css from './EmptyState.less'
-
-const SHOW_TEMPLATES_COUNT = 8
 
 type AddGuidanceTemplateModalProps = {
     onTemplateSelect: (template: GuidanceTemplate | undefined) => void
@@ -59,35 +57,32 @@ export const AddGuidanceTemplateModal = ({
             {guidanceTemplates.length > 0 && (
                 <div className={css.templatesContainer}>
                     <div className={css.templatesContainerHeader}>
-                        <Heading size="lg">Create Guidance</Heading>
-                        <Text>
-                            Use our pre-built templates as a starting point or
-                            build your own guidance from scratch.
-                        </Text>
-                    </div>
-                    <div className={css.templatesList}>
-                        <div
-                            key="empty-card"
-                            className={css.emptyCard}
+                        <div>
+                            <Heading size="lg">Create Guidance</Heading>
+                            <Text>
+                                Use our pre-built templates as a starting point
+                                or build your own guidance from scratch.
+                            </Text>
+                        </div>
+                        <Button
+                            variant="secondary"
+                            leadingSlot="add"
                             onClick={onCustomGuidanceClick}
                         >
-                            <div className={css.chip}>
-                                <Icon name="add-plus" />
+                            Custom Guidance
+                        </Button>
+                    </div>
+                    <div className={css.templatesList}>
+                        {guidanceTemplates.map((template) => (
+                            <div key={template.id}>
+                                <GuidanceTemplateCard
+                                    onClick={() =>
+                                        onGuidanceTemplateClick(template)
+                                    }
+                                    guidanceTemplate={template}
+                                />
                             </div>
-                            <Heading size="sm">Custom Guidance</Heading>
-                        </div>
-                        {guidanceTemplates
-                            .slice(0, SHOW_TEMPLATES_COUNT)
-                            .map((template) => (
-                                <div key={template.id}>
-                                    <GuidanceTemplateCard
-                                        onClick={() =>
-                                            onGuidanceTemplateClick(template)
-                                        }
-                                        guidanceTemplate={template}
-                                    />
-                                </div>
-                            ))}
+                        ))}
                     </div>
                     <div>
                         <Text variant="bold" size="sm">

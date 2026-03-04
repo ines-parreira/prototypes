@@ -1,4 +1,4 @@
-import { Heading, Text } from '@gorgias/axiom'
+import { Button, Heading, Text } from '@gorgias/axiom'
 
 import { GuidanceTemplateCard } from 'pages/aiAgent/components/GuidanceTemplateCard/GuidanceTemplateCard'
 import { useGuidanceTemplates } from 'pages/aiAgent/hooks/useGuidanceTemplates'
@@ -7,7 +7,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import { CustomCard } from 'pages/common/components/TemplateCard'
 
 import css from './GuidanceTemplatesModal.less'
 
@@ -33,12 +32,23 @@ export const GuidanceTemplatesModal: React.FC<Props> = ({
         >
             <ModalHeader
                 className={css.header}
-                title={<Heading size="md">Guidance templates</Heading>}
-                subtitle={
-                    <Text size="md" variant="regular">
-                        Edit, test, and refine these scenarios to build
-                        knowledge quickly.
-                    </Text>
+                title={
+                    <div className={css.headerContent}>
+                        <div>
+                            <Heading size="md">Guidance templates</Heading>
+                            <Text size="md" variant="regular">
+                                Edit, test, and refine these scenarios to build
+                                knowledge quickly.
+                            </Text>
+                        </div>
+                        <Button
+                            variant="secondary"
+                            leadingSlot="add"
+                            onClick={() => onTemplateClick()}
+                        >
+                            Custom Guidance
+                        </Button>
+                    </div>
                 }
             />
 
@@ -52,13 +62,6 @@ export const GuidanceTemplatesModal: React.FC<Props> = ({
                             />
                         </li>
                     ))}
-                    <li>
-                        <CustomCard
-                            title="Create custom Guidance"
-                            showOnlyTitle
-                            onClick={() => onTemplateClick()}
-                        />
-                    </li>
                 </ul>
             </ModalBody>
 

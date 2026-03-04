@@ -9,6 +9,11 @@
     .header {
         border-bottom: none;
         padding: var(--layout-spacing-s) var(--layout-spacing-m);
+        align-items: center;
+
+        > div:first-child {
+            flex: 1;
+        }
 
         h3 {
             margin-bottom: 0;
@@ -19,8 +24,14 @@
         }
     }
 
+    .headerContent {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .modalBody {
-        padding: 0 var(--layout-spacing-m);
+        padding: var(--layout-spacing-s) var(--layout-spacing-m);
         max-height: 60vh;
         overflow-y: auto;
 
