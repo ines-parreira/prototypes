@@ -110,7 +110,7 @@ export type WorkflowStepHttpRequest = {
         } | null
         trackstar_integration_name?: string | null
         service_connection_settings?: {
-            integration_id: string
+            integration_id: string | number
             path: string
         } | null
         variables: {

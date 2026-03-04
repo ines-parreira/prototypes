@@ -17,6 +17,10 @@ declare namespace Components {
                 integration_name: string
                 last_seen: string // date-time
                 updated_date: string // date-time
+                affected_endpoints?: {
+                    endpoint: string
+                    preventing_sync: boolean
+                }[]
             }
             event_type: 'connection-error.created'
             integration_name:
@@ -25,6 +29,7 @@ declare namespace Components {
                 | 'shipstation'
                 | 'shipbob'
                 | 'dear-systems'
+                | 'deposco'
         }
         export interface CreateTokenBodyDto {
             auth_code: string
@@ -225,6 +230,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -1019,6 +1028,7 @@ declare namespace Components {
                           | 'shipstation'
                           | 'shipbob'
                           | 'dear-systems'
+                          | 'deposco'
                   }
               }
         export interface GetAutomationEventResponseDto {
@@ -1590,6 +1600,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -2376,6 +2390,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -4473,7 +4491,6 @@ declare namespace Components {
                                         }
                                       | {
                                             kind: 'liquid-template'
-                                            success: boolean
                                             output: {
                                                 data_type:
                                                     | 'string'
@@ -5276,7 +5293,6 @@ declare namespace Components {
                                         }
                                       | {
                                             kind: 'liquid-template'
-                                            success: boolean
                                             output: {
                                                 data_type:
                                                     | 'string'
@@ -5385,6 +5401,18 @@ declare namespace Components {
                               error?: null | null
                               at: string // date-time
                           }
+                        | {
+                              kind: 'liquid-template'
+                              output: {
+                                  data_type:
+                                      | 'string'
+                                      | 'number'
+                                      | 'boolean'
+                                      | 'date'
+                                  value?: any
+                              }
+                              at: string // date-time
+                          }
                 } | null
             } | null
             outputs?: {
@@ -5473,6 +5501,7 @@ declare namespace Components {
                           | 'shipstation'
                           | 'shipbob'
                           | 'dear-systems'
+                          | 'deposco'
                   }
               }
         )[]
@@ -5729,6 +5758,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -6556,6 +6589,7 @@ declare namespace Components {
                 | 'shipstation'
                 | 'shipbob'
                 | 'dear-systems'
+                | 'deposco'
             error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
@@ -6587,6 +6621,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -9817,7 +9855,6 @@ declare namespace Components {
                                               }
                                             | {
                                                   kind: 'liquid-template'
-                                                  success: boolean
                                                   output: {
                                                       data_type:
                                                           | 'string'
@@ -10731,7 +10768,6 @@ declare namespace Components {
                                               }
                                             | {
                                                   kind: 'liquid-template'
-                                                  success: boolean
                                                   output: {
                                                       data_type:
                                                           | 'string'
@@ -10838,6 +10874,18 @@ declare namespace Components {
                                     kind: 'edit-order-note'
                                     success: boolean
                                     error?: null | null
+                                    at: string // date-time
+                                }
+                              | {
+                                    kind: 'liquid-template'
+                                    output: {
+                                        data_type:
+                                            | 'string'
+                                            | 'number'
+                                            | 'boolean'
+                                            | 'date'
+                                        value?: any
+                                    }
                                     at: string // date-time
                                 }
                       } | null
@@ -12683,7 +12731,6 @@ declare namespace Components {
                                               }
                                             | {
                                                   kind: 'liquid-template'
-                                                  success: boolean
                                                   output: {
                                                       data_type:
                                                           | 'string'
@@ -13597,7 +13644,6 @@ declare namespace Components {
                                               }
                                             | {
                                                   kind: 'liquid-template'
-                                                  success: boolean
                                                   output: {
                                                       data_type:
                                                           | 'string'
@@ -13704,6 +13750,18 @@ declare namespace Components {
                                     kind: 'edit-order-note'
                                     success: boolean
                                     error?: null | null
+                                    at: string // date-time
+                                }
+                              | {
+                                    kind: 'liquid-template'
+                                    output: {
+                                        data_type:
+                                            | 'string'
+                                            | 'number'
+                                            | 'boolean'
+                                            | 'date'
+                                        value?: any
+                                    }
                                     at: string // date-time
                                 }
                       } | null
@@ -14815,7 +14873,6 @@ declare namespace Components {
                                         }
                                       | {
                                             kind: 'liquid-template'
-                                            success: boolean
                                             output: {
                                                 data_type:
                                                     | 'string'
@@ -15618,7 +15675,6 @@ declare namespace Components {
                                         }
                                       | {
                                             kind: 'liquid-template'
-                                            success: boolean
                                             output: {
                                                 data_type:
                                                     | 'string'
@@ -15727,6 +15783,18 @@ declare namespace Components {
                               error?: null | null
                               at: string // date-time
                           }
+                        | {
+                              kind: 'liquid-template'
+                              output: {
+                                  data_type:
+                                      | 'string'
+                                      | 'number'
+                                      | 'boolean'
+                                      | 'date'
+                                  value?: any
+                              }
+                              at: string // date-time
+                          }
                 } | null
             } | null
             outputs?: {
@@ -15766,6 +15834,7 @@ declare namespace Components {
                           | 'shipstation'
                           | 'shipbob'
                           | 'dear-systems'
+                          | 'deposco'
                   }
               }
         export type UpsertAppRequestResponseDto =
@@ -15801,6 +15870,7 @@ declare namespace Components {
                           | 'shipstation'
                           | 'shipbob'
                           | 'dear-systems'
+                          | 'deposco'
                   }
               }
         export interface UpsertStoreAppRequestBodyDto {
@@ -15998,6 +16068,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -16939,6 +17013,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -17881,6 +17959,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -18826,6 +18908,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -19615,6 +19701,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string
@@ -20323,6 +20413,10 @@ declare namespace Components {
                               refresh_token_url: string
                           } | null
                           trackstar_integration_name?: string | null
+                          service_connection_settings?: {
+                              integration_id: string | number
+                              path: string
+                          } | null
                           variables: {
                               id: string
                               name: string

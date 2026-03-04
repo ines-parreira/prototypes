@@ -17,6 +17,7 @@ const TRACKSTAR_INTEGRATIONS = [
     'shipstation',
     'shipbob',
     'dear-systems',
+    'deposco',
 ] as const
 type AvailableIntegraion = (typeof TRACKSTAR_INTEGRATIONS)[number]
 type Props = {

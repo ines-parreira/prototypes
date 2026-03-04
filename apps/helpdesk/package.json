@@ -47,7 +47,7 @@
         "convert:update-client": "pnpm convert:fetch-openapi && pnpm convert:generate-types",
         "ssp-api:generate-types": "typegen ./src/rest_api/ssp_api/ssp-api.openapi.json > ./src/rest_api/ssp_api/client.generated.d.ts",
         "wf-api:fetch-openapi": "curl http://localhost:3100/docs-json > ./src/rest_api/workflows_api/wf-api.openapi.json && prettier --write --experimental-cli ./src/rest_api/workflows_api/wf-api.openapi.json",
-        "wf-api:generate-types": "typegen ./src/rest_api/workflows_api/wf-api.openapi.json > ./src/rest_api/workflows_api/client.generated.d.ts",
+        "wf-api:generate-types": "typegen ./src/rest_api/workflows_api/wf-api.openapi.json > ./src/rest_api/workflows_api/client.generated.d.ts && prettier --write --experimental-cli ./src/rest_api/workflows_api/client.generated.d.ts",
         "dev:proxy": "DEV_ENV=proxy pnpm serve:app",
         "dev:local": "pnpm serve:app",
         "dev:workers:proxy": "DEV_ENV=proxy pnpm serve:sharedWorker"

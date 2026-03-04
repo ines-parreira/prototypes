@@ -281,7 +281,7 @@ export type HttpRequestNodeType = Node<
         } | null
         trackstar_integration_name?: string | null
         serviceConnectionSettings?: {
-            integration_id: string
+            integration_id: string | number
             path: string
         } | null
         errors?: {
