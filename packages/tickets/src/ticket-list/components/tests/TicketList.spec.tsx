@@ -18,7 +18,7 @@ import { TicketList } from '../TicketList'
 
 const mockViewTickets = vi.fn()
 const mockGetTicketActivity = vi.fn(() => ({
-    viewing: [] as Array<{ id: number }>,
+    viewing: [] as Array<{ id: number; name?: string; email?: string }>,
 }))
 
 vi.mock('@gorgias/realtime-ably', () => ({
@@ -36,6 +36,8 @@ vi.mock('@repo/feature-flags', () => ({
 const viewId = 123
 const mockTicket1 = mockTicket({ id: 1, subject: 'First Ticket' })
 const mockTicket2 = mockTicket({ id: 2, subject: 'Second Ticket' })
+const mockTicket3 = mockTicket({ id: 3, subject: 'Third Ticket' })
+const nextItemsUrl = `/api/views/${viewId}/items/?cursor=page-2`
 
 const mockListViewItems = mockListViewItemsHandler(async () =>
     HttpResponse.json({
@@ -100,7 +102,7 @@ describe('TicketList', () => {
     it('should render loading state', () => {
         renderWithVirtuoso(<TicketList viewId={viewId} />)
 
-        expect(screen.getByText('Loading...')).toBeInTheDocument()
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('should render tickets with subjects', async () => {
@@ -164,27 +166,105 @@ describe('TicketList', () => {
         })
     })
 
-    it('should highlight active ticket (covers TicketListItem)', async () => {
-        renderWithVirtuoso(<TicketList viewId={viewId} activeTicketId={1} />)
+    it('should show another agent viewing indicator when other agents are viewing', async () => {
+        mockGetTicketActivity.mockReturnValue({
+            viewing: [{ id: 99, name: 'Viewing Agent' }],
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} currentUserId={1} />)
+
+        await waitFor(() => {
+            expect(screen.getAllByText('VA')).toHaveLength(2)
+        })
+    })
+
+    it('fetches the next page when the end of the list is reached', async () => {
+        server.use(
+            mockListViewItemsHandler(async ({ request }) => {
+                const cursor = new URL(request.url).searchParams.get('cursor')
+                if (cursor === 'page-2') {
+                    return HttpResponse.json({
+                        data: [mockTicket3],
+                        meta: {
+                            current_cursor: 'page-2',
+                            next_items: null,
+                            prev_items: null,
+                        },
+                        object: 'list',
+                        uri: `/api/views/${viewId}/items/`,
+                    } as any)
+                }
+                return HttpResponse.json({
+                    data: [mockTicket1, mockTicket2],
+                    meta: {
+                        current_cursor: null,
+                        next_items: nextItemsUrl,
+                        prev_items: null,
+                    },
+                    object: 'list',
+                    uri: `/api/views/${viewId}/items/`,
+                } as any)
+            }).handler,
+        )
+
+        renderWithVirtuoso(<TicketList viewId={viewId} />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Third Ticket')).toBeInTheDocument()
+        })
+    })
+
+    it('shows footer loading skeletons while fetching the next page', async () => {
+        let resolvePage2!: () => void
+        const page2Promise = new Promise<void>((resolve) => {
+            resolvePage2 = resolve
+        })
+
+        server.use(
+            mockListViewItemsHandler(async ({ request }) => {
+                const cursor = new URL(request.url).searchParams.get('cursor')
+                if (cursor === 'page-2') {
+                    await page2Promise
+                    return HttpResponse.json({
+                        data: [mockTicket3],
+                        meta: {
+                            current_cursor: 'page-2',
+                            next_items: null,
+                            prev_items: null,
+                        },
+                        object: 'list',
+                        uri: `/api/views/${viewId}/items/`,
+                    } as any)
+                }
+                return HttpResponse.json({
+                    data: [mockTicket1, mockTicket2],
+                    meta: {
+                        current_cursor: null,
+                        next_items: nextItemsUrl,
+                        prev_items: null,
+                    },
+                    object: 'list',
+                    uri: `/api/views/${viewId}/items/`,
+                } as any)
+            }).handler,
+        )
+
+        renderWithVirtuoso(<TicketList viewId={viewId} />)
 
         await waitFor(() => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
         })
 
-        const activeTicket = screen.getByText('First Ticket').parentElement
-        const inactiveTicket = screen.getByText('Second Ticket').parentElement
+        await waitFor(() => {
+            expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(
+                0,
+            )
+        })
 
-        expect(activeTicket).toHaveStyle({ background: '#e0e0e0' })
-        expect(inactiveTicket).toHaveStyle({ background: 'white' })
-    })
-
-    it('should show another agent viewing indicator when other agents are viewing', async () => {
-        mockGetTicketActivity.mockReturnValue({ viewing: [{ id: 99 }] })
-
-        renderWithVirtuoso(<TicketList viewId={viewId} currentUserId={1} />)
+        resolvePage2()
 
         await waitFor(() => {
-            expect(screen.getAllByText('another agent viewing')).toHaveLength(2)
+            expect(screen.getByText('Third Ticket')).toBeInTheDocument()
         })
     })
 })
