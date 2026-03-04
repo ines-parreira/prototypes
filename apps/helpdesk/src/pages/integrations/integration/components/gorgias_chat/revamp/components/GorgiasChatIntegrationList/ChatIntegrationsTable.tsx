@@ -15,7 +15,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types'
-import { AiAgentStatusCell } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationList/revamp/AiAgentStatusCell'
+import { AiAgentStatusCell } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/AiAgentStatusCell'
 import { Tab } from 'pages/integrations/integration/types'
 
 import { ActionsCell } from './ActionsCell'
