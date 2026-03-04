@@ -140,3 +140,7 @@ apps/helpdesk/src/state/billing @gorgias/growth-billing
 apps/helpdesk/src/pages/aiAgent/utils/handoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
 apps/helpdesk/src/pages/aiAgent/hooks/handoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
 apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization* @gorgias/ai-agent-orchestration-shopping-assistant
+
+# CPLT Analytics: AI Agent revamp paths
+apps/helpdesk/src/pages/aiAgent/analyticsAiAgent @gorgias/cplt-analytics-frontend
+apps/helpdesk/src/pages/aiAgent/analyticsOverview @gorgias/cplt-analytics-frontend
