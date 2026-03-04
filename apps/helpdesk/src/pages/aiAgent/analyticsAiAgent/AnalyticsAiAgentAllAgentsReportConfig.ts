@@ -17,7 +17,9 @@ import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/char
 import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
+import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
+import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { STATS_ROUTES } from 'routes/constants'
@@ -47,6 +49,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     AutomatedInteractionsCard = 'automated_interactions_card',
     TotalSalesCard = 'total_sales_card',
     TimeSavedCard = 'time_saved_card',
+    ZeroTouchTicketsCard = 'zero_touch_tickets_card',
     AverageCsatCard = 'average_csat_card',
     CoverageRateCard = 'coverage_rate_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
@@ -122,6 +125,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'The time agent would have spent resolving customer inquiries without AI Agent.',
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.ZeroTouchTicketsCard]: {
+                chartComponent: AnalyticsAiAgentZeroTouchTicketsCard,
+                label: 'Zero touch tickets',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentZeroTouchTicketsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'Number of tickets closed without any agent reply.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AverageCsatCard]: {

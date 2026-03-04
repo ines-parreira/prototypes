@@ -31,6 +31,13 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         visibility: true,
                     },
                     {
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.ZeroTouchTicketsCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
+                    {
                         chartId: AnalyticsAiAgentAllAgentsChart.AverageCsatCard,
                         gridSize: 3,
                         visibility: true,

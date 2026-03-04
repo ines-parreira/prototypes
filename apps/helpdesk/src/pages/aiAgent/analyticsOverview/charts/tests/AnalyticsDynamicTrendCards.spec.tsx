@@ -22,6 +22,7 @@ import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsA
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
@@ -286,7 +287,6 @@ describe('Analytics Dynamic Trend Cards', () => {
             Component: AnalyticsAiAgentCoverageRateCard,
             config: {
                 label: 'Coverage rate',
-
                 description:
                     'Percentage of tickets that AI Agent attempted to respond to.',
                 chartType: ChartType.Card,
@@ -294,6 +294,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 interpretAs: 'more-is-better',
                 value: 55.5,
                 prevValue: 12.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentZeroTouchTicketsCard',
+            Component: AnalyticsAiAgentZeroTouchTicketsCard,
+            config: {
+                label: 'Zero touch tickets',
+                description:
+                    'Number of tickets closed without any agent reply.',
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 100,
             },
         },
     ]

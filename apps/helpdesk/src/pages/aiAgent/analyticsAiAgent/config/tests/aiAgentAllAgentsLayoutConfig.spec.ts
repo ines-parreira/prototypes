@@ -9,11 +9,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 6 cards', () => {
+        it('should have kpis section with 7 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(6)
+            expect(kpisSection.items).toHaveLength(7)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -31,17 +31,33 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                 AnalyticsAiAgentAllAgentsChart.TimeSavedCard,
             )
             expect(kpisSection.items[4].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.ZeroTouchTicketsCard,
+            )
+            expect(kpisSection.items[5].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.AverageCsatCard,
             )
+            expect(kpisSection.items[6].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.CoverageRateCard,
+            )
+        })
+
+        it('should have ZeroTouchTicketsCard with requiresFeatureFlag', () => {
+            const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
+            const zeroTouchItem = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.ZeroTouchTicketsCard,
+            )
+            expect(zeroTouchItem?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have AverageCsatCard with requiresFeatureFlag', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
-            const csatCard = kpisSection.items[4]
+            const csatCard = kpisSection.items[5]
             expect(csatCard.requiresFeatureFlag).toBe(true)
         })
 
-        it('should have all non-CSAT KPI cards without requiresFeatureFlag', () => {
+        it('should have all non-feature-flag KPI cards without requiresFeatureFlag', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             kpisSection.items.slice(0, 4).forEach((item) => {
                 expect(item.requiresFeatureFlag).toBeFalsy()
@@ -99,7 +115,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(9)
+            expect(totalCharts).toBe(10)
         })
 
         it('should have all required chart types defined', () => {

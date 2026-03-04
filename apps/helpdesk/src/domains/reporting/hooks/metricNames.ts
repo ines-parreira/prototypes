@@ -30,6 +30,7 @@ export const METRIC_NAMES = {
         'ai-agent-support-interactions-per-channel',
     AI_AGENT_SUPPORT_INTERACTIONS_TOTAL: 'ai-agent-support-interactions-total',
     AI_AGENT_CSAT_AVERAGE_SCORE: 'ai-agent-csat-average-score',
+    AI_AGENT_ZERO_TOUCH_TICKETS: 'ai-agent-zero-touch-tickets',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -783,6 +784,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_AGENT,
         METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_PER_CHANNEL,
         METRIC_NAMES.SUPPORT_PERFORMANCE_ZERO_TOUCH_TICKETS_TIME_SERIES,
+        METRIC_NAMES.AI_AGENT_ZERO_TOUCH_TICKETS,
     ],
 
     // P3
