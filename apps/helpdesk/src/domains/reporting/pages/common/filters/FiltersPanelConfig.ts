@@ -58,6 +58,14 @@ import {
     InternalComplianceFilterWithSavedState,
     InternalComplianceFilterWithState,
 } from 'domains/reporting/pages/common/filters/InternalComplianceFilter'
+import {
+    JourneyCampaignsFilterFromContext,
+    JourneyCampaignsFilterFromSavedContext,
+} from 'domains/reporting/pages/common/filters/JourneyCampaignsFilter'
+import {
+    JourneyFlowsFilterFromContext,
+    JourneyFlowsFilterFromSavedContext,
+} from 'domains/reporting/pages/common/filters/JourneyFlowsFilter'
 import { JourneysFilterWithState } from 'domains/reporting/pages/common/filters/JourneyTypeFilter'
 import {
     LanguageProficiencyFilterWithSavedState,
@@ -108,6 +116,8 @@ export const FilterComponentMap: Record<
     [FilterKey.CampaignStatuses]: CampaignStatusesFilterFromContext,
     [FilterKey.Channels]: ChannelsFilterWithState,
     [FilterKey.JourneyType]: JourneysFilterWithState,
+    [FilterKey.JourneyFlows]: JourneyFlowsFilterFromContext,
+    [FilterKey.JourneyCampaigns]: JourneyCampaignsFilterFromContext,
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
     [FilterKey.CustomFields]: CustomFieldsFilterWithState,
     [FilterKey.Efficiency]: EfficiencyFilterWithState,
@@ -150,6 +160,8 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.Tags]: TagsFilterWithSavedState,
     [FilterKey.AggregationWindow]: () => null,
     [FilterKey.JourneyType]: () => null,
+    [FilterKey.JourneyFlows]: JourneyFlowsFilterFromSavedContext,
+    [FilterKey.JourneyCampaigns]: JourneyCampaignsFilterFromSavedContext,
     [FilterKey.HelpCenters]: () => null,
     [FilterKey.LocaleCodes]: () => null,
     [FilterKey.Period]: () => null,

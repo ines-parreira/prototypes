@@ -17,6 +17,8 @@ export enum FilterKey {
     CampaignStatuses = 'campaignStatuses',
     Channels = 'channels',
     JourneyType = 'journeyType',
+    JourneyFlows = 'journeyFlows',
+    JourneyCampaigns = 'journeyCampaigns',
     CommunicationSkills = 'communicationSkills',
     CustomFields = 'customFields',
     Efficiency = 'efficiency',
@@ -68,6 +70,8 @@ export type StateOnlyFilterKeys = Exclude<
     | FilterKey.CustomFields
     | FilterKey.AggregationWindow
     | FilterKey.JourneyType
+    | FilterKey.JourneyFlows
+    | FilterKey.JourneyCampaigns
 >
 
 export type CleanFilterComponentKeys = Exclude<
@@ -89,6 +93,8 @@ export type StaticFilter =
     | FilterKey.CampaignStatuses
     | FilterKey.Channels
     | FilterKey.JourneyType
+    | FilterKey.JourneyFlows
+    | FilterKey.JourneyCampaigns
     | FilterKey.HelpCenters
     | FilterKey.Integrations
     | FilterKey.LocaleCodes
@@ -155,6 +161,8 @@ export type LegacyStatsFilters = {
     [FilterKey.CampaignStatuses]?: string[]
     [FilterKey.Channels]?: string[]
     [FilterKey.JourneyType]?: string[]
+    [FilterKey.JourneyFlows]?: string[]
+    [FilterKey.JourneyCampaigns]?: string[]
     [FilterKey.CommunicationSkills]?: string[]
     [FilterKey.CustomFields]?: string[]
     [FilterKey.Efficiency]?: string[]
@@ -270,6 +278,8 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.CampaignStatuses]?: WithLogicalOperator<string>
     [FilterKey.Channels]?: WithLogicalOperator<string>
     [FilterKey.JourneyType]?: WithLogicalOperator<string>
+    [FilterKey.JourneyFlows]?: WithLogicalOperator<string>
+    [FilterKey.JourneyCampaigns]?: WithLogicalOperator<string>
     [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
     [FilterKey.CustomFields]?: CustomFieldFilter[]
     [FilterKey.Efficiency]?: WithLogicalOperator<string>

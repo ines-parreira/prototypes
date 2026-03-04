@@ -68,6 +68,7 @@ type Props = {
         warningType?: 'not-applicable' | 'non-existent'
         warningMessage?: string
     }
+    displayLabel?: string
     isDisabled?: boolean
     shouldCloseOnSelect?: boolean
 }
@@ -120,6 +121,7 @@ const Filter = ({
     selectedOptions: selectedPartialOptions,
     showQuickSelect = true,
     showSearch = true,
+    displayLabel,
     filterErrors,
     isDisabled,
     shouldCloseOnSelect,
@@ -187,7 +189,7 @@ const Filter = ({
             />
             <FilterValue
                 ref={ref}
-                optionsLabels={selectedLabels}
+                optionsLabels={displayLabel ? [displayLabel] : selectedLabels}
                 trailIcon={!isPersistent ? FILTER_CLEAR_ICON : undefined}
                 trailIconTooltipText={REMOVE_FILTER_LABEL}
                 onTrailIconClick={onRemove}

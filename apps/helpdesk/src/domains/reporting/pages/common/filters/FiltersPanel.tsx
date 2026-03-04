@@ -111,6 +111,8 @@ const getActiveFilters = (
             filterKey !== FilterKey.Tags &&
             filterKey !== FilterKey.AggregationWindow &&
             filterKey !== FilterKey.JourneyType &&
+            filterKey !== FilterKey.JourneyFlows &&
+            filterKey !== FilterKey.JourneyCampaigns &&
             filterKey !== FilterKey.Period
         ) {
             const filter =

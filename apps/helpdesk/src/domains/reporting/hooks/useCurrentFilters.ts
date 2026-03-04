@@ -49,6 +49,8 @@ export const getValidator = (
         case FilterKey.SlaPolicies:
         case FilterKey.VoiceQueues:
         case FilterKey.AssignedTeam:
+        case FilterKey.JourneyCampaigns:
+        case FilterKey.JourneyFlows:
             return isFilterWithLogicalOperator
     }
 }

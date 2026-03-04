@@ -22,11 +22,11 @@ import { useAIJourneyConversionRate } from 'AIJourney/hooks/useAIJourneyConversi
 import { useAIJourneyGmvInfluenced } from 'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useJourneyContext } from 'AIJourney/providers'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { JOURNEY_TYPE_FILTER_VALUES } from 'domains/reporting/pages/common/filters/JourneyTypeFilter'
 
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
 import FiltersPanelWrapper from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
+import { filterNonDraftCampaigns } from '../../../domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
 import { useAIJourneyOptOutRate } from '../../hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate'
 import { useAIJourneyResponseRate } from '../../hooks/useAIJourneyResponseRate/useAIJourneyResponseRate'
@@ -51,27 +51,43 @@ export const Analytics = () => {
 
     const filters = {
         period: statsFilters.period,
-        journeys: statsFilters.journeyType,
     }
 
+    const nonDraftCampaigns = useMemo(
+        () => filterNonDraftCampaigns(campaigns ?? []),
+        [campaigns],
+    )
+
+    const allFlowIds = useMemo(
+        () => journeys?.map((j) => j.id) ?? [],
+        [journeys],
+    )
+    const allCampaignIds = useMemo(
+        () => nonDraftCampaigns.map((c) => c.id),
+        [nonDraftCampaigns],
+    )
+
     const journeysIdsToFilter = useMemo(() => {
-        const includeCampaigns = statsFilters.journeyType?.values.includes(
-            JOURNEY_TYPE_FILTER_VALUES.CAMPAIGN,
-        )
-        const includeJourneys = statsFilters.journeyType?.values.includes(
-            JOURNEY_TYPE_FILTER_VALUES.FLOW,
-        )
+        const selectedFlowIds = statsFilters.journeyFlows?.values
+        const selectedCampaignIds = statsFilters.journeyCampaigns?.values
 
-        if (includeCampaigns && !includeJourneys && campaigns) {
-            return campaigns.map((campaign) => campaign.id)
-        }
+        const allFlowsSelected =
+            !selectedFlowIds || selectedFlowIds.length === allFlowIds.length
+        const allCampaignsSelected =
+            !selectedCampaignIds ||
+            selectedCampaignIds.length === allCampaignIds.length
 
-        if (includeJourneys && !includeCampaigns && journeys) {
-            return journeys.map((journey) => journey.id)
-        }
+        if (allFlowsSelected && allCampaignsSelected) return []
 
-        return []
-    }, [campaigns, journeys, statsFilters.journeyType])
+        const flows = selectedFlowIds ?? allFlowIds
+        const cmpgns = selectedCampaignIds ?? allCampaignIds
+        return [...flows, ...cmpgns]
+    }, [
+        statsFilters.journeyFlows,
+        statsFilters.journeyCampaigns,
+        allFlowIds,
+        allCampaignIds,
+    ])
 
     const gmvInfluenced = useAIJourneyGmvInfluenced(
         integrationId,
@@ -326,7 +342,8 @@ export const Analytics = () => {
                     persistentFilters={[
                         FilterKey.Period,
                         FilterKey.AggregationWindow,
-                        FilterKey.JourneyType,
+                        FilterKey.JourneyFlows,
+                        FilterKey.JourneyCampaigns,
                     ]}
                     withSavedFilters={false}
                     filterSettingsOverrides={{

@@ -280,6 +280,8 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                 case FilterKey.Period:
                 case FilterKey.AggregationWindow:
                 case FilterKey.JourneyType:
+                case FilterKey.JourneyFlows:
+                case FilterKey.JourneyCampaigns:
                 case FilterKey.StoreIntegrations:
                     break
                 case FilterKey.Tags: {

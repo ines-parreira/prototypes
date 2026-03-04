@@ -385,15 +385,22 @@ describe('<Analytics />', () => {
         expect(screen.getByText('150')).toBeInTheDocument()
     })
 
-    it('should filter journeys by campaign type only', () => {
-        const campaigns = [
-            { id: 1, name: 'Campaign 1' },
-            { id: 2, name: 'Campaign 2' },
-        ]
-
+    it('should filter by specific flows', () => {
         mockUseJourneyContext.mockReturnValue({
-            journeys: [{ id: 3, name: 'Journey 1' }],
-            campaigns,
+            journeys: [
+                { id: 'flow-1', type: 'cart_abandoned' },
+                { id: 'flow-2', type: 'post_purchase' },
+            ],
+            campaigns: [
+                {
+                    id: 'campaign-1',
+                    campaign: { title: 'Campaign 1', state: 'active' },
+                },
+                {
+                    id: 'campaign-2',
+                    campaign: { title: 'Campaign 2', state: 'active' },
+                },
+            ],
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
             currency: 'USD',
@@ -410,8 +417,8 @@ describe('<Analytics />', () => {
                     end_datetime: moment().toISOString(),
                     start_datetime: moment().toISOString(),
                 },
-                journeyType: {
-                    values: ['campaign'],
+                journeyFlows: {
+                    values: ['flow-1'],
                     operator: 'in',
                 },
             },
@@ -435,19 +442,26 @@ describe('<Analytics />', () => {
             expect.any(Object),
             expect.any(String),
             expect.any(String),
-            [1, 2],
+            ['flow-1', 'campaign-1', 'campaign-2'],
         )
     })
 
-    it('should filter journeys by flow type only', () => {
-        const journeys = [
-            { id: 1, name: 'Journey 1' },
-            { id: 2, name: 'Journey 2' },
-        ]
-
+    it('should filter by specific campaigns', () => {
         mockUseJourneyContext.mockReturnValue({
-            journeys,
-            campaigns: [{ id: 3, name: 'Campaign 1' }],
+            journeys: [
+                { id: 'flow-1', type: 'cart_abandoned' },
+                { id: 'flow-2', type: 'post_purchase' },
+            ],
+            campaigns: [
+                {
+                    id: 'campaign-1',
+                    campaign: { title: 'Campaign 1', state: 'active' },
+                },
+                {
+                    id: 'campaign-2',
+                    campaign: { title: 'Campaign 2', state: 'active' },
+                },
+            ],
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
             currency: 'USD',
@@ -464,8 +478,8 @@ describe('<Analytics />', () => {
                     end_datetime: moment().toISOString(),
                     start_datetime: moment().toISOString(),
                 },
-                journeyType: {
-                    values: ['flow'],
+                journeyCampaigns: {
+                    values: ['campaign-1'],
                     operator: 'in',
                 },
             },
@@ -489,14 +503,19 @@ describe('<Analytics />', () => {
             expect.any(Object),
             expect.any(String),
             expect.any(String),
-            [1, 2],
+            ['flow-1', 'flow-2', 'campaign-1'],
         )
     })
 
-    it('should not filter journeys when both types are selected', () => {
+    it('should not filter when all are selected', () => {
         mockUseJourneyContext.mockReturnValue({
-            journeys: [{ id: 1, name: 'Journey 1' }],
-            campaigns: [{ id: 2, name: 'Campaign 1' }],
+            journeys: [{ id: 'flow-1', type: 'cart_abandoned' }],
+            campaigns: [
+                {
+                    id: 'campaign-1',
+                    campaign: { title: 'Campaign 1', state: 'active' },
+                },
+            ],
             currentIntegration: { id: 286584 },
             shopName: 'shopify-store',
             currency: 'USD',
@@ -512,10 +531,6 @@ describe('<Analytics />', () => {
                 period: {
                     end_datetime: moment().toISOString(),
                     start_datetime: moment().toISOString(),
-                },
-                journeyType: {
-                    values: ['campaign', 'flow'],
-                    operator: 'in',
                 },
             },
             userTimezone: 'America/New_York',

@@ -21,6 +21,8 @@ export const isFilterFilled = (
         case FilterKey.Campaigns:
         case FilterKey.Channels:
         case FilterKey.JourneyType:
+        case FilterKey.JourneyFlows:
+        case FilterKey.JourneyCampaigns:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
         case FilterKey.StoreIntegrations:
