@@ -126,7 +126,12 @@ describe('createLinkRenderer', () => {
 
     it('should render clickable link with role="button" and aria-label', () => {
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({ links, nodes, onLinkClick })
+        const renderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkClick,
+            minLinkWidth: 3,
+        })
 
         const { getByRole } = render(
             <svg>
@@ -145,7 +150,12 @@ describe('createLinkRenderer', () => {
     it('should call onLinkClick with correct payload when clicking a clickable link', async () => {
         const user = userEvent.setup()
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({ links, nodes, onLinkClick })
+        const renderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkClick,
+            minLinkWidth: 3,
+        })
 
         const { getByRole } = render(
             <svg>
@@ -169,7 +179,12 @@ describe('createLinkRenderer', () => {
 
     it('should not render role="button" for non-clickable links', () => {
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({ links, nodes, onLinkClick })
+        const renderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkClick,
+            minLinkWidth: 3,
+        })
 
         const { container } = render(
             <svg>
@@ -193,7 +208,12 @@ describe('createLinkRenderer', () => {
     it('should not call onLinkClick when clicking a non-clickable link', async () => {
         const user = userEvent.setup()
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({ links, nodes, onLinkClick })
+        const renderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkClick,
+            minLinkWidth: 3,
+        })
 
         const { container } = render(
             <svg>
@@ -216,7 +236,7 @@ describe('createLinkRenderer', () => {
     })
 
     it('should render fallback path for unknown link index', () => {
-        const renderer = createLinkRenderer({ links, nodes })
+        const renderer = createLinkRenderer({ links, nodes, minLinkWidth: 3 })
 
         const { container } = render(
             <svg>

@@ -36,4 +36,5 @@ export type SankeyChartProps = {
     nodePadding?: number
     labelWidth?: number
     valueFormatter?: (value: number) => string
+    minLinkWidth?: number
 }

@@ -16,10 +16,11 @@ type SankeyLinkRendererOptions = {
     links: ResolvedLink[]
     nodes: SankeyNodeItem[]
     onLinkClick?: (payload: SankeyLinkClickPayload) => void
+    minLinkWidth: number
 }
 
 export const createLinkRenderer =
-    ({ links, nodes, onLinkClick }: SankeyLinkRendererOptions) =>
+    ({ links, nodes, onLinkClick, minLinkWidth }: SankeyLinkRendererOptions) =>
     (props: LinkProps) => {
         const {
             sourceX,
@@ -34,6 +35,7 @@ export const createLinkRenderer =
         } = props
 
         const d = `M${sourceX},${sourceY} C${sourceControlX},${sourceY} ${targetControlX},${targetY} ${targetX},${targetY}`
+        const clampedWidth = Math.max(minLinkWidth, linkWidth ?? 0)
 
         const linkData = links[index]
         if (!linkData) {
@@ -42,7 +44,7 @@ export const createLinkRenderer =
                     d={d}
                     fill="none"
                     stroke="#ccc"
-                    strokeWidth={linkWidth}
+                    strokeWidth={clampedWidth}
                     strokeOpacity={0.25}
                 />
             )
@@ -68,7 +70,7 @@ export const createLinkRenderer =
                 d={d}
                 fill="none"
                 stroke={linkColor}
-                strokeWidth={linkWidth}
+                strokeWidth={clampedWidth}
                 strokeOpacity={0.25}
                 className={isClickable ? css.clickableLink : css.link}
                 onClick={isClickable ? handleClick : undefined}

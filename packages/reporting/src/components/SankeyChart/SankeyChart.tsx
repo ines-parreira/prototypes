@@ -15,6 +15,7 @@ const CHART_HEIGHT = 400
 const DEFAULT_NODE_WIDTH = 10
 const DEFAULT_NODE_PADDING = 24
 const DEFAULT_LABEL_WIDTH = 160
+const DEFAULT_MIN_LINK_WIDTH = 3
 
 export const SankeyChart = ({
     title,
@@ -27,6 +28,7 @@ export const SankeyChart = ({
     nodePadding = DEFAULT_NODE_PADDING,
     labelWidth = DEFAULT_LABEL_WIDTH,
     valueFormatter,
+    minLinkWidth = DEFAULT_MIN_LINK_WIDTH,
 }: SankeyChartProps) => {
     const resolvedLinks: ResolvedLink[] = useMemo(() => {
         const nameToIndex = new Map(
@@ -73,8 +75,9 @@ export const SankeyChart = ({
                 links: resolvedLinks,
                 nodes: data.nodes,
                 onLinkClick,
+                minLinkWidth,
             }),
-        [resolvedLinks, data.nodes, onLinkClick],
+        [resolvedLinks, data.nodes, onLinkClick, minLinkWidth],
     )
 
     const chartHeight =
