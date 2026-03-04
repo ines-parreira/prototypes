@@ -29,7 +29,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/DisconnectStoreModal',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/DisconnectStoreModal',
     () => ({
         __esModule: true,
         default: (props: any) => mockDisconnectStoreModal(props),

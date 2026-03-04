@@ -12,7 +12,7 @@ import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import DisconnectStoreModal from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/DisconnectStoreModal'
+import DisconnectStoreModal from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/DisconnectStoreModal'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 

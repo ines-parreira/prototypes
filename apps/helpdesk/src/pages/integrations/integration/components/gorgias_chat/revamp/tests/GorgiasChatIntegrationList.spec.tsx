@@ -5,9 +5,8 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
+import { GorgiasChatIntegrationListRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationList'
 import { getIntegrationConfig } from 'state/integrations/helpers'
-
-import GorgiasChatIntegrationList from './GorgiasChatIntegrationList'
 
 jest.mock('@repo/routing', () => ({
     history: {
@@ -37,9 +36,12 @@ const MockChatIntegrationsTable = jest.fn(
     ),
 )
 
-jest.mock('./ChatIntegrationsTable', () => ({
-    ChatIntegrationsTable: (props: any) => MockChatIntegrationsTable(props),
-}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable',
+    () => ({
+        ChatIntegrationsTable: (props: any) => MockChatIntegrationsTable(props),
+    }),
+)
 
 const historyPushMock = assumeMock(history.push)
 const getIntegrationConfigMock = assumeMock(getIntegrationConfig)
@@ -52,14 +54,14 @@ const renderComponent = ({
     loading?: any
 }) => {
     return render(
-        <GorgiasChatIntegrationList
+        <GorgiasChatIntegrationListRevamp
             integrations={integrations}
             loading={loading}
         />,
     )
 }
 
-describe('GorgiasChatIntegrationList', () => {
+describe('GorgiasChatIntegrationListRevamp', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         getIntegrationConfigMock.mockReturnValue({

@@ -14,7 +14,7 @@ import {
     Text,
 } from '@gorgias/axiom'
 
-import AdvancedInstallationSidePanel from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/AdvancedInstallationCard/AdvancedInstallationSidePanel'
+import AdvancedInstallationSidePanel from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/AdvancedInstallationCard/AdvancedInstallationSidePanel'
 
 import css from './AdvancedInstallationCard.less'
 

@@ -56,7 +56,7 @@ jest.mock('pages/common/components/SkeletonLoader', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls',
     () => {
         const { forwardRef: reactForwardRef } = jest.requireActual('react')
         return {

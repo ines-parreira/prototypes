@@ -5,14 +5,12 @@ import type { Map } from 'immutable'
 import { IntegrationType } from 'models/integration/types'
 import ChatSettingsPageHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/components/revamp/ChatSettingsPageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import AdvancedInstallationCard from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/AdvancedInstallationCard/AdvancedInstallationCard'
+import DeleteCard from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/DeleteCard/DeleteCard'
+import css from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.less'
+import InstallationCard from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/InstallationCard'
 import { Tab } from 'pages/integrations/integration/types'
 import type { deleteIntegration } from 'state/integrations/actions'
-
-import AdvancedInstallationCard from './AdvancedInstallationCard/AdvancedInstallationCard'
-import DeleteCard from './DeleteCard/DeleteCard'
-import InstallationCard from './InstallationCard/InstallationCard'
-
-import css from './GorgiasChatIntegrationInstall.less'
 
 type BreadcrumbItemData = {
     link?: string
@@ -28,6 +26,7 @@ type Props = {
     }
 }
 
+// TODO [ChatSettingsScreensRevamp]: Delete this component once the feature flag is properly migrated
 const GorgiasChatIntegrationInstall = ({
     integration,
     actions: { deleteIntegration, updateOrCreateIntegration },

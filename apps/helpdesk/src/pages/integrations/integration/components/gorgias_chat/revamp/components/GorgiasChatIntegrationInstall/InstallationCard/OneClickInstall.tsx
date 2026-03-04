@@ -30,8 +30,8 @@ import useShopifyThemeAppExtension from 'pages/integrations/integration/componen
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
-import type { VisibilityControlsHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls'
-import VisibilityControls from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls'
+import type { VisibilityControlsHandle } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls'
+import VisibilityControls from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/VisibilityControls'
 import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import {
     getStoreIntegrations,

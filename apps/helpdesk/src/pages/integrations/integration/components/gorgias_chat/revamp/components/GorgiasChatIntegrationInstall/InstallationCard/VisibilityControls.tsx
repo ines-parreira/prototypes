@@ -30,8 +30,7 @@ import {
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import type { UrlValidationResult } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
 import validateUrl from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/utils/validateUrl'
-
-import VisibilityCondition from './VisibilityCondition'
+import VisibilityCondition from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/VisibilityCondition'
 
 import css from './VisibilityControls.less'
 

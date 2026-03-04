@@ -62,7 +62,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/StoreController',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/StoreController',
     () => ({
         __esModule: true,
         default: (props: any) => mockStoreController(props),
@@ -70,7 +70,7 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/OneClickInstall',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/OneClickInstall',
     () => ({
         __esModule: true,
         default: (props: any) => mockOneClickInstall(props),

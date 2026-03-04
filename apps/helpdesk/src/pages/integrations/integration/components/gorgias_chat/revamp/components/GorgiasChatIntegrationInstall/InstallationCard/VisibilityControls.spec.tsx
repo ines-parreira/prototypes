@@ -82,7 +82,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/InstallationCard/VisibilityCondition',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/VisibilityCondition',
     () => ({
         __esModule: true,
         default: (props: MockVisibilityConditionProps) =>
