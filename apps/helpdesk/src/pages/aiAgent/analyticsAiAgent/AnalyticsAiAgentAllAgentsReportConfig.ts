@@ -1,6 +1,7 @@
 import { fetchAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomatedInteractionsTrend'
 import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
+import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -9,6 +10,7 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
@@ -46,6 +48,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     TotalSalesCard = 'total_sales_card',
     TimeSavedCard = 'time_saved_card',
     AverageCsatCard = 'average_csat_card',
+    CoverageRateCard = 'coverage_rate_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -135,6 +138,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.CoverageRateCard]: {
+                chartComponent: AnalyticsAiAgentCoverageRateCard,
+                label: 'Coverage rate',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchCoverageRateTrend,
+                        metricFormat: 'decimal-to-percent',
+                    },
+                ],
+                description:
+                    'Percentage of tickets that AI Agent attempted to respond to.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {

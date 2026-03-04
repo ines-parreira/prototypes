@@ -14,11 +14,13 @@ import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAi
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
+import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCoverageRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
+import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
@@ -263,6 +265,35 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 4.5,
                 prevValue: 4.3,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSuccessRateSalesCard',
+            Component: AnalyticsAiAgentSuccessRateSalesCard,
+            config: {
+                label: 'Success rate',
+                description:
+                    'The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 55.5,
+                prevValue: 12.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentCoverageRateCard',
+            Component: AnalyticsAiAgentCoverageRateCard,
+            config: {
+                label: 'Coverage rate',
+
+                description:
+                    'Percentage of tickets that AI Agent attempted to respond to.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 55.5,
+                prevValue: 12.0,
             },
         },
     ]
