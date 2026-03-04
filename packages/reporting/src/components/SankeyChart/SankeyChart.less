@@ -1,0 +1,94 @@
+:local {
+    .cardContainer {
+        box-shadow: var(--effects-shadow-container);
+        background-color: var(--elevation-neutral-mid);
+    }
+
+    .chartContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        :global {
+            .recharts-wrapper {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-surface {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+        }
+    }
+
+    .nodeLabel {
+        font-size: 12px;
+        fill: var(--content-neutral-default);
+    }
+
+    .nodeValue {
+        font-size: 12px;
+        font-weight: bold;
+        fill: var(--content-neutral-default);
+    }
+
+    .nodePercentage {
+        font-size: 11px;
+        fill: var(--content-neutral-secondary);
+    }
+
+    .clickableLink {
+        cursor: pointer;
+        transition: stroke-opacity 0.2s ease;
+
+        &:hover {
+            stroke-opacity: 0.7;
+        }
+
+        &:focus-visible,
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    .link {
+        transition: stroke-opacity 0.2s ease;
+    }
+
+    .skeletonContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        gap: var(--spacing-lg);
+
+        div[data-name='skeleton'] {
+            display: flex;
+            flex: 1;
+
+            span {
+                display: flex !important;
+                flex: 1 !important;
+                width: 100% !important;
+            }
+        }
+    }
+
+    .skeletonColumn {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        flex: 1;
+    }
+
+    .skeletonCenter {
+        flex: 3;
+    }
+}

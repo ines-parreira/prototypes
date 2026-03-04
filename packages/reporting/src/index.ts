@@ -50,3 +50,11 @@ export {
     ShowMoreList,
     type ShowMoreListProps,
 } from './components/ShowMoreList/ShowMoreList'
+export { SankeyChart } from './components/SankeyChart/SankeyChart'
+export type {
+    SankeyChartData,
+    SankeyChartProps,
+    SankeyNodeItem,
+    SankeyLinkItem,
+    SankeyLinkClickPayload,
+} from './components/SankeyChart/types'
