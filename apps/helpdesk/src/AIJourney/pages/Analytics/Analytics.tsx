@@ -403,6 +403,7 @@ export const Analytics = () => {
 
                 {selectedData && (
                     <LineChart
+                        variant="area"
                         onMetricChange={setTitle}
                         metrics={metricsLabels}
                         title={title}

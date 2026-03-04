@@ -66,6 +66,14 @@ describe('LineChart', () => {
 
             expect(screen.getByText('My chart')).toBeInTheDocument()
         })
+
+        it('should render area variant with data without errors', () => {
+            render(
+                <LineChart title="My chart" data={mockData} variant="area" />,
+            )
+
+            expect(screen.getByText('My chart')).toBeInTheDocument()
+        })
     })
 
     describe('metric selection', () => {

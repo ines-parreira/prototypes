@@ -1,7 +1,12 @@
+import { useId } from 'react'
+
 import {
+    Area,
+    AreaChart as AreaChartRecharts,
     CartesianGrid,
     Line,
     LineChart as LineChartRecharts,
+    ResponsiveContainer,
     Tooltip,
     XAxis,
     YAxis,
@@ -24,6 +29,8 @@ import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
 import { toChartData } from './utils'
 
+const CHART_COLOR = 'var(--purple-500)'
+
 type LineChartProps = {
     containerHeight?: SizeValue
     containerWidth?: SizeValue
@@ -36,6 +43,7 @@ type LineChartProps = {
     onMetricChange?: (metric: string) => void
     skeletonHeight?: number
     title: string
+    variant?: 'line' | 'area'
 }
 export const LineChart = ({
     containerHeight,
@@ -49,13 +57,18 @@ export const LineChart = ({
     onMetricChange,
     skeletonHeight = 250,
     title,
+    variant = 'line',
 }: LineChartProps) => {
+    const gradientId = useId()
     const formatter = formatMetricValueOrString({ metricFormat, currency })
     if (isLoading) {
         return <Skeleton height={skeletonHeight} />
     }
 
     const transformedData = toChartData(data)
+    const isArea = variant === 'area'
+    const ChartContainer = isArea ? AreaChartRecharts : LineChartRecharts
+    const curveType = isCurvedLine ? 'monotone' : 'linear'
 
     return (
         <Card elevation="mid">
@@ -108,37 +121,68 @@ export const LineChart = ({
                         </div>
                     )}
                 </Box>
-                <LineChartRecharts
-                    style={{
-                        height: 'calc(100% - 20px)',
-                        flex: '1',
-                        aspectRatio: 1,
-                    }}
-                    responsive
-                    data={transformedData}
-                >
-                    <CartesianGrid strokeDasharray="1.5 3" vertical={false} />
-                    <XAxis dataKey="name" interval="preserveStartEnd" />
-                    <YAxis width="auto" tickFormatter={formatter} />
-                    <Tooltip
-                        cursor={{
-                            strokeDasharray: '1.5 3',
-                            strokeWidth: '1px',
-                            stroke: '#1E242E',
-                        }}
-                        content={ChartTooltip}
-                        formatter={formatter}
-                    />
-                    {data.map((series) => (
-                        <Line
-                            key={series.label}
-                            type={isCurvedLine ? 'monotone' : 'linear'}
-                            dataKey={series.label}
-                            dot={false}
-                            color="#0D6CF2"
+                <ResponsiveContainer width="100%" height="100%">
+                    <ChartContainer data={transformedData}>
+                        {isArea && (
+                            <defs>
+                                <linearGradient
+                                    id={gradientId}
+                                    x1="0"
+                                    y1="0"
+                                    x2="0"
+                                    y2="1"
+                                >
+                                    <stop
+                                        offset="0%"
+                                        stopColor={CHART_COLOR}
+                                        stopOpacity={0.2}
+                                    />
+                                    <stop
+                                        offset="100%"
+                                        stopColor={CHART_COLOR}
+                                        stopOpacity={0}
+                                    />
+                                </linearGradient>
+                            </defs>
+                        )}
+                        <CartesianGrid
+                            strokeDasharray="1.5 3"
+                            vertical={false}
                         />
-                    ))}
-                </LineChartRecharts>
+                        <XAxis dataKey="name" interval="preserveStartEnd" />
+                        <YAxis width="auto" tickFormatter={formatter} />
+                        <Tooltip
+                            cursor={{
+                                strokeDasharray: '1.5 3',
+                                strokeWidth: '1px',
+                                stroke: '#1E242E',
+                            }}
+                            content={ChartTooltip}
+                            formatter={formatter}
+                        />
+                        {data.map((series) =>
+                            isArea ? (
+                                <Area
+                                    key={series.label}
+                                    type={curveType}
+                                    dataKey={series.label}
+                                    stroke={CHART_COLOR}
+                                    fillOpacity={1}
+                                    fill={`url(#${gradientId})`}
+                                    dot={false}
+                                />
+                            ) : (
+                                <Line
+                                    key={series.label}
+                                    type={curveType}
+                                    dataKey={series.label}
+                                    dot={false}
+                                    stroke={CHART_COLOR}
+                                />
+                            ),
+                        )}
+                    </ChartContainer>
+                </ResponsiveContainer>
             </Box>
         </Card>
     )
