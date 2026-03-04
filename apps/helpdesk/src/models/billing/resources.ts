@@ -111,8 +111,8 @@ export async function reactivateAccount() {
     return res
 }
 
-export async function setIsAccountVetted({ isVetted }: { isVetted: boolean }) {
-    const res = await client.post(`/billing/vet-account`, { value: isVetted })
+export async function setIsAccountVetted({ value }: { value: boolean }) {
+    const res = await client.post(`/billing/vet-account`, { value: value })
     return res
 }
 

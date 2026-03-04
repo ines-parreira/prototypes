@@ -215,6 +215,7 @@ export const payingWithCreditCard: BillingState = {
         ach_debit_bank_account: null,
         ach_credit_bank_account: null,
         payment_term_days: null,
+        is_vetted: false,
     },
     current_plans: {
         helpdesk: basicMonthlyHelpdeskPlan,
@@ -315,6 +316,7 @@ export const trial: BillingState = {
         ach_debit_bank_account: null,
         ach_credit_bank_account: null,
         payment_term_days: null,
+        is_vetted: true,
     },
     current_plans: {
         helpdesk: proMonthlyHelpdeskPlan,

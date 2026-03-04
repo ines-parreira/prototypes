@@ -7,6 +7,7 @@ import MockDate from 'mockdate'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import type {
+    BillingState,
     CouponSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
@@ -395,6 +396,72 @@ describe('BillingInternalViewUI', () => {
         expect(notify).toHaveBeenNthCalledWith(1, {
             allowHTML: true,
             message: 'Account has been successfully reactivated.',
+            noAutoDismiss: false,
+            showDismissButton: true,
+            status: NotificationStatus.Success,
+            style: 'alert',
+        })
+    })
+
+    it('should be always possible to vet an account', async () => {
+        const user = userEvent.setup()
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={payingWithCreditCard}
+            />,
+        )
+
+        const vetButton = screen.getByRole('button', {
+            name: /Vet account/,
+        })
+
+        mockedServer.onPost('/billing/vet-account').reply(200, {})
+        await user.click(vetButton)
+
+        expect(mockedServer.history.post.length).toBe(1)
+        expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
+
+        expect(notify).toHaveBeenLastCalledWith({
+            allowHTML: true,
+            message: 'Account has been successfully (un)vetted.',
+            noAutoDismiss: false,
+            showDismissButton: true,
+            status: NotificationStatus.Success,
+            style: 'alert',
+        })
+    })
+
+    it('should be always possible to unvet an account', async () => {
+        const user = userEvent.setup()
+        const vettedAccount: BillingState = {
+            ...payingWithCreditCard,
+            customer: {
+                ...payingWithCreditCard.customer,
+                is_vetted: true,
+            },
+        }
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingInternalViewUI
+                {...BillingInternalViewUIDefaultProps}
+                billingState={vettedAccount}
+            />,
+        )
+
+        const unvetButton = screen.getByRole('button', {
+            name: /Unvet account/,
+        })
+
+        mockedServer.onPost('/billing/vet-account').reply(200, {})
+        await user.click(unvetButton)
+
+        expect(mockedServer.history.post.length).toBe(1)
+        expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
+
+        expect(notify).toHaveBeenLastCalledWith({
+            allowHTML: true,
+            message: 'Account has been successfully (un)vetted.',
             noAutoDismiss: false,
             showDismissButton: true,
             status: NotificationStatus.Success,

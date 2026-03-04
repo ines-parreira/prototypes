@@ -227,6 +227,7 @@ type CustomerSummary = {
     ach_debit_bank_account?: AchDebitBankAccount | null
     ach_credit_bank_account?: AchCreditBankAccount | null
     payment_term_days: number | null
+    is_vetted: boolean
 }
 
 export type CurrentPlans = {
