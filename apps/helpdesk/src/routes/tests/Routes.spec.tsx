@@ -135,6 +135,13 @@ jest.mock('pages/aiAgent/AiAgentSales', () => ({
     AiAgentSales: () => <div>AiAgentSales</div>,
 }))
 
+jest.mock(
+    'pages/aiAgent/procedures/components/AiAgentProcedures/AiAgentProcedures',
+    () => ({
+        AiAgentProcedures: () => <div>AiAgentProcedures</div>,
+    }),
+)
+
 jest.mock('domains/reporting/routes/StatsRoutes')
 const StatsRoutesMock = assumeMock(StatsRoutes)
 
@@ -1073,6 +1080,57 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()
+        })
+
+        it('should render procedures page when KnowledgeIntentManagementSystem feature flag is enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.KnowledgeIntentManagementSystem) {
+                    return true
+                }
+                return false
+            })
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/procedures',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByText('AiAgentProcedures')).toBeInTheDocument()
+        })
+
+        it('should not render procedures page when KnowledgeIntentManagementSystem feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/procedures',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.queryByText('AiAgentProcedures'),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -4,6 +4,7 @@ import { renderHook } from '@repo/testing'
 import {
     ANALYTICS,
     CUSTOMER_ENGAGEMENT,
+    PROCEDURES,
     PRODUCT_RECOMMENDATIONS,
     SALES,
     STRATEGY,
@@ -224,6 +225,15 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.routes.intentsWithId('123')).toBe(
             '/app/ai-agent/shopify/test/intents/123',
+        )
+    })
+
+    it('should return correct path for procedures', () => {
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
+        )
+        expect(result.current.routes.procedures).toBe(
+            '/app/ai-agent/shopify/test/procedures',
         )
     })
 
@@ -540,6 +550,52 @@ describe('useAiAgentNavigation', () => {
             )
 
             expect(toneOfVoiceItem).toBeUndefined()
+        })
+
+        it('should include Procedures in Train section when KnowledgeIntentManagementSystem feature flag is enabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.KnowledgeIntentManagementSystem) {
+                    return true
+                }
+                return false
+            })
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test-shop' }),
+            )
+
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.title === TRAIN,
+            )
+            const proceduresItem = trainItem?.items?.find(
+                (item) => item.title === PROCEDURES,
+            )
+
+            expect(proceduresItem).toBeDefined()
+            expect(proceduresItem?.route).toBe(
+                '/app/ai-agent/shopify/test-shop/procedures',
+            )
+            expect(proceduresItem?.dataCanduId).toBe(
+                'ai-agent-navbar-procedures',
+            )
+            expect(proceduresItem?.exact).toBe(true)
+        })
+
+        it('should not include Procedures when KnowledgeIntentManagementSystem feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test-shop' }),
+            )
+
+            const trainItem = result.current.navigationItems.find(
+                (item) => item.title === TRAIN,
+            )
+            const proceduresItem = trainItem?.items?.find(
+                (item) => item.title === PROCEDURES,
+            )
+
+            expect(proceduresItem).toBeUndefined()
         })
     })
 })

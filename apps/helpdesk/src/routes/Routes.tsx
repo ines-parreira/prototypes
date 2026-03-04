@@ -71,6 +71,7 @@ import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportu
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import { AiAgentPlaygroundPage } from 'pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage'
+import { AiAgentProcedures } from 'pages/aiAgent/procedures/components/AiAgentProcedures/AiAgentProcedures'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
@@ -360,6 +361,10 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
     const isAbTestingEnabled = useFlag(
         FeatureFlagKey.AiShoppingAssistantAbTesting,
         false,
+    )
+
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
     )
 
     const { routes } = useAiAgentNavigation({ shopName })
@@ -662,6 +667,18 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             component={AiAgentOpportunities}
                         />
                     </AiAgentErrorBoundary>
+                    {isKnowledgeIntentManagementSystemEnabled && (
+                        <AiAgentErrorBoundary
+                            section="ai-agent-procedures"
+                            team={SentryTeam.CONVAI_KNOWLEDGE}
+                        >
+                            <Route
+                                path={`${path}/procedures`}
+                                exact
+                                component={AiAgentProcedures}
+                            />
+                        </AiAgentErrorBoundary>
+                    )}
                     <AiAgentErrorBoundary
                         section="ai-agent-products"
                         team={SentryTeam.CONVAI_KNOWLEDGE}

@@ -148,6 +148,7 @@ export enum FeatureFlagKey {
     HistoricalImports = 'linear.project_historical-imports-zendesk',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     IncreaseVisibilityOfOpportunity = 'linear.project_increase-visibility-of-opportunities.top-opportunities',
+    KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',
     LiquidTemplateStep = 'liquid-template-step',
     MacroArchives = 'macro-archives',
     MacroForwardByEmail = 'macro-forward-by-email',
