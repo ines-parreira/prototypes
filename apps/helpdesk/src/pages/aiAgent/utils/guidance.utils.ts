@@ -55,7 +55,12 @@ export const mapUpdateGuidanceArticleToArticleApi = (
             : undefined,
         is_current: updateGuidanceArticle.isCurrent,
         commit_message: updateGuidanceArticle.commitMessage,
-        ...(intents !== undefined ? { intents } : {}),
+        ...(intents !== undefined
+            ? {
+                  intents,
+                  is_intent_usage_enabled: intents.length > 0,
+              }
+            : {}),
     }
 }
 

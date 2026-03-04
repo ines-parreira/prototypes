@@ -73,6 +73,22 @@ describe('guidance.utils', () => {
 
             expect(result).toEqual({
                 intents: ['order::status'],
+                is_intent_usage_enabled: true,
+            })
+        })
+
+        it('should set is_intent_usage_enabled to false when intents are empty', () => {
+            const updateGuidanceArticle: UpdateGuidanceArticle = {
+                intents: [],
+            }
+
+            const result = mapUpdateGuidanceArticleToArticleApi(
+                updateGuidanceArticle,
+            )
+
+            expect(result).toEqual({
+                intents: [],
+                is_intent_usage_enabled: false,
             })
         })
 
