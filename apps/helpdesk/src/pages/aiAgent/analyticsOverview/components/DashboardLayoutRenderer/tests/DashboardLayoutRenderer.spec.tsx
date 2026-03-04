@@ -2,23 +2,26 @@ import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
-import { useListManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useListManagedDashboards'
+import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
-const mockedUseListManagedDashboards = jest.mocked(useListManagedDashboards)
+const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
+    useGetManagedDashboardsLayoutConfig,
+)
 const mockedUseFlag = jest.mocked(useFlag)
 
 jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useListManagedDashboards',
+    'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
     () => ({
-        useListManagedDashboards: jest.fn(() => ({
-            data: [],
-        })),
+        useGetManagedDashboardsLayoutConfig: jest.fn(
+            ({ defaultLayoutConfig }) => defaultLayoutConfig,
+        ),
     }),
 )
 
@@ -213,6 +216,7 @@ describe('DashboardLayoutRenderer', () => {
             <DashboardLayoutRenderer
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
+                dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
 
@@ -250,44 +254,33 @@ describe('DashboardLayoutRenderer', () => {
     })
 
     it('should render default sections alongside saved sections when section IDs differ', () => {
-        mockedUseListManagedDashboards.mockReturnValueOnce({
-            data: [
+        mockedUseGetManagedDashboardsLayoutConfig.mockReturnValueOnce({
+            sections: [
                 {
-                    id: 'test-dashboard',
-                    config: {
-                        id: 'test-dashboard',
-                        tabs: [
-                            {
-                                id: 'tab_main',
-                                name: 'Main',
-                                sections: [
-                                    {
-                                        section_id: 'kpis',
-                                        type: 'card',
-                                        items: [
-                                            {
-                                                chart_id:
-                                                    'unknown_chart_id_not_in_report_config',
-                                                metadata: {
-                                                    visible: true,
-                                                    grid_size: 3,
-                                                },
-                                            },
-                                        ],
-                                    },
-                                ],
-                            },
-                        ],
-                    },
-                } as any,
+                    id: 'kpis',
+                    type: 'kpis',
+                    items: [
+                        {
+                            chartId:
+                                'unknown_chart_id_not_in_report_config' as any,
+                            gridSize: 3,
+                            visibility: true,
+                        },
+                        {
+                            chartId: AnalyticsOverviewChart.AutomationRateCard,
+                            gridSize: 3,
+                            visibility: true,
+                        },
+                    ],
+                },
             ],
-        })
+        } as unknown as DashboardLayoutConfig)
 
         render(
             <DashboardLayoutRenderer
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
-                dashboardId="test-dashboard"
+                dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
 
@@ -324,6 +317,7 @@ describe('DashboardLayoutRenderer', () => {
             <DashboardLayoutRenderer
                 defaultLayoutConfig={customConfig}
                 reportConfig={reportConfigMock}
+                dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
 
@@ -361,6 +355,7 @@ describe('DashboardLayoutRenderer', () => {
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
                     tabKey="test-tab"
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -403,6 +398,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={configWithHiddenItems}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -428,6 +424,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -444,6 +441,7 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi2',
                     ])}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -457,6 +455,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -470,6 +469,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -486,6 +486,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -507,6 +508,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -529,6 +531,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={chartsLayoutConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -543,6 +546,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={tableLayoutConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -556,6 +560,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={mixedLayoutConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -581,6 +586,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={manyKpisConfig}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -601,7 +607,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
-                    dashboardId="test-dashboard"
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -617,6 +623,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -636,7 +643,7 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi3',
                     ])}
                     reportConfig={reportConfigMock}
-                    dashboardId="test-dashboard"
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -658,6 +665,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -671,6 +679,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(false)}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 
@@ -684,6 +693,7 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
+                    dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
 

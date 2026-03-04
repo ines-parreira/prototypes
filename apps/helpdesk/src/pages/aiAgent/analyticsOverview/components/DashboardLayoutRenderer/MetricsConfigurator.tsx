@@ -67,7 +67,7 @@ export const MetricsConfigurator = ({
             <ConfigureMetricsModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
-                maxVisibleMetric={8}
+                maxVisibleMetric={20}
                 metrics={metrics}
                 onSave={handleSave}
                 isLoading={isLoading}

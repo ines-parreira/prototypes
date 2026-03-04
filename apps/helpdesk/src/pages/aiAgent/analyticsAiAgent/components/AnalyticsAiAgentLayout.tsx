@@ -12,6 +12,7 @@ import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPa
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
+import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -98,7 +99,7 @@ export const AnalyticsAiAgentLayout = () => {
                         }
                         reportConfig={AnalyticsAiAgentAllAgentsReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.AllAgents}
-                        dashboardId="ai-agent-all-agents"
+                        dashboardId={ManagedDashboardId.AiAgentAllAgents}
                     />
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
@@ -109,7 +110,7 @@ export const AnalyticsAiAgentLayout = () => {
                         }
                         reportConfig={AnalyticsAiAgentSupportAgentReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.SupportAgent}
-                        dashboardId="ai-agent-support-agent"
+                        dashboardId={ManagedDashboardId.AiAgentSupportAgent}
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
@@ -122,7 +123,9 @@ export const AnalyticsAiAgentLayout = () => {
                             AnalyticsAiAgentShoppingAssistantReportConfig
                         }
                         tabKey={AiAgentAnalyticsQueryParams.ShoppingAssistant}
-                        dashboardId="ai-agent-shopping-assistant"
+                        dashboardId={
+                            ManagedDashboardId.AiAgentShoppingAssistant
+                        }
                     />
                 )
             default:

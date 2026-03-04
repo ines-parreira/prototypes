@@ -105,12 +105,30 @@ export function mergeWithDefaults(
     defaultConfig: DashboardLayoutConfig,
 ): DashboardLayoutConfig {
     const savedSectionIds = new Set(savedConfig.sections.map((s) => s.id))
+    const defaultSectionMap = new Map(
+        defaultConfig.sections.map((s) => [s.id, s]),
+    )
 
-    const missingDefaultSections = defaultConfig.sections.filter(
+    const mergedSections = savedConfig.sections.map((savedSection) => {
+        const defaultSection = defaultSectionMap.get(savedSection.id)
+        if (!defaultSection) return savedSection
+
+        const savedChartIds = new Set(savedSection.items.map((i) => i.chartId))
+        const missingItems = defaultSection.items.filter(
+            (item) => !savedChartIds.has(item.chartId),
+        )
+
+        return {
+            ...savedSection,
+            items: [...savedSection.items, ...missingItems],
+        }
+    })
+
+    const missingSections = defaultConfig.sections.filter(
         (defaultSection) => !savedSectionIds.has(defaultSection.id),
     )
 
     return {
-        sections: [...savedConfig.sections, ...missingDefaultSections],
+        sections: [...mergedSections, ...missingSections],
     }
 }

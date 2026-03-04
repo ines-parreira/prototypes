@@ -12,7 +12,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { GlobalNavigation } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
-import { useListManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useListManagedDashboards'
+import { useFetchManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useFetchManagedDashboards'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { AppContextProvider } from 'pages/AppContext'
@@ -53,7 +53,9 @@ const App = ({
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const dispatch = useAppDispatch()
 
-    useListManagedDashboards()
+    // Prefetch managed dashboards at the app root to avoid loading states when
+    // navigating to the new analytics ai agent dashboards.
+    useFetchManagedDashboards()
 
     const openedPanel = useAppSelector(getCurrentOpenedPanel)
 

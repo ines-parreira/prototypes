@@ -35,3 +35,10 @@ export type DashboardLayoutConfig<
 > = {
     sections: LayoutSection<TChart>[]
 }
+
+export enum ManagedDashboardId {
+    AiAgentOverview = 'ai-agent-overview',
+    AiAgentAllAgents = 'ai-agent-all-agents',
+    AiAgentSupportAgent = 'ai-agent-support-agent',
+    AiAgentShoppingAssistant = 'ai-agent-shopping-assistant',
+}

@@ -424,6 +424,48 @@ describe('managedDashboardMappers', () => {
             expect(result.sections).toHaveLength(2)
         })
 
+        it('should keep saved section as-is and append default section when saved section has no corresponding default', () => {
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'orphan_section',
+                        type: 'kpis',
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.AutomationRateCard,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'other_section',
+                        type: 'charts',
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.AutomatedInteractionsCard,
+                                gridSize: 6,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections).toHaveLength(2)
+            expect(result.sections[0]).toEqual(savedConfig.sections[0])
+            expect(result.sections[1]).toEqual(defaultConfig.sections[0])
+        })
+
         it('should handle empty saved config', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [],

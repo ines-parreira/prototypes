@@ -36,9 +36,9 @@ jest.mock('common/navigation', () => ({
 }))
 
 jest.mock(
-    'domains/reporting/hooks/managed-dashboards/useListManagedDashboards',
+    'domains/reporting/hooks/managed-dashboards/useFetchManagedDashboards',
     () => ({
-        useListManagedDashboards: jest.fn(),
+        useFetchManagedDashboards: jest.fn(),
     }),
 )
 

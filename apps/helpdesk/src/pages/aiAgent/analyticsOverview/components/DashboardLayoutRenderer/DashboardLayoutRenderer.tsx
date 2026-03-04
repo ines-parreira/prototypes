@@ -1,25 +1,23 @@
-import { useMemo } from 'react'
-
 import { Box } from '@gorgias/axiom'
 
-import { useListManagedDashboards } from 'domains/reporting/hooks/managed-dashboards/useListManagedDashboards'
+import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { KpisSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/KpisSection'
-import { useDashboardConfig } from 'pages/aiAgent/analyticsOverview/hooks/useDashboardConfig'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutItem,
     LayoutSection,
+    ManagedDashboardId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 type DashboardLayoutRendererProps<TChart extends string> = {
     defaultLayoutConfig: DashboardLayoutConfig
     reportConfig: ReportConfig<TChart>
     tabKey?: string
-    dashboardId?: string
+    dashboardId: ManagedDashboardId
 }
 
 const renderSection =
@@ -84,17 +82,10 @@ export const DashboardLayoutRenderer = ({
     tabKey,
     dashboardId,
 }: DashboardLayoutRendererProps<string>) => {
-    const { data } = useListManagedDashboards()
-
-    const savedDashboard = useMemo(
-        () => data.find((dashboard) => dashboard.id === dashboardId),
-        [data, dashboardId],
-    )
-
-    const { layoutConfig } = useDashboardConfig(
+    const layoutConfig = useGetManagedDashboardsLayoutConfig({
+        dashboardId,
         defaultLayoutConfig,
-        savedDashboard,
-    )
+    })
 
     return (
         <Box
