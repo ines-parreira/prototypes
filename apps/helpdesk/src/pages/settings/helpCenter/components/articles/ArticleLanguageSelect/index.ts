@@ -1,5 +1,2 @@
-export {
-    ActionType,
-    ArticleLanguageSelect,
-    OptionItem,
-} from './ArticleLanguageSelect'
+export { ArticleLanguageSelect } from './ArticleLanguageSelect'
+export type { ActionType, OptionItem } from './ArticleLanguageSelect'

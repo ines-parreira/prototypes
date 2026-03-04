@@ -1,2 +1,3 @@
 export { BadgeList } from './BadgeList'
-export { BadgeSelectItem, DynamicBadgeList } from './DynamicBadgeList'
+export { DynamicBadgeList } from './DynamicBadgeList'
+export type { BadgeSelectItem } from './DynamicBadgeList'

@@ -29,96 +29,94 @@ export {
     IvrMenuActionType,
     AddressType,
 } from '../constants'
-export {
+export { IntegrationDataItemType, isStoreIntegration } from './misc'
+export type {
     AutoResponder,
     IntegrationAuthentication,
     IntegrationDataItem,
-    IntegrationDataItemType,
     IntegrationExtra,
     IntegrationFromType,
-    isStoreIntegration,
     OAuth2,
     ProductCardDetails,
     StoreIntegration,
 } from './misc'
 export {
     DNSRecordType,
+    EmailMigrationInboundVerificationStatus,
+    EmailMigrationOutboundVerificationStatus,
+    EmailMigrationStatus,
+    isEmailIntegration,
+    OutboundVerificationStatusValue,
+    OutboundVerificationType,
+} from './email'
+export type {
     DomainDNSRecord,
     EmailDomain,
     EmailIntegration,
     EmailIntegrationMeta,
     EmailMigrationBannerStatus,
     EmailMigrationInboundVerification,
-    EmailMigrationInboundVerificationStatus,
     EmailMigrationOutboundVerification,
-    EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
-    EmailMigrationStatus,
     EmailSignature,
-    isEmailIntegration,
     MigrationIntegration,
-    OutboundVerificationStatusValue,
-    OutboundVerificationType,
 } from './email'
+export { isGmailIntegration } from './gmail'
+export type { GmailIntegration, GmailIntegrationMeta } from './gmail'
+export { isOutlookIntegration } from './outlook'
+export type { OutlookIntegration, OutlookIntegrationMeta } from './outlook'
+export { isAircallIntegration } from './aircall'
+export type { AircallIntegration } from './aircall'
 export {
-    GmailIntegration,
-    GmailIntegrationMeta,
-    isGmailIntegration,
-} from './gmail'
-export {
-    isOutlookIntegration,
-    OutlookIntegration,
-    OutlookIntegrationMeta,
-} from './outlook'
-export { AircallIntegration, isAircallIntegration } from './aircall'
-export {
-    GetApplicationsResponse,
-    GetInstallationSnippetParams,
-    GetInstallationSnippetResponse,
-    GorgiasChatApplicationBaseInfo,
     GorgiasChatAutoResponderReply,
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatAvatarSettings,
     GorgiasChatBackgroundColorStyle,
     GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
     GorgiasChatEmailCaptureType,
     GorgiasChatInstallationMethod,
-    GorgiasChatInstallationVisibility,
-    GorgiasChatInstallationVisibilityCondition,
     GorgiasChatInstallationVisibilityConditionOperator,
     GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityMethod,
-    GorgiasChatIntegration,
-    GorgiasChatIntegrationMeta,
     GorgiasChatLauncherType,
-    GorgiasChatMetaInstallation,
     GorgiasChatMinimumSnippetVersion,
-    GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     GorgiasChatStatusEnum,
     isGorgiasChatIntegration,
     latestSnippetVersion,
+} from './gorgiasChat'
+export type {
+    GetApplicationsResponse,
+    GetInstallationSnippetParams,
+    GetInstallationSnippetResponse,
+    GorgiasChatApplicationBaseInfo,
+    GorgiasChatAvatarSettings,
+    GorgiasChatInstallationVisibility,
+    GorgiasChatInstallationVisibilityCondition,
+    GorgiasChatIntegration,
+    GorgiasChatIntegrationMeta,
+    GorgiasChatMetaInstallation,
+    GorgiasChatPosition,
     SelfServiceConfiguration,
 } from './gorgiasChat'
-export {
+export { isFacebookIntegration } from './facebook'
+export type {
     FacebokIntegrationPreferences,
     FacebookIntegration,
     FacebookIntegrationMeta,
     FacebookIntegrationSettings,
-    isFacebookIntegration,
 } from './facebook'
-export {
+export { isHttpIntegration } from './http'
+export type {
     HTTPForm,
     HttpIntegration,
     HTTPIntegrationEvent,
     HttpIntegrationMeta,
-    isHttpIntegration,
 } from './http'
-export {
-    isShopifyIntegration,
+export { isShopifyIntegration, ShopifyTags } from './shopify'
+export type {
     ShopifyCollection,
     ShopifyCollectionResponse,
     ShopifyCustomerSegment,
@@ -127,41 +125,25 @@ export {
     ShopifyIntegrationMeta,
     ShopifyOrderTags,
     ShopifySegmentResponse,
-    ShopifyTags,
 } from './shopify'
-export {
-    isRechargeIntegration,
-    RechargeIntegration,
-    RechargeIntegrationMeta,
-} from './recharge'
-export {
-    isSmileIntegration,
-    SmileIntegration,
-    SmileIntegrationMeta,
-} from './smile'
-export {
-    isMagento2Integration,
-    Magento2Integration,
-    Magento2IntegrationMeta,
-} from './magento2'
-export {
-    isZendeskIntegration,
-    ZendeskIntegration,
-    ZendeskIntegrationMeta,
-} from './zendesk'
-export {
-    isYotpoIntegration,
-    YotpoIntegration,
-    YotpoIntegrationMeta,
-} from './yotpo'
-export {
-    isKlaviyoIntegration,
-    KlaviyoIntegration,
-    KlaviyoIntegrationMeta,
-} from './klaviyo'
+export { isRechargeIntegration } from './recharge'
+export type { RechargeIntegration, RechargeIntegrationMeta } from './recharge'
+export { isSmileIntegration } from './smile'
+export type { SmileIntegration, SmileIntegrationMeta } from './smile'
+export { isMagento2Integration } from './magento2'
+export type { Magento2Integration, Magento2IntegrationMeta } from './magento2'
+export { isZendeskIntegration } from './zendesk'
+export type { ZendeskIntegration, ZendeskIntegrationMeta } from './zendesk'
+export { isYotpoIntegration } from './yotpo'
+export type { YotpoIntegration, YotpoIntegrationMeta } from './yotpo'
+export { isKlaviyoIntegration } from './klaviyo'
+export type { KlaviyoIntegration, KlaviyoIntegrationMeta } from './klaviyo'
 export {
     isPhoneIntegration,
     isStandardPhoneIntegration,
+    PhoneRingingBehaviour,
+} from './phone'
+export type {
     IvrForwardCall,
     IvrForwardCallMenuAction,
     IvrMenuAction,
@@ -176,20 +158,36 @@ export {
     PhoneIntegrationPreferences,
     PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
     PhoneIntegrationVoicemailSettings,
-    PhoneRingingBehaviour,
     VoiceMessage,
     VoiceMessageNone,
     VoiceMessageRecording,
     VoiceMessageTextToSpeech,
 } from './phone'
-export { isSmsIntegration, SmsIntegration, SmsIntegrationMeta } from './sms'
-export {
-    isTwitterIntegration,
-    TwitterIntegration,
-    TwitterIntegrationMeta,
-} from './twitter'
+export { isSmsIntegration } from './sms'
+export type { SmsIntegration, SmsIntegrationMeta } from './sms'
+export { isTwitterIntegration } from './twitter'
+export type { TwitterIntegration, TwitterIntegrationMeta } from './twitter'
 export {
     BigCommerceActionType,
+    BigCommerceCouponError,
+    BigCommerceCouponErrorMessage,
+    BigCommerceCustomerAddressType,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
+    bigCommerceProductCheckboxModifierTypes,
+    bigCommerceProductSelectModifierTypes,
+    bigCommerceProductSwatchModifierTypes,
+    BigCommerceRefundableItemType,
+    BigCommerceRefundType,
+    isBigCommerceIntegration,
+    OrderPaymentMethodType,
+    OrderStatusIDType,
+    OrderStatusList,
+    ProductModifiersChangedError,
+} from './bigcommerce'
+export type {
     BigCommerceAddressResponse,
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceBillingAddress,
@@ -204,25 +202,18 @@ export {
     BigCommerceCheckoutResponse,
     BigCommerceConsignment,
     BigCommerceCoupon,
-    BigCommerceCouponError,
-    BigCommerceCouponErrorMessage,
     BigCommerceCreateConsignmentPayload,
     BigCommerceCustomAddress,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
-    BigCommerceCustomerAddressType,
     BigCommerceCustomProduct,
     BigCommerceDiscount,
     BigCommerceDuplicateOrderErrorResponse,
     BigCommerceDuplicateOrderResponse,
     BigCommerceErrorList,
-    BigCommerceGeneralError,
-    BigCommerceGeneralErrorMessage,
     BigCommerceIntegration,
     BigCommerceIntegrationMeta,
-    BigCommerceLineItemError,
-    BigCommerceLineItemErrorMessage,
     BigCommerceNestedCart,
     BigCommerceNestedCartResponse,
     BigCommerceNestedCheckout,
@@ -232,23 +223,18 @@ export {
     BigCommerceOrderShipping,
     BigCommerceProduct,
     BigCommerceProductCheckboxModifier,
-    bigCommerceProductCheckboxModifierTypes,
     BigCommerceProductModifiers,
     BigCommerceProductModifiersBase,
     BigCommerceProductSelectModifier,
-    bigCommerceProductSelectModifierTypes,
     BigCommerceProductsListType,
     BigCommerceProductSwatchModifier,
-    bigCommerceProductSwatchModifierTypes,
     BigCommerceProductVariant,
-    BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayload,
     BigCommerceRefundItemsPayloadComponent,
     BigCommerceRefundMethod,
     BigCommerceRefundMethodComponent,
     BigCommerceRefundOrderPayload,
     BigCommerceRefundOrderState,
-    BigCommerceRefundType,
     BigCommerceShippingOption,
     BigCommerceTaxCheckout,
     BigCommerceUpsertConsignmentPayload,
@@ -262,34 +248,23 @@ export {
     GiftWrappingItemRefundData,
     HandlingItemRefundData,
     IndividualItemsLevelRefundData,
-    isBigCommerceIntegration,
     OrderLevelRefundData,
-    OrderPaymentMethodType,
-    OrderStatusIDType,
-    OrderStatusList,
     ProductItemRefundData,
-    ProductModifiersChangedError,
     ShippingItemRefundData,
 } from './bigcommerce'
 export {
     isWhatsAppIntegration,
     WhatsAppCodeVerificationMethod,
-    WhatsAppIntegration,
-    WhatsAppIntegrationMeta,
-    WhatsAppMigrationProgress,
     WhatsAppPhoneNumberStatus,
     WhatsAppPhoneNumberVerificationStatus,
 } from './whatsapp'
+export type {
+    WhatsAppIntegration,
+    WhatsAppIntegrationMeta,
+    WhatsAppMigrationProgress,
+} from './whatsapp'
 export {
-    AppData,
-    AppDetail,
-    AppErrorLog,
-    AppIntegration,
-    AppIntegrationMeta,
-    AppListData,
-    AppListItem,
     Category,
-    DisconnectResponse,
     isAppDetail,
     isAppIntegration,
     isAppListItem,
@@ -297,7 +272,20 @@ export {
     PricingPlan,
     TrialPeriod,
 } from './app'
-export { EcommerceIntegration, EcommerceIntegrationMeta } from './ecommerce'
+export type {
+    AppData,
+    AppDetail,
+    AppErrorLog,
+    AppIntegration,
+    AppIntegrationMeta,
+    AppListData,
+    AppListItem,
+    DisconnectResponse,
+} from './app'
+export type {
+    EcommerceIntegration,
+    EcommerceIntegrationMeta,
+} from './ecommerce'
 export type Integration =
     | EmailIntegration
     | GmailIntegration

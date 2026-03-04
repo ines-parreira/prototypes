@@ -1,1 +1,2 @@
-export { CampaignDetailsForm, Props } from './CampaignDetailsForm'
+export { CampaignDetailsForm } from './CampaignDetailsForm'
+export type { Props } from './CampaignDetailsForm'

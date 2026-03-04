@@ -1,2 +1,3 @@
-export { ImageUpload, ImageUploadProps } from './ImageUpload'
+export { ImageUpload } from './ImageUpload'
+export type { ImageUploadProps } from './ImageUpload'
 export { useLocalImage } from './hooks'

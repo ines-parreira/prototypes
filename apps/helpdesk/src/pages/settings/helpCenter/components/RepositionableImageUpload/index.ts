@@ -1,4 +1,2 @@
-export {
-    RepositionableImageUpload,
-    RepositionableImageUploadProps,
-} from './RepositionableImageUpload'
+export { RepositionableImageUpload } from './RepositionableImageUpload'
+export type { RepositionableImageUploadProps } from './RepositionableImageUpload'

@@ -1,2 +1,2 @@
 export { default } from './ArticleLandingPage'
-export { ArticleLandingPageProps } from './ArticleLandingPage'
+export type { ArticleLandingPageProps } from './ArticleLandingPage'

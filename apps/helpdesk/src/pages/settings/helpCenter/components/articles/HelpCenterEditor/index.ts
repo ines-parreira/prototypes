@@ -1,1 +1,1 @@
-export { Props } from './HelpCenterEditor'
+export type { Props } from './HelpCenterEditor'
