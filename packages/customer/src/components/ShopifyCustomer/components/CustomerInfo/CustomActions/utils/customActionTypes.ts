@@ -1,3 +1,5 @@
+import type { Widget } from '@gorgias/helpdesk-types'
+
 export type ParameterType = 'text' | 'dropdown'
 
 export type Parameter = {
@@ -29,3 +31,27 @@ export type ButtonAction = {
 
 export type ButtonConfig = { label: string; action: ButtonAction }
 export type LinkConfig = { label: string; url: string }
+
+export type NestedWidget = {
+    path?: string
+    type?: string
+    meta?: {
+        custom?: {
+            links?: LinkConfig[]
+            buttons?: ButtonConfig[]
+        }
+        [key: string]: unknown
+    }
+    [key: string]: unknown
+}
+
+export type WidgetTemplate = {
+    type?: string
+    widgets?: NestedWidget[]
+    meta?: Record<string, unknown>
+    [key: string]: unknown
+}
+
+export type ShopifyWidget = Widget & {
+    template?: WidgetTemplate
+}
