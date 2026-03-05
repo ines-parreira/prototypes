@@ -142,11 +142,15 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             )
         } else {
             // empty editor state (triggered after message is sent, textarea needs to be emptied)
+            const emptyContentState = ContentState.createFromText('')
             editorState = EditorState.push(
                 editorState,
-                ContentState.createFromText(''),
+                emptyContentState,
                 'insert-characters',
             )
+            // Move selection into the new content's block so isValidSelectionKey doesn't
+            // falsely trigger _focusEditor() when the user starts typing.
+            editorState = EditorState.moveFocusToEnd(editorState)
         }
 
         return editorState

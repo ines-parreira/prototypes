@@ -439,4 +439,113 @@ describe('TicketReplyEditor component', () => {
 
         expect(mockHandleTypingActivity).toHaveBeenCalled()
     })
+
+    describe('getEditorStateFromReducer', () => {
+        it('should return editor state with selection pointing to a valid block when content is empty', () => {
+            let instance: TicketReplyEditorContainer | null = null
+
+            render(
+                <Provider store={store}>
+                    <TicketReplyEditorContainer
+                        {...minProps}
+                        ref={(ref) => {
+                            instance = ref
+                        }}
+                        newMessage={fromJS({
+                            state: {
+                                contentState:
+                                    ContentState.createFromText('hello'),
+                            },
+                            newMessage: {
+                                body_text: 'hello',
+                                body_html: '<p>hello</p>',
+                            },
+                        })}
+                        newMessageType={TicketMessageSourceType.Email}
+                    />
+                </Provider>,
+            )
+
+            const emptyProps = {
+                ...minProps,
+                newMessage: fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                }),
+            }
+
+            const resultEditorState =
+                instance!.getEditorStateFromReducer(emptyProps)!
+            const selection = resultEditorState.getSelection()
+            const anchorKey = selection.getAnchorKey()
+            const content = resultEditorState.getCurrentContent()
+
+            expect(content.getBlockForKey(anchorKey)).toBeDefined()
+        })
+
+        it('should update selection block key when transitioning from non-empty to empty content', () => {
+            let instance: TicketReplyEditorContainer | null = null
+
+            render(
+                <Provider store={store}>
+                    <TicketReplyEditorContainer
+                        {...minProps}
+                        ref={(ref) => {
+                            instance = ref
+                        }}
+                        newMessage={fromJS({
+                            state: {
+                                contentState:
+                                    ContentState.createFromText('sent message'),
+                            },
+                            newMessage: {
+                                body_text: 'sent message',
+                                body_html: '<p>sent message</p>',
+                            },
+                        })}
+                        newMessageType={TicketMessageSourceType.Email}
+                    />
+                </Provider>,
+            )
+
+            const propsWithContent = {
+                ...minProps,
+                newMessage: fromJS({
+                    state: {
+                        contentState:
+                            ContentState.createFromText('sent message'),
+                    },
+                }),
+            }
+            const stateWithContent =
+                instance!.getEditorStateFromReducer(propsWithContent)!
+            const oldBlockKey = stateWithContent
+                .getCurrentContent()
+                .getFirstBlock()
+                .getKey()
+
+            const propsWithEmptyContent = {
+                ...minProps,
+                newMessage: fromJS({
+                    state: {
+                        contentState: ContentState.createFromText(''),
+                    },
+                }),
+            }
+            const stateAfterClear = instance!.getEditorStateFromReducer(
+                propsWithEmptyContent,
+            )!
+            const newBlockKey = stateAfterClear
+                .getCurrentContent()
+                .getFirstBlock()
+                .getKey()
+            const selectionAnchorKey = stateAfterClear
+                .getSelection()
+                .getAnchorKey()
+
+            expect(selectionAnchorKey).toBe(newBlockKey)
+            expect(selectionAnchorKey).not.toBe(oldBlockKey)
+        })
+    })
 })
