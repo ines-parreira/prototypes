@@ -146,6 +146,7 @@ export enum FeatureFlagKey {
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HistoricalImports = 'linear.project_historical-imports-zendesk',
+    HttpIntegrationOAuth = 'http-integration-oauth',
     IncreaseGuidanceCreationLimit = 'increase-guidance-creation-limitation',
     IncreaseVisibilityOfOpportunity = 'linear.project_increase-visibility-of-opportunities.top-opportunities',
     KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',

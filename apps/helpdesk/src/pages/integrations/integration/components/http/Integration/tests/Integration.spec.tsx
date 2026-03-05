@@ -6,7 +6,7 @@ import { fromJS } from 'immutable'
 import { baseHttp, httpIntegration } from 'fixtures/integrations'
 import { ContentType, HttpMethod } from 'models/api/types'
 import type { HTTPForm } from 'models/integration/types'
-import { IntegrationType } from 'models/integration/types'
+import { IntegrationType, OAuth2TokenLocation } from 'models/integration/types'
 import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -129,6 +129,7 @@ describe('HTTP Integration', () => {
                     'ticket-status-updated': false,
                 },
                 form: null,
+                oauth2: undefined,
             },
         })
 
@@ -797,6 +798,413 @@ describe('HTTP Integration', () => {
 
             expect(setStateSpy).toHaveBeenCalled()
             expect(component.current?.isInitialized).toBe(true)
+        })
+    })
+
+    describe('OAuth2 authentication', () => {
+        const oauthMinProps = {
+            ...minProps,
+            isHttpIntegrationOAuthEnabled: true,
+        }
+
+        it('should render OAuth2 toggle in the creation form', () => {
+            render(<Integration {...oauthMinProps} />)
+
+            expect(
+                screen.getByText('Enable authentication method: OAuth2'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render OAuth2 fields when toggle is off by default', () => {
+            render(<Integration {...oauthMinProps} />)
+
+            expect(screen.queryByLabelText('Token URL')).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Client ID')).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Client Secret'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Token Location'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Token Key')).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Scopes')).not.toBeInTheDocument()
+        })
+
+        it('should show OAuth2 fields when toggle is enabled', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            expect(
+                screen.getByRole('textbox', { name: /token url/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /client id/i }),
+            ).toBeInTheDocument()
+            expect(screen.getByLabelText(/client secret/i)).toBeInTheDocument()
+            expect(screen.getByLabelText('Token Location')).toBeInTheDocument()
+            expect(
+                screen.getByRole('textbox', { name: /token key/i }),
+            ).toBeInTheDocument()
+            expect(screen.getByLabelText('Scopes')).toBeInTheDocument()
+        })
+
+        it('should hide OAuth2 fields when toggle is disabled after being enabled', () => {
+            render(<Integration {...oauthMinProps} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+                expect(
+                    screen.getByRole('textbox', { name: /token url/i }),
+                ).toBeInTheDocument()
+
+                fireEvent.click(toggle)
+                expect(
+                    screen.queryByRole('textbox', { name: /token url/i }),
+                ).not.toBeInTheDocument()
+            }
+        })
+
+        it('should update oauth2Config state when Token URL is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token url/i }),
+                {
+                    target: { value: 'https://auth.example.com/token' },
+                },
+            )
+
+            expect(component.current?.state.oauth2Config.token_url).toBe(
+                'https://auth.example.com/token',
+            )
+        })
+
+        it('should update oauth2Config state when Client ID is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /client id/i }),
+                {
+                    target: { value: 'my-client-id' },
+                },
+            )
+
+            expect(component.current?.state.oauth2Config.client_id).toBe(
+                'my-client-id',
+            )
+        })
+
+        it('should update oauth2Config state when Client Secret is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(screen.getByLabelText(/client secret/i), {
+                target: { value: 'super-secret' },
+            })
+
+            expect(component.current?.state.oauth2Config.client_secret).toBe(
+                'super-secret',
+            )
+        })
+
+        it('should update oauth2Config state when Token Location is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.click(screen.getByLabelText('Token Location'))
+            const queryStringMatches = screen.getAllByText(
+                OAuth2TokenLocation.QueryString,
+            )
+            fireEvent.click(
+                queryStringMatches.find((el) => el.tagName === 'SPAN') ??
+                    queryStringMatches[0],
+            )
+
+            expect(component.current?.state.oauth2Config.token_location).toBe(
+                OAuth2TokenLocation.QueryString,
+            )
+        })
+
+        it('should update oauth2Config state when Token Key is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token key/i }),
+                {
+                    target: { value: 'access_token' },
+                },
+            )
+
+            expect(component.current?.state.oauth2Config.token_key).toBe(
+                'access_token',
+            )
+        })
+
+        it('should update oauth2Config state when Scopes is changed', () => {
+            const component = React.createRef<Integration>()
+            render(<Integration {...oauthMinProps} ref={component} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(screen.getByLabelText('Scopes'), {
+                target: { value: 'read write' },
+            })
+
+            expect(component.current?.state.oauth2Config.scopes).toBe(
+                'read write',
+            )
+        })
+
+        it('should include oauth2 config in submission payload when enabled', () => {
+            const mockUpdateOrCreate = jest.fn()
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            fireEvent.change(screen.getByLabelText('Integration name'), {
+                target: { value: 'OAuth2 Integration' },
+            })
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket created')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token url/i }),
+                {
+                    target: { value: 'https://auth.example.com/token' },
+                },
+            )
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /client id/i }),
+                {
+                    target: { value: 'my-client-id' },
+                },
+            )
+            fireEvent.change(screen.getByLabelText(/client secret/i), {
+                target: { value: 'my-secret' },
+            })
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token key/i }),
+                {
+                    target: { value: 'access_token' },
+                },
+            )
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const call = mockUpdateOrCreate.mock.calls[0][0]
+            const payload = call.toJS()
+
+            expect(payload.http.oauth2).toEqual({
+                token_url: 'https://auth.example.com/token',
+                client_id: 'my-client-id',
+                client_secret: 'my-secret',
+                token_location: OAuth2TokenLocation.Header,
+                token_key: 'access_token',
+                scopes: '',
+            })
+        })
+
+        it('should omit oauth2 from submission payload when toggle is disabled', () => {
+            const mockUpdateOrCreate = jest.fn()
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            fireEvent.change(screen.getByLabelText('Integration name'), {
+                target: { value: 'Test Integration' },
+            })
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+
+            const checkbox = screen
+                .getByText('Ticket message failed')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const call = mockUpdateOrCreate.mock.calls[0][0]
+            const payload = call.toJS()
+
+            expect(payload.http.oauth2).toBeUndefined()
+        })
+
+        it('should initialize OAuth2 state from existing integration with oauth2 config', () => {
+            const integrationWithOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'existing-client-id',
+                        client_secret: 'existing-secret',
+                        token_location: OAuth2TokenLocation.QueryString,
+                        token_key: 'access_token',
+                        scopes: 'read write',
+                    },
+                },
+            }
+
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    integration={integrationWithOAuth2}
+                    isUpdate={true}
+                />,
+            )
+
+            expect(
+                screen.getByRole('textbox', { name: /token url/i }),
+            ).toHaveValue('https://auth.example.com/token')
+            expect(
+                screen.getByRole('textbox', { name: /client id/i }),
+            ).toHaveValue('existing-client-id')
+            expect(screen.getByLabelText('Token Location')).toHaveValue(
+                OAuth2TokenLocation.QueryString,
+            )
+            expect(
+                screen.getByRole('textbox', { name: /token key/i }),
+            ).toHaveValue('access_token')
+            expect(screen.getByLabelText('Scopes')).toHaveValue('read write')
+        })
+
+        it('should default Token Location to Header', () => {
+            render(<Integration {...oauthMinProps} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            expect(screen.getByLabelText('Token Location')).toHaveValue(
+                OAuth2TokenLocation.Header,
+            )
+        })
+
+        it('should render Header and QueryString Token Location options', () => {
+            render(<Integration {...oauthMinProps} />)
+
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            expect(
+                screen.getByRole('option', {
+                    name: OAuth2TokenLocation.Header,
+                    hidden: true,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', {
+                    name: OAuth2TokenLocation.QueryString,
+                    hidden: true,
+                }),
+            ).toBeInTheDocument()
         })
     })
 })

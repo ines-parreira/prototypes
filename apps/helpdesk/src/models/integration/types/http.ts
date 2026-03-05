@@ -12,6 +12,20 @@ export type HttpIntegration = IntegrationBase & {
     http: Maybe<HttpIntegrationMeta>
 }
 
+export enum OAuth2TokenLocation {
+    Header = 'header',
+    QueryString = 'query',
+}
+
+export type OAuth2Config = {
+    token_url: string
+    client_id: string
+    client_secret: string
+    token_location: OAuth2TokenLocation
+    token_key: string
+    scopes?: string
+}
+
 export type HttpIntegrationMeta = {
     execution_order: number
     form: HTTPForm
@@ -21,6 +35,7 @@ export type HttpIntegrationMeta = {
     }
     id: number
     method: HttpMethod
+    oauth2?: OAuth2Config
     request_content_type: ContentType
     response_content_type: ContentType
     triggers: {

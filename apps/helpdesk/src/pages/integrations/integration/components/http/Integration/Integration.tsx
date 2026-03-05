@@ -1,6 +1,8 @@
-import type { SyntheticEvent } from 'react'
+import type { ComponentProps, SyntheticEvent } from 'react'
 import { Component } from 'react'
+import type React from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 import { isArray } from 'lodash'
 import _forIn from 'lodash/forIn'
@@ -9,7 +11,16 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Container, Form, FormGroup, FormText } from 'reactstrap'
 
-import { Box, Button, LegacyLabel as Label } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    LegacyLabel as Label,
+    ListItem,
+    Select,
+    SelectTrigger,
+    TextField,
+    ToggleField,
+} from '@gorgias/axiom'
 
 import { ContentType, HttpMethod } from 'models/api/types'
 import { EventType } from 'models/event/types'
@@ -17,8 +28,9 @@ import type {
     HTTPForm,
     HttpIntegration,
     HttpIntegrationMeta,
+    OAuth2Config,
 } from 'models/integration/types'
-import { IntegrationType } from 'models/integration/types'
+import { IntegrationType, OAuth2TokenLocation } from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -45,6 +57,7 @@ import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 type Props = {
     integration: HttpIntegration | undefined
     isUpdate: boolean
+    isHttpIntegrationOAuthEnabled?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -54,6 +67,8 @@ type State = {
     isTestShown: boolean
     method?: HttpMethod
     name: string
+    oauth2Enabled: boolean
+    oauth2Config: OAuth2Config
     requestContentType?: ContentType
     responseContentType?: ContentType
     ticketCreated: boolean
@@ -84,6 +99,15 @@ export class Integration extends Component<Props, State> {
         ticketStatusUpdated: false,
         headers: [],
         form: null,
+        oauth2Enabled: false,
+        oauth2Config: {
+            token_url: '',
+            client_id: '',
+            client_secret: '',
+            token_location: OAuth2TokenLocation.Header,
+            token_key: '',
+            scopes: '',
+        },
     }
 
     isInitialized: boolean | undefined
@@ -122,6 +146,8 @@ export class Integration extends Component<Props, State> {
         }
         const headers = integration.http?.headers
 
+        const existingOAuth2 = integration.http?.oauth2
+
         return {
             name: integration.name,
             description: integration.description || '',
@@ -146,6 +172,15 @@ export class Integration extends Component<Props, State> {
             ticketStatusUpdated:
                 integration.http?.triggers['ticket-status-updated'] ?? false,
             form: formData,
+            oauth2Enabled: !!existingOAuth2,
+            oauth2Config: existingOAuth2 ?? {
+                token_url: '',
+                client_id: '',
+                client_secret: '',
+                token_location: OAuth2TokenLocation.Header,
+                token_key: '',
+                scopes: '',
+            },
         }
     }
 
@@ -261,6 +296,9 @@ export class Integration extends Component<Props, State> {
                         this.state.ticketStatusUpdated,
                 },
                 form,
+                oauth2: this.state.oauth2Enabled
+                    ? this.state.oauth2Config
+                    : undefined,
             },
         }
 
@@ -336,7 +374,11 @@ export class Integration extends Component<Props, State> {
             ticketAssignmentUpdated,
             ticketStatusUpdated,
             form,
+            oauth2Enabled,
+            oauth2Config,
         } = this.state
+
+        const { isHttpIntegrationOAuthEnabled } = this.props
 
         const isSubmitting = this._isSubmitting()
 
@@ -654,6 +696,176 @@ export class Integration extends Component<Props, State> {
                                         }
                                     />
                                 </FormGroup>
+                                {isHttpIntegrationOAuthEnabled && (
+                                    <FormGroup>
+                                        <ToggleField
+                                            label="Enable authentication method: OAuth2"
+                                            value={oauth2Enabled}
+                                            onChange={(value) =>
+                                                this.setState({
+                                                    oauth2Enabled: value,
+                                                })
+                                            }
+                                        />
+                                        {oauth2Enabled && (
+                                            <Box
+                                                flexDirection="column"
+                                                paddingTop="lg"
+                                                gap="md"
+                                            >
+                                                <TextField
+                                                    id="oauth2-token-url"
+                                                    type="text"
+                                                    label="Token URL"
+                                                    value={
+                                                        oauth2Config.token_url
+                                                    }
+                                                    isRequired
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            oauth2Config: {
+                                                                ...oauth2Config,
+                                                                token_url:
+                                                                    value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                                <TextField
+                                                    id="oauth2-client-id"
+                                                    type="text"
+                                                    label="Client ID"
+                                                    value={
+                                                        oauth2Config.client_id
+                                                    }
+                                                    isRequired
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            oauth2Config: {
+                                                                ...oauth2Config,
+                                                                client_id:
+                                                                    value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                                <TextField
+                                                    id="oauth2-client-secret"
+                                                    type="password"
+                                                    label="Client Secret"
+                                                    placeholder="***********"
+                                                    value={
+                                                        oauth2Config.client_secret
+                                                    }
+                                                    isRequired
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            oauth2Config: {
+                                                                ...oauth2Config,
+                                                                client_secret:
+                                                                    value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                                <Box flexDirection="column">
+                                                    <Label>
+                                                        Token Location
+                                                    </Label>
+                                                    <Select
+                                                        items={Object.values(
+                                                            OAuth2TokenLocation,
+                                                        ).map((loc) => ({
+                                                            id: loc,
+                                                            name: loc,
+                                                        }))}
+                                                        selectedItem={{
+                                                            id: oauth2Config.token_location,
+                                                            name: oauth2Config.token_location,
+                                                        }}
+                                                        onSelect={(item) =>
+                                                            this.setState({
+                                                                oauth2Config: {
+                                                                    ...oauth2Config,
+                                                                    token_location:
+                                                                        item.id as OAuth2TokenLocation,
+                                                                },
+                                                            })
+                                                        }
+                                                        trigger={({
+                                                            ref,
+                                                            selectedText,
+                                                            isOpen,
+                                                        }) => (
+                                                            <SelectTrigger>
+                                                                <TextField
+                                                                    inputRef={
+                                                                        ref as React.RefObject<HTMLInputElement>
+                                                                    }
+                                                                    value={
+                                                                        selectedText
+                                                                    }
+                                                                    isFocused={
+                                                                        isOpen
+                                                                    }
+                                                                    trailingSlot={
+                                                                        isOpen
+                                                                            ? 'arrow-chevron-up'
+                                                                            : 'arrow-chevron-down'
+                                                                    }
+                                                                    variant="primary"
+                                                                    aria-label="Token Location"
+                                                                />
+                                                            </SelectTrigger>
+                                                        )}
+                                                    >
+                                                        {(item) => (
+                                                            <ListItem
+                                                                id={item.id}
+                                                                label={
+                                                                    item.name
+                                                                }
+                                                            />
+                                                        )}
+                                                    </Select>
+                                                </Box>
+                                                <TextField
+                                                    id="oauth2-token-key"
+                                                    type="text"
+                                                    label="Token Key"
+                                                    value={
+                                                        oauth2Config.token_key
+                                                    }
+                                                    isRequired
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            oauth2Config: {
+                                                                ...oauth2Config,
+                                                                token_key:
+                                                                    value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                                <TextField
+                                                    id="oauth2-scopes"
+                                                    type="text"
+                                                    label="Scopes"
+                                                    placeholder="Enter"
+                                                    value={oauth2Config.scopes}
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            oauth2Config: {
+                                                                ...oauth2Config,
+                                                                scopes: value,
+                                                            },
+                                                        })
+                                                    }
+                                                />
+                                            </Box>
+                                        )}
+                                    </FormGroup>
+                                )}
                                 {method !== HttpMethod.Get &&
                                     (requestContentType === ContentType.Json ? (
                                         <JSONBody
@@ -757,4 +969,21 @@ const connector = connect(
     },
 )
 
-export default connector(Integration)
+const ConnectedIntegration = connector(Integration)
+
+type ConnectedProps_ = ComponentProps<typeof ConnectedIntegration>
+
+function IntegrationWithFeatureFlag(props: ConnectedProps_) {
+    const isHttpIntegrationOAuthEnabled = useFlag(
+        FeatureFlagKey.HttpIntegrationOAuth,
+        false,
+    )
+    return (
+        <ConnectedIntegration
+            {...props}
+            isHttpIntegrationOAuthEnabled={isHttpIntegrationOAuthEnabled}
+        />
+    )
+}
+
+export default IntegrationWithFeatureFlag
