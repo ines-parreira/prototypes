@@ -1069,6 +1069,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                     title: 'Alpha',
                     lastUpdatedAt: '2024-01-01T00:00:00Z',
                     inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '2',
@@ -1083,6 +1084,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                     title: 'Charlie',
                     lastUpdatedAt: '2024-01-03T00:00:00Z',
                     inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 2,
                 },
             ]
 
@@ -1310,8 +1312,8 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                         },
                         {
                             id: '3',
-                            type: KnowledgeType.Guidance,
-                            title: 'Guidance public',
+                            type: KnowledgeType.Document,
+                            title: 'Document public',
                             lastUpdatedAt: '2024-01-03T00:00:00Z',
                             inUseByAI: KnowledgeVisibility.PUBLIC,
                         },
@@ -1327,7 +1329,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                     expect(result[0].publishedVersionId).toBe(123)
 
                     expect(result[1].id).toBe('3')
-                    expect(result[1].type).toBe(KnowledgeType.Guidance)
+                    expect(result[1].type).toBe(KnowledgeType.Document)
 
                     expect(result[2].id).toBe('2')
                     expect(result[2].type).toBe(KnowledgeType.FAQ)

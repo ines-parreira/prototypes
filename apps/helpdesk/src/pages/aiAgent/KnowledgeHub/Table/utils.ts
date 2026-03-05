@@ -110,11 +110,14 @@ export const filterKnowledgeItemsByInUseByAI = (
     }
 
     return items.filter((item) => {
-        // For FAQ (Help Center articles), check both conditions:
+        // For FAQ and Guidance articles, check both conditions:
         // 1. Article must have a published version (not only draft)
         // 2. Article must have public visibility
         let isInUse: boolean
-        if (item.type === KnowledgeType.FAQ) {
+        if (
+            item.type === KnowledgeType.FAQ ||
+            item.type === KnowledgeType.Guidance
+        ) {
             isInUse =
                 !!item.publishedVersionId &&
                 item.inUseByAI === KnowledgeVisibility.PUBLIC

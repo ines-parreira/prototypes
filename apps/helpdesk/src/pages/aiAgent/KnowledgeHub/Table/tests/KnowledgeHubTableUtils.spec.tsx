@@ -17,6 +17,7 @@ describe('KnowledgeHubTable Utilities', () => {
                 title: 'Alpha',
                 lastUpdatedAt: '2024-01-01T00:00:00Z',
                 inUseByAI: KnowledgeVisibility.PUBLIC,
+                publishedVersionId: 1,
             },
             {
                 id: '2',
@@ -31,6 +32,7 @@ describe('KnowledgeHubTable Utilities', () => {
                 title: 'Charlie',
                 lastUpdatedAt: '2024-01-03T00:00:00Z',
                 inUseByAI: KnowledgeVisibility.PUBLIC,
+                publishedVersionId: 2,
             },
         ]
 
@@ -250,8 +252,8 @@ describe('KnowledgeHubTable Utilities', () => {
                     },
                     {
                         id: '3',
-                        type: KnowledgeType.Guidance,
-                        title: 'Guidance public',
+                        type: KnowledgeType.Document,
+                        title: 'Document public',
                         lastUpdatedAt: '2024-01-03T00:00:00Z',
                         inUseByAI: KnowledgeVisibility.PUBLIC,
                     },
@@ -265,10 +267,52 @@ describe('KnowledgeHubTable Utilities', () => {
                 expect(result[0].publishedVersionId).toBe(123)
 
                 expect(result[1].id).toBe('3')
-                expect(result[1].type).toBe(KnowledgeType.Guidance)
+                expect(result[1].type).toBe(KnowledgeType.Document)
 
                 expect(result[2].id).toBe('2')
                 expect(result[2].type).toBe(KnowledgeType.FAQ)
+                expect(result[2].publishedVersionId).toBeNull()
+            })
+
+            it('should apply special Guidance logic requiring publishedVersionId', () => {
+                const items: GroupedKnowledgeItem[] = [
+                    {
+                        id: '1',
+                        type: KnowledgeType.Guidance,
+                        title: 'Guidance with published version',
+                        lastUpdatedAt: '2024-01-01T00:00:00Z',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                        publishedVersionId: 123,
+                    },
+                    {
+                        id: '2',
+                        type: KnowledgeType.Guidance,
+                        title: 'Guidance public but no published version',
+                        lastUpdatedAt: '2024-01-02T00:00:00Z',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                        publishedVersionId: null,
+                    },
+                    {
+                        id: '3',
+                        type: KnowledgeType.Document,
+                        title: 'Document public',
+                        lastUpdatedAt: '2024-01-03T00:00:00Z',
+                        inUseByAI: KnowledgeVisibility.PUBLIC,
+                    },
+                ]
+
+                const sorting: SortingState = [{ id: 'inUseByAI', desc: false }]
+                const result = sortData(items, sorting)
+
+                expect(result[0].id).toBe('1')
+                expect(result[0].type).toBe(KnowledgeType.Guidance)
+                expect(result[0].publishedVersionId).toBe(123)
+
+                expect(result[1].id).toBe('3')
+                expect(result[1].type).toBe(KnowledgeType.Document)
+
+                expect(result[2].id).toBe('2')
+                expect(result[2].type).toBe(KnowledgeType.Guidance)
                 expect(result[2].publishedVersionId).toBeNull()
             })
         })

@@ -459,6 +459,7 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
                     title: 'Second',
                     lastUpdatedAt: '2024-01-02T00:00:00Z',
                     inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
                 },
                 {
                     id: '3',

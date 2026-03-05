@@ -463,4 +463,75 @@ describe('getColumns - Metrics Columns', () => {
             expect((columns[4] as any).accessorKey).toBe('metrics.csat')
         })
     })
+
+    describe('In Use by AI Agent Column', () => {
+        const IN_USE_BY_AI_COLUMN_INDEX = 6
+
+        const renderInUseByAICell = (item: GroupedKnowledgeItem) => {
+            const columns = getColumns(
+                '',
+                mockOnClick,
+                mockAvailableActions,
+                mockGuidanceHelpCenterId,
+                mockMetricsDateRange,
+                mockOutcomeCustomFieldId,
+                mockIntentCustomFieldId,
+            )
+            const column = columns[IN_USE_BY_AI_COLUMN_INDEX]
+
+            const mockInfo = {
+                row: {
+                    original: item,
+                },
+                getValue: () => item.inUseByAI,
+            } as any
+
+            const cellContent = column.cell
+                ? typeof column.cell === 'function'
+                    ? column.cell(mockInfo)
+                    : null
+                : null
+
+            return render(<div>{cellContent}</div>)
+        }
+
+        it('should show check icon for Guidance with publishedVersionId and PUBLIC visibility', () => {
+            const item = createMockItem({
+                type: KnowledgeType.Guidance,
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                publishedVersionId: 1,
+            })
+
+            renderInUseByAICell(item)
+            expect(
+                screen.getByRole('img', { name: 'check' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show close icon for Guidance with no publishedVersionId even with PUBLIC visibility', () => {
+            const item = createMockItem({
+                type: KnowledgeType.Guidance,
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+                publishedVersionId: null,
+            })
+
+            renderInUseByAICell(item)
+            expect(
+                screen.getByRole('img', { name: 'close' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show close icon for Guidance with publishedVersionId but UNLISTED visibility', () => {
+            const item = createMockItem({
+                type: KnowledgeType.Guidance,
+                inUseByAI: KnowledgeVisibility.UNLISTED,
+                publishedVersionId: 1,
+            })
+
+            renderInUseByAICell(item)
+            expect(
+                screen.getByRole('img', { name: 'close' }),
+            ).toBeInTheDocument()
+        })
+    })
 })

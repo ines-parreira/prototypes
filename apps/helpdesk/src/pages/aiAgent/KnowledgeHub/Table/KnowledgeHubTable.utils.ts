@@ -54,13 +54,15 @@ export const sortData = (
         // Special handling for boolean columns (inUseByAI)
         if (sortKey === 'inUseByAI') {
             const aInUse =
-                a.type === KnowledgeTypeEnum.FAQ
+                a.type === KnowledgeTypeEnum.FAQ ||
+                a.type === KnowledgeTypeEnum.Guidance
                     ? !!a.publishedVersionId &&
                       aValue === KnowledgeVisibility.PUBLIC
                     : aValue === KnowledgeVisibility.PUBLIC
 
             const bInUse =
-                b.type === KnowledgeTypeEnum.FAQ
+                b.type === KnowledgeTypeEnum.FAQ ||
+                b.type === KnowledgeTypeEnum.Guidance
                     ? !!b.publishedVersionId &&
                       bValue === KnowledgeVisibility.PUBLIC
                     : bValue === KnowledgeVisibility.PUBLIC

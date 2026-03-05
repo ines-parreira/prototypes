@@ -461,6 +461,7 @@ describe('KnowledgeHub Table Utils', () => {
                 title: 'Public Item 2',
                 lastUpdatedAt: '2025-01-03T00:00:00Z',
                 inUseByAI: KnowledgeVisibility.PUBLIC,
+                publishedVersionId: 1,
                 id: '3',
             },
             {
@@ -687,6 +688,58 @@ describe('KnowledgeHub Table Utils', () => {
             ]
 
             const result = filterKnowledgeItemsByInUseByAI(faqItems, true)
+
+            expect(result).toHaveLength(0)
+        })
+
+        it('Guidance: published article with public visibility is in use by AI', () => {
+            const guidanceItems = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Published Guidance',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: 1,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(guidanceItems, true)
+
+            expect(result).toHaveLength(1)
+            expect(result[0].id).toBe('1')
+        })
+
+        it('Guidance: article without published version ID even with public visibility is NOT in use by AI', () => {
+            const guidanceItems = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Draft Guidance',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.PUBLIC,
+                    publishedVersionId: null,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(guidanceItems, true)
+
+            expect(result).toHaveLength(0)
+        })
+
+        it('Guidance: published article with unlisted visibility is NOT in use by AI', () => {
+            const guidanceItems = [
+                {
+                    type: KnowledgeType.Guidance,
+                    title: 'Unlisted Guidance',
+                    lastUpdatedAt: '2025-01-01T00:00:00Z',
+                    inUseByAI: KnowledgeVisibility.UNLISTED,
+                    publishedVersionId: 1,
+                    id: '1',
+                },
+            ]
+
+            const result = filterKnowledgeItemsByInUseByAI(guidanceItems, true)
 
             expect(result).toHaveLength(0)
         })

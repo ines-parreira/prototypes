@@ -425,11 +425,14 @@ export const getColumns = (
                     )
                 }
 
-                // For FAQ (Help Center articles), check both conditions:
+                // For FAQ and Guidance articles, check both conditions:
                 // 1. Article must have a published version (not only draft)
                 // 2. Article must have public visibility
                 let isInUse: boolean
-                if (row.type === KnowledgeType.FAQ) {
+                if (
+                    row.type === KnowledgeType.FAQ ||
+                    row.type === KnowledgeType.Guidance
+                ) {
                     isInUse =
                         !!row.publishedVersionId &&
                         row.inUseByAI === KnowledgeVisibility.PUBLIC
