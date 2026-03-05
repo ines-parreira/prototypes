@@ -3,6 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
+    isTransientErrorMessage,
     isTransientErrorStatus,
     postEnrichedReporting,
     postReportingV1,
@@ -550,5 +551,29 @@ describe('Reporting resources', () => {
         ])('should return false for $description', ({ status }) => {
             expect(isTransientErrorStatus(status)).toBe(false)
         })
+    })
+
+    describe('isTransientErrorMessage', () => {
+        it('should return false for undefined', () => {
+            expect(isTransientErrorMessage(undefined)).toBe(false)
+        })
+
+        it('should return false for empty string', () => {
+            expect(isTransientErrorMessage('')).toBe(false)
+        })
+
+        it.each(['Network Error', 'Request aborted', 'timeout exceeded'])(
+            'should return true for "%s"',
+            (message) => {
+                expect(isTransientErrorMessage(message)).toBe(true)
+            },
+        )
+
+        it.each(['Internal Server Error', 'Failed', 'Try again'])(
+            'should return false for unrecognized message "%s"',
+            (message) => {
+                expect(isTransientErrorMessage(message)).toBe(false)
+            },
+        )
     })
 })

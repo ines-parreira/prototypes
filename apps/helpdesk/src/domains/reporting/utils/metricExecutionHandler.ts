@@ -6,6 +6,7 @@ import type { MetricName } from 'domains/reporting/hooks/metricNames'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { UsePostReportingQueryData } from 'domains/reporting/models/queries'
 import {
+    isTransientErrorMessage,
     isTransientErrorStatus,
     postReportingV1,
     postReportingV2,
@@ -144,7 +145,7 @@ export async function metricExecutionHandler<
             // Skip errors caused by invalid CSRF tokens -> 'Something went wrong. Please reload this page.'
             const isTransientError =
                 (isAxiosError && isTransientErrorStatus(statusCode)) ||
-                errorMessage === 'Network Error' ||
+                isTransientErrorMessage(errorMessage) ||
                 reason?.error?.msg ===
                     'Something went wrong. Please reload this page.'
 

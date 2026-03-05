@@ -411,25 +411,28 @@ describe('metricExecutionHandler', () => {
             },
         )
 
-        it('should propagate Network Error without reporting to Sentry', async () => {
-            postReportingV1Mock.mockResolvedValue(createMockOldResponse())
-            const axiosError = new AxiosError('Network Error')
-            postReportingV2Mock.mockRejectedValue(axiosError)
-            postReportingV2QueryMock.mockResolvedValue(
-                createMockNextQueryResponse() as any,
-            )
+        it.each(['Network Error', 'Request aborted', 'timeout exceeded'])(
+            'should propagate transient errors without reporting to Sentry',
+            async (errorMessage: string) => {
+                postReportingV1Mock.mockResolvedValue(createMockOldResponse())
+                const axiosError = new AxiosError(errorMessage)
+                postReportingV2Mock.mockRejectedValue(axiosError)
+                postReportingV2QueryMock.mockResolvedValue(
+                    createMockNextQueryResponse() as any,
+                )
 
-            const config: ExecuteMetricConfig = {
-                metricName: 'test-metric',
-                oldPayload: mockOldPayload,
-                newPayload: mockNewPayload,
-            }
+                const config: ExecuteMetricConfig = {
+                    metricName: 'test-metric',
+                    oldPayload: mockOldPayload,
+                    newPayload: mockNewPayload,
+                }
 
-            await expect(metricExecutionHandler(config)).rejects.toThrow(
-                axiosError,
-            )
-            expect(reportErrorMock).not.toHaveBeenCalled()
-        })
+                await expect(metricExecutionHandler(config)).rejects.toThrow(
+                    axiosError,
+                )
+                expect(reportErrorMock).not.toHaveBeenCalled()
+            },
+        )
 
         it('should propagate 401 errors without reporting to Sentry', async () => {
             postReportingV1Mock.mockResolvedValue(createMockOldResponse())

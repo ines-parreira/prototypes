@@ -37,6 +37,18 @@ export const isTransientErrorStatus = (status: number | undefined): boolean => {
     )
 }
 
+export const isTransientErrorMessage = (
+    message: string | undefined,
+): boolean => {
+    if (!message) return false
+
+    return (
+        message === 'Network Error' ||
+        message === 'Request aborted' ||
+        message === 'timeout exceeded'
+    )
+}
+
 type APIReportingQuery = Omit<ReportingQuery, 'metricName'>
 
 type ReportingQueryParams = {
