@@ -29,10 +29,12 @@ export const DisableForAIButton = ({
 
     if (renderMode === ButtonRenderMode.DisabledWithTooltip && tooltipMessage) {
         return (
-            <Tooltip delay={0}>
-                <TooltipTrigger>{button}</TooltipTrigger>
-                <TooltipContent caption={tooltipMessage} />
-            </Tooltip>
+            <div>
+                <Tooltip delay={0}>
+                    <TooltipTrigger>{button}</TooltipTrigger>
+                    <TooltipContent caption={tooltipMessage} />
+                </Tooltip>
+            </div>
         )
     }
 
