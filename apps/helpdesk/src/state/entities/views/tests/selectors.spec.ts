@@ -50,5 +50,56 @@ describe('selectors', () => {
                 getOrderedViewsByType(ViewType.TicketList)(state),
             ).toMatchSnapshot()
         })
+
+        it('should sort views without display_order to the end', () => {
+            const stateWithNewView: RootState = {
+                entities: {
+                    views: {
+                        '1': { id: 1, type: ViewType.TicketList },
+                        '2': { id: 2, type: ViewType.TicketList },
+                        '99': { id: 99, type: ViewType.TicketList },
+                    },
+                },
+                views: fromJS({
+                    items: [
+                        { id: 1, display_order: 2 },
+                        { id: 2, display_order: 1 },
+                    ],
+                }),
+                currentUser: fromJS(user),
+            } as any
+
+            const result = getOrderedViewsByType(ViewType.TicketList)(
+                stateWithNewView,
+            )
+
+            expect(result.map((v) => v.id)).toEqual([2, 1, 99])
+        })
+
+        it('should keep multiple views without display_order at the end', () => {
+            const stateWithMultipleUnorderedViews: RootState = {
+                entities: {
+                    views: {
+                        '1': { id: 1, type: ViewType.TicketList },
+                        '2': { id: 2, type: ViewType.TicketList },
+                        '99': { id: 99, type: ViewType.TicketList },
+                        '100': { id: 100, type: ViewType.TicketList },
+                    },
+                },
+                views: fromJS({
+                    items: [
+                        { id: 1, display_order: 2 },
+                        { id: 2, display_order: 1 },
+                    ],
+                }),
+                currentUser: fromJS(user),
+            } as any
+
+            const result = getOrderedViewsByType(ViewType.TicketList)(
+                stateWithMultipleUnorderedViews,
+            )
+
+            expect(result.map((v) => v.id)).toEqual([2, 1, 99, 100])
+        })
     })
 })

@@ -64,29 +64,34 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                         }, [] as View[])
                         .sort(
                             (view1, view2) =>
-                                (optimisticSettings.views[view1.id]
+                                ((optimisticSettings.views[view1.id]
                                     ? optimisticSettings.views[view1.id]
                                           .display_order
                                     : setting.views?.[view1.id]
-                                          ?.display_order) -
-                                (optimisticSettings.views[view2.id]
+                                          ?.display_order) ?? Infinity) -
+                                ((optimisticSettings.views[view2.id]
                                     ? optimisticSettings.views[view2.id]
                                           .display_order
-                                    : setting.views?.[view2.id]?.display_order),
+                                    : setting.views?.[view2.id]
+                                          ?.display_order) ?? Infinity),
                         ),
                     data: section,
                     type: TicketNavbarElementType.Section,
                 })) as TicketNavbarElement[]
 
             const getDisplayOrder = (element: TicketNavbarElement) => {
-                return element.type === TicketNavbarElementType.Section
-                    ? optimisticSettings.view_sections[element.data.id]
+                const order =
+                    element.type === TicketNavbarElementType.Section
                         ? optimisticSettings.view_sections[element.data.id]
-                              .display_order
-                        : setting.view_sections[element.data.id]?.display_order
-                    : optimisticSettings.views[element.data.id]
-                      ? optimisticSettings.views[element.data.id].display_order
-                      : setting.views?.[element.data.id]?.display_order
+                            ? optimisticSettings.view_sections[element.data.id]
+                                  .display_order
+                            : setting.view_sections[element.data.id]
+                                  ?.display_order
+                        : optimisticSettings.views[element.data.id]
+                          ? optimisticSettings.views[element.data.id]
+                                .display_order
+                          : setting.views?.[element.data.id]?.display_order
+                return order ?? Infinity
             }
             return [...viewElements, ...sectionElements]
                 .filter(

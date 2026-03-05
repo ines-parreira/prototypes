@@ -25,16 +25,16 @@ export const getOrderedViewsByType = (type: ViewType) =>
                 .filter((view) => view.type === type)
                 .sort(
                     (view1, view2) =>
-                        settings.getIn([
+                        (settings.getIn([
                             'data',
                             view1.id.toString(),
                             'display_order',
-                        ]) -
-                        settings.getIn([
+                        ]) ?? Infinity) -
+                        (settings.getIn([
                             'data',
                             view2.id.toString(),
                             'display_order',
-                        ]),
+                        ]) ?? Infinity),
                 )
         },
     )
