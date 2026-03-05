@@ -217,17 +217,19 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 if (statFilters.tags && hasFilter(statFilters.tags)) {
                     filters.push(
                         createTagsFilter(
-                            statFilters.tags.map((tag) => ({
-                                operator:
-                                    tag.operator ===
-                                    ReportingStatsOperatorsEnum.OneOf
-                                        ? LogicalOperatorEnum.ONE_OF
-                                        : tag.operator ===
-                                            ReportingStatsOperatorsEnum.NotOneOf
-                                          ? LogicalOperatorEnum.NOT_ONE_OF
-                                          : LogicalOperatorEnum.ALL_OF,
-                                values: tag.values.map(String),
-                            })),
+                            statFilters.tags
+                                .filter((tag) => tag.values.length > 0)
+                                .map((tag) => ({
+                                    operator:
+                                        tag.operator ===
+                                        ReportingStatsOperatorsEnum.OneOf
+                                            ? LogicalOperatorEnum.ONE_OF
+                                            : tag.operator ===
+                                                ReportingStatsOperatorsEnum.NotOneOf
+                                              ? LogicalOperatorEnum.NOT_ONE_OF
+                                              : LogicalOperatorEnum.ALL_OF,
+                                    values: tag.values.map(String),
+                                })),
                         ),
                     )
                 }

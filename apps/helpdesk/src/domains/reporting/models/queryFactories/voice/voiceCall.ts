@@ -11,6 +11,7 @@ import {
     VoiceCallMember,
     VoiceCallSegment,
 } from 'domains/reporting/models/cubes/VoiceCallCube'
+import { hasFilter } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -50,7 +51,7 @@ export const getAdvancedVoicePeriodFilters = (
 
 export const getTicketPeriodFilters = (filters: StatsFilters) => {
     const extraFilters = []
-    if (filters.tags?.length) {
+    if (hasFilter(filters.tags)) {
         extraFilters.push(
             {
                 member: TicketMember.PeriodStart,

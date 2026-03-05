@@ -819,56 +819,60 @@ describe('voice queries factories', () => {
     )
 
     describe('voiceCallDefaultFilters', () => {
-        it.each([undefined, []])(
-            'should not add ticket filters if the tags are empty',
-            (tags) => {
-                const filters = {
-                    ...statsFilters,
-                    tags,
-                }
-                const query = voiceCallListQueryFactory(
-                    filters,
-                    timezone,
-                    undefined,
-                    10,
-                    10,
-                    undefined,
-                    undefined,
-                    [],
-                    false,
-                )
+        it.each([
+            undefined,
+            [],
+            [
+                {
+                    ...withDefaultLogicalOperator([]),
+                    filterInstanceId: TagFilterInstanceId.First,
+                },
+            ],
+        ])('should not add ticket filters if the tags are empty', (tags) => {
+            const filters = {
+                ...statsFilters,
+                tags,
+            }
+            const query = voiceCallListQueryFactory(
+                filters,
+                timezone,
+                undefined,
+                10,
+                10,
+                undefined,
+                undefined,
+                [],
+                false,
+            )
 
-                expect(query).toEqual({
-                    metricName: METRIC_NAMES.VOICE_CALL_LIST,
-                    measures: [VoiceCallMeasure.VoiceCallCount],
-                    dimensions: voiceCallListDimensions,
-                    filters: [
-                        {
-                            member: VoiceCallMember.PeriodStart,
-                            operator: ReportingFilterOperator.AfterDate,
-                            values: [periodStart],
-                        },
-                        {
-                            member: VoiceCallMember.PeriodEnd,
-                            operator: ReportingFilterOperator.BeforeDate,
-                            values: [periodEnd],
-                        },
-                        {
-                            member: VoiceCallMember.DisplayStatus,
-                            operator: ReportingFilterOperator.Equals,
-                            values: [],
-                        },
-                    ],
-                    timezone,
-                    segments: [VoiceCallSegment.callsInFinalStatus],
-                    offset: 10,
-                    limit: 10,
-                    order: [
-                        [VoiceCallDimension.CreatedAt, OrderDirection.Desc],
-                    ],
-                })
-            },
-        )
+            expect(query).toEqual({
+                metricName: METRIC_NAMES.VOICE_CALL_LIST,
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                dimensions: voiceCallListDimensions,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallMember.DisplayStatus,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [],
+                    },
+                ],
+                timezone,
+                segments: [VoiceCallSegment.callsInFinalStatus],
+                offset: 10,
+                limit: 10,
+                order: [[VoiceCallDimension.CreatedAt, OrderDirection.Desc]],
+            })
+        })
 
         it('should add ticket filters if the tags are not empty', () => {
             const filters = {

@@ -380,6 +380,66 @@ describe('utils', () => {
                     ],
                 })
             })
+
+            it('should skip tags operators with empty values', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['tags'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    tags: [
+                        {
+                            operator: LogicalOperatorEnum.ALL_OF,
+                            values: [4],
+                            filterInstanceId: 'first' as any,
+                        },
+                        {
+                            operator: LogicalOperatorEnum.NOT_ONE_OF,
+                            values: [],
+                            filterInstanceId: 'first' as any,
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                expect(result).toContainEqual({
+                    member: 'tags',
+                    values: [
+                        {
+                            operator: 'all-of',
+                            values: ['4'],
+                        },
+                    ],
+                })
+            })
+
+            it('should skip tags with empty values', () => {
+                const scopeConfig: ScopeMeta = {
+                    measures: ['ticketCount'],
+                    scope: MetricScope.TicketsOpen,
+                    filters: ['tags'],
+                }
+
+                const statFilters: StatsFiltersWithLogicalOperator = {
+                    ...basePeriodFilters,
+                    tags: [
+                        {
+                            operator: LogicalOperatorEnum.NOT_ONE_OF,
+                            values: [],
+                            filterInstanceId: 'first' as any,
+                        },
+                    ],
+                }
+
+                const result = createScopeFilters(statFilters, scopeConfig)
+
+                // periodStart + periodEnd filters, no tags
+                expect(result).toHaveLength(2)
+            })
         })
 
         describe('customFields filter', () => {
