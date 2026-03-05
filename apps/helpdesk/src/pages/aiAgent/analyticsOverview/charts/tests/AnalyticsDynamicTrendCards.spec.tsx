@@ -13,6 +13,7 @@ import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyti
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
 import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
+import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCoverageRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
@@ -306,6 +307,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 120,
                 prevValue: 100,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentClosedTicketsCard',
+            Component: AnalyticsAiAgentClosedTicketsCard,
+            config: {
+                label: 'Closed tickets',
+                description:
+                    'Number of unique closed tickets within the selected timeframe (that did not reopen).',
+                metricFormat: 'decimal' as const,
+                value: 350,
+                prevValue: 300,
             },
         },
     ]

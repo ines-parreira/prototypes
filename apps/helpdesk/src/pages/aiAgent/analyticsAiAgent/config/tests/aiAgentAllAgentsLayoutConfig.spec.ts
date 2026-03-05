@@ -9,11 +9,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 7 cards', () => {
+        it('should have kpis section with 8 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(7)
+            expect(kpisSection.items).toHaveLength(8)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -115,7 +115,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(10)
+            expect(totalCharts).toBe(11)
         })
 
         it('should have all required chart types defined', () => {

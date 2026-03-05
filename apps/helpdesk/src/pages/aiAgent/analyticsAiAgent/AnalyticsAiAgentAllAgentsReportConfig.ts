@@ -13,11 +13,13 @@ import {
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
+import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
 import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
@@ -52,6 +54,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     ZeroTouchTicketsCard = 'zero_touch_tickets_card',
     AverageCsatCard = 'average_csat_card',
     CoverageRateCard = 'coverage_rate_card',
+    ClosedTicketsCard = 'closed_tickets_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -173,6 +176,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'Percentage of tickets that AI Agent attempted to respond to.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.ClosedTicketsCard]: {
+                chartComponent: AnalyticsAiAgentClosedTicketsCard,
+                label: 'Closed tickets',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentClosedTicketsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'Number of unique closed tickets within the selected timeframe (that did not reopen).',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {
