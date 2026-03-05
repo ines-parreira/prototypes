@@ -814,6 +814,396 @@ describe('TimelineContent', () => {
                 ).not.toBeInTheDocument()
             })
         })
+
+        it('should not open order side panel when navigating to an adjacent order and flag is false', async () => {
+            const user = userEvent.setup()
+            useHelpdeskV2MS2FlagMock.mockReturnValue(false)
+            setupWithMixedItems()
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('heading', { name: /order #3519/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Order skipping navigation when useHelpdeskV2MS2Flag is false', () => {
+        const makeOrder = (id: number, name: string) => ({
+            id,
+            name,
+            created_at: '2024-01-01T10:00:00Z',
+            updated_at: '2024-01-01T10:00:00Z',
+            currency: 'USD',
+            total_price: '100.00',
+            financial_status: 'paid' as const,
+            fulfillment_status: 'fulfilled' as const,
+            line_items: [],
+            note: '',
+            tags: '',
+            shipping_address: {} as any,
+            billing_address: {} as any,
+            discount_codes: [],
+            shipping_lines: [],
+            total_line_items_price: '100.00',
+            total_discounts: '0.00',
+            subtotal_price: '100.00',
+            total_tax: '0.00',
+            taxes_included: false,
+            discount_applications: [],
+            refunds: [],
+        })
+
+        beforeEach(() => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(false)
+        })
+
+        it('should skip a single order and navigate to the next ticket when Next is clicked', async () => {
+            const user = userEvent.setup()
+            const ticket1 = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const ticket2 = createMockTicket({
+                id: 2,
+                subject: 'Second Ticket',
+            })
+            const order = makeOrder(101, '#1001')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket: ticket1 },
+                    { kind: TimelineItemKind.Order, order },
+                    { kind: TimelineItemKind.Ticket, ticket: ticket2 },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket: ticket1,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                    {
+                        ticket: ticket2,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 3,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /order #1001/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should skip a single order and navigate to the previous ticket when Previous is clicked', async () => {
+            const user = userEvent.setup()
+            const ticket1 = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const ticket2 = createMockTicket({
+                id: 2,
+                subject: 'Second Ticket',
+            })
+            const order = makeOrder(101, '#1001')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket: ticket1 },
+                    { kind: TimelineItemKind.Order, order },
+                    { kind: TimelineItemKind.Ticket, ticket: ticket2 },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket: ticket1,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                    {
+                        ticket: ticket2,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 3,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('Second Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /previous ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /order #1001/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should skip multiple consecutive orders and navigate to the next ticket when Next is clicked', async () => {
+            const user = userEvent.setup()
+            const ticket1 = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const ticket2 = createMockTicket({
+                id: 2,
+                subject: 'Second Ticket',
+            })
+            const order1 = makeOrder(101, '#1001')
+            const order2 = makeOrder(102, '#1002')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket: ticket1 },
+                    { kind: TimelineItemKind.Order, order: order1 },
+                    { kind: TimelineItemKind.Order, order: order2 },
+                    { kind: TimelineItemKind.Ticket, ticket: ticket2 },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket: ticket1,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                    {
+                        ticket: ticket2,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 4,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should skip multiple consecutive orders and navigate to the previous ticket when Previous is clicked', async () => {
+            const user = userEvent.setup()
+            const ticket1 = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const ticket2 = createMockTicket({
+                id: 2,
+                subject: 'Second Ticket',
+            })
+            const order1 = makeOrder(101, '#1001')
+            const order2 = makeOrder(102, '#1002')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket: ticket1 },
+                    { kind: TimelineItemKind.Order, order: order1 },
+                    { kind: TimelineItemKind.Order, order: order2 },
+                    { kind: TimelineItemKind.Ticket, ticket: ticket2 },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket: ticket1,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                    {
+                        ticket: ticket2,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 4,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('Second Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /second ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /previous ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not navigate when only orders remain after the selected ticket and Next is clicked', async () => {
+            const user = userEvent.setup()
+            // Use id: 1 so that useTicket mock returns "First Ticket" as the side panel heading
+            const ticket = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const order1 = makeOrder(101, '#1001')
+            const order2 = makeOrder(102, '#1002')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket },
+                    { kind: TimelineItemKind.Order, order: order1 },
+                    { kind: TimelineItemKind.Order, order: order2 },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 3,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next ticket/i }),
+            )
+
+            await waitFor(() => {
+                // Side panel should still show the ticket — no navigation occurred
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /order/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not navigate when only orders remain before the selected ticket and Previous is clicked', async () => {
+            const user = userEvent.setup()
+            // Use id: 1 so that useTicket mock returns "First Ticket" as the side panel heading
+            const ticket = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const order1 = makeOrder(101, '#1001')
+            const order2 = makeOrder(102, '#1002')
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Order, order: order1 },
+                    { kind: TimelineItemKind.Order, order: order2 },
+                    { kind: TimelineItemKind.Ticket, ticket },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 3,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /previous ticket/i }),
+            )
+
+            await waitFor(() => {
+                // Side panel should still show the ticket — no navigation occurred
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /order/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
     })
 
     describe('Custom fields integration', () => {

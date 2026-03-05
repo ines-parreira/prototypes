@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { ShopifyCustomerProvider } from '@repo/customer'
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box } from '@gorgias/axiom'
@@ -83,6 +84,8 @@ export function TimelineContent({
 
     const { products: productsMap } = useOrderProducts(customer, orders)
 
+    const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
+
     const { notify: dispatchNotification } = useNotify()
 
     const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
@@ -140,12 +143,12 @@ export function TimelineContent({
                     setSelectedTicket(enriched)
                     setSelectedOrder(null)
                 }
-            } else {
+            } else if (hasUIVisionMilestone2) {
                 setSelectedOrder(item.order)
                 setSelectedTicket(null)
             }
         },
-        [timelineItems, enrichedTickets],
+        [timelineItems, enrichedTickets, hasUIVisionMilestone2],
     )
 
     const handleSelectTicket = useCallback((enriched: EnrichedTicket) => {
@@ -176,16 +179,56 @@ export function TimelineContent({
     }, [])
 
     const handleNext = useCallback(() => {
-        if (hasNext) {
-            navigateToItem(selectedItemIndex + 1)
+        if (!hasNext) return
+        if (!hasUIVisionMilestone2) {
+            // When the flag is off, orders are not previewable so skip them
+            // and land on the next ticket instead
+            let nextIndex = selectedItemIndex + 1
+            while (
+                nextIndex < timelineItems.length &&
+                timelineItems[nextIndex].kind === TimelineItemKind.Order
+            ) {
+                nextIndex++
+            }
+            if (nextIndex < timelineItems.length) {
+                navigateToItem(nextIndex)
+            }
+            return
         }
-    }, [hasNext, selectedItemIndex, navigateToItem])
+        navigateToItem(selectedItemIndex + 1)
+    }, [
+        hasNext,
+        selectedItemIndex,
+        navigateToItem,
+        hasUIVisionMilestone2,
+        timelineItems,
+    ])
 
     const handlePrevious = useCallback(() => {
-        if (hasPrevious) {
-            navigateToItem(selectedItemIndex - 1)
+        if (!hasPrevious) return
+        if (!hasUIVisionMilestone2) {
+            // When the flag is off, orders are not previewable so skip them
+            // and land on the previous ticket instead
+            let prevIndex = selectedItemIndex - 1
+            while (
+                prevIndex >= 0 &&
+                timelineItems[prevIndex].kind === TimelineItemKind.Order
+            ) {
+                prevIndex--
+            }
+            if (prevIndex >= 0) {
+                navigateToItem(prevIndex)
+            }
+            return
         }
-    }, [hasPrevious, selectedItemIndex, navigateToItem])
+        navigateToItem(selectedItemIndex - 1)
+    }, [
+        hasPrevious,
+        selectedItemIndex,
+        navigateToItem,
+        hasUIVisionMilestone2,
+        timelineItems,
+    ])
 
     return (
         <Box flexDirection="column" height={'100%'}>
