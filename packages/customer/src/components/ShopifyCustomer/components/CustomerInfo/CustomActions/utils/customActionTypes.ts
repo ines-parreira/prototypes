@@ -1,6 +1,7 @@
 export type ParameterType = 'text' | 'dropdown'
 
 export type Parameter = {
+    id: string
     key: string
     value: string
     type?: ParameterType
@@ -21,7 +22,7 @@ export type ButtonAction = {
     params: Parameter[]
     body: {
         contentType: ContentType
-        'application/json': unknown
+        'application/json': Record<string, unknown> | string
         'application/x-www-form-urlencoded': Parameter[]
     }
 }

@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useFieldArray } from '@repo/forms'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
@@ -8,65 +8,32 @@ import { ParameterRow } from './ParameterRow'
 import css from './ParameterList.less'
 
 type Props = {
+    name: string
     label: string
-    parameters: Parameter[]
-    onChange: (params: Parameter[]) => void
 }
 
-export function ParameterList({
-    label: listLabel,
-    parameters,
-    onChange,
-}: Props) {
-    const handleAdd = useCallback(() => {
-        onChange([
-            ...parameters,
-            {
-                key: '',
-                value: '',
-                type: 'text',
-                label: '',
-                editable: false,
-                mandatory: false,
-            },
-        ])
-    }, [parameters, onChange])
+const EMPTY_PARAMETER: Omit<Parameter, 'id'> = {
+    key: '',
+    value: '',
+    type: 'text',
+    label: '',
+    editable: false,
+    mandatory: false,
+}
 
-    const handleRemove = useCallback(
-        (index: number) => {
-            onChange(parameters.filter((_, i) => i !== index))
-        },
-        [parameters, onChange],
-    )
+export function ParameterList({ name, label: listLabel }: Props) {
+    const { fields, append, remove } = useFieldArray({ name })
 
-    const handleChange = useCallback(
-        (index: number, field: keyof Parameter, val: unknown) => {
-            const updated = parameters.map((p, i) => {
-                if (i !== index) return p
-
-                const next = { ...p, [field]: val }
-
-                if (field === 'type' && val === 'dropdown') {
-                    next.editable = true
-                }
-
-                if (field === 'editable' && !val) {
-                    next.mandatory = false
-                }
-
-                return next
-            })
-            onChange(updated)
-        },
-        [parameters, onChange],
-    )
+    function handleAdd() {
+        append({ ...EMPTY_PARAMETER, id: crypto.randomUUID() })
+    }
 
     return (
         <Box flexDirection="column" gap="xs">
             <Text size="sm" variant="bold">
                 {listLabel}
             </Text>
-            {parameters.length > 0 && (
+            {fields.length > 0 && (
                 <Box flexDirection="row" gap="xs" alignItems="flex-end">
                     <div className={css.typeColumn}>
                         <Text size="xs" variant="bold">
@@ -101,13 +68,11 @@ export function ParameterList({
                     <div className={css.removeColumn} />
                 </Box>
             )}
-            {parameters.map((param, index) => (
+            {fields.map((field, index) => (
                 <ParameterRow
-                    key={index}
-                    param={param}
-                    index={index}
-                    onChange={handleChange}
-                    onRemove={handleRemove}
+                    key={field.id}
+                    name={`${name}.${index}`}
+                    onRemove={() => remove(index)}
                 />
             ))}
             <Box>

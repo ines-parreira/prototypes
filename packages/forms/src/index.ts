@@ -23,6 +23,7 @@ export type { FormErrors, FormValidator } from './utils/validation'
 // Re-export react-hook-form hooks and utilities
 export {
     useFieldArray,
+    useForm,
     useFormContext,
     useFormState,
     useWatch,

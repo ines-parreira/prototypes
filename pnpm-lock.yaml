@@ -1803,6 +1803,9 @@ importers:
       '@repo/feature-flags':
         specifier: workspace:*
         version: link:../feature-flags
+      '@repo/forms':
+        specifier: workspace:*
+        version: link:../forms
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks

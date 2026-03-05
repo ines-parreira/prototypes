@@ -1,6 +1,10 @@
+import { useFormContext, useWatch } from '@repo/forms'
+
 import {
     Box,
     Button,
+    ListItem,
+    SelectField,
     TextAreaField,
     TextField,
     ToggleField,
@@ -8,19 +12,24 @@ import {
 
 import { PARAMETER_TYPES } from '../utils/customActionConstants'
 import type { Parameter, ParameterType } from '../utils/customActionTypes'
-import { validateDropdownValues } from '../utils/customActionUtils'
-import { SelectDropdown } from './SelectDropdown'
+import {
+    applyParameterConstraints,
+    validateDropdownValues,
+} from '../utils/customActionUtils'
 
 import css from './ParameterList.less'
 
+type SelectItem = { id: string; name: string }
+
 type Props = {
-    param: Parameter
-    index: number
-    onChange: (index: number, field: keyof Parameter, val: unknown) => void
-    onRemove: (index: number) => void
+    name: string
+    onRemove: () => void
 }
 
-export function ParameterRow({ param, index, onChange, onRemove }: Props) {
+export function ParameterRow({ name, onRemove }: Props) {
+    const { setValue, getValues } = useFormContext()
+    const param = useWatch({ name }) as Parameter
+
     const paramType = param.type ?? 'text'
     const isDropdown = paramType === 'dropdown'
     const isEditable = isDropdown || (param.editable ?? false)
@@ -30,24 +39,34 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
         ? validateDropdownValues(param.value)
         : undefined
 
+    function handleChange(updates: Partial<Parameter>) {
+        const current = getValues(name) as Parameter
+        const updated = applyParameterConstraints({ ...current, ...updates })
+        setValue(name, updated)
+    }
+
     return (
         <Box flexDirection="column" gap="xs">
             <Box flexDirection="row" gap="xs" alignItems="center">
                 <div className={css.typeColumn}>
-                    <SelectDropdown
+                    <SelectField
                         items={PARAMETER_TYPES}
-                        selectedItem={selectedType}
-                        onSelect={(item) =>
-                            onChange(index, 'type', item.id as ParameterType)
+                        value={selectedType}
+                        onChange={(item: SelectItem) =>
+                            handleChange({ type: item.id as ParameterType })
                         }
                         aria-label="Type"
                         size="sm"
-                    />
+                    >
+                        {(item: SelectItem) => (
+                            <ListItem id={item.id} label={item.name} />
+                        )}
+                    </SelectField>
                 </div>
                 <Box flex={1}>
                     <TextField
                         value={param.label ?? ''}
-                        onChange={(val) => onChange(index, 'label', val)}
+                        onChange={(val) => handleChange({ label: val })}
                         placeholder="Display name"
                         size="sm"
                         aria-label="Label"
@@ -56,7 +75,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                 <Box flex={1}>
                     <TextField
                         value={param.key}
-                        onChange={(val) => onChange(index, 'key', val)}
+                        onChange={(val) => handleChange({ key: val })}
                         size="sm"
                         aria-label="Key"
                     />
@@ -67,7 +86,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                     <Box flex={1}>
                         <TextField
                             value={param.value}
-                            onChange={(val) => onChange(index, 'value', val)}
+                            onChange={(val) => handleChange({ value: val })}
                             size="sm"
                             aria-label="Value"
                         />
@@ -78,7 +97,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                         aria-label="Editable"
                         label=""
                         value={isEditable}
-                        onChange={(val) => onChange(index, 'editable', val)}
+                        onChange={(val) => handleChange({ editable: val })}
                         isDisabled={isDropdown}
                     />
                 </div>
@@ -87,7 +106,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                         aria-label="Required"
                         label=""
                         value={param.mandatory ?? false}
-                        onChange={(val) => onChange(index, 'mandatory', val)}
+                        onChange={(val) => handleChange({ mandatory: val })}
                         isDisabled={!isEditable}
                     />
                 </div>
@@ -95,7 +114,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                     size="sm"
                     variant="tertiary"
                     intent="destructive"
-                    onClick={() => onRemove(index)}
+                    onClick={onRemove}
                 >
                     Remove
                 </Button>
@@ -105,7 +124,7 @@ export function ParameterRow({ param, index, onChange, onRemove }: Props) {
                 <TextAreaField
                     label="Values"
                     value={param.value}
-                    onChange={(val) => onChange(index, 'value', val)}
+                    onChange={(val) => handleChange({ value: val })}
                     placeholder="e.g. Value 1; Value 2; Value 3"
                     caption="Max 10 values separated by semicolons"
                     error={dropdownError}
