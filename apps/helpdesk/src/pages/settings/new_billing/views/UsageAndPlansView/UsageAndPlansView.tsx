@@ -8,6 +8,7 @@ import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
+import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
@@ -42,6 +43,7 @@ import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeB
 import ProductCard from '../../components/ProductCard'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_PAUSED_TOOLTIP,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
@@ -60,6 +62,18 @@ type UsageAndPlansViewProps = {
     voiceBanner?: BillingBanner
     smsBanner?: BillingBanner
     helpdeskBanner?: BillingBanner
+}
+
+function getDisabledTooltip(
+    isBillingPaused: boolean,
+    isTrialingSubscription: boolean,
+) {
+    if (isBillingPaused) {
+        return BILLING_PAUSED_TOOLTIP
+    }
+    if (isTrialingSubscription) {
+        return PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
+    }
 }
 
 const UsageAndPlansView = ({
@@ -87,6 +101,8 @@ const UsageAndPlansView = ({
     const isSubscribedToHelpdeskStarter =
         currentHelpdeskPlan?.name === 'Starter'
 
+    const billingState = useBillingState()
+    const isBillingPaused = !!billingState.data?.subscription.is_paused
     const isTrialingSubscription = useAppSelector(isTrialing)
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime'),
@@ -123,9 +139,10 @@ const UsageAndPlansView = ({
         FeatureFlagKey.BillingPreventSubscriptionAnyPlan,
     )
 
-    const disabledTooltip = isTrialingSubscription
-        ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
-        : undefined
+    const disabledTooltip = getDisabledTooltip(
+        isBillingPaused,
+        isTrialingSubscription,
+    )
 
     const productCancellationsQuery = useProductCancellations()
     const isLoading = productCancellationsQuery.isLoading
@@ -288,9 +305,11 @@ const UsageAndPlansView = ({
                         banner={helpdeskBanner}
                         tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
+                            isBillingPaused ||
                             isSubscribedToHelpdeskStarter ||
                             (!currentHelpdeskPlan && !!scheduledToCancelAt)
                         }
+                        disabledTooltip={disabledTooltip}
                         scheduledToCancelAt={
                             currentHelpdeskPlan
                                 ? scheduledToCancelAt || null
@@ -302,8 +321,10 @@ const UsageAndPlansView = ({
                         plan={currentAutomatePlan}
                         usage={currentUsage?.automation}
                         isDisabled={
-                            !currentAutomatePlan && !!scheduledToCancelAt
+                            isBillingPaused ||
+                            (!currentAutomatePlan && !!scheduledToCancelAt)
                         }
+                        disabledTooltip={disabledTooltip}
                         tooltipDisabledCTACallback={contactBilling}
                         scheduledToCancelAt={
                             currentAutomatePlan
@@ -323,6 +344,7 @@ const UsageAndPlansView = ({
                         banner={voiceBanner}
                         tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
+                            isBillingPaused ||
                             (!currentVoicePlan && !!scheduledToCancelAt) ||
                             isTrialingSubscription
                         }
@@ -345,6 +367,7 @@ const UsageAndPlansView = ({
                         banner={smsBanner}
                         tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
+                            isBillingPaused ||
                             (!currentSmsPlan && !!scheduledToCancelAt) ||
                             isTrialingSubscription
                         }
@@ -367,8 +390,10 @@ const UsageAndPlansView = ({
                         banner={convertBanner}
                         tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
-                            !currentConvertPlan && !!scheduledToCancelAt
+                            isBillingPaused ||
+                            (!currentConvertPlan && !!scheduledToCancelAt)
                         }
+                        disabledTooltip={disabledTooltip}
                         autoUpgradeEnabled={Boolean(
                             convertStatus && convertStatus.auto_upgrade_enabled,
                         )}

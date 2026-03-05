@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
+import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import type { PlanId } from 'models/billing/types'
@@ -20,7 +21,10 @@ import {
 import { TicketPurpose } from 'state/billing/types'
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
 
-import { BILLING_PAYMENT_FREQUENCY_PATH } from '../../constants'
+import {
+    BILLING_PAUSED_TOOLTIP,
+    BILLING_PAYMENT_FREQUENCY_PATH,
+} from '../../constants'
 
 import css from './NavigateToChangeBillingFrequency.less'
 
@@ -54,6 +58,9 @@ export default function NavigateToChangeBillingFrequency({
     const isAAOLegacy =
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
 
+    const billingState = useBillingState()
+    const isBillingPaused = !!billingState.data?.subscription.is_paused
+
     const cadence = currentHelpdeskPlan?.cadence ?? Cadence.Year
     const isCadenceUpgradable =
         Object.values(Cadence).find((other) =>
@@ -61,7 +68,9 @@ export default function NavigateToChangeBillingFrequency({
         ) !== undefined
 
     let toolTipContent
-    if (isCadenceUpgradable) {
+    if (isBillingPaused) {
+        toolTipContent = BILLING_PAUSED_TOOLTIP
+    } else if (isCadenceUpgradable) {
         if (isSubscribedToHelpdeskStarter) {
             toolTipContent =
                 'To change billing frequency, upgrade your Helpdesk plan to Basic or higher'

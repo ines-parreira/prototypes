@@ -209,6 +209,14 @@ const ProductCard = ({
     const updateContainer = useMemo(
         () => (
             <>
+                {isDisabled && disabledTooltip && (
+                    <Tooltip
+                        placement="top"
+                        target={`productCardButton_${type}`}
+                    >
+                        {disabledTooltip}
+                    </Tooltip>
+                )}
                 {isYearlyPlan && (
                     <ContactUsTooltip
                         type={type}
@@ -217,7 +225,7 @@ const ProductCard = ({
                 )}
                 <Button
                     intent="secondary"
-                    isDisabled={isYearlyPlan}
+                    isDisabled={isYearlyPlan || isDisabled}
                     onClick={() => {
                         const url = `${BILLING_PROCESS_PATH}/${type}`
                         logEvent(
@@ -232,7 +240,14 @@ const ProductCard = ({
                 </Button>
             </>
         ),
-        [history, type, tooltipDisabledCTACallback, isYearlyPlan],
+        [
+            history,
+            type,
+            tooltipDisabledCTACallback,
+            isYearlyPlan,
+            isDisabled,
+            disabledTooltip,
+        ],
     )
 
     const counter = useMemo(() => {

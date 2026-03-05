@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
+import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -28,8 +29,10 @@ import NavigateToChangeBillingFrequency from '../NavigateToChangeBillingFrequenc
 import css from '../NavigateToChangeBillingFrequency.less'
 
 jest.mock('@repo/logging')
+jest.mock('billing/hooks/useBillingState')
 
 const logEventMock = assumeMock(logEvent)
+const mockUseBillingState = assumeMock(useBillingState)
 
 const store: Partial<StoreState> = {
     billing: fromJS(billingState),
@@ -48,6 +51,10 @@ describe('NavigateToChangeBillingFrequency', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         logEventMock.mockClear()
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        } as any)
     })
 
     it('should render the correct button text', () => {
@@ -154,6 +161,31 @@ describe('NavigateToChangeBillingFrequency', () => {
         await act(() => userEvent.click(contact))
         expect(contactBillingMock).toHaveBeenCalledWith(
             TicketPurpose.CONTACT_US,
+        )
+    })
+
+    it('should tell the user to contact support when billing is paused', async () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: { subscription: { is_paused: true } },
+        } as any)
+
+        renderWithStoreAndQueryClientProvider(
+            <MemoryRouter>
+                <NavigateToChangeBillingFrequency {...props} />
+            </MemoryRouter>,
+            store,
+        )
+
+        const button = screen.getByText('Change Frequency')
+        expect(button).toBeInTheDocument()
+        expect(button).toHaveClass(css.disabledText)
+        await act(() => userEvent.hover(button))
+
+        const tooltip = screen.getByRole('tooltip')
+        expect(tooltip).toBeInTheDocument()
+        expect(tooltip).toHaveTextContent(
+            'Your billing is paused. Please contact support to make changes.',
         )
     })
 

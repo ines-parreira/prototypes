@@ -192,6 +192,7 @@ const subscription: SubscriptionSummary = {
     status: SubscriptionStatus.ACTIVE,
     cadence: Cadence.Month,
     invoice_cadence: InvoiceCadence.Month,
+    is_paused: false,
     is_trialing: false,
     trial_start_datetime: null,
     trial_end_datetime: null,

@@ -5,6 +5,7 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
+import { useBillingState } from 'billing/hooks/useBillingState'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -31,6 +32,9 @@ import ScheduledCancellationSummary from '../../../components/ScheduledCancellat
 import SummaryTotal from '../../../components/SummaryTotal'
 import useProductCancellations from '../../../hooks/useProductCancellations'
 import BillingProcessView from '../BillingProcessView'
+
+jest.mock('billing/hooks/useBillingState')
+const mockUseBillingState = assumeMock(useBillingState)
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -109,6 +113,10 @@ const storeInitialState = {
 
 describe('BillingProcessView', () => {
     beforeEach(() => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        } as any)
         mockUseProductCancellations.mockReturnValue({
             data: new Map(),
         } as any)
@@ -1232,6 +1240,35 @@ describe('BillingProcessView', () => {
             },
             {},
         )
+    })
+
+    describe('Paused billing redirect', () => {
+        it('should redirect to billing homepage when billing is paused', async () => {
+            mockUseBillingState.mockReturnValue({
+                isLoading: false,
+                data: { subscription: { is_paused: true } },
+            } as any)
+
+            renderWithStoreAndQueryClientAndRouter(
+                <BillingProcessView
+                    currentUsage={currentProductsUsage}
+                    contactBilling={jest.fn()}
+                    dispatchBillingError={jest.fn()}
+                    setDefaultMessage={jest.fn()}
+                    setIsModalOpen={jest.fn()}
+                    periodEnd="2021-01-01"
+                    isTrialing={false}
+                    isCurrentSubscriptionCanceled={false}
+                />,
+                storeInitialState,
+            )
+
+            await waitFor(() => {
+                expect(mockHistoryPush).toHaveBeenCalledWith(
+                    '/app/settings/billing',
+                )
+            })
+        })
     })
 
     describe('Yearly contract plan redirect', () => {

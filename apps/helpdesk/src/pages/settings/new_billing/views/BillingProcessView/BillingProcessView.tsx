@@ -117,9 +117,10 @@ const BillingProcessView = ({
     const { pathname } = useLocation()
 
     // Current subscription state
-    const currentSubscriptionScheduledToCancelAt = useAppSelector(
-        getCurrentSubscription,
-    ).get('scheduled_to_cancel_at')
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const currentSubscriptionScheduledToCancelAt = currentSubscription.get(
+        'scheduled_to_cancel_at',
+    )
     const isCurrentSubscriptionScheduledToCancel =
         !!currentSubscriptionScheduledToCancelAt
     const currentSubscriptionProducts = useAppSelector(getCurrentPlansByProduct)
@@ -159,12 +160,14 @@ const BillingProcessView = ({
         selectedProduct,
         filterByCadence: true,
     })
+    const isBillingPaused = !!billingState.data?.subscription.is_paused
+
     const history = useHistory()
     useEffect(() => {
-        if (isYearlyContractPlan(currentHelpdeskPlan)) {
+        if (isYearlyContractPlan(currentHelpdeskPlan) || isBillingPaused) {
             history.push(BILLING_BASE_PATH)
         }
-    }, [currentHelpdeskPlan, history])
+    }, [currentHelpdeskPlan, isBillingPaused, history])
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 

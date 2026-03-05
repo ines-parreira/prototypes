@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -57,6 +58,9 @@ const useFlagMock = useFlag as jest.Mock
 
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
+
+jest.mock('billing/hooks/useBillingState')
+const mockUseBillingState = assumeMock(useBillingState)
 
 const queryClient = mockQueryClient()
 const mockedDispatch = jest.fn()
@@ -130,6 +134,10 @@ describe('BillingFrequencyView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         logEventMock.mockClear()
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        } as any)
 
         // Default to testing with all features enabled
         let mockFeatureFlags = {
@@ -283,6 +291,30 @@ describe('BillingFrequencyView', () => {
         renderBillingFrequencyView(storeOverride, true)
 
         expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+    })
+
+    it('should redirect users when billing is paused', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: { subscription: { is_paused: true } },
+        } as any)
+
+        renderBillingFrequencyView()
+
+        expect(mockedHistoryPush).toHaveBeenCalledWith(BILLING_PAYMENT_PATH)
+    })
+
+    it('should render Loader when billing state is loading', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: true,
+            data: undefined,
+        } as any)
+
+        renderBillingFrequencyView()
+
+        expect(
+            screen.queryByRole('heading', { name: 'Billing frequency' }),
+        ).not.toBeInTheDocument()
     })
 
     it('should redirect users if at least one product is scheduled to cancel', () => {

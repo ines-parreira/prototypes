@@ -128,6 +128,9 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
 export const PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP =
     'To subscribe to this product, you must have a paid Helpdesk subscription'
 
+export const BILLING_PAUSED_TOOLTIP =
+    'Your billing is paused. Please contact support to make changes.'
+
 export const TAX_ID_VALIDATION: {
     [key in TaxIdType]: {
         countries: string[]

@@ -9,6 +9,7 @@ import { act } from 'react-dom/test-utils'
 import * as uiKit from '@gorgias/axiom'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
+import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -42,6 +43,7 @@ import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import type { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
 import {
+    BILLING_PAUSED_TOOLTIP,
     BILLING_PAYMENT_FREQUENCY_PATH,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from 'pages/settings/new_billing/constants'
@@ -86,10 +88,13 @@ jest.mock(
     }),
 )
 
+jest.mock('billing/hooks/useBillingState')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
+
+const mockUseBillingState = assumeMock(useBillingState)
 
 const mockUseGetOrCreateAccountConfiguration = assumeMock(
     useGetOrCreateAccountConfiguration,
@@ -179,6 +184,10 @@ describe('UsageAndPlansView', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: undefined,
+        } as any)
         mockUseGetOrCreateAccountConfiguration.mockReturnValue({
             status: 'success',
             isLoading: false,
@@ -747,6 +756,71 @@ describe('UsageAndPlansView', () => {
         },
     )
 
+    it('should render with product cards disabled and paused tooltip when billing is paused', () => {
+        mockUseBillingState.mockReturnValue({
+            isLoading: false,
+            data: { subscription: { is_paused: true } },
+        } as any)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <UsageAndPlansView
+                contactBilling={jest.fn()}
+                periodEnd="2021-01-01"
+                currentUsage={mockedUsage}
+                helpdeskBanner={helpdeskBanner}
+                convertBanner={convertBanner}
+            />,
+            store,
+        )
+
+        expect(ProductCardMock).toHaveBeenCalledTimes(5)
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                type: ProductType.Helpdesk,
+                isDisabled: true,
+                disabledTooltip: BILLING_PAUSED_TOOLTIP,
+            }),
+            {},
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                type: ProductType.Automation,
+                isDisabled: true,
+                disabledTooltip: BILLING_PAUSED_TOOLTIP,
+            }),
+            {},
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            3,
+            expect.objectContaining({
+                type: ProductType.Voice,
+                isDisabled: true,
+                disabledTooltip: BILLING_PAUSED_TOOLTIP,
+            }),
+            {},
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            4,
+            expect.objectContaining({
+                type: ProductType.SMS,
+                isDisabled: true,
+                disabledTooltip: BILLING_PAUSED_TOOLTIP,
+            }),
+            {},
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            5,
+            expect.objectContaining({
+                type: ProductType.Convert,
+                isDisabled: true,
+                disabledTooltip: BILLING_PAUSED_TOOLTIP,
+            }),
+            {},
+        )
+    })
+
     it('should render with the Subscribe button disabled for trialing users', () => {
         const alteredBilling = {
             ...mockedBilling,
@@ -794,6 +868,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Helpdesk],
                 banner: helpdeskBanner,
                 isDisabled: false,
+                disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
                 scheduledToCancelAt: null,
                 tooltipDisabledCTACallback: expect.any(Function),
             },
@@ -806,6 +881,7 @@ describe('UsageAndPlansView', () => {
                 plan: undefined,
                 usage: null,
                 isDisabled: false,
+                disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
                 scheduledToCancelAt: null,
                 tooltipDisabledCTACallback: expect.any(Function),
             },
@@ -845,6 +921,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 banner: convertBanner,
                 isDisabled: false,
+                disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
                 autoUpgradeEnabled: false,
                 scheduledToCancelAt: null,
                 tooltipDisabledCTACallback: expect.any(Function),

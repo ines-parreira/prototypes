@@ -6,10 +6,12 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
+import { useBillingState } from 'billing/hooks/useBillingState'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'
 import Alert from 'pages/common/components/Alert/Alert'
+import Loader from 'pages/common/components/Loader/Loader'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
@@ -47,6 +49,9 @@ const BillingFrequencyView = ({
     isCurrentSubscriptionCanceled,
 }: BillingFrequencyViewProps) => {
     const history = useHistory()
+    const billingState = useBillingState()
+
+    const isBillingPaused = !!billingState.data?.subscription.is_paused
     const { pathname } = useLocation()
 
     useEffectOnce(() => {
@@ -218,7 +223,8 @@ const BillingFrequencyView = ({
         if (
             !cadenceUpgradeIsPossible ||
             isCurrentSubscriptionCanceled ||
-            cancellationsByPlanId.size > 0
+            cancellationsByPlanId.size > 0 ||
+            isBillingPaused
         ) {
             history.push(BILLING_PAYMENT_PATH)
         }
@@ -227,8 +233,13 @@ const BillingFrequencyView = ({
         canUseQuarterlyBilling,
         isCurrentSubscriptionCanceled,
         cancellationsByPlanId.size,
+        isBillingPaused,
         history,
     ])
+
+    if (billingState.isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className={css.container}>
