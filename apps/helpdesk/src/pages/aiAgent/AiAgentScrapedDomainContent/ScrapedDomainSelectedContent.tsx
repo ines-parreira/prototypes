@@ -63,6 +63,7 @@ type UrlQuestionProps = {
 
 type SharedProps = {
     shopName: string
+    storeDomain?: string | null
     latestSync?: string | null
     isOpened: boolean
     isLoading: boolean
@@ -226,6 +227,7 @@ const SelectedProductView = ({
 const ScrapedDomainSelectedContent = (props: Props) => {
     const {
         shopName,
+        storeDomain,
         latestSync,
         selectedContent,
         contentType,
@@ -282,7 +284,11 @@ const ScrapedDomainSelectedContent = (props: Props) => {
         <SelectedProductView
             product={selectedContent as ProductWithAiAgentStatus}
             detail={detail as IngestedProduct}
-            storeWebsiteContentRoute={routes.questionsContent}
+            storeWebsiteContentRoute={
+                storeDomain
+                    ? routes.knowledgeSourcesByDomain(storeDomain)
+                    : routes.knowledgeSources
+            }
             latestSync={latestSync}
             integrationId={productProps.integrationId}
             additionalInfo={productProps.additionalInfo}

@@ -35,7 +35,7 @@ const AiAgentScrapedDomainProductsView = ({
     >(null)
     const [isOpened, setIsOpened] = useState(false)
 
-    const { storeUrl, storeDomainIngestionLog, isFetchLoading } =
+    const { storeDomain, storeUrl, storeDomainIngestionLog, isFetchLoading } =
         useSyncStoreDomain({
             helpCenterId,
             shopName,
@@ -118,6 +118,7 @@ const AiAgentScrapedDomainProductsView = ({
             />
             <ScrapedDomainSelectedContent
                 shopName={shopName}
+                storeDomain={storeDomain}
                 latestSync={storeDomainIngestionLog?.latest_sync}
                 selectedContent={selectedProduct}
                 contentType={CONTENT_TYPE.PRODUCT}

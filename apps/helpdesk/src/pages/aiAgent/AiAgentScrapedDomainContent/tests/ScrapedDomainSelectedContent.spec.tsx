@@ -13,6 +13,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
         routes: {
             questionsContent: '/questions',
             products: '/products',
+            knowledgeSources: '/knowledge/sources',
+            knowledgeSourcesByDomain: (domain: string) =>
+                `/knowledge/sources?filter=domain&folder=${encodeURIComponent(domain)}`,
         },
         navigationItems: [],
     })),

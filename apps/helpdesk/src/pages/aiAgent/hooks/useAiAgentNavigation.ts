@@ -62,6 +62,8 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         knowledgeArticle: (type: string, id: number) =>
             `${basePath}/knowledge/${type}/${id}`,
         knowledgeSources: `${basePath}/knowledge/sources`,
+        knowledgeSourcesByDomain: (domain: string) =>
+            `${basePath}/knowledge/sources?filter=domain&folder=${encodeURIComponent(domain)}`,
         sales: `${basePath}/sales`,
         salesStrategy: `${basePath}/sales/strategy`,
         customerEngagement: `${basePath}/sales/customer-engagement`,
