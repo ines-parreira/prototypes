@@ -117,6 +117,22 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
         ).toEqual([FilterKey.Period, FilterKey.AggregationWindow])
     })
 
+    it('should have cost saved card config', () => {
+        const config =
+            AnalyticsAiAgentAllAgentsReportConfig.charts[
+                AnalyticsAiAgentAllAgentsChart.CostSavedCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Cost saved')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('currency-precision-1')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have average CSAT card config', () => {
         const config =
             AnalyticsAiAgentAllAgentsReportConfig.charts[

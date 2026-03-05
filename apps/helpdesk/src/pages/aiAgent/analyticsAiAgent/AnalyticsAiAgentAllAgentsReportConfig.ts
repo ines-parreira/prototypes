@@ -14,11 +14,13 @@ import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
+import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
 import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
 import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsCostSavedTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
@@ -55,6 +57,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     AverageCsatCard = 'average_csat_card',
     CoverageRateCard = 'coverage_rate_card',
     ClosedTicketsCard = 'closed_tickets_card',
+    CostSavedCard = 'cost_saved_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -192,6 +195,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'Number of unique closed tickets within the selected timeframe (that did not reopen).',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.CostSavedCard]: {
+                chartComponent: AnalyticsAiAgentCostSavedCard,
+                label: 'Cost saved',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentAllAgentsCostSavedTrend,
+                        metricFormat: 'currency-precision-1',
+                    },
+                ],
+                description:
+                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                chartType: ChartType.Card,
+                metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {

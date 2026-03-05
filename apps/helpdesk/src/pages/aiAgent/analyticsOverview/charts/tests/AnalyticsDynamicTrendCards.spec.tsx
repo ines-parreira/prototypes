@@ -15,6 +15,7 @@ import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAge
 import { AnalyticsAiAgentClickThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClickThroughRateCard'
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
+import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCoverageRateCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
@@ -297,6 +298,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 interpretAs: 'more-is-better',
                 value: 55.5,
                 prevValue: 12.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentCostSavedCard',
+            Component: AnalyticsAiAgentCostSavedCard,
+            config: {
+                label: 'Cost saved',
+                description:
+                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                metricFormat: 'currency-precision-1' as const,
+                value: 1234.5,
+                prevValue: 1000,
             },
         },
         {
