@@ -10,15 +10,15 @@ import {
     fetchTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import { fetchStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import { aiAgentAutomatedInteractionsQueryFactory } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import { aiAgentAutomatedInteractionsQueryV2Factory } from 'domains/reporting/models/scopes/automatedInteractions'
 import {
     aiAgentAutomationRate,
-    aiAgentAutomationRateQueryV2Factory,
-} from 'domains/reporting/models/scopes/automationRate'
+    aiAgentAutomationRateQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -53,14 +53,12 @@ export const fetchAIAgentAutomationRateTrend = async (
         aiAgentAutomationRate.name,
     )
     if (stage === 'live' || stage === 'complete') {
-        return fetchMetricTrend(
-            undefined,
-            undefined,
-            aiAgentAutomationRateQueryV2Factory({
+        return fetchStatsMetricTrend(
+            aiAgentAutomationRateQueryFactoryV2({
                 filters,
                 timezone,
             }),
-            aiAgentAutomationRateQueryV2Factory({
+            aiAgentAutomationRateQueryFactoryV2({
                 filters: {
                     ...filters,
                     period: getPreviousPeriod(filters.period),

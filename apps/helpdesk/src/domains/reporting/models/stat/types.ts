@@ -62,6 +62,8 @@ export enum APIOnlyFilterKey {
     AbVariant = 'abVariant',
     Source = 'source',
     EventType = 'eventType',
+    AutomationFeatureType = 'automationFeatureType',
+    AiAgentSkill = 'aiAgentSkill',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -324,6 +326,8 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.AbVariant]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.Source]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.EventType]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.AutomationFeatureType]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.AiAgentSkill]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

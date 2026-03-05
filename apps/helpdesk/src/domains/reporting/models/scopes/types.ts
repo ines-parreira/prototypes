@@ -116,6 +116,7 @@ export type DimensionName =
     | 'automationFeatureType'
     | 'customField'
     | 'engagementType'
+    | 'orderManagementType'
 
 export type MeasureName =
     | 'ticketCount'

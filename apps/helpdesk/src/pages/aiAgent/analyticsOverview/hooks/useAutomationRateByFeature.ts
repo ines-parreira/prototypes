@@ -9,6 +9,7 @@ import {
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useStatsMetricPerDimension } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
@@ -22,8 +23,67 @@ import {
     flowsAutomatedInteractionsQueryV2Factory,
     orderManagementAutomatedInteractionsQueryV2Factory,
 } from 'domains/reporting/models/scopes/automatedInteractions'
+import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
+import {
+    automationRatePerFeature,
+    automationRatePerFeatureQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomationRate'
+import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+
+const MAP_DIMENSION_API_TO_UI: Record<string, string> = {
+    [AutomationFeatureType.AiAgent]: 'AI Agent',
+    [AutomationFeatureType.Flows]: 'Flows',
+    [AutomationFeatureType.OrderManagement]: 'Order Management',
+    [AutomationFeatureType.ArticleRecommendation]: 'Article Recommendation',
+}
 
 export const useAutomationRateByFeature = (): {
+    data: ChartDataItem[] | undefined
+    isLoading: boolean
+    isError: boolean
+} => {
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+
+    // We don't support double-reads for this metric as the V1 implementation doesn't use a single Cube
+    const stage = useGetNewStatsFeatureFlagMigration(
+        automationRatePerFeature.name,
+    )
+    const newQueryEnabled = stage === 'live' || stage === 'complete'
+    const response = useStatsMetricPerDimension(
+        automationRatePerFeatureQueryFactoryV2({
+            filters: cleanStatsFilters,
+            timezone: userTimezone,
+        }),
+        'automationFeatureType',
+        newQueryEnabled,
+    )
+    const oldData = useAutomationRateByFeatureV1(!newQueryEnabled)
+
+    return newQueryEnabled
+        ? {
+              isLoading: response.isFetching,
+              isError: response.isError,
+              data: response.data?.allValues
+                  ?.filter((metricValue) =>
+                      Object.keys(MAP_DIMENSION_API_TO_UI).includes(
+                          metricValue.dimension.toString(),
+                      ),
+                  )
+                  .map((metricValue) => {
+                      return {
+                          name: MAP_DIMENSION_API_TO_UI[
+                              metricValue.dimension.toString()
+                          ],
+                          value: metricValue.value,
+                      }
+                  }),
+          }
+        : oldData
+}
+
+export const useAutomationRateByFeatureV1 = (
+    enabled: boolean = true,
+): {
     data: ChartDataItem[] | undefined
     isLoading: boolean
     isError: boolean
@@ -38,6 +98,7 @@ export const useAutomationRateByFeature = (): {
         AutomationDatasetMeasure.AutomatedInteractions,
         aiAgentAutomatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
     const flowsInteractions = useTrendFromMultipleMetricsTrend(
@@ -47,6 +108,7 @@ export const useAutomationRateByFeature = (): {
         AutomationDatasetMeasure.AutomatedInteractions,
         flowsAutomatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
     const articleRecommendationInteractions = useTrendFromMultipleMetricsTrend(
@@ -56,6 +118,7 @@ export const useAutomationRateByFeature = (): {
         AutomationDatasetMeasure.AutomatedInteractions,
         articleRecommendationAutomatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
     const orderManagementInteractions = useTrendFromMultipleMetricsTrend(
@@ -65,23 +128,27 @@ export const useAutomationRateByFeature = (): {
         AutomationDatasetMeasure.AutomatedInteractions,
         orderManagementAutomatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
     const allAutomatedInteractions = useAllAutomatedInteractions(
         cleanStatsFilters,
         userTimezone,
+        enabled,
     )
 
     const allAutomatedInteractionsByAutoResponders =
         useAllAutomatedInteractionsByAutoResponders(
             cleanStatsFilters,
             userTimezone,
+            enabled,
         )
 
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
         cleanStatsFilters,
         userTimezone,
         aiAgentUserId,
+        enabled,
     )
 
     const isLoading =

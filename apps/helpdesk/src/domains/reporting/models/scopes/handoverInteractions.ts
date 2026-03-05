@@ -1,5 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { HandoverAutomationFeatureType } from 'domains/reporting/models/scopes/constants'
+import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -54,7 +54,7 @@ export const aiAgentHandoverInteractions = handoverInteractionsScope
             {
                 member: 'automationFeatureType',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [HandoverAutomationFeatureType.AiAgent],
+                values: [AutomationFeatureType.AiAgent],
             },
         ] as any,
     }))
@@ -72,7 +72,7 @@ export const aiSalesAgentHandoverInteractions = handoverInteractionsScope
             {
                 member: 'aiAgentSkill',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [HandoverAutomationFeatureType.AiAgentSales],
+                values: [AutomationFeatureType.AiAgentSales],
             },
         ] as any,
     }))
@@ -90,7 +90,7 @@ export const aiSupportHandoverInteractions = handoverInteractionsScope
             {
                 member: 'aiAgentSkill',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [HandoverAutomationFeatureType.AiAgentSupport],
+                values: [AutomationFeatureType.AiAgentSupport],
             },
         ] as any,
     }))

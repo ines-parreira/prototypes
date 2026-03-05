@@ -224,6 +224,7 @@ export enum FeatureFlagKey {
     ReportingP1MetricMigration = 'linear.project_new-stats-api.p1-metric-migration',
     ReportingP2MetricMigration = 'linear.project_new-stats-api.p2-metric-migration',
     ReportingP3MetricMigration = 'linear.project_new-stats-api.p3-metric-migration',
+    ReportingP5AiAgentRevampQueryScopes = 'linear.project_new-stats-api.p5-ai-agent-revamp-query-scopes',
     ReportingUnsortedMetricMigration = 'linear.project_new-stats-api.reporting-unsorted-metric-migration',
     EmbeddedSpqSettings = 'embedded-spq-settings',
     DisableArticleRecommendationForShopify = 'linear.task_AIEXP-8184.article-recommendation-shopify-kill-switch',

@@ -24,7 +24,6 @@ export const P1_SCOPES: MetricScope[] = [
 
 export const P2_SCOPES: MetricScope[] = [
     MetricScope.AutomatedInteractions,
-    MetricScope.AutomationRate,
     MetricScope.AutoQA,
     MetricScope.MessagesReceived,
     MetricScope.HumanFirstResponseTime,
@@ -47,6 +46,10 @@ export const P3_SCOPES: MetricScope[] = [
     MetricScope.ConvertCampaignOrderEvents,
     MetricScope.AISalesAgentConversations,
     MetricScope.AISalesAgentOrders,
+]
+
+export const P5_AI_AGENT_REVAMP_SCOPES: MetricScope[] = [
+    MetricScope.OverallAutomationRate,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
@@ -78,9 +81,25 @@ P3_SCOPES.forEach((scope) => {
     })
 })
 
+P5_AI_AGENT_REVAMP_SCOPES.forEach((scope) => {
+    METRIC_NAMES_BY_SCOPE[scope].forEach((metricName) => {
+        METRIC_TO_FLAG_MAP.set(
+            metricName,
+            FeatureFlagKey.ReportingP5AiAgentRevampQueryScopes,
+        )
+    })
+})
+
 export function resolveMetricFlag(name: MetricName): FeatureFlagKey {
     return (
         METRIC_TO_FLAG_MAP.get(name) ??
         FeatureFlagKey.ReportingUnsortedMetricMigration
+    )
+}
+
+export function skipMetricComparison(name: MetricName): boolean {
+    return (
+        resolveMetricFlag(name) ===
+        FeatureFlagKey.ReportingP5AiAgentRevampQueryScopes
     )
 }

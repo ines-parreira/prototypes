@@ -10,12 +10,12 @@ import {
     fetchFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { fetchMetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
+import { fetchStatsMetricTrend } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
     overallAutomationRate,
-    overallAutomationRateQueryV2Factory,
-} from 'domains/reporting/models/scopes/automationRate'
+    overallAutomationRateQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -48,14 +48,12 @@ export const fetchAutomationRateTrend = async (
         overallAutomationRate.name,
     )
     if (stage === 'live' || stage === 'complete') {
-        return fetchMetricTrend(
-            undefined,
-            undefined,
-            overallAutomationRateQueryV2Factory({
+        return fetchStatsMetricTrend(
+            overallAutomationRateQueryFactoryV2({
                 filters,
                 timezone,
             }),
-            overallAutomationRateQueryV2Factory({
+            overallAutomationRateQueryFactoryV2({
                 filters: {
                     ...filters,
                     period: getPreviousPeriod(filters.period),

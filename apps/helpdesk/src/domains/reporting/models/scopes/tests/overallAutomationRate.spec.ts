@@ -1,12 +1,14 @@
 import {
     aiAgentAutomationRate,
-    aiAgentAutomationRateQueryV2Factory,
+    aiAgentAutomationRateQueryFactoryV2,
+    automationRatePerFeature,
+    automationRatePerFeatureQueryFactoryV2,
     overallAutomationRate,
-    overallAutomationRateQueryV2Factory,
-} from 'domains/reporting/models/scopes/automationRate'
+    overallAutomationRateQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
-describe('automationRateScope', () => {
+describe('overallAutomationRateScope', () => {
     const filters: StatsFilters = {
         period: {
             start_datetime: '2025-09-03T00:00:00.000',
@@ -27,7 +29,7 @@ describe('automationRateScope', () => {
 
             const expected = {
                 metricName: 'ai-agent-overall-automation-rate',
-                scope: 'automation-rate',
+                scope: 'overall-automation-rate',
                 measures: ['automationRate'],
                 timezone: 'utc',
                 filters: [
@@ -54,8 +56,41 @@ describe('automationRateScope', () => {
 
             const expected = {
                 metricName: 'ai-agent-automation-rate',
-                scope: 'automation-rate',
-                measures: ['aiAgentAutomationRate'],
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['ai-agent'],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('automationRatePerFeature', () => {
+        it('creates query with automationFeatureType dimension', () => {
+            const actual = automationRatePerFeature.build(context)
+
+            const expected = {
+                metricName: 'ai-agent-automation-rate-per-feature',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: ['automationFeatureType'],
                 timezone: 'utc',
                 filters: [
                     {
@@ -76,21 +111,31 @@ describe('automationRateScope', () => {
     })
 
     describe('QueryV2Factory methods', () => {
-        describe('overallAutomationRateQueryV2Factory', () => {
+        describe('overallAutomationRateQueryFactoryV2', () => {
             it('returns the same result as calling build directly', () => {
                 const factoryResult =
-                    overallAutomationRateQueryV2Factory(context)
+                    overallAutomationRateQueryFactoryV2(context)
                 const buildResult = overallAutomationRate.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
             })
         })
 
-        describe('aiAgentAutomationRateQueryV2Factory', () => {
+        describe('aiAgentAutomationRateQueryFactoryV2', () => {
             it('returns the same result as calling build directly', () => {
                 const factoryResult =
-                    aiAgentAutomationRateQueryV2Factory(context)
+                    aiAgentAutomationRateQueryFactoryV2(context)
                 const buildResult = aiAgentAutomationRate.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('automationRatePerFeatureQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    automationRatePerFeatureQueryFactoryV2(context)
+                const buildResult = automationRatePerFeature.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
             })

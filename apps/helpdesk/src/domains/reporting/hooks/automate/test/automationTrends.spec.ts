@@ -236,6 +236,7 @@ describe('automationTrends', () => {
                         },
                         timezone,
                     }),
+                    true,
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -395,6 +396,7 @@ describe('automationTrends', () => {
                         },
                         timezone,
                     }),
+                    true,
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,

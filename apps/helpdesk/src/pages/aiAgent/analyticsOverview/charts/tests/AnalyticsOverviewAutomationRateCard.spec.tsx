@@ -4,15 +4,15 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { postReportingV2 } from 'domains/reporting/models/resources'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
-import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-jest.mock('domains/reporting/utils/metricExecutionHandler')
-const mockMetricExecutionHandler = assumeMock(metricExecutionHandler)
+jest.mock('domains/reporting/models/resources')
+const mockPostReportingV2 = assumeMock(postReportingV2)
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = assumeMock(useStatsFilters)
@@ -57,7 +57,7 @@ describe('AnalyticsOverviewAutomationRateCard', () => {
             'complete' as MigrationStage,
         )
 
-        mockMetricExecutionHandler.mockResolvedValue({
+        mockPostReportingV2.mockResolvedValue({
             data: {
                 data: [
                     {

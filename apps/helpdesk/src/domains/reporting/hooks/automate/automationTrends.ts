@@ -36,6 +36,7 @@ export const useTrendFromMultipleMetricsTrend = <
     metric: Metric,
     queryFactoryV2?: (ctx: Context<TMeta>) => BuiltQuery<TMeta>,
     metricV2?: MeasureName,
+    enabled: boolean = true,
 ) => {
     const trendData = useMultipleMetricsTrends(
         queryFactory(filters, timezone),
@@ -48,6 +49,7 @@ export const useTrendFromMultipleMetricsTrend = <
             filters: { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
         }),
+        enabled,
     )
 
     const data =
@@ -114,6 +116,7 @@ export const useTrendFromMultipleMetricsTrendPerDimension = <
         dimensionId: number | undefined,
     ) => ReportingQuery<TCube>,
     metric: Metric,
+    enabled: boolean = true,
 ) => {
     const filteredAutomatedInteractionsData = useMultipleMetricsTrends(
         queryFactory(filters, timezone, dimensionId),
@@ -122,6 +125,9 @@ export const useTrendFromMultipleMetricsTrendPerDimension = <
             timezone,
             dimensionId,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     return {
@@ -216,6 +222,7 @@ export const fetchFilteredAutomatedInteractionsByAutoResponders = (
 export const useAllAutomatedInteractions = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         { period: filters.period },
@@ -224,6 +231,7 @@ export const useAllAutomatedInteractions = (
         AutomationDatasetMeasure.AutomatedInteractions,
         automatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
 export const fetchAllAutomatedInteractions = (
@@ -242,6 +250,7 @@ export const fetchAllAutomatedInteractions = (
 export const useAllAutomatedInteractionsByAutoResponders = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         { period: filters.period },
@@ -250,6 +259,7 @@ export const useAllAutomatedInteractionsByAutoResponders = (
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
         automatedInteractionsQueryV2Factory,
         'automatedInteractionsByAutoResponders',
+        enabled,
     )
 
 export const fetchAllAutomatedInteractionsByAutoResponders = (
@@ -269,6 +279,7 @@ export const useBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
     aiAgentUserId: number | undefined,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -276,6 +287,7 @@ export const useBillableTicketsExcludingAIAgent = (
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
         BillableTicketDatasetMeasure.BillableTicketCount,
+        enabled,
     )
 export const fetchBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,

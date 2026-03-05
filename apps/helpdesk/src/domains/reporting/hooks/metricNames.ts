@@ -20,6 +20,8 @@ export const METRIC_NAMES = {
     AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
     AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
     AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
+    AI_AGENT_AUTOMATION_RATE_PER_FEATURE:
+        'ai-agent-automation-rate-per-feature',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -591,7 +593,6 @@ export enum MetricScope {
     AutoQA = 'auto-qa',
     HumanFirstResponseTime = 'human-first-response-time',
     MessagesReceived = 'messages-received',
-    AutomationRate = 'automation-rate',
     TicketFields = 'ticket-fields',
     AutomatedInteractions = 'automated-interactions',
     HandoverInteractions = 'handover-interactions',
@@ -611,6 +612,9 @@ export enum MetricScope {
     ConvertCampaignOrderEvents = 'convert-campaign-order-events',
     AISalesAgentOrders = 'ai-sales-agent-orders',
     AISalesAgentConversations = 'ai-sales-agent-conversations',
+
+    // P5 - AI Agent Revamp
+    OverallAutomationRate = 'overall-automation-rate',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -723,10 +727,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_AGENT,
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_PER_CHANNEL,
         METRIC_NAMES.SUPPORT_PERFORMANCE_MESSAGES_RECEIVED_TIME_SERIES,
-    ],
-    [MetricScope.AutomationRate]: [
-        METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
-        METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
     ],
     [MetricScope.TicketFields]: [
         METRIC_NAMES.TICKET_INSIGHTS_CUSTOM_FIELDS_TICKET_COUNT,
@@ -860,5 +860,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
+    ],
+
+    // P5
+    [MetricScope.OverallAutomationRate]: [
+        METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
+        METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
+        METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE,
     ],
 }

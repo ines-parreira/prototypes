@@ -1,6 +1,6 @@
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
-import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { ScopeMeta } from 'domains/reporting/models/scopes/scope'
 import {
     compareAndReportQueries,
@@ -2904,6 +2904,90 @@ describe('utils', () => {
                     v1Query,
                     v2Query,
                 )
+                consoleSpy.mockRestore()
+            })
+        })
+
+        describe('skipMetricComparison', () => {
+            const v1Query: ReportingQuery<any> = {
+                measures: ['automationRate.count'],
+                dimensions: [],
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate' as any,
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                ],
+                metricName: METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
+                timezone: 'UTC',
+            }
+
+            const v2QueryWithDifferences: ReportingQuery<any> = {
+                measures: ['automationRate.different'],
+                dimensions: [],
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate' as any,
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                ],
+                metricName: METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
+                timezone: 'UTC',
+            }
+
+            it('should return true and skip comparison for ai-agent-overall-automation-rate', () => {
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+                const reportErrorMock = reportError as jest.Mock
+
+                const result = compareAndReportQueries(
+                    METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
+                    v1Query,
+                    v2QueryWithDifferences,
+                )
+
+                expect(result).toBe(true)
+                expect(consoleSpy).not.toHaveBeenCalled()
+                expect(reportErrorMock).not.toHaveBeenCalled()
+
+                consoleSpy.mockRestore()
+            })
+
+            it('should return true and skip comparison for ai-agent-automation-rate', () => {
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+                const reportErrorMock = reportError as jest.Mock
+
+                const result = compareAndReportQueries(
+                    METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
+                    v1Query,
+                    v2QueryWithDifferences,
+                )
+
+                expect(result).toBe(true)
+                expect(consoleSpy).not.toHaveBeenCalled()
+                expect(reportErrorMock).not.toHaveBeenCalled()
+
+                consoleSpy.mockRestore()
+            })
+
+            it('should still compare queries for non-P5 metric names', () => {
+                const consoleSpy = jest
+                    .spyOn(console, 'error')
+                    .mockImplementation()
+
+                compareAndReportQueries(
+                    'tickets' as any,
+                    v1Query,
+                    v2QueryWithDifferences,
+                )
+
+                expect(consoleSpy).toHaveBeenCalled()
+
                 consoleSpy.mockRestore()
             })
         })

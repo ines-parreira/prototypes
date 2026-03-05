@@ -6,6 +6,21 @@ jest.mock('domains/reporting/hooks/automate/automateStatsFormulae')
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration', () => ({
+    useGetNewStatsFeatureFlagMigration: jest.fn().mockReturnValue('off'),
+}))
+jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
+    useStatsMetricPerDimension: jest.fn(),
+}))
+jest.mock('domains/reporting/models/scopes/overallAutomationRate', () => {
+    const actual = jest.requireActual(
+        'domains/reporting/models/scopes/overallAutomationRate',
+    )
+    return {
+        ...actual,
+        automationRatePerFeatureQueryFactoryV2: jest.fn(),
+    }
+})
 
 const mockUseStatsFilters = jest.requireMock(
     'domains/reporting/hooks/support-performance/useStatsFilters',
@@ -28,6 +43,12 @@ const mockUseBillableTicketsExcludingAIAgent = jest.requireMock(
 const mockAutomationRateUnfilteredDenominator = jest.requireMock(
     'domains/reporting/hooks/automate/automateStatsFormulae',
 ).automationRateUnfilteredDenominator as jest.Mock
+const mockUseGetNewStatsFeatureFlagMigration = jest.requireMock(
+    'domains/reporting/utils/useGetNewStatsFeatureFlagMigration',
+).useGetNewStatsFeatureFlagMigration as jest.Mock
+const mockUseStatsMetricPerDimension = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).useStatsMetricPerDimension as jest.Mock
 
 describe('useAutomationRateByFeature', () => {
     beforeEach(() => {
@@ -325,5 +346,144 @@ describe('useAutomationRateByFeature', () => {
         const { result } = renderHook(() => useAutomationRateByFeature())
 
         expect(result.current.isError).toBe(true)
+    })
+})
+
+describe('useAutomationRateByFeature when stage is live or complete', () => {
+    const defaultAllValues = [
+        { dimension: 'ai-agent', value: 30, decile: null },
+        { dimension: 'flow', value: 20, decile: null },
+        { dimension: 'order-management', value: 10, decile: null },
+        { dimension: 'article-recommendation', value: 15, decile: null },
+    ]
+
+    beforeEach(() => {
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {},
+            userTimezone: 'UTC',
+        })
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: defaultAllValues,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should return chart data with correct feature names', () => {
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data?.map((item) => item.name)).toEqual([
+            'AI Agent',
+            'Flows',
+            'Order Management',
+            'Article Recommendation',
+        ])
+    })
+
+    it('should preserve values from the response', () => {
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data).toEqual([
+            { name: 'AI Agent', value: 30 },
+            { name: 'Flows', value: 20 },
+            { name: 'Order Management', value: 10 },
+            { name: 'Article Recommendation', value: 15 },
+        ])
+    })
+
+    it('should filter out unknown dimensions', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    ...defaultAllValues,
+                    { dimension: 'unknown-feature', value: 99, decile: null },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data).toHaveLength(4)
+        expect(result.current.data?.map((item) => item.name)).not.toContain(
+            'unknown-feature',
+        )
+    })
+
+    it('should return isLoading true when response is fetching', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: null,
+            isFetching: true,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isError true when response has error', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: null,
+            isFetching: false,
+            isError: true,
+        })
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.isError).toBe(true)
+    })
+
+    it('should return undefined data when response data is null', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: null,
+            isFetching: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data).toBeUndefined()
+    })
+
+    it('should handle null values in dimension data', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'ai-agent', value: null, decile: null },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data).toEqual([{ name: 'AI Agent', value: null }])
+    })
+
+    it('should use the V2 path when stage is complete', () => {
+        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+
+        const { result } = renderHook(() => useAutomationRateByFeature())
+
+        expect(result.current.data).toHaveLength(4)
     })
 })
