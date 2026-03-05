@@ -84,6 +84,7 @@ const { useAiAgentHelpCenterState } = jest.requireMock(
 
 const guidanceArticle = getGuidanceArticleFixture(1)
 const guidanceArticle2 = getGuidanceArticleFixture(2)
+const mockGuidanceArticles = [] as const
 
 const mockUseGuidanceArticle = jest.fn()
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
@@ -92,7 +93,7 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticle', () => ({
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(() => ({
-        guidanceArticles: [],
+        guidanceArticles: mockGuidanceArticles,
         isGuidanceArticleListLoading: false,
         isFetched: true,
     })),
@@ -111,17 +112,22 @@ jest.mock(
 const updateGuidanceArticle = jest.fn()
 const createGuidanceArticle = jest.fn()
 const duplicate = jest.fn()
+const deleteGuidanceArticle = jest.fn()
+const duplicateGuidanceArticle = jest.fn()
+const discardGuidanceDraft = jest.fn()
+const rebasePublishGuidanceArticle = jest.fn()
 
 jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
     useGuidanceArticleMutation: jest.fn(() => ({
         updateGuidanceArticle,
         createGuidanceArticle,
-        deleteGuidanceArticle: jest.fn(),
-        duplicateGuidanceArticle: jest.fn(),
+        deleteGuidanceArticle,
+        duplicateGuidanceArticle,
         duplicate,
         isGuidanceArticleUpdating: false,
         isGuidanceArticleDeleting: false,
-        discardGuidanceDraft: jest.fn(),
+        discardGuidanceDraft,
+        rebasePublishGuidanceArticle,
         isDiscardingDraft: false,
     })),
 }))

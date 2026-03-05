@@ -12,20 +12,16 @@ import {
 } from '../KnowledgeEditorSidePanelCommonFields'
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
 import { KnowledgeEditorSidePanelTwoColumnsContent } from '../KnowledgeEditorSidePanelTwoColumnsContent'
-import { KnowledgeEditorSidePanelGuidanceDisableIntentsModal } from './modals/KnowledgeEditorSidePanelGuidanceDisableIntentsModal'
+import { KnowledgeEditorSidePanelGuidanceVisibilityConflictModal } from './modals/KnowledgeEditorSidePanelGuidanceVisibilityConflictModal'
 
 import css from '../KnowledgeEditorSidePanelCommonFields.less'
 
 export type Props = {
     sectionId: string
-    linkedIntentsCount?: number
-    onDisableWithLinkedIntents?: () => void
 }
 
 export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
     sectionId,
-    linkedIntentsCount = 0,
-    onDisableWithLinkedIntents,
 }: Props) => {
     const {
         aiAgentStatus,
@@ -35,28 +31,19 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         isDraft,
         isViewingHistoricalVersion,
         guidanceMode,
+        visibilityConflict,
+        closeVisibilityConflictModal,
+        rebaseAndEnableVisibility,
     } = useGuidanceDetailsFromContext()
-    const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
-    const [isDisablingWithLinkedIntents, setIsDisablingWithLinkedIntents] =
+    const [isTogglingAIAgentStatus, setIsTogglingAIAgentStatus] =
         useState(false)
 
     const handleAIAgentStatusChange = async () => {
-        if (aiAgentStatus.value && linkedIntentsCount > 0) {
-            setIsDisableModalOpen(true)
-            return
-        }
-
-        await aiAgentStatus.onChange()
-    }
-
-    const handleDisableWithLinkedIntents = async () => {
-        setIsDisablingWithLinkedIntents(true)
+        setIsTogglingAIAgentStatus(true)
         try {
             await aiAgentStatus.onChange()
-            onDisableWithLinkedIntents?.()
-            setIsDisableModalOpen(false)
         } finally {
-            setIsDisablingWithLinkedIntents(false)
+            setIsTogglingAIAgentStatus(false)
         }
     }
 
@@ -90,7 +77,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                     checked={aiAgentStatus.value}
                     className={css.extraLeftMargin}
                     onChange={handleAIAgentStatusChange}
-                    isDisabled={isUpdating || isDisablingWithLinkedIntents}
+                    isDisabled={isUpdating || isTogglingAIAgentStatus}
                     tooltip={aiAgentStatus.tooltip}
                 />
             ),
@@ -124,11 +111,12 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 <KnowledgeEditorSidePanelTwoColumnsContent columns={columns} />
             </KnowledgeEditorSidePanelSection>
 
-            <KnowledgeEditorSidePanelGuidanceDisableIntentsModal
-                isOpen={isDisableModalOpen}
-                isDisabling={isDisablingWithLinkedIntents}
-                onClose={() => setIsDisableModalOpen(false)}
-                onDisable={handleDisableWithLinkedIntents}
+            <KnowledgeEditorSidePanelGuidanceVisibilityConflictModal
+                isOpen={visibilityConflict.isOpen}
+                isLoading={isUpdating || isTogglingAIAgentStatus}
+                message={visibilityConflict.message}
+                onClose={closeVisibilityConflictModal}
+                onRebase={rebaseAndEnableVisibility}
             />
         </>
     )

@@ -202,6 +202,19 @@ export const updateArticleTranslation = async (
     return response
 }
 
+export const rebasePublishArticleTranslation = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.PublishAndRebaseArticleTranslation.PathParameters,
+    data: Paths.PublishAndRebaseArticleTranslation.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.publishAndRebaseArticleTranslation(
+        pathParams,
+        data,
+    )
+    return response
+}
+
 export const copyArticle = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CopyArticle.PathParameters,

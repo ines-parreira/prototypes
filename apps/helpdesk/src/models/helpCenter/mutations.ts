@@ -15,6 +15,7 @@ import {
     deleteArticle,
     deleteArticleTranslation,
     deleteArticleTranslationDraft,
+    rebasePublishArticleTranslation,
     updateArticleTranslation,
 } from './resources'
 
@@ -284,6 +285,51 @@ export const useUpdateArticleTranslation = (
                         typeof key[3] !== 'number'
                     )
                 },
+            })
+            await callbacks?.onSettled?.()
+        },
+    })
+}
+
+export const useRebasePublishArticleTranslation = (
+    helpCenterId: number,
+    callbacks?: AdditionalCallbacks<
+        Awaited<ReturnType<typeof rebasePublishArticleTranslation>>,
+        unknown
+    >,
+) => {
+    const queryClient = useQueryClient()
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    const articleListKey = helpCenterKeys.articles(helpCenterId)
+
+    return useMutation<
+        Awaited<ReturnType<typeof rebasePublishArticleTranslation>>,
+        unknown,
+        Parameters<typeof rebasePublishArticleTranslation>
+    >({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            rebasePublishArticleTranslation(client, pathParams, data),
+        onSuccess: async (data) => {
+            await callbacks?.onSuccess?.(data)
+        },
+        onError: async (error) => {
+            await callbacks?.onError?.(error)
+        },
+        onSettled: async (_data, _error, variables) => {
+            const [, pathParams] = variables
+
+            if (pathParams.article_id) {
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.article(
+                        helpCenterId,
+                        pathParams.article_id,
+                    ),
+                })
+            }
+
+            await queryClient.invalidateQueries({
+                queryKey: articleListKey,
             })
             await callbacks?.onSettled?.()
         },

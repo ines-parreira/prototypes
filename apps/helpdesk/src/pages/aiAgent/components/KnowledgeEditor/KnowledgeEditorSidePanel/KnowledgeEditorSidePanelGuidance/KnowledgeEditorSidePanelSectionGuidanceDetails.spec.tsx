@@ -1,5 +1,3 @@
-import type { ComponentProps } from 'react'
-
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -51,19 +49,18 @@ const baseDetailsData = {
     isDraft: false,
     isViewingHistoricalVersion: false,
     guidanceMode: 'read' as const,
+    visibilityConflict: {
+        isOpen: false,
+        message: '',
+    },
+    closeVisibilityConflictModal: jest.fn(),
+    rebaseAndEnableVisibility: jest.fn().mockResolvedValue(undefined),
 }
 
-const renderComponent = (
-    props?: Partial<
-        ComponentProps<typeof KnowledgeEditorSidePanelSectionGuidanceDetails>
-    >,
-) =>
+const renderComponent = () =>
     render(
         <KnowledgeEditorSidePanel initialExpandedSections={['details']}>
-            <KnowledgeEditorSidePanelSectionGuidanceDetails
-                sectionId="details"
-                {...props}
-            />
+            <KnowledgeEditorSidePanelSectionGuidanceDetails sectionId="details" />
         </KnowledgeEditorSidePanel>,
     )
 
@@ -76,87 +73,7 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
         jest.clearAllMocks()
     })
 
-    it('opens confirmation modal when disabling with linked intents', async () => {
-        const user = userEvent.setup()
-        renderComponent({ linkedIntentsCount: 2 })
-
-        await user.click(
-            screen.getByRole('button', { name: 'Toggle AI agent status' }),
-        )
-
-        expect(baseDetailsData.aiAgentStatus.onChange).not.toHaveBeenCalled()
-        expect(
-            screen.getByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
-            }),
-        ).toBeInTheDocument()
-    })
-
-    it('calls disable and unlink callback on confirm', async () => {
-        const user = userEvent.setup()
-        const onDisableWithLinkedIntents = jest.fn()
-        renderComponent({ linkedIntentsCount: 1, onDisableWithLinkedIntents })
-
-        await user.click(
-            screen.getByRole('button', { name: 'Toggle AI agent status' }),
-        )
-        await user.click(screen.getByRole('button', { name: 'Disable' }))
-
-        expect(baseDetailsData.aiAgentStatus.onChange).toHaveBeenCalledTimes(1)
-        expect(onDisableWithLinkedIntents).toHaveBeenCalledTimes(1)
-    })
-
-    it('calls disable without linked intents callback when none is provided', async () => {
-        const user = userEvent.setup()
-        renderComponent({ linkedIntentsCount: 1 })
-
-        await user.click(
-            screen.getByRole('button', { name: 'Toggle AI agent status' }),
-        )
-        await user.click(screen.getByRole('button', { name: 'Disable' }))
-
-        expect(baseDetailsData.aiAgentStatus.onChange).toHaveBeenCalledTimes(1)
-        expect(
-            screen.queryByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
-            }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('closes confirmation modal without disabling on cancel', async () => {
-        const user = userEvent.setup()
-        renderComponent({ linkedIntentsCount: 1 })
-
-        await user.click(
-            screen.getByRole('button', { name: 'Toggle AI agent status' }),
-        )
-        await user.click(screen.getByRole('button', { name: 'Cancel' }))
-
-        expect(baseDetailsData.aiAgentStatus.onChange).not.toHaveBeenCalled()
-        expect(
-            screen.queryByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
-            }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('toggles directly when there are no linked intents', async () => {
-        const user = userEvent.setup()
-        renderComponent({ linkedIntentsCount: 0 })
-
-        await user.click(
-            screen.getByRole('button', { name: 'Toggle AI agent status' }),
-        )
-
-        expect(baseDetailsData.aiAgentStatus.onChange).toHaveBeenCalledTimes(1)
-        expect(
-            screen.queryByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
-            }),
-        ).not.toBeInTheDocument()
-    })
-
-    it('toggles directly when linked intents count prop is omitted', async () => {
+    it('toggles directly when disabling guidance', async () => {
         const user = userEvent.setup()
         renderComponent()
 
@@ -165,11 +82,6 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
         )
 
         expect(baseDetailsData.aiAgentStatus.onChange).toHaveBeenCalledTimes(1)
-        expect(
-            screen.queryByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
-            }),
-        ).not.toBeInTheDocument()
     })
 
     it('toggles directly when enabling guidance', async () => {
@@ -183,17 +95,73 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
             },
         })
 
-        renderComponent({ linkedIntentsCount: 2 })
+        renderComponent()
 
         await user.click(
             screen.getByRole('button', { name: 'Toggle AI agent status' }),
         )
 
         expect(mockEnableGuidance).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders visibility conflict modal from hook state', () => {
+        mockUseGuidanceDetailsFromContext.mockReturnValue({
+            ...baseDetailsData,
+            visibilityConflict: {
+                isOpen: true,
+                message: 'Conflict details',
+            },
+        })
+
+        renderComponent()
+
         expect(
-            screen.queryByRole('heading', {
-                name: 'Disable guidance and unlink intents?',
+            screen.getByRole('heading', {
+                name: "This guidance can't be made visible yet",
             }),
-        ).not.toBeInTheDocument()
+        ).toBeInTheDocument()
+        expect(screen.getByText('Conflict details')).toBeInTheDocument()
+    })
+
+    it('calls rebase callback from conflict modal action', async () => {
+        const user = userEvent.setup()
+        const rebaseAndEnableVisibility = jest.fn().mockResolvedValue(undefined)
+        mockUseGuidanceDetailsFromContext.mockReturnValue({
+            ...baseDetailsData,
+            visibilityConflict: {
+                isOpen: true,
+                message: 'Conflict details',
+            },
+            rebaseAndEnableVisibility,
+        })
+
+        renderComponent()
+
+        await user.click(
+            screen.getByRole('button', {
+                name: 'Override and make public',
+            }),
+        )
+
+        expect(rebaseAndEnableVisibility).toHaveBeenCalledTimes(1)
+    })
+
+    it('calls close callback from conflict modal cancel action', async () => {
+        const user = userEvent.setup()
+        const closeVisibilityConflictModal = jest.fn()
+        mockUseGuidanceDetailsFromContext.mockReturnValue({
+            ...baseDetailsData,
+            visibilityConflict: {
+                isOpen: true,
+                message: 'Conflict details',
+            },
+            closeVisibilityConflictModal,
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: 'Cancel' }))
+
+        expect(closeVisibilityConflictModal).toHaveBeenCalledTimes(1)
     })
 })

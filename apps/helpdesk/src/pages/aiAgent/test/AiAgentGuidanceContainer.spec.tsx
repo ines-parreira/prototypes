@@ -143,6 +143,8 @@ const defaultGuidanceArticleMutationProps: ReturnType<
     duplicateGuidanceArticle: jest.fn(),
     discardGuidanceDraft: jest.fn(),
     isDiscardingDraft: false,
+    rebasePublishGuidanceArticle: jest.fn(),
+    getGuidanceArticleTranslation: jest.fn(),
 }
 
 const defaultGuidanceAiSuggestionsProps: ReturnType<

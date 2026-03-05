@@ -11,6 +11,8 @@ const mockUseGuidanceStore = jest.fn()
 const mockDispatch = jest.fn()
 const mockUseFlag = jest.fn()
 const mockUpdateGuidanceArticle = jest.fn()
+const mockCloseVisibilityConflictModal = jest.fn()
+const mockRebaseAndEnableVisibility = jest.fn()
 const mockUseGetArticleTranslationIntents = jest.fn(
     (__params?: unknown, __options?: unknown) => ({
         data: {
@@ -116,6 +118,14 @@ jest.mock(
                 lastUpdatedDatetime: testDate,
                 isUpdating: false,
                 isDraft: false,
+                guidanceMode: 'read',
+                isViewingHistoricalVersion: false,
+                visibilityConflict: {
+                    isOpen: false,
+                    message: '',
+                },
+                closeVisibilityConflictModal: mockCloseVisibilityConflictModal,
+                rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
             }
         }),
     }),

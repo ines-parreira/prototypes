@@ -22,6 +22,8 @@ const mockUseToggleVisibility = useToggleVisibility as jest.Mock
 
 describe('useGuidanceDetailsFromContext', () => {
     const mockToggleVisibility = jest.fn()
+    const mockCloseVisibilityConflictModal = jest.fn()
+    const mockRebaseAndEnableVisibility = jest.fn()
 
     const mockGuidanceArticle: GuidanceArticle = {
         id: 123,
@@ -83,6 +85,12 @@ describe('useGuidanceDetailsFromContext', () => {
             toggleVisibility: mockToggleVisibility,
             isAtLimit: false,
             limitMessage: 'You have reached the limit',
+            visibilityConflict: {
+                isOpen: false,
+                message: '',
+            },
+            closeVisibilityConflictModal: mockCloseVisibilityConflictModal,
+            rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
         })
     })
 
@@ -146,6 +154,13 @@ describe('useGuidanceDetailsFromContext', () => {
                     toggleVisibility: mockToggleVisibility,
                     isAtLimit: true,
                     limitMessage: 'You have reached the limit',
+                    visibilityConflict: {
+                        isOpen: false,
+                        message: '',
+                    },
+                    closeVisibilityConflictModal:
+                        mockCloseVisibilityConflictModal,
+                    rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
                 })
                 mockUseGuidanceContext.mockReturnValue({
                     ...defaultContextValue,
@@ -166,6 +181,13 @@ describe('useGuidanceDetailsFromContext', () => {
                     toggleVisibility: mockToggleVisibility,
                     isAtLimit: true,
                     limitMessage: 'You have reached the limit',
+                    visibilityConflict: {
+                        isOpen: false,
+                        message: '',
+                    },
+                    closeVisibilityConflictModal:
+                        mockCloseVisibilityConflictModal,
+                    rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
                 })
 
                 const { result } = renderHook(() =>
@@ -207,6 +229,13 @@ describe('useGuidanceDetailsFromContext', () => {
                     toggleVisibility: mockToggleVisibility,
                     isAtLimit: true,
                     limitMessage: 'You have reached the limit',
+                    visibilityConflict: {
+                        isOpen: false,
+                        message: '',
+                    },
+                    closeVisibilityConflictModal:
+                        mockCloseVisibilityConflictModal,
+                    rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
                 })
                 mockUseGuidanceContext.mockReturnValue({
                     ...defaultContextValue,
@@ -305,6 +334,12 @@ describe('useGuidanceDetailsFromContext', () => {
                 toggleVisibility: mockToggleVisibility,
                 isAtLimit: true,
                 limitMessage: 'You have reached the limit',
+                visibilityConflict: {
+                    isOpen: false,
+                    message: '',
+                },
+                closeVisibilityConflictModal: mockCloseVisibilityConflictModal,
+                rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
             })
             mockUseGuidanceContext.mockReturnValue({
                 ...defaultContextValue,
@@ -340,11 +375,44 @@ describe('useGuidanceDetailsFromContext', () => {
                 toggleVisibility: mockToggleVisibility,
                 isAtLimit: true,
                 limitMessage: 'You have reached the limit',
+                visibilityConflict: {
+                    isOpen: false,
+                    message: '',
+                },
+                closeVisibilityConflictModal: mockCloseVisibilityConflictModal,
+                rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
             })
 
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
 
             expect(result.current.isUpdating).toBe(false)
+        })
+
+        it('returns visibility conflict state and handlers', () => {
+            mockUseToggleVisibility.mockReturnValue({
+                toggleVisibility: mockToggleVisibility,
+                isAtLimit: false,
+                limitMessage: 'You have reached the limit',
+                visibilityConflict: {
+                    isOpen: true,
+                    message: 'Conflict message',
+                },
+                closeVisibilityConflictModal: mockCloseVisibilityConflictModal,
+                rebaseAndEnableVisibility: mockRebaseAndEnableVisibility,
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.visibilityConflict).toEqual({
+                isOpen: true,
+                message: 'Conflict message',
+            })
+            expect(result.current.closeVisibilityConflictModal).toBe(
+                mockCloseVisibilityConflictModal,
+            )
+            expect(result.current.rebaseAndEnableVisibility).toBe(
+                mockRebaseAndEnableVisibility,
+            )
         })
     })
 

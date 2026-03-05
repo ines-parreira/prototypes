@@ -31,7 +31,6 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         guidanceHelpCenterId,
         publishedVersionId,
         draftVersionId,
-        linkedIntentsCount,
         guidanceMode,
         showMissingKnowledgeCheckbox,
         shouldAddToMissingKnowledge,
@@ -43,7 +42,6 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
             publishedVersionId: storeState.state.guidance?.publishedVersionId,
             draftVersionId: storeState.state.guidance?.draftVersionId,
-            linkedIntentsCount: storeState.state.guidance?.intents?.length ?? 0,
             guidanceMode: storeState.state.guidanceMode,
             showMissingKnowledgeCheckbox:
                 storeState.config.showMissingKnowledgeCheckbox,
@@ -97,10 +95,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
                 </>
             }
         >
-            <KnowledgeEditorSidePanelSectionGuidanceDetails
-                sectionId="details"
-                linkedIntentsCount={linkedIntentsCount}
-            />
+            <KnowledgeEditorSidePanelSectionGuidanceDetails sectionId="details" />
 
             {isLinkedIntentsEnabled && (
                 <KnowledgeEditorSidePanelSectionLinkedIntents sectionId="linked-intents" />

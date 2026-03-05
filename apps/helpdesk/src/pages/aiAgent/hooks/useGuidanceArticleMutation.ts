@@ -7,13 +7,17 @@ import {
     useCreateArticle,
     useDeleteArticle,
     useDeleteArticleTranslationDraft,
+    useRebasePublishArticleTranslation,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/mutations'
+import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { LocaleCode } from 'models/helpCenter/types'
 import {
     mapGuidanceToArticleApi,
     mapUpdateGuidanceArticleToArticleApi,
 } from 'pages/aiAgent/utils/guidance.utils'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import type { Paths } from 'rest_api/help_center_api/client.generated'
 import { reportError } from 'utils/errors'
 
 import type { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
@@ -23,6 +27,8 @@ export const useGuidanceArticleMutation = ({
 }: {
     guidanceHelpCenterId: number
 }) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
     const {
         mutateAsync: createArticleMutateAsync,
         isLoading: isArticleCreationLoading,
@@ -50,6 +56,11 @@ export const useGuidanceArticleMutation = ({
         mutateAsync: deleteArticleTranslationDraftAsync,
         isLoading: isDiscardingDraft,
     } = useDeleteArticleTranslationDraft(guidanceHelpCenterId)
+
+    const {
+        mutateAsync: rebasePublishArticleTranslationAsync,
+        isLoading: isRebasingPublish,
+    } = useRebasePublishArticleTranslation(guidanceHelpCenterId)
 
     const createGuidanceArticle = useCallback(
         async (createGuidanceArticle: CreateGuidanceArticle) => {
@@ -214,6 +225,100 @@ export const useGuidanceArticleMutation = ({
         [deleteArticleTranslationDraftAsync, guidanceHelpCenterId],
     )
 
+    const rebasePublishGuidanceArticle = useCallback(
+        async (
+            {
+                intents,
+                commitMessage,
+            }: {
+                intents: NonNullable<
+                    Paths.PublishAndRebaseArticleTranslation.RequestBody['intents']
+                >
+                commitMessage?: string
+            },
+            { articleId, locale }: { articleId: number; locale: LocaleCode },
+        ) => {
+            try {
+                const response = await rebasePublishArticleTranslationAsync([
+                    undefined,
+                    {
+                        article_id: articleId,
+                        help_center_id: guidanceHelpCenterId,
+                        locale,
+                    },
+                    {
+                        intents,
+                        commit_message: commitMessage,
+                    },
+                ])
+
+                return response?.data
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context: 'Error during guidance rebase publish',
+                    },
+                })
+
+                throw error
+            }
+        },
+        [guidanceHelpCenterId, rebasePublishArticleTranslationAsync],
+    )
+
+    const getGuidanceArticleTranslation = useCallback(
+        async ({
+            articleId,
+            locale,
+        }: {
+            articleId: number
+            locale: LocaleCode
+        }): Promise<{
+            locale: LocaleCode
+            intents: NonNullable<
+                NonNullable<
+                    Awaited<ReturnType<typeof getHelpCenterArticle>>
+                >['translation']['intents']
+            >
+        } | null> => {
+            try {
+                const article = await getHelpCenterArticle(
+                    helpCenterClient,
+                    {
+                        id: articleId,
+                        help_center_id: guidanceHelpCenterId,
+                    },
+                    {
+                        locale,
+                        version_status: 'current',
+                        locale_fallback: true,
+                    },
+                )
+
+                const translation = article?.translation
+                if (!translation) return null
+
+                return {
+                    locale: translation.locale as LocaleCode,
+                    intents: translation.intents ?? [],
+                }
+            } catch (error) {
+                reportError(error, {
+                    tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
+                    extra: {
+                        context:
+                            'Error while fetching conflicting guidance translation',
+                        articleId,
+                        locale,
+                    },
+                })
+                throw error
+            }
+        },
+        [helpCenterClient, guidanceHelpCenterId],
+    )
+
     return {
         deleteGuidanceArticle,
         isGuidanceArticleDeleting,
@@ -223,10 +328,13 @@ export const useGuidanceArticleMutation = ({
             isArticleCreationLoading ||
             isUpdateArticleTranslationLoading ||
             isCopyArticleLoading ||
-            isBulkCopyArticlesLoading,
+            isBulkCopyArticlesLoading ||
+            isRebasingPublish,
         duplicateGuidanceArticle,
         duplicate,
         discardGuidanceDraft,
         isDiscardingDraft,
+        rebasePublishGuidanceArticle,
+        getGuidanceArticleTranslation,
     }
 }

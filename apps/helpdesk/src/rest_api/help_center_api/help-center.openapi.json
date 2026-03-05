@@ -1182,6 +1182,55 @@
                 "tags": ["article-translations"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/publish-and-rebase": {
+            "post": {
+                "operationId": "publishAndRebaseArticleTranslation",
+                "summary": "Rebase draft and publish from current published version",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "article_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "locale",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RebaseArticleTranslationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArticleTranslationResponseDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-translations"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions": {
             "get": {
                 "operationId": "listArticleTranslationVersions",
@@ -6562,16 +6611,16 @@
                 "properties": {
                     "id": { "type": "number" },
                     "version": { "type": "number" },
-                    "title": { "type": "string" }
+                    "title": { "type": "string" },
+                    "locale": { "type": "string" }
                 },
-                "required": ["id", "version", "title"]
+                "required": ["id", "version", "title", "locale"]
             },
             "ArticleTranslationIntentDto": {
                 "type": "object",
                 "properties": {
                     "name": { "type": "string" },
                     "intent": {
-                        "type": "string",
                         "enum": [
                             "account::deletion",
                             "account::login",
@@ -6628,7 +6677,8 @@
                             "warranty::other",
                             "wholesale::information",
                             "wholesale::other"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "is_available": { "type": "boolean" },
                     "used_by_article": {
@@ -6968,6 +7018,85 @@
                         "example": 12345
                     }
                 }
+            },
+            "RebaseArticleTranslationDto": {
+                "type": "object",
+                "properties": {
+                    "intents": {
+                        "description": "The list of intents to publish on top of the currently published version.",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "account::deletion",
+                                "account::login",
+                                "account::other",
+                                "account::registration",
+                                "account::update",
+                                "exchange::other",
+                                "exchange::request",
+                                "exchange::status",
+                                "feedback::negative",
+                                "feedback::other",
+                                "feedback::positive",
+                                "marketing::advertising",
+                                "marketing::collaboration",
+                                "marketing::other",
+                                "marketing::unsubscribe",
+                                "order::cancel",
+                                "order::damaged",
+                                "order::edit",
+                                "order::missing item",
+                                "order::other",
+                                "order::payment",
+                                "order::placement",
+                                "order::refund",
+                                "order::status",
+                                "order::wrong item",
+                                "other::no reply",
+                                "other::other",
+                                "other::spam",
+                                "product::availability",
+                                "product::customization",
+                                "product::details",
+                                "product::other",
+                                "product::quality issues",
+                                "product::usage",
+                                "promotion & discount::information",
+                                "promotion & discount::issue",
+                                "promotion & discount::other",
+                                "return::information",
+                                "return::other",
+                                "return::request",
+                                "return::status",
+                                "shipping::change address",
+                                "shipping::delay",
+                                "shipping::delivered not received",
+                                "shipping::information",
+                                "shipping::other",
+                                "subscription::cancel",
+                                "subscription::information",
+                                "subscription::modification",
+                                "subscription::other",
+                                "warranty::claim",
+                                "warranty::information",
+                                "warranty::other",
+                                "wholesale::information",
+                                "wholesale::other"
+                            ]
+                        }
+                    },
+                    "publisher_user_id": {
+                        "type": "number",
+                        "description": "The ID of the user publishing this translation. Required when using API key authentication."
+                    },
+                    "commit_message": {
+                        "type": "string",
+                        "description": "Optional commit message describing the publication.",
+                        "maxLength": 280
+                    }
+                },
+                "required": ["intents"]
             },
             "ArticleTranslationVersionResponseDto": {
                 "type": "object",

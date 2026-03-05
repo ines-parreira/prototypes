@@ -480,6 +480,7 @@ declare namespace Components {
             id: number
             version: number
             title: string
+            locale: string
         }
         export interface ArticleTranslationIntentsResponseDto {
             intents: ArticleTranslationIntentGroupDto[]
@@ -3745,6 +3746,76 @@ declare namespace Components {
             ip_address: string
             user_agent: string
         }
+        export interface RebaseArticleTranslationDto {
+            /**
+             * The list of intents to publish on top of the currently published version.
+             */
+            intents: (
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
+            )[]
+            /**
+             * The ID of the user publishing this translation. Required when using API key authentication.
+             */
+            publisher_user_id?: number
+            /**
+             * Optional commit message describing the publication.
+             */
+            commit_message?: string
+        }
         export interface RedirectDto {
             /**
              * Creation date
@@ -6259,6 +6330,22 @@ declare namespace Paths {
             export interface $201 {}
         }
     }
+    namespace PublishAndRebaseArticleTranslation {
+        namespace Parameters {
+            export type ArticleId = number
+            export type HelpCenterId = number
+            export type Locale = string
+        }
+        export interface PathParameters {
+            help_center_id: Parameters.HelpCenterId
+            article_id: Parameters.ArticleId
+            locale: Parameters.Locale
+        }
+        export type RequestBody = Components.Schemas.RebaseArticleTranslationDto
+        namespace Responses {
+            export type $201 = Components.Schemas.ArticleTranslationResponseDto
+        }
+    }
     namespace SetArticlesPositionsInCategory {
         namespace Parameters {
             export type CategoryId = number
@@ -6857,6 +6944,14 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    /**
+     * publishAndRebaseArticleTranslation - Rebase draft and publish from current published version
+     */
+    'publishAndRebaseArticleTranslation'(
+        parameters: Parameters<Paths.PublishAndRebaseArticleTranslation.PathParameters>,
+        data?: Paths.PublishAndRebaseArticleTranslation.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.PublishAndRebaseArticleTranslation.Responses.$201>
     /**
      * listArticleTranslationVersions - List all versions for an article translation
      *
@@ -8168,6 +8263,16 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteArticleTranslation.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/publish-and-rebase']: {
+        /**
+         * publishAndRebaseArticleTranslation - Rebase draft and publish from current published version
+         */
+        'post'(
+            parameters: Parameters<Paths.PublishAndRebaseArticleTranslation.PathParameters>,
+            data?: Paths.PublishAndRebaseArticleTranslation.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.PublishAndRebaseArticleTranslation.Responses.$201>
     }
     ['/api/help-center/help-centers/{help_center_id}/articles/{article_id}/translations/{locale}/versions']: {
         /**

@@ -18,6 +18,12 @@ export type GuidanceDetailsData = {
     isDraft: boolean
     isViewingHistoricalVersion: boolean
     guidanceMode: GuidanceModeType
+    visibilityConflict: {
+        isOpen: boolean
+        message: string
+    }
+    closeVisibilityConflictModal: () => void
+    rebaseAndEnableVisibility: () => Promise<void>
 }
 
 const getAiAgentStatusTooltip = (
@@ -62,7 +68,14 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             lastUpdated: storeState.guidanceArticle?.lastUpdated,
         })),
     )
-    const { toggleVisibility, isAtLimit, limitMessage } = useToggleVisibility()
+    const {
+        toggleVisibility,
+        isAtLimit,
+        limitMessage,
+        visibilityConflict,
+        closeVisibilityConflictModal,
+        rebaseAndEnableVisibility,
+    } = useToggleVisibility()
 
     const isDisabled = isUpdating || isAutoSaving
     const isDraft = isGuidanceCurrent === undefined ? false : !isGuidanceCurrent
@@ -100,6 +113,12 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             isDraft,
             isViewingHistoricalVersion,
             guidanceMode,
+            visibilityConflict: {
+                isOpen: visibilityConflict.isOpen,
+                message: visibilityConflict.message,
+            },
+            closeVisibilityConflictModal,
+            rebaseAndEnableVisibility,
         }),
         [
             visibility,
@@ -112,6 +131,10 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             isDisabled,
             isViewingHistoricalVersion,
             guidanceMode,
+            visibilityConflict.isOpen,
+            visibilityConflict.message,
+            closeVisibilityConflictModal,
+            rebaseAndEnableVisibility,
         ],
     )
 }

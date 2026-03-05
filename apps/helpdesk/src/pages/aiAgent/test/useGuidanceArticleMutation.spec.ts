@@ -7,8 +7,11 @@ import {
     useCreateArticle,
     useDeleteArticle,
     useDeleteArticleTranslationDraft,
+    useRebasePublishArticleTranslation,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/mutations'
+import { getHelpCenterArticle } from 'models/helpCenter/resources'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { reportError } from 'utils/errors'
 
 import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
@@ -20,6 +23,16 @@ jest.mock('models/helpCenter/mutations', () => ({
     useUpdateArticleTranslation: jest.fn(),
     useCopyArticle: jest.fn(),
     useBulkCopyArticles: jest.fn(),
+    useRebasePublishArticleTranslation: jest.fn(),
+}))
+
+jest.mock('models/helpCenter/resources', () => ({
+    ...jest.requireActual('models/helpCenter/resources'),
+    getHelpCenterArticle: jest.fn(),
+}))
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useHelpCenterApi: jest.fn(),
 }))
 
 jest.mock('utils/errors', () => ({
@@ -36,6 +49,11 @@ const mockedUseUpdateArticleTranslation = jest.mocked(
 )
 const mockedUseCopyArticle = jest.mocked(useCopyArticle)
 const mockedUseBulkCopyArticles = jest.mocked(useBulkCopyArticles)
+const mockedUseRebasePublishArticleTranslation = jest.mocked(
+    useRebasePublishArticleTranslation,
+)
+const mockedGetHelpCenterArticle = jest.mocked(getHelpCenterArticle)
+const mockedUseHelpCenterApi = jest.mocked(useHelpCenterApi)
 const mockedReportError = jest.mocked(reportError)
 
 describe('useGuidanceArticleMutation', () => {
@@ -44,6 +62,10 @@ describe('useGuidanceArticleMutation', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: {} as any,
+        } as any)
+        mockedGetHelpCenterArticle.mockResolvedValue(null)
 
         mockedUseCreateArticle.mockReturnValue({
             mutateAsync: mutateAsyncMock,
@@ -74,6 +96,102 @@ describe('useGuidanceArticleMutation', () => {
             mutateAsync: mutateAsyncMock,
             isLoading: false,
         } as any)
+
+        mockedUseRebasePublishArticleTranslation.mockReturnValue({
+            mutateAsync: mutateAsyncMock,
+            isLoading: false,
+        } as any)
+    })
+
+    describe('getGuidanceArticleTranslation', () => {
+        it('returns translation intents and locale for conflicting guidance', async () => {
+            mockedGetHelpCenterArticle.mockResolvedValueOnce({
+                id: 42,
+                translation: {
+                    locale: 'en-US',
+                    intents: ['marketing::unsubscribe', 'order::status'],
+                },
+            } as any)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            const translation = await act(async () =>
+                result.current.getGuidanceArticleTranslation({
+                    articleId: 42,
+                    locale: 'en',
+                } as any),
+            )
+
+            expect(mockedGetHelpCenterArticle).toHaveBeenCalledWith(
+                expect.anything(),
+                {
+                    id: 42,
+                    help_center_id: helpCenterId,
+                },
+                {
+                    locale: 'en',
+                    version_status: 'current',
+                    locale_fallback: true,
+                },
+            )
+            expect(translation).toEqual({
+                locale: 'en-US',
+                intents: ['marketing::unsubscribe', 'order::status'],
+            })
+        })
+
+        it('returns null when translation is not available', async () => {
+            mockedGetHelpCenterArticle.mockResolvedValueOnce(null)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            const translation = await act(async () =>
+                result.current.getGuidanceArticleTranslation({
+                    articleId: 999,
+                    locale: 'en',
+                } as any),
+            )
+
+            expect(translation).toBeNull()
+        })
+
+        it('reports and rethrows errors when fetching translation fails', async () => {
+            const error = new Error('Fetch failed')
+            mockedGetHelpCenterArticle.mockRejectedValueOnce(error)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await expect(async () => {
+                await act(async () => {
+                    await result.current.getGuidanceArticleTranslation({
+                        articleId: 42,
+                        locale: 'en',
+                    } as any)
+                })
+            }).rejects.toThrow('Fetch failed')
+
+            expect(mockedReportError).toHaveBeenCalledWith(error, {
+                tags: { team: 'convai-knowledge' },
+                extra: {
+                    context:
+                        'Error while fetching conflicting guidance translation',
+                    articleId: 42,
+                    locale: 'en',
+                },
+            })
+        })
     })
 
     describe('duplicateGuidanceArticle', () => {
@@ -283,6 +401,99 @@ describe('useGuidanceArticleMutation', () => {
         })
     })
 
+    it('should call rebasePublishGuidanceArticle with correct parameters', async () => {
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        await act(async () => {
+            await result.current.rebasePublishGuidanceArticle(
+                {
+                    intents: ['order::status'],
+                },
+                {
+                    articleId: 2,
+                    locale: 'en',
+                } as any,
+            )
+        })
+
+        expect(mutateAsyncMock).toHaveBeenCalledWith([
+            undefined,
+            {
+                article_id: 2,
+                help_center_id: helpCenterId,
+                locale: 'en',
+            },
+            {
+                intents: ['order::status'],
+                commit_message: undefined,
+            },
+        ])
+    })
+
+    it('reports and rethrows errors when rebasePublishGuidanceArticle fails', async () => {
+        const error = new Error('Rebase failed')
+        mutateAsyncMock.mockRejectedValueOnce(error)
+
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        await expect(async () => {
+            await act(async () => {
+                await result.current.rebasePublishGuidanceArticle(
+                    {
+                        intents: ['order::status'],
+                    },
+                    {
+                        articleId: 2,
+                        locale: 'en',
+                    } as any,
+                )
+            })
+        }).rejects.toThrow('Rebase failed')
+
+        expect(mockedReportError).toHaveBeenCalledWith(error, {
+            tags: { team: 'convai-knowledge' },
+            extra: {
+                context: 'Error during guidance rebase publish',
+            },
+        })
+    })
+
+    it('returns empty intents when conflicting translation has no intents', async () => {
+        mockedGetHelpCenterArticle.mockResolvedValueOnce({
+            id: 42,
+            translation: {
+                locale: 'en-US',
+                intents: undefined,
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useGuidanceArticleMutation({
+                guidanceHelpCenterId: helpCenterId,
+            }),
+        )
+
+        const translation = await act(async () =>
+            result.current.getGuidanceArticleTranslation({
+                articleId: 42,
+                locale: 'en',
+            } as any),
+        )
+
+        expect(translation).toEqual({
+            locale: 'en-US',
+            intents: [],
+        })
+    })
+
     it('should throw an error when createGuidanceArticle is called without content', async () => {
         mockedUseCreateArticle.mockReturnValue({
             mutateAsync: mutateAsyncMock,
@@ -431,6 +642,99 @@ describe('useGuidanceArticleMutation', () => {
                     locale: 'fr',
                 },
             ])
+        })
+    })
+
+    describe('deleteGuidanceArticle', () => {
+        it('should call deleteGuidanceArticle with correct parameters', async () => {
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await act(async () => {
+                await result.current.deleteGuidanceArticle(321)
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith([
+                undefined,
+                {
+                    id: 321,
+                    help_center_id: helpCenterId,
+                },
+            ])
+        })
+
+        it('reports and rethrows errors when deleteGuidanceArticle fails', async () => {
+            const error = new Error('Delete failed')
+            mutateAsyncMock.mockRejectedValueOnce(error)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await expect(async () => {
+                await act(async () => {
+                    await result.current.deleteGuidanceArticle(321)
+                })
+            }).rejects.toThrow('Delete failed')
+
+            expect(mockedReportError).toHaveBeenCalledWith(error, {
+                tags: { team: 'convai-knowledge' },
+                extra: {
+                    context: 'Error during guidance article deletion',
+                },
+            })
+        })
+    })
+
+    describe('duplicate', () => {
+        it('should call duplicate with expected payload', async () => {
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await act(async () => {
+                await result.current.duplicate([1, 2], ['shop-a', 'shop-b'])
+            })
+
+            expect(mutateAsyncMock).toHaveBeenCalledWith([
+                undefined,
+                { help_center_id: helpCenterId },
+                {
+                    article_ids: [1, 2],
+                    shop_names: ['shop-a', 'shop-b'],
+                },
+            ])
+        })
+
+        it('reports and rethrows errors when duplicate fails', async () => {
+            const error = new Error('Bulk copy failed')
+            mutateAsyncMock.mockRejectedValueOnce(error)
+
+            const { result } = renderHook(() =>
+                useGuidanceArticleMutation({
+                    guidanceHelpCenterId: helpCenterId,
+                }),
+            )
+
+            await expect(async () => {
+                await act(async () => {
+                    await result.current.duplicate([1], ['shop-a'])
+                })
+            }).rejects.toThrow('Bulk copy failed')
+
+            expect(mockedReportError).toHaveBeenCalledWith(error, {
+                tags: { team: 'convai-knowledge' },
+                extra: {
+                    context: 'Error during guidance article duplication',
+                },
+            })
         })
     })
 })

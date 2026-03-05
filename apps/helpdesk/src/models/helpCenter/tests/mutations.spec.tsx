@@ -16,6 +16,7 @@ import {
     useDeleteArticle,
     useDeleteArticleTranslation,
     useDeleteArticleTranslationDraft,
+    useRebasePublishArticleTranslation,
     useUpdateArticleTranslation,
 } from '../mutations'
 import { helpCenterKeys } from '../queries'
@@ -32,6 +33,7 @@ jest.mock('../resources', () => ({
     bulkDeleteArticles: jest.fn(),
     bulkCopyArticles: jest.fn(),
     bulkUpdateArticleTranslationVisibility: jest.fn(),
+    rebasePublishArticleTranslation: jest.fn(),
 }))
 
 const mockCreateArticle = resources.createArticle as jest.Mock
@@ -49,6 +51,8 @@ const mockBulkDeleteArticles = resources.bulkDeleteArticles as jest.Mock
 const mockBulkCopyArticles = resources.bulkCopyArticles as jest.Mock
 const mockBulkUpdateArticleTranslationVisibility =
     resources.bulkUpdateArticleTranslationVisibility as jest.Mock
+const mockRebasePublishArticleTranslation =
+    resources.rebasePublishArticleTranslation as jest.Mock
 
 const mockTranslationPayload = {
     locale: 'en-US' as const,
@@ -869,6 +873,103 @@ describe('helpCenter mutations', () => {
                 expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
                     queryKey: articleListKey,
                 })
+            })
+        })
+    })
+
+    describe('useRebasePublishArticleTranslation', () => {
+        const queryClient = mockQueryClient()
+        const onSettled = jest.fn()
+        const onError = jest.fn()
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            queryClient.clear()
+            jest.spyOn(queryClient, 'invalidateQueries')
+        })
+
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        )
+
+        it('calls resource mutation with expected arguments', async () => {
+            mockRebasePublishArticleTranslation.mockResolvedValue({
+                data: { id: 1 },
+            })
+            const onSuccess = jest.fn()
+
+            const { result } = renderHook(
+                () =>
+                    useRebasePublishArticleTranslation(helpCenterId, {
+                        onSuccess,
+                    }),
+                { wrapper },
+            )
+
+            result.current.mutate([
+                undefined,
+                { help_center_id: helpCenterId, article_id: 1, locale: 'en' },
+                { intents: ['order::status'] },
+            ])
+
+            await waitFor(() => {
+                expect(mockRebasePublishArticleTranslation).toHaveBeenCalled()
+                expect(onSuccess).toHaveBeenCalledWith({ data: { id: 1 } })
+            })
+        })
+
+        it('calls onError callback when resource mutation fails', async () => {
+            const error = new Error('Rebase failed')
+            mockRebasePublishArticleTranslation.mockRejectedValue(error)
+
+            const { result } = renderHook(
+                () =>
+                    useRebasePublishArticleTranslation(helpCenterId, {
+                        onError,
+                    }),
+                { wrapper },
+            )
+
+            result.current.mutate([
+                undefined,
+                { help_center_id: helpCenterId, article_id: 1, locale: 'en' },
+                { intents: ['order::status'] },
+            ])
+
+            await waitFor(() => {
+                expect(onError).toHaveBeenCalledWith(error)
+            })
+        })
+
+        it('invalidates article and article list caches on settled', async () => {
+            mockRebasePublishArticleTranslation.mockResolvedValue({
+                data: { id: 1 },
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useRebasePublishArticleTranslation(helpCenterId, {
+                        onSettled,
+                    }),
+                { wrapper },
+            )
+
+            result.current.mutate([
+                undefined,
+                { help_center_id: helpCenterId, article_id: 1, locale: 'en' },
+                { intents: ['order::status'] },
+            ])
+
+            await waitFor(() => {
+                expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+                    queryKey: helpCenterKeys.article(helpCenterId, 1),
+                })
+                expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
+                    queryKey: articleListKey,
+                })
+                expect(onSettled).toHaveBeenCalled()
             })
         })
     })

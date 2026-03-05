@@ -17,6 +17,7 @@ import {
     getIngestionLogs,
     getKnowledgeStatus,
     listIngestedResources,
+    rebasePublishArticleTranslation,
     startIngestion,
     updateAllIngestedResourcesStatus,
     updateIngestedResource,
@@ -639,6 +640,52 @@ describe('resources', () => {
                 locale: 'en',
             })
             expect(result).toEqual(data)
+        })
+    })
+
+    describe('rebasePublishArticleTranslation', () => {
+        it('should return null when client is not set', async () => {
+            const result = await rebasePublishArticleTranslation(
+                undefined,
+                {
+                    help_center_id,
+                    article_id: 123,
+                    locale: 'en',
+                },
+                {
+                    intents: ['order::status'],
+                },
+            )
+
+            expect(result).toBeNull()
+        })
+
+        it('should call API with correct parameters', async () => {
+            const client = {
+                publishAndRebaseArticleTranslation: jest
+                    .fn()
+                    .mockResolvedValue({ data: { id: 1 } }),
+            }
+            const pathParams = {
+                help_center_id,
+                article_id: 123,
+                locale: 'en' as const,
+            }
+            const body: Parameters<typeof rebasePublishArticleTranslation>[2] =
+                {
+                    intents: ['order::status'],
+                }
+
+            const result = await rebasePublishArticleTranslation(
+                client as unknown as HelpCenterClient,
+                pathParams,
+                body,
+            )
+
+            expect(
+                client.publishAndRebaseArticleTranslation,
+            ).toHaveBeenCalledWith(pathParams, body)
+            expect(result).toEqual({ data: { id: 1 } })
         })
     })
 })
