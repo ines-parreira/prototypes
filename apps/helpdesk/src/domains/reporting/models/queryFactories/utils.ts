@@ -269,7 +269,7 @@ export const addOptionalFilter = (
             reportingFilters = [
                 {
                     member: filterDefaults.member,
-                    values: [...filter.values.map(toLowerCaseString), null],
+                    values: filter.values.map(toLowerCaseString),
                     operator: FilterOperatorMap[filter.operator],
                 },
             ]

@@ -1,5 +1,4 @@
 import { AiSalesAgentOrdersFilterMember } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { HelpdeskMessageMember } from 'domains/reporting/models/cubes/HelpdeskMessageCube'
 import { TicketMember } from 'domains/reporting/models/cubes/TicketCube'
 import {
     addFieldIdToCustomFieldValues,
@@ -337,27 +336,6 @@ describe('utils', () => {
                     member: TicketMember.MessageSenderIdToExclude,
                     operator: ReportingFilterOperator.NotEquals,
                     values: filter.values,
-                },
-            ])
-        })
-
-        it('should add null value for HelpdeskMessageMember.SenderId with NOT_ONE_OF', () => {
-            const filters: ReportingFilter[] = []
-            const filter = {
-                values: ['123', '456'],
-                operator: LogicalOperatorEnum.NOT_ONE_OF,
-            }
-
-            const updatedFilters = addOptionalFilter(filters, filter, {
-                member: HelpdeskMessageMember.SenderId,
-                operator: ReportingFilterOperator.Equals,
-            })
-
-            expect(updatedFilters).toEqual([
-                {
-                    member: HelpdeskMessageMember.SenderId,
-                    operator: ReportingFilterOperator.NotEquals,
-                    values: [...filter.values, null],
                 },
             ])
         })
