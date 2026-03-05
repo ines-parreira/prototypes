@@ -191,7 +191,7 @@ export function MultiLevelSelect(props: Props) {
                     )
                 }
                 footer={
-                    !!selectedOption && (
+                    !!selectedValue && (
                         <ListFooter>
                             <Button
                                 size="sm"
