@@ -42,7 +42,10 @@ export const useToggleAIAgentVisibility = () => {
             if (response?.data) {
                 dispatch({
                     type: 'UPDATE_TRANSLATION',
-                    payload: response.data,
+                    payload: {
+                        ...response.data,
+                        is_current: state.article.translation.is_current,
+                    },
                 })
                 onUpdatedFn?.()
                 notifySuccess(
@@ -59,6 +62,7 @@ export const useToggleAIAgentVisibility = () => {
     }, [
         state.article?.id,
         state.article?.translation.customer_visibility,
+        state.article?.translation.is_current,
         state.currentLocale,
         currentVisibilityStatus,
         helpCenter.id,

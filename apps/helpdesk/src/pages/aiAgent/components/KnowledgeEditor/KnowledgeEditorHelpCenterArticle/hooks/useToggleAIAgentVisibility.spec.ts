@@ -302,7 +302,7 @@ describe('useToggleAIAgentVisibility', () => {
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'UPDATE_TRANSLATION',
-            payload: translationData,
+            payload: { ...translationData, is_current: true },
         })
         expect(mockOnUpdatedFn).toHaveBeenCalled()
     })
@@ -378,6 +378,40 @@ describe('useToggleAIAgentVisibility', () => {
                 is_current: false,
             },
         ])
+    })
+
+    it('preserves is_current from state when dispatching UPDATE_TRANSLATION', async () => {
+        const article = createMockArticle({
+            translation: {
+                ...createMockArticle().translation,
+                is_current: true,
+                visibility_status: 'PUBLIC',
+            },
+        })
+        mockMutateAsync.mockResolvedValue({
+            data: {
+                visibility_status: 'UNLISTED',
+                is_current: false,
+            },
+        })
+
+        setupContext({
+            state: { article } as ArticleContextValue['state'],
+        })
+
+        const { result } = renderHook(() => useToggleAIAgentVisibility())
+
+        await act(async () => {
+            await result.current.toggleAIAgentVisibility()
+        })
+
+        expect(mockDispatch).toHaveBeenCalledWith({
+            type: 'UPDATE_TRANSLATION',
+            payload: {
+                visibility_status: 'UNLISTED',
+                is_current: true,
+            },
+        })
     })
 
     it('does not dispatch UPDATE_TRANSLATION on mutation failure', async () => {
