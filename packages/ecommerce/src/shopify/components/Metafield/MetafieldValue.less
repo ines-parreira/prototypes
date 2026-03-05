@@ -1,0 +1,43 @@
+:local {
+    .trackingUrl {
+        color: var(--content-accent-default);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration: underline;
+    }
+
+    .colorSwatch {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .field {
+        display: block;
+        position: relative;
+        width: fit-content;
+        padding-right: 20px;
+
+        &:hover {
+            .copyButton {
+                visibility: visible;
+            }
+        }
+    }
+
+    .copyButton {
+        display: inline-block;
+        visibility: hidden;
+        margin-left: var(--spacing-xxs);
+        position: absolute;
+        top: 0;
+        right: -5px;
+    }
+
+    .tooltip {
+        color: white;
+    }
+}

@@ -28,6 +28,8 @@
 
     .label {
         color: var(--content-neutral-secondary);
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 
     .lineItemsCount {
@@ -56,5 +58,18 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         text-decoration: underline;
+    }
+
+    .colorSwatch {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .metafieldValue {
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }

@@ -1,8 +1,10 @@
+import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
+import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
 import { useUserDateTimePreferences } from '@repo/user'
 
 import { Box, Text } from '@gorgias/axiom'
 
-import { useGetOrderMetafields } from '../../hooks/useGetOrderMetafields'
+import { OrderMetafieldsSection } from './OrderMetafieldsSection'
 import type { OrderFieldRenderContext } from './types'
 import { useOrderDetailsFieldPreferences } from './useOrderDetailsFieldPreferences'
 
@@ -15,6 +17,7 @@ type Props = {
         note?: string
         created_at?: string
         invoice_url?: string
+        metafields?: FullShopifyMetafield[]
     }
     isDraftOrder?: boolean
     integrationId?: number
@@ -29,11 +32,6 @@ export function OrderDetailsSection({
     ticketId,
     storeName,
 }: Props) {
-    const { metafields } = useGetOrderMetafields({
-        integrationId,
-        orderId: order.id,
-    })
-
     const { dateFormat, timeFormat } = useUserDateTimePreferences()
 
     const { fields } = useOrderDetailsFieldPreferences()
@@ -101,24 +99,11 @@ export function OrderDetailsSection({
                         </Box>
                     )
                 })}
-
-                {metafields?.map((field) => (
-                    <Box
-                        key={`${field.namespace ?? ''}.${field.key}`}
-                        display="grid"
-                        w="100%"
-                        alignItems="flex-start"
-                        gap="xs"
-                        className={css.row}
-                    >
-                        <Text as="span" size="md" className={css.label}>
-                            {field.namespace
-                                ? `${field.namespace}.${field.key}`
-                                : field.key}
-                        </Text>
-                        <Text size="md">{String(field.value)}</Text>
-                    </Box>
-                ))}
+                <OrderMetafieldsSection
+                    integrationId={integrationId}
+                    metafields={normalizeMetafields(order.metafields)}
+                    storeName={storeName}
+                />
             </Box>
         </Box>
     )

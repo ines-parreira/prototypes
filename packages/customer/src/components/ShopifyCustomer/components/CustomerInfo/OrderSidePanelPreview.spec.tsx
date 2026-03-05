@@ -8,6 +8,14 @@ import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        EnableShopifyMetafieldsIngestionUI:
+            'EnableShopifyMetafieldsIngestionUI',
+    },
+    useFlag: vi.fn().mockReturnValue(false),
+}))
+
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 const usersHandler = http.get('/api/users/:id', () => HttpResponse.json({}))
 
@@ -33,6 +41,11 @@ const shopOrderTagsHandler = http.get(
 
 const metafieldsHandler = http.get(
     '/integrations/shopify/:integrationId/order/:orderId/metafields',
+    () => HttpResponse.json({ data: [], meta: {} }),
+)
+
+const definitionsHandler = http.get(
+    '/api/integrations/shopify/:integrationId/metafield-definitions',
     () => HttpResponse.json({ data: [], meta: {} }),
 )
 
@@ -289,7 +302,7 @@ describe('OrderSidePanelPreview', () => {
 
 describe('OrderSidePanelPreview — Order Details section', () => {
     beforeEach(() => {
-        server.use(shopOrderTagsHandler, metafieldsHandler)
+        server.use(shopOrderTagsHandler, metafieldsHandler, definitionsHandler)
     })
 
     it('renders "Order details" section header', async () => {
@@ -446,6 +459,91 @@ describe('OrderSidePanelPreview — Order Details section', () => {
             expect(
                 screen.queryByText('Handle with care'),
             ).not.toBeInTheDocument()
+        })
+    })
+})
+
+describe('OrderSidePanelPreview — metafields inside Order Details section', () => {
+    beforeEach(() => {
+        server.use(shopOrderTagsHandler, metafieldsHandler, definitionsHandler)
+    })
+
+    it('renders metafield value inside the Order details section', async () => {
+        server.use(
+            http.get(
+                '/api/integrations/shopify/:integrationId/metafield-definitions',
+                () =>
+                    HttpResponse.json({
+                        data: [{ key: 'note', name: 'Note' }],
+                        meta: {},
+                    }),
+            ),
+        )
+
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockOrderWithDetails,
+                    metafields: [
+                        {
+                            key: 'note',
+                            type: 'single_line_text_field',
+                            value: 'Rush order',
+                        },
+                    ],
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                integrationId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Order details')).toBeInTheDocument()
+            expect(screen.getByText('Rush order')).toBeInTheDocument()
+        })
+    })
+
+    it('renders metafield label and value using definition name when available', async () => {
+        server.use(
+            http.get(
+                '/api/integrations/shopify/:integrationId/metafield-definitions',
+                () =>
+                    HttpResponse.json({
+                        data: [
+                            {
+                                namespace: 'custom',
+                                key: 'gift_message',
+                                name: 'Gift Message',
+                            },
+                        ],
+                        meta: {},
+                    }),
+            ),
+        )
+
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockOrderWithDetails,
+                    metafields: [
+                        {
+                            namespace: 'custom',
+                            key: 'gift_message',
+                            type: 'single_line_text_field',
+                            value: 'Happy Birthday!',
+                        },
+                    ],
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                integrationId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Gift Message')).toBeInTheDocument()
+            expect(screen.getByText('Happy Birthday!')).toBeInTheDocument()
         })
     })
 })

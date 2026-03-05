@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import type { ReactNode } from 'react'
 
+import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
 import type {
     FinancialStatusValue,
     FulfillmentStatusValue,
@@ -46,6 +47,7 @@ export type OrderData = {
         tracking_number?: string | null
     }> | null
     shipping_address?: ShippingAddress | null
+    metafields?: FullShopifyMetafield[]
 }
 
 type Props<T extends OrderData = OrderData> = {
