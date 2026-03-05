@@ -108,12 +108,13 @@ export type {
     FacebookIntegrationMeta,
     FacebookIntegrationSettings,
 } from './facebook'
-export { isHttpIntegration } from './http'
+export { isHttpIntegration, OAuth2TokenLocation } from './http'
 export type {
     HTTPForm,
     HttpIntegration,
     HTTPIntegrationEvent,
     HttpIntegrationMeta,
+    OAuth2Config,
 } from './http'
 export { isShopifyIntegration, ShopifyTags } from './shopify'
 export type {
