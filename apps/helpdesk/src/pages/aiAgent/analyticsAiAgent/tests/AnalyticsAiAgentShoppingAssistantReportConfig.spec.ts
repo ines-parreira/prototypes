@@ -104,6 +104,21 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
+    it('should have handover interactions card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.HandoverInteractionsCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Handover interactions')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+    })
+
     it('should have shopping assistant trend combo chart config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
@@ -238,6 +253,21 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.DiscountUsageCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
+    it('should have fetch function for handover interactions trend', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.HandoverInteractionsCard
             ]
 
         expect(config.csvProducer).toBeDefined()

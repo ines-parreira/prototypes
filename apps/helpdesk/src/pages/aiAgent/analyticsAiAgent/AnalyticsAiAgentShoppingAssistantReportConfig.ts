@@ -1,4 +1,5 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchAiAgentSalesHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSalesHandoverInteractionsTrend'
 import { fetchAverageOrderValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useAverageOrderValueTrend'
 import { fetchConversionRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useConversionRateTrend'
 import { fetchDiscountCodesAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
@@ -35,6 +36,7 @@ import { AnalyticsShoppingAssistantPerformanceTable } from 'pages/aiAgent/analyt
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
+import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { TotalSalesByProductComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/TotalSalesByProductComboChart'
@@ -76,6 +78,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     ClickThroughRateCard = 'click_through_rate_card',
     SuccessRateCard = 'sales_rate_card',
     ProductRecommendationsCard = 'product_recommendations_card',
+    HandoverInteractionsCard = 'handover_interactions_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -330,6 +333,22 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     metricFormat: 'decimal',
                     interpretAs: 'more-is-better',
                 },
+            [AnalyticsAiAgentShoppingAssistantChart.HandoverInteractionsCard]: {
+                chartComponent: AnalyticsAiAgentSalesHandoverInteractionsCard,
+                label: 'Handover interactions',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentSalesHandoverInteractionsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'less-is-better',
+            },
             [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
                 {
                     chartComponent: TotalSalesByProductComboChart,

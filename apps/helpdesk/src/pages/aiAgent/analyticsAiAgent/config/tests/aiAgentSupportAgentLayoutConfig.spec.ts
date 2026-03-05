@@ -9,7 +9,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 5 cards', () => {
+        it('should have kpis section with 6 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
@@ -45,6 +45,17 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             const csatCard = kpisSection.items[4]
             expect(csatCard.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
+            const kpisSection =
+                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
+            const handoverCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
+            )
+            expect(handoverCard?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have all KPI cards with gridSize 3', () => {
@@ -93,7 +104,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 8 charts across all sections', () => {
+        it('should have total of 9 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,

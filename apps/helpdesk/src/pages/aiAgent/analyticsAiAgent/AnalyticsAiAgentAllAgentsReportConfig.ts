@@ -3,6 +3,7 @@ import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automat
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchAiAgentAllAgentsHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentAllAgentsHandoverInteractionsTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
@@ -11,6 +12,7 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
+import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
@@ -57,6 +59,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     AverageCsatCard = 'average_csat_card',
     CoverageRateCard = 'coverage_rate_card',
     ClosedTicketsCard = 'closed_tickets_card',
+    HandoverInteractionsCard = 'handover_interactions_card',
     CostSavedCard = 'cost_saved_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
@@ -196,6 +199,23 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard]: {
+                chartComponent:
+                    AnalyticsAiAgentAllAgentsHandoverInteractionsCard,
+                label: 'Handover interactions',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentAllAgentsHandoverInteractionsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'less-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.CostSavedCard]: {
                 chartComponent: AnalyticsAiAgentCostSavedCard,

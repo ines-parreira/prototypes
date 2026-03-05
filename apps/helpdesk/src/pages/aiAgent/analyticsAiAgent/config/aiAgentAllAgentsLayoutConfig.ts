@@ -58,6 +58,13 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         requiresFeatureFlag: true,
                     },
                     {
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
+                    {
                         chartId: AnalyticsAiAgentAllAgentsChart.CostSavedCard,
                         gridSize: 3,
                         visibility: true,

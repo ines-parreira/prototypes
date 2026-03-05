@@ -9,6 +9,7 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
@@ -22,6 +23,7 @@ import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiA
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
+import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
@@ -355,6 +357,30 @@ describe('Analytics Dynamic Trend Cards', () => {
                 label: 'Handover interactions',
                 description:
                     'The number of interactions handed over from AI Agent to a human support agent.',
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 150,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsHandoverInteractionsCard',
+            Component: AnalyticsAiAgentAllAgentsHandoverInteractionsCard,
+            config: {
+                label: 'Handover interactions',
+                description:
+                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 150,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSalesHandoverInteractionsCard',
+            Component: AnalyticsAiAgentSalesHandoverInteractionsCard,
+            config: {
+                label: 'Handover interactions',
+                description:
+                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
                 metricFormat: 'decimal' as const,
                 value: 120,
                 prevValue: 150,

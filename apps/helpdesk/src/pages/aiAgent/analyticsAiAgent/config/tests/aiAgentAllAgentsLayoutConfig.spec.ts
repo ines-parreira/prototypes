@@ -1,5 +1,5 @@
-import { AnalyticsAiAgentAllAgentsChart } from '../../AnalyticsAiAgentAllAgentsReportConfig'
-import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from '../aiAgentAllAgentsLayoutConfig'
+import { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
+import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
 
 describe('aiAgentAllAgentsLayoutConfig', () => {
     describe('ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT', () => {
@@ -9,11 +9,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 9 cards', () => {
+        it('should have kpis section with 10 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(9)
+            expect(kpisSection.items).toHaveLength(10)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -43,6 +43,9 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
                 AnalyticsAiAgentAllAgentsChart.ClosedTicketsCard,
             )
             expect(kpisSection.items[8].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard,
+            )
+            expect(kpisSection.items[9].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.CostSavedCard,
             )
         })
@@ -65,14 +68,32 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
 
         it('should have ClosedTicketsCard with requiresFeatureFlag', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
-            const closedTicketsCard = kpisSection.items[7]
-            expect(closedTicketsCard.requiresFeatureFlag).toBe(true)
+            const closedTicketsCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.ClosedTicketsCard,
+            )
+            expect(closedTicketsCard?.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
+            const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
+            const handoverCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard,
+            )
+            expect(handoverCard?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have CostSavedCard with requiresFeatureFlag', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
-            const costSavedCard = kpisSection.items[8]
-            expect(costSavedCard.requiresFeatureFlag).toBe(true)
+            const costSavedCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.CostSavedCard,
+            )
+            expect(costSavedCard?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have all non-feature-flag KPI cards without requiresFeatureFlag', () => {
@@ -127,13 +148,13 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 11 charts across all sections', () => {
+        it('should have total of 13 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(12)
+            expect(totalCharts).toBe(13)
         })
 
         it('should have all required chart types defined', () => {
