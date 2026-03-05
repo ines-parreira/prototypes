@@ -51,6 +51,7 @@ export const BannerCategories = {
     AI_SHOPPING_ASSISTANT_TRIAL_REVAMP: 'ai_shopping_assistant_trial_revamp',
     AI_AGENT_TRIAL: 'ai_agent_trial',
     BILLING: 'billing',
+    BILLING_ADDRESS_VALIDATION: 'billing_address_validation',
     EMAIL_DISCONNECTED: 'email_disconnected',
     EMAIL_DOMAIN_VERIFICATION: 'email_domain_verification',
     EMAIL_MIGRATION_BANNER: 'email_migration_banner',

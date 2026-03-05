@@ -170,6 +170,13 @@ export type UpcomingInvoiceSummary = {
     usages: ProductUsages
 }
 
+export enum BillingAddressValidationStatus {
+    NotValidated = 'not_validated',
+    Valid = 'valid',
+    PartiallyValid = 'partially_valid',
+    Invalid = 'invalid',
+}
+
 export enum SubscriptionStatus {
     ACTIVE = 'active',
     CANCELED = 'canceled',
@@ -228,6 +235,7 @@ type CustomerSummary = {
     ach_credit_bank_account?: AchCreditBankAccount | null
     payment_term_days: number | null
     is_vetted: boolean
+    billing_address_validation_status: BillingAddressValidationStatus
 }
 
 export type CurrentPlans = {

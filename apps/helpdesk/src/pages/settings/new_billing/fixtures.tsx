@@ -25,7 +25,12 @@ import type {
     SubscriptionSummary,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import { Cadence, ProductType, SubscriptionStatus } from 'models/billing/types'
+import {
+    BillingAddressValidationStatus,
+    Cadence,
+    ProductType,
+    SubscriptionStatus,
+} from 'models/billing/types'
 import type { Invoice } from 'state/billing/types'
 import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
 
@@ -216,6 +221,8 @@ export const payingWithCreditCard: BillingState = {
         ach_credit_bank_account: null,
         payment_term_days: null,
         is_vetted: false,
+        billing_address_validation_status:
+            BillingAddressValidationStatus.NotValidated,
     },
     current_plans: {
         helpdesk: basicMonthlyHelpdeskPlan,
@@ -317,6 +324,8 @@ export const trial: BillingState = {
         ach_credit_bank_account: null,
         payment_term_days: null,
         is_vetted: true,
+        billing_address_validation_status:
+            BillingAddressValidationStatus.NotValidated,
     },
     current_plans: {
         helpdesk: proMonthlyHelpdeskPlan,
