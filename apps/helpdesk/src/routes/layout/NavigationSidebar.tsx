@@ -90,7 +90,7 @@ export function NavigationSidebar() {
             </Box>
 
             <SidebarContent>
-                {!isCollapsed && <CurrentContent />}
+                <CurrentContent />
             </SidebarContent>
 
             <SidebarFooter>

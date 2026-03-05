@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen } from '@testing-library/react'
@@ -47,15 +48,26 @@ const mockUseParams = jest.mocked(useParams)
 const mockPush = jest.fn()
 const mockReplace = jest.fn()
 const mockSetLastSelectedStore = jest.fn()
+const mockToggleCollapse = jest.fn()
 
 const mockUseFlag = useFlag as jest.Mock
 
-const renderNavbar = (location = '/app/ai-journey/teststore1') =>
+const renderNavbar = (
+    location = '/app/ai-journey/teststore1',
+    isCollapsed = false,
+) =>
     render(
         <QueryClientProvider client={appQueryClient}>
             <Provider store={mockStore({})}>
                 <ThemeProvider>
-                    <AiJourneyNavbar />
+                    <SidebarContext.Provider
+                        value={{
+                            isCollapsed,
+                            toggleCollapse: mockToggleCollapse,
+                        }}
+                    >
+                        <AiJourneyNavbar />
+                    </SidebarContext.Provider>
                 </ThemeProvider>
             </Provider>
         </QueryClientProvider>,
@@ -315,7 +327,14 @@ describe('<AiJourneyNavbar />', () => {
                 <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore({})}>
                         <ThemeProvider>
-                            <AiJourneyNavbar />
+                            <SidebarContext.Provider
+                                value={{
+                                    isCollapsed: false,
+                                    toggleCollapse: mockToggleCollapse,
+                                }}
+                            >
+                                <AiJourneyNavbar />
+                            </SidebarContext.Provider>
                         </ThemeProvider>
                     </Provider>
                 </QueryClientProvider>,
@@ -337,9 +356,16 @@ describe('<AiJourneyNavbar />', () => {
                 <QueryClientProvider client={appQueryClient}>
                     <Provider store={mockStore({})}>
                         <ThemeProvider>
-                            <JourneyProvider>
-                                <AiJourneyNavbar />
-                            </JourneyProvider>
+                            <SidebarContext.Provider
+                                value={{
+                                    isCollapsed: false,
+                                    toggleCollapse: mockToggleCollapse,
+                                }}
+                            >
+                                <JourneyProvider>
+                                    <AiJourneyNavbar />
+                                </JourneyProvider>
+                            </SidebarContext.Provider>
                         </ThemeProvider>
                     </Provider>
                 </QueryClientProvider>,

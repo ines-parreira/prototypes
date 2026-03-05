@@ -1,4 +1,6 @@
-import { userEvent } from '@repo/testing'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { SidebarContext } from '@repo/navigation'
+import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import { AccordionState } from 'components/Accordion/utils/accordion-state'
@@ -13,10 +15,30 @@ jest.mock('components/Accordion/hooks/useAccordionItem', () => ({
     useAccordionItem: jest.fn(),
 }))
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+}))
+
 const mockUseAccordion =
     require('components/Accordion/hooks/useAccordion').useAccordion
 const mockUseAccordionItem =
     require('components/Accordion/hooks/useAccordionItem').useAccordionItem
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
+
+const wrapper = ({
+    children,
+    isCollapsed = false,
+}: {
+    children: React.ReactNode
+    isCollapsed?: boolean
+}) => (
+    <SidebarContext.Provider value={{ isCollapsed, toggleCollapse: jest.fn() }}>
+        {children}
+    </SidebarContext.Provider>
+)
 
 describe('AccordionItemTrigger', () => {
     const defaultAccordionProps = {
@@ -35,6 +57,7 @@ describe('AccordionItemTrigger', () => {
     beforeEach(() => {
         mockUseAccordion.mockReturnValue(defaultAccordionProps)
         mockUseAccordionItem.mockReturnValue(defaultItemProps)
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
     })
 
     afterEach(() => {
@@ -50,6 +73,7 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
@@ -74,6 +98,7 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
@@ -96,6 +121,7 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
@@ -116,6 +142,7 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
@@ -136,6 +163,7 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
@@ -152,9 +180,48 @@ describe('AccordionItemTrigger', () => {
                     </Navigation.SectionTrigger>
                 </Navigation.Section>
             </Navigation.Root>,
+            { wrapper },
         )
 
         const trigger = screen.getByRole('button')
         expect(trigger).toHaveClass('custom-class')
+    })
+
+    describe('with wayfinding flag enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('renders icon when provided', () => {
+            render(
+                <Navigation.Root>
+                    <Navigation.Section value="section1">
+                        <Navigation.SectionTrigger icon="settings">
+                            Trigger with Icon
+                        </Navigation.SectionTrigger>
+                    </Navigation.Section>
+                </Navigation.Root>,
+                { wrapper },
+            )
+
+            const trigger = screen.getByRole('button')
+            expect(trigger).toHaveTextContent('Trigger with Icon')
+        })
+
+        it('renders without icon when not provided', () => {
+            render(
+                <Navigation.Root>
+                    <Navigation.Section value="section1">
+                        <Navigation.SectionTrigger>
+                            Trigger without Icon
+                        </Navigation.SectionTrigger>
+                    </Navigation.Section>
+                </Navigation.Root>,
+                { wrapper },
+            )
+
+            const trigger = screen.getByRole('button')
+            expect(trigger).toHaveTextContent('Trigger without Icon')
+        })
     })
 })

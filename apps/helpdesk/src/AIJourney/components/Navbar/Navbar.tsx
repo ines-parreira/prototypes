@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
+import { useSidebar } from '@repo/navigation'
 import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom'
+
+import type { IconName } from '@gorgias/axiom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import { ActiveContent, Navbar } from 'common/navigation'
@@ -11,15 +18,20 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
+import { CollapsedAiJourneyNavigation } from './CollapsedAiJourneyNavigation'
+
 import css from './Navbar.less'
 
 export const AiJourneyNavbar = () => {
     const history = useHistory()
     const location = useLocation()
+    const { isCollapsed } = useSidebar()
     const match = matchPath<{ shopName: string }>(location.pathname, {
         path: '/app/ai-journey/:shopName',
     })
     const shopName = match?.params.shopName
+
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const isAiJourneyAnalyticsEnabled = useFlag(
         FeatureFlagKey.AiJourneyAnalyticsEnabled,
@@ -81,6 +93,94 @@ export const AiJourneyNavbar = () => {
     const shouldAccessPlayground = isAiJourneyPlaygroundEnabled
     const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled
     const shouldAccessCampaigns = isAiJourneyCampaignsEnabled
+
+    const navigationItems = useMemo(() => {
+        const items: Array<{
+            icon: IconName
+            to: string
+            label: string
+            exact?: boolean
+            isActive?: (match: any, location: any) => boolean
+        }> = []
+
+        if (shouldAccessAnalytics) {
+            items.push({
+                icon: 'chart-line-alt',
+                to: `/app/ai-journey/${shopName}/analytics`,
+                label: 'Analytics',
+                exact: true,
+            })
+        }
+
+        if (shouldAccessCampaigns) {
+            items.push({
+                icon: 'nav-flag',
+                to: `/app/ai-journey/${shopName}/campaigns`,
+                label: 'Campaigns',
+                isActive: (_, location) =>
+                    location.pathname.includes('campaign'),
+            })
+        }
+
+        items.push({
+            icon: 'flows',
+            to: `/app/ai-journey/${shopName}/flows`,
+            label: 'Flows',
+            exact: true,
+        })
+
+        if (shouldAccessPlayground) {
+            items.push({
+                icon: 'media-play-circle',
+                to: `/app/ai-journey/${shopName}/playground`,
+                label: 'Playground',
+                exact: true,
+            })
+        }
+
+        return items
+    }, [
+        shopName,
+        shouldAccessCampaigns,
+        shouldAccessPlayground,
+        shouldAccessAnalytics,
+    ])
+
+    if (hasWayfindingMS1Flag) {
+        return isCollapsed && navigationItems.length > 0 ? (
+            <CollapsedAiJourneyNavigation navigationItems={navigationItems} />
+        ) : (
+            <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
+                <Navigation.Root className={css.container}>
+                    <StoreSelector
+                        integrations={storeIntegrations}
+                        selected={selectedStoreIntegration}
+                        onChange={handleStoreChange}
+                        enableDynamicHeight
+                        fullWidth
+                        singleStoreInline
+                        buttonClassName={css.storeSelectorButton}
+                        hideSelectedFromDropdown
+                        applyClassicThemeOverride
+                    />
+                    <div className={css.navigationSections}>
+                        {navigationItems.map((item) => (
+                            <Navigation.SectionItem
+                                key={item.to}
+                                as={NavLink}
+                                icon={item.icon}
+                                to={item.to}
+                                exact={item.exact}
+                                isActive={item.isActive}
+                            >
+                                {item.label}
+                            </Navigation.SectionItem>
+                        ))}
+                    </div>
+                </Navigation.Root>
+            </Navbar>
+        )
+    }
 
     return (
         <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">

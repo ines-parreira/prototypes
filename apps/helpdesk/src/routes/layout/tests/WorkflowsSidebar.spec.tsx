@@ -1,3 +1,4 @@
+import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,9 +6,8 @@ import { fromJS } from 'immutable'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { WorkflowsSidebar } from 'routes/layout/sidebars'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
-
-import { WorkflowsSidebar } from '../sidebars/WorkflowsSidebar'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -52,6 +52,20 @@ describe('WorkflowsSidebar', () => {
         }),
     }
 
+    const renderWorkflowsSidebar = (
+        state = defaultState,
+        isCollapsed = false,
+    ) => {
+        return renderWithStoreAndQueryClientAndRouter(
+            <SidebarContext.Provider
+                value={{ isCollapsed, toggleCollapse: jest.fn() }}
+            >
+                <WorkflowsSidebar />
+            </SidebarContext.Provider>,
+            state,
+        )
+    }
+
     beforeEach(() => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
@@ -70,10 +84,7 @@ describe('WorkflowsSidebar', () => {
     })
 
     it('should render Tools section with workflow items', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
         expect(screen.getByText('Flows')).toBeInTheDocument()
         expect(screen.getByText('Order Management')).toBeInTheDocument()
         expect(screen.getByText('Rules')).toBeInTheDocument()
@@ -85,10 +96,7 @@ describe('WorkflowsSidebar', () => {
     })
 
     it('should render Fields and Tags section', () => {
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
         expect(screen.getByText('Ticket Fields')).toBeInTheDocument()
         expect(screen.getByText('Customer Fields')).toBeInTheDocument()
         expect(screen.getByText('Field Conditions')).toBeInTheDocument()
@@ -104,10 +112,7 @@ describe('WorkflowsSidebar', () => {
             { id: 1, type: 'shopify', name: 'test-store' } as any,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(screen.getByText('Flows')).toBeInTheDocument()
         expect(screen.getByText('Order Management')).toBeInTheDocument()
@@ -122,10 +127,7 @@ describe('WorkflowsSidebar', () => {
             { id: 1, type: 'shopify', name: 'test-store' } as any,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
         expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
@@ -138,10 +140,7 @@ describe('WorkflowsSidebar', () => {
         })
         mockUseStoreIntegrations.mockReturnValue([])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
         expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
@@ -156,10 +155,7 @@ describe('WorkflowsSidebar', () => {
             { id: 1, type: 'shopify', name: 'test-store' } as any,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
         expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
@@ -177,10 +173,7 @@ describe('WorkflowsSidebar', () => {
             { id: 1, type: 'shopify', name: 'test-store' } as any,
         ])
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(screen.getByText('Article Recommendations')).toBeInTheDocument()
     })
@@ -190,10 +183,7 @@ describe('WorkflowsSidebar', () => {
             enabledInSettings: false,
         } as any)
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(
             screen.queryByText('Article Recommendations'),
@@ -209,13 +199,18 @@ describe('WorkflowsSidebar', () => {
             isLoading: false,
         })
 
-        renderWithStoreAndQueryClientAndRouter(
-            <WorkflowsSidebar />,
-            defaultState,
-        )
+        renderWorkflowsSidebar()
 
         expect(
             screen.queryByText('Article Recommendations'),
         ).not.toBeInTheDocument()
+    })
+
+    describe('collapsed state', () => {
+        it('should render CollapsedWorkflowsSidebar when collapsed', () => {
+            renderWorkflowsSidebar(defaultState, true)
+            expect(screen.queryByText('Flows')).not.toBeInTheDocument()
+            expect(screen.queryByText('Rules')).not.toBeInTheDocument()
+        })
     })
 })

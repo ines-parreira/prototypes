@@ -27,6 +27,24 @@ import { TicketNavbarContainer } from '../TicketNavbar'
 import type { TicketNavbarBlock } from '../TicketNavbarBlock'
 import type TicketNavbarContent from '../TicketNavbarContent'
 
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useSidebar: jest.fn(() => ({
+        isCollapsed: false,
+        toggleCollapse: jest.fn(),
+    })),
+}))
+const mockUseSidebar = jest.requireMock('@repo/navigation')
+    .useSidebar as jest.Mock
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
+}))
+const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
+    '@repo/feature-flags',
+).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+
 jest.mock('common/navigation', () => ({
     ActiveContent: { Tickets: 'tickets' },
     Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -218,6 +236,11 @@ describe('<TicketNavbar/>', () => {
         mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(200)
 
         useSplitTicketViewSwitcherMock.mockImplementation(_noop)
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        mockUseSidebar.mockReturnValue({
+            isCollapsed: false,
+            toggleCollapse: jest.fn(),
+        })
     })
 
     it('should fetch the views and dispatch the views actions (legacy views + views entity)', (done) => {
@@ -409,5 +432,82 @@ describe('<TicketNavbar/>', () => {
 
         // Check that the system views container is not rendered
         expect(queryByTestId('new-system-views')).not.toBeInTheDocument()
+    })
+
+    describe('sidebar collapsed state with wayfinding flag', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        })
+
+        it('should return null when sidebar is collapsed and wayfinding flag is enabled', () => {
+            mockUseSidebar.mockReturnValue({
+                isCollapsed: true,
+                toggleCollapse: jest.fn(),
+            })
+
+            const { container } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                {
+                    path: '/foo/:viewId?',
+                    route: '/foo/1',
+                },
+            )
+
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('should render when sidebar is expanded and wayfinding flag is enabled', () => {
+            mockUseSidebar.mockReturnValue({
+                isCollapsed: false,
+                toggleCollapse: jest.fn(),
+            })
+
+            const { queryAllByTestId } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                {
+                    path: '/foo/:viewId?',
+                    route: '/foo/1',
+                },
+            )
+
+            const navbarBlocks = queryAllByTestId('NavbarBlock')
+            expect(navbarBlocks.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('without wayfinding flag', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        })
+
+        it('should render regardless of sidebar collapsed state', () => {
+            mockUseSidebar.mockReturnValue({
+                isCollapsed: true,
+                toggleCollapse: jest.fn(),
+            })
+
+            const { queryAllByTestId } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                {
+                    path: '/foo/:viewId?',
+                    route: '/foo/1',
+                },
+            )
+
+            const navbarBlocks = queryAllByTestId('NavbarBlock')
+            expect(navbarBlocks.length).toBeGreaterThan(0)
+        })
     })
 })

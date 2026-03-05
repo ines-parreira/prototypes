@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-02T12:39:18.870Z",
-  "total": 4429,
+  "date": "2026-03-05T14:29:52.039Z",
+  "total": 4417,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -411,7 +411,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "IconButton",
       "comment": "*\n * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
-      "count": 106,
+      "count": 103,
       "filePath": "apps/helpdesk/src/pages/common/components/button/IconButton.tsx",
       "usages": [
         {
@@ -498,10 +498,7 @@
             "apps/helpdesk/src/pages/settings/customFields/components/Row.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryPreview/AIArticlesLibraryPreview.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent/HelpCenterArticleModalAdvancedViewContent.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent/HelpCenterArticleModalBasicViewContent.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleSection/HelpCenterWizardArticleSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterTable.tsx",
@@ -531,7 +528,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "SelectField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SelectField />` from @gorgias/axiom instead.\n * @date 2026-01-13\n * @type ui-kit-migration\n ",
-      "count": 82,
+      "count": 81,
       "filePath": "apps/helpdesk/src/pages/common/forms/SelectField/SelectField.tsx",
       "usages": [
         {
@@ -600,7 +597,6 @@
             "apps/helpdesk/src/pages/settings/contactForm/components/LanguageInputSection/LanguageInputSection.tsx",
             "apps/helpdesk/src/pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticleArchiveModal/AIArticleArchiveModal.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCategoryEdit/HelpCenterCategoryEdit.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterNewView.tsx",
@@ -1507,7 +1503,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "isTeamLead",
       "comment": "*\n * @deprecated Use isTeamLead from @repo/utils package instead\n * @date 2025-11-18\n * @type permissions-migration\n ",
-      "count": 28,
+      "count": 29,
       "filePath": "apps/helpdesk/src/utils.ts",
       "usages": [
         {
@@ -1538,6 +1534,7 @@
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
             "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
             "apps/helpdesk/src/pages/tickets/detail/TicketInfobarContainer.tsx",
+            "apps/helpdesk/src/routes/layout/products/analytics.ts",
             "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
             "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
             "apps/helpdesk/src/tests/utils.spec.ts"
@@ -3925,7 +3922,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1443,
+      "count": 1437,
       "usages": [
         {
           "name": "LegacyButton",
@@ -4510,7 +4507,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 297,
+          "count": 292,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -4677,7 +4674,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationVisibilityCondition.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/OneClickInstallationCardStoreRow.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationLanguages/components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRowActions.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationListRow.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/ControlTicketVolumeControls.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Integration/JSONBody.tsx",
@@ -4703,15 +4699,11 @@
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryArticleEditor/AIArticlesLibraryArticleEditor.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesLibraryPreview/AIArticlesLibraryPreview.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/articles/ArticleLanguageSelect/components/ActionButton/ActionButton.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent/HelpCenterArticleModalAdvancedViewContent.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent/HelpCenterArticleModalBasicViewContent.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalFooter.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditModalHeader.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/ArticlesTable/components/ArticleRow/ArticleRow.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableRow/CategoriesTableRow.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/ConnectToShopSection/ConnectToShopSection.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/EditingState/EditingState.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterAutoEmbedCard/HelpCenterAutoEmbedCard.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
@@ -4813,7 +4805,7 @@
         },
         {
           "name": "LegacyLabel",
-          "count": 141,
+          "count": 140,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInputs.tsx",
             "apps/helpdesk/src/pages/aiAgent/actions/components/SimplifiedStepBuilderSteps.tsx",
@@ -4924,7 +4916,6 @@
             "apps/helpdesk/src/pages/settings/customFields/components/DropdownInput.tsx",
             "apps/helpdesk/src/pages/settings/customFields/components/RequirementTypeInput.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticleArchiveModal/AIArticleArchiveModal.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/articles/HelpCenterEditAdvancedArticleForm.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/steps/HelpCenterCreationWizardStepAutomate.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/steps/HelpCenterCreationWizardStepBasics.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/steps/HelpCenterCreationWizardStepBranding.tsx",
@@ -5518,11 +5509,11 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 1011,
+      "count": 1008,
       "usages": [
         {
           "name": "Container",
-          "count": 76,
+          "count": 75,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/AiAgentView/AiAgentView.tsx",
             "apps/helpdesk/src/pages/App.tsx",
@@ -5563,7 +5554,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateInputGroup.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Integration/Integration.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/IntegrationList.tsx",
@@ -5604,7 +5594,7 @@
         },
         {
           "name": "Breadcrumb",
-          "count": 71,
+          "count": 70,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5640,7 +5630,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Breadcrumb.tsx",
@@ -5681,7 +5670,7 @@
         },
         {
           "name": "BreadcrumbItem",
-          "count": 71,
+          "count": 70,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/CancelOrderFlowView.tsx",
@@ -5717,7 +5706,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationInstall.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationList/GorgiasChatIntegrationList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Breadcrumb.tsx",

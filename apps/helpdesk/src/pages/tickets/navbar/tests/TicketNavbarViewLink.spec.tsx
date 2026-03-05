@@ -15,6 +15,7 @@ import TicketNavbarViewLink from '../TicketNavbarViewLink'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
     useFlag: jest.fn(),
 }))
 const useFlagMock = assumeMock(useFlag)

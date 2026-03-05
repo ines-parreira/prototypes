@@ -1,3 +1,5 @@
+import type { IconName } from '@gorgias/axiom'
+
 import { Navigation } from 'components/Navigation/Navigation'
 import type { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,11 +13,13 @@ const Section = ({
     id,
     requiredRole,
     value,
+    icon,
 }: {
     children: React.ReactNode
     id: string
     requiredRole?: UserRole
     value: string
+    icon?: IconName
 }) => {
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -27,8 +31,9 @@ const Section = ({
         <Navigation.Section
             data-candu-id={`settings-category-${id}`}
             value={value}
+            icon={icon}
         >
-            <Navigation.SectionTrigger>
+            <Navigation.SectionTrigger icon={icon}>
                 <div className={css.title}>{value}</div>
                 <Navigation.SectionIndicator />
             </Navigation.SectionTrigger>

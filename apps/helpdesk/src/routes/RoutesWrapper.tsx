@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { SidebarProvider } from '@repo/navigation'
 import { useLocation } from 'react-router-dom'
 
 import { AppLayout } from './layout/AppLayout'
@@ -22,5 +23,5 @@ export default function RoutesWrapper() {
         return <AppLayout hasPanel={renderPanelRoutes}>{routes}</AppLayout>
     }
 
-    return routes
+    return <SidebarProvider>{routes}</SidebarProvider>
 }

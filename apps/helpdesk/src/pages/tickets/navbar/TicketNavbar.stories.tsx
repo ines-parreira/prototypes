@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@repo/navigation'
 import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
@@ -76,11 +77,13 @@ const storyConfig: Meta = {
                             <NotificationsProvider>
                                 <QueryClientProvider client={appQueryClient}>
                                     <VoiceDeviceProvider>
-                                        <NavBarProvider>
-                                            <div>
-                                                <Component />
-                                            </div>
-                                        </NavBarProvider>
+                                        <SidebarProvider>
+                                            <NavBarProvider>
+                                                <div>
+                                                    <Component />
+                                                </div>
+                                            </NavBarProvider>
+                                        </SidebarProvider>
                                     </VoiceDeviceProvider>
                                 </QueryClientProvider>
                             </NotificationsProvider>

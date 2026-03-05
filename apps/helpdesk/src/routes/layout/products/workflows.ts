@@ -1,6 +1,37 @@
 import { UserRole } from '@repo/utils'
 
+import type { IconName } from '@gorgias/axiom'
+
 export const WORKFLOWS_DEFAULT_PATH = '/app/workflows'
+
+export enum WorkflowsSection {
+    Tools = 'Tools',
+    FieldsAndTags = 'Fields and Tags',
+}
+
+export type WorkflowsSectionConfig = {
+    id: string
+    label: string
+    icon?: IconName
+    requiredRole?: UserRole.Admin | UserRole.Agent
+}
+
+export const workflowsSections: Record<
+    WorkflowsSection,
+    WorkflowsSectionConfig
+> = {
+    [WorkflowsSection.Tools]: {
+        id: 'tools',
+        label: 'Tools',
+        icon: 'wrench',
+    },
+    [WorkflowsSection.FieldsAndTags]: {
+        id: 'fields-and-tags',
+        label: 'Fields and Tags',
+        icon: 'tag',
+        requiredRole: UserRole.Agent,
+    },
+}
 
 export enum WorkflowsRoute {
     Flows = 'Flows',

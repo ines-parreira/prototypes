@@ -18,6 +18,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { STATS_ROUTES } from 'routes/constants'
+import { analyticsSections } from 'routes/layout/products/analytics'
 
 const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
 const AUTOMATE_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
@@ -41,8 +42,14 @@ export function AutomateStatsNavbar() {
     )
 
     return (
-        <Navigation.Section value={StatsNavbarViewSections.Automate}>
-            <Navigation.SectionTrigger data-candu-id="navbar-block-ai-agent">
+        <Navigation.Section
+            value={analyticsSections[StatsNavbarViewSections.Automate].id}
+            icon={analyticsSections[StatsNavbarViewSections.Automate].icon}
+        >
+            <Navigation.SectionTrigger
+                data-candu-id="navbar-block-ai-agent"
+                icon={analyticsSections[StatsNavbarViewSections.Automate].icon}
+            >
                 <span className={css.sectionTriggerTitle}>
                     {isAnalyticsDashboardsNewScreensEnabled
                         ? 'AI & Automation'

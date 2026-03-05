@@ -92,8 +92,10 @@ export const ActionDrivenNavigationItems = ({
                         <Navigation.Section
                             key={item.title}
                             value={sectionValue}
+                            icon={item.icon}
                         >
                             <Navigation.SectionTrigger
+                                icon={item.icon}
                                 className={css.sectionTrigger}
                             >
                                 {item.title}
@@ -171,6 +173,7 @@ export const ActionDrivenNavigationItems = ({
                         data-candu-id={item.dataCanduId}
                         exact={item.exact}
                         className={css.sectionItemHeading}
+                        icon={item.icon}
                     >
                         {item.title === OPPORTUNITIES ? (
                             <div className={css.navItemWithBadge}>

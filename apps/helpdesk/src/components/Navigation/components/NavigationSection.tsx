@@ -1,6 +1,17 @@
+import type { IconName } from '@gorgias/axiom'
+
 import type { AccordionItemProps } from '../../Accordion/Accordion'
 import { Accordion } from '../../Accordion/Accordion'
 
-export function NavigationSection({ children, ...props }: AccordionItemProps) {
+type NavigationSectionProps = AccordionItemProps & {
+    icon?: IconName
+    to?: string
+    isSelected?: boolean
+}
+
+export function NavigationSection({
+    children,
+    ...props
+}: NavigationSectionProps) {
     return <Accordion.Item {...props}>{children}</Accordion.Item>
 }

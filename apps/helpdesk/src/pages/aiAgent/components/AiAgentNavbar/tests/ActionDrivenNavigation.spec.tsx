@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { SidebarContext } from '@repo/navigation'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
@@ -13,6 +14,7 @@ import { ActionDrivenNavigation } from '../ActionDrivenNavigation'
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn(() => ({})),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
     getLDClient: jest.fn(() => ({
         variation: jest.fn((flag, defaultValue) => defaultValue),
         waitForInitialization: jest.fn(() => Promise.resolve()),
@@ -22,6 +24,9 @@ jest.mock('@repo/feature-flags', () => ({
     })),
 }))
 const mockUseFlag = jest.mocked(useFlag)
+const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
+    '@repo/feature-flags',
+).useHelpdeskV2WayfindingMS1Flag as jest.Mock
 
 jest.mock('../useActionDrivenNavbarSections', () => ({
     useActionDrivenNavbarSections: jest.fn(),
@@ -34,6 +39,16 @@ jest.mock('../ActionDrivenNavigationItems', () => ({
         getChannelStatus: __getChannelStatus,
     }: any) => (
         <div data-testid="navigation-items">
+            {navigationItems?.map((item: any) => (
+                <div key={item.route}>{item.title}</div>
+            ))}
+        </div>
+    ),
+}))
+
+jest.mock('../CollapsedActionDrivenNavigationItems', () => ({
+    CollapsedActionDrivenNavigationItems: ({ navigationItems }: any) => (
+        <div data-testid="collapsed-navigation-items">
             {navigationItems?.map((item: any) => (
                 <div key={item.route}>{item.title}</div>
             ))}
@@ -115,7 +130,6 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
     })),
 }))
 
-// Mock useStoreConfigurations to prevent the error
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     useStoreActivations: jest.fn(() => ({
         storeActivations: {},
@@ -128,7 +142,6 @@ jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations', () => ({
     })),
 }))
 
-// Mock useCanEnableAiAgentDuringTrial
 jest.mock('hooks/aiAgent/useCanUseAiAgent', () => ({
     useCanUseAiAgent: jest.fn(() => ({
         isCurrentStoreDuringTrial: true,
@@ -143,7 +156,6 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     })),
 }))
 
-// Mock useAppSelector
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(() => true),
@@ -215,6 +227,8 @@ describe('ActionDrivenNavigation', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+
         mockedOnboardingHook.mockReturnValue('onboarded')
         mockedTrialAccessHook.mockReturnValue({
             hasAnyTrialOptedOut: false,
@@ -253,12 +267,16 @@ describe('ActionDrivenNavigation', () => {
     const mockStore = configureMockStore()
     const initialState = {}
 
-    const renderComponent = () => {
+    const renderComponent = (isCollapsed = false) => {
         const store = mockStore(initialState)
         return render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <ActionDrivenNavigation />
+                    <SidebarContext.Provider
+                        value={{ isCollapsed, toggleCollapse: jest.fn() }}
+                    >
+                        <ActionDrivenNavigation />
+                    </SidebarContext.Provider>
                 </MemoryRouter>
             </Provider>,
         )
@@ -348,7 +366,6 @@ describe('ActionDrivenNavigation', () => {
         mockGetStoreActivationStatus.mockReturnValue(true)
         renderComponent()
 
-        // It is called at least once during render to compute the active status dot
         expect(mockGetStoreActivationStatus).toHaveBeenCalled()
     })
 
@@ -419,6 +436,82 @@ describe('ActionDrivenNavigation', () => {
         renderComponent()
 
         expect(screen.getByText('Get started')).toBeInTheDocument()
+    })
+
+    describe('sidebar collapsed state with wayfinding flag', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        })
+
+        it('renders CollapsedActionDrivenNavigationItems when sidebar is collapsed', () => {
+            mockGetStoreActivationStatus.mockReturnValue(true)
+
+            renderComponent(true)
+
+            expect(
+                screen.getByTestId('collapsed-navigation-items'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Overview')).toBeInTheDocument()
+            expect(screen.getByText('Analyze')).toBeInTheDocument()
+        })
+
+        it('does not render Actions platform, store selector, or collapsed item when sidebar is collapsed', () => {
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+            )
+            mockedOnboardingHook.mockReturnValue('onboardingWizard')
+            mockGetStoreActivationStatus.mockReturnValue(false)
+            mockedTrialAccessHook.mockReturnValue({
+                hasCurrentStoreTrialStarted: false,
+            })
+
+            renderComponent(true)
+
+            expect(
+                screen.queryByText('Actions platform'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('store-selector'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Try for free')).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('navigation-root'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('shows all items when sidebar is expanded', () => {
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+            )
+
+            renderComponent(false)
+
+            expect(screen.getByText('Actions platform')).toBeInTheDocument()
+            expect(screen.getByTestId('store-selector')).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('collapsed-navigation-items'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('without wayfinding flag', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+        })
+
+        it('shows all items regardless of sidebar collapsed state', () => {
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+            )
+
+            renderComponent(true)
+
+            expect(screen.getByText('Actions platform')).toBeInTheDocument()
+            expect(screen.getByTestId('store-selector')).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('collapsed-navigation-items'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('hasAccess scenarios', () => {

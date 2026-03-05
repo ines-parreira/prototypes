@@ -4,6 +4,8 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
 import { Link, useLocation } from 'react-router-dom'
 
+import { Box } from '@gorgias/axiom'
+
 import navbarCss from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -42,7 +44,7 @@ export function CreateTicketNavbarButton() {
                         icon="add"
                         className={navbarCss.buttonIcon}
                     />
-                    Create ticket
+                    <Box w="100%">Create ticket</Box>
                 </Navigation.SectionItem>
             </div>
         )
@@ -57,7 +59,7 @@ export function CreateTicketNavbarButton() {
                 className={css.createTicketCTA}
             >
                 <ButtonIconLabel icon="add" className={navbarCss.buttonIcon} />
-                Create ticket
+                <Box w="100%">Create ticket</Box>
             </Navigation.SectionItem>
             <UncontrolledDropdown
                 target={dropdownTargetRef}

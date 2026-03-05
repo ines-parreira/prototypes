@@ -22,7 +22,12 @@ export function NavigationSidebarNotificationsButton() {
             ></Button>
             {count > 0 && (
                 <div className={css.badge} data-right-offset={rightOffset}>
-                    <Quantity quantity={count} maxQuantity={99} color="red" />
+                    <Quantity
+                        quantity={count}
+                        maxQuantity={99}
+                        color="red"
+                        size="sm"
+                    />
                 </div>
             )}
         </div>

@@ -2,6 +2,8 @@ import type { ComponentType } from 'react'
 
 import type { IconName } from '@gorgias/axiom'
 
+import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
+import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
 import { WORKFLOWS_DEFAULT_PATH } from 'routes/layout/products/workflows'
 
 import {
@@ -84,7 +86,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: AnalyticsSidebar,
         urlPatterns: ['stats', 'voice-of-customer'],
         icon: 'chart-bar-vertical',
-        defaultPath: '/app/stats',
+        defaultPath: ANALYTICS_DEFAULT_PATH,
     },
     [Product.Workflows]: {
         id: Product.Workflows,
@@ -109,6 +111,6 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: SettingsSidebar,
         urlPatterns: ['settings'],
         icon: 'settings',
-        defaultPath: '/app/settings',
+        defaultPath: SETTINGS_DEFAULT_PATH,
     },
 }

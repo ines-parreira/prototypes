@@ -1,4 +1,9 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
+import { useSidebar } from '@repo/navigation'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
@@ -16,12 +21,16 @@ import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 
 import { ActionDrivenNavigationItems } from './ActionDrivenNavigationItems'
+import { CollapsedActionDrivenNavigationItems } from './CollapsedActionDrivenNavigationItems'
 import { useActionDrivenNavbarSections } from './useActionDrivenNavbarSections'
 import { getCollapsedSectionName } from './utils'
 
 import css from './AiAgentNavbar.less'
 
 export const ActionDrivenNavigation = () => {
+    const { isCollapsed: isSidebarCollapsed } = useSidebar()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+
     const {
         selectedStore,
         selectedStoreIntegration,
@@ -70,6 +79,19 @@ export const ActionDrivenNavigation = () => {
 
     const shouldRenderAIAgentItems =
         !!selectedStore && hasAccess && (isActive || isOnboarded)
+
+    if (
+        hasWayfindingMS1Flag &&
+        selectedStore &&
+        navigationItems &&
+        isSidebarCollapsed
+    ) {
+        return (
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={navigationItems}
+            />
+        )
+    }
 
     return (
         <Navigation.Root

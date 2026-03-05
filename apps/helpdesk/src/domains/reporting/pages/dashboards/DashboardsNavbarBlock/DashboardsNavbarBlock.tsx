@@ -24,6 +24,7 @@ import { getDashboardPath } from 'domains/reporting/pages/dashboards/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import IconInput from 'pages/common/forms/input/IconInput'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
+import { analyticsSections } from 'routes/layout/products/analytics'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
@@ -75,9 +76,18 @@ export const DashboardsNavbarBlock = () => {
     }, [isOpen, setOpen])
 
     return (
-        <Navigation.Section value={StatsNavbarViewSections.Dashboards}>
+        <Navigation.Section
+            value={analyticsSections[StatsNavbarViewSections.Dashboards].id}
+            icon={analyticsSections[StatsNavbarViewSections.Dashboards].icon}
+        >
             <div className={css.actionsContainer}>
-                <Navigation.SectionTrigger data-candu-id="navbar-block-dashboards">
+                <Navigation.SectionTrigger
+                    data-candu-id="navbar-block-dashboards"
+                    icon={
+                        analyticsSections[StatsNavbarViewSections.Dashboards]
+                            .icon
+                    }
+                >
                     <span className={css.sectionTriggerTitle}>
                         {DASHBOARDS_NAV_TITLE}
                     </span>

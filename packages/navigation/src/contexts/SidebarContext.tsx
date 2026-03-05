@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, useCallback, useContext, useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 
@@ -21,12 +21,15 @@ export function SidebarProvider({
         false,
     )
 
-    const toggleCollapse = () => setIsCollapsed((prev) => !prev)
+    const toggleCollapse = useCallback(
+        () => setIsCollapsed((prev) => !prev),
+        [setIsCollapsed],
+    )
 
-    const value = {
-        isCollapsed,
-        toggleCollapse,
-    }
+    const value = useMemo(
+        () => ({ isCollapsed, toggleCollapse }),
+        [isCollapsed, toggleCollapse],
+    )
 
     return (
         <SidebarContext.Provider value={value}>

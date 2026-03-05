@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
+import { useSidebar } from '@repo/navigation'
 import { shortcutManager } from '@repo/utils'
 import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
@@ -124,6 +126,8 @@ export function TicketNavbarContainer({
     disableResize = false,
 }: Props) {
     const history = useHistory()
+    const { isCollapsed } = useSidebar()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const params = useParams<{ viewId?: string }>()
     const { viewId } = useSearch<{ viewId?: string }>()
@@ -450,6 +454,10 @@ export function TicketNavbarContainer({
         useStoredNavigationSections(categories)
 
     const { scrollableAreaRef } = useAutoScrollOnDragging()
+
+    if (hasWayfindingMS1Flag && isCollapsed) {
+        return null
+    }
 
     return (
         <Navbar

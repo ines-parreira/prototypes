@@ -2,6 +2,8 @@ import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import type { IconName } from '@gorgias/axiom'
+
 import {
     ANALYZE,
     CHAT,
@@ -142,6 +144,7 @@ export type NavigationItem = {
     title: string
     exact?: boolean
     dataCanduId?: string
+    icon?: IconName
     items?: NavigationItem[]
 }
 
@@ -192,6 +195,7 @@ const useNavigationItems = (
             {
                 title: ANALYZE,
                 dataCanduId: 'ai-agent-navbar-analyze',
+                icon: 'chart-line',
                 items: [
                     {
                         route: routes.analyzeOverview,
@@ -214,6 +218,7 @@ const useNavigationItems = (
             {
                 title: TRAIN,
                 dataCanduId: 'ai-agent-navbar-train',
+                icon: 'graduated',
                 items: [
                     // TODO: uncomment when overview page is moved to the new navigation
                     /*{
@@ -289,10 +294,12 @@ const useNavigationItems = (
                 title: TEST,
                 dataCanduId: 'ai-agent-navbar-test',
                 exact: true,
+                icon: 'media-play-circle',
             },
             {
                 title: DEPLOY,
                 dataCanduId: 'ai-agent-navbar-deploy',
+                icon: 'rocket',
                 items: [
                     {
                         route: routes.deployChat,
@@ -315,6 +322,7 @@ const useNavigationItems = (
                 title: SETTINGS,
                 dataCanduId: 'ai-agent-navbar-settings',
                 route: routes.settings,
+                icon: 'slider-filter',
                 items: isGorgiasUser
                     ? [
                           {
