@@ -146,8 +146,8 @@ describe('OrdersList', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('renders nothing when both orders and draft orders arrays are empty', () => {
-        const { container } = render(
+    it('renders only the orders header when both orders and draft orders arrays are empty', () => {
+        render(
             <OrdersList
                 orders={[]}
                 isLoadingOrders={false}
@@ -157,7 +157,11 @@ describe('OrdersList', () => {
             />,
         )
 
-        expect(container).toBeEmptyDOMElement()
+        expect(screen.getByText('Orders')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /create order/i }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('#1001')).not.toBeInTheDocument()
     })
 
     it('renders OrdersHeader with correct orders count', () => {

@@ -708,6 +708,114 @@ describe('TimelineContent', () => {
         })
     })
 
+    describe('Cross-panel navigation', () => {
+        const setupWithMixedItems = () => {
+            const ticket = createMockTicket({ id: 1, subject: 'First Ticket' })
+            const order = {
+                id: 101,
+                name: '#3519',
+                created_at: '2024-01-01T10:00:00Z',
+                updated_at: '2024-01-01T10:00:00Z',
+                currency: 'USD',
+                total_price: '150.00',
+                financial_status: 'paid' as const,
+                fulfillment_status: 'fulfilled' as const,
+                line_items: [],
+                note: '',
+                tags: '',
+                shipping_address: {} as any,
+                billing_address: {} as any,
+                discount_codes: [],
+                shipping_lines: [],
+                total_line_items_price: '150.00',
+                total_discounts: '0.00',
+                subtotal_price: '150.00',
+                total_tax: '0.00',
+                taxes_included: false,
+                discount_applications: [],
+                refunds: [],
+            }
+
+            useTimelineDataMock.mockReturnValue({
+                ...defaultTimelineDataReturn,
+                timelineItems: [
+                    { kind: TimelineItemKind.Ticket, ticket },
+                    { kind: TimelineItemKind.Order, order },
+                ],
+                enrichedTickets: [
+                    {
+                        ticket,
+                        evaluationResults: {},
+                        conditionsLoading: false,
+                        isFieldRequired: jest.fn(),
+                        isFieldVisible: jest.fn(),
+                        customFields: [],
+                        iconName: 'email' as IconName,
+                    },
+                ],
+                totalNumber: 2,
+            } as unknown as ReturnType<typeof useTimelineData>)
+
+            return { ticket, order }
+        }
+
+        it('should open the order side panel when navigating from a ticket to an adjacent order', async () => {
+            const user = userEvent.setup()
+            setupWithMixedItems()
+
+            renderComponent()
+
+            await user.click(screen.getByText('First Ticket'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next ticket/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /first ticket/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should open the ticket side panel when navigating from an order to an adjacent ticket', async () => {
+            const user = userEvent.setup()
+            setupWithMixedItems()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /previous order/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /first ticket/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('heading', { name: /order #3519/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
+
     describe('Custom fields integration', () => {
         it('should fetch custom field definitions', () => {
             renderComponent()
@@ -922,6 +1030,56 @@ describe('TimelineContent', () => {
                 ).toBeInTheDocument()
                 expect(
                     screen.getByRole('button', { name: /cancel/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should navigate to next order when Next order button is clicked', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3519'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /next order/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3520/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should navigate to previous order when Previous order button is clicked', async () => {
+            const user = userEvent.setup()
+            setupWithOrders()
+
+            renderComponent()
+
+            await user.click(screen.getByText('#3520'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3520/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /previous order/i }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #3519/i }),
                 ).toBeInTheDocument()
             })
         })

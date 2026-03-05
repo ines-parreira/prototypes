@@ -34,10 +34,6 @@ export function OrdersList({
     const hasOrders = orders && orders.length > 0
     const hasDraftOrders = draftOrders && draftOrders.length > 0
 
-    if (!hasOrders && !hasDraftOrders) {
-        return null
-    }
-
     return (
         <>
             <Separator />

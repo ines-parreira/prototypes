@@ -16,7 +16,18 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
+import { useGetDraftOrders } from '../../../hooks/useGetDraftOrders'
+import { useGetOrders } from '../../../hooks/useGetOrders'
 import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
+import type { OrderEcommerceData } from '../../../types'
+
+vi.mock('../../../hooks/useGetOrders', () => ({
+    useGetOrders: vi.fn(),
+}))
+
+vi.mock('../../../hooks/useGetDraftOrders', () => ({
+    useGetDraftOrders: vi.fn(),
+}))
 
 const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
     shopifyIntegrationId: undefined,
@@ -132,6 +143,27 @@ const mockListOrders = mockListEcommerceDataHandler(async () =>
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 
 beforeEach(() => {
+    mockUseTicketInfobarNavigation.mockReturnValue({
+        shopifyIntegrationId: undefined,
+        activeTab: undefined,
+        isExpanded: true,
+        isEditShopifyFieldsOpen: false,
+        onChangeTab: vi.fn(),
+        onToggle: vi.fn(),
+        onToggleEditShopifyFields: vi.fn(),
+    })
+
+    vi.mocked(useGetOrders).mockReturnValue({
+        orders: undefined,
+        isLoadingOrders: false,
+        refetchOrders: vi.fn(),
+    })
+
+    vi.mocked(useGetDraftOrders).mockReturnValue({
+        orders: undefined,
+        isLoadingOrders: false,
+    })
+
     server.use(
         mockListIntegrations.handler,
         mockGetEcommerceData.handler,
@@ -508,6 +540,55 @@ describe('CustomerInfo', () => {
         ).toBeInTheDocument()
 
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    })
+
+    describe('Order selection', () => {
+        const mockOrder: OrderEcommerceData = {
+            id: 'order-1',
+            account_id: 1,
+            created_datetime: '2024-01-15T10:00:00Z',
+            updated_datetime: '2024-01-15T10:00:00Z',
+            source_type: 'shopify',
+            integration_id: 1,
+            external_id: 'ext-order-1',
+            data: {
+                id: 12345,
+                name: '#1001',
+                financial_status: 'paid',
+                fulfillment_status: 'fulfilled',
+                line_items: [],
+                currency: 'USD',
+                total_price: '99.99',
+            } as unknown as OrderEcommerceData['data'],
+        }
+
+        it('should open the order side panel when an order card is clicked', async () => {
+            vi.mocked(useGetOrders).mockReturnValue({
+                orders: [mockOrder],
+                isLoadingOrders: false,
+                refetchOrders: vi.fn(),
+            })
+
+            const { user } = render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('#1001')).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByText('#1001'))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('heading', { name: /order #1001/i }),
+                ).toBeInTheDocument()
+            })
+        })
     })
 
     it('calls onToggleEditShopifyFields(false) when Confirm is clicked in IntermediateEditPanel', async () => {

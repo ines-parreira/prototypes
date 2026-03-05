@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { OrderSidePanelPreview, ShopifyCustomerProvider } from '@repo/customer'
+import { ShopifyCustomerProvider } from '@repo/customer'
 import type { EnrichedTicket } from '@repo/tickets'
 
 import { Box } from '@gorgias/axiom'
@@ -12,15 +12,16 @@ import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustom
 import { useNotify } from 'hooks/useNotify'
 import { useGetCustomer } from 'models/customer/queries'
 import { extractOrders } from 'timeline/helpers/orders'
+import { TimelineItemKind } from 'timeline/types'
 
 import { useOrderProducts } from '../hooks/useOrderProducts'
 import { useTicketList } from '../hooks/useTicketList'
 import { useTimelineData } from '../hooks/useTimelineData'
 import type { ChannelToIconFn } from '../hooks/useTimelineData'
-import { TicketTimelineSidePanelPreview } from './TicketTimelineSidePanelPreview'
 import { TimelineFilters } from './TimelineFilters'
 import { TimelineHeader } from './TimelineHeader'
 import { TimelineList } from './TimelineList'
+import { TimelineSidePanelPreview } from './TimelineSidePanelPreview'
 
 import css from './TicketTimeline.less'
 
@@ -87,10 +88,8 @@ export function TimelineContent({
     const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
         null,
     )
-    const [isTicketOpen, setIsTicketOpen] = useState(false)
-
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
-    const [isOrderOpen, setIsOrderOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
 
     const selectedOrderIntegrationId = useMemo(() => {
         if (!selectedOrder || !customer?.integrations) return undefined
@@ -106,23 +105,59 @@ export function TimelineContent({
         { query: { enabled: !!selectedOrderIntegrationId } },
     )
 
-    const currentIndex = selectedTicket
-        ? enrichedTickets.findIndex(
-              (e) => e.ticket.id === selectedTicket.ticket.id,
-          )
-        : -1
-    const isFirstTicket = currentIndex <= 0
-    const isLastTicket =
-        currentIndex >= enrichedTickets.length - 1 || currentIndex === -1
+    const selectedItemIndex = useMemo(() => {
+        if (selectedTicket) {
+            return timelineItems.findIndex(
+                (item) =>
+                    item.kind === TimelineItemKind.Ticket &&
+                    item.ticket.id === selectedTicket.ticket.id,
+            )
+        }
+        if (selectedOrder) {
+            return timelineItems.findIndex(
+                (item) =>
+                    item.kind === TimelineItemKind.Order &&
+                    item.order.id === selectedOrder.id,
+            )
+        }
+        return -1
+    }, [selectedTicket, selectedOrder, timelineItems])
+
+    const hasPrevious = selectedItemIndex > 0
+    const hasNext =
+        selectedItemIndex !== -1 && selectedItemIndex < timelineItems.length - 1
+
+    const navigateToItem = useCallback(
+        (index: number) => {
+            const item = timelineItems[index]
+            if (!item) return
+
+            if (item.kind === TimelineItemKind.Ticket) {
+                const enriched = enrichedTickets.find(
+                    (e) => e.ticket.id === item.ticket.id,
+                )
+                if (enriched) {
+                    setSelectedTicket(enriched)
+                    setSelectedOrder(null)
+                }
+            } else {
+                setSelectedOrder(item.order)
+                setSelectedTicket(null)
+            }
+        },
+        [timelineItems, enrichedTickets],
+    )
 
     const handleSelectTicket = useCallback((enriched: EnrichedTicket) => {
         setSelectedTicket(enriched)
-        setIsTicketOpen(true)
+        setSelectedOrder(null)
+        setIsOpen(true)
     }, [])
 
     const handleSelectOrder = useCallback((order: Order) => {
         setSelectedOrder(order)
-        setIsOrderOpen(true)
+        setSelectedTicket(null)
+        setIsOpen(true)
     }, [])
 
     const handleDuplicateOrder = useCallback((order: Order) => {
@@ -141,16 +176,16 @@ export function TimelineContent({
     }, [])
 
     const handleNext = useCallback(() => {
-        if (currentIndex < enrichedTickets.length - 1) {
-            setSelectedTicket(enrichedTickets[currentIndex + 1])
+        if (hasNext) {
+            navigateToItem(selectedItemIndex + 1)
         }
-    }, [currentIndex, enrichedTickets])
+    }, [hasNext, selectedItemIndex, navigateToItem])
 
     const handlePrevious = useCallback(() => {
-        if (currentIndex > 0) {
-            setSelectedTicket(enrichedTickets[currentIndex - 1])
+        if (hasPrevious) {
+            navigateToItem(selectedItemIndex - 1)
         }
-    }, [currentIndex, enrichedTickets])
+    }, [hasPrevious, selectedItemIndex, navigateToItem])
 
     return (
         <Box flexDirection="column" height={'100%'}>
@@ -191,30 +226,25 @@ export function TimelineContent({
                     isFetchingNextPage={isFetchingNextPage}
                 />
             </div>
-            <TicketTimelineSidePanelPreview
-                enrichedTicket={selectedTicket}
-                isOpen={isTicketOpen}
-                onOpenChange={setIsTicketOpen}
-                onNext={handleNext}
-                onPrevious={handlePrevious}
-                isFirstTicket={isFirstTicket}
-                isLastTicket={isLastTicket}
-            />
             <ShopifyCustomerProvider
                 dispatchNotification={dispatchNotification}
             >
-                <OrderSidePanelPreview
-                    order={selectedOrder as any}
-                    isOpen={isOrderOpen}
-                    onOpenChange={setIsOrderOpen}
+                <TimelineSidePanelPreview
+                    enrichedTicket={selectedTicket}
+                    selectedOrder={selectedOrder}
+                    isOpen={isOpen}
+                    onOpenChange={setIsOpen}
+                    hasPrevious={hasPrevious}
+                    hasNext={hasNext}
+                    onNext={handleNext}
+                    onPrevious={handlePrevious}
                     productsMap={productsMap}
-                    isDraftOrder={false}
-                    onDuplicate={handleDuplicateOrder}
-                    onRefund={handleRefundOrder}
-                    onCancel={handleCancelOrder}
                     storeName={selectedOrderIntegrationData?.data.name}
                     integrationId={selectedOrderIntegrationId}
                     ticketId={activeTicketId}
+                    onDuplicate={handleDuplicateOrder}
+                    onRefund={handleRefundOrder}
+                    onCancel={handleCancelOrder}
                 />
             </ShopifyCustomerProvider>
         </Box>
