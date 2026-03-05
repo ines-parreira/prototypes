@@ -3,9 +3,8 @@ import { screen, waitFor } from '@testing-library/react'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
+import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import { AnalyticsAiAgentRevenuePerInteractionCard } from '../AnalyticsAiAgentRevenuePerInteractionCard'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)

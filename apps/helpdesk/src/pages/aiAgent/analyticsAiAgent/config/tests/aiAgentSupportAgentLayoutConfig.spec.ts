@@ -14,7 +14,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(5)
+            expect(kpisSection.items).toHaveLength(6)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -34,6 +34,9 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             )
             expect(kpisSection.items[4].chartId).toBe(
                 AnalyticsAiAgentSupportAgentChart.AverageCsatCard,
+            )
+            expect(kpisSection.items[5].chartId).toBe(
+                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
             )
         })
 
@@ -96,7 +99,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(8)
+            expect(totalCharts).toBe(9)
         })
 
         it('should have all required chart types defined', () => {
@@ -116,6 +119,9 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard,
+            )
+            expect(allChartIds).toContain(
+                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
             )
             expect(allChartIds).toContain(
                 AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,

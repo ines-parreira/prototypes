@@ -8,9 +8,8 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import { AnalyticsAiAgentAutomationRateCard } from '../AnalyticsAiAgentAutomationRateCard'
 
 jest.mock('domains/reporting/utils/metricExecutionHandler')
 const mockMetricExecutionHandler = assumeMock(metricExecutionHandler)

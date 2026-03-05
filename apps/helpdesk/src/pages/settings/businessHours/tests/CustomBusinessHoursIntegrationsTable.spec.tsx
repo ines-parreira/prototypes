@@ -1,6 +1,6 @@
 import { Form } from '@repo/forms'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -173,9 +173,7 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             expect(selectAllCheckbox).not.toBeChecked()
 
             /* select all */
-            await act(async () => {
-                await user.click(selectAllCheckbox)
-            })
+            await user.click(selectAllCheckbox)
 
             expect(firstIntegrationCheckbox).toBeChecked()
             expect(secondIntegrationCheckbox).toBeChecked()
@@ -183,9 +181,7 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
             /* unselect all */
 
-            await act(async () => {
-                await user.click(selectAllCheckbox)
-            })
+            await user.click(selectAllCheckbox)
 
             expect(firstIntegrationCheckbox).not.toBeChecked()
             expect(secondIntegrationCheckbox).not.toBeChecked()
@@ -301,9 +297,7 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             name: 'Select all integrations',
         })
 
-        await act(async () => {
-            await user.click(selectAllCheckbox)
-        })
+        await user.click(selectAllCheckbox)
 
         await waitFor(() => {
             expect(selectAllCheckbox).toBeChecked()
@@ -314,9 +308,7 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             true,
         )
 
-        await act(async () => {
-            await user.click(selectAllCheckbox)
-        })
+        await user.click(selectAllCheckbox)
 
         await waitFor(() => {
             expect(selectAllCheckbox).not.toBeChecked()
@@ -394,21 +386,15 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         expect(integrationHeader).toBeInTheDocument()
 
-        await act(async () => {
-            await user.click(integrationHeader)
-        })
+        await user.click(integrationHeader)
 
         expect(screen.getByText('arrow_upward')).toBeVisible()
 
-        await act(async () => {
-            await user.click(integrationHeader)
-        })
+        await user.click(integrationHeader)
 
         expect(screen.getByText('arrow_downward')).toBeVisible()
 
-        await act(async () => {
-            await user.click(integrationHeader)
-        })
+        await user.click(integrationHeader)
     })
 
     it('should search for integrations by name when typing in the search input', async () => {
@@ -433,10 +419,8 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             'Search integrations',
         )
 
-        await act(async () => {
-            await user.clear(searchInput)
-            await user.type(searchInput, searchTerm)
-        })
+        await user.clear(searchInput)
+        await user.type(searchInput, searchTerm)
 
         await waitFor(() => {
             expect(receivedSearchParam).toBe(searchTerm)
@@ -463,14 +447,10 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         const allChannelsDropdown = await screen.findByRole('button', {
             name: /all channels/i,
         })
-        await act(async () => {
-            await user.click(allChannelsDropdown)
-        })
+        await user.click(allChannelsDropdown)
 
         const voiceOption = await screen.findByText('Voice')
-        await act(async () => {
-            await user.click(voiceOption)
-        })
+        await user.click(voiceOption)
 
         await waitFor(() => {
             expect(receivedChannelsParam).toBe('phone')
@@ -497,14 +477,10 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         const allChannelsDropdown = await screen.findByRole('button', {
             name: /all channels/i,
         })
-        await act(async () => {
-            await user.click(allChannelsDropdown)
-        })
+        await user.click(allChannelsDropdown)
 
         const appOption = await screen.findByText('More Applications')
-        await act(async () => {
-            await user.click(appOption)
-        })
+        await user.click(appOption)
 
         await waitFor(() => {
             expect(receivedChannelsParam).toBe('app')
@@ -531,14 +507,10 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         const allStoresButton = await screen.findByRole('button', {
             name: /all stores/i,
         })
-        await act(async () => {
-            await user.click(allStoresButton)
-        })
+        await user.click(allStoresButton)
 
         const storeOption = await screen.findByText('Test Shopify Store')
-        await act(async () => {
-            await user.click(storeOption)
-        })
+        await user.click(storeOption)
 
         await waitFor(() => {
             expect(receivedStoreIdParam).toBe('42')
@@ -571,9 +543,7 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
             name: 'Select all integrations',
         })
 
-        await act(async () => {
-            await user.click(selectAllCheckbox)
-        })
+        await user.click(selectAllCheckbox)
 
         await waitFor(() => {
             expect(

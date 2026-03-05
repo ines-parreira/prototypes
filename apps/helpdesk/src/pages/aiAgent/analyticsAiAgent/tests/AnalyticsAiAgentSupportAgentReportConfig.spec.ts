@@ -4,12 +4,11 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
-import { STATS_ROUTES } from 'routes/constants'
-
 import {
     AnalyticsAiAgentSupportAgentChart,
     AnalyticsAiAgentSupportAgentReportConfig,
-} from '../AnalyticsAiAgentSupportAgentReportConfig'
+} from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
+import { STATS_ROUTES } from 'routes/constants'
 
 describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
     it('should have correct report ID', () => {
@@ -134,7 +133,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentSupportAgentReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(9)
+        expect(Object.keys(charts)).toHaveLength(10)
         expect(
             charts[AnalyticsAiAgentSupportAgentChart.TimeSavedCard],
         ).toBeDefined()
@@ -167,6 +166,9 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         ).toBeDefined()
         expect(
             charts[AnalyticsAiAgentSupportAgentChart.AverageCsatCard],
+        ).toBeDefined()
+        expect(
+            charts[AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard],
         ).toBeDefined()
     })
 
@@ -301,6 +303,35 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
             expect(result).toHaveProperty('fileName')
             expect(result).toHaveProperty('files')
         }
+    })
+
+    it('should have handover interactions card config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Handover interactions')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+    })
+
+    it('should have fetch function for handover interactions trend', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
     })
 
     it('should have support interactions combo chart config', () => {

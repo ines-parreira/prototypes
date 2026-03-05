@@ -3,8 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-
-import { AnalyticsAiAgentDecreaseinFRTCard } from '../AnalyticsAiAgentDecreaseinFRTCard'
+import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
 
 jest.mock(
     'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend',

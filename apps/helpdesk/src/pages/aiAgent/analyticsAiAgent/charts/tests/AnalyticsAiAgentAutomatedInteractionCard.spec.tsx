@@ -6,9 +6,8 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import { AnalyticsAiAgentAutomatedInteractionsCard } from '../AnalyticsAiAgentAutomatedInteractionCard'
 
 jest.mock('domains/reporting/models/queries')
 const mockUsePostReportingV2 = assumeMock(usePostReportingV2)

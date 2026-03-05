@@ -133,21 +133,9 @@ describe('AnalyticsOverviewReportConfig', () => {
     it('should have all chart configs defined', () => {
         const charts = AnalyticsOverviewReportConfig.charts
 
-        expect(Object.keys(charts)).toHaveLength(8)
-        expect(charts[AnalyticsOverviewChart.AutomationRateCard]).toBeDefined()
-        expect(
-            charts[AnalyticsOverviewChart.AutomatedInteractionsCard],
-        ).toBeDefined()
-        expect(charts[AnalyticsOverviewChart.TimeSavedCard]).toBeDefined()
-        expect(charts[AnalyticsOverviewChart.CostSavedCard]).toBeDefined()
-        expect(
-            charts[AnalyticsOverviewChart.AutomationRateComboChart],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsOverviewChart.AutomatedInteractionsComboChart],
-        ).toBeDefined()
-        expect(charts[AnalyticsOverviewChart.AutomationLineChart]).toBeDefined()
-        expect(charts[AnalyticsOverviewChart.PerformanceTable]).toBeDefined()
+        Object.values(AnalyticsOverviewChart).forEach((chart) => {
+            expect(charts[chart]).toBeDefined()
+        })
     })
 
     it('should have fetch function for automation rate trend', async () => {

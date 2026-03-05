@@ -112,6 +112,10 @@ export type DimensionName =
     | 'statusName'
     | 'campaignId'
     | 'abVariant'
+    | 'aiAgentSkill'
+    | 'automationFeatureType'
+    | 'customField'
+    | 'engagementType'
 
 export type MeasureName =
     | 'ticketCount'
@@ -188,6 +192,7 @@ export type MeasureName =
     | 'discountSalesCount'
     | 'ticketSales'
     | 'ticketSalesCount'
+    | 'handoverInteractionsCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -199,6 +204,7 @@ export type TimeDimensionName =
     | 'queuedDate'
     | 'timestamp'
     | 'periodStart'
+    | 'eventDatetime'
 
 export type StringFilterName =
     | 'periodStart'
@@ -248,6 +254,10 @@ export type StringFilterName =
     | 'abVariant'
     | 'shopName'
     | 'campaignId'
+    | 'aiAgentSkill'
+    | 'automationFeatureType'
+    | 'customField'
+    | 'engagementType'
 
 export type NumberFilterName =
     | 'agentId'

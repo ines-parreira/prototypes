@@ -4,12 +4,11 @@ import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
-import { STATS_ROUTES } from 'routes/constants'
-
 import {
     AnalyticsAiAgentAllAgentsChart,
     AnalyticsAiAgentAllAgentsReportConfig,
-} from '../AnalyticsAiAgentAllAgentsReportConfig'
+} from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
+import { STATS_ROUTES } from 'routes/constants'
 
 describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
     it('should have correct report ID', () => {

@@ -7,10 +7,9 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import { AnalyticsOverviewCostSavedCard } from '../AnalyticsOverviewCostSavedCard'
 
 jest.mock('domains/reporting/utils/metricExecutionHandler')
 const mockMetricExecutionHandler = assumeMock(metricExecutionHandler)

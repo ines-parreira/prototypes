@@ -554,6 +554,14 @@ export const METRIC_NAMES = {
     VOICE_OF_CUSTOMER_TICKETS_WITH_PRODUCTS:
         'voice-of-customer-tickets-with-products',
 
+    // Handover Interactions
+    HANDOVER_INTERACTIONS: 'handover-interactions',
+    AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
+    AI_AGENT_SALES_HANDOVER_INTERACTIONS:
+        'ai-sales-agent-handover-interactions',
+    AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS:
+        'ai-agent-support-handover-interactions',
+
     // Test and utility
     TEST_METRIC: 'test-metric',
 } as const
@@ -583,6 +591,7 @@ export enum MetricScope {
     AutomationRate = 'automation-rate',
     TicketFields = 'ticket-fields',
     AutomatedInteractions = 'automated-interactions',
+    HandoverInteractions = 'handover-interactions',
     VoiceAgentEvents = 'voice-agent-events',
     VoiceCalls = 'voice-calls',
     VoiceCallsSummary = 'voice-calls-summary',
@@ -845,5 +854,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES,
         METRIC_NAMES.AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS,
         METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED,
+    ],
+    [MetricScope.HandoverInteractions]: [
+        METRIC_NAMES.HANDOVER_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
     ],
 }

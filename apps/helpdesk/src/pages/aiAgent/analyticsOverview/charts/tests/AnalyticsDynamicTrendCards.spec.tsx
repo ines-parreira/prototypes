@@ -23,7 +23,9 @@ import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsA
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
@@ -319,6 +321,30 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 350,
                 prevValue: 300,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentHandoverInteractionsCard',
+            Component: AnalyticsAiAgentHandoverInteractionsCard,
+            config: {
+                label: 'Handover interactions',
+                description:
+                    'The number of interactions handed over from AI Agent to a human support agent.',
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 150,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSupportHandoverInteractionsCard',
+            Component: AnalyticsAiAgentSupportHandoverInteractionsCard,
+            config: {
+                label: 'Handover interactions',
+                description:
+                    'The number of interactions handed over from AI Agent to a human support agent.',
+                metricFormat: 'decimal' as const,
+                value: 120,
+                prevValue: 150,
             },
         },
     ]

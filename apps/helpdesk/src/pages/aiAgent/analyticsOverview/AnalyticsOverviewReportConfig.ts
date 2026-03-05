@@ -3,20 +3,22 @@ import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/
 import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import { fetchTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     ChartType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
-import { AnalyticsOverviewLineChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewLineChart'
-import { AnalyticsOverviewPerformanceTable } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewPerformanceTable'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
+import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsOverviewChart {
@@ -28,6 +30,7 @@ export enum AnalyticsOverviewChart {
     AutomatedInteractionsComboChart = 'automated_interactions_combo_chart',
     AutomationLineChart = 'automation_line_chart',
     PerformanceTable = 'performance_table',
+    HandoverInteractionsCard = 'handover_interactions_card',
 }
 
 export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart> =
@@ -100,6 +103,22 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 metricFormat: 'currency-precision-1',
                 interpretAs: 'more-is-better',
             },
+            [AnalyticsOverviewChart.HandoverInteractionsCard]: {
+                chartComponent: AnalyticsAiAgentHandoverInteractionsCard,
+                label: 'Handover interactions',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchHandoverInteractionsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'less-is-better',
+            },
             [AnalyticsOverviewChart.AutomationRateComboChart]: {
                 chartComponent: AutomationRateComboChart,
                 label: 'Overall automation rate',
@@ -120,7 +139,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomationLineChart]: {
-                chartComponent: AnalyticsOverviewLineChart,
+                chartComponent: AutomationLineChart,
                 label: 'Overall automation rate',
                 csvProducer: null,
                 description: 'Automation metrics trend over time',
@@ -129,7 +148,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
-                chartComponent: AnalyticsOverviewPerformanceTable,
+                chartComponent: PerformanceBreakdownTable,
                 label: 'Performance breakdown',
                 csvProducer: null,
                 description: '',

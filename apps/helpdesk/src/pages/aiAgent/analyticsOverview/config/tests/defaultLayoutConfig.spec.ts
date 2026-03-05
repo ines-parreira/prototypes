@@ -11,7 +11,7 @@ describe('defaultLayoutConfig', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(4)
+            expect(kpisSection.items).toHaveLength(5)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -81,7 +81,7 @@ describe('defaultLayoutConfig', () => {
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(7)
+            expect(totalCharts).toBe(8)
         })
 
         it('should have all required chart types defined', () => {

@@ -3,9 +3,8 @@ import { screen, waitFor } from '@testing-library/react'
 import { useAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
-
-import { AnalyticsAiAgentTimeSavedCard } from '../AnalyticsAiAgentTimeSavedCard'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)

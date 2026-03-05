@@ -4,17 +4,24 @@ import { usePerformanceMetricsPerFeature } from '../usePerformanceMetricsPerFeat
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/metricTrends')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 jest.mock('../useAutomationRateByFeature')
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+jest.mock(
+    'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend',
+)
 
-const mockUseStatsFilters = jest.requireMock(
-    'domains/reporting/hooks/support-performance/useStatsFilters',
-).useStatsFilters as jest.Mock
+const mockUseAutomateFilters = jest.requireMock(
+    'domains/reporting/hooks/automate/useAutomateFilters',
+).useAutomateFilters as jest.Mock
 
 const mockUseTrendFromMultipleMetricsTrend = jest.requireMock(
     'domains/reporting/hooks/automate/automationTrends',
 ).useTrendFromMultipleMetricsTrend as jest.Mock
+
+const mockUseHandoverInteractionsTrend = jest.requireMock(
+    'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend',
+).useHandoverInteractionsTrend as jest.Mock
 
 const mockUseTicketHandleTimeTrend = jest.requireMock(
     'domains/reporting/hooks/metricTrends',
@@ -30,14 +37,21 @@ const mockUseMoneySavedPerInteractionWithAutomate = jest.requireMock(
 
 describe('usePerformanceMetricsPerFeature', () => {
     beforeEach(() => {
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: {
+        mockUseAutomateFilters.mockReturnValue({
+            statsFilters: {
                 period: { from: '2024-01-01', to: '2024-01-31' },
             },
             userTimezone: 'UTC',
+            granularity: 'day',
         })
 
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
+
+        mockUseHandoverInteractionsTrend.mockReturnValue({
+            data: { value: 100 },
+            isFetching: false,
+            isError: false,
+        })
 
         mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
             data: { value: 100 },
@@ -218,6 +232,12 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should handle null interactions gracefully', () => {
+        mockUseHandoverInteractionsTrend.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        })
+
         mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -265,7 +285,7 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should calculate cost saved correctly with different interaction values', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
+        mockUseHandoverInteractionsTrend.mockReturnValueOnce({
             data: { value: 500 },
             isFetching: false,
             isError: false,
@@ -280,7 +300,7 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should calculate time saved correctly with different values', () => {
-        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
+        mockUseHandoverInteractionsTrend.mockReturnValueOnce({
             data: { value: 200 },
             isFetching: false,
             isError: false,

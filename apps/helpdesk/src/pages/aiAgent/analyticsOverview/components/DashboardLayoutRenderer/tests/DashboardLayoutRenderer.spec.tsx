@@ -203,6 +203,10 @@ const reportConfigMock = {
             chartComponent: () => null,
             label: 'Performance Table',
         },
+        [AnalyticsOverviewChart.HandoverInteractionsCard]: {
+            chartComponent: () => null,
+            label: 'Handover Interactions',
+        },
     },
 } as unknown as ReportConfig<string>
 

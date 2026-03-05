@@ -3,6 +3,7 @@ import { fetchAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/au
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
+import { fetchAiAgentSupportHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSupportHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -13,6 +14,7 @@ import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
 import { AnalyticsSupportAgentPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
@@ -42,6 +44,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
     SupportInteractionsCard = 'support_interactions_card',
     DecreaseInFRTCard = 'decrease_in_first_resolution_time_card',
     AverageCsatCard = 'average_csat_card',
+    HandoverInteractionsCard = 'handover_interactions_card',
     SupportAgentTrendComboChart = 'support_agent_trend_combo_chart',
     SupportInteractionsComboChart = 'support_interactions_combo_chart',
     SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
@@ -133,6 +136,22 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard]: {
+                chartComponent: AnalyticsAiAgentSupportHandoverInteractionsCard,
+                label: 'Handover interactions',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentSupportHandoverInteractionsTrend,
+                        metricFormat: 'decimal',
+                    },
+                ],
+                description:
+                    'The number of interactions handed over from AI Agent to a human support agent.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal',
+                interpretAs: 'less-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart]: {
                 chartComponent: AutomationRateComboChart,

@@ -5,7 +5,6 @@ import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomate
 import { useTicketHandleTimeTrend } from 'domains/reporting/hooks/metricTrends'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
-    aiAgentAutomatedInteractionsQueryFactory,
     aiAgentHandoversQueryFactory,
     articleRecommendationAutomatedInteractionsQueryFactory,
     flowsAutomatedInteractionsQueryFactory,
@@ -13,13 +12,13 @@ import {
     orderManagementAutomatedInteractionsQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/metrics'
 import {
-    aiAgentAutomatedInteractionsQueryV2Factory,
     aiAgentHandoversQueryV2Factory,
     articleRecommendationAutomatedInteractionsQueryV2Factory,
     flowsAutomatedInteractionsQueryV2Factory,
     flowsHandoversQueryV2Factory,
     orderManagementAutomatedInteractionsQueryV2Factory,
 } from 'domains/reporting/models/scopes/automatedInteractions'
+import { useHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
 import { useAutomationRateByFeature } from 'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
@@ -60,13 +59,9 @@ export const usePerformanceMetricsPerFeature =
             AGENT_COST_PER_TICKET,
         )
 
-        const aiAgentInteractions = useTrendFromMultipleMetricsTrend(
+        const aiAgentInteractions = useHandoverInteractionsTrend(
             statsFilters,
             userTimezone,
-            aiAgentAutomatedInteractionsQueryFactory,
-            AutomationDatasetMeasure.AutomatedInteractions,
-            aiAgentAutomatedInteractionsQueryV2Factory,
-            'automatedInteractions',
         )
 
         const flowsInteractions = useTrendFromMultipleMetricsTrend(

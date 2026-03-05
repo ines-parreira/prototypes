@@ -4,14 +4,13 @@ import { userEvent } from '@testing-library/user-event'
 import * as automatedInteractionsBySkillHook from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
 import * as automateFiltersHook from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-
-import * as automatedInteractionsMetricHook from '../../../analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
-import { AnalyticsOverviewAutomatedInteractionsComboChart } from '../AnalyticsOverviewAutomatedInteractionsComboChart'
+import * as automatedInteractionsMetricHook from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
+import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 jest.mock('domains/reporting/hooks/automate/useAutomatedInteractionsBySkill')
 jest.mock(
-    '../../../analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric',
+    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric',
 )
 
 describe('AnalyticsOverviewAutomatedInteractionsComboChart', () => {

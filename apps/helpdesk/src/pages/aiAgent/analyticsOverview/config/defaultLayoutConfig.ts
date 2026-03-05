@@ -27,6 +27,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
                     gridSize: 3,
                     visibility: true,
                 },
+                {
+                    chartId: AnalyticsOverviewChart.HandoverInteractionsCard,
+                    gridSize: 3,
+                    visibility: true,
+                    requiresFeatureFlag: true,
+                },
             ],
         },
         {
