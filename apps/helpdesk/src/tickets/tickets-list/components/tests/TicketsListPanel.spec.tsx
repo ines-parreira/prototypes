@@ -55,6 +55,20 @@ jest.mock('ticket-list-view', () => ({
     ),
 }))
 jest.mock('tickets/core/hooks', () => ({ useViewId: () => 123456 }))
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () => ({
+    __esModule: true,
+    default: jest.fn(() => ({ setIsEnabled: jest.fn() })),
+}))
+
+jest.mock('hooks/useAppDispatch', () => ({
+    __esModule: true,
+    default: jest.fn(() => jest.fn()),
+}))
+
+jest.mock('hooks/useAppSelector', () => ({
+    __esModule: true,
+    default: jest.fn(() => null),
+}))
 
 describe('TicketsListPanel', () => {
     beforeEach(() => {

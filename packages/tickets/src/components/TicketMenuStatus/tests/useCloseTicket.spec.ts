@@ -13,6 +13,9 @@ vi.mock('@gorgias/helpdesk-queries', async () => {
         ...actual,
         useUpdateTicket: vi.fn(),
         queryKeys: {
+            views: {
+                all: vi.fn(() => ['views']),
+            },
             tickets: {
                 getTicket: vi.fn(() => ['tickets', 'detail']),
             },

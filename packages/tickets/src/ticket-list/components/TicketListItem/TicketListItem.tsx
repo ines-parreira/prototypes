@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react'
+import { memo, useCallback, useRef } from 'react'
 
 import { Link } from 'react-router-dom'
 
@@ -20,6 +20,7 @@ import type {
 
 import { TicketMessageSourceIcon } from '../../../components/TicketMessageSourceIcon/TicketMessageSourceIcon'
 import type { TicketMessageSource } from '../../../components/TicketMessageSourceIcon/utils'
+import type { OnSelectTicketParams } from '../../hooks/useTicketSelection'
 import { TicketListItemAgentsViewing } from './components/TicketListItemAgentsViewing'
 import { TicketListItemTrailingSlot } from './components/TicketListItemTrailingSlot'
 import { useTicketListItemData } from './hooks/useTicketListItemData'
@@ -33,7 +34,7 @@ type Props = {
     currentUserId?: number
     showTranslatedContent?: boolean
     isSelected?: boolean
-    onSelect?: (ticketId: number, selected: boolean, shiftKey?: boolean) => void
+    onSelect?: (params: OnSelectTicketParams) => void
     translation?: TicketTranslationCompact
 }
 
@@ -55,10 +56,16 @@ export const TicketListItem = memo(function TicketListItem({
             translation,
         })
 
+    const shiftKeyRef = useRef(false)
+
     const handleCheckboxChange = useCallback(
         (value: boolean) => {
             if (onSelect) {
-                onSelect(ticket.id, value, false)
+                onSelect({
+                    id: ticket.id,
+                    selected: value,
+                    shiftKey: shiftKeyRef.current,
+                })
             }
         },
         [onSelect, ticket.id],
@@ -105,13 +112,27 @@ export const TicketListItem = memo(function TicketListItem({
                             </Text>
                         </Box>
                     ) : (
-                        displaySubject
+                        <Text
+                            overflow="ellipsis"
+                            variant="bold"
+                            size="sm"
+                            color="content-neutral-secondary"
+                        >
+                            {displaySubject}
+                        </Text>
                     )
                 }
             >
                 <div
+                    role="presentation"
                     className={styles.headerCheckbox}
-                    onClick={(e) => e.stopPropagation()}
+                    onClickCapture={(e) => {
+                        shiftKeyRef.current = e.shiftKey
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                    }}
                 >
                     <Box data-checkbox-slot data-selected={isSelected}>
                         <Box data-element="checkbox">

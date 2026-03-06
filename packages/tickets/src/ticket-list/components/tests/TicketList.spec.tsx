@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { VirtuosoMockContext } from 'react-virtuoso'
@@ -11,6 +11,7 @@ import {
     mockListViewItemsHandler,
     mockListViewItemsUpdatesHandler,
     mockTicket,
+    mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
@@ -61,6 +62,7 @@ const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
 
 const mockCurrentUser = mockGetCurrentUserHandler()
 const mockGetView = mockGetViewHandler()
+const mockUpdateTicket = mockUpdateTicketHandler()
 
 const server = setupServer()
 
@@ -100,13 +102,13 @@ afterAll(() => {
 
 describe('TicketList', () => {
     it('should render loading state', () => {
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
     it('should render tickets with subjects', async () => {
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
@@ -132,7 +134,7 @@ describe('TicketList', () => {
             ).handler,
         )
 
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(
@@ -159,7 +161,7 @@ describe('TicketList', () => {
             ).handler,
         )
 
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(screen.getByText('No tickets found')).toBeInTheDocument()
@@ -171,7 +173,13 @@ describe('TicketList', () => {
             viewing: [{ id: 99, name: 'Viewing Agent' }],
         })
 
-        renderWithVirtuoso(<TicketList viewId={viewId} currentUserId={1} />)
+        renderWithVirtuoso(
+            <TicketList
+                viewId={viewId}
+                currentUserId={1}
+                onCollapse={vi.fn()}
+            />,
+        )
 
         await waitFor(() => {
             expect(screen.getAllByText('VA')).toHaveLength(2)
@@ -207,7 +215,7 @@ describe('TicketList', () => {
             }).handler,
         )
 
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(screen.getByText('Third Ticket')).toBeInTheDocument()
@@ -249,7 +257,7 @@ describe('TicketList', () => {
             }).handler,
         )
 
-        renderWithVirtuoso(<TicketList viewId={viewId} />)
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
@@ -266,5 +274,128 @@ describe('TicketList', () => {
         await waitFor(() => {
             expect(screen.getByText('Third Ticket')).toBeInTheDocument()
         })
+    })
+})
+
+describe('mark as read on navigation', () => {
+    it('marks an unread ticket as read when it becomes the active ticket', async () => {
+        const unreadTicket = mockTicket({
+            id: 1,
+            subject: 'First Ticket',
+            is_unread: true,
+        })
+        server.use(
+            mockListViewItemsHandler(async () =>
+                HttpResponse.json({
+                    data: [unreadTicket],
+                    meta: {
+                        current_cursor: null,
+                        next_items: null,
+                        prev_items: null,
+                    },
+                    object: 'list',
+                    uri: `/api/views/${viewId}/items/`,
+                } as any),
+            ).handler,
+            mockUpdateTicket.handler,
+        )
+
+        const waitForRequest = mockUpdateTicket.waitForRequest(server)
+
+        renderWithVirtuoso(
+            <TicketList
+                viewId={viewId}
+                onCollapse={vi.fn()}
+                activeTicketId={1}
+            />,
+        )
+
+        await waitForRequest(async (request) => {
+            const body = await request.json()
+            expect(body).toMatchObject({ is_unread: false })
+        })
+    })
+
+    it('does not mark a ticket as read when it is already read', async () => {
+        const readTicket = mockTicket({
+            id: 1,
+            subject: 'First Ticket',
+            is_unread: false,
+        })
+        const updateSpy = vi.fn()
+        server.use(
+            mockListViewItemsHandler(async () =>
+                HttpResponse.json({
+                    data: [readTicket],
+                    meta: {
+                        current_cursor: null,
+                        next_items: null,
+                        prev_items: null,
+                    },
+                    object: 'list',
+                    uri: `/api/views/${viewId}/items/`,
+                } as any),
+            ).handler,
+            mockUpdateTicketHandler(async (info) => {
+                updateSpy(info)
+                return HttpResponse.json(readTicket)
+            }).handler,
+        )
+
+        renderWithVirtuoso(
+            <TicketList
+                viewId={viewId}
+                onCollapse={vi.fn()}
+                activeTicketId={1}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('First Ticket')).toBeInTheDocument()
+        })
+
+        expect(updateSpy).not.toHaveBeenCalled()
+    })
+})
+
+describe('selection behaviour', () => {
+    it('clears the selection when the sort order changes', async () => {
+        const { user } = renderWithVirtuoso(
+            <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('First Ticket')).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByLabelText('Select ticket 1'))
+
+        await waitFor(() => {
+            expect(screen.getByText('1 selected')).toBeInTheDocument()
+        })
+
+        // Simulate a sort order change by updating localStorage directly and
+        // dispatching the custom event that useLocalStorage listens for.
+        act(() => {
+            localStorage.setItem(
+                'ticket-list-view-sort-orders',
+                JSON.stringify({
+                    [viewId]: 'last_received_message_datetime:desc',
+                }),
+            )
+            window.dispatchEvent(
+                new CustomEvent('local-storage', {
+                    detail: { key: 'ticket-list-view-sort-orders' },
+                }),
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Select all')).toBeInTheDocument()
+        })
+    })
+
+    afterEach(() => {
+        localStorage.clear()
     })
 })

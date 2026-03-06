@@ -1,9 +1,17 @@
+import { useEffect } from 'react'
+
 import { Panel } from '@repo/layout'
 import { useCurrentUserId } from '@repo/tickets'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
 import { TicketList } from '@repo/tickets/ticket-list'
+import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
+import { setViewActive } from 'state/views/actions'
+import { getViewPlainJS } from 'state/views/selectors'
 import { TicketListView } from 'ticket-list-view'
 import { useViewId } from 'tickets/core/hooks'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
@@ -23,6 +31,16 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const { ticketId: urlTicketId } = useParams<{ ticketId?: string }>()
     const viewId = useViewId()
     const { currentUserId } = useCurrentUserId()
+    const { setIsEnabled: setSplitTicketView } = useSplitTicketView()
+
+    const dispatch = useAppDispatch()
+    const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
+
+    useEffect(() => {
+        if (hasUIVisionMS4 && view) {
+            dispatch(setViewActive(fromJS(view)))
+        }
+    }, [hasUIVisionMS4, dispatch, view])
 
     const ticketId = urlTicketId ? parseInt(urlTicketId, 10) : undefined
     if (hasUIVisionMS4) {
@@ -32,6 +50,7 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
                     viewId={viewId}
                     activeTicketId={ticketId}
                     currentUserId={currentUserId}
+                    onCollapse={() => setSplitTicketView(false)}
                 />
             </Panel>
         )

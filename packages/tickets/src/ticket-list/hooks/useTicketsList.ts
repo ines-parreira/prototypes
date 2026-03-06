@@ -28,7 +28,11 @@ export function getTicketsListQueryKey(
     return queryKeys.views.listViewItems(viewId, params)
 }
 
-export function useTicketsList(viewId: number, params?: UseTicketsListParams) {
+export function useTicketsList(
+    viewId: number,
+    params?: UseTicketsListParams,
+    pauseUpdates?: boolean,
+) {
     const query = useInfiniteQuery({
         queryKey: getTicketsListQueryKey(viewId, params),
         queryFn: async ({ pageParam, signal }) => {
@@ -74,7 +78,7 @@ export function useTicketsList(viewId: number, params?: UseTicketsListParams) {
         viewId,
         params,
         upToCursor,
-        enabled: !query.isLoading,
+        enabled: !query.isLoading && !pauseUpdates,
     })
 
     return {

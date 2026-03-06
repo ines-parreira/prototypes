@@ -22,7 +22,7 @@ export const ticketMessageSourceToIconName = (
         case TicketMessageSourceType.Chat:
         case TicketMessageSourceType.ChatContactForm:
         case TicketMessageSourceType.ChatOfflineCapture:
-            return IconName.CommChat
+            return IconName.CommChatCircleDots
         case TicketMessageSourceType.Api:
             return IconName.SystemCode
         case TicketMessageSourceType.Aircall:

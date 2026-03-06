@@ -1,5 +1,6 @@
-import { forwardRef, useCallback, useMemo } from 'react'
+import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
 
+import { usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
 import type { Components } from 'react-virtuoso'
 
@@ -12,9 +13,14 @@ import type {
 
 import { useCurrentUserLanguagePreferences } from '../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../translations/hooks/useTicketsTranslatedProperties'
+import { useMarkTicketAsRead } from '../hooks/useMarkTicketAsRead'
 import { useSortOrder } from '../hooks/useSortOrder'
+import type { OnSelectTicketParams } from '../hooks/useTicketSelection'
+import { useTicketSelection } from '../hooks/useTicketSelection'
 import { useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
+import { TicketListActions } from './TicketListActions/TicketListActions'
+import { TicketListHeader } from './TicketListHeader/TicketListHeader'
 import { TicketListItemSkeleton } from './TicketListItem/components/TicketListItemSkeleton'
 import { TicketListItem } from './TicketListItem/TicketListItem'
 
@@ -28,13 +34,9 @@ type ListContext = {
     isFetchingNextPage: boolean
     translationMap: Record<number, TicketTranslationCompact>
     shouldShowTranslatedContent: (language?: Language | null) => boolean
-    selectedTicketIds?: Set<number>
-    onSelectTicket?: (
-        ticketId: number,
-        selected: boolean,
-        shiftKey?: boolean,
-    ) => void
-    hasSelectedAll?: boolean
+    selectedTicketIds: Set<number>
+    onSelectTicket: (params: OnSelectTicketParams) => void
+    hasSelectedAll: boolean
 }
 
 const List: NonNullable<Components<TicketCompact, ListContext>['List']> =
@@ -104,8 +106,7 @@ function itemContent(
             currentUserId={context.currentUserId}
             isSelected={
                 context.hasSelectedAll ||
-                context.selectedTicketIds?.has(ticket.id) ||
-                false
+                context.selectedTicketIds.has(ticket.id)
             }
             onSelect={context.onSelectTicket}
             translation={context.translationMap?.[ticket.id]}
@@ -118,30 +119,27 @@ function itemContent(
 
 type Props = {
     viewId: number
+    onCollapse: () => void
     activeTicketId?: number
     currentUserId?: number
-    selectedTicketIds?: Set<number>
-    onSelectTicket?: (
-        ticketId: number,
-        selected: boolean,
-        shiftKey?: boolean,
-    ) => void
-    hasSelectedAll?: boolean
 }
 
 export function TicketList({
     viewId,
+    onCollapse,
     activeTicketId,
     currentUserId,
-    selectedTicketIds,
-    onSelectTicket,
-    hasSelectedAll,
 }: Props) {
     const [sortOrder] = useSortOrder(viewId)
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder }),
         [sortOrder],
     )
+
+    // Ref allows polling pause state to inform useTicketsList on the same render
+    // that a selection change occurred, avoiding a one-render lag.
+    const pauseUpdatesRef = useRef(false)
+
     const {
         tickets,
         fetchNextPage,
@@ -149,9 +147,49 @@ export function TicketList({
         isLoading,
         isFetchingNextPage,
         error,
-    } = useTicketsList(viewId, ticketsListParams)
+    } = useTicketsList(viewId, ticketsListParams, pauseUpdatesRef.current)
+
+    const {
+        hasSelectedAll,
+        selectedTicketIds,
+        selectionCount,
+        hasAnySelection,
+        onSelect,
+        onSelectAll,
+        clear,
+    } = useTicketSelection(tickets)
+
+    // Keep the ref in sync so the next render passes the correct value to useTicketsList
+    pauseUpdatesRef.current = hasAnySelection
+
+    const previousSortOrder = usePrevious(sortOrder)
+    useEffect(() => {
+        if (!previousSortOrder || previousSortOrder === sortOrder) return
+        clear()
+    }, [sortOrder, previousSortOrder, clear])
 
     const { viewVisibleTickets } = useViewVisibleTickets()
+
+    const { markAsRead } = useMarkTicketAsRead()
+    const activeTicketInListId = useMemo(() => {
+        if (!activeTicketId) return undefined
+        return tickets.some((ticket) => ticket.id === activeTicketId)
+            ? activeTicketId
+            : undefined
+    }, [activeTicketId, tickets])
+    const previousActiveTicketInListId = usePrevious(activeTicketInListId)
+    useEffect(() => {
+        if (!activeTicketId) return
+
+        const activeTicket = tickets.find((t) => t.id === activeTicketId)
+        if (!activeTicket) return
+
+        if (previousActiveTicketInListId === activeTicketId) return
+
+        if (activeTicket.is_unread) {
+            markAsRead(activeTicketId)
+        }
+    }, [activeTicketId, previousActiveTicketInListId, tickets, markAsRead])
 
     const ticketIds = useMemo(() => tickets.map((t) => t.id), [tickets])
     const { translationMap } = useTicketsTranslatedProperties({
@@ -169,7 +207,7 @@ export function TicketList({
             translationMap,
             shouldShowTranslatedContent,
             selectedTicketIds,
-            onSelectTicket,
+            onSelectTicket: onSelect,
             hasSelectedAll,
         }),
         [
@@ -181,7 +219,7 @@ export function TicketList({
             translationMap,
             shouldShowTranslatedContent,
             selectedTicketIds,
-            onSelectTicket,
+            onSelect,
             hasSelectedAll,
         ],
     )
@@ -226,10 +264,19 @@ export function TicketList({
             height="100%"
             width="100%"
             flexDirection="column"
-            padding="xs"
             className={css.ticketListContainer}
         >
+            <TicketListHeader viewId={viewId} onCollapse={onCollapse} />
+            <TicketListActions
+                viewId={viewId}
+                selectedTicketIds={selectedTicketIds}
+                hasSelectedAll={hasSelectedAll}
+                selectionCount={selectionCount}
+                onSelectAll={onSelectAll}
+                onActionComplete={clear}
+            />
             <Virtuoso<TicketCompact, ListContext>
+                className={css.ticketList}
                 data={isLoading ? [] : tickets}
                 context={context}
                 increaseViewportBy={{ top: 300, bottom: 1000 }}

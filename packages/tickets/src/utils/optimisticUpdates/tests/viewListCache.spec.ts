@@ -6,7 +6,9 @@ import type { Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import {
+    patchAllTicketsInViewListCache,
     patchTicketInViewListCache,
+    removeAllTicketsFromViewListCache,
     removeTicketFromViewListCache,
 } from '../viewListCache'
 
@@ -233,6 +235,132 @@ describe('removeTicketFromViewListCache', () => {
     it('does nothing when no cached data exists', () => {
         expect(() => {
             removeTicketFromViewListCache(queryClient, 1)
+        }).not.toThrow()
+    })
+})
+
+describe('patchAllTicketsInViewListCache', () => {
+    it('patches every ticket in the specified view across all pages', () => {
+        const viewId = 123
+        const key = queryKeys.views.listViewItems(viewId, undefined)
+
+        queryClient.setQueryData(
+            key,
+            makeInfiniteData([
+                [
+                    mockTicket({ id: 1, subject: 'A' }),
+                    mockTicket({ id: 2, subject: 'B' }),
+                ],
+                [mockTicket({ id: 3, subject: 'C' })],
+            ]),
+        )
+
+        patchAllTicketsInViewListCache(queryClient, viewId, {
+            subject: 'Patched',
+        })
+
+        const cache = getViewListCache(queryClient, key)
+
+        expect(cache?.pages[0].data.map((t) => t.subject)).toEqual([
+            'Patched',
+            'Patched',
+        ])
+        expect(cache?.pages[1].data[0].subject).toBe('Patched')
+        expect(cache?.pageParams).toEqual([undefined, 'cursor-1'])
+    })
+
+    it('does not affect other views', () => {
+        const key123 = queryKeys.views.listViewItems(123, undefined)
+        const key456 = queryKeys.views.listViewItems(456, undefined)
+
+        queryClient.setQueryData(
+            key123,
+            makeInfiniteData([[mockTicket({ id: 1, subject: 'View 123' })]]),
+        )
+        queryClient.setQueryData(
+            key456,
+            makeInfiniteData([[mockTicket({ id: 2, subject: 'View 456' })]]),
+        )
+
+        patchAllTicketsInViewListCache(queryClient, 123, { subject: 'Patched' })
+
+        expect(
+            getViewListCache(queryClient, key123)?.pages[0].data[0].subject,
+        ).toBe('Patched')
+        expect(
+            getViewListCache(queryClient, key456)?.pages[0].data[0].subject,
+        ).toBe('View 456')
+    })
+
+    it('does nothing when no cached data exists', () => {
+        expect(() => {
+            patchAllTicketsInViewListCache(queryClient, 123, {
+                subject: 'Patched',
+            })
+        }).not.toThrow()
+    })
+})
+
+describe('removeAllTicketsFromViewListCache', () => {
+    it('empties every page in the specified view', () => {
+        const viewId = 123
+        const key = queryKeys.views.listViewItems(viewId, undefined)
+
+        queryClient.setQueryData(
+            key,
+            makeInfiniteData([
+                [mockTicket({ id: 1 }), mockTicket({ id: 2 })],
+                [mockTicket({ id: 3 })],
+            ]),
+        )
+
+        removeAllTicketsFromViewListCache(queryClient, viewId)
+
+        const cache = getViewListCache(queryClient, key)
+
+        expect(cache?.pages[0].data).toHaveLength(0)
+        expect(cache?.pages[1].data).toHaveLength(0)
+        expect(cache?.pageParams).toEqual([undefined, 'cursor-1'])
+    })
+
+    it('does not affect other views', () => {
+        const key123 = queryKeys.views.listViewItems(123, undefined)
+        const key456 = queryKeys.views.listViewItems(456, undefined)
+
+        queryClient.setQueryData(
+            key123,
+            makeInfiniteData([[mockTicket({ id: 1 })]]),
+        )
+        queryClient.setQueryData(
+            key456,
+            makeInfiniteData([[mockTicket({ id: 2 })]]),
+        )
+
+        removeAllTicketsFromViewListCache(queryClient, 123)
+
+        expect(
+            getViewListCache(queryClient, key123)?.pages[0].data,
+        ).toHaveLength(0)
+        expect(
+            getViewListCache(queryClient, key456)?.pages[0].data,
+        ).toHaveLength(1)
+    })
+
+    it('returns the same reference when all pages are already empty', () => {
+        const viewId = 123
+        const key = queryKeys.views.listViewItems(viewId, undefined)
+        const initial = makeInfiniteData([[], []])
+
+        queryClient.setQueryData(key, initial)
+
+        removeAllTicketsFromViewListCache(queryClient, viewId)
+
+        expect(getViewListCache(queryClient, key)).toBe(initial)
+    })
+
+    it('does nothing when no cached data exists', () => {
+        expect(() => {
+            removeAllTicketsFromViewListCache(queryClient, 123)
         }).not.toThrow()
     })
 })
