@@ -44,7 +44,7 @@ export const useCheckOpportunityRelevance = (
                     Number(resource.identifiers?.resourceSetId),
                     Number(resource.identifiers?.resourceId),
                     locale,
-                    'latest_draft',
+                    'current',
                 ),
                 queryFn: async () => {
                     if (!resource.identifiers) return null
@@ -60,7 +60,7 @@ export const useCheckOpportunityRelevance = (
                             },
                             {
                                 locale,
-                                version_status: 'latest_draft',
+                                version_status: 'current',
                             },
                         )
                         return article
