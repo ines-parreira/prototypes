@@ -37,6 +37,10 @@ export const SelectableReports = ({
                             checkedCharts,
                         )
 
+                        if (chart.hidden) {
+                            return null
+                        }
+
                         return (
                             <div
                                 key={chart.config.reportPath}

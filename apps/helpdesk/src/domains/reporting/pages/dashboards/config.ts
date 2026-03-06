@@ -148,6 +148,7 @@ export const REPORTS_CONFIG: ReportsModalConfig = [
             {
                 type: AnalyticsOverviewChart,
                 config: AnalyticsOverviewReportConfig,
+                hidden: true,
             },
             {
                 type: AutomateOverviewChart,

@@ -1,10 +1,13 @@
-import React from 'react'
-
-import { userEvent } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { REPORTS_CONFIG } from 'domains/reporting/pages/dashboards/config'
-import { ModalSearchBar } from 'domains/reporting/pages/dashboards/DashboardsModal/ModalSearchBar'
+import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
+import {
+    getSearchConfig,
+    ModalSearchBar,
+} from 'domains/reporting/pages/dashboards/DashboardsModal/ModalSearchBar'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import type { ReportsModalConfig } from 'domains/reporting/pages/dashboards/types'
 import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
@@ -18,6 +21,69 @@ const props = {
     setSelectedReport,
 }
 
+const mockChartComponent = () => <div />
+
+const searchTestConfig: ReportsModalConfig = [
+    {
+        category: 'Test Category',
+        children: [
+            {
+                type: OverviewChart,
+                config: {
+                    id: ReportsIDs.SupportPerformanceOverviewReportConfig,
+                    reportName: 'Visible Report',
+                    reportPath: '/visible',
+                    charts: {
+                        chart1: {
+                            chartComponent: mockChartComponent,
+                            label: 'Messages Sent',
+                            csvProducer: null,
+                            description: '',
+                            chartType: ChartType.Card,
+                        },
+                    },
+                    reportFilters: { optional: [], persistent: [] },
+                },
+            },
+            {
+                type: OverviewChart,
+                hidden: true,
+                config: {
+                    id: ReportsIDs.AiAgentAnalyticsOverview,
+                    reportName: 'Hidden Report',
+                    reportPath: '/hidden',
+                    charts: {
+                        hiddenChart1: {
+                            chartComponent: mockChartComponent,
+                            label: 'Messages Sent',
+                            csvProducer: null,
+                            description: '',
+                            chartType: ChartType.Card,
+                        },
+                    },
+                    reportFilters: { optional: [], persistent: [] },
+                },
+            },
+        ],
+    },
+]
+
+describe('getSearchConfig', () => {
+    it('excludes hidden reports from search results even when charts match the search value', () => {
+        const result = getSearchConfig(searchTestConfig, 'Messages Sent')
+
+        expect(result).toHaveLength(1)
+        expect(result![0].children).toHaveLength(1)
+        expect(result![0].children[0].config.reportPath).toBe('/visible')
+    })
+
+    it('includes visible reports when charts match the search value', () => {
+        const result = getSearchConfig(searchTestConfig, 'Messages Sent')
+
+        expect(result![0].children[0].config.reportName).toBe('Visible Report')
+    })
+})
+
 describe('ModalSearchBar', () => {
     it('should call the setters on value change', async () => {
         render(<ModalSearchBar {...props} />, {})
@@ -25,7 +91,7 @@ describe('ModalSearchBar', () => {
         const value = 'Messages'
 
         const inputElement = screen.getByRole('textbox')
-        userEvent.type(inputElement, value)
+        fireEvent.change(inputElement, { target: { value } })
 
         const calledCharts = {
             ...SupportPerformanceOverviewReportConfig,
@@ -69,7 +135,7 @@ describe('ModalSearchBar', () => {
         const value = 'Messages'
 
         const inputElement = screen.getByRole('textbox')
-        await userEvent.type(inputElement, value)
+        fireEvent.change(inputElement, { target: { value } })
 
         fireEvent.click(screen.getByText('close'))
 
@@ -84,7 +150,7 @@ describe('ModalSearchBar', () => {
         const value = 'NONEXISTENT_VALUE'
 
         const inputElement = screen.getByRole('textbox')
-        await userEvent.type(inputElement, value)
+        fireEvent.change(inputElement, { target: { value } })
 
         expect(setConfig).toHaveBeenLastCalledWith(null)
         expect(setSelectedReport).toHaveBeenLastCalledWith(null)

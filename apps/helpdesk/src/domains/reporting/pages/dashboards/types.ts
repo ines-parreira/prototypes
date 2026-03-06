@@ -231,6 +231,7 @@ export type AvailableChartIds =
 export type ReportChildrenConfig = {
     type: AvailableChartIds
     config: ReportConfig<string>
+    hidden?: boolean
 }[]
 
 export type ReportsModalConfig = {

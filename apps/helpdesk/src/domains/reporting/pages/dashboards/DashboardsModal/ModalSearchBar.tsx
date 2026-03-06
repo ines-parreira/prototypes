@@ -30,6 +30,8 @@ export const getSearchConfig = (
         for (const report of reportConfig.children) {
             const filteredCharts: Record<string, ChartConfig> = {}
 
+            if (report.hidden) continue
+
             for (const [chartId, chart] of Object.entries(
                 report.config.charts,
             )) {

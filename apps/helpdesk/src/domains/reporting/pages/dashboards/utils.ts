@@ -496,6 +496,9 @@ export const getReportsConfigSearchResult = (
             if (Object.keys(filteredCharts).length > 0) {
                 filteredChildren.push({
                     type: report.type,
+                    ...(report.hidden !== undefined && {
+                        hidden: report.hidden,
+                    }),
                     config: {
                         ...report.config,
                         charts: filteredCharts,
