@@ -51,19 +51,4 @@ describe('<DrillDownTicketDetailsCell />', () => {
             screen.getByText(`Ticket ${ticketDetails.id}`),
         ).toBeInTheDocument()
     })
-
-    it('should render deleted or merged message when description is missing', () => {
-        render(
-            <DrillDownTicketDetailsCell
-                ticketDetails={{
-                    ...ticketDetails,
-                    description: null,
-                }}
-            />,
-        )
-
-        expect(
-            screen.getByText('Ticket has been deleted or merged'),
-        ).toBeInTheDocument()
-    })
 })

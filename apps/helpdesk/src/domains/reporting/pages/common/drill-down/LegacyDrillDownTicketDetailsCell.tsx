@@ -10,7 +10,6 @@ import type { Props as BodyCellProps } from 'pages/common/components/table/cells
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TicketIcon, { NullTicketIcon } from 'pages/common/components/TicketIcon'
 
-const TICKET_DELETED_OR_MERGED = 'Ticket has been deleted or merged'
 const TICKET_LABEL = 'Ticket'
 
 export const LegacyDrillDownTicketDetailsCell = ({
@@ -46,7 +45,7 @@ export const LegacyDrillDownTicketDetailsCell = ({
                         `${TICKET_LABEL} ${ticketDetails.id}`}
                 </h4>
                 <p className={css.description}>
-                    {ticketDetails.description ?? TICKET_DELETED_OR_MERGED}
+                    {ticketDetails.description ?? ''}
                 </p>
             </div>
         </BodyCell>

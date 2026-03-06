@@ -81,21 +81,6 @@ describe('<LegacyDrillDownTicketDetailsCell />', () => {
         ).toBeInTheDocument()
     })
 
-    it('should render deleted or merged message when description is missing', () => {
-        render(
-            <LegacyDrillDownTicketDetailsCell
-                ticketDetails={{
-                    ...ticketDetails,
-                    description: null,
-                }}
-            />,
-        )
-
-        expect(
-            screen.getByText('Ticket has been deleted or merged'),
-        ).toBeInTheDocument()
-    })
-
     it('should render ticket icon when status is not null and channel exists', () => {
         const { container } = render(
             <LegacyDrillDownTicketDetailsCell
