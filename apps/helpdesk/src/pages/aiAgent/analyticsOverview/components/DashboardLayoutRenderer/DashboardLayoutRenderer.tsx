@@ -3,8 +3,9 @@ import { Box } from '@gorgias/axiom'
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
-import { KpisSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/KpisSection'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -28,13 +29,13 @@ const renderSection =
         layoutConfig: DashboardLayoutConfig,
     ) =>
     (section: LayoutSection) => {
-        const isChartsSection = section.type === 'charts'
-        const isKpisSection = section.type === 'kpis'
-        const isTableSection = section.type === 'table'
+        const isChartsSection = section.type === ChartType.Graph
+        const isCardsSection = section.type === ChartType.Card
+        const isTableSection = section.type === ChartType.Table
 
-        if (isKpisSection) {
+        if (isCardsSection) {
             return (
-                <KpisSection
+                <CardsSection
                     key={section.id}
                     section={section}
                     reportConfig={reportConfig}

@@ -19,6 +19,7 @@ import {
     managedDashboardKeys,
     useUpdateManagedDashboard,
 } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { layoutConfigToBackendConfig } from 'domains/reporting/utils/managedDashboardMappers'
 import type {
     AnalyticsChartType,
@@ -74,7 +75,7 @@ const mockDashboard: AnalyticsManagedDashboard = {
 const mockConfig = mockDashboard.config
 
 const mockLayoutConfig: DashboardLayoutConfig = {
-    sections: [{ id: 'section_kpis', type: 'kpis', items: [] }],
+    sections: [{ id: 'section_kpis', type: ChartType.Card, items: [] }],
 }
 
 function makeWrapper() {
@@ -315,8 +316,8 @@ describe('useUpdateManagedDashboard', () => {
 
             const twoSectionLayout: DashboardLayoutConfig = {
                 sections: [
-                    { id: 'section_kpis', type: 'kpis', items: [] },
-                    { id: 'section_graphs', type: 'kpis', items: [] },
+                    { id: 'section_kpis', type: ChartType.Card, items: [] },
+                    { id: 'section_graphs', type: ChartType.Graph, items: [] },
                 ],
             }
 

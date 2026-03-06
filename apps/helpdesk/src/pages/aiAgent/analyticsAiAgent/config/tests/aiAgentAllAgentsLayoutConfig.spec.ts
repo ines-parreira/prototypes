@@ -1,5 +1,7 @@
-import { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
-import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+
+import { AnalyticsAiAgentAllAgentsChart } from '../../AnalyticsAiAgentAllAgentsReportConfig'
+import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from '../aiAgentAllAgentsLayoutConfig'
 
 describe('aiAgentAllAgentsLayoutConfig', () => {
     describe('ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT', () => {
@@ -12,7 +14,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
         it('should have kpis section with 12 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
-            expect(kpisSection.type).toBe('kpis')
+            expect(kpisSection.type).toBe(ChartType.Card)
             expect(kpisSection.items).toHaveLength(12)
         })
 
@@ -140,7 +142,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[1]
             expect(visualizationsSection.id).toBe('visualizations')
-            expect(visualizationsSection.type).toBe('charts')
+            expect(visualizationsSection.type).toBe(ChartType.Graph)
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
@@ -166,7 +168,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
-            expect(breakdownSection.type).toBe('table')
+            expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.items).toHaveLength(1)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.PerformanceTable,

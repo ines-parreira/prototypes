@@ -3,6 +3,7 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useUpdateManagedDashboard } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { MetricsConfigurator } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator'
 
@@ -56,7 +57,7 @@ describe('MetricsConfigurator', () => {
         sections: [
             {
                 id: 'section_kpis',
-                type: 'kpis' as const,
+                type: ChartType.Card,
                 items: [
                     {
                         chartId: AnalyticsOverviewChart.AutomationRateCard,
@@ -223,7 +224,7 @@ describe('MetricsConfigurator', () => {
             sections: [
                 {
                     id: 'section_charts',
-                    type: 'charts' as const,
+                    type: ChartType.Graph,
                     items: [],
                 },
             ],
@@ -307,7 +308,7 @@ describe('MetricsConfigurator', () => {
             sections: [
                 {
                     id: 'section_kpis',
-                    type: 'kpis' as const,
+                    type: ChartType.Card,
                     items: [
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,

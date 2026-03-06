@@ -1,3 +1,4 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
@@ -6,7 +7,7 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
         sections: [
             {
                 id: 'kpis',
-                type: 'kpis',
+                type: ChartType.Card,
                 items: [
                     {
                         chartId:
@@ -120,7 +121,7 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
             },
             {
                 id: 'visualizations',
-                type: 'charts',
+                type: ChartType.Graph,
                 items: [
                     {
                         chartId:
@@ -138,7 +139,7 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
             },
             {
                 id: 'breakdown',
-                type: 'table',
+                type: ChartType.Table,
                 items: [
                     {
                         chartId:

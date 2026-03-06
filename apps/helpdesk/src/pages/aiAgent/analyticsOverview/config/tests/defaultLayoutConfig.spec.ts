@@ -1,3 +1,5 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+
 import { AnalyticsOverviewChart } from '../../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../defaultLayoutConfig'
 
@@ -10,7 +12,7 @@ describe('defaultLayoutConfig', () => {
         it('should have kpis section with 7 cards', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
-            expect(kpisSection.type).toBe('kpis')
+            expect(kpisSection.type).toBe(ChartType.Card)
             expect(kpisSection.items).toHaveLength(7)
         })
 
@@ -78,7 +80,7 @@ describe('defaultLayoutConfig', () => {
             const visualizationsSection =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[1]
             expect(visualizationsSection.id).toBe('visualizations')
-            expect(visualizationsSection.type).toBe('charts')
+            expect(visualizationsSection.type).toBe(ChartType.Graph)
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
@@ -104,7 +106,7 @@ describe('defaultLayoutConfig', () => {
             const breakdownSection =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
-            expect(breakdownSection.type).toBe('table')
+            expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.items).toHaveLength(1)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsOverviewChart.PerformanceTable,

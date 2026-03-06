@@ -1,3 +1,5 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+
 import { AnalyticsAiAgentShoppingAssistantChart } from '../../AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from '../aiAgentShoppingAssistantLayoutConfig'
 
@@ -13,7 +15,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
-            expect(kpisSection.type).toBe('kpis')
+            expect(kpisSection.type).toBe(ChartType.Card)
             expect(kpisSection.items).toHaveLength(16)
         })
 
@@ -64,7 +66,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[1]
             expect(visualizationsSection.id).toBe('visualizations')
-            expect(visualizationsSection.type).toBe('charts')
+            expect(visualizationsSection.type).toBe(ChartType.Graph)
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
@@ -90,7 +92,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
-            expect(breakdownSection.type).toBe('table')
+            expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.items).toHaveLength(1)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,

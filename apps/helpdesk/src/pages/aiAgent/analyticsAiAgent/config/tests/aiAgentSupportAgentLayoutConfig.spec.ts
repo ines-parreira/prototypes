@@ -1,3 +1,5 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+
 import { AnalyticsAiAgentSupportAgentChart } from '../../AnalyticsAiAgentSupportAgentReportConfig'
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../aiAgentSupportAgentLayoutConfig'
 
@@ -13,7 +15,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
-            expect(kpisSection.type).toBe('kpis')
+            expect(kpisSection.type).toBe(ChartType.Card)
             expect(kpisSection.items).toHaveLength(7)
         })
 
@@ -84,7 +86,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[1]
             expect(visualizationsSection.id).toBe('visualizations')
-            expect(visualizationsSection.type).toBe('charts')
+            expect(visualizationsSection.type).toBe(ChartType.Graph)
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
@@ -110,7 +112,7 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
-            expect(breakdownSection.type).toBe('table')
+            expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.items).toHaveLength(1)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsAiAgentSupportAgentChart.PerformanceTable,

@@ -1,7 +1,8 @@
 import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
-import { KpisSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/KpisSection'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -65,7 +66,7 @@ const defaultLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
             id: 'kpis',
-            type: 'kpis',
+            type: ChartType.Card,
             items: [],
         },
     ],
@@ -79,7 +80,7 @@ const makeSection = (
     }>,
 ): LayoutSection => ({
     id: 'kpis',
-    type: 'kpis',
+    type: ChartType.Card,
     items: items.map(({ chartId, visibility, requiresFeatureFlag }) => ({
         chartId: chartId as AnalyticsChartType,
         gridSize: 3,
@@ -88,7 +89,7 @@ const makeSection = (
     })),
 })
 
-describe('KpisSection', () => {
+describe('CardsSection', () => {
     beforeEach(() => {
         mockedUseFlag.mockReset()
     })
@@ -100,7 +101,7 @@ describe('KpisSection', () => {
 
         it('should render ShowMoreList when feature flag is on', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -116,7 +117,7 @@ describe('KpisSection', () => {
 
         it('should render MetricsConfigurator when dashboardId is provided', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -133,7 +134,7 @@ describe('KpisSection', () => {
 
         it('should not render MetricsConfigurator when dashboardId is not provided', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -149,7 +150,7 @@ describe('KpisSection', () => {
 
         it('should pass correct keyKpisConfig (all items) to MetricsConfigurator', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                         { chartId: 'kpi2', visibility: false },
@@ -168,7 +169,7 @@ describe('KpisSection', () => {
 
         it('should only render visible items', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                         { chartId: 'kpi2', visibility: false },
@@ -186,7 +187,7 @@ describe('KpisSection', () => {
 
         it('should show item when requiresFeatureFlag=true and feature flag is on', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         {
                             chartId: 'kpi1',
@@ -204,7 +205,7 @@ describe('KpisSection', () => {
 
         it('should show item when requiresFeatureFlag=false and feature flag is on', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         {
                             chartId: 'kpi1',
@@ -228,7 +229,7 @@ describe('KpisSection', () => {
 
         it('should render plain div instead of ShowMoreList', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -245,7 +246,7 @@ describe('KpisSection', () => {
 
         it('should not render MetricsConfigurator even when dashboardId is provided', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -262,7 +263,7 @@ describe('KpisSection', () => {
 
         it('should only render visible items', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                         { chartId: 'kpi2', visibility: false },
@@ -278,7 +279,7 @@ describe('KpisSection', () => {
 
         it('should hide item when requiresFeatureFlag=true and feature flag is off', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         {
                             chartId: 'kpi1',
@@ -296,7 +297,7 @@ describe('KpisSection', () => {
 
         it('should show item when requiresFeatureFlag=false and feature flag is off', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         {
                             chartId: 'kpi1',
@@ -314,7 +315,7 @@ describe('KpisSection', () => {
 
         it('should render items when tabKey is provided and feature flag is off', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                     ])}
@@ -335,7 +336,7 @@ describe('KpisSection', () => {
 
         it('should render items regardless of tabKey', () => {
             render(
-                <KpisSection
+                <CardsSection
                     section={makeSection([
                         { chartId: 'kpi1', visibility: true },
                         { chartId: 'kpi2', visibility: true },

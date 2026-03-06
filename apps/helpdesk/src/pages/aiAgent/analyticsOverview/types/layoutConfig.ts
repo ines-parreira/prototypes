@@ -1,3 +1,4 @@
+import type { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import type { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import type { AnalyticsAiAgentSupportAgentChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
@@ -8,8 +9,6 @@ export type AnalyticsChartType =
     | AnalyticsAiAgentAllAgentsChart
     | AnalyticsAiAgentSupportAgentChart
     | AnalyticsAiAgentShoppingAssistantChart
-
-export type SectionType = 'kpis' | 'charts' | 'table'
 
 export type GridSize = 3 | 6 | 12
 
@@ -26,7 +25,7 @@ export type LayoutSection<
     TChart extends AnalyticsChartType = AnalyticsChartType,
 > = {
     id: string
-    type: SectionType
+    type: ChartType
     items: LayoutItem<TChart>[]
 }
 

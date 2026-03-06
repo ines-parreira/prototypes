@@ -4,11 +4,11 @@ import type {
     Section,
 } from '@gorgias/helpdesk-types'
 
+import type { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutSection,
-    SectionType,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 export function layoutConfigToBackendConfig(
@@ -19,7 +19,7 @@ export function layoutConfigToBackendConfig(
         (section: LayoutSection): Section => {
             return {
                 section_id: section.id,
-                type: mapSectionType(section.type),
+                type: section.type,
                 items: section.items.map(
                     (item): Item => ({
                         chart_id: item.chartId,
@@ -59,9 +59,7 @@ export function backendConfigToLayoutConfig(
         (backendSection: Section): LayoutSection => {
             return {
                 id: backendSection.section_id,
-                type: mapSectionTypeFromBackend(
-                    backendSection.type as 'card' | 'graph' | 'table',
-                ),
+                type: backendSection.type as ChartType,
                 items: backendSection.items.map((item: Item) => ({
                     chartId: item.chart_id as AnalyticsChartType,
                     gridSize: (item.metadata?.grid_size ?? 3) as 3 | 6 | 12,
@@ -73,30 +71,6 @@ export function backendConfigToLayoutConfig(
 
     return {
         sections,
-    }
-}
-
-function mapSectionType(frontendType: SectionType): 'card' | 'graph' | 'table' {
-    switch (frontendType) {
-        case 'kpis':
-            return 'card'
-        case 'charts':
-            return 'graph'
-        case 'table':
-            return 'table'
-    }
-}
-
-function mapSectionTypeFromBackend(
-    backendType: 'card' | 'graph' | 'table',
-): SectionType {
-    switch (backendType) {
-        case 'card':
-            return 'kpis'
-        case 'graph':
-            return 'charts'
-        case 'table':
-            return 'table'
     }
 }
 

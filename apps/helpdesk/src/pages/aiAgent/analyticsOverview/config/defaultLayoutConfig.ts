@@ -1,3 +1,4 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
@@ -5,7 +6,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
     sections: [
         {
             id: 'kpis',
-            type: 'kpis',
+            type: ChartType.Card,
             items: [
                 {
                     chartId: AnalyticsOverviewChart.AutomationRateCard,
@@ -50,7 +51,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
         },
         {
             id: 'visualizations',
-            type: 'charts',
+            type: ChartType.Graph,
             items: [
                 {
                     chartId: AnalyticsOverviewChart.AutomationRateComboChart,
@@ -66,7 +67,7 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
         },
         {
             id: 'breakdown',
-            type: 'table',
+            type: ChartType.Table,
             items: [
                 {
                     chartId: AnalyticsOverviewChart.PerformanceTable,

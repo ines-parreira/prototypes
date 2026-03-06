@@ -3,6 +3,7 @@ import type {
     ItemMetadata,
 } from '@gorgias/helpdesk-types'
 
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import {
     backendConfigToLayoutConfig,
     layoutConfigToBackendConfig,
@@ -19,7 +20,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'section_kpis',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId:
@@ -37,7 +38,7 @@ describe('managedDashboardMappers', () => {
                     },
                     {
                         id: 'section_charts',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [
                             {
                                 chartId: AnalyticsOverviewChart.TimeSavedCard,
@@ -63,7 +64,7 @@ describe('managedDashboardMappers', () => {
                         sections: [
                             {
                                 section_id: 'section_kpis',
-                                type: 'card',
+                                type: ChartType.Card,
                                 items: [
                                     {
                                         chart_id:
@@ -85,7 +86,7 @@ describe('managedDashboardMappers', () => {
                             },
                             {
                                 section_id: 'section_charts',
-                                type: 'graph',
+                                type: ChartType.Graph,
                                 items: [
                                     {
                                         chart_id:
@@ -131,17 +132,17 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 's1',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [],
                     },
                     {
                         id: 's2',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [],
                     },
                     {
                         id: 's3',
-                        type: 'table',
+                        type: ChartType.Table,
                         items: [],
                     },
                 ],
@@ -149,9 +150,9 @@ describe('managedDashboardMappers', () => {
 
             const result = layoutConfigToBackendConfig('test-id', layoutConfig)
 
-            expect(result.tabs[0].sections[0].type).toBe('card')
-            expect(result.tabs[0].sections[1].type).toBe('graph')
-            expect(result.tabs[0].sections[2].type).toBe('table')
+            expect(result.tabs[0].sections[0].type).toBe(ChartType.Card)
+            expect(result.tabs[0].sections[1].type).toBe(ChartType.Graph)
+            expect(result.tabs[0].sections[2].type).toBe(ChartType.Table)
         })
     })
 
@@ -166,7 +167,7 @@ describe('managedDashboardMappers', () => {
                         sections: [
                             {
                                 section_id: 'section_kpis',
-                                type: 'card',
+                                type: ChartType.Card,
                                 items: [
                                     {
                                         chart_id: 'chart_1',
@@ -202,7 +203,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'section_kpis',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId: 'chart_1',
@@ -230,17 +231,17 @@ describe('managedDashboardMappers', () => {
                         sections: [
                             {
                                 section_id: 's1',
-                                type: 'card',
+                                type: ChartType.Card,
                                 items: [],
                             },
                             {
                                 section_id: 's2',
-                                type: 'graph',
+                                type: ChartType.Graph,
                                 items: [],
                             },
                             {
                                 section_id: 's3',
-                                type: 'table',
+                                type: ChartType.Table,
                                 items: [],
                             },
                         ],
@@ -252,9 +253,9 @@ describe('managedDashboardMappers', () => {
                 sections: [],
             })
 
-            expect(result.sections[0].type).toBe('kpis')
-            expect(result.sections[1].type).toBe('charts')
-            expect(result.sections[2].type).toBe('table')
+            expect(result.sections[0].type).toBe(ChartType.Card)
+            expect(result.sections[1].type).toBe(ChartType.Graph)
+            expect(result.sections[2].type).toBe(ChartType.Table)
         })
 
         it('should fallback to defaults when no tabs exist', () => {
@@ -267,7 +268,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'default_section',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [],
                     },
                 ],
@@ -291,7 +292,7 @@ describe('managedDashboardMappers', () => {
                         sections: [
                             {
                                 section_id: 'section_kpis',
-                                type: 'card',
+                                type: ChartType.Card,
                                 items: [
                                     {
                                         chart_id: 'chart_1',
@@ -339,7 +340,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'saved_section',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId:
@@ -356,7 +357,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'saved_section',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId:
@@ -368,7 +369,7 @@ describe('managedDashboardMappers', () => {
                     },
                     {
                         id: 'new_section',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [
                             {
                                 chartId:
@@ -393,12 +394,12 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'section_1',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [],
                     },
                     {
                         id: 'section_2',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [],
                     },
                 ],
@@ -408,12 +409,12 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'section_1',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [],
                     },
                     {
                         id: 'section_2',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [],
                     },
                 ],
@@ -429,7 +430,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'orphan_section',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId:
@@ -446,7 +447,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'other_section',
-                        type: 'charts',
+                        type: ChartType.Graph,
                         items: [
                             {
                                 chartId:
@@ -475,7 +476,7 @@ describe('managedDashboardMappers', () => {
                 sections: [
                     {
                         id: 'default_section',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [],
                     },
                 ],

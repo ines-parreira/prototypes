@@ -1,3 +1,4 @@
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
@@ -6,7 +7,7 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
         sections: [
             {
                 id: 'kpis',
-                type: 'kpis',
+                type: ChartType.Card,
                 items: [
                     {
                         chartId:
@@ -88,7 +89,7 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
             },
             {
                 id: 'visualizations',
-                type: 'charts',
+                type: ChartType.Graph,
                 items: [
                     {
                         chartId:
@@ -106,7 +107,7 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
             },
             {
                 id: 'breakdown',
-                type: 'table',
+                type: ChartType.Table,
                 items: [
                     {
                         chartId:

@@ -13,8 +13,9 @@ import {
 import type { AnalyticsManagedDashboard } from '@gorgias/helpdesk-types'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
-import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -59,7 +60,7 @@ const mockDefaultLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
             id: 'kpis',
-            type: 'kpis',
+            type: ChartType.Card,
             items: [
                 {
                     chartId: 'default-kpi' as any,
@@ -84,7 +85,7 @@ const mockDashboard: AnalyticsManagedDashboard = {
                 sections: [
                     {
                         section_id: 'kpis',
-                        type: 'card',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chart_id: 'saved-kpi',

@@ -6,6 +6,7 @@ import type { MetricConfigItem } from '@repo/reporting'
 import { Box, Button } from '@gorgias/axiom'
 
 import { useUpdateManagedDashboard } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -27,8 +28,8 @@ export const MetricsConfigurator = ({
 
     const handleSave = (updatedMetrics: MetricConfigItem[]) => {
         const kpisSectionId =
-            currentLayoutConfig.sections.find((s) => s.type === 'kpis')?.id ??
-            'section_kpis'
+            currentLayoutConfig.sections.find((s) => s.type === ChartType.Card)
+                ?.id ?? 'section_kpis'
 
         updateSection(
             dashboardId,

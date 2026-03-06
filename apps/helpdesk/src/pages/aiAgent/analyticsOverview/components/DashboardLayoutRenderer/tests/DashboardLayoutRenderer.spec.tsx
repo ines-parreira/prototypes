@@ -76,7 +76,7 @@ const createKpisLayoutConfig = (
         sections: [
             {
                 id: 'kpis',
-                type: 'kpis',
+                type: ChartType.Card,
                 items: chartIds.map((chartId) => ({
                     chartId,
                     gridSize: 3,
@@ -91,7 +91,7 @@ const createKpiConfigWithFeatureFlag = (requiresFeatureFlag: boolean) =>
         sections: [
             {
                 id: 'kpis',
-                type: 'kpis',
+                type: ChartType.Card,
                 items: [
                     {
                         chartId: 'kpi1' as any,
@@ -108,7 +108,7 @@ const chartsLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
             id: 'charts',
-            type: 'charts',
+            type: ChartType.Graph,
             items: [
                 { chartId: 'chart1' as any, gridSize: 6, visibility: true },
                 { chartId: 'chart2' as any, gridSize: 6, visibility: true },
@@ -121,7 +121,7 @@ const tableLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
             id: 'table',
-            type: 'table',
+            type: ChartType.Table,
             items: [
                 { chartId: 'table1' as any, gridSize: 12, visibility: true },
             ],
@@ -133,7 +133,7 @@ const mixedLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
             id: 'kpis',
-            type: 'kpis',
+            type: ChartType.Card,
             items: [
                 { chartId: 'kpi1' as any, gridSize: 3, visibility: true },
                 { chartId: 'kpi2' as any, gridSize: 3, visibility: true },
@@ -141,7 +141,7 @@ const mixedLayoutConfig: DashboardLayoutConfig = {
         },
         {
             id: 'charts',
-            type: 'charts',
+            type: ChartType.Graph,
             items: [
                 { chartId: 'chart1' as any, gridSize: 6, visibility: true },
                 { chartId: 'chart2' as any, gridSize: 6, visibility: true },
@@ -149,7 +149,7 @@ const mixedLayoutConfig: DashboardLayoutConfig = {
         },
         {
             id: 'table',
-            type: 'table',
+            type: ChartType.Table,
             items: [
                 { chartId: 'table1' as any, gridSize: 12, visibility: true },
             ],
@@ -270,7 +270,7 @@ describe('DashboardLayoutRenderer', () => {
             sections: [
                 {
                     id: 'kpis',
-                    type: 'kpis',
+                    type: ChartType.Card,
                     items: [
                         {
                             chartId:
@@ -308,7 +308,7 @@ describe('DashboardLayoutRenderer', () => {
             sections: [
                 {
                     id: 'kpis',
-                    type: 'kpis',
+                    type: ChartType.Card,
                     items: [
                         {
                             chartId: AnalyticsOverviewChart.AutomationRateCard,
@@ -382,7 +382,7 @@ describe('DashboardLayoutRenderer', () => {
                 sections: [
                     {
                         id: 'kpis',
-                        type: 'kpis',
+                        type: ChartType.Card,
                         items: [
                             {
                                 chartId:

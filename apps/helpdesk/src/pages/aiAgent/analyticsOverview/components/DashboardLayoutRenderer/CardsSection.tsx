@@ -12,7 +12,7 @@ import type {
     LayoutSection,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
-type KpisSectionProps = {
+type CardsSectionProps = {
     section: LayoutSection
     reportConfig: ReportConfig<AnalyticsChartType>
     tabKey?: string
@@ -20,13 +20,13 @@ type KpisSectionProps = {
     layoutConfig: DashboardLayoutConfig
 }
 
-export const KpisSection = ({
+export const CardsSection = ({
     section,
     reportConfig,
     tabKey,
     dashboardId,
     layoutConfig,
-}: KpisSectionProps) => {
+}: CardsSectionProps) => {
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
     )
