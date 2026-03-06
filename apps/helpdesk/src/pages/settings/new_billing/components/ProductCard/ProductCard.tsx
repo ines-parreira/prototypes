@@ -7,6 +7,8 @@ import { useHistory } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
+    Color,
+    Tag,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 
@@ -34,7 +36,6 @@ import { TicketPurpose } from 'state/billing/types'
 
 import { BILLING_PROCESS_PATH, DATE_FORMAT } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
-import Badge, { BadgeType } from '../Badge/Badge'
 
 import css from './ProductCard.less'
 
@@ -311,21 +312,16 @@ const ProductCard = ({
             return null
         }
         if (!plan) {
-            return <Badge text="Inactive" type={BadgeType.Info} />
+            return <Tag color={Color.Grey}>Inactive</Tag>
         }
 
         if (scheduledToCancelAt) {
             const formattedDate =
                 moment(scheduledToCancelAt).format(DATE_FORMAT)
-            return (
-                <Badge
-                    text={`Active until ${formattedDate}`}
-                    type={BadgeType.Warning}
-                />
-            )
+            return <Tag color={Color.Orange}>Active until {formattedDate}</Tag>
         }
 
-        return <Badge text="Active" type={BadgeType.Success} />
+        return <Tag color={Color.Green}>Active</Tag>
     }, [plan, scheduledToCancelAt, isLoading])
 
     return (

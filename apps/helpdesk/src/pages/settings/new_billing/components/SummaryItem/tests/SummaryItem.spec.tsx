@@ -4,7 +4,7 @@ import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 
 import type { SummaryItemProps } from '../SummaryItem'
-import SummaryItem from '../SummaryItem'
+import { SummaryItem } from '../SummaryItem'
 
 describe('SummaryItem', () => {
     const props: SummaryItemProps = {
@@ -116,5 +116,122 @@ describe('SummaryItem', () => {
 
         expect(screen.getByText(/\$60/)).toBeInTheDocument()
         expect(screen.queryByText(/\$0/)).not.toBeInTheDocument()
+    })
+
+    it('displays Added tag when there is no current plan', () => {
+        render(<SummaryItem {...props} currentPlan={undefined} />)
+
+        expect(screen.getByText('Added')).toBeInTheDocument()
+    })
+
+    it('displays Upgraded tag when selected plan amount is higher than current plan', () => {
+        render(
+            <SummaryItem
+                {...props}
+                selectedPlans={{
+                    ...props.selectedPlans,
+                    helpdesk: {
+                        isSelected: true,
+                        plan: {
+                            ...basicMonthlyHelpdeskPlan,
+                            plan_id: 'different_plan_id',
+                            amount: 90000,
+                        },
+                    },
+                }}
+            />,
+        )
+
+        expect(screen.getByText('Upgraded')).toBeInTheDocument()
+    })
+
+    it('displays Downgraded tag when selected plan amount is lower than current plan', () => {
+        render(
+            <SummaryItem
+                {...props}
+                currentPlan={{
+                    ...basicMonthlyHelpdeskPlan,
+                    plan_id: 'different_plan_id',
+                    amount: 90000,
+                }}
+            />,
+        )
+
+        expect(screen.getByText('Downgraded')).toBeInTheDocument()
+    })
+
+    it('does not display a modification tag when plan is unchanged', () => {
+        render(<SummaryItem {...props} />)
+
+        expect(screen.queryByText('Added')).not.toBeInTheDocument()
+        expect(screen.queryByText('Upgraded')).not.toBeInTheDocument()
+        expect(screen.queryByText('Downgraded')).not.toBeInTheDocument()
+    })
+
+    it('does not display a modification tag when product is not selected', () => {
+        render(
+            <SummaryItem
+                {...props}
+                selectedPlans={{
+                    ...props.selectedPlans,
+                    helpdesk: {
+                        isSelected: false,
+                        plan: basicMonthlyHelpdeskPlan,
+                    },
+                }}
+            />,
+        )
+
+        expect(screen.queryByText('Added')).not.toBeInTheDocument()
+        expect(screen.queryByText('Upgraded')).not.toBeInTheDocument()
+        expect(screen.queryByText('Downgraded')).not.toBeInTheDocument()
+    })
+
+    it('does not display a modification tag when selected plan is not in available plans', () => {
+        render(
+            <SummaryItem
+                {...props}
+                selectedPlans={{
+                    ...props.selectedPlans,
+                    helpdesk: {
+                        isSelected: true,
+                        plan: {
+                            ...basicMonthlyHelpdeskPlan,
+                            plan_id: 'unknown_plan_id',
+                        },
+                    },
+                }}
+            />,
+        )
+
+        expect(screen.queryByText('Added')).not.toBeInTheDocument()
+        expect(screen.queryByText('Upgraded')).not.toBeInTheDocument()
+        expect(screen.queryByText('Downgraded')).not.toBeInTheDocument()
+    })
+
+    it('does not display a modification tag when current plan is not in available plans', () => {
+        render(
+            <SummaryItem
+                {...props}
+                currentPlan={{
+                    ...basicMonthlyHelpdeskPlan,
+                    plan_id: 'unknown_current_plan_id',
+                }}
+                selectedPlans={{
+                    ...props.selectedPlans,
+                    helpdesk: {
+                        isSelected: true,
+                        plan: {
+                            ...basicMonthlyHelpdeskPlan,
+                            plan_id: 'different_plan_id',
+                        },
+                    },
+                }}
+            />,
+        )
+
+        expect(screen.queryByText('Added')).not.toBeInTheDocument()
+        expect(screen.queryByText('Upgraded')).not.toBeInTheDocument()
+        expect(screen.queryByText('Downgraded')).not.toBeInTheDocument()
     })
 })

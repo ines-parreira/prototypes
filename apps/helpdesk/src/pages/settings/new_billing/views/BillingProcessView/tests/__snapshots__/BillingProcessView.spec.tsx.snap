@@ -93,11 +93,20 @@ exports[`BillingProcessView should render 1`] = `
                   >
                     Helpdesk
                   </div>
-                  <span
-                    class="badge success"
+                  <div
+                    class="ui-tag-tag-9068 ui-tag-md-9068"
+                    color="green"
+                    data-color="green"
+                    data-name="tag"
                   >
-                    Active
-                  </span>
+                    <span
+                      class="typography-regular-sm ui-text-text-d239"
+                      data-name="text"
+                      style="text-align: left; text-wrap: nowrap;"
+                    >
+                      Active
+                    </span>
+                  </div>
                 </div>
                 <button
                   aria-disabled="false"
@@ -445,9 +454,18 @@ exports[`BillingProcessView should render 1`] = `
                 class="details"
               >
                 <div
-                  class="title"
+                  data-name="box"
+                  style="align-items: center; display: flex; gap: 8px;"
                 >
-                  Helpdesk
+                  <span
+                    class="typography-bold-md ui-text-text-d239"
+                    data-name="text"
+                    style="text-align: left;"
+                  >
+                    <strong>
+                      Helpdesk
+                    </strong>
+                  </span>
                 </div>
                 <div
                   class="description"

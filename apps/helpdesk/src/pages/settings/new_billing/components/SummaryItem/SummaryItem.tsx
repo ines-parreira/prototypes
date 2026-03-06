@@ -19,6 +19,7 @@ import warningIcon from '../../../../../assets/img/icons/warning.svg'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
 import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import { SummaryItemTitle } from './SummaryItemTitle'
 
 import css from './SummaryItem.less'
 
@@ -32,7 +33,7 @@ export type SummaryItemProps = {
     scheduledToCancelAt?: string | null
 }
 
-const SummaryItem = ({
+export const SummaryItem = ({
     productType,
     cadence = Cadence.Month,
     currentPlan,
@@ -107,7 +108,13 @@ const SummaryItem = ({
                         !selectedPlan.isSelected || !!scheduledToCancelAt,
                 })}
             >
-                <div className={css.title}>{productInfo.title}</div>
+                <SummaryItemTitle
+                    title={productInfo.title}
+                    isSelected={selectedPlan.isSelected}
+                    selectedPlanId={selectedPlan.plan?.plan_id}
+                    currentPlan={currentPlan}
+                    availablePlans={availablePlans}
+                />
                 <div className={css.description}>
                     {productType === ProductType.Helpdesk && name
                         ? `${name} - `
@@ -177,5 +184,3 @@ const SummaryItem = ({
         </div>
     )
 }
-
-export default SummaryItem

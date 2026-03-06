@@ -19,11 +19,20 @@ exports[`ProductCard should render a Helpdesk ProductCard component 1`] = `
         <div>
           Helpdesk
         </div>
-        <span
-          class="badge success"
+        <div
+          class="ui-tag-tag-9068 ui-tag-md-9068"
+          color="green"
+          data-color="green"
+          data-name="tag"
         >
-          Active
-        </span>
+          <span
+            class="typography-regular-sm ui-text-text-d239"
+            data-name="text"
+            style="text-align: left; text-wrap: nowrap;"
+          >
+            Active
+          </span>
+        </div>
       </div>
       <div>
         Basic

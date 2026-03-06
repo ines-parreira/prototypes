@@ -8,6 +8,8 @@ import moment from 'moment'
 
 import {
     LegacyButton as Button,
+    Color,
+    Tag,
     LegacyTooltip as Tooltip,
 } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
@@ -39,7 +41,6 @@ import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
 import { formatNumTickets } from '../../utils/formatAmount'
 import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
-import Badge, { BadgeType } from '../Badge'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'
 import CounterText from '../CounterText'
@@ -260,15 +261,10 @@ const ProductPlanSelection = ({
         if (scheduledToCancelAt) {
             const formattedDate =
                 moment(scheduledToCancelAt).format(DATE_FORMAT)
-            return (
-                <Badge
-                    text={`Active until ${formattedDate}`}
-                    type={BadgeType.Warning}
-                />
-            )
+            return <Tag color={Color.Orange}>Active until {formattedDate}</Tag>
         }
 
-        return <Badge text="Active" type={BadgeType.Success} />
+        return <Tag color={Color.Green}>Active</Tag>
     }, [isActive, scheduledToCancelAt])
 
     const handleOpen = useCallback(() => {
