@@ -36,7 +36,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Automation rate')
+        expect(config.label).toBe('Overall automation rate')
         expect(config.chartType).toBe(ChartType.Card)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

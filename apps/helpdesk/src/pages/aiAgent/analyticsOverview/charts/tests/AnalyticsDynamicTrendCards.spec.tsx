@@ -10,6 +10,7 @@ import type {
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
 import { AnalyticsAiAgentBuyThroughRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentBuyThroughRateCard'
@@ -30,6 +31,7 @@ import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiA
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
@@ -423,6 +425,32 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'duration' as const,
                 value: 88770,
                 prevValue: 88200,
+            },
+        },
+        {
+            name: 'AnalyticsOverviewAutomationRateCard',
+            Component: AnalyticsOverviewAutomationRateCard,
+            config: {
+                label: 'Automation rate',
+                description:
+                    'The number of interactions automated by all automation features as a % of total customer interactions.',
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 12.5,
+                prevValue: 10,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAutomationRateCard',
+            Component: AnalyticsAiAgentAutomationRateCard,
+            config: {
+                label: 'Automation rate',
+                description:
+                    'The percentage of customer interactions fully handled by the AI Agent.',
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 12.5,
+                prevValue: 10,
             },
         },
     ]

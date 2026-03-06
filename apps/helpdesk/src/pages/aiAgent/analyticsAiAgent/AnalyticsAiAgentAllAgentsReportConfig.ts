@@ -77,7 +77,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
         charts: {
             [AnalyticsAiAgentAllAgentsChart.AutomationRateCard]: {
                 chartComponent: AnalyticsAiAgentAutomationRateCard,
-                label: 'Automation rate',
+                label: 'Overall automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
