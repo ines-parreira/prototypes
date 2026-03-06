@@ -212,6 +212,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         mockUseStoreActivations.mockReturnValue({
             storeActivations: [],
+            allStoreActivations: {},
         })
 
         mockUseTrialModalProps.mockReturnValue({

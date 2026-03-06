@@ -41,6 +41,7 @@ export const ActionDrivenNavigation = () => {
         navigationItems,
         expandedSections,
         handleExpandedSectionsChange,
+        isActivationDataReady,
     } = useActionDrivenNavbarSections()
 
     const {
@@ -111,6 +112,7 @@ export const ActionDrivenNavigation = () => {
 
             <div className={css.storeSelector}>
                 <StoreSelector
+                    key={String(isActivationDataReady)}
                     integrations={storeIntegrations}
                     selected={selectedStoreIntegration}
                     onChange={(id) => {
@@ -131,7 +133,6 @@ export const ActionDrivenNavigation = () => {
                     fullWidth
                     singleStoreInline
                     buttonClassName={css.storeSelectorButton}
-                    hideSelectedFromDropdown
                     applyClassicThemeOverride
                     withSearch={storeIntegrations.length > 10}
                 />

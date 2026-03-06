@@ -96,6 +96,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
 
         mockUseStoreActivations.mockReturnValue({
             storeActivations: STORE_ACTIVATIONS,
+            allStoreActivations: {},
             isFetchLoading: false,
         } as any)
 
@@ -106,6 +107,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     it('should return undefined when no store activations are provided', () => {
         mockUseStoreActivations.mockReturnValueOnce({
             storeActivations: {},
+            allStoreActivations: {},
             isFetchLoading: false,
         } as any)
 

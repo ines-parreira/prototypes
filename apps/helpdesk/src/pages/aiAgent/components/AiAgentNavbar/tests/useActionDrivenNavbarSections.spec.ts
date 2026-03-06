@@ -4,6 +4,7 @@ import { useHistory, useLocation, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useAiAgentLastSelectedShop } from 'pages/aiAgent/hooks/useAiAgentLastSelectedShop'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
@@ -30,6 +31,9 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations')
 const mockUseStoreActivations = assumeMock(useStoreActivations)
 
+jest.mock('pages/aiAgent/hooks/useAiAgentLastSelectedShop')
+const mockUseAiAgentLastSelectedShop = assumeMock(useAiAgentLastSelectedShop)
+
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 const mockUseAiAgentNavigation = assumeMock(useAiAgentNavigation)
 
@@ -37,6 +41,10 @@ describe('useActionDrivenNavbarSections', () => {
     const mockPush = jest.fn()
     const mockReplace = jest.fn()
     const mockSetExpandedSections = jest.fn()
+    const mockSetLastSelectedShop = jest.fn()
+    const mockResolveShop = jest.fn(
+        (availableShopNames: string[]) => availableShopNames[0],
+    )
 
     const mockStoreIntegrations = [
         {
@@ -142,6 +150,11 @@ describe('useActionDrivenNavbarSections', () => {
             jest.fn(),
         ] as any)
 
+        mockUseAiAgentLastSelectedShop.mockReturnValue({
+            setLastSelectedShop: mockSetLastSelectedShop,
+            resolveShop: mockResolveShop,
+        })
+
         mockUseAppSelector.mockImplementation((selector) => {
             if (selector === getShopifyIntegrationsSortedByName) {
                 return mockStoreIntegrations
@@ -151,6 +164,7 @@ describe('useActionDrivenNavbarSections', () => {
 
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations as any,
+            allStoreActivations: mockStoreActivations as any,
             progressPercentage: 0,
             isFetchLoading: false,
             isSaveLoading: false,
@@ -296,6 +310,76 @@ describe('useActionDrivenNavbarSections', () => {
                 'settings',
             ])
         })
+
+        it('should persist selected shop on store select', () => {
+            const { result } = renderHook(() => useActionDrivenNavbarSections())
+
+            act(() => {
+                result.current.handleStoreSelect('teststore2')
+            })
+
+            expect(mockSetLastSelectedShop).toHaveBeenCalledWith('teststore2')
+        })
+
+        it('should redirect to last selected shop when no store in URL params', () => {
+            mockResolveShop.mockReturnValue('teststore2')
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent',
+                },
+                writable: true,
+                configurable: true,
+            })
+            mockUseParams.mockReturnValue({})
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            renderHook(() => useActionDrivenNavbarSections())
+
+            expect(mockResolveShop).toHaveBeenCalledWith([
+                'teststore1',
+                'teststore2',
+            ])
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore2',
+            )
+        })
+
+        it('should fall back to first store when last selected shop no longer exists', () => {
+            mockResolveShop.mockReturnValue('teststore1')
+
+            Object.defineProperty(window, 'location', {
+                value: {
+                    pathname: '/app/ai-agent',
+                },
+                writable: true,
+                configurable: true,
+            })
+            mockUseParams.mockReturnValue({})
+            mockUseLocation.mockReturnValue({
+                pathname: '/app/ai-agent',
+                search: '',
+                hash: '',
+                state: null,
+                key: 'test',
+            })
+
+            renderHook(() => useActionDrivenNavbarSections())
+
+            expect(mockResolveShop).toHaveBeenCalledWith([
+                'teststore1',
+                'teststore2',
+            ])
+            expect(mockReplace).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/teststore1',
+            )
+        })
     })
 
     describe('store activation status', () => {
@@ -378,6 +462,7 @@ describe('useActionDrivenNavbarSections', () => {
             })
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: {} as any,
+                allStoreActivations: {} as any,
                 progressPercentage: 0,
                 isFetchLoading: false,
                 isSaveLoading: false,
@@ -464,6 +549,7 @@ describe('useActionDrivenNavbarSections', () => {
         it('should return false when storeActivations is empty', () => {
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: {} as any,
+                allStoreActivations: {} as any,
                 progressPercentage: 0,
                 isFetchLoading: false,
                 isSaveLoading: false,

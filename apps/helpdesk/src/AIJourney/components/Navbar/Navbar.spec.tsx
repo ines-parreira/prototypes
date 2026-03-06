@@ -130,28 +130,34 @@ describe('<AiJourneyNavbar />', () => {
     it('should render ai agent navbar with first store selected', async () => {
         renderNavbar()
 
-        expect(screen.getByText('teststore1')).toBeInTheDocument()
-        expect(screen.queryByText('teststore2')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /teststore1/ }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('option', { name: /teststore2/ }),
+        ).not.toBeInTheDocument()
     })
 
     it('should open dropdown when clicking in selected store', async () => {
         renderNavbar()
 
         await act(async () => {
-            await user.click(screen.getByText('teststore1'))
+            await user.click(screen.getByRole('button', { name: /teststore1/ }))
         })
-        expect(screen.getByText('teststore2')).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: /teststore2/ }),
+        ).toBeInTheDocument()
     })
 
     it('should navigate to selected store when onChange is triggered', async () => {
         renderNavbar()
 
         await act(async () => {
-            await user.click(screen.getByText('teststore1'))
+            await user.click(screen.getByRole('button', { name: /teststore1/ }))
         })
 
         await act(async () => {
-            await user.click(screen.getByText('teststore2'))
+            await user.click(screen.getByRole('option', { name: /teststore2/ }))
         })
 
         expect(mockPush).toHaveBeenCalledWith('/app/ai-journey/teststore2')
@@ -196,8 +202,8 @@ describe('<AiJourneyNavbar />', () => {
         it('should save selected store to localStorage when changing store', async () => {
             renderNavbar()
 
-            await user.click(screen.getByText('teststore1'))
-            await user.click(screen.getByText('teststore2'))
+            await user.click(screen.getByRole('button', { name: /teststore1/ }))
+            await user.click(screen.getByRole('option', { name: /teststore2/ }))
 
             expect(mockSetLastSelectedStore).toHaveBeenCalledWith('teststore2')
         })

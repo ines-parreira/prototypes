@@ -194,7 +194,6 @@ export const AiJourneyNavbar = () => {
                         fullWidth
                         singleStoreInline
                         buttonClassName={css.storeSelectorButton}
-                        hideSelectedFromDropdown
                         applyClassicThemeOverride
                     />
                 </div>

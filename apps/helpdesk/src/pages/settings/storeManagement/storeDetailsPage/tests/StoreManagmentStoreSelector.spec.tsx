@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { mockStoresWithAssignedChannels } from '../../fixtures'
@@ -75,9 +75,15 @@ describe('StoreManagementStoreSelector', () => {
         const dropdownOptions = screen.getAllByRole('option')
         expect(dropdownOptions).toHaveLength(3)
 
-        expect(screen.getAllByText('test-1')).toHaveLength(2)
-        expect(screen.getByText('test-2')).toBeInTheDocument()
-        expect(screen.getByText('test-3')).toBeInTheDocument()
+        expect(
+            dropdownOptions.find((o) => o.textContent?.includes('test-1')),
+        ).toBeDefined()
+        expect(
+            dropdownOptions.find((o) => o.textContent?.includes('test-2')),
+        ).toBeDefined()
+        expect(
+            dropdownOptions.find((o) => o.textContent?.includes('test-3')),
+        ).toBeDefined()
     })
 
     it('navigates to selected store when dropdown item is clicked', async () => {
@@ -160,6 +166,7 @@ describe('StoreManagementStoreSelector', () => {
 
         render(<StoreManagementStoreSelector />)
 
-        expect(screen.getByText('test-2')).toBeInTheDocument()
+        const button = screen.getByRole('button')
+        expect(within(button).getByText('test-2')).toBeInTheDocument()
     })
 })

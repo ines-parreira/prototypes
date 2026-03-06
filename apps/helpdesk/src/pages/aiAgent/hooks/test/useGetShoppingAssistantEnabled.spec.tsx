@@ -16,6 +16,7 @@ describe('useGetShoppingAssistantEnabled', () => {
     it('should return isEnabled as false when data is not loaded', () => {
         mockUseStoreActivations.mockReturnValue({
             storeActivations: {},
+            allStoreActivations: {},
             isFetchLoading: true,
         })
 
@@ -36,6 +37,7 @@ describe('useGetShoppingAssistantEnabled', () => {
                     },
                 },
             },
+            allStoreActivations: {},
             isFetchLoading: false,
         })
 
@@ -56,6 +58,7 @@ describe('useGetShoppingAssistantEnabled', () => {
                     },
                 },
             },
+            allStoreActivations: {},
             isFetchLoading: false,
         })
 
@@ -72,6 +75,7 @@ describe('useGetShoppingAssistantEnabled', () => {
             storeActivations: {
                 [mockShopName]: {},
             },
+            allStoreActivations: {},
             isFetchLoading: false,
         })
 

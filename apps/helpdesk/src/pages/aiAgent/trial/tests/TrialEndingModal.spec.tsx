@@ -96,6 +96,7 @@ const createMockShoppingAssistantTrialFlow = (overrides = {}) =>
 
 const createMockStoreActivations = (overrides = {}) => ({
     storeActivations: {},
+    allStoreActivations: {},
     progressPercentage: 0,
     isFetchLoading: false,
     isSaveLoading: false,

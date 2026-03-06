@@ -161,6 +161,7 @@ describe('useTrialPromoCard', () => {
         })
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations,
+            allStoreActivations: mockStoreActivations,
             progressPercentage: 0,
             isFetchLoading: false,
             isSaveLoading: false,
@@ -1856,28 +1857,30 @@ describe('useTrialPromoCard', () => {
         beforeEach(() => {
             mockFeatureFlags(true, false, true)
             // Mock store activations with AI Agent trial configuration
-            mockUseStoreActivations.mockReturnValue({
-                storeActivations: {
-                    'first-shop': {
-                        ...storeActivationFixture({ storeName: 'first-shop' }),
-                        configuration: {
-                            ...storeActivationFixture({
-                                storeName: 'first-shop',
-                            }).configuration,
-                            trial: {
-                                startDatetime: '2024-01-01T00:00:00Z',
-                                endDatetime: '2024-01-15T00:00:00Z',
-                                account: {
-                                    optInDatetime: '2024-01-01T00:00:00Z',
-                                    optOutDatetime: null,
-                                    plannedUpgradeDatetime: null,
-                                    actualUpgradeDatetime: null,
-                                    actualTerminationDatetime: null,
-                                },
+            const trialStoreActivations = {
+                'first-shop': {
+                    ...storeActivationFixture({ storeName: 'first-shop' }),
+                    configuration: {
+                        ...storeActivationFixture({
+                            storeName: 'first-shop',
+                        }).configuration,
+                        trial: {
+                            startDatetime: '2024-01-01T00:00:00Z',
+                            endDatetime: '2024-01-15T00:00:00Z',
+                            account: {
+                                optInDatetime: '2024-01-01T00:00:00Z',
+                                optOutDatetime: null,
+                                plannedUpgradeDatetime: null,
+                                actualUpgradeDatetime: null,
+                                actualTerminationDatetime: null,
                             },
                         },
                     },
                 },
+            }
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: trialStoreActivations,
+                allStoreActivations: trialStoreActivations,
                 progressPercentage: 0,
                 isFetchLoading: false,
                 isSaveLoading: false,
@@ -2101,30 +2104,32 @@ describe('useTrialPromoCard', () => {
         beforeEach(() => {
             mockFeatureFlags(true, true, true)
             // Mock store activations with Shopping Assistant trial configuration
-            mockUseStoreActivations.mockReturnValue({
-                storeActivations: {
-                    'first-shop': {
-                        ...storeActivationFixture({ storeName: 'first-shop' }),
-                        configuration: {
-                            ...storeActivationFixture({
-                                storeName: 'first-shop',
-                            }).configuration,
-                            sales: {
-                                trial: {
-                                    startDatetime: '2024-01-01T00:00:00Z',
-                                    endDatetime: '2024-01-15T00:00:00Z',
-                                    account: {
-                                        optInDatetime: '2024-01-01T00:00:00Z',
-                                        optOutDatetime: null,
-                                        plannedUpgradeDatetime: null,
-                                        actualUpgradeDatetime: null,
-                                        actualTerminationDatetime: null,
-                                    },
+            const saTrialStoreActivations = {
+                'first-shop': {
+                    ...storeActivationFixture({ storeName: 'first-shop' }),
+                    configuration: {
+                        ...storeActivationFixture({
+                            storeName: 'first-shop',
+                        }).configuration,
+                        sales: {
+                            trial: {
+                                startDatetime: '2024-01-01T00:00:00Z',
+                                endDatetime: '2024-01-15T00:00:00Z',
+                                account: {
+                                    optInDatetime: '2024-01-01T00:00:00Z',
+                                    optOutDatetime: null,
+                                    plannedUpgradeDatetime: null,
+                                    actualUpgradeDatetime: null,
+                                    actualTerminationDatetime: null,
                                 },
                             },
                         },
                     },
                 },
+            }
+            mockUseStoreActivations.mockReturnValue({
+                storeActivations: saTrialStoreActivations,
+                allStoreActivations: saTrialStoreActivations,
                 progressPercentage: 0,
                 isFetchLoading: false,
                 isSaveLoading: false,

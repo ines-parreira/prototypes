@@ -120,6 +120,7 @@ describe('useShoppingAssistantTrialBanner', () => {
                     }),
                 },
             },
+            allStoreActivations: {},
             isFetchLoading: false,
         } as any)
 

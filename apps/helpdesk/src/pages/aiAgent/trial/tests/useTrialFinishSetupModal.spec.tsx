@@ -64,6 +64,7 @@ describe('useTrialFinishSetupModal', () => {
             storeActivations: {
                 [mockStoreName]: storeActivationFixture(),
             },
+            allStoreActivations: {},
             progressPercentage: 0,
             isFetchLoading: false,
             isSaveLoading: false,

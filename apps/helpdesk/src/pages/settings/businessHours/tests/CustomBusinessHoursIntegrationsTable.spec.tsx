@@ -1,6 +1,6 @@
 import { Form } from '@repo/forms'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -130,7 +130,9 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
 
         // filters
         expect(screen.getByText('search')).toBeInTheDocument()
-        expect(screen.getByText('All Stores')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /All Stores/ }),
+        ).toBeInTheDocument()
         expect(screen.getByText('All Channels')).toBeInTheDocument()
     })
 
@@ -509,8 +511,12 @@ describe('CustomBusinessHoursIntegrationsTable', () => {
         })
         await user.click(allStoresButton)
 
-        const storeOption = await screen.findByText('Test Shopify Store')
-        await user.click(storeOption)
+        const storeOption = await screen.findByRole('option', {
+            name: /Test Shopify Store/,
+        })
+        await act(async () => {
+            await user.click(storeOption)
+        })
 
         await waitFor(() => {
             expect(receivedStoreIdParam).toBe('42')

@@ -179,6 +179,7 @@ describe('useTrialMetrics', () => {
 
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations,
+            allStoreActivations: {},
             isFetchLoading: false,
         } as any)
 
@@ -262,6 +263,7 @@ describe('useTrialMetrics', () => {
         it('should not make API calls when no activations exist', async () => {
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: null,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
             mockFormatAmount.mockReturnValue('$0')
@@ -284,6 +286,7 @@ describe('useTrialMetrics', () => {
 
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: storeActivationsWithUnmatched,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
 
@@ -324,6 +327,7 @@ describe('useTrialMetrics', () => {
             mockFetchMetricPerDimension.mockResolvedValue(emptyGmvReportingData)
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: null,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
             mockFormatAmount.mockReturnValue('$0')
@@ -350,6 +354,7 @@ describe('useTrialMetrics', () => {
 
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: storeActivationsWithMissingDates,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
             mockFormatAmount.mockReturnValue('$0')
@@ -458,6 +463,7 @@ describe('useTrialMetrics', () => {
 
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: storeActivationsWithoutTrial,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
 
@@ -485,6 +491,7 @@ describe('useTrialMetrics', () => {
 
             mockUseStoreActivations.mockReturnValue({
                 storeActivations: storeActivationsWithoutTrialStartDate,
+                allStoreActivations: {},
                 isFetchLoading: false,
             } as any)
 

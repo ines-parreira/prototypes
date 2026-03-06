@@ -152,6 +152,7 @@ export const useStoreActivations = ({
     enabled?: boolean
 } = {}): {
     storeActivations: Record<string, StoreActivation>
+    allStoreActivations: Record<string, StoreActivation>
     progressPercentage: number
     isFetchLoading: boolean
     isSaveLoading: boolean
@@ -382,6 +383,7 @@ export const useStoreActivations = ({
     return {
         activation: activateStore,
         storeActivations: filteredState,
+        allStoreActivations: state,
         progressPercentage: computeActivationPercentage(filteredState),
         isFetchLoading,
         isSaveLoading,

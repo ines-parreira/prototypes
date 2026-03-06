@@ -23,6 +23,7 @@ export const applyMockActivationHook = () => {
     const mockUseStoreActivations = assumeMock(useStoreActivations)
     mockUseStoreActivations.mockReturnValue({
         storeActivations: {},
+        allStoreActivations: {},
         progressPercentage: 0,
         isFetchLoading: false,
         isSaveLoading: false,

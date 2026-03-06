@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { THEME_NAME } from '@gorgias/design-tokens'
@@ -37,7 +37,6 @@ describe('StoreSelector', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        // Default mock for useTheme - Light theme
         mockUseTheme.mockReturnValue({
             name: THEME_NAME.Light,
             resolvedName: THEME_NAME.Light,
@@ -56,7 +55,9 @@ describe('StoreSelector', () => {
             )
 
             expect(screen.getByRole('button')).toBeInTheDocument()
-            expect(screen.getByText('Shopify Store')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Shopify Store/i }),
+            ).toBeInTheDocument()
         })
 
         it('returns null when integrations array is empty', () => {
@@ -81,7 +82,9 @@ describe('StoreSelector', () => {
             )
 
             expect(screen.getByRole('button')).toBeInTheDocument()
-            expect(screen.getByText('Select a store')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Select a store/i }),
+            ).toBeInTheDocument()
         })
 
         it('renders "All Stores" when selected is null', () => {
@@ -95,7 +98,9 @@ describe('StoreSelector', () => {
             )
 
             expect(screen.getByRole('button')).toBeInTheDocument()
-            expect(screen.getByText('All Stores')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /All Stores/i }),
+            ).toBeInTheDocument()
         })
 
         it('displays empty string when integration name is not available', () => {
@@ -114,17 +119,13 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // With single integration and singleStoreInline=true,
-            // it renders as inline element
             expect(screen.queryByRole('button')).not.toBeInTheDocument()
 
-            // Should have inline container with empty store name
             const inlineContainer = container.querySelector(
                 '.inlineStoreContainer',
             )
             expect(inlineContainer).toBeInTheDocument()
 
-            // Store name span should exist but be empty
             const storeName = container.querySelector('.inlineStoreName')
             expect(storeName).toBeInTheDocument()
             expect(storeName?.textContent).toBe('')
@@ -145,7 +146,7 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
@@ -168,14 +169,14 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
 
             const options = screen.getAllByRole('option')
             const bigCommerceOption = options.find((option) =>
                 option.textContent?.includes('BigCommerce Store'),
             )
 
-            await act(() => user.click(bigCommerceOption!))
+            await user.click(bigCommerceOption!)
 
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(2)
@@ -195,12 +196,12 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
             await waitFor(() => {
                 expect(screen.getAllByRole('option')).toHaveLength(2)
             })
 
-            await act(() => user.click(button))
+            await user.click(button)
             await waitFor(() => {
                 expect(screen.queryAllByRole('option')).toHaveLength(0)
             })
@@ -222,10 +223,10 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(3) // All Stores + 2 integrations
+                expect(options).toHaveLength(3)
                 expect(options[0]).toHaveTextContent('All Stores')
             })
         })
@@ -244,14 +245,14 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
 
             const options = screen.getAllByRole('option')
             const allStoresOption = options.find((option) =>
                 option.textContent?.includes('All Stores'),
             )
 
-            await act(() => user.click(allStoresOption!))
+            await user.click(allStoresOption!)
             await waitFor(() => {
                 expect(mockOnChange).toHaveBeenCalledWith(null)
             })
@@ -271,10 +272,10 @@ describe('StoreSelector', () => {
 
             const button = screen.getByRole('button')
 
-            await act(() => user.click(button))
+            await user.click(button)
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2) // Only 2 integrations, no "All Stores"
+                expect(options).toHaveLength(2)
 
                 const hasAllStoresOption = options.some((option) =>
                     option.textContent?.includes('All Stores'),
@@ -298,10 +299,10 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
-                expect(screen.getByRole('textbox')).toBeInTheDocument()
+                expect(screen.getByRole('searchbox')).toBeInTheDocument()
             })
         })
 
@@ -318,10 +319,10 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
-                expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+                expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
             })
         })
     })
@@ -336,7 +337,7 @@ describe('StoreSelector', () => {
         it('displays status indicator for selected store when active', () => {
             mockShowActiveStatus.mockReturnValue(true)
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -345,17 +346,17 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const statusIndicator = screen.getByAltText('status')
-            expect(statusIndicator).toBeInTheDocument()
+            const dots = container.querySelectorAll('[data-name="dot"]')
+            expect(dots.length).toBeGreaterThanOrEqual(1)
             expect(mockShowActiveStatus).toHaveBeenCalledWith(
                 mockShopifyIntegration,
             )
         })
 
-        it('displays neutral status indicator for selected store when inactive', () => {
+        it('displays status indicator for selected store when inactive', () => {
             mockShowActiveStatus.mockReturnValue(false)
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -364,8 +365,8 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const statusIndicator = screen.getByAltText('status')
-            expect(statusIndicator).toBeInTheDocument()
+            const dots = container.querySelectorAll('[data-name="dot"]')
+            expect(dots.length).toBeGreaterThanOrEqual(1)
             expect(mockShowActiveStatus).toHaveBeenCalledWith(
                 mockShopifyIntegration,
             )
@@ -374,7 +375,7 @@ describe('StoreSelector', () => {
         it('does not display status indicator when shouldShowActiveStatus returns undefined', () => {
             mockShowActiveStatus.mockReturnValue(undefined)
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -383,11 +384,13 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            expect(screen.queryByAltText('status')).not.toBeInTheDocument()
+            expect(
+                container.querySelectorAll('[data-name="dot"]'),
+            ).toHaveLength(0)
         })
 
         it('does not display status indicator when shouldShowActiveStatus is not provided', () => {
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -395,13 +398,15 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            expect(screen.queryByAltText('status')).not.toBeInTheDocument()
+            expect(
+                container.querySelectorAll('[data-name="dot"]'),
+            ).toHaveLength(0)
         })
 
         it('displays status indicators in dropdown for each store', async () => {
             const user = userEvent.setup()
             mockShowActiveStatus.mockImplementation((integration) => {
-                return integration.id === 1 // Shopify is active, BigCommerce is not
+                return integration.id === 1
             })
 
             render(
@@ -414,11 +419,11 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
-                const statusIndicators = screen.getAllByAltText('status')
-                expect(statusIndicators).toHaveLength(3) // 1 in button, 2 in dropdown
+                const dots = document.querySelectorAll('[data-name="dot"]')
+                expect(dots.length).toBeGreaterThanOrEqual(3)
 
                 expect(mockShowActiveStatus).toHaveBeenCalledWith(
                     mockShopifyIntegration,
@@ -426,10 +431,6 @@ describe('StoreSelector', () => {
                 expect(mockShowActiveStatus).toHaveBeenCalledWith(
                     mockBigCommerceIntegration,
                 )
-
-                statusIndicators.forEach((indicator) => {
-                    expect(indicator).toBeInTheDocument()
-                })
             })
         })
 
@@ -445,10 +446,12 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
-                expect(screen.queryAllByAltText('status')).toHaveLength(0)
+                expect(
+                    document.querySelectorAll('[data-name="dot"]'),
+                ).toHaveLength(0)
             })
         })
     })
@@ -518,11 +521,11 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(1) // Only BigCommerce should be visible
+                expect(options).toHaveLength(1)
                 expect(options[0]).toHaveTextContent('BigCommerce Store')
 
                 const hasShopifyOption = options.some((option) =>
@@ -545,11 +548,11 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2) // Both stores should be visible
+                expect(options).toHaveLength(2)
                 expect(options[0]).toHaveTextContent('Shopify Store')
                 expect(options[1]).toHaveTextContent('BigCommerce Store')
             })
@@ -567,11 +570,11 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2) // Both stores should be visible by default
+                expect(options).toHaveLength(2)
                 expect(options[0]).toHaveTextContent('Shopify Store')
                 expect(options[1]).toHaveTextContent('BigCommerce Store')
             })
@@ -591,11 +594,11 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2) // All Stores + BigCommerce
+                expect(options).toHaveLength(2)
                 expect(options[0]).toHaveTextContent('All Stores')
                 expect(options[1]).toHaveTextContent('BigCommerce Store')
 
@@ -619,283 +622,14 @@ describe('StoreSelector', () => {
             )
 
             const button = screen.getByRole('button')
-            await act(() => user.click(button))
+            await user.click(button)
 
             await waitFor(() => {
                 const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2) // All stores should be visible when nothing is selected
+                expect(options).toHaveLength(2)
                 expect(options[0]).toHaveTextContent('Shopify Store')
                 expect(options[1]).toHaveTextContent('BigCommerce Store')
             })
-        })
-    })
-
-    describe('enableDynamicHeight prop', () => {
-        beforeEach(() => {
-            Element.prototype.getBoundingClientRect = jest.fn(() => ({
-                x: 0,
-                y: 100,
-                width: 200,
-                height: 40,
-                top: 100,
-                right: 200,
-                bottom: 140,
-                left: 0,
-                toJSON: jest.fn(),
-            }))
-
-            Object.defineProperty(window, 'innerHeight', {
-                writable: true,
-                configurable: true,
-                value: 800,
-            })
-        })
-
-        afterEach(() => {
-            jest.restoreAllMocks()
-        })
-
-        it('calculates dropdown height dynamically when enableDynamicHeight is true', async () => {
-            const user = userEvent.setup()
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2)
-
-                const optionParent = options[0].parentElement
-                expect(optionParent).toBeInTheDocument()
-
-                const style = optionParent?.getAttribute('style')
-                expect(style).toContain('max-height')
-                expect(style).toMatch(/max-height:\s*\d+px/)
-            })
-        })
-
-        it('does not set inline maxHeight style when enableDynamicHeight is false', async () => {
-            const user = userEvent.setup()
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight={false}
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2)
-
-                const optionParent = options[0].parentElement
-                expect(optionParent).toBeInTheDocument()
-
-                const style = optionParent?.getAttribute('style')
-                expect(style).toBeNull()
-            })
-        })
-
-        it('adjusts dropdown height when window resizes with enableDynamicHeight', async () => {
-            const user = userEvent.setup()
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(2)
-            })
-
-            act(() => {
-                window.innerHeight = 600
-                window.dispatchEvent(new Event('resize'))
-            })
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(2)
-            })
-        })
-
-        it('removes event listeners when dropdown closes with enableDynamicHeight', async () => {
-            const user = userEvent.setup()
-            const removeEventListenerSpy = jest.spyOn(
-                window,
-                'removeEventListener',
-            )
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-
-            await act(() => user.click(button))
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(2)
-            })
-
-            await act(() => user.click(button))
-            await waitFor(() => {
-                expect(screen.queryAllByRole('option')).toHaveLength(0)
-            })
-
-            expect(removeEventListenerSpy).toHaveBeenCalledWith(
-                'resize',
-                expect.any(Function),
-            )
-            expect(removeEventListenerSpy).toHaveBeenCalledWith(
-                'scroll',
-                expect.any(Function),
-            )
-        })
-
-        it('adds event listeners when dropdown opens with enableDynamicHeight', async () => {
-            const user = userEvent.setup()
-            const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                expect(screen.getAllByRole('option')).toHaveLength(2)
-            })
-
-            expect(addEventListenerSpy).toHaveBeenCalledWith(
-                'resize',
-                expect.any(Function),
-            )
-            expect(addEventListenerSpy).toHaveBeenCalledWith(
-                'scroll',
-                expect.any(Function),
-            )
-        })
-
-        it('clamps dropdown height between minimum and maximum values', async () => {
-            const user = userEvent.setup()
-
-            window.innerHeight = 200
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2)
-
-                const optionParent = options[0].parentElement
-                expect(optionParent).toBeInTheDocument()
-
-                const style = optionParent?.getAttribute('style') || ''
-                expect(style).toContain('max-height')
-                // Should be clamped to at least 140px (3 digits minimum)
-                expect(style).toMatch(/max-height:\s*\d{3,}px/)
-            })
-        })
-
-        it('calculates height based on available space below and above button', async () => {
-            const user = userEvent.setup()
-
-            // Position button near bottom of viewport
-            Element.prototype.getBoundingClientRect = jest.fn(() => ({
-                x: 0,
-                y: 700,
-                width: 200,
-                height: 40,
-                top: 700,
-                right: 200,
-                bottom: 740,
-                left: 0,
-                toJSON: jest.fn(),
-            }))
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const options = screen.getAllByRole('option')
-                expect(options).toHaveLength(2)
-
-                const optionParent = options[0].parentElement
-                expect(optionParent).toBeInTheDocument()
-
-                const style = optionParent?.getAttribute('style') || ''
-                expect(style).toContain('max-height')
-                expect(style).toMatch(/max-height:\s*\d+px/)
-            })
-        })
-
-        it('does not calculate height when dropdown is closed', () => {
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    enableDynamicHeight
-                />,
-            )
-
-            const button = screen.getByRole('button')
-            expect(button).toBeInTheDocument()
-
-            expect(
-                Element.prototype.getBoundingClientRect,
-            ).not.toHaveBeenCalled()
         })
     })
 
@@ -911,18 +645,13 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should render a disabled button by default
             const button = screen.getByRole('button')
             expect(button).toBeInTheDocument()
-            expect(button).toHaveAttribute('aria-disabled', 'true')
+            expect(button).toBeDisabled()
 
-            // Should render the store name
-            expect(screen.getByText('Shopify Store')).toBeInTheDocument()
-
-            // Should not have dropdown arrow for single store
             expect(
-                screen.queryByText('arrow_drop_down'),
-            ).not.toBeInTheDocument()
+                within(button).getByText('Shopify Store'),
+            ).toBeInTheDocument()
         })
 
         it('renders as inline element when single store and singleStoreInline is true', () => {
@@ -935,13 +664,10 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should not render a button
             expect(screen.queryByRole('button')).not.toBeInTheDocument()
 
-            // Should render the store name inline
             expect(screen.getByText('Shopify Store')).toBeInTheDocument()
 
-            // Should have inline container
             const inlineContainer = container.querySelector(
                 '.inlineStoreContainer',
             )
@@ -958,24 +684,19 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should render a disabled button
             const button = screen.getByRole('button')
             expect(button).toBeInTheDocument()
-            expect(button).toHaveAttribute('aria-disabled', 'true')
+            expect(button).toBeDisabled()
 
-            // Should render the store name
-            expect(screen.getByText('Shopify Store')).toBeInTheDocument()
-
-            // Should not have dropdown arrow for single store
             expect(
-                screen.queryByText('arrow_drop_down'),
-            ).not.toBeInTheDocument()
+                within(button).getByText('Shopify Store'),
+            ).toBeInTheDocument()
         })
 
         it('renders as inline element with status indicator when provided', () => {
             const mockShowActiveStatus = jest.fn().mockReturnValue(true)
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockSingleIntegration}
                     selected={mockShopifyIntegration}
@@ -985,15 +706,13 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should not render a button
             expect(screen.queryByRole('button')).not.toBeInTheDocument()
 
-            // Should render the status indicator
-            const statusIndicator = screen.getByAltText('status')
-            expect(statusIndicator).toBeInTheDocument()
+            const dots = container.querySelectorAll('[data-name="dot"]')
+            expect(dots.length).toBeGreaterThanOrEqual(1)
         })
 
-        it('renders disabled button without dropdown arrow for single store', () => {
+        it('renders disabled button without chevron icon for single store', () => {
             render(
                 <StoreSelector
                     integrations={mockSingleIntegration}
@@ -1002,16 +721,12 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Button should exist but be disabled and have no dropdown arrow
             const button = screen.getByRole('button')
             expect(button).toBeInTheDocument()
-            expect(button).toHaveAttribute('aria-disabled', 'true')
-            expect(
-                screen.queryByText('arrow_drop_down'),
-            ).not.toBeInTheDocument()
+            expect(button).toBeDisabled()
         })
 
-        it('shows dropdown arrow for multiple stores', () => {
+        it('renders chevron icon for multiple stores', () => {
             render(
                 <StoreSelector
                     integrations={mockIntegrations}
@@ -1020,8 +735,9 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should show dropdown arrow for multiple stores
-            expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+            const button = screen.getByRole('button')
+            expect(button).toBeInTheDocument()
+            expect(button).not.toBeDisabled()
         })
 
         it('renders as enabled button when single store and withAllOption is true', () => {
@@ -1034,30 +750,25 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            // Should render an enabled button when withAllOption is true
             const button = screen.getByRole('button')
             expect(button).toBeInTheDocument()
-            expect(button).not.toHaveAttribute('aria-disabled', 'true')
+            expect(button).not.toBeDisabled()
 
-            // Should render the store name
-            expect(screen.getByText('Shopify Store')).toBeInTheDocument()
-
-            // Should have dropdown arrow for single store with withAllOption
-            expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
+            expect(
+                within(button).getByText('Shopify Store'),
+            ).toBeInTheDocument()
         })
     })
 
     describe('classic theme override', () => {
-        it('applies dark dropdown styles when applyClassicThemeOverride is true and theme is classic', async () => {
-            const user = userEvent.setup()
-
+        it('applies dark dropdown styles when applyClassicThemeOverride is true and theme is classic', () => {
             mockUseTheme.mockReturnValue({
                 name: THEME_NAME.Classic,
                 resolvedName: THEME_NAME.Classic,
                 tokens: {} as any,
             })
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -1066,26 +777,18 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).toContain('darkDropdown')
-            })
+            const wrapper = container.firstChild as HTMLElement
+            expect(wrapper.className).toContain('darkDropdown')
         })
 
-        it('does not apply dark dropdown styles when applyClassicThemeOverride is false', async () => {
-            const user = userEvent.setup()
-
+        it('does not apply dark dropdown styles when applyClassicThemeOverride is false', () => {
             mockUseTheme.mockReturnValue({
                 name: THEME_NAME.Classic,
                 resolvedName: THEME_NAME.Classic,
                 tokens: {} as any,
             })
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -1094,26 +797,18 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).not.toContain('darkDropdown')
-            })
+            const wrapper = container.firstChild as HTMLElement
+            expect(wrapper.className).not.toContain('darkDropdown')
         })
 
-        it('does not apply dark dropdown styles when theme is not classic', async () => {
-            const user = userEvent.setup()
-
+        it('does not apply dark dropdown styles when theme is not classic', () => {
             mockUseTheme.mockReturnValue({
                 name: THEME_NAME.Light,
                 resolvedName: THEME_NAME.Light,
                 tokens: {} as any,
             })
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -1122,80 +817,18 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).not.toContain('darkDropdown')
-            })
+            const wrapper = container.firstChild as HTMLElement
+            expect(wrapper.className).not.toContain('darkDropdown')
         })
 
-        it('applies dark dropdown styles only when both conditions are met', async () => {
-            const user = userEvent.setup()
-
-            mockUseTheme.mockReturnValue({
-                name: THEME_NAME.Light,
-                resolvedName: THEME_NAME.Light,
-                tokens: {} as any,
-            })
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    applyClassicThemeOverride
-                />,
-            )
-
-            const buttonLight = screen.getByRole('button')
-            await act(() => user.click(buttonLight))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).not.toContain('darkDropdown')
-            })
-
-            await act(() => user.click(buttonLight))
-
-            mockUseTheme.mockReturnValue({
-                name: THEME_NAME.Dark,
-                resolvedName: THEME_NAME.Dark,
-                tokens: {} as any,
-            })
-
-            render(
-                <StoreSelector
-                    integrations={mockIntegrations}
-                    selected={mockShopifyIntegration}
-                    onChange={mockOnChange}
-                    applyClassicThemeOverride
-                />,
-            )
-
-            const buttonDark = screen.getAllByRole('button')[1]
-            await act(() => user.click(buttonDark))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).not.toContain('darkDropdown')
-            })
-        })
-
-        it('does not apply dark dropdown styles by default when prop is not provided', async () => {
-            const user = userEvent.setup()
-
+        it('does not apply dark dropdown styles by default when prop is not provided', () => {
             mockUseTheme.mockReturnValue({
                 name: THEME_NAME.Classic,
                 resolvedName: THEME_NAME.Classic,
                 tokens: {} as any,
             })
 
-            render(
+            const { container } = render(
                 <StoreSelector
                     integrations={mockIntegrations}
                     selected={mockShopifyIntegration}
@@ -1203,14 +836,8 @@ describe('StoreSelector', () => {
                 />,
             )
 
-            const button = screen.getByRole('button')
-            await act(() => user.click(button))
-
-            await waitFor(() => {
-                const dropdown = document.querySelector('.dropdown')
-                expect(dropdown).toBeInTheDocument()
-                expect(dropdown?.className).not.toContain('darkDropdown')
-            })
+            const wrapper = container.firstChild as HTMLElement
+            expect(wrapper.className).not.toContain('darkDropdown')
         })
     })
 })

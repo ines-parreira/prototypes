@@ -65,6 +65,9 @@ const createMockUseStoreActivationsReturn = (storeActivation: any) => ({
     storeActivations: {
         'test-store': storeActivation,
     },
+    allStoreActivations: {
+        'test-store': storeActivation,
+    },
     progressPercentage: 0,
     isFetchLoading: false,
     isSaveLoading: false,

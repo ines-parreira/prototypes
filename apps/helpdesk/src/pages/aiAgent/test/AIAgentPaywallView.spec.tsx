@@ -97,6 +97,7 @@ describe('<AiAgentPaywallView />', () => {
                     },
                 },
             },
+            allStoreActivations: {},
             isFetchLoading: false,
         } as unknown as ReturnType<typeof useStoreActivations>)
         useStoreConfigurationsMock.mockReturnValue({

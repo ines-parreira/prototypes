@@ -86,6 +86,7 @@ const setupMockStoreActivations = (
 ) => {
     const defaultValues = {
         storeActivations: {},
+        allStoreActivations: {},
         progressPercentage: 0,
         isFetchLoading: false,
         isSaveLoading: false,

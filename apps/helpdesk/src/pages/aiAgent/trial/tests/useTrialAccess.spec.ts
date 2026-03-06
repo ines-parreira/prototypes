@@ -195,6 +195,7 @@ describe('useTrialAccess', () => {
         mockUseAtLeastOneStoreHasActiveTrial.mockReturnValue(false)
         mockUseStoreActivations.mockReturnValue({
             storeActivations: mockStoreActivations,
+            allStoreActivations: mockStoreActivations,
             progressPercentage: 50,
             isFetchLoading: false,
             isSaveLoading: false,
@@ -363,7 +364,8 @@ describe('useTrialAccess', () => {
 
             // Set loading state for store activations
             mockUseStoreActivations.mockReturnValue({
-                storeActivations: {}, // Empty while loading
+                storeActivations: {},
+                allStoreActivations: {},
                 progressPercentage: 0,
                 isFetchLoading: true,
                 isSaveLoading: false,
@@ -410,7 +412,8 @@ describe('useTrialAccess', () => {
 
             // Set loading state for store activations
             mockUseStoreActivations.mockReturnValue({
-                storeActivations: {}, // Empty while loading
+                storeActivations: {},
+                allStoreActivations: {},
                 progressPercentage: 0,
                 isFetchLoading: true,
                 isSaveLoading: false,

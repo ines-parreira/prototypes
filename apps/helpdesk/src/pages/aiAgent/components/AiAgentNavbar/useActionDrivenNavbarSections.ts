@@ -7,6 +7,7 @@ import type { AccordionValues } from 'components/Accordion/utils/types'
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
+import { useAiAgentLastSelectedShop } from 'pages/aiAgent/hooks/useAiAgentLastSelectedShop'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { isAiAgentEnabled } from 'pages/aiAgent/util'
 import { isAiAgentEnabledForStore } from 'pages/aiAgent/utils/store-configuration.utils'
@@ -45,6 +46,7 @@ export const useActionDrivenNavbarSections = () => {
     const currentShopName = params.shopName || urlData.storeSlug
     const currentIntegrationType =
         params.shopType || urlData.integrationType || 'shopify'
+    const { setLastSelectedShop, resolveShop } = useAiAgentLastSelectedShop()
     const [selectedStore, setSelectedStore] = useState(currentShopName)
 
     useEffect(() => {
@@ -53,13 +55,15 @@ export const useActionDrivenNavbarSections = () => {
             if (pathname.startsWith('/app/ai-agent/actions-platform')) {
                 return
             }
-            const firstStore = storeIntegrations[0]
-            const firstShopName = getShopNameFromStoreIntegration(firstStore)
-            if (firstShopName) {
+            const availableShopNames = storeIntegrations
+                .map(getShopNameFromStoreIntegration)
+                .filter(Boolean) as string[]
+            const resolvedShopName = resolveShop(availableShopNames)
+            if (resolvedShopName) {
                 history.replace(
-                    `/app/ai-agent/${currentIntegrationType}/${firstShopName}`,
+                    `/app/ai-agent/${currentIntegrationType}/${resolvedShopName}`,
                 )
-                setSelectedStore(firstShopName)
+                setSelectedStore(resolvedShopName)
             }
         }
     }, [
@@ -68,6 +72,7 @@ export const useActionDrivenNavbarSections = () => {
         history,
         currentIntegrationType,
         location.pathname,
+        resolveShop,
     ])
 
     const [expandedSections, setExpandedSections] =
@@ -79,7 +84,8 @@ export const useActionDrivenNavbarSections = () => {
         shopName: selectedStore || currentShopName || '',
     })
 
-    const { storeActivations } = useStoreActivations()
+    const { storeActivations, allStoreActivations, isFetchLoading } =
+        useStoreActivations()
 
     const selectedStoreIntegration = useMemo(() => {
         return storeIntegrations.find(
@@ -88,27 +94,30 @@ export const useActionDrivenNavbarSections = () => {
     }, [storeIntegrations, selectedStore])
 
     const getStoreActivationStatus = useCallback(
-        (storeName: string) => {
-            const activation = storeActivations[storeName]
+        (storeName: string): boolean | undefined => {
+            if (isFetchLoading) {
+                return undefined
+            }
+            const activation = allStoreActivations[storeName]
             if (!activation) {
                 return false
             }
 
             return isAiAgentEnabledForStore(activation.configuration)
         },
-        [storeActivations],
+        [allStoreActivations, isFetchLoading],
     )
 
     const getSetupCompletionStatus = useCallback(
         (storeName: string) => {
-            const activation = storeActivations[storeName]
+            const activation = allStoreActivations[storeName]
             if (!activation) {
                 return false
             }
 
             return true
         },
-        [storeActivations],
+        [allStoreActivations],
     )
 
     const getChannelStatus = useCallback(
@@ -143,6 +152,7 @@ export const useActionDrivenNavbarSections = () => {
     const handleStoreSelect = useCallback(
         (shopName: string) => {
             setSelectedStore(shopName)
+            setLastSelectedShop(shopName)
 
             const currentPath = location.pathname
             const pathMatch = currentPath.match(
@@ -175,6 +185,7 @@ export const useActionDrivenNavbarSections = () => {
             history,
             currentIntegrationType,
             setExpandedSections,
+            setLastSelectedShop,
             getSetupCompletionStatus,
             location.pathname,
         ],
@@ -198,5 +209,9 @@ export const useActionDrivenNavbarSections = () => {
         navigationItems,
         expandedSections,
         handleExpandedSectionsChange,
+        isActivationDataReady:
+            !isFetchLoading &&
+            (storeIntegrations.length === 0 ||
+                Object.keys(allStoreActivations).length > 0),
     }
 }
