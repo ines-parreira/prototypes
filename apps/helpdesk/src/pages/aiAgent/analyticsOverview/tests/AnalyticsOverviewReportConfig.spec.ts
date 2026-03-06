@@ -102,6 +102,20 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
+    it('should have decrease in FRT card config', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.DecreaseInFRTCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Decrease in first response time')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+    })
+
     it('should have automated interactions combo chart config', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
@@ -144,22 +158,6 @@ describe('AnalyticsOverviewReportConfig', () => {
             FilterKey.Period,
             FilterKey.AggregationWindow,
         ])
-    })
-
-    it('should have decrease in resolution time card config', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.DecreaseInResolutionTimeCard
-            ]
-
-        expect(config).toBeDefined()
-        expect(config.label).toBe('Decrease in resolution time')
-        expect(config.chartType).toBe(ChartType.Card)
-        expect(config.metricFormat).toBe('duration')
-        expect(config.csvProducer).not.toBeNull()
-        expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
-        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
     it('should have all chart configs defined', () => {

@@ -7,11 +7,11 @@ describe('defaultLayoutConfig', () => {
             expect(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections).toHaveLength(3)
         })
 
-        it('should have kpis section with 6 cards', () => {
+        it('should have kpis section with 7 cards', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(6)
+            expect(kpisSection.items).toHaveLength(7)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -34,6 +34,9 @@ describe('defaultLayoutConfig', () => {
             expect(kpisSection.items[5].chartId).toBe(
                 AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
             )
+            expect(kpisSection.items[6].chartId).toBe(
+                AnalyticsOverviewChart.DecreaseInFRTCard,
+            )
         })
 
         it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
@@ -52,6 +55,14 @@ describe('defaultLayoutConfig', () => {
                 (i) =>
                     i.chartId ===
                     AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
+            )
+            expect(item?.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have DecreaseInFRTCard with requiresFeatureFlag', () => {
+            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
+            const item = kpisSection.items.find(
+                (i) => i.chartId === AnalyticsOverviewChart.DecreaseInFRTCard,
             )
             expect(item?.requiresFeatureFlag).toBe(true)
         })
@@ -101,13 +112,13 @@ describe('defaultLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 9 charts across all sections', () => {
+        it('should have total of 10 charts across all sections', () => {
             const totalCharts =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(9)
+            expect(totalCharts).toBe(10)
         })
 
         it('should only contain valid chart types', () => {

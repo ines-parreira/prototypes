@@ -1,6 +1,7 @@
 import { fetchFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
+import { fetchDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { fetchTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -16,6 +17,7 @@ import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyt
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
+import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
@@ -34,6 +36,7 @@ export enum AnalyticsOverviewChart {
     AutomationLineChart = 'automation_line_chart',
     PerformanceTable = 'performance_table',
     HandoverInteractionsCard = 'handover_interactions_card',
+    DecreaseInFRTCard = 'decrease_in_frt_card',
 }
 
 export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart> =
@@ -137,6 +140,22 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
+            },
+            [AnalyticsOverviewChart.DecreaseInFRTCard]: {
+                chartComponent: AnalyticsOverviewDecreaseInFRTCard,
+                label: 'Decrease in first response time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchDecreaseInFirstResponseTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.AutomationRateComboChart]: {
                 chartComponent: AutomationRateComboChart,

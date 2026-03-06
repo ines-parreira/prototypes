@@ -9,6 +9,7 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
@@ -35,6 +36,7 @@ import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOver
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
+import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 
@@ -353,6 +355,30 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 120,
                 prevValue: 150,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsFRTCard',
+            Component: AnalyticsAiAgentAllAgentsFRTCard,
+            config: {
+                label: 'Decrease in first response time',
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
+            },
+        },
+        {
+            name: 'AnalyticsOverviewDecreaseInFRTCard',
+            Component: AnalyticsOverviewDecreaseInFRTCard,
+            config: {
+                label: 'Decrease in first response time',
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
             },
         },
         {

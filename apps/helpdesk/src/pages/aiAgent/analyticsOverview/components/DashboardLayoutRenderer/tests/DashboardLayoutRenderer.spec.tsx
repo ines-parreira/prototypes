@@ -211,6 +211,10 @@ const reportConfigMock = {
             chartComponent: () => null,
             label: 'Decrease in Resolution Time',
         },
+        [AnalyticsOverviewChart.DecreaseInFRTCard]: {
+            chartComponent: () => null,
+            label: 'Decrease in FRT',
+        },
     },
 } as unknown as ReportConfig<string>
 

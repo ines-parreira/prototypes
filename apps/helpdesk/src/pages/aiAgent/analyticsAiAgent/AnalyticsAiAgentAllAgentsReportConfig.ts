@@ -13,6 +13,7 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
+import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
@@ -25,6 +26,7 @@ import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/ch
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsCostSavedTrend'
+import { fetchAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsFRTTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
@@ -64,6 +66,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     HandoverInteractionsCard = 'handover_interactions_card',
     CostSavedCard = 'cost_saved_card',
     DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
+    DecreaseInFRTCard = 'decrease_in_frt_all_agents_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -248,6 +251,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 ],
                 description:
                     'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.DecreaseInFRTCard]: {
+                chartComponent: AnalyticsAiAgentAllAgentsFRTCard,
+                label: 'Decrease in first response time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentAllAgentsFRTTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
