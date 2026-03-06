@@ -20,28 +20,30 @@ export function TicketHeader({ subject, time, iconName }: TicketHeaderProps) {
                 ) : undefined
             }
             title={
-                <Box
-                    justifyContent="space-between"
-                    alignItems="center"
-                    flex="1"
-                    minWidth={0}
-                    gap="xxxs"
-                >
-                    <Box minWidth={0}>
-                        <Text size="sm" variant="bold" overflow="ellipsis">
-                            {subject}
-                        </Text>
+                <div className={css.titleContainer}>
+                    <Box
+                        justifyContent="space-between"
+                        alignItems="center"
+                        flex="1"
+                        minWidth={0}
+                        gap="xxxs"
+                    >
+                        <Box minWidth={0}>
+                            <Text size="sm" variant="bold" overflow="ellipsis">
+                                {subject}
+                            </Text>
+                        </Box>
+                        <Box flexShrink="0" className={css.noWrap}>
+                            <Text
+                                size="sm"
+                                variant="regular"
+                                className={css.dateText}
+                            >
+                                {time}
+                            </Text>
+                        </Box>
                     </Box>
-                    <Box flexShrink="0" className={css.noWrap}>
-                        <Text
-                            size="sm"
-                            variant="regular"
-                            className={css.dateText}
-                        >
-                            {time}
-                        </Text>
-                    </Box>
-                </Box>
+                </div>
             }
         />
     )

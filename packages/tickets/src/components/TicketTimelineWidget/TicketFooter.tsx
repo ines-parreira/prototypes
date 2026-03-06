@@ -37,7 +37,7 @@ export function TicketFooter({
     const { label, color } = getStatusInfo(isSnoozed, status)
 
     return (
-        <CardFooter>
+        <CardFooter display="block">
             <Box gap="xs" alignItems="center">
                 <Box flexShrink="0">
                     <Tag color={color}>{label}</Tag>
