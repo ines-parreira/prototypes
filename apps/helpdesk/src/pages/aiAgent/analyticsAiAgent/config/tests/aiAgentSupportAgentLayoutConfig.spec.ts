@@ -9,12 +9,12 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 6 cards', () => {
+        it('should have kpis section with 7 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(6)
+            expect(kpisSection.items).toHaveLength(7)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -38,6 +38,20 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(kpisSection.items[5].chartId).toBe(
                 AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
             )
+            expect(kpisSection.items[6].chartId).toBe(
+                AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard,
+            )
+        })
+
+        it('should have DecreaseInResolutionTimeCard with requiresFeatureFlag', () => {
+            const kpisSection =
+                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
+            const item = kpisSection.items.find(
+                (i) =>
+                    i.chartId ===
+                    AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard,
+            )
+            expect(item?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have AverageCsatCard with requiresFeatureFlag', () => {
@@ -104,13 +118,13 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 9 charts across all sections', () => {
+        it('should have total of 10 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(9)
+            expect(totalCharts).toBe(10)
         })
 
         it('should have all required chart types defined', () => {
@@ -119,33 +133,11 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                     (section) => section.items.map((item) => item.chartId),
                 )
 
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.TimeSavedCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.CostSavedCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.PerformanceTable,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsAiAgentSupportAgentChart.AverageCsatCard,
-            )
+            allChartIds.forEach((chartId) => {
+                expect(
+                    Object.values(AnalyticsAiAgentSupportAgentChart),
+                ).toContain(chartId)
+            })
         })
     })
 })

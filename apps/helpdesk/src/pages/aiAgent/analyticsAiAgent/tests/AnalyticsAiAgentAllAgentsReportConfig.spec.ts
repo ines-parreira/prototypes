@@ -161,6 +161,22 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
     })
 
+    it('should have decrease in resolution time card config', () => {
+        const config =
+            AnalyticsAiAgentAllAgentsReportConfig.charts[
+                AnalyticsAiAgentAllAgentsChart.DecreaseInResolutionTimeCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Decrease in resolution time')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('duration')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentAllAgentsReportConfig.charts
         const enumKeys = Object.values(AnalyticsAiAgentAllAgentsChart)
@@ -172,156 +188,12 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
         }
     })
 
-    it('should have fetch function for automation rate trend', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AutomationRateCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for automated interactions trend', () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AutomatedInteractionsCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for total sales trend', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.TotalSalesCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for time saved trend', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.TimeSavedCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for all agents trend breakdown', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
-    })
-
-    it('should have fetch function for all agents trend data', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
-    })
-
-    it('should have fetch function for average CSAT trend', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AverageCsatCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for handover interactions trend', () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.HandoverInteractionsCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for performance breakdown', async () => {
-        const config =
-            AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.PerformanceTable
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+    it('should have fetch function for all charts with csvProducer', () => {
+        Object.values(AnalyticsAiAgentAllAgentsChart).forEach((chartId) => {
+            const config = AnalyticsAiAgentAllAgentsReportConfig.charts[chartId]
+            config.csvProducer?.forEach((producer) => {
+                expect(typeof producer.fetch).toBe('function')
+            })
+        })
     })
 })

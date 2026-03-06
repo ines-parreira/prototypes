@@ -46,6 +46,13 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig<Anal
                         visibility: true,
                         requiresFeatureFlag: true,
                     },
+                    {
+                        chartId:
+                            AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                 ],
             },
             {

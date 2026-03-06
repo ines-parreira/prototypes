@@ -2,6 +2,7 @@ import { fetchAIAgentAutomatedInteractionsTrend } from 'domains/reporting/hooks/
 import { fetchAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/useAIAgentAutomationRateTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCoverageRateTrend'
+import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentAllAgentsHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentAllAgentsHandoverInteractionsTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
@@ -17,6 +18,7 @@ import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyti
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
+import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
 import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
 import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
@@ -61,6 +63,7 @@ export enum AnalyticsAiAgentAllAgentsChart {
     ClosedTicketsCard = 'closed_tickets_card',
     HandoverInteractionsCard = 'handover_interactions_card',
     CostSavedCard = 'cost_saved_card',
+    DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
     PerformanceTable = 'performance_table',
@@ -231,6 +234,22 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentAllAgentsChart.DecreaseInResolutionTimeCard]: {
+                chartComponent: AnalyticsAiAgentDecreaseInResolutionTimeCard,
+                label: 'Decrease in resolution time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchDecreaseInResolutionTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {

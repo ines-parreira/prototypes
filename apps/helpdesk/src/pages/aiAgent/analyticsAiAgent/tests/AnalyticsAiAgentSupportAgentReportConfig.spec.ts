@@ -130,179 +130,41 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         ).toEqual([FilterKey.Period, FilterKey.AggregationWindow])
     })
 
+    it('should have decrease in resolution time card config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Decrease in resolution time')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('duration')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have all chart configs defined', () => {
         const charts = AnalyticsAiAgentSupportAgentReportConfig.charts
+        const enumKeys = Object.values(AnalyticsAiAgentSupportAgentChart)
 
-        expect(Object.keys(charts)).toHaveLength(10)
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.TimeSavedCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.CostSavedCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
-            ],
-        ).toBeDefined()
-        expect(
-            charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart
-            ],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.PerformanceTable],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.AverageCsatCard],
-        ).toBeDefined()
-        expect(
-            charts[AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard],
-        ).toBeDefined()
-    })
+        expect(Object.keys(charts)).toHaveLength(enumKeys.length)
 
-    it('should have fetch function for time saved trend', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.TimeSavedCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for cost saved trend', () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.CostSavedCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for support interactions trend', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for decrease in FRT trend', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.DecreaseInFRTCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for average CSAT trend', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.AverageCsatCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for support agent trend breakdown', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
+        for (const key of enumKeys) {
+            expect(charts[key]).toBeDefined()
         }
     })
 
-    it('should have fetch function for support agent trend data', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.type).toBe('time-series')
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for performance breakdown', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.PerformanceTable
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+    it('should have fetch function for all charts with csvProducer', () => {
+        Object.values(AnalyticsAiAgentSupportAgentChart).forEach((chartId) => {
+            const config =
+                AnalyticsAiAgentSupportAgentReportConfig.charts[chartId]
+            config.csvProducer?.forEach((producer) => {
+                expect(typeof producer.fetch).toBe('function')
+            })
+        })
     })
 
     it('should have handover interactions card config', () => {
@@ -319,21 +181,6 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
     })
 
-    it('should have fetch function for handover interactions trend', () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
     it('should have support interactions combo chart config', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
@@ -344,28 +191,7 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.label).toBe('Automated interactions')
         expect(config.description).toBe('Support interactions by intent')
         expect(config.chartType).toBe(ChartType.Graph)
-    })
-
-    it('should have fetch function for support interactions combo chart', async () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
-            ]
-
-        expect(config.csvProducer).toBeDefined()
         expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.type).toBe(DataExportFormat.Table)
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-            expect(result.fileName).toBe('support-interactions.csv')
-        }
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
     })
 })

@@ -2,6 +2,7 @@ import { fetchAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting
 import { fetchAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
+import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSupportHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSupportHandoverInteractionsTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
@@ -14,6 +15,7 @@ import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
 import { AnalyticsSupportAgentPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
@@ -43,6 +45,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
     CostSavedCard = 'cost_saved_card',
     SupportInteractionsCard = 'support_interactions_card',
     DecreaseInFRTCard = 'decrease_in_first_resolution_time_card',
+    DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
     AverageCsatCard = 'average_csat_card',
     HandoverInteractionsCard = 'handover_interactions_card',
     SupportAgentTrendComboChart = 'support_agent_trend_combo_chart',
@@ -117,6 +120,23 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 ],
                 description:
                     'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard]: {
+                chartComponent:
+                    AnalyticsAiAgentSupportDecreaseInResolutionTimeCard,
+                label: 'Decrease in resolution time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchDecreaseInResolutionTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
                 chartType: ChartType.Card,
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',

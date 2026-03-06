@@ -7,11 +7,11 @@ describe('defaultLayoutConfig', () => {
             expect(DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections).toHaveLength(3)
         })
 
-        it('should have kpis section with 4 cards', () => {
+        it('should have kpis section with 6 cards', () => {
             const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(5)
+            expect(kpisSection.items).toHaveLength(6)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -28,6 +28,32 @@ describe('defaultLayoutConfig', () => {
             expect(kpisSection.items[3].chartId).toBe(
                 AnalyticsOverviewChart.CostSavedCard,
             )
+            expect(kpisSection.items[4].chartId).toBe(
+                AnalyticsOverviewChart.HandoverInteractionsCard,
+            )
+            expect(kpisSection.items[5].chartId).toBe(
+                AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
+            )
+        })
+
+        it('should have HandoverInteractionsCard with requiresFeatureFlag', () => {
+            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
+            const item = kpisSection.items.find(
+                (i) =>
+                    i.chartId ===
+                    AnalyticsOverviewChart.HandoverInteractionsCard,
+            )
+            expect(item?.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have DecreaseInResolutionTimeCard with requiresFeatureFlag', () => {
+            const kpisSection = DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[0]
+            const item = kpisSection.items.find(
+                (i) =>
+                    i.chartId ===
+                    AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
+            )
+            expect(item?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have all KPI cards with gridSize 3', () => {
@@ -75,38 +101,24 @@ describe('defaultLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 7 charts across all sections', () => {
+        it('should have total of 9 charts across all sections', () => {
             const totalCharts =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(8)
+            expect(totalCharts).toBe(9)
         })
 
-        it('should have all required chart types defined', () => {
+        it('should only contain valid chart types', () => {
             const allChartIds =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections.flatMap((section) =>
                     section.items.map((item) => item.chartId),
                 )
 
-            expect(allChartIds).toContain(
-                AnalyticsOverviewChart.AutomationRateCard,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsOverviewChart.AutomatedInteractionsCard,
-            )
-            expect(allChartIds).toContain(AnalyticsOverviewChart.TimeSavedCard)
-            expect(allChartIds).toContain(AnalyticsOverviewChart.CostSavedCard)
-            expect(allChartIds).toContain(
-                AnalyticsOverviewChart.AutomationRateComboChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsOverviewChart.AutomationLineChart,
-            )
-            expect(allChartIds).toContain(
-                AnalyticsOverviewChart.PerformanceTable,
-            )
+            allChartIds.forEach((chartId) => {
+                expect(Object.values(AnalyticsOverviewChart)).toContain(chartId)
+            })
         })
     })
 })

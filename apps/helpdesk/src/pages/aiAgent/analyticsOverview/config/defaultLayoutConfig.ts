@@ -33,6 +33,13 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
                     visibility: true,
                     requiresFeatureFlag: true,
                 },
+                {
+                    chartId:
+                        AnalyticsOverviewChart.DecreaseInResolutionTimeCard,
+                    gridSize: 3,
+                    visibility: true,
+                    requiresFeatureFlag: true,
+                },
             ],
         },
         {

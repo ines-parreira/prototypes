@@ -86,6 +86,22 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Card)
     })
 
+    it('should have decrease in resolution time card config', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.DecreaseInResolutionTimeCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Decrease in resolution time')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('duration')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have automated interactions combo chart config', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
@@ -130,6 +146,22 @@ describe('AnalyticsOverviewReportConfig', () => {
         ])
     })
 
+    it('should have decrease in resolution time card config', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.DecreaseInResolutionTimeCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Decrease in resolution time')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('duration')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have all chart configs defined', () => {
         const charts = AnalyticsOverviewReportConfig.charts
 
@@ -138,99 +170,24 @@ describe('AnalyticsOverviewReportConfig', () => {
         })
     })
 
-    it('should have fetch function for automation rate trend', async () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationRateCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
+    it('should have fetch function for all charts with csvProducer', () => {
+        Object.values(AnalyticsOverviewChart).forEach((chartId) => {
+            const config = AnalyticsOverviewReportConfig.charts[chartId]
+            config.csvProducer?.forEach((producer) => {
+                expect(typeof producer.fetch).toBe('function')
+            })
+        })
     })
 
-    it('should have fetch function for automated interactions trend', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomatedInteractionsCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for time saved trend', async () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.TimeSavedCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have fetch function for cost saved trend', async () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.CostSavedCard
-            ]
-
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
-
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
-        expect(csvProducer?.fetch).toBeDefined()
-        expect(typeof csvProducer?.fetch).toBe('function')
-    })
-
-    it('should have null csvProducer for automation rate combo chart', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationRateComboChart
-            ]
-
-        expect(config.csvProducer).toBeNull()
-    })
-
-    it('should have null csvProducer for automated interactions combo chart', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomatedInteractionsComboChart
-            ]
-
-        expect(config.csvProducer).toBeNull()
-    })
-
-    it('should have null csvProducer for automation line chart', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationLineChart
-            ]
-
-        expect(config.csvProducer).toBeNull()
-    })
-
-    it('should have null csvProducer for performance table', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.PerformanceTable
-            ]
-
-        expect(config.csvProducer).toBeNull()
+    it('should have null csvProducer for graph and table charts', () => {
+        Object.values(AnalyticsOverviewChart).forEach((chartId) => {
+            const config = AnalyticsOverviewReportConfig.charts[chartId]
+            if (
+                config.chartType === ChartType.Graph ||
+                config.chartType === ChartType.Table
+            ) {
+                expect(config.csvProducer).toBeNull()
+            }
+        })
     })
 })

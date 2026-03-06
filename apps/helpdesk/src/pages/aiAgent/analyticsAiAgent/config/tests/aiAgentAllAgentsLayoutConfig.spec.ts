@@ -9,11 +9,11 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             )
         })
 
-        it('should have kpis section with 10 cards', () => {
+        it('should have kpis section with 11 cards', () => {
             const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe('kpis')
-            expect(kpisSection.items).toHaveLength(10)
+            expect(kpisSection.items).toHaveLength(11)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -48,6 +48,19 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(kpisSection.items[9].chartId).toBe(
                 AnalyticsAiAgentAllAgentsChart.CostSavedCard,
             )
+            expect(kpisSection.items[10].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.DecreaseInResolutionTimeCard,
+            )
+        })
+
+        it('should have DecreaseInResolutionTimeCard with requiresFeatureFlag', () => {
+            const kpisSection = ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[0]
+            const item = kpisSection.items.find(
+                (i) =>
+                    i.chartId ===
+                    AnalyticsAiAgentAllAgentsChart.DecreaseInResolutionTimeCard,
+            )
+            expect(item?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have ZeroTouchTicketsCard with requiresFeatureFlag', () => {
@@ -148,13 +161,13 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             expect(breakdownSection.items[0].gridSize).toBe(12)
         })
 
-        it('should have total of 13 charts across all sections', () => {
+        it('should have total of 14 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(13)
+            expect(totalCharts).toBe(14)
         })
 
         it('should have all required chart types defined', () => {

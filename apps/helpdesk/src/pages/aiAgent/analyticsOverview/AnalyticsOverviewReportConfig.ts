@@ -1,6 +1,7 @@
 import { fetchFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { fetchAutomationCostSavedTrend } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { fetchAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
+import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { fetchTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend'
@@ -15,6 +16,7 @@ import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyt
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
+import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
@@ -26,6 +28,7 @@ export enum AnalyticsOverviewChart {
     AutomatedInteractionsCard = 'automated_interactions_card',
     TimeSavedCard = 'time_saved_card',
     CostSavedCard = 'cost_saved_card',
+    DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
     AutomationRateComboChart = 'automation_rate_combo_chart',
     AutomatedInteractionsComboChart = 'automated_interactions_combo_chart',
     AutomationLineChart = 'automation_line_chart',
@@ -101,6 +104,22 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
                 chartType: ChartType.Card,
                 metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsOverviewChart.DecreaseInResolutionTimeCard]: {
+                chartComponent: AnalyticsOverviewDecreaseInResolutionTimeCard,
+                label: 'Decrease in resolution time',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchDecreaseInResolutionTimeTrend,
+                        metricFormat: 'duration',
+                    },
+                ],
+                description:
+                    'The reduction in the average time to resolve a ticket when AI Agent is used, compared with tickets resolved manually by support agents.',
+                chartType: ChartType.Card,
+                metricFormat: 'duration',
                 interpretAs: 'more-is-better',
             },
             [AnalyticsOverviewChart.HandoverInteractionsCard]: {
