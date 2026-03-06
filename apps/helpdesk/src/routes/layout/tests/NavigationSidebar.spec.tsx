@@ -25,6 +25,10 @@ jest.mock('routes/layout/NavigationSidebarSpotlightButton', () => ({
     ),
 }))
 
+jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
+    useAiAgentAccess: jest.fn(() => ({ hasAccess: true })),
+}))
+
 jest.mock('routes/layout/sidebars', () => ({
     InboxSidebar: () => <div>InboxSidebar</div>,
     AiAgentSidebar: () => <div>AiAgentSidebar</div>,

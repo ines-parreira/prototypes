@@ -14,14 +14,6 @@ jest.mock('@repo/routing', () => ({
     },
 }))
 
-const renderMenuItem = (item: any) => {
-    return render(
-        <Menu trigger={<Button>Open Menu</Button>}>
-            <SidebarProductHeaderMenuItem item={item} />
-        </Menu>,
-    )
-}
-
 describe('SidebarProductHeaderMenuItem', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -31,7 +23,11 @@ describe('SidebarProductHeaderMenuItem', () => {
         const user = userEvent.setup()
         const item = productConfig[Product.Inbox]
 
-        renderMenuItem(item)
+        render(
+            <Menu trigger={<Button>Open Menu</Button>}>
+                <SidebarProductHeaderMenuItem item={item} />
+            </Menu>,
+        )
 
         const menuTrigger = screen.getByRole('button', { name: /Open Menu/i })
         await user.click(menuTrigger)
@@ -42,5 +38,43 @@ describe('SidebarProductHeaderMenuItem', () => {
         expect(history.push).toHaveBeenCalledWith(
             productConfig[Product.Inbox].defaultPath,
         )
+    })
+
+    it('should render item name with Upgrade badge when requiresUpgrade is true', async () => {
+        const user = userEvent.setup()
+        const item = productConfig[Product.AiAgent]
+
+        render(
+            <Menu trigger={<Button>Open Menu</Button>}>
+                <SidebarProductHeaderMenuItem item={item} requiresUpgrade />
+            </Menu>,
+        )
+
+        const menuTrigger = screen.getByRole('button', {
+            name: /Open Menu/i,
+        })
+        await user.click(menuTrigger)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('Upgrade')).toBeInTheDocument()
+    })
+
+    it('should render item name without Upgrade badge when requiresUpgrade is false', async () => {
+        const user = userEvent.setup()
+        const item = productConfig[Product.AiAgent]
+
+        render(
+            <Menu trigger={<Button>Open Menu</Button>}>
+                <SidebarProductHeaderMenuItem item={item} />
+            </Menu>,
+        )
+
+        const menuTrigger = screen.getByRole('button', {
+            name: /Open Menu/i,
+        })
+        await user.click(menuTrigger)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.queryByText('Upgrade')).not.toBeInTheDocument()
     })
 })

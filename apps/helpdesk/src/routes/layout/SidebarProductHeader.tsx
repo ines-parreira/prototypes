@@ -1,7 +1,9 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSidebar } from '@repo/navigation'
 
 import { Button, Menu, MenuSection } from '@gorgias/axiom'
 
+import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeaderMenuItem'
 
@@ -18,6 +20,8 @@ export function SidebarProductHeader({
     selectedItem,
 }: SidebarProductHeaderProps) {
     const { isCollapsed } = useSidebar()
+    const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
+    const { hasAccess } = useAiAgentAccess()
 
     return (
         <Menu
@@ -50,10 +54,13 @@ export function SidebarProductHeader({
                 />
                 <SidebarProductHeaderMenuItem
                     item={productConfig[Product.AiAgent]}
+                    requiresUpgrade={!hasAccess}
                 />
-                <SidebarProductHeaderMenuItem
-                    item={productConfig[Product.Marketing]}
-                />
+                {isAiJourneyEnabled && (
+                    <SidebarProductHeaderMenuItem
+                        item={productConfig[Product.Marketing]}
+                    />
+                )}
                 <SidebarProductHeaderMenuItem
                     item={productConfig[Product.Analytics]}
                 />
