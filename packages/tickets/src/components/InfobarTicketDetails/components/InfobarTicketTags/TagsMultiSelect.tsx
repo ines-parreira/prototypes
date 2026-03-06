@@ -23,7 +23,7 @@ import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
 import { useCreateTicketTag } from './hooks/useCreateTicketTag'
 import { useListTagsSearch } from './hooks/useListTagsSearch'
-import { sortByAscendingIdOrder } from './hooks/useUpdateTicketTags'
+import { sortByAlphabeticalTagNameOrder } from './hooks/useUpdateTicketTags'
 import { TagsMultiSelectShowMore } from './TagsMultiSelectShowMore'
 
 import css from './TagsMultiSelect.less'
@@ -81,7 +81,9 @@ export function TagsMultiSelect({
     const handleCreateTag = useCallback(async () => {
         try {
             const createdTag = await createTicketTag(search.trim())
-            onChange([...value, createdTag].sort(sortByAscendingIdOrder))
+            onChange(
+                [...value, createdTag].sort(sortByAlphabeticalTagNameOrder),
+            )
             setSearch('')
         } catch {
             dispatchNotification({
@@ -111,7 +113,9 @@ export function TagsMultiSelect({
                 ) as TicketTag[]
 
             if (newTags.length > 0) {
-                onChange([...newTags, ...value].sort(sortByAscendingIdOrder))
+                onChange(
+                    [...newTags, ...value].sort(sortByAlphabeticalTagNameOrder),
+                )
             } else {
                 // Non-visible currently saved tags shouldn't be removed
                 // since they can't have been selected for deletion
@@ -130,7 +134,7 @@ export function TagsMultiSelect({
 
                 onChange(
                     [...nonVisibleSavedTags, ...selectedVisibleSavedTags].sort(
-                        sortByAscendingIdOrder,
+                        sortByAlphabeticalTagNameOrder,
                     ),
                 )
             }

@@ -353,6 +353,60 @@ describe('TagsMultiSelect', () => {
         clearSpy.mockRestore()
     })
 
+    it('sorts selected tags alphabetically instead of by id', async () => {
+        const tagsWithNameOrderDifferentFromId = [
+            mockTag({ id: 1, name: 'Zulu', decoration: null }),
+            mockTag({ id: 2, name: 'Alpha', decoration: null }),
+        ]
+
+        const mockListTagsNameSorted = mockListTagsHandler(async ({ data }) =>
+            HttpResponse.json({
+                ...data,
+                data: tagsWithNameOrderDifferentFromId,
+                meta: {
+                    total_resources: tagsWithNameOrderDifferentFromId.length,
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
+            }),
+        )
+
+        server.use(mockListTagsNameSorted.handler)
+
+        const onChange = vi.fn()
+        const { user } = render(
+            <TagsMultiSelect
+                value={[
+                    mockTicketTag({
+                        id: 1,
+                        name: 'Zulu',
+                        decoration: null,
+                    }),
+                ]}
+                onChange={onChange}
+            />,
+        )
+
+        await waitForQueriesSettled()
+
+        await openTagsMenu(user)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('option', { name: 'Alpha' }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('option', { name: 'Alpha' }))
+
+        expect(onChange).toHaveBeenCalledTimes(1)
+
+        const updatedTags = onChange.mock.calls[0][0] as Array<{
+            name: string
+        }>
+        expect(updatedTags.map((tag) => tag.name)).toEqual(['Alpha', 'Zulu'])
+    })
+
     it('allows selecting a tag from the dropdown and removing it', async () => {
         const onChange = vi.fn()
 

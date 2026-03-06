@@ -8,8 +8,22 @@ import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 import { useTicketsLegacyBridge } from '../../../../../utils/LegacyBridge'
 import { NotificationStatus } from '../../../../../utils/LegacyBridge/context'
 
-export const sortByAscendingIdOrder = <T extends { id: number }>(a: T, b: T) =>
-    (a.id - b.id) * 1
+export const sortByAlphabeticalTagNameOrder = <
+    T extends { id: number; name: string },
+>(
+    a: T,
+    b: T,
+) => {
+    const byName = a.name.localeCompare(b.name, undefined, {
+        sensitivity: 'base',
+    })
+
+    if (byName !== 0) {
+        return byName
+    }
+
+    return a.id - b.id
+}
 
 export function useUpdateTicketTags(ticketId: string) {
     const { dispatchNotification } = useTicketsLegacyBridge()

@@ -4,7 +4,7 @@ import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { useGetTicketData } from './hooks/useGetTicketData'
 import {
-    sortByAscendingIdOrder,
+    sortByAlphabeticalTagNameOrder,
     useUpdateTicketTags,
 } from './hooks/useUpdateTicketTags'
 import { TagsMultiSelect } from './TagsMultiSelect'
@@ -24,7 +24,7 @@ export function TicketInfobarTicketDetailsTags({
     const handleChange = useCallback(
         async (tags: TicketTag[]) => {
             await updateTicketTags(Number(ticketId), {
-                tags: tags.sort(sortByAscendingIdOrder),
+                tags: tags.sort(sortByAlphabeticalTagNameOrder),
             })
         },
         [updateTicketTags, ticketId],
