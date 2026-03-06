@@ -40,7 +40,7 @@ const PlaygroundMessage = ({
     children,
 }: Props) => {
     const { mode } = useSettingsContext()
-    const { messages } = useMessagesContext()
+    const { messages, isMessageSending } = useMessagesContext()
     const { setShouldFocusCustomerSelection } = useCoreContext()
     const {
         aiJourneySettings: { includeProductImage, selectedProduct, mediaUrls },
@@ -105,7 +105,7 @@ const PlaygroundMessage = ({
         case MessageType.TICKET_EVENT:
             return <TicketEvent type={message.outcome} />
         case MessageType.PLACEHOLDER:
-            return isPolling ? (
+            return isPolling || isMessageSending ? (
                 <MessageContainer
                     channel={channel}
                     sender={message.sender}

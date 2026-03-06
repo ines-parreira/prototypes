@@ -150,6 +150,23 @@ describe('PlaygroundMessage', () => {
         expect(screen.getByText('Thinking...')).toBeInTheDocument()
     })
 
+    it('should render placeholder message when a message is being sent', () => {
+        mockUseMessagesContext.mockReturnValue({
+            messages: [],
+            onMessageSend: jest.fn(),
+            isMessageSending: true,
+            onNewConversation: jest.fn(),
+            isWaitingResponse: false,
+            draftMessage: '',
+            draftSubject: '',
+            setDraftMessage: jest.fn(),
+            setDraftSubject: jest.fn(),
+        })
+        renderComponent({ message: playgroundPlaceholderMessageFixture })
+
+        expect(screen.getByText('Thinking...')).toBeInTheDocument()
+    })
+
     it('should not render placeholder message when polling is disabled', () => {
         renderComponent({ message: playgroundPlaceholderMessageFixture })
 

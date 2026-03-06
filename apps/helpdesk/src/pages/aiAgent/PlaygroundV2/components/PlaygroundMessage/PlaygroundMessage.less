@@ -72,7 +72,7 @@
             color: var(--content-neutral-secondary); // legacy
 
             :global {
-                animation: shimmer 1.5s infinite ease-in-out;
+                animation: playgroundMessageShimmer 1.5s infinite ease-in-out;
             }
         }
 
@@ -165,11 +165,21 @@
         }
 
         .aiAgentLoadingSkeletonContainer {
-            background-size: 200% 100% !important;
-            background-clip: text !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-            color: var(--content-neutral-secondary) !important;
+            background: linear-gradient(
+                90deg,
+                var(--grey-600) 0%,
+                var(--grey-300) 50%,
+                var(--grey-600) 100%
+            );
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: var(--content-neutral-secondary);
+
+            :global {
+                animation: playgroundMessageShimmer 1.5s infinite ease-in-out;
+            }
         }
 
         .messageErrorContainer {
@@ -206,6 +216,15 @@
         }
         to {
             opacity: 1;
+        }
+    }
+
+    @keyframes playgroundMessageShimmer {
+        0% {
+            background-position: 0% 0;
+        }
+        100% {
+            background-position: 200% 0;
         }
     }
 }
