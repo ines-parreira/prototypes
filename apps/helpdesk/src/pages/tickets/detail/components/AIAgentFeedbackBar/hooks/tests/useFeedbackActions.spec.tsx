@@ -4,6 +4,9 @@ import type { ChoiceOption } from '../../MissingKnowledgeSelect'
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useFeedbackActions } from '../useFeedbackActions'
 
+const mockDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
+
 // Base types for cleaner mocking
 type MockFeedback = {
     executions: { executionId: string }[]
@@ -240,6 +243,10 @@ const renderHookWithData = (
 }
 
 describe('useFeedbackActions', () => {
+    beforeEach(() => {
+        mockDispatch.mockClear()
+    })
+
     describe('onSubmitMissingKnowledge', () => {
         // Test all choice types with parameterized test
         it.each([
@@ -340,17 +347,7 @@ describe('useFeedbackActions', () => {
             await result.current.onSubmitMissingKnowledge([unknownChoice])
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
-            expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: {
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                feedbackValue: null,
-                            }),
-                        ],
-                    },
-                }),
-            )
+            expect(mocks.upsertFeedback).not.toHaveBeenCalled()
         })
 
         it('should handle missing executionId', async () => {
@@ -380,7 +377,7 @@ describe('useFeedbackActions', () => {
             expect(mocks.upsertFeedback).not.toHaveBeenCalled()
         })
 
-        it('should handle deleted choices', async () => {
+        it('should handle deleted choices without existing feedback id', async () => {
             const mockData = createMockData(
                 AiAgentKnowledgeResourceTypeEnum.ARTICLE,
             )
@@ -395,17 +392,90 @@ describe('useFeedbackActions', () => {
             await result.current.onSubmitMissingKnowledge([deletedChoice])
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
+            expect(mocks.upsertFeedback).not.toHaveBeenCalled()
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+
+        it('should handle deleted choices with existing feedback id', async () => {
+            const choice = createMockChoice(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                { isDeleted: true },
+            )
+            const mockData = createMockData(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                {
+                    enrichedData: createMockEnrichedData({
+                        suggestedResources: [
+                            {
+                                ...createSuggestedResource(choice),
+                                feedback: {
+                                    id: 'existing-feedback-id',
+                                    executionId: MOCK_EXEC_ID,
+                                },
+                            },
+                        ],
+                    }),
+                },
+            )
+            const { result, mocks } = renderHookWithData(mockData)
+
+            await result.current.onSubmitMissingKnowledge([choice])
+
+            expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
             expect(mocks.upsertFeedback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     data: {
                         feedbackToUpsert: [
                             expect.objectContaining({
+                                id: 'existing-feedback-id',
                                 feedbackValue: null,
                             }),
                         ],
                     },
                 }),
             )
+        })
+
+        it('should filter out feedback with null value and no existing id', async () => {
+            const validChoice = createMockChoice(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+            )
+            const deletedChoiceNoId = createMockChoice(
+                AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                { isDeleted: true },
+            )
+
+            const mockData = createMockData(
+                AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                {
+                    enrichedData: createMockEnrichedData({
+                        suggestedResources: [
+                            createSuggestedResource(validChoice),
+                            createSuggestedResource(deletedChoiceNoId),
+                        ],
+                    }),
+                },
+            )
+            const { result, mocks } = renderHookWithData(mockData)
+
+            await result.current.onSubmitMissingKnowledge([
+                validChoice,
+                deletedChoiceNoId,
+            ])
+
+            expect(mocks.upsertFeedback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: {
+                        feedbackToUpsert: [
+                            expect.objectContaining({
+                                feedbackValue:
+                                    expect.stringContaining('ARTICLE'),
+                            }),
+                        ],
+                    },
+                }),
+            )
+            expect(mockDispatch).toHaveBeenCalled()
         })
 
         // Test resource not found scenarios
@@ -432,17 +502,7 @@ describe('useFeedbackActions', () => {
                 await result.current.onSubmitMissingKnowledge([choice])
 
                 expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
-                expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: {
-                            feedbackToUpsert: [
-                                expect.objectContaining({
-                                    feedbackValue: null,
-                                }),
-                            ],
-                        },
-                    }),
-                )
+                expect(mocks.upsertFeedback).not.toHaveBeenCalled()
             },
         )
 
@@ -490,7 +550,6 @@ describe('useFeedbackActions', () => {
                                 feedbackValue:
                                     expect.stringContaining('ARTICLE'),
                             }),
-                            expect.objectContaining({ feedbackValue: null }),
                         ],
                     },
                 }),
@@ -521,24 +580,14 @@ describe('useFeedbackActions', () => {
             await result.current.onSubmitMissingKnowledge([choice])
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
-            expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: {
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                feedbackValue: null,
-                            }),
-                        ],
-                    },
-                }),
-            )
+            expect(mocks.upsertFeedback).not.toHaveBeenCalled()
         })
 
         it('should handle missing STORE_WEBSITE_QUESTION_SNIPPET resource', async () => {
             const mockData = createMockData(
                 AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                 {
-                    storeWebsiteQuestions: [], // Empty array to trigger the missing resource case
+                    storeWebsiteQuestions: [],
                 },
             )
             const { result, mocks } = renderHookWithData(mockData)
@@ -550,17 +599,7 @@ describe('useFeedbackActions', () => {
             await result.current.onSubmitMissingKnowledge([choice])
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
-            expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: {
-                        feedbackToUpsert: [
-                            expect.objectContaining({
-                                feedbackValue: null, // Should be null when resource not found
-                            }),
-                        ],
-                    },
-                }),
-            )
+            expect(mocks.upsertFeedback).not.toHaveBeenCalled()
         })
 
         it('should handle FILE_EXTERNAL_SNIPPET with null snippetHelpCenterId', async () => {
@@ -773,7 +812,6 @@ describe('useFeedbackActions', () => {
 
             const { result, mocks } = renderHookWithData(mockData as any)
 
-            // Test each choice type with undefined arrays
             const choices = [
                 createMockChoice(AiAgentKnowledgeResourceTypeEnum.ACTION),
                 createMockChoice(AiAgentKnowledgeResourceTypeEnum.GUIDANCE),
@@ -792,17 +830,7 @@ describe('useFeedbackActions', () => {
             await result.current.onSubmitMissingKnowledge(choices)
 
             expect(mocks.setLoadingMutations).toHaveBeenCalledTimes(2)
-            expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    data: {
-                        feedbackToUpsert: choices.map(() =>
-                            expect.objectContaining({
-                                feedbackValue: null, // Should be null when resources are undefined
-                            }),
-                        ),
-                    },
-                }),
-            )
+            expect(mocks.upsertFeedback).not.toHaveBeenCalled()
         })
 
         it('should handle individual undefined resource arrays', async () => {
@@ -839,19 +867,8 @@ describe('useFeedbackActions', () => {
 
                 await result.current.onSubmitMissingKnowledge([choice])
 
-                expect(mocks.upsertFeedback).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        data: {
-                            feedbackToUpsert: [
-                                expect.objectContaining({
-                                    feedbackValue: null,
-                                }),
-                            ],
-                        },
-                    }),
-                )
+                expect(mocks.upsertFeedback).not.toHaveBeenCalled()
 
-                // Reset mocks for next iteration
                 mocks.upsertFeedback.mockClear()
                 mocks.setLoadingMutations.mockClear()
             }

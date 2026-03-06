@@ -81,10 +81,15 @@ export const AiAgentReasoningFeedback = ({
         userId,
     })
 
-    const { data, isLoading } = useGetFeedback({
-        objectType: FindFeedbackObjectType.Ticket,
-        objectId: ticketId.toString(),
-    })
+    const { data, isLoading } = useGetFeedback(
+        {
+            objectType: FindFeedbackObjectType.Ticket,
+            objectId: ticketId?.toString() ?? '',
+        },
+        {
+            enabled: !!ticketId,
+        },
+    )
 
     const reasoningFeedback = useMemo(() => {
         return data?.executions
@@ -127,7 +132,7 @@ export const AiAgentReasoningFeedback = ({
     const isOtherSelected = selectedReasons.includes('OTHER')
 
     const { mutateAsync: upsertFeedback } = useUpsertFeedback({
-        objectId: ticketId.toString(),
+        objectId: ticketId?.toString() ?? '',
         objectType: 'TICKET',
     })
 

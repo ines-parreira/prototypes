@@ -92,6 +92,35 @@ describe('AiAgentReasoningFeedback', () => {
         )
     }
 
+    describe('useGetFeedback guard', () => {
+        it('should not fetch feedback when ticketId is undefined', () => {
+            renderComponent({ ticketId: undefined })
+
+            expect(mockUseGetFeedback).toHaveBeenCalledWith(
+                expect.objectContaining({ objectId: '' }),
+                expect.objectContaining({ enabled: false }),
+            )
+        })
+
+        it('should not fetch feedback when ticketId is 0', () => {
+            renderComponent({ ticketId: 0 })
+
+            expect(mockUseGetFeedback).toHaveBeenCalledWith(
+                expect.objectContaining({ objectId: '0' }),
+                expect.objectContaining({ enabled: false }),
+            )
+        })
+
+        it('should fetch feedback when ticketId is valid', () => {
+            renderComponent()
+
+            expect(mockUseGetFeedback).toHaveBeenCalledWith(
+                expect.objectContaining({ objectId: '123' }),
+                expect.objectContaining({ enabled: true }),
+            )
+        })
+    })
+
     describe('Component rendering', () => {
         it('should render feedback section with text and buttons', () => {
             renderComponent()

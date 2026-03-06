@@ -231,6 +231,50 @@ describe('AIAgentSimplifiedFeedback', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({ data: undefined } as any)
     })
 
+    describe('useGetFeedback guard', () => {
+        it('should not fetch feedback when ticketId is undefined', () => {
+            useAppSelectorMock.mockImplementation((selector) => {
+                if (selector === getTicketState) {
+                    return {
+                        get: () => undefined,
+                    }
+                }
+                if (selector === getCurrentAccountState)
+                    return new Map([
+                        ['id', 1],
+                        ['domain', 'test.com'],
+                    ] as any)
+                if (selector === getAIAgentMessages) return []
+                if (selector === getViewsState)
+                    return { getIn: () => 'AI Agent' }
+                if (selector === getSectionIdByName)
+                    return { 'AI Agent': 'AI Agent' }
+                if (selector === getDateAndTimeFormatter)
+                    return () => 'MMMM DD, YYYY'
+                if (selector.toString().includes('state.currentUser'))
+                    return new Map([['id', 789]])
+                if (selector === getCurrentPlansByProduct) return null
+                return null
+            })
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(useGetFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({ objectId: '' }),
+                expect.objectContaining({ enabled: false }),
+            )
+        })
+
+        it('should fetch feedback when ticketId is valid', () => {
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(useGetFeedbackMock).toHaveBeenCalledWith(
+                expect.objectContaining({ objectId: '123' }),
+                expect.objectContaining({ enabled: true }),
+            )
+        })
+    })
+
     it('should render explanation message if there are no feedback executions yet', () => {
         render(<AIAgentSimplifiedFeedback />)
         expect(

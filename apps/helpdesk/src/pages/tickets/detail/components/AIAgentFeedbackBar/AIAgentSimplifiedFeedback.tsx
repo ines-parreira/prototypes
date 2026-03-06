@@ -82,12 +82,20 @@ const AIAgentSimplifiedFeedback = () => {
     }, [aiMessages, ticket])
 
     const { goToTicket: goToNextTicket, isEnabled: isNextEnabled } =
-        useGoToNextTicket(ticketId.toString(), TicketInfobarTab.AIFeedback)
+        useGoToNextTicket(
+            ticketId?.toString() ?? '',
+            TicketInfobarTab.AIFeedback,
+        )
 
-    const { data: feedback, isLoading: isLoadingFeedback } = useGetFeedback({
-        objectId: ticketId.toString(),
-        objectType: 'TICKET',
-    })
+    const { data: feedback, isLoading: isLoadingFeedback } = useGetFeedback(
+        {
+            objectId: ticketId?.toString() ?? '',
+            objectType: 'TICKET',
+        },
+        {
+            enabled: !!ticketId,
+        },
+    )
 
     const { onKnowledgeResourceCreateClick, onKnowledgeResourceClick } =
         useFeedbackTracking({
@@ -187,7 +195,7 @@ const AIAgentSimplifiedFeedback = () => {
     }, [enrichedFeedbackMetadata])
 
     const { mutateAsync: upsertFeedback } = useUpsertFeedback({
-        objectId: ticketId.toString(),
+        objectId: ticketId?.toString() ?? '',
         objectType: 'TICKET',
     })
 
