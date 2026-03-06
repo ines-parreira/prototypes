@@ -136,11 +136,10 @@ export default function ConditionsNodeEditor({
                 nodeId: edge.id,
                 data: {
                     name: edge?.data?.name,
-                    conditions: {
-                        ...(type === 'and'
+                    conditions:
+                        type === 'and'
                             ? { and: updatedConditions }
-                            : { or: updatedConditions }),
-                    },
+                            : { or: updatedConditions },
                 },
             })
         }
@@ -162,11 +161,10 @@ export default function ConditionsNodeEditor({
                 nodeId: item.id,
                 data: {
                     ...item.data,
-                    conditions: {
-                        ...(type === 'and'
+                    conditions:
+                        type === 'and'
                             ? { and: [...conditions, newCondition] }
-                            : { or: [...conditions, newCondition] }),
-                    },
+                            : { or: [...conditions, newCondition] },
                 },
             })
         }
@@ -327,16 +325,14 @@ export default function ConditionsNodeEditor({
                                                         {
                                                             name: item?.data
                                                                 ?.name,
-                                                            conditions: {
-                                                                ...(type ===
-                                                                'and'
+                                                            conditions:
+                                                                type === 'and'
                                                                     ? {
                                                                           and: updatedConditions,
                                                                       }
                                                                     : {
                                                                           or: updatedConditions,
-                                                                      }),
-                                                            },
+                                                                      },
                                                         },
                                                     )
                                                 }}

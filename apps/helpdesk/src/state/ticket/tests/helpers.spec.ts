@@ -883,7 +883,7 @@ describe('ticket helpers', () => {
                     integrations: {
                         ...shop_integration_1,
                         ...shop_integration_2,
-                        ...{ 45: { customer: { some_key: 'some_val' } } },
+                        45: { customer: { some_key: 'some_val' } },
                     },
                 },
             })

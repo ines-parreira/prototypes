@@ -50,23 +50,19 @@ export function bannersReducer(
         case BannerActionTypes.REMOVE_CATEGORY: {
             if (!isInState(banners, action.category)) return banners
 
-            return [
-                ...banners.filter(
-                    (banner) => banner.category !== action.category,
-                ),
-            ]
+            return banners.filter(
+                (banner) => banner.category !== action.category,
+            )
         }
         case BannerActionTypes.REMOVE_BANNER: {
             if (!isInState(banners, action.category, action.instanceId))
                 return banners
 
-            return [
-                ...banners.filter(
-                    (banner) =>
-                        banner.category !== action.category ||
-                        banner.instanceId !== action.instanceId,
-                ),
-            ]
+            return banners.filter(
+                (banner) =>
+                    banner.category !== action.category ||
+                    banner.instanceId !== action.instanceId,
+            )
         }
     }
 }

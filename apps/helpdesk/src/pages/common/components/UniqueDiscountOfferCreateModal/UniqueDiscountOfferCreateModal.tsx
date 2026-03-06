@@ -106,15 +106,15 @@ export const UniqueDiscountOfferCreateModal: React.FC<
     const appNode = useAppNode()
 
     const selectedSegments = useMemo(() => {
-        return new Set([...(discount.external_customer_segment_ids || [])])
+        return new Set(discount.external_customer_segment_ids || [])
     }, [discount])
 
     const selectedCollections = useMemo(() => {
-        return new Set([...(discount.external_collection_ids || [])])
+        return new Set(discount.external_collection_ids || [])
     }, [discount])
 
     const selectedProducts = useMemo(() => {
-        return new Set([...(discount.external_product_ids || [])])
+        return new Set(discount.external_product_ids || [])
     }, [discount])
 
     const {

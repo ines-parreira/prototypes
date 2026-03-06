@@ -136,9 +136,7 @@ export default function TeamCreationModal({
                 const res = await createTeam({
                     name,
                     description,
-                    decoration: {
-                        ...(!!emoji ? { emoji } : {}),
-                    },
+                    decoration: !!emoji ? { emoji } : {},
                     members: memberIds.map((memberId) => ({ id: memberId })),
                 })
 

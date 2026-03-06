@@ -88,15 +88,15 @@ const Collapse = ({
         >
             {(status) => (
                 <div
-                    style={{
-                        ...(dimension !== null
+                    style={
+                        dimension !== null
                             ? {
                                   [direction === 'vertical'
                                       ? 'height'
                                       : 'width']: dimension,
                               }
-                            : {}),
-                    }}
+                            : {}
+                    }
                     className={classnames(css.container, {
                         [css.isVertical]: direction === 'vertical',
                         [css.isHorizontal]: direction === 'horizontal',

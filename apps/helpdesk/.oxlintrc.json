@@ -186,6 +186,7 @@
         ],
         "react/no-find-dom-node": "off",
         "react/no-unescaped-entities": "error",
+        "unicorn/no-useless-spread": "error",
         "unicorn/*": "off"
     },
     "extends": ["../../node_modules/@gorgias/config/oxlint-react.json"]

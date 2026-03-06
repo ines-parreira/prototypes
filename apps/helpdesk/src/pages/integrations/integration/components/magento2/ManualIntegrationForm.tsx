@@ -121,7 +121,7 @@ const ManualIntegrationForm = ({
                         onChange={(value) =>
                             setValues({
                                 ...values,
-                                ...{ adminURLSuffix: value },
+                                adminURLSuffix: value,
                             })
                         }
                         isRequired
@@ -151,7 +151,10 @@ const ManualIntegrationForm = ({
                 label="Consumer key"
                 value={values.consumerKey}
                 onChange={(value: string) =>
-                    setValues({ ...values, ...{ consumerKey: value } })
+                    setValues({
+                        ...values,
+                        consumerKey: value,
+                    })
                 }
                 isRequired={!isUpdate}
             />
@@ -163,7 +166,10 @@ const ManualIntegrationForm = ({
                 label="Consumer secret"
                 value={values.consumerSecret}
                 onChange={(value: string) =>
-                    setValues({ ...values, ...{ consumerSecret: value } })
+                    setValues({
+                        ...values,
+                        consumerSecret: value,
+                    })
                 }
                 isRequired={!isUpdate}
             />
@@ -175,7 +181,10 @@ const ManualIntegrationForm = ({
                 label="Access token"
                 value={values.accessToken}
                 onChange={(value: string) =>
-                    setValues({ ...values, ...{ accessToken: value } })
+                    setValues({
+                        ...values,
+                        accessToken: value,
+                    })
                 }
                 isRequired={!isUpdate}
             />
@@ -187,7 +196,10 @@ const ManualIntegrationForm = ({
                 label="Access token secret"
                 value={values.accessTokenSecret}
                 onChange={(value: string) =>
-                    setValues({ ...values, ...{ accessTokenSecret: value } })
+                    setValues({
+                        ...values,
+                        accessTokenSecret: value,
+                    })
                 }
                 isRequired={!isUpdate}
             />

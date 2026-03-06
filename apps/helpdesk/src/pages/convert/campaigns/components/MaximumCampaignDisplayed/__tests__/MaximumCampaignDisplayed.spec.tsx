@@ -24,7 +24,10 @@ describe('<MaximumCampaignDisplayed />', () => {
     it('feature is enabled', () => {
         render(
             <MaximumCampaignDisplayed
-                {...{ ...defaultProps, ...{ config: { value: 30 } } }}
+                {...{
+                    ...defaultProps,
+                    config: { value: 30 },
+                }}
             />,
         )
 
@@ -36,7 +39,10 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         render(
             <MaximumCampaignDisplayed
-                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+                {...{
+                    ...defaultProps,
+                    onChange: onChangeMock,
+                }}
             />,
         )
 
@@ -55,7 +61,10 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         const { container } = render(
             <MaximumCampaignDisplayed
-                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+                {...{
+                    ...defaultProps,
+                    onChange: onChangeMock,
+                }}
             />,
         )
 

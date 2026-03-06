@@ -29,7 +29,7 @@ export const searchCustomers = async ({
                 ...(withHighlights === true ? { withHighlights: true } : {}),
             }),
         },
-        { ...(cancelToken ? { cancelToken } : {}) },
+        cancelToken ? { cancelToken } : {},
     )
 
 export const searchCustomersWithHighlights = async (

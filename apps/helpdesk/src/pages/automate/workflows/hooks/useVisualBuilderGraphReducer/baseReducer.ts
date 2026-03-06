@@ -520,27 +520,25 @@ export function baseReducer(
                         }
 
                         // preserve edge ordering
-                        draft.edges = [
-                            ...draft.edges
-                                .filter((e) => e.source !== action.nodeId)
-                                .map((edge) => {
-                                    // Removes variables from conditions that are associated with the deleted choice
-                                    if (edge.data?.conditions) {
-                                        edge.data.conditions =
-                                            cleanConditionsFromEmptyVariables(
-                                                edge.data.conditions,
-                                                getWorkflowVariableListForNode(
-                                                    draft,
-                                                    edge.target,
-                                                    action.steps,
-                                                    action.apps,
-                                                ),
-                                            )
-                                        return edge
-                                    }
+                        draft.edges = draft.edges
+                            .filter((e) => e.source !== action.nodeId)
+                            .map((edge) => {
+                                // Removes variables from conditions that are associated with the deleted choice
+                                if (edge.data?.conditions) {
+                                    edge.data.conditions =
+                                        cleanConditionsFromEmptyVariables(
+                                            edge.data.conditions,
+                                            getWorkflowVariableListForNode(
+                                                draft,
+                                                edge.target,
+                                                action.steps,
+                                                action.apps,
+                                            ),
+                                        )
                                     return edge
-                                }),
-                        ]
+                                }
+                                return edge
+                            })
                     }
 
                     if (

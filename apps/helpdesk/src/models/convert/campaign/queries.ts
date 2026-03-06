@@ -108,11 +108,16 @@ export const useSuggestCampaignCopy = (
     overrides?: MutationOverrides<typeof suggestCampaignCopy>,
 ) => {
     const { client: convertClient } = useConvertApi()
+    const suggestCampaignCopyOptions = {
+        ...CONVERT_DEFAULT_OPTIONS,
+        staleTime: 0,
+        cacheTime: 0,
+    }
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
             suggestCampaignCopy(client, data),
-        ...{ ...CONVERT_DEFAULT_OPTIONS, staleTime: 0, cacheTime: 0 },
+        ...suggestCampaignCopyOptions,
         ...overrides,
     })
 }

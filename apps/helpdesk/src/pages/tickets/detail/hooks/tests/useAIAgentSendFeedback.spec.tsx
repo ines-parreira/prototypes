@@ -96,6 +96,9 @@ describe('useAIAgentSendFeedback', () => {
     const mockSetAgentFeedbackMessageStatus = jest.fn()
 
     beforeEach(() => {
+        queryClient.clear()
+        mockedDispatch.mockClear()
+
         mockedUseSubmitAIAgentTicketMessagesFeedback.mockReturnValue({
             mutateAsync: jest.fn().mockReturnValue({ data: {} }),
             isLoading: false,
@@ -112,6 +115,95 @@ describe('useAIAgentSendFeedback', () => {
         mockedSetAgentFeedbackMessageStatus.mockImplementation(
             mockSetAgentFeedbackMessageStatus,
         )
+    })
+
+    it('should optimistically update only the targeted message feedback on mutate', async () => {
+        const getQueryDataMock = jest.spyOn(queryClient, 'getQueryData')
+        const setQueryDataMock = jest.spyOn(queryClient, 'setQueryData')
+
+        const previousFeedback = {
+            data: {
+                messages: [
+                    {
+                        messageId: 2,
+                        feedbackOnMessage: [
+                            {
+                                type: 'resource',
+                                resourceType: 'article',
+                                resourceId: 11,
+                            },
+                        ],
+                        feedbackOnResource: [
+                            {
+                                resourceType: 'soft_action',
+                                resourceId: 7,
+                                type: 'binary',
+                                feedback: 'thumbs_up',
+                            },
+                        ],
+                    },
+                    {
+                        messageId: 3,
+                        feedbackOnMessage: [],
+                        feedbackOnResource: [],
+                    },
+                ],
+            },
+        }
+
+        getQueryDataMock.mockReturnValue(previousFeedback as any)
+
+        const payloadWithMessageFeedback: SubmitMessageFeedback = {
+            feedbackOnMessage: [{ type: 'note', feedback: 'new feedback' }],
+            feedbackOnResource: payload.feedbackOnResource,
+        }
+
+        renderHook(() => useAIAgentSendFeedback(), {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(store)}>{children}</Provider>
+                </QueryClientProvider>
+            ),
+        })
+
+        await mockedUseSubmitAIAgentTicketMessagesFeedback.mock.calls[0][0]?.onMutate?.(
+            [2, payloadWithMessageFeedback],
+        )
+
+        const nextData = setQueryDataMock.mock.calls[0]?.[1] as any
+
+        expect(nextData.data.messages).toEqual([
+            {
+                messageId: 2,
+                feedbackOnMessage: [
+                    { type: 'note', feedback: 'new feedback' },
+                    {
+                        type: 'resource',
+                        resourceType: 'article',
+                        resourceId: 11,
+                    },
+                ],
+                feedbackOnResource: [
+                    {
+                        resourceType: 'soft_action',
+                        resourceId: 3,
+                        type: 'binary',
+                        feedback: 'thumbs_up',
+                    },
+                    {
+                        resourceType: 'soft_action',
+                        resourceId: 7,
+                        type: 'binary',
+                        feedback: 'thumbs_up',
+                    },
+                ],
+            },
+            {
+                messageId: 3,
+                feedbackOnMessage: [],
+                feedbackOnResource: [],
+            },
+        ])
     })
 
     it('should send feedback', async () => {

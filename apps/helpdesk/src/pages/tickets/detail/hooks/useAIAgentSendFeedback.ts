@@ -51,26 +51,24 @@ export const useAIAgentSendFeedback = () => {
                     >(queryKey, {
                         ...previousFeedback,
                         data: {
-                            messages: [
-                                ...previousFeedback.data.messages.map(
-                                    (message) => {
-                                        if (message.messageId === messageId) {
-                                            return {
-                                                ...message,
-                                                feedbackOnMessage: [
-                                                    ...feedback.feedbackOnMessage,
-                                                    ...message.feedbackOnMessage,
-                                                ],
-                                                feedbackOnResource: [
-                                                    ...feedback.feedbackOnResource,
-                                                    ...message.feedbackOnResource,
-                                                ],
-                                            }
+                            messages: previousFeedback.data.messages.map(
+                                (message) => {
+                                    if (message.messageId === messageId) {
+                                        return {
+                                            ...message,
+                                            feedbackOnMessage: [
+                                                ...feedback.feedbackOnMessage,
+                                                ...message.feedbackOnMessage,
+                                            ],
+                                            feedbackOnResource: [
+                                                ...feedback.feedbackOnResource,
+                                                ...message.feedbackOnResource,
+                                            ],
                                         }
-                                        return message
-                                    },
-                                ),
-                            ],
+                                    }
+                                    return message
+                                },
+                            ),
                         },
                     })
                 }

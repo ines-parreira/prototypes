@@ -263,6 +263,34 @@ describe('baseReducer', () => {
         ).toHaveLength(0)
     })
 
+    test('DELETE_NODE keeps non-conditional edges when edge data is missing', () => {
+        const g = _cloneDeep(visualBuilderGraphSimpleChoicesFixture)
+        const edgeWithoutData = g.edges.find(
+            (edge) => edge.id === 'multiple_choices1_automated_message2',
+        )
+        if (edgeWithoutData) {
+            edgeWithoutData.data = undefined
+        }
+
+        const nextG = baseReducer(g, {
+            type: 'DELETE_NODE',
+            nodeId: 'automated_message1',
+            steps: [],
+            apps: [],
+        })
+
+        expect(
+            nextG.edges.find(
+                (edge) => edge.id === 'multiple_choices1_automated_message2',
+            ),
+        ).toEqual(
+            expect.objectContaining({
+                id: 'multiple_choices1_automated_message2',
+                data: undefined,
+            }),
+        )
+    })
+
     test('DELETE_BRANCH', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         let nextG = baseReducer(g, {

@@ -88,12 +88,10 @@ export default function AgentsFilter({
     const filterOptions = [
         {
             title: TEAMS_TITLE,
-            options: [
-                ...teams.map((team) => ({
-                    ...team,
-                    value: `${teamValuePrefix}${team.value}`,
-                })),
-            ],
+            options: teams.map((team) => ({
+                ...team,
+                value: `${teamValuePrefix}${team.value}`,
+            })),
         },
         { title: USERS_TITLE, options: agents },
     ]

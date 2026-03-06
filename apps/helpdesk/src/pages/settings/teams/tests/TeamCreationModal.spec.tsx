@@ -27,6 +27,20 @@ jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => () => (
     <div>RuleCreationModalContent</div>
 ))
 
+jest.mock('pages/common/components/EmojiPicker/EmojiPicker', () => ({
+    __esModule: true,
+    default: ({ onClick }: any) => (
+        <button
+            type="button"
+            onClick={(event) => {
+                onClick({ native: '😀' }, event)
+            }}
+        >
+            Select emoji
+        </button>
+    ),
+}))
+
 jest.mock('@repo/logging')
 
 const logEventMock = logEvent as jest.Mock
@@ -110,6 +124,45 @@ describe('<TeamCreationModal />', () => {
         expect(createTeam).toHaveBeenCalledWith(nextTeam)
         await waitFor(() => {
             expect(minProps.onTeamCreated).toHaveBeenNthCalledWith(1)
+        })
+    })
+
+    it('should submit selected emoji in team decoration', async () => {
+        const store = mockStore({
+            agents: fromJS({
+                all: [{ id: 1, name: 'foo bar' }],
+            }),
+        })
+
+        const { getByLabelText, getAllByText, getByText, getByRole } = render(
+            <Provider store={store}>
+                <TeamCreationModal {...minProps} isOpen />
+            </Provider>,
+        )
+
+        fireEvent.change(getByLabelText(/team name/i), {
+            target: { value: 'Apollo' },
+        })
+        fireEvent.change(getByLabelText(/description/i), {
+            target: { value: 'God of music' },
+        })
+        fireEvent.click(getByText('insert_emoticon'))
+        fireEvent.click(getByRole('button', { name: 'Select emoji' }))
+
+        fireEvent.focus(getByText(/Add at least 1 team member/i))
+        fireEvent.click(screen.getByText(/foo bar/i))
+        fireEvent.click(getAllByText(/Create team/i)[1])
+
+        await waitFor(() => {
+            expect(createTeam).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    decoration: {
+                        emoji: expect.objectContaining({
+                            native: '😀',
+                        }),
+                    },
+                }),
+            )
         })
     })
 

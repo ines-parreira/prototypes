@@ -110,12 +110,11 @@ describe('ui/stats/selectors', () => {
             const state = {
                 currentUser: currentUserInitialState.mergeDeep(
                     fromJS({
-                        ...{ ...user, timezone: null },
+                        ...user,
+                        timezone: null,
                         _internal: {
                             loading: {
-                                settings: {
-                                    preferences: true,
-                                },
+                                settings: { preferences: true },
                                 currentUser: true,
                             },
                         },
@@ -199,12 +198,11 @@ describe('ui/stats/selectors', () => {
             const state = {
                 currentUser: currentUserInitialState.mergeDeep(
                     fromJS({
-                        ...{ ...user, timezone: null },
+                        ...user,
+                        timezone: null,
                         _internal: {
                             loading: {
-                                settings: {
-                                    preferences: true,
-                                },
+                                settings: { preferences: true },
                                 currentUser: true,
                             },
                         },

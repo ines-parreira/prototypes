@@ -87,9 +87,9 @@ export const aiAgentTicketsDefaultFilters = ({
         allOutcomeValuesToExclude.push(...outcomeValuesToExclude)
     }
 
-    const allIntentValuesToExclude = [
-        ...AI_INTENTS_TO_EXCLUDE.map((value) => `${intentFieldId}::${value}`),
-    ]
+    const allIntentValuesToExclude = AI_INTENTS_TO_EXCLUDE.map(
+        (value) => `${intentFieldId}::${value}`,
+    )
 
     return [
         {

@@ -61,9 +61,7 @@ export const searchTickets = async ({
                 ...(trackTotalHits === true ? { trackTotalHits: true } : {}),
             }),
         },
-        {
-            ...(cancelToken ? { cancelToken } : {}),
-        },
+        cancelToken ? { cancelToken } : {},
     )
 }
 

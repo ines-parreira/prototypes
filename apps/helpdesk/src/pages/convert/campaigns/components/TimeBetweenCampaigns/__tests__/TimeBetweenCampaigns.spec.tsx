@@ -26,7 +26,10 @@ describe('<MaximumCampaignDisplayed />', () => {
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
-                    ...{ config: { value: 30, unit: 'seconds' } },
+                    config: {
+                        value: 30,
+                        unit: 'seconds',
+                    },
                 }}
             />,
         )
@@ -39,7 +42,10 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         render(
             <TimeBetweenCampaigns
-                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+                {...{
+                    ...defaultProps,
+                    onChange: onChangeMock,
+                }}
             />,
         )
 
@@ -59,7 +65,10 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         const { container } = render(
             <TimeBetweenCampaigns
-                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+                {...{
+                    ...defaultProps,
+                    onChange: onChangeMock,
+                }}
             />,
         )
 
@@ -88,9 +97,10 @@ describe('<MaximumCampaignDisplayed />', () => {
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
-                    ...{
-                        onChange: onChangeMock,
-                        config: { value: 60, unit: 'seconds' },
+                    onChange: onChangeMock,
+                    config: {
+                        value: 60,
+                        unit: 'seconds',
                     },
                 }}
             />,
@@ -117,9 +127,10 @@ describe('<MaximumCampaignDisplayed />', () => {
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
-                    ...{
-                        onChange: onChangeMock,
-                        config: { value: 1, unit: 'minutes' },
+                    onChange: onChangeMock,
+                    config: {
+                        value: 1,
+                        unit: 'minutes',
                     },
                 }}
             />,
@@ -146,9 +157,10 @@ describe('<MaximumCampaignDisplayed />', () => {
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
-                    ...{
-                        onChange: onChangeMock,
-                        config: { value: 1, unit: 'seconds' },
+                    onChange: onChangeMock,
+                    config: {
+                        value: 1,
+                        unit: 'seconds',
                     },
                 }}
             />,

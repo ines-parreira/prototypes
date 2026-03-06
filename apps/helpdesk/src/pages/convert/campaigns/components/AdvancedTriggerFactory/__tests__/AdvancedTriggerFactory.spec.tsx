@@ -61,7 +61,7 @@ describe('AdvancedTriggerFactory', () => {
         } as any)
     })
 
-    it.each([...Object.values(CampaignTriggerType)])(
+    it.each(Object.values(CampaignTriggerType))(
         'should render AdvancedTriggerFactory for trigger type %s',
         (type) => {
             const expectedLabel =
