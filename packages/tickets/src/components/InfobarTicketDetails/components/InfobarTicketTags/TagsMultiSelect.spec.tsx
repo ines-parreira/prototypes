@@ -314,6 +314,7 @@ describe('TagsMultiSelect', () => {
         expect(searchInput).toHaveValue('NewTag')
 
         await closeTagsMenu(user)
+        await waitForQueriesSettled()
 
         await openTagsMenu(user)
         expect(

@@ -14,6 +14,7 @@ import {
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
+    OverflowTooltip,
     Tag,
     Text,
 } from '@gorgias/axiom'
@@ -207,6 +208,8 @@ export function TagsMultiSelect({
                         items={tagsOptions}
                         selectedItems={selectedTags}
                         onSelect={handleSelectChange}
+                        minWidth={256}
+                        maxWidth={256}
                         maxHeight={256}
                         isLoading={isLoading}
                         onLoadMore={() => shouldLoadMore && onLoad()}
@@ -235,10 +238,18 @@ export function TagsMultiSelect({
                         {(option) => (
                             <ListItem
                                 key={option.id}
-                                label={option.label}
+                                textValue={option.label}
+                                label={
+                                    <OverflowTooltip placement="right">
+                                        <Text overflow="ellipsis">
+                                            {option.label}
+                                        </Text>
+                                    </OverflowTooltip>
+                                }
                                 leadingSlot={({ isSelected }) => (
                                     <CheckBoxField value={isSelected} />
                                 )}
+                                wrap={false}
                             />
                         )}
                     </MultiSelect>

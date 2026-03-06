@@ -8,8 +8,10 @@ import {
     ListFooter,
     ListHeader,
     ListItem,
+    OverflowTooltip,
     Select,
     SelectTrigger,
+    Text,
     TextField,
     Tooltip,
     TooltipContent,
@@ -172,8 +174,8 @@ export function MultiLevelSelect(props: Props) {
                 keyName="id"
                 selectedItem={selectedOption ?? null}
                 onSelect={handleSelect}
-                minWidth={139}
-                maxWidth={139}
+                minWidth={256}
+                maxWidth={256}
                 maxHeight={258}
                 size="sm"
                 header={
@@ -208,7 +210,11 @@ export function MultiLevelSelect(props: Props) {
                     <ListItem
                         key={option.id}
                         textValue={option.label}
-                        label={option.label}
+                        label={
+                            <OverflowTooltip placement="right">
+                                <Text overflow="ellipsis">{option.label}</Text>
+                            </OverflowTooltip>
+                        }
                         caption={option.caption}
                         trailingSlot={
                             option.hasChildren && !searchValue ? (
