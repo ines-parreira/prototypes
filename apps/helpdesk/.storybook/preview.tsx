@@ -16,17 +16,16 @@ import {
     PointElement,
     Tooltip,
 } from 'chart.js'
+import { spyOn } from 'storybook/test'
 
 import { ThemeProvider, useSetTheme } from '../src/core/theme/index.ts'
 import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx'
 
+import '../src/assets/css/main.less'
+import './style.less'
+
 // @ts-expect-error
 initLaunchDarkly()
-
-require('@storybook/addon-console')
-
-require('../src/assets/css/main.less')
-require('./style.less')
 
 export const parameters = {
     chromatic: { disableSnapshot: true },
@@ -142,6 +141,19 @@ export const preview: Preview = {
     },
     // @ts-expect-error LDDecorator types mismatch
     decorators: [withTheme, LDDecorator],
+    tags: ['autodocs'],
 }
 
 export default preview
+
+export const beforeEach = function beforeEach() {
+    spyOn(console, 'log').mockName('console.log')
+    spyOn(console, 'warn').mockName('console.warn')
+    spyOn(console, 'error').mockName('console.error')
+    spyOn(console, 'info').mockName('console.info')
+    spyOn(console, 'debug').mockName('console.debug')
+    spyOn(console, 'trace').mockName('console.trace')
+    spyOn(console, 'count').mockName('console.count')
+    spyOn(console, 'dir').mockName('console.dir')
+    spyOn(console, 'assert').mockName('console.assert')
+}

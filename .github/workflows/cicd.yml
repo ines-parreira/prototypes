@@ -295,7 +295,7 @@ jobs:
           buildScriptName: "storybook:build"
           exitOnceUploaded: true
           autoAcceptChanges: "main"
-          onlyChanged: true
+          onlyChanged: false
           zip: true
 
   security-sast:

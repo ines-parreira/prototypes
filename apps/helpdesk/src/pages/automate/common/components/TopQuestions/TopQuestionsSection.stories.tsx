@@ -1,6 +1,6 @@
-import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import { action } from 'storybook/actions'
 
 import { IntegrationType } from 'models/integration/constants'
 

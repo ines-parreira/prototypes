@@ -1,7 +1,7 @@
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
 import { rspack } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 import dotenv from 'dotenv'
@@ -13,6 +13,7 @@ dotenv.config()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const require = createRequire(import.meta.url)
 
 const {
     NODE_ENV,
@@ -113,7 +114,7 @@ const urlLoader = {
     loader: 'url-loader',
     options: {
         limit: 5000,
-        fallback: 'file-loader',
+        fallback: require.resolve('file-loader'),
         emitFile: false,
         name: urlLoaderName,
         context: 'src/',
@@ -180,11 +181,6 @@ const config = {
             }),
         isDev && new ReactRefreshPlugin(),
         isDev && new rspack.HotModuleReplacementPlugin(),
-        codecovWebpackPlugin({
-            enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-            bundleName: 'helpdesk-web-app',
-            uploadToken: process.env.CODECOV_TOKEN,
-        }),
         new rspack.BannerPlugin(
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
         ),

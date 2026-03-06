@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
 import type { Meta, StoryFn } from '@storybook/react'
-import { userEvent } from '@storybook/test'
 import { within } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import { userEvent } from 'storybook/test'
 
 import { ThemeProvider } from 'core/theme'
 import { PeriodFilter } from 'domains/reporting/pages/common/filters/PeriodFilter'

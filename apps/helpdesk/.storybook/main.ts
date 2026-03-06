@@ -1,6 +1,12 @@
+import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import type { StorybookConfig } from 'storybook-react-rsbuild'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+const require = createRequire(import.meta.url)
 
 const srcDir = join(__dirname, '../src')
 
@@ -21,17 +27,14 @@ const config: StorybookConfig = {
             to: 'gorgias/axiom',
         },
     ],
+
     addons: [
-        '@storybook/addon-links',
-        '@storybook/addon-essentials',
-        '@storybook/addon-interactions',
+        getAbsolutePath('@storybook/addon-links'),
+        getAbsolutePath('@storybook/addon-docs'),
     ],
     framework: {
         name: getAbsolutePath('storybook-react-rsbuild'),
         options: {},
-    },
-    docs: {
-        autodocs: true,
     },
     typescript: {
         check: false,

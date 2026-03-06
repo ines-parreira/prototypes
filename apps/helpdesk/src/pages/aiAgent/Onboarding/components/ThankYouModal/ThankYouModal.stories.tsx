@@ -1,5 +1,5 @@
-import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/react'
+import { action } from 'storybook/actions'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
 

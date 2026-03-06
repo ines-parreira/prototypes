@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import { action } from 'storybook/actions'
 
 import { user } from 'fixtures/users'
 import type { StoreConfiguration } from 'models/aiAgent/types'

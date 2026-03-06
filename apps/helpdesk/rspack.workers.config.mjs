@@ -2,7 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
 import { rspack } from '@rspack/core'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
 import { RspackManifestPlugin } from 'rspack-manifest-plugin'
@@ -85,13 +84,6 @@ const sharedWorkerConfig = merge(base, {
             ? ['helpdesk.shared-worker', HASH, 'js'].filter(Boolean).join('.')
             : 'helpdesk.shared-worker.js',
     },
-    plugins: [
-        codecovWebpackPlugin({
-            enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-            bundleName: 'helpdesk-shared-worker',
-            uploadToken: process.env.CODECOV_TOKEN,
-        }),
-    ],
 })
 
 const serviceWorkerConfig = merge(base, {
@@ -101,13 +93,6 @@ const serviceWorkerConfig = merge(base, {
             ? ['helpdesk.service-worker', HASH, 'js'].filter(Boolean).join('.')
             : 'helpdesk.service-worker.js',
     },
-    plugins: [
-        codecovWebpackPlugin({
-            enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
-            bundleName: 'helpdesk-service-worker',
-            uploadToken: process.env.CODECOV_TOKEN,
-        }),
-    ],
 })
 
 const workerConfigs = [sharedWorkerConfig, serviceWorkerConfig]

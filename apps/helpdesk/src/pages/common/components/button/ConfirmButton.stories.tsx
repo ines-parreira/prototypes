@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { action } from '@storybook/addon-actions'
 import type { Meta, StoryObj } from '@storybook/react'
 import _omit from 'lodash/omit'
+import { action } from 'storybook/actions'
 
 import ConfirmButton from './ConfirmButton'
 
