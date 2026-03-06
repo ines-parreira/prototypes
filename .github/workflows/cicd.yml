@@ -215,6 +215,7 @@ jobs:
       image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
       docker-file-path: deployment/docker/Dockerfile
       build-args: RELEASE=${{ github.sha }}
+      additional-platforms: 'linux/arm64'
     secrets: inherit
 
   build-production:
