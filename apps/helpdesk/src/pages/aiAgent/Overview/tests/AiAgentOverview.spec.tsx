@@ -22,6 +22,7 @@ import { IntegrationType } from 'models/integration/constants'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { SHOPPING_ASSISTANT_TRIAL_DURATION_DAYS } from 'pages/aiAgent/components/ShoppingAssistant/constants/shoppingAssistant'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
+import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { useAiAgentOverviewModeEnabled } from 'pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled'
 import { useHasNoOnboardedStores } from 'pages/aiAgent/Overview/hooks/useHasNoOnboardedStores'
@@ -74,6 +75,12 @@ jest.mock('pages/aiAgent/Overview/hooks/useAiAgentOverviewModeEnabled')
 jest.mock('@repo/feature-flags')
 const mockUseFlag = jest.mocked(useFlag)
 
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities',
+    () => ({
+        useHasAccessToOpportunities: jest.fn(),
+    }),
+)
 jest.mock('pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities')
 jest.mock('pages/aiAgent/hooks/useShopIntegrationId')
 jest.mock('pages/aiAgent/TopOpportunities/TopOpportunitiesSection', () => ({
@@ -106,6 +113,7 @@ const defaultThankYouModalValues = {
 
 const mockUseThankYouModal = useThankYouModal as jest.Mock
 const mockUseTrialAccess = useTrialAccess as jest.Mock
+const mockUseHasAccessToOpportunities = useHasAccessToOpportunities as jest.Mock
 const mockUseBillingState = assumeMock(useBillingState)
 const mockUseAiAgentUpgradePlan = assumeMock(useAiAgentUpgradePlan)
 const mockUseUpgradePlan = assumeMock(useUpgradePlan)
@@ -987,6 +995,7 @@ describe('AiAgentOverview', () => {
                 }
                 return false
             })
+            mockUseHasAccessToOpportunities.mockReturnValue(true)
         })
 
         it('should render TopOpportunitiesSection when user has full access and feature flag is enabled', () => {
@@ -1011,18 +1020,7 @@ describe('AiAgentOverview', () => {
         })
 
         it('should render TopOpportunitiesSection for non-full access users when totalPending > 15', () => {
-            const storeWithoutFullAccess = {
-                ...defaultStore,
-                currentAccount: fromJS({
-                    ...defaultStore.currentAccount?.toJS(),
-                    current_subscription: {
-                        products: {
-                            automation:
-                                'aut-addon-basic-full-price-monthly-usd-4', // No 'usd-6' in plan_id
-                        },
-                    },
-                }),
-            }
+            mockUseHasAccessToOpportunities.mockReturnValue(false)
 
             mockUseKnowledgeServiceOpportunities.mockReturnValue({
                 opportunities: [
@@ -1039,32 +1037,13 @@ describe('AiAgentOverview', () => {
                 totalPending: 20,
             } as any)
 
-            const { getByText } = render(
-                <MemoryRouter>
-                    <Provider store={mockStore(storeWithoutFullAccess)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
+            const { getByText } = renderComponent()
 
             expect(getByText('Top Opportunities Section')).toBeInTheDocument()
         })
 
         it('should not render TopOpportunitiesSection for non-full access users when totalPending < 15', () => {
-            const storeWithoutFullAccess = {
-                ...defaultStore,
-                currentAccount: fromJS({
-                    ...defaultStore.currentAccount?.toJS(),
-                    current_subscription: {
-                        products: {
-                            automation:
-                                'aut-addon-basic-full-price-monthly-usd-4',
-                        },
-                    },
-                }),
-            }
+            mockUseHasAccessToOpportunities.mockReturnValue(false)
 
             mockUseKnowledgeServiceOpportunities.mockReturnValue({
                 opportunities: [
@@ -1081,19 +1060,32 @@ describe('AiAgentOverview', () => {
                 totalPending: 10,
             } as any)
 
-            const { queryByText } = render(
-                <MemoryRouter>
-                    <Provider store={mockStore(storeWithoutFullAccess)}>
-                        <QueryClientProvider client={queryClient}>
-                            <AiAgentOverview />
-                        </QueryClientProvider>
-                    </Provider>
-                </MemoryRouter>,
-            )
+            const { queryByText } = renderComponent()
 
             expect(
                 queryByText('Top Opportunities Section'),
             ).not.toBeInTheDocument()
+        })
+
+        it('should render TopOpportunitiesSection for trial users when shopping assistant trial is active', () => {
+            mockUseKnowledgeServiceOpportunities.mockReturnValue({
+                opportunities: [
+                    {
+                        id: '1',
+                        key: 'opp-1',
+                        type: 'FILL_KNOWLEDGE_GAP',
+                        insight: 'Test insight',
+                        ticketCount: 5,
+                    },
+                ],
+                isLoading: false,
+                allowedOpportunityIds: undefined,
+                totalPending: 10,
+            } as any)
+
+            const { getByText } = renderComponent()
+
+            expect(getByText('Top Opportunities Section')).toBeInTheDocument()
         })
 
         it('should not render TopOpportunitiesSection when IncreaseVisibilityOfOpportunity feature flag is disabled', () => {

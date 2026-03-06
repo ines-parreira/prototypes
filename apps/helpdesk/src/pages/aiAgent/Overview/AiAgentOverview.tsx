@@ -14,6 +14,7 @@ import { useActivation } from 'pages/aiAgent//Activation/hooks/useActivation'
 import { useStoreActivations } from 'pages/aiAgent/Activation/hooks/useStoreActivations'
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
+import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useKnowledgeServiceOpportunities } from 'pages/aiAgent/opportunities/hooks/useKnowledgeServiceOpportunities'
 import { AiAgentTaskSection } from 'pages/aiAgent/Overview/components/AiAgentTaskSection/AiAgentTaskSection'
 import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
@@ -30,7 +31,6 @@ import { TrialAlertBanner } from 'pages/aiAgent/trial/components/TrialAlertBanne
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
-import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     getShopifyIntegrationByShopName,
@@ -55,9 +55,7 @@ export const AiAgentOverview = () => {
     const shopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(shopName || ''),
     )
-    const currentPlansByProduct = useAppSelector(getCurrentPlansByProduct)
-    const hasFullAccess =
-        currentPlansByProduct?.automation?.plan_id.includes('usd-6')
+    const hasAccessToOpportunities = useHasAccessToOpportunities(shopName)
 
     const hasResourceSection = useFlag(
         FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection,
@@ -101,14 +99,19 @@ export const AiAgentOverview = () => {
     )
 
     const displayTopOpportunitiesSection = useMemo(() => {
-        if (hasFullAccess) return isOpportunitiesEnabled
+        if (hasAccessToOpportunities) return isOpportunitiesEnabled
 
         return (
             isOpportunitiesEnabled &&
             !!opportunities &&
             totalPending >= TOP_OPPORTUNITIES_RESTRICTED_LIMIT
         )
-    }, [hasFullAccess, isOpportunitiesEnabled, opportunities, totalPending])
+    }, [
+        hasAccessToOpportunities,
+        isOpportunitiesEnabled,
+        opportunities,
+        totalPending,
+    ])
 
     const {
         activationModal,

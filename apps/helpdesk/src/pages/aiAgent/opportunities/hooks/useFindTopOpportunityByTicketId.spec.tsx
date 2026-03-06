@@ -7,8 +7,7 @@ import { renderHook } from '@testing-library/react'
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 import type { FindOpportunitiesByTicketIdOpportunity200Item } from '@gorgias/knowledge-service-types'
 
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -28,9 +27,12 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 
-jest.mock('pages/aiAgent/trial/hooks/useTrialAccess', () => ({
-    useTrialAccess: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities',
+    () => ({
+        useHasAccessToOpportunities: jest.fn(),
+    }),
+)
 
 describe('useFindTopOpportunityByTicketId', () => {
     const queryClient = new QueryClient({
@@ -147,15 +149,14 @@ describe('useFindTopOpportunityByTicketId', () => {
     const mockRefetch = jest.fn()
 
     const mockUseFlag = useFlag as jest.Mock
-    const mockUseTrialAccess = useTrialAccess as jest.Mock
+    const mockUseHasAccessToOpportunities =
+        useHasAccessToOpportunities as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
         mockUseFlag.mockReturnValue(true)
-        mockUseTrialAccess.mockReturnValue({
-            currentAutomatePlan: { plan_id: 'usd-6-monthly' },
-        })
+        mockUseHasAccessToOpportunities.mockReturnValue(true)
     })
 
     describe('SDK hook invocation', () => {
@@ -751,7 +752,7 @@ describe('useFindTopOpportunityByTicketId', () => {
             )
         })
 
-        it('should disable the query when the user does not have full access', () => {
+        it('should disable the query when the user does not have access to opportunities', () => {
             const mockSDKHook =
                 useFindOpportunitiesByTicketIdOpportunity as jest.Mock
             mockSDKHook.mockReturnValue({
@@ -760,9 +761,7 @@ describe('useFindTopOpportunityByTicketId', () => {
                 isError: false,
                 refetch: mockRefetch,
             })
-            mockUseTrialAccess.mockReturnValue({
-                currentAutomatePlan: { plan_id: 'free' },
-            })
+            mockUseHasAccessToOpportunities.mockReturnValue(false)
 
             renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
                 wrapper,
@@ -773,34 +772,6 @@ describe('useFindTopOpportunityByTicketId', () => {
                 '12345',
                 expect.objectContaining({
                     query: expect.objectContaining({ enabled: false }),
-                }),
-            )
-        })
-
-        it('should enable the query when the user does not have full access but on trial', () => {
-            const mockSDKHook =
-                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
-            mockSDKHook.mockReturnValue({
-                data: [],
-                isLoading: false,
-                isError: false,
-                refetch: mockRefetch,
-            })
-            mockUseTrialAccess.mockReturnValue({
-                currentAutomatePlan: { plan_id: 'free' },
-                hasAnyTrialActive: true,
-                trialType: TrialType.ShoppingAssistant,
-            })
-
-            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
-                wrapper,
-            })
-
-            expect(mockSDKHook).toHaveBeenCalledWith(
-                789,
-                '12345',
-                expect.objectContaining({
-                    query: expect.objectContaining({ enabled: true }),
                 }),
             )
         })

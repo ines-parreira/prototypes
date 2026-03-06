@@ -4,8 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 
-import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
-import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -21,16 +20,7 @@ export const useFindTopOpportunityByTicketId = (
         }
     },
 ) => {
-    const { currentAutomatePlan, hasAnyTrialActive, trialType } =
-        useTrialAccess()
-    const hasFullAccess = currentAutomatePlan?.plan_id.includes('usd-6')
-
-    const hasAccessToOpportunities = useMemo(
-        () =>
-            hasFullAccess ||
-            (hasAnyTrialActive && trialType === TrialType.ShoppingAssistant),
-        [hasFullAccess, hasAnyTrialActive, trialType],
-    )
+    const hasAccessToOpportunities = useHasAccessToOpportunities()
 
     const isTopOpportunitiesEnabled = useFlag(
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,

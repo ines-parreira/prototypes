@@ -15,9 +15,9 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
+import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
 import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
@@ -124,10 +124,18 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities',
+    () => ({
+        useHasAccessToOpportunities: jest.fn(),
+    }),
+)
+
 const useFlagMock = useFlag as jest.Mock
 const useShopIntegrationIdMock = useShopIntegrationId as jest.Mock
 const useFindTopOpportunityByTicketIdMock =
     useFindTopOpportunityByTicketId as jest.Mock
+const mockUseHasAccessToOpportunities = useHasAccessToOpportunities as jest.Mock
 
 const initialFeedbackData = {
     isLoading: true,
@@ -229,6 +237,8 @@ describe('AIAgentSimplifiedFeedback', () => {
         useFlagMock.mockReturnValue(false)
 
         useGetAiAgentFeedbackMock.mockReturnValue({ data: undefined } as any)
+
+        mockUseHasAccessToOpportunities.mockReturnValue(true)
     })
 
     describe('useGetFeedback guard', () => {
@@ -3219,13 +3229,6 @@ describe('AIAgentSimplifiedFeedback', () => {
                 ) {
                     return new Map([['id', 789]])
                 }
-                if (selector === getCurrentPlansByProduct) {
-                    return {
-                        automation: {
-                            plan_id: 'some-plan-usd-6',
-                        },
-                    }
-                }
                 return null
             })
 
@@ -3308,71 +3311,25 @@ describe('AIAgentSimplifiedFeedback', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should not render DetectedOpportunitiesBanner when user does not have full access', () => {
+        it('should not render DetectedOpportunitiesBanner when user does not have access to opportunities', () => {
             useFlagMock.mockReturnValue(true)
-
-            // Mock user without full access (plan_id doesn't include 'usd-6')
-            useAppSelectorMock.mockImplementation((selector) => {
-                if (selector === getTicketState) {
-                    return new Map([
-                        ['id', 123],
-                        ['tags', []],
-                    ] as any)
-                }
-                if (selector === getCurrentAccountState) {
-                    return new Map([
-                        ['id', 456],
-                        ['domain', 'test.myshopify.com'],
-                    ] as any)
-                }
-                if (selector === getAIAgentMessages) {
-                    return [
-                        {
-                            id: '1',
-                            created_datetime: new Date().toISOString(),
-                        },
-                    ]
-                }
-                if (selector === getDateAndTimeFormatter) {
-                    return () => 'MMMM DD, YYYY'
-                }
-                if (selector === getSectionIdByName) {
-                    return { 'AI Agent': 789 }
-                }
-                if (selector === getViewsState) {
-                    return {
-                        getIn: jest.fn((path) => {
-                            if (
-                                path[0] === 'active' &&
-                                path[1] === 'section_id'
-                            ) {
-                                return 789
-                            }
-                            return null
-                        }),
-                    }
-                }
-                if (
-                    typeof selector === 'function' &&
-                    selector.toString().includes('currentUser')
-                ) {
-                    return new Map([['id', 789]])
-                }
-                if (selector === getCurrentPlansByProduct) {
-                    return {
-                        automation: {
-                            plan_id: 'plan-usd-5', // No 'usd-6' in plan_id
-                        },
-                    }
-                }
-                return null
-            })
+            mockUseHasAccessToOpportunities.mockReturnValue(false)
 
             render(<AIAgentSimplifiedFeedback />)
 
             expect(
                 screen.queryByRole('button', { name: /review guidance/i }),
             ).not.toBeInTheDocument()
+        })
+
+        it('should render DetectedOpportunitiesBanner when user has access to opportunities', () => {
+            useFlagMock.mockReturnValue(true)
+
+            render(<AIAgentSimplifiedFeedback />)
+
+            expect(
+                screen.getByRole('button', { name: /review guidance/i }),
+            ).toBeInTheDocument()
         })
     })
 })
