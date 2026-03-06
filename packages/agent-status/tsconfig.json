@@ -4,6 +4,6 @@
         "baseUrl": ".",
         "types": ["vitest/globals", "@testing-library/jest-dom"]
     },
-    "include": ["assets.d.ts", "global.d.ts", "src/**/*"],
+    "include": ["assets.d.ts", "src/**/*"],
     "exclude": ["node_modules"]
 }

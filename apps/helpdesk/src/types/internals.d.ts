@@ -1,6 +1,7 @@
 import { Middleware } from 'redux'
 
 import { Page } from 'services/statusPageManager/types'
+import { Account } from 'state/currentAccount/types'
 import { GorgiasInitialState, InitialReactQueryState } from 'types'
 import { SystemMessage } from 'utils'
 
@@ -12,9 +13,14 @@ function ObiSDK(
 function ObiSDK(action: 'stopSession'): void
 
 declare global {
+    interface GorgiasStateCurrentAccount extends Account {}
+
+    interface GorgiasStateShared
+        extends GorgiasInitialState,
+            InitialReactQueryState {}
+
     interface Window {
         GORGIAS_CONSTANTS: { [key: string]: any }
-        GORGIAS_STATE: GorgiasInitialState & InitialReactQueryState
         SEGMENT_EVENTS_TO_TRACK?: { data: any; type: string }[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string
@@ -25,13 +31,7 @@ declare global {
         StatusPage: {
             page: typeof Page
         }
-        GORGIAS_CLUSTER: string
         CSRF_TOKEN: string
-        DEVELOPMENT: boolean
-        PRODUCTION: boolean
-        STAGING: boolean
-        IMAGE_PROXY_SIGN_KEY: Maybe<string>
-        IMAGE_PROXY_URL: string
         noticeable: {
             render: (target: string, id: string) => Promise<void>
             on: (
@@ -67,9 +67,6 @@ declare global {
         }
         DISABLE_ACTIVITY_POLLING: string
         AUTH_TIME: number | null
-        USER_IMPERSONATED: true | null
-        SEGMENT_ANALYTICS_USER_ID: string
-        GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
         SENTRY_DSN: string
         WHATSAPP_APP_ID: string
         devToolsExtension: () => Middleware

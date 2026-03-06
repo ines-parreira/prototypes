@@ -1,5 +1,6 @@
 {
     "$schema": "https://json.schemastore.org/tsconfig",
+    "files": ["./global.d.ts"],
     "compilerOptions": {
         // I/O
         "declaration": false,
