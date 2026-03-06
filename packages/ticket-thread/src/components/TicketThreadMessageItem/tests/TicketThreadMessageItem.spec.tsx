@@ -28,6 +28,8 @@ beforeEach(() => {
 
 const messageData = mockTicketMessage({
     id: 1,
+    body_html: null,
+    stripped_html: null,
     stripped_text: 'hello',
     body_text: 'hello',
 })
@@ -127,7 +129,9 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(messageData.body_text!).parentElement,
+            screen
+                .getByText(messageData.body_text!)
+                .closest('[style*="align-self"]'),
         ).toHaveStyle({
             alignSelf: 'flex-end',
         })
@@ -148,7 +152,9 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(
-            screen.getByText(messageData.body_text!).parentElement,
+            screen
+                .getByText(messageData.body_text!)
+                .closest('[style*="align-self"]'),
         ).toHaveStyle({
             alignSelf: 'flex-start',
         })

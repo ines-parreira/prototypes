@@ -61,6 +61,37 @@ catalogs:
     launchdarkly-react-client-sdk:
       specifier: ^3.3.2
       version: 3.3.2
+  html:
+    '@types/htmlparser2':
+      specifier: 3.10.2
+      version: 3.10.2
+    '@types/linkifyjs':
+      specifier: 2.1.3
+      version: 2.1.3
+    '@types/sanitize-html':
+      specifier: 1.27.0
+      version: 1.27.0
+    '@types/urlsafe-base64':
+      specifier: 1.0.28
+      version: 1.0.28
+    htmlparser2:
+      specifier: 3.10.1
+      version: 3.10.1
+    linkify-element:
+      specifier: ^4.3.2
+      version: 4.3.2
+    linkify-string:
+      specifier: ^4.3.2
+      version: 4.3.2
+    linkifyjs:
+      specifier: ^4.3.2
+      version: 4.3.2
+    sanitize-html:
+      specifier: 2.12.1
+      version: 2.12.1
+    urlsafe-base64:
+      specifier: 1.0.0
+      version: 1.0.0
   libphonenumber:
     libphonenumber-js:
       specifier: 1.12.25
@@ -243,13 +274,6 @@ catalogs:
     '@gorgias/knowledge-service-validators':
       specifier: ^0.2.57
       version: 0.2.57
-  sanitize-html:
-    '@types/sanitize-html':
-      specifier: 1.27.0
-      version: 1.27.0
-    sanitize-html:
-      specifier: 2.12.1
-      version: 2.12.1
   styles:
     '@types/classnames':
       specifier: 2.2.10
@@ -741,7 +765,7 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5
       htmlparser2:
-        specifier: 3.10.1
+        specifier: catalog:html
         version: 3.10.1
       httpstatus:
         specifier: 1.0.0
@@ -780,7 +804,7 @@ importers:
         specifier: 1.12.25
         version: 1.12.25
       linkify-element:
-        specifier: ^4.3.2
+        specifier: catalog:html
         version: 4.3.2(linkifyjs@4.3.2)
       linkify-html:
         specifier: ^4.3.2
@@ -789,10 +813,10 @@ importers:
         specifier: 2.0.3
         version: 2.0.3
       linkify-string:
-        specifier: ^4.3.2
+        specifier: catalog:html
         version: 4.3.2(linkifyjs@4.3.2)
       linkifyjs:
-        specifier: ^4.3.2
+        specifier: catalog:html
         version: 4.3.2
       liquidjs:
         specifier: ^10.9.2
@@ -975,7 +999,7 @@ importers:
         specifier: 4.1.7
         version: 4.1.7
       sanitize-html:
-        specifier: catalog:sanitize-html
+        specifier: catalog:html
         version: 2.12.1
       scroll-into-view-if-needed:
         specifier: 3.0.8
@@ -1002,7 +1026,7 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0
       urlsafe-base64:
-        specifier: 1.0.0
+        specifier: catalog:html
         version: 1.0.0
       uuid:
         specifier: ^9.0.1
@@ -1162,7 +1186,7 @@ importers:
         specifier: catalog:react-router
         version: 4.7.11
       '@types/htmlparser2':
-        specifier: 3.10.2
+        specifier: catalog:html
         version: 3.10.2
       '@types/indefinite':
         specifier: ^2.3.4
@@ -1183,7 +1207,7 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
       '@types/linkifyjs':
-        specifier: 2.1.3
+        specifier: catalog:html
         version: 2.1.3
       '@types/lodash':
         specifier: 4.14.158
@@ -1267,7 +1291,7 @@ importers:
         specifier: ^0.1.11
         version: 0.1.11
       '@types/sanitize-html':
-        specifier: catalog:sanitize-html
+        specifier: catalog:html
         version: 1.27.0
       '@types/scrollparent':
         specifier: ^2.0.3
@@ -1288,7 +1312,7 @@ importers:
         specifier: ^0.7.39
         version: 0.7.39
       '@types/urlsafe-base64':
-        specifier: 1.0.28
+        specifier: catalog:html
         version: 1.0.28
       '@types/uuid':
         specifier: ^9.0.8
@@ -2963,6 +2987,18 @@ importers:
 
   packages/utils:
     dependencies:
+      htmlparser2:
+        specifier: catalog:html
+        version: 3.10.1
+      linkify-element:
+        specifier: catalog:html
+        version: 4.3.2(linkifyjs@4.3.2)
+      linkify-string:
+        specifier: catalog:html
+        version: 4.3.2(linkifyjs@4.3.2)
+      linkifyjs:
+        specifier: catalog:html
+        version: 4.3.2
       moment:
         specifier: catalog:moment
         version: 2.29.4
@@ -2972,6 +3008,9 @@ importers:
       mousetrap:
         specifier: catalog:mousetrap
         version: 1.6.5
+      urlsafe-base64:
+        specifier: catalog:html
+        version: 1.0.0
     devDependencies:
       '@gorgias/helpdesk-types':
         specifier: catalog:rest-api-sdk
@@ -3003,6 +3042,12 @@ importers:
       '@types/history':
         specifier: catalog:react-router
         version: 4.7.11
+      '@types/htmlparser2':
+        specifier: catalog:html
+        version: 3.10.2
+      '@types/linkifyjs':
+        specifier: catalog:html
+        version: 2.1.3
       '@types/lodash':
         specifier: catalog:lodash
         version: 4.14.158
@@ -3022,8 +3067,11 @@ importers:
         specifier: catalog:react-router
         version: 5.3.3
       '@types/sanitize-html':
-        specifier: catalog:sanitize-html
+        specifier: catalog:html
         version: 1.27.0
+      '@types/urlsafe-base64':
+        specifier: catalog:html
+        version: 1.0.28
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
@@ -3052,7 +3100,7 @@ importers:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)
       sanitize-html:
-        specifier: catalog:sanitize-html
+        specifier: catalog:html
         version: 2.12.1
       typescript:
         specifier: catalog:typescript

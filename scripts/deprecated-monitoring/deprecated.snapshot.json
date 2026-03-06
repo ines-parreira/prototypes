@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-05T14:29:52.039Z",
-  "total": 4417,
+  "date": "2026-03-06T10:49:58.385Z",
+  "total": 4477,
   "deprecated": [
     {
       "nodeType": "ExportDefaultDeclaration",
@@ -1873,6 +1873,38 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "replaceAttachmentURL",
+      "comment": "*\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 18,
+      "filePath": "apps/helpdesk/src/utils.ts",
+      "usages": [
+        {
+          "name": "replaceAttachmentURL",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallRecording/VoiceCallRecording.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/diff/DiffReadOnlyEditor.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/Image.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceMessageTTS/TTSPreviewButton.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceRecordingInput.tsx",
+            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
+            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketAttachments.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketAttachments.tsx",
+            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "isEmail",
       "comment": "*\n * @deprecated\n * @date 2025-12-03\n * @type migration to @repo/utils\n *\n * Guess if a passed string is an email\n ",
       "count": 17,
@@ -2021,6 +2053,33 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "parseMedia",
+      "comment": "*\n * Parse media in html according to HTML tag\n * - Append a proxy URL before the images src so we can control their width and protect our agents privacy\n * - Replace Aircall audio src with the new attachment URL\n * - Prefix anchor tags pointing to attachments with a the new attachment URL\n *\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 13,
+      "filePath": "apps/helpdesk/src/utils.ts",
+      "usages": [
+        {
+          "name": "parseMedia",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
+            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
+            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "formatPhoneNumberInternational",
       "comment": "*\n * @deprecated\n * @date 2025-12-03\n * @type migration to @repo/utils\n ",
       "count": 12,
@@ -2119,6 +2178,31 @@
             "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts",
             "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/utils.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "proxifyURL",
+      "comment": "*\n * Append a proxy URL before an image url, for signing/resizing/cropping.\n *\n * The default format string `cw-1` is a hack for https://github.com/willnorris/imageproxy\n * to maintain the full image width/height, but still parse the image (eg. exif rotation).\n * imageproxy has no explicit option for it.\n * https://godoc.org/willnorris.com/go/imageproxy#ParseOptions\n *\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 11,
+      "filePath": "apps/helpdesk/src/utils.ts",
+      "usages": [
+        {
+          "name": "proxifyURL",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
+            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
+            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketAttachments.tsx",
+            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts"
           ]
         }
       ]
@@ -2858,6 +2942,26 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "parseHtml",
+      "comment": "* Forgiving html parser:\n * - Fixes invalid markup\n * - Doesn't remove invalid chars\n * - Doesn't run scripts or inline event handlers\n * global is required for testing in a separate jsdom instance.\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/utils/html.ts",
+      "usages": [
+        {
+          "name": "parseHtml",
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/components/GuidanceForm/GuidanceForm.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/MessageContent.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/components/tests/MessageContent.spec.tsx",
+            "apps/helpdesk/src/utils/editor.tsx",
+            "apps/helpdesk/src/utils/tests/html.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "Drawer",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SidePanel />` from @gorgias/axiom instead.\n * @date 2026-01-05\n * @type ui-kit-migration\n ",
       "count": 5,
@@ -2909,6 +3013,43 @@
             "apps/helpdesk/src/pages/tickets/detail/TicketDetailContainer.tsx",
             "apps/helpdesk/src/state/customers/tests/selectors.spec.ts",
             "apps/helpdesk/src/state/widgets/selectors.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "linkifyHtml",
+      "comment": "*\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 5,
+      "filePath": "apps/helpdesk/src/utils/html.ts",
+      "usages": [
+        {
+          "name": "linkifyHtml",
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundMessage/PlaygroundMessage.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts",
+            "apps/helpdesk/src/utils/tests/html.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "isPrivateAsset",
+      "comment": "*\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 4,
+      "filePath": "apps/helpdesk/src/common/utils/isPrivateAsset.ts",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/common/utils/tests/isPrivateAsset.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts",
+            "apps/helpdesk/src/utils.ts"
           ]
         }
       ]
@@ -3238,6 +3379,23 @@
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyEditor.tsx",
             "apps/helpdesk/src/state/newMessage/utils.ts",
             "apps/helpdesk/src/tickets/ticket-detail/components/MessageStatusIndicator.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "linkifyString",
+      "comment": "*\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/utils/html.ts",
+      "usages": [
+        {
+          "name": "linkifyString",
+          "files": [
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts"
           ]
         }
       ]

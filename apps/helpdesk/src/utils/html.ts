@@ -12,17 +12,25 @@ const linkifyOptions = {
         type === 'url' ? '_blank' : '_self',
 }
 
-/* Forgiving html parser:
+/** Forgiving html parser:
  * - Fixes invalid markup
  * - Doesn't remove invalid chars
  * - Doesn't run scripts or inline event handlers
  * global is required for testing in a separate jsdom instance.
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
  */
 export const parseHtml = (html = '', global = window): Document => {
     const parser = new global.DOMParser()
     return parser.parseFromString(html, 'text/html')
 }
 
+/**
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
+ */
 export const linkifyHtml = (body: string) => {
     // parse html before linkifying it.
     // linkifyjs's html tokenizer (simple-html-tokenizer) breaks and returns empty string
@@ -36,6 +44,11 @@ export const linkifyHtml = (body: string) => {
     }`
 }
 
+/**
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
+ */
 export const linkifyString = (body: string) =>
     linkifyjsString(body, linkifyOptions)
 

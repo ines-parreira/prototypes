@@ -19,6 +19,10 @@
     "peerDependencies": {
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/routing": "workspace:*",
+        "htmlparser2": "catalog:html",
+        "linkify-element": "catalog:html",
+        "linkify-string": "catalog:html",
+        "linkifyjs": "catalog:html",
         "lodash": "catalog:lodash",
         "moment": "catalog:moment",
         "moment-timezone": "catalog:moment",
@@ -27,7 +31,8 @@
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
-        "sanitize-html": "catalog:sanitize-html"
+        "sanitize-html": "catalog:html",
+        "urlsafe-base64": "catalog:html"
     },
     "devDependencies": {
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
@@ -40,13 +45,16 @@
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/history": "catalog:react-router",
+        "@types/htmlparser2": "catalog:html",
         "@types/lodash": "catalog:lodash",
+        "@types/linkifyjs": "catalog:html",
         "@types/mousetrap": "catalog:mousetrap",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@types/react-router": "catalog:react-router",
         "@types/react-router-dom": "catalog:react-router",
-        "@types/sanitize-html": "catalog:sanitize-html",
+        "@types/sanitize-html": "catalog:html",
+        "@types/urlsafe-base64": "catalog:html",
         "@vitest/coverage-v8": "catalog:test",
         "lodash": "catalog:lodash",
         "oxlint": "catalog:oxlint",
@@ -56,7 +64,7 @@
         "react-dom": "catalog:react",
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
-        "sanitize-html": "catalog:sanitize-html",
+        "sanitize-html": "catalog:html",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }

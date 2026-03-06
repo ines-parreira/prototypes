@@ -27,6 +27,8 @@ beforeEach(() => {
 })
 
 const messageData = mockTicketMessage({
+    body_html: null,
+    stripped_html: null,
     body_text: 'hello',
     stripped_text: 'hello',
 })

@@ -391,6 +391,11 @@ export const replaceAttachmentURLToExternalSource = (url: string) => {
     return replaceAttachmentURL(src, undefined, true)
 }
 
+/**
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
+ */
 export const replaceAttachmentURL = (
     url: string,
     format?: string,
@@ -471,6 +476,10 @@ const _proxyImageSignedURL = (url: string): string => {
  * to maintain the full image width/height, but still parse the image (eg. exif rotation).
  * imageproxy has no explicit option for it.
  * https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
+ *
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
  */
 export const proxifyURL = (urlStr: string, format = 'cw-1'): string => {
     const url = new URL(urlStr)
@@ -498,6 +507,10 @@ const proxifyImage = (
  * - Append a proxy URL before the images src so we can control their width and protect our agents privacy
  * - Replace Aircall audio src with the new attachment URL
  * - Prefix anchor tags pointing to attachments with a the new attachment URL
+ *
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-02
+ * @type migration to @repo/utils
  */
 export const parseMedia = (html: string, imageFormat = '1000x'): string => {
     const handledTags = ['a', 'audio', 'img']
