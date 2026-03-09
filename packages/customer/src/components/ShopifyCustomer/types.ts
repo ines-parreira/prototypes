@@ -9,7 +9,6 @@ export type PurchaseSummaryData = {
     numberOfOrders?: number
     amountSpent?: MoneyAmount
     lastOrderId?: string
-    occurredAt?: string | null
 }
 
 export type EcommerceData = {

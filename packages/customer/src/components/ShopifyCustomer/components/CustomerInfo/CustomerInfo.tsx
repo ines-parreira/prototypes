@@ -102,7 +102,7 @@ export function CustomerInfo({
 
     const hasData = !!purchaseSummary || !!shopper
 
-    const { fields, preferences, setPreferences } =
+    const { fields, preferences, savePreferences } =
         useCustomerFieldPreferences()
 
     const { isEditShopifyFieldsOpen, onToggleEditShopifyFields } =
@@ -182,7 +182,7 @@ export function CustomerInfo({
                 fields={fields}
                 context={context}
                 preferences={preferences}
-                onSavePreferences={setPreferences}
+                onSavePreferences={savePreferences}
                 onClose={() => onToggleEditShopifyFields(false)}
             />
         )

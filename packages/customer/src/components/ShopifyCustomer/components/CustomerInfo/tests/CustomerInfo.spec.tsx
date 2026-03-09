@@ -11,6 +11,7 @@ import {
 import {
     mockGetCurrentUserHandler,
     mockListIntegrationsHandler,
+    mockListWidgetsHandler,
 } from '@gorgias/helpdesk-mocks'
 import type { Integration } from '@gorgias/helpdesk-types'
 
@@ -141,6 +142,7 @@ const mockListOrders = mockListEcommerceDataHandler(async () =>
 )
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockListWidgets = mockListWidgetsHandler()
 
 beforeEach(() => {
     mockUseTicketInfobarNavigation.mockReturnValue({
@@ -169,6 +171,7 @@ beforeEach(() => {
         mockGetEcommerceData.handler,
         mockListOrders.handler,
         mockGetCurrentUser.handler,
+        mockListWidgets.handler,
     )
 })
 

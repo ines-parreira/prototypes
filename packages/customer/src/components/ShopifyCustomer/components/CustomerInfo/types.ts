@@ -101,3 +101,10 @@ export type OrderFieldConfig =
 export type OrderDetailsFieldPreferences = {
     fields: FieldPreference[]
 }
+
+export type LeafTemplate = {
+    path: string
+    type: string
+    title: string
+    [key: string]: unknown
+}

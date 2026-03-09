@@ -1,21 +1,35 @@
-import { act } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook } from '../../../../../tests/render.utils'
-import { DEFAULT_FIELDS, FIELD_DEFINITIONS } from '../fields'
+import { FIELD_DEFINITIONS } from '../fields'
 import { useCustomerFieldPreferences } from '../useCustomerFieldPreferences'
 
-const STORAGE_KEY = 'shopify-customer-info-fields'
+const mockSavePreferences = vi.fn()
+let mockWidgetPreferences: { fields: Array<{ id: string; visible: boolean }> }
+let mockIsLoading = false
 
-afterEach(() => {
-    localStorage.removeItem(STORAGE_KEY)
+vi.mock('../useWidgetFieldPreferences', () => ({
+    useWidgetFieldPreferences: () => ({
+        preferences: mockWidgetPreferences,
+        savePreferences: mockSavePreferences,
+        isLoading: mockIsLoading,
+    }),
+}))
+
+const ALL_FIELD_IDS = Object.keys(FIELD_DEFINITIONS)
+
+beforeEach(() => {
+    mockWidgetPreferences = {
+        fields: ALL_FIELD_IDS.map((id) => ({ id, visible: false })),
+    }
+    mockIsLoading = false
 })
 
 describe('useCustomerFieldPreferences', () => {
-    it('returns default visible fields matching DEFAULT_FIELD_IDS', () => {
+    it('returns no visible fields when all preferences are hidden', () => {
         const { result } = renderHook(() => useCustomerFieldPreferences())
 
-        const fieldIds = result.current.fields.map((f) => f.id)
-        expect(fieldIds).toEqual(DEFAULT_FIELDS.map((f) => f.id))
+        expect(result.current.fields).toHaveLength(0)
     })
 
     it('returns all field definitions in preferences', () => {
@@ -36,32 +50,37 @@ describe('useCustomerFieldPreferences', () => {
         expect(result.current.fields).toHaveLength(visiblePrefs.length)
     })
 
-    it('returns all default fields when stored value is not an array', () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify('not-an-array'))
+    it('returns empty fields when preferences fields is not an array', () => {
+        mockWidgetPreferences = { fields: 'not-an-array' as never }
 
         const { result } = renderHook(() => useCustomerFieldPreferences())
 
-        const fieldIds = result.current.fields.map((f) => f.id)
-        expect(fieldIds).toEqual(DEFAULT_FIELDS.map((f) => f.id))
+        expect(result.current.fields).toHaveLength(0)
     })
 
-    it('persists updated preferences', () => {
-        const { result } = renderHook(() => useCustomerFieldPreferences())
-
-        const updated = {
+    it('returns only the fields matching visible preference ids', () => {
+        mockWidgetPreferences = {
             fields: [
-                { id: 'email', visible: true },
-                { id: 'phone', visible: true },
+                { id: 'totalSpent', visible: true },
+                { id: 'orders', visible: true },
             ],
         }
 
-        act(() => {
-            result.current.setPreferences(updated)
-        })
+        const { result } = renderHook(() => useCustomerFieldPreferences())
 
+        expect(result.current.fields).toHaveLength(2)
         expect(result.current.fields.map((f) => f.id)).toEqual([
-            'email',
-            'phone',
+            'totalSpent',
+            'orders',
         ])
+    })
+
+    it('exposes savePreferences and isLoading', () => {
+        mockIsLoading = true
+
+        const { result } = renderHook(() => useCustomerFieldPreferences())
+
+        expect(result.current.savePreferences).toBe(mockSavePreferences)
+        expect(result.current.isLoading).toBe(true)
     })
 })

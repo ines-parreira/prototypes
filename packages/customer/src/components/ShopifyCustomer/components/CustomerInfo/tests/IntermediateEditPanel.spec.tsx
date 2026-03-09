@@ -49,7 +49,7 @@ describe('IntermediateEditPanel', () => {
         fields,
         context: mockContext,
         preferences: defaultPreferences,
-        onSavePreferences: vi.fn(),
+        onSavePreferences: vi.fn().mockResolvedValue(undefined),
         onClose: vi.fn(),
     }
 

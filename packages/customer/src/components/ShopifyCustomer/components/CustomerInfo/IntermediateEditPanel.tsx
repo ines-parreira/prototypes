@@ -23,7 +23,7 @@ type Props = {
     fields: FieldConfig[]
     context: FieldRenderContext
     preferences: ShopifyFieldPreferences
-    onSavePreferences: (preferences: ShopifyFieldPreferences) => void
+    onSavePreferences: (preferences: ShopifyFieldPreferences) => Promise<void>
     onClose: () => void
 }
 

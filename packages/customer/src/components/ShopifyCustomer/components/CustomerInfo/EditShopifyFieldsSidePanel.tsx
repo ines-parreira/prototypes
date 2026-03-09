@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import {
     Box,
@@ -17,6 +24,10 @@ import {
     ToggleField,
 } from '@gorgias/axiom'
 
+import {
+    NotificationStatus,
+    ShopifyCustomerContext,
+} from '../../ShopifyCustomerContext'
 import { DraggableFieldRow } from './DraggableFieldRow'
 import { reorderArray } from './editShopifyFields.utils'
 import { FIELD_DEFINITIONS } from './fields'
@@ -32,7 +43,7 @@ type Props = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     preferences: ShopifyFieldPreferences
-    onSave: (preferences: ShopifyFieldPreferences) => void
+    onSave: (preferences: ShopifyFieldPreferences) => Promise<void>
     context: FieldRenderContext
 }
 
@@ -48,12 +59,15 @@ export function EditShopifyFieldsSidePanel({
     onSave,
     context,
 }: Props) {
+    const { dispatchNotification } = useContext(ShopifyCustomerContext)
     const [localFields, setLocalFields] = useState(preferences.fields)
     const initialFieldsRef = useRef(preferences.fields)
+    const isSavingRef = useRef(false)
     const [isExpanded, setIsExpanded] = useState(true)
+    const [isSaving, setIsSaving] = useState(false)
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && !isSavingRef.current) {
             setLocalFields(preferences.fields)
             initialFieldsRef.current = preferences.fields
             setIsExpanded(true)
@@ -77,10 +91,22 @@ export function EditShopifyFieldsSidePanel({
         setLocalFields((prev) => reorderArray(prev, dragIndex, hoverIndex))
     }, [])
 
-    const handleSave = useCallback(() => {
-        onSave({ fields: localFields })
-        onOpenChange(false)
-    }, [localFields, onSave, onOpenChange])
+    const handleSave = useCallback(async () => {
+        isSavingRef.current = true
+        setIsSaving(true)
+        try {
+            await onSave({ fields: localFields })
+            onOpenChange(false)
+        } catch {
+            dispatchNotification({
+                status: NotificationStatus.Error,
+                message: 'Failed to save field preferences',
+            })
+        } finally {
+            isSavingRef.current = false
+            setIsSaving(false)
+        }
+    }, [localFields, onSave, onOpenChange, dispatchNotification])
 
     const allVisible = localFields.every((f) => f.visible)
 
@@ -203,7 +229,8 @@ export function EditShopifyFieldsSidePanel({
                 <Button
                     variant="primary"
                     onClick={handleSave}
-                    isDisabled={!hasChanges}
+                    isDisabled={!hasChanges || isSaving}
+                    isLoading={isSaving}
                 >
                     Save
                 </Button>

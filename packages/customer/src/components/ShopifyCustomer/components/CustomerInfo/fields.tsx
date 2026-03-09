@@ -4,7 +4,7 @@ import pluralize from 'pluralize'
 import { formatCreatedAt } from './customerInfoFields.utils'
 import { ShopifyTags } from './ShopifyTags'
 import { formatTagCount } from './shopifyTags.utils'
-import type { FieldConfig, FieldPreference } from './types'
+import type { FieldConfig } from './types'
 
 export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
     totalSpent: {
@@ -119,18 +119,6 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
         label: 'Last order ID',
         getValue: (ctx) => ctx.purchaseSummary?.lastOrderId,
     },
-    occurredAt: {
-        id: 'occurredAt',
-        type: 'readonly',
-        label: 'Last order date',
-        getValue: (ctx) => ctx.purchaseSummary?.occurredAt ?? undefined,
-        formatValue: (_, ctx) =>
-            formatCreatedAt(
-                ctx.purchaseSummary?.occurredAt ?? undefined,
-                ctx.dateFormat,
-                ctx.timeFormat,
-            ),
-    },
     id: {
         id: 'id',
         type: 'readonly',
@@ -157,11 +145,3 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
             ctx.shopper?.data?.tax_exemptions?.join(', ') || undefined,
     },
 }
-
-export const DEFAULT_FIELDS: FieldPreference[] = [
-    { id: 'tags', visible: true },
-    { id: 'totalSpent', visible: true },
-    { id: 'createdAt', visible: true },
-    { id: 'orders', visible: true },
-    { id: 'note', visible: true },
-]

@@ -32,7 +32,6 @@ const mockPurchaseSummaryData: PurchaseSummaryData = {
     numberOfOrders: 5,
     amountSpent: { amount: '500.00', currencyCode: 'USD' },
     lastOrderId: 'order_789',
-    occurredAt: '2024-01-15T10:00:00Z',
 }
 
 const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(async () =>

@@ -38,7 +38,7 @@ describe('EditShopifyFieldsSidePanel', () => {
         isOpen: true,
         onOpenChange: vi.fn(),
         preferences: defaultPreferences,
-        onSave: vi.fn(),
+        onSave: vi.fn().mockResolvedValue(undefined),
         context: mockContext,
     }
 
