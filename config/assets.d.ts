@@ -20,3 +20,8 @@ declare module '*.mp4' {
     const resource: string
     export = resource
 }
+
+declare module '*.mp3' {
+    const value: string
+    export default value
+}

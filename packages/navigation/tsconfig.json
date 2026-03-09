@@ -3,6 +3,6 @@
     "compilerOptions": {
         "types": ["vitest/globals", "@testing-library/jest-dom"]
     },
-    "include": ["src/**/*", "vitest.config.ts", "assets.d.ts"],
+    "include": ["src/**/*", "vitest.config.ts"],
     "exclude": ["node_modules"]
 }
