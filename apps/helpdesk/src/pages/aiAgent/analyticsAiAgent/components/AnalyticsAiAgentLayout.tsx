@@ -99,7 +99,9 @@ export const AnalyticsAiAgentLayout = () => {
                         }
                         reportConfig={AnalyticsAiAgentAllAgentsReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.AllAgents}
-                        dashboardId={ManagedDashboardId.AiAgentAllAgents}
+                        dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                        tabId={AiAgentAnalyticsQueryParams.AllAgents}
+                        tabName={AiAgentAnalyticsContent.AllAgents}
                     />
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
@@ -110,7 +112,9 @@ export const AnalyticsAiAgentLayout = () => {
                         }
                         reportConfig={AnalyticsAiAgentSupportAgentReportConfig}
                         tabKey={AiAgentAnalyticsQueryParams.SupportAgent}
-                        dashboardId={ManagedDashboardId.AiAgentSupportAgent}
+                        dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                        tabId={AiAgentAnalyticsQueryParams.SupportAgent}
+                        tabName={AiAgentAnalyticsContent.SupportAgent}
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
@@ -123,9 +127,9 @@ export const AnalyticsAiAgentLayout = () => {
                             AnalyticsAiAgentShoppingAssistantReportConfig
                         }
                         tabKey={AiAgentAnalyticsQueryParams.ShoppingAssistant}
-                        dashboardId={
-                            ManagedDashboardId.AiAgentShoppingAssistant
-                        }
+                        dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                        tabId={AiAgentAnalyticsQueryParams.ShoppingAssistant}
+                        tabName={AiAgentAnalyticsContent.ShoppingAssistant}
                     />
                 )
             default:

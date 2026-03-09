@@ -20,7 +20,7 @@ import {
     useUpdateManagedDashboard,
 } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import { layoutConfigToBackendConfig } from 'domains/reporting/utils/managedDashboardMappers'
+import { buildDashboardConfig } from 'domains/reporting/utils/managedDashboardMappers'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -30,7 +30,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 jest.mock('domains/reporting/utils/managedDashboardMappers', () => ({
-    layoutConfigToBackendConfig: jest.fn(),
+    buildDashboardConfig: jest.fn(),
 }))
 
 jest.mock('state/notifications/actions', () => ({
@@ -110,7 +110,7 @@ function makeWrapperWithClient() {
 }
 
 beforeEach(() => {
-    jest.mocked(layoutConfigToBackendConfig).mockReturnValue(mockConfig)
+    jest.mocked(buildDashboardConfig).mockReturnValue(mockConfig)
 })
 
 describe('useUpdateManagedDashboard', () => {
@@ -129,6 +129,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -159,6 +161,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -196,6 +200,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -233,6 +239,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -263,6 +271,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -291,6 +301,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     mockLayoutConfig,
                     'section_kpis',
                     (section) => section,
@@ -342,6 +354,8 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
+                    'tab_main',
+                    'Main',
                     twoSectionLayout,
                     'section_kpis',
                     sectionUpdater,
@@ -355,9 +369,8 @@ describe('useUpdateManagedDashboard', () => {
                 })
             })
 
-            const configPassedToMapper = jest.mocked(
-                layoutConfigToBackendConfig,
-            ).mock.calls[0][1]
+            const configPassedToMapper =
+                jest.mocked(buildDashboardConfig).mock.calls[0][3]
 
             const kpisSection = configPassedToMapper.sections.find(
                 (s) => s.id === 'section_kpis',
@@ -368,6 +381,138 @@ describe('useUpdateManagedDashboard', () => {
 
             expect(kpisSection?.items).toEqual(updatedItems)
             expect(graphsSection?.items).toEqual([])
+        })
+    })
+
+    describe('cache reading', () => {
+        it('should read matching dashboard config from list cache and pass it to buildDashboardConfig', async () => {
+            const { queryClient, wrapper } = makeWrapperWithClient()
+
+            queryClient.setQueryData(
+                managedDashboardKeys.listAnalyticsManagedDashboards(),
+                { data: { data: [mockDashboard] } },
+            )
+
+            server.use(
+                mockUpdateAnalyticsManagedDashboardHandler(async () =>
+                    HttpResponse.json(mockDashboard),
+                ).handler,
+            )
+
+            const { result } = renderHook(() => useUpdateManagedDashboard(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.updateSection(
+                    'ai-agent-overview',
+                    'tab_main',
+                    'Main',
+                    mockLayoutConfig,
+                    'section_kpis',
+                    (section) => section,
+                )
+            })
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
+                })
+            })
+
+            expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
+                'ai-agent-overview',
+                'tab_main',
+                'Main',
+                expect.any(Object),
+                mockDashboard.config,
+            )
+        })
+
+        it('should pass undefined to buildDashboardConfig when no matching dashboard found in cache', async () => {
+            const { queryClient, wrapper } = makeWrapperWithClient()
+
+            queryClient.setQueryData(
+                managedDashboardKeys.listAnalyticsManagedDashboards(),
+                { data: { data: [mockDashboard] } },
+            )
+
+            server.use(
+                mockUpdateAnalyticsManagedDashboardHandler(async () =>
+                    HttpResponse.json(mockDashboard),
+                ).handler,
+            )
+
+            const { result } = renderHook(() => useUpdateManagedDashboard(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.updateSection(
+                    'ai-agent-analytics',
+                    'all-agents',
+                    'All Agents',
+                    mockLayoutConfig,
+                    'section_kpis',
+                    (section) => section,
+                )
+            })
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
+                })
+            })
+
+            expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
+                'ai-agent-analytics',
+                'all-agents',
+                'All Agents',
+                expect.any(Object),
+                undefined,
+            )
+        })
+    })
+
+    describe('tab-aware saving', () => {
+        it('should pass tabId and tabName to buildDashboardConfig', async () => {
+            server.use(
+                mockUpdateAnalyticsManagedDashboardHandler(async () =>
+                    HttpResponse.json(mockDashboard),
+                ).handler,
+            )
+
+            const { result } = renderHook(() => useUpdateManagedDashboard(), {
+                wrapper: makeWrapper(),
+            })
+
+            act(() => {
+                result.current.updateSection(
+                    'ai-agent-analytics',
+                    'all-agents',
+                    'All Agents',
+                    mockLayoutConfig,
+                    'section_kpis',
+                    (section) => section,
+                )
+            })
+
+            await waitFor(() => {
+                expect(notify).toHaveBeenCalledWith({
+                    status: NotificationStatus.Success,
+                    message: MANAGED_DASHBOARD_SAVED_MESSAGE,
+                })
+            })
+
+            expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
+                'ai-agent-analytics',
+                'all-agents',
+                'All Agents',
+                expect.any(Object),
+                undefined,
+            )
         })
     })
 })

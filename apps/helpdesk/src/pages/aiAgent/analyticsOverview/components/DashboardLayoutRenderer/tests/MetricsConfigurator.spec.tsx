@@ -92,6 +92,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -106,6 +108,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -128,6 +132,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -150,6 +156,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -182,7 +190,7 @@ describe('MetricsConfigurator', () => {
         )
     })
 
-    it('should call updateSection with correct section when saving', async () => {
+    it('should call updateSection with correct args when saving', async () => {
         const mockUpdateSection = jest.fn()
         mockedUseUpdateManagedDashboard.mockReturnValue(
             mockHookReturn(mockUpdateSection),
@@ -193,6 +201,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -207,6 +217,44 @@ describe('MetricsConfigurator', () => {
 
         expect(mockUpdateSection).toHaveBeenCalledWith(
             'ai-agent-overview',
+            'tab_main',
+            'Main',
+            mockLayoutConfig,
+            'section_kpis',
+            expect.any(Function),
+            expect.any(Function),
+        )
+    })
+
+    it('should call updateSection with ai-agent tab params when provided', async () => {
+        const mockUpdateSection = jest.fn()
+        mockedUseUpdateManagedDashboard.mockReturnValue(
+            mockHookReturn(mockUpdateSection),
+        )
+
+        render(
+            <MetricsConfigurator
+                metrics={mockMetrics}
+                dashboardId="ai-agent-analytics"
+                currentLayoutConfig={mockLayoutConfig}
+                tabId="all-agents"
+                tabName="All Agents"
+            />,
+        )
+
+        const onSave =
+            mockedConfigureMetricsModal.mock.calls[
+                mockedConfigureMetricsModal.mock.calls.length - 1
+            ][0].onSave
+
+        act(() => {
+            onSave(mockMetrics)
+        })
+
+        expect(mockUpdateSection).toHaveBeenCalledWith(
+            'ai-agent-analytics',
+            'all-agents',
+            'All Agents',
             mockLayoutConfig,
             'section_kpis',
             expect.any(Function),
@@ -235,6 +283,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={layoutWithNoKpis}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -249,6 +299,8 @@ describe('MetricsConfigurator', () => {
 
         expect(mockUpdateSection).toHaveBeenCalledWith(
             'ai-agent-overview',
+            'tab_main',
+            'Main',
             layoutWithNoKpis,
             'section_kpis',
             expect.any(Function),
@@ -267,6 +319,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -279,7 +333,7 @@ describe('MetricsConfigurator', () => {
             onSave(mockMetrics)
         })
 
-        const sectionUpdater = mockUpdateSection.mock.calls[0][3]
+        const sectionUpdater = mockUpdateSection.mock.calls[0][5]
         const currentSection = mockLayoutConfig.sections[0]
         const result = sectionUpdater(currentSection)
 
@@ -332,6 +386,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics.slice(0, 2)}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={layoutWithFeatureFlag}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -344,7 +400,7 @@ describe('MetricsConfigurator', () => {
             onSave(mockMetrics.slice(0, 2))
         })
 
-        const sectionUpdater = mockUpdateSection.mock.calls[0][3]
+        const sectionUpdater = mockUpdateSection.mock.calls[0][5]
         const result = sectionUpdater(layoutWithFeatureFlag.sections[0])
 
         expect(result.items[0].requiresFeatureFlag).toBe(true)
@@ -362,6 +418,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -383,7 +441,7 @@ describe('MetricsConfigurator', () => {
             onSave(metricsWithNewItem)
         })
 
-        const sectionUpdater = mockUpdateSection.mock.calls[0][3]
+        const sectionUpdater = mockUpdateSection.mock.calls[0][5]
         const currentSection = mockLayoutConfig.sections[0]
         const result = sectionUpdater(currentSection)
 
@@ -412,6 +470,8 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
+                tabId="tab_main"
+                tabName="Main"
             />,
         )
 
@@ -431,7 +491,7 @@ describe('MetricsConfigurator', () => {
             onSave(mockMetrics)
         })
 
-        const onSuccess = mockUpdateSection.mock.calls[0][4]
+        const onSuccess = mockUpdateSection.mock.calls[0][6]
 
         act(() => {
             onSuccess()

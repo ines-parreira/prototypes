@@ -6,12 +6,13 @@ import {
     queryKeys,
     useUpdateAnalyticsManagedDashboard,
 } from '@gorgias/helpdesk-queries'
+import type { AnalyticsManagedDashboard } from '@gorgias/helpdesk-types'
 
 import {
     MANAGED_DASHBOARD_SAVE_FAILED_MESSAGE,
     MANAGED_DASHBOARD_SAVED_MESSAGE,
 } from 'domains/reporting/hooks/managed-dashboards/useCreateManagedDashboard'
-import { layoutConfigToBackendConfig } from 'domains/reporting/utils/managedDashboardMappers'
+import { buildDashboardConfig } from 'domains/reporting/utils/managedDashboardMappers'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { isGorgiasApiError } from 'models/api/types'
 import type {
@@ -67,6 +68,8 @@ export function useUpdateManagedDashboard(
     const updateSection = useCallback(
         (
             dashboardId: string,
+            tabId: string,
+            tabName: string,
             layoutConfig: DashboardLayoutConfig,
             sectionId: string,
             sectionUpdater: (section: LayoutSection) => LayoutSection,
@@ -79,9 +82,21 @@ export function useUpdateManagedDashboard(
                         : section,
                 ),
             }
-            const dashboardConfig = layoutConfigToBackendConfig(
+
+            const cachedList = queryClient.getQueryData<{
+                data: { data: AnalyticsManagedDashboard[] }
+            }>(managedDashboardKeys.listAnalyticsManagedDashboards())
+
+            const existingDashboard = cachedList?.data?.data?.find(
+                (d) => d.id === dashboardId,
+            )
+
+            const dashboardConfig = buildDashboardConfig(
                 dashboardId,
+                tabId,
+                tabName,
                 updatedLayoutConfig,
+                existingDashboard?.config,
             )
 
             saveDashboard(
@@ -89,7 +104,7 @@ export function useUpdateManagedDashboard(
                 { onSuccess },
             )
         },
-        [saveDashboard],
+        [queryClient, saveDashboard],
     )
 
     return { updateSection, isLoading }

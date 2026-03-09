@@ -107,6 +107,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -124,6 +126,8 @@ describe('CardsSection', () => {
                     reportConfig={reportConfigMock}
                     dashboardId="test-dashboard"
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -140,6 +144,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -159,6 +165,8 @@ describe('CardsSection', () => {
                     reportConfig={reportConfigMock}
                     dashboardId="test-dashboard"
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -177,6 +185,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -197,6 +207,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -215,6 +227,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -235,6 +249,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -253,6 +269,8 @@ describe('CardsSection', () => {
                     reportConfig={reportConfigMock}
                     dashboardId="test-dashboard"
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -270,6 +288,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -289,6 +309,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -307,6 +329,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -322,6 +346,8 @@ describe('CardsSection', () => {
                     reportConfig={reportConfigMock}
                     tabKey="test-tab"
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 
@@ -344,6 +370,8 @@ describe('CardsSection', () => {
                     reportConfig={reportConfigMock}
                     tabKey="test-tab"
                     layoutConfig={defaultLayoutConfig}
+                    tabId="tab_main"
+                    tabName="Main"
                 />,
             )
 

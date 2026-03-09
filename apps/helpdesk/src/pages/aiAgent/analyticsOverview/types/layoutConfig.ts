@@ -37,7 +37,5 @@ export type DashboardLayoutConfig<
 
 export enum ManagedDashboardId {
     AiAgentOverview = 'ai-agent-overview',
-    AiAgentAllAgents = 'ai-agent-all-agents',
-    AiAgentSupportAgent = 'ai-agent-support-agent',
-    AiAgentShoppingAssistant = 'ai-agent-shopping-assistant',
+    AiAgentAnalytics = 'ai-agent-analytics',
 }

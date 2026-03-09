@@ -19,6 +19,8 @@ type DashboardLayoutRendererProps<TChart extends string> = {
     reportConfig: ReportConfig<TChart>
     tabKey?: string
     dashboardId: ManagedDashboardId
+    tabId?: string
+    tabName?: string
 }
 
 const renderSection =
@@ -27,6 +29,8 @@ const renderSection =
         tabKey: string | undefined,
         dashboardId: string | undefined,
         layoutConfig: DashboardLayoutConfig,
+        tabId: string,
+        tabName: string,
     ) =>
     (section: LayoutSection) => {
         const isChartsSection = section.type === ChartType.Graph
@@ -42,6 +46,8 @@ const renderSection =
                     tabKey={tabKey}
                     dashboardId={dashboardId}
                     layoutConfig={layoutConfig}
+                    tabId={tabId}
+                    tabName={tabName}
                 />
             )
         }
@@ -82,10 +88,13 @@ export const DashboardLayoutRenderer = ({
     reportConfig,
     tabKey,
     dashboardId,
+    tabId = 'tab_main',
+    tabName = 'Main',
 }: DashboardLayoutRendererProps<string>) => {
     const layoutConfig = useGetManagedDashboardsLayoutConfig({
         dashboardId,
         defaultLayoutConfig,
+        tabId,
     })
 
     return (
@@ -98,7 +107,14 @@ export const DashboardLayoutRenderer = ({
             className={css.container}
         >
             {layoutConfig.sections.map(
-                renderSection(reportConfig, tabKey, dashboardId, layoutConfig),
+                renderSection(
+                    reportConfig,
+                    tabKey,
+                    dashboardId,
+                    layoutConfig,
+                    tabId,
+                    tabName,
+                ),
             )}
         </Box>
     )

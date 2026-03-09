@@ -16,12 +16,16 @@ type MetricsConfiguratorProps = {
     metrics: MetricConfigItem[]
     dashboardId: string
     currentLayoutConfig: DashboardLayoutConfig
+    tabId: string
+    tabName: string
 }
 
 export const MetricsConfigurator = ({
     metrics,
     dashboardId,
     currentLayoutConfig,
+    tabId,
+    tabName,
 }: MetricsConfiguratorProps) => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const { updateSection, isLoading } = useUpdateManagedDashboard()
@@ -33,6 +37,8 @@ export const MetricsConfigurator = ({
 
         updateSection(
             dashboardId,
+            tabId,
+            tabName,
             currentLayoutConfig,
             kpisSectionId,
             (section) => ({

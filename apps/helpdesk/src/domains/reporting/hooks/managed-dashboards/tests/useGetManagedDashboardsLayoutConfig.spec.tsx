@@ -72,7 +72,7 @@ const mockDefaultLayoutConfig: DashboardLayoutConfig = {
     ],
 }
 
-const mockDashboard: AnalyticsManagedDashboard = {
+const mockOverviewDashboard: AnalyticsManagedDashboard = {
     id: 'ai-agent-overview',
     account_id: 1,
     user_id: 2,
@@ -90,6 +90,51 @@ const mockDashboard: AnalyticsManagedDashboard = {
                             {
                                 chart_id: 'saved-kpi',
                                 metadata: { visible: true, grid_size: 3 },
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
+    created_datetime: '2026-02-18T00:00:00Z',
+    updated_datetime: '2026-02-18T00:00:00Z',
+}
+
+const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
+    id: 'ai-agent-analytics',
+    account_id: 1,
+    user_id: 2,
+    config: {
+        id: 'ai-agent-analytics',
+        tabs: [
+            {
+                id: 'all-agents',
+                name: 'All Agents',
+                sections: [
+                    {
+                        section_id: 'kpis',
+                        type: ChartType.Card,
+                        items: [
+                            {
+                                chart_id: 'all-agents-saved-kpi',
+                                metadata: { visible: true, grid_size: 3 },
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                id: 'support-agent',
+                name: 'Support Agent',
+                sections: [
+                    {
+                        section_id: 'kpis',
+                        type: ChartType.Card,
+                        items: [
+                            {
+                                chart_id: 'support-agent-saved-kpi',
+                                metadata: { visible: false, grid_size: 6 },
                             },
                         ],
                     },
@@ -130,7 +175,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             mockListAnalyticsManagedDashboardsHandler(async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
-                        data: [mockDashboard],
+                        data: [mockOverviewDashboard],
                     }),
                 ),
             ).handler,
@@ -139,7 +184,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         const { result } = renderHook(
             () =>
                 useGetManagedDashboardsLayoutConfig({
-                    dashboardId: ManagedDashboardId.AiAgentAllAgents,
+                    dashboardId: ManagedDashboardId.AiAgentAnalytics,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
                 }),
             { wrapper: makeWrapper() },
@@ -155,7 +200,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             mockListAnalyticsManagedDashboardsHandler(async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
-                        data: [mockDashboard],
+                        data: [mockOverviewDashboard],
                     }),
                 ),
             ).handler,
@@ -207,5 +252,71 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         expect(result.current).toEqual(mockDefaultLayoutConfig)
+    })
+
+    it('should return layout config for the correct tab when tabId is provided', async () => {
+        server.use(
+            mockListAnalyticsManagedDashboardsHandler(async () =>
+                HttpResponse.json(
+                    mockListAnalyticsManagedDashboardsResponse({
+                        data: [mockAnalyticsDashboard],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetManagedDashboardsLayoutConfig({
+                    dashboardId: ManagedDashboardId.AiAgentAnalytics,
+                    defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: 'all-agents',
+                }),
+            { wrapper: makeWrapper() },
+        )
+
+        await waitFor(() => {
+            const kpisSection = result.current.sections.find(
+                (s) => s.id === 'kpis',
+            )
+            expect(
+                kpisSection?.items.some(
+                    (i) => i.chartId === ('all-agents-saved-kpi' as any),
+                ),
+            ).toBe(true)
+        })
+    })
+
+    it('should return layout config for the support-agent tab when that tabId is provided', async () => {
+        server.use(
+            mockListAnalyticsManagedDashboardsHandler(async () =>
+                HttpResponse.json(
+                    mockListAnalyticsManagedDashboardsResponse({
+                        data: [mockAnalyticsDashboard],
+                    }),
+                ),
+            ).handler,
+        )
+
+        const { result } = renderHook(
+            () =>
+                useGetManagedDashboardsLayoutConfig({
+                    dashboardId: ManagedDashboardId.AiAgentAnalytics,
+                    defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: 'support-agent',
+                }),
+            { wrapper: makeWrapper() },
+        )
+
+        await waitFor(() => {
+            const kpisSection = result.current.sections.find(
+                (s) => s.id === 'kpis',
+            )
+            expect(
+                kpisSection?.items.some(
+                    (i) => i.chartId === ('support-agent-saved-kpi' as any),
+                ),
+            ).toBe(true)
+        })
     })
 })

@@ -13,9 +13,11 @@ import type {
 export function useGetManagedDashboardsLayoutConfig({
     dashboardId,
     defaultLayoutConfig,
+    tabId,
 }: {
     dashboardId: ManagedDashboardId
     defaultLayoutConfig: DashboardLayoutConfig
+    tabId?: string
 }): DashboardLayoutConfig {
     const { data } = useFetchManagedDashboards()
 
@@ -30,10 +32,11 @@ export function useGetManagedDashboardsLayoutConfig({
             backendConfigToLayoutConfig(
                 savedDashboard.config,
                 defaultLayoutConfig,
+                tabId,
             ),
             defaultLayoutConfig,
         )
-    }, [data, dashboardId, defaultLayoutConfig])
+    }, [data, dashboardId, defaultLayoutConfig, tabId])
 
     return layoutConfig
 }

@@ -18,6 +18,8 @@ type CardsSectionProps = {
     tabKey?: string
     dashboardId?: string
     layoutConfig: DashboardLayoutConfig
+    tabId: string
+    tabName: string
 }
 
 export const CardsSection = ({
@@ -26,6 +28,8 @@ export const CardsSection = ({
     tabKey,
     dashboardId,
     layoutConfig,
+    tabId,
+    tabName,
 }: CardsSectionProps) => {
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
@@ -51,6 +55,8 @@ export const CardsSection = ({
                     metrics={keyKpisConfig}
                     dashboardId={dashboardId}
                     currentLayoutConfig={layoutConfig}
+                    tabId={tabId}
+                    tabName={tabName}
                 />
             )}
             <ShowMoreList containerClassName={css.kpisSection}>

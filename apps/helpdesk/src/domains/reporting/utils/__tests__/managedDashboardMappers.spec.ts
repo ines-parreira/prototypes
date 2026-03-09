@@ -6,6 +6,7 @@ import type {
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import {
     backendConfigToLayoutConfig,
+    buildDashboardConfig,
     layoutConfigToBackendConfig,
     mergeWithDefaults,
 } from 'domains/reporting/utils/managedDashboardMappers'
@@ -153,6 +154,142 @@ describe('managedDashboardMappers', () => {
             expect(result.tabs[0].sections[0].type).toBe(ChartType.Card)
             expect(result.tabs[0].sections[1].type).toBe(ChartType.Graph)
             expect(result.tabs[0].sections[2].type).toBe(ChartType.Table)
+        })
+
+        it('should use provided tabId and tabName when given', () => {
+            const layoutConfig: DashboardLayoutConfig = { sections: [] }
+
+            const result = layoutConfigToBackendConfig(
+                'ai-agent-analytics',
+                layoutConfig,
+                'all-agents',
+                'All Agents',
+            )
+
+            expect(result.tabs[0].id).toBe('all-agents')
+            expect(result.tabs[0].name).toBe('All Agents')
+        })
+    })
+
+    describe('buildDashboardConfig', () => {
+        const layoutConfig: DashboardLayoutConfig = {
+            sections: [
+                {
+                    id: 'section_kpis',
+                    type: ChartType.Card,
+                    items: [
+                        {
+                            chartId: AnalyticsOverviewChart.AutomationRateCard,
+                            gridSize: 3,
+                            visibility: true,
+                        },
+                    ],
+                },
+            ],
+        }
+
+        it('should create a new config when no existing config is provided', () => {
+            const result = buildDashboardConfig(
+                'ai-agent-analytics',
+                'all-agents',
+                'All Agents',
+                layoutConfig,
+            )
+
+            expect(result).toEqual({
+                id: 'ai-agent-analytics',
+                tabs: [
+                    {
+                        id: 'all-agents',
+                        name: 'All Agents',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [
+                                    {
+                                        chart_id:
+                                            AnalyticsOverviewChart.AutomationRateCard,
+                                        metadata: {
+                                            visible: true,
+                                            grid_size: 3,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            })
+        })
+
+        it('should update an existing tab while preserving other tabs', () => {
+            const existingConfig: AnalyticsManagedDashboardConfig = {
+                id: 'ai-agent-analytics',
+                tabs: [
+                    {
+                        id: 'all-agents',
+                        name: 'All Agents',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [],
+                            },
+                        ],
+                    },
+                    {
+                        id: 'support-agent',
+                        name: 'Support Agent',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = buildDashboardConfig(
+                'ai-agent-analytics',
+                'all-agents',
+                'All Agents',
+                layoutConfig,
+                existingConfig,
+            )
+
+            expect(result.tabs).toHaveLength(2)
+            expect(result.tabs[0].id).toBe('all-agents')
+            expect(result.tabs[0].sections[0].items).toHaveLength(1)
+            expect(result.tabs[1].id).toBe('support-agent')
+            expect(result.tabs[1].sections[0].items).toHaveLength(0)
+        })
+
+        it('should append a new tab when the tabId does not exist in existing config', () => {
+            const existingConfig: AnalyticsManagedDashboardConfig = {
+                id: 'ai-agent-analytics',
+                tabs: [
+                    {
+                        id: 'all-agents',
+                        name: 'All Agents',
+                        sections: [],
+                    },
+                ],
+            }
+
+            const result = buildDashboardConfig(
+                'ai-agent-analytics',
+                'support-agent',
+                'Support Agent',
+                layoutConfig,
+                existingConfig,
+            )
+
+            expect(result.tabs).toHaveLength(2)
+            expect(result.tabs[0].id).toBe('all-agents')
+            expect(result.tabs[1].id).toBe('support-agent')
         })
     })
 
@@ -331,6 +468,123 @@ describe('managedDashboardMappers', () => {
                 gridSize: 3,
                 visibility: true,
             })
+        })
+
+        it('should find the correct tab by tabId when multiple tabs exist', () => {
+            const backendConfig: AnalyticsManagedDashboardConfig = {
+                id: 'ai-agent-analytics',
+                tabs: [
+                    {
+                        id: 'all-agents',
+                        name: 'All Agents',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [
+                                    {
+                                        chart_id: 'all-agents-chart',
+                                        metadata: {
+                                            visible: true,
+                                            grid_size: 3,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        id: 'support-agent',
+                        name: 'Support Agent',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [
+                                    {
+                                        chart_id: 'support-agent-chart',
+                                        metadata: {
+                                            visible: false,
+                                            grid_size: 6,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = { sections: [] }
+
+            const allAgentsResult = backendConfigToLayoutConfig(
+                backendConfig,
+                defaultConfig,
+                'all-agents',
+            )
+
+            expect(allAgentsResult.sections[0].items[0].chartId).toBe(
+                'all-agents-chart',
+            )
+            expect(allAgentsResult.sections[0].items[0].visibility).toBe(true)
+
+            const supportAgentResult = backendConfigToLayoutConfig(
+                backendConfig,
+                defaultConfig,
+                'support-agent',
+            )
+
+            expect(supportAgentResult.sections[0].items[0].chartId).toBe(
+                'support-agent-chart',
+            )
+            expect(supportAgentResult.sections[0].items[0].visibility).toBe(
+                false,
+            )
+        })
+
+        it('should return default config when tabId is provided but not found in saved tabs', () => {
+            const backendConfig: AnalyticsManagedDashboardConfig = {
+                id: 'ai-agent-analytics',
+                tabs: [
+                    {
+                        id: 'all-agents',
+                        name: 'All Agents',
+                        sections: [
+                            {
+                                section_id: 'section_kpis',
+                                type: ChartType.Card,
+                                items: [
+                                    {
+                                        chart_id: 'all-agents-chart',
+                                        metadata: {
+                                            visible: true,
+                                            grid_size: 3,
+                                        },
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'default_section',
+                        type: ChartType.Card,
+                        items: [],
+                    },
+                ],
+            }
+
+            const result = backendConfigToLayoutConfig(
+                backendConfig,
+                defaultConfig,
+                'support-agent',
+            )
+
+            expect(result).toEqual(defaultConfig)
         })
     })
 

@@ -11,51 +11,91 @@ import type {
     LayoutSection,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
+type DashboardTab = AnalyticsManagedDashboardConfig['tabs'][number]
+
+function layoutConfigToTabSections(
+    layoutConfig: DashboardLayoutConfig,
+): Section[] {
+    return layoutConfig.sections.map(
+        (section: LayoutSection): Section => ({
+            section_id: section.id,
+            type: section.type,
+            items: section.items.map(
+                (item): Item => ({
+                    chart_id: item.chartId,
+                    metadata: {
+                        visible: item.visibility,
+                        grid_size: item.gridSize,
+                    },
+                }),
+            ),
+        }),
+    )
+}
+
 export function layoutConfigToBackendConfig(
     dashboardId: string,
     layoutConfig: DashboardLayoutConfig,
+    tabId = 'tab_main',
+    tabName = 'Main',
 ): AnalyticsManagedDashboardConfig {
-    const sections: Section[] = layoutConfig.sections.map(
-        (section: LayoutSection): Section => {
-            return {
-                section_id: section.id,
-                type: section.type,
-                items: section.items.map(
-                    (item): Item => ({
-                        chart_id: item.chartId,
-                        metadata: {
-                            visible: item.visibility,
-                            grid_size: item.gridSize,
-                        },
-                    }),
-                ),
-            }
-        },
-    )
-
     return {
         id: dashboardId,
         tabs: [
             {
-                id: 'tab_main',
-                name: 'Main',
-                sections,
+                id: tabId,
+                name: tabName,
+                sections: layoutConfigToTabSections(layoutConfig),
             },
         ],
+    }
+}
+
+export function buildDashboardConfig(
+    dashboardId: string,
+    tabId: string,
+    tabName: string,
+    layoutConfig: DashboardLayoutConfig,
+    existingConfig?: AnalyticsManagedDashboardConfig,
+): AnalyticsManagedDashboardConfig {
+    const sections = layoutConfigToTabSections(layoutConfig)
+    const updatedTab: DashboardTab = { id: tabId, name: tabName, sections }
+
+    if (!existingConfig) {
+        return { id: dashboardId, tabs: [updatedTab] }
+    }
+
+    const existingTabIndex = existingConfig.tabs.findIndex(
+        (t) => t.id === tabId,
+    )
+
+    if (existingTabIndex === -1) {
+        return {
+            ...existingConfig,
+            tabs: [...existingConfig.tabs, updatedTab],
+        }
+    }
+
+    return {
+        ...existingConfig,
+        tabs: existingConfig.tabs.map((t) => (t.id === tabId ? updatedTab : t)),
     }
 }
 
 export function backendConfigToLayoutConfig(
     backendConfig: AnalyticsManagedDashboardConfig,
     defaultConfig: DashboardLayoutConfig,
+    tabId?: string,
 ): DashboardLayoutConfig {
-    const mainTab = backendConfig.tabs[0]
+    const tab = tabId
+        ? backendConfig.tabs.find((t) => t.id === tabId)
+        : backendConfig.tabs[0]
 
-    if (!mainTab) {
+    if (!tab) {
         return defaultConfig
     }
 
-    const sections: LayoutSection[] = mainTab.sections.map(
+    const sections: LayoutSection[] = tab.sections.map(
         (backendSection: Section): LayoutSection => {
             return {
                 id: backendSection.section_id,
