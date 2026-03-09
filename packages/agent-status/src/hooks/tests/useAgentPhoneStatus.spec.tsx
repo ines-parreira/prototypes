@@ -87,7 +87,9 @@ describe('useAgentPhoneStatus', () => {
                 isLoading: false,
                 isError: false,
                 error: null,
-            } as any)
+            } as unknown as ReturnType<
+                typeof helpdeskQueries.useGetUserPhoneStatus
+            >)
 
             renderHook(() =>
                 useAgentPhoneStatus({
@@ -136,6 +138,36 @@ describe('useAgentPhoneStatus', () => {
                         select: expect.any(Function),
                         staleTime: customStaleTime,
                         cacheTime: customCacheTime,
+                    },
+                },
+            )
+        })
+
+        it('disables query and sets staleTime to Infinity when cacheOnly is true', () => {
+            vi.mocked(helpdeskQueries.useGetUserPhoneStatus).mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: false,
+                error: null,
+            } as unknown as ReturnType<
+                typeof helpdeskQueries.useGetUserPhoneStatus
+            >)
+
+            renderHook(() =>
+                useAgentPhoneStatus({
+                    userId: MOCK_USER_ID,
+                    cacheOnly: true,
+                }),
+            )
+
+            expect(helpdeskQueries.useGetUserPhoneStatus).toHaveBeenCalledWith(
+                MOCK_USER_ID,
+                {
+                    query: {
+                        enabled: false,
+                        select: expect.any(Function),
+                        staleTime: Infinity,
+                        cacheTime: DurationInMs.OneHour,
                     },
                 },
             )

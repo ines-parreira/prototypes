@@ -11,6 +11,11 @@ type UseAgentPhoneStatusParams = {
     staleTime?: number
     cacheTime?: number
     enabled?: boolean
+    /**
+     * When true, only reads from cache without making network requests.
+     * Useful when cache is pre-populated by batch queries.
+     */
+    cacheOnly?: boolean
 }
 /**
  * Hook that fetches the phone status for a given user.
@@ -19,6 +24,7 @@ type UseAgentPhoneStatusParams = {
  * @param staleTime - The stale time for the phone status
  * @param cacheTime - The cache time for the phone status
  * @param enabled - Whether to fetch the phone status
+ * @param cacheOnly - When true, only reads from cache without making network requests
  * @returns The phone status for the given user
  */
 
@@ -27,12 +33,13 @@ export function useAgentPhoneStatus({
     staleTime = DurationInMs.OneMinute,
     cacheTime = DurationInMs.OneHour,
     enabled = true,
+    cacheOnly = false,
 }: UseAgentPhoneStatusParams) {
     const { data, isLoading, isError, error } = useGetUserPhoneStatus(userId, {
         query: {
-            enabled: !!userId && enabled,
+            enabled: !!userId && enabled && !cacheOnly,
             select: (data) => data.data,
-            staleTime,
+            staleTime: cacheOnly ? Infinity : staleTime,
             cacheTime,
         },
     })

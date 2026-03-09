@@ -18,6 +18,8 @@ export type {
 
 export { useCustomUserUnavailabilityModal } from './useCustomUserUnavailabilityModal'
 export { useAgentPhoneStatus } from './useAgentPhoneStatus'
+export { useListUserPhoneStatuses } from './useListUserPhoneStatuses'
+export { usePhoneStatusBatchPollingInterval } from './usePhoneStatusBatchPollingInterval'
 export { useListUserAvailabilities } from './useListUserAvailabilities'
 export { useAvailabilityStatusColor } from './useAvailabilityStatusColor'
 export { useUserAvailabilityRealtimeHandler } from './useUserAvailabilityRealtimeHandler'

@@ -59,6 +59,8 @@ export {
 export { NotificationStatus } from './utils/LegacyBridge/context'
 
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
+export { useListUserPhoneStatuses } from './hooks/useListUserPhoneStatuses'
+export { usePhoneStatusBatchPollingInterval } from './hooks/usePhoneStatusBatchPollingInterval'
 export { AgentAvatar } from './components'
 export { LiveAgentsRealtimeListener } from './components'
 
