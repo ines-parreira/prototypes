@@ -1,9 +1,10 @@
 import type { ComponentProps } from 'react'
 
+import { isValidColor } from '@repo/utils'
+
 import type { UpdateTicketTag } from '@gorgias/helpdesk-types'
 
 import { Tag } from 'components/Tag/Tag'
-import { isValidColor } from 'utils/colors'
 
 type Props = {
     className?: string

@@ -1,0 +1,1 @@
+export { isValidColor } from './colors'
