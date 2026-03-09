@@ -39,6 +39,12 @@ jest.mock('routes/layout/sidebars', () => ({
     SettingsSidebar: () => <div>SettingsSidebar</div>,
 }))
 
+jest.mock('utils', () => ({
+    ...jest.requireActual('utils'),
+    toggleChat: jest.fn(),
+}))
+
+const mockToggleChat = jest.requireMock('utils').toggleChat as jest.Mock
 const mockToggleCollapse = jest.fn()
 
 const wrapper = ({ children }: any) => (
@@ -118,6 +124,18 @@ describe('NavigationSidebar', () => {
             await user.click(collapseButton)
 
             expect(mockToggleCollapse).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call toggleChat when help button is clicked', async () => {
+            const user = userEvent.setup()
+            render(<NavigationSidebar />, { wrapper })
+
+            const toggleChatButton = screen.getByRole('button', {
+                name: /open chat/i,
+            })
+            await user.click(toggleChatButton)
+
+            expect(mockToggleChat).toHaveBeenCalledTimes(1)
         })
     })
 

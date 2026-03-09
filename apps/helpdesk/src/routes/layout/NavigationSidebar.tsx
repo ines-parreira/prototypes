@@ -9,7 +9,6 @@ import { history } from '@repo/routing'
 import { Box, Button } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
-import { HELP_DOCS_BASE_URL } from 'config'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
 import { NavigationSidebarSpotlightButton } from 'routes/layout/NavigationSidebarSpotlightButton'
@@ -19,6 +18,7 @@ import {
     SidebarContentType,
 } from 'routes/layout/productConfig'
 import { SidebarProductHeader } from 'routes/layout/SidebarProductHeader'
+import { toggleChat } from 'utils'
 
 export function NavigationSidebar() {
     const currentProduct = useCurrentRouteProduct()
@@ -116,10 +116,10 @@ export function NavigationSidebar() {
                     />
                     <Button
                         icon="circle-help"
-                        as="a"
-                        href={HELP_DOCS_BASE_URL}
+                        onClick={toggleChat}
                         variant="tertiary"
                         size="sm"
+                        aria-label="Open chat"
                     />
                     <NavigationSidebarNotificationsButton />
                 </Box>

@@ -1060,6 +1060,18 @@ export const openChat = (e: SyntheticEvent) => {
     }
 }
 
+export const toggleChat = () => {
+    if (!window.GorgiasChat) {
+        return
+    }
+
+    if (window.GorgiasChat.isOpen()) {
+        window.GorgiasChat.close()
+    } else {
+        window.GorgiasChat.open()
+    }
+}
+
 export const transformSystemMessagesToNotifications = (
     systemMessages: Array<SystemMessage>,
 ): Array<AlertNotification> => {

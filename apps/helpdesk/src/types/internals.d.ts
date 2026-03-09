@@ -47,6 +47,7 @@ declare global {
         PHRASE_FEEDBACK_URL: string
         GorgiasChat?: {
             open: () => void
+            close: () => void
             setPage: (page: string) => void
             isOpen: () => boolean
             previewFlow: (params: {

@@ -1270,4 +1270,66 @@ describe('global utils', () => {
             )
         })
     })
+
+    describe('toggleChat()', () => {
+        afterEach(() => {
+            delete (window as any).GorgiasChat
+        })
+
+        it('should do nothing when GorgiasChat is not present', () => {
+            expect(() => utils.toggleChat()).not.toThrow()
+        })
+
+        it('should close the chat when it is open', () => {
+            const close = jest.fn()
+            ;(window as any).GorgiasChat = {
+                isOpen: jest.fn(() => true),
+                open: jest.fn(),
+                close,
+            }
+
+            utils.toggleChat()
+
+            expect(close).toHaveBeenCalledTimes(1)
+        })
+
+        it('should open the chat when it is closed', () => {
+            const open = jest.fn()
+            ;(window as any).GorgiasChat = {
+                isOpen: jest.fn(() => false),
+                open,
+                close: jest.fn(),
+            }
+
+            utils.toggleChat()
+
+            expect(open).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not call open when the chat is open', () => {
+            const open = jest.fn()
+            ;(window as any).GorgiasChat = {
+                isOpen: jest.fn(() => true),
+                open,
+                close: jest.fn(),
+            }
+
+            utils.toggleChat()
+
+            expect(open).not.toHaveBeenCalled()
+        })
+
+        it('should not call close when the chat is closed', () => {
+            const close = jest.fn()
+            ;(window as any).GorgiasChat = {
+                isOpen: jest.fn(() => false),
+                open: jest.fn(),
+                close,
+            }
+
+            utils.toggleChat()
+
+            expect(close).not.toHaveBeenCalled()
+        })
+    })
 })
