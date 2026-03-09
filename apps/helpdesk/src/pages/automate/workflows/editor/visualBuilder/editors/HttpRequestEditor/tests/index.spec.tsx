@@ -570,4 +570,173 @@ describe('<HttpRequestEditor />', () => {
             httpRequestNodeId: nodeInEdition.id,
         })
     })
+
+    it('should disable the Test request button when trackstar auth is enabled', () => {
+        mockUseApps.mockReturnValue({
+            apps: [],
+            actionsApps: [
+                {
+                    id: 'someid1',
+                    auth_type: 'trackstar',
+                    auth_settings: {
+                        integration_name: 'sandbox',
+                    },
+                },
+            ],
+            isLoading: false,
+        })
+        const nodeInEdition: HttpRequestNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'http_request1',
+            type: 'http_request',
+            data: {
+                name: '',
+                url: '',
+                method: 'GET',
+                headers: [],
+                json: null,
+                formUrlencoded: null,
+                bodyContentType: null,
+                variables: [],
+                trackstar_integration_name: 'sandbox',
+            },
+        }
+
+        const graph: VisualBuilderGraph = {
+            id: '',
+            internal_id: '',
+            is_draft: false,
+            name: '',
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'channel_trigger1',
+                    type: 'channel_trigger',
+                    data: { label: '', label_tkey: '' },
+                },
+                nodeInEdition,
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'channel_trigger1',
+                    target: 'http_request1',
+                },
+            ],
+            available_languages: [],
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+            isTemplate: true,
+            apps: [{ app_id: 'someid1', type: 'app' }],
+        }
+
+        renderWithStore(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: graph,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: jest.fn(),
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: jest.fn().mockReturnValue([]),
+                    initialVisualBuilderGraph: graph,
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
+                    <HttpRequestEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>,
+            {},
+        )
+
+        expect(
+            screen.getByRole('button', { name: /test request/i }),
+        ).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should disable the Test request button when service connection is enabled', () => {
+        mockUseApps.mockReturnValue({
+            apps: [],
+            actionsApps: [],
+            isLoading: false,
+        })
+        const nodeInEdition: HttpRequestNodeType = {
+            ...buildNodeCommonProperties(),
+            id: 'http_request1',
+            type: 'http_request',
+            data: {
+                name: '',
+                url: '',
+                method: 'GET',
+                headers: [],
+                json: null,
+                formUrlencoded: null,
+                bodyContentType: null,
+                variables: [],
+                serviceConnectionSettings: {
+                    integration_id: '{{store.helpdesk_integration_id}}',
+                    path: '/admin/api/2025-01/orders.json',
+                },
+            },
+        }
+
+        const graph: VisualBuilderGraph = {
+            id: '',
+            internal_id: '',
+            is_draft: false,
+            name: '',
+            nodes: [
+                {
+                    ...buildNodeCommonProperties(),
+                    id: 'channel_trigger1',
+                    type: 'channel_trigger',
+                    data: { label: '', label_tkey: '' },
+                },
+                nodeInEdition,
+            ],
+            edges: [
+                {
+                    ...buildEdgeCommonProperties(),
+                    source: 'channel_trigger1',
+                    target: 'http_request1',
+                },
+            ],
+            available_languages: [],
+            nodeEditingId: null,
+            choiceEventIdEditing: null,
+            branchIdsEditing: [],
+            isTemplate: true,
+            apps: [{ type: 'shopify' }],
+        }
+
+        renderWithStore(
+            <VisualBuilderContext.Provider
+                value={{
+                    visualBuilderGraph: graph,
+                    checkNodeHasVariablesUsedInChildren: () => false,
+                    dispatch: jest.fn(),
+                    getVariableListInChildren: () => [],
+                    checkNewVisualBuilderNode: () => false,
+                    getVariableListForNode: jest.fn().mockReturnValue([]),
+                    initialVisualBuilderGraph: graph,
+                    isNew: false,
+                }}
+            >
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
+                    <HttpRequestEditor nodeInEdition={nodeInEdition} />
+                </NodeEditorDrawerContext.Provider>
+            </VisualBuilderContext.Provider>,
+            {},
+        )
+
+        expect(
+            screen.getByRole('button', { name: /test request/i }),
+        ).toHaveAttribute('aria-disabled', 'true')
+    })
 })

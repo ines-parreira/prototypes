@@ -554,7 +554,9 @@ export default function HttpRequestEditor({
                             !!errors?.url ||
                             !!errors?.headers ||
                             !!errors?.json ||
-                            !!errors?.formUrlencoded
+                            !!errors?.formUrlencoded ||
+                            useServiceConnection ||
+                            !!nodeInEdition.data.trackstar_integration_name
                         }
                         onClick={() => {
                             if (
