@@ -6,7 +6,7 @@ type Props = {
     chat: Map<any, any>
 }
 
-export function ChatCell({ chat }: Props) {
+export const ChatCell = ({ chat }: Props) => {
     return (
         <Text size="md" variant="medium">
             {chat.get('name')}

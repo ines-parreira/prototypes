@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { Map } from 'immutable'
 import { NavLink } from 'react-router-dom'
@@ -8,6 +8,7 @@ import {
     Icon,
     IconName,
     IconSize,
+    Skeleton,
     Tag,
     TagColor,
     Text,
@@ -40,7 +41,7 @@ type StatusCellProps = {
     loading: Map<any, any>
 }
 
-export function StatusCell({ chat, loading }: StatusCellProps) {
+export const StatusCell = ({ chat, loading }: StatusCellProps) => {
     const chatIntegrationId = chat.get('id') as number
     const wizardStatus: GorgiasChatCreationWizardStatus = chat.getIn([
         'meta',
@@ -48,10 +49,34 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
         'status',
     ])
 
+    const wrapperRef = useRef<HTMLDivElement>(null)
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+        const element = wrapperRef.current
+        if (!element) return
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true)
+                    observer.disconnect()
+                }
+            },
+            { threshold: 0 },
+        )
+        observer.observe(element)
+        return () => observer.disconnect()
+    }, [])
+
     const isLoadingIntegrations = loading.get('integrations', true) as boolean
 
     const { chatStatus, isChatStatusLoading, isChatStatusError } =
-        useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
+        useGorgiasChatIntegrationStatusData(
+            chat,
+            isLoadingIntegrations,
+            !isVisible,
+        )
 
     const baseLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${chatIntegrationId}`
     const preferencesLink = `${baseLink}/${Tab.Preferences}`
@@ -126,70 +151,61 @@ export function StatusCell({ chat, loading }: StatusCellProps) {
         [chatIsPublishedButNotInstalled],
     )
 
-    const Wrapper = ({ children }: { children?: JSX.Element }) => {
-        return <div id={`chat-status-${chatIntegrationId}`}>{children}</div>
-    }
-
-    if (isLoadingIntegrations || isChatStatusLoading) {
-        return (
-            <Wrapper>
-                <span>Loading...</span>
-            </Wrapper>
-        )
-    }
-
     if (isChatStatusError) {
         return (
-            <Wrapper>
+            <div id={`chat-status-${chatIntegrationId}`} ref={wrapperRef}>
                 <span>Status unavailable</span>
-            </Wrapper>
+            </div>
         )
     }
 
-    if (chatStatus) {
+    if (isLoadingIntegrations || isChatStatusLoading || !chatStatus) {
         return (
-            <Wrapper>
-                <Tooltip
-                    placement="top"
-                    delay={100}
-                    isDisabled={
-                        !(
-                            chatIsHiddenOutsideBusinessHours ||
-                            chatIsPublishedButNotInstalled
-                        )
-                    }
-                >
-                    <TooltipTrigger>
-                        <span role="button">{getStatusTag(chatStatus)}</span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {chatIsHiddenOutsideBusinessHours && (
-                            <Text size="md" variant="medium">
-                                Chat is{' '}
-                                <NavLink
-                                    to={preferencesLink}
-                                    onClick={(e) => e.stopPropagation()}
-                                >
-                                    hidden outside
-                                    <br />
-                                    business hours
-                                </NavLink>
-                            </Text>
-                        )}
-
-                        {chatIsPublishedButNotInstalled && (
-                            <Text size="md" variant="medium">
-                                We couldn&apos;t detect the chat widget on your
-                                website in the last 72 hours. Please check that
-                                it&apos;s installed correctly and live on your
-                                site.
-                            </Text>
-                        )}
-                    </TooltipContent>
-                </Tooltip>
-            </Wrapper>
+            <div id={`chat-status-${chatIntegrationId}`} ref={wrapperRef}>
+                <Skeleton height="24px" width="80px" />
+            </div>
         )
     }
 
-    return <Wrapper></Wrapper>
+    return (
+        <div id={`chat-status-${chatIntegrationId}`} ref={wrapperRef}>
+            <Tooltip
+                placement="top"
+                delay={100}
+                isDisabled={
+                    !(
+                        chatIsHiddenOutsideBusinessHours ||
+                        chatIsPublishedButNotInstalled
+                    )
+                }
+            >
+                <TooltipTrigger>
+                    <span role="button">{getStatusTag(chatStatus)}</span>
+                </TooltipTrigger>
+                <TooltipContent>
+                    {chatIsHiddenOutsideBusinessHours && (
+                        <Text size="md" variant="medium">
+                            Chat is{' '}
+                            <NavLink
+                                to={preferencesLink}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                hidden outside
+                                <br />
+                                business hours
+                            </NavLink>
+                        </Text>
+                    )}
+
+                    {chatIsPublishedButNotInstalled && (
+                        <Text size="md" variant="medium">
+                            We couldn&apos;t detect the chat widget on your
+                            website in the last 72 hours. Please check that
+                            it&apos;s installed correctly and live on your site.
+                        </Text>
+                    )}
+                </TooltipContent>
+            </Tooltip>
+        </div>
+    )
 }

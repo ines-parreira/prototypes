@@ -59,25 +59,28 @@ const MockAiAgentStatusCell = jest.fn(({ chat, storeIntegration }) => (
     </div>
 ))
 
-jest.mock('./ChatCell', () => ({
+jest.mock('../ChatCell/ChatCell', () => ({
     ChatCell: (props: any) => MockChatCell(props),
 }))
 
-jest.mock('./StoreIntegrationCell', () => ({
+jest.mock('../StoreIntegrationCell/StoreIntegrationCell', () => ({
     StoreIntegrationCell: (props: any) => MockStoreIntegrationCell(props),
 }))
 
-jest.mock('./StatusCell', () => ({
+jest.mock('../StatusCell/StatusCell', () => ({
     StatusCell: (props: any) => MockStatusCell(props),
 }))
 
-jest.mock('./ActionsCell', () => ({
+jest.mock('../ActionsCell/ActionsCell', () => ({
     ActionsCell: (props: any) => MockActionsCell(props),
 }))
 
-jest.mock('./AiAgentStatusCell', () => ({
-    AiAgentStatusCell: (props: any) => MockAiAgentStatusCell(props),
-}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/AiAgentStatusCell/AiAgentStatusCell',
+    () => ({
+        AiAgentStatusCell: (props: any) => MockAiAgentStatusCell(props),
+    }),
+)
 
 const MockHeaderRowGroup = jest.fn(({ headerGroups }) => (
     <div data-testid="header-row-group">Headers: {headerGroups.length}</div>

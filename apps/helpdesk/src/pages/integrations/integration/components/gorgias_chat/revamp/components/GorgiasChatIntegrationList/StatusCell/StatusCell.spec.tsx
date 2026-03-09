@@ -8,11 +8,12 @@ import {
     GorgiasChatStatusEnum,
 } from 'models/integration/types'
 
-import * as hookGorgiasChatIntegrationStatusData from '../../../../../hooks/useGorgiasChatIntegrationStatusData'
+import * as hookGorgiasChatIntegrationStatusData from '../../../../../../hooks/useGorgiasChatIntegrationStatusData'
 import { StatusCell } from './StatusCell'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
+    Skeleton: () => <span role="status" />,
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     TooltipContent: ({ children }: { children: React.ReactNode }) => (
         <>{children}</>
@@ -60,7 +61,7 @@ describe('StatusCell', () => {
         })
 
     describe('loading and error states', () => {
-        it('should display loading text when integrations are loading', () => {
+        it('should display skeleton when integrations are loading', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: undefined,
                 isChatStatusLoading: false,
@@ -72,10 +73,10 @@ describe('StatusCell', () => {
 
             render(<StatusCell chat={chat} loading={loading} />)
 
-            expect(screen.getByText('Loading...')).toBeInTheDocument()
+            expect(screen.getByRole('status')).toBeInTheDocument()
         })
 
-        it('should display loading text when chat status is loading', () => {
+        it('should display skeleton when chat status is loading', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: undefined,
                 isChatStatusLoading: true,
@@ -87,7 +88,7 @@ describe('StatusCell', () => {
 
             render(<StatusCell chat={chat} loading={loading} />)
 
-            expect(screen.getByText('Loading...')).toBeInTheDocument()
+            expect(screen.getByRole('status')).toBeInTheDocument()
         })
 
         it('should display error text when chat status fetch fails', () => {
@@ -105,7 +106,7 @@ describe('StatusCell', () => {
             expect(screen.getByText('Status unavailable')).toBeInTheDocument()
         })
 
-        it('should render empty wrapper when chat status is undefined', () => {
+        it('should display skeleton when chat status is not yet available', () => {
             mockUseGorgiasChatIntegrationStatusData.mockReturnValue({
                 chatStatus: undefined,
                 isChatStatusLoading: false,
@@ -119,7 +120,7 @@ describe('StatusCell', () => {
 
             expect(screen.queryByText('Online')).not.toBeInTheDocument()
             expect(screen.queryByText('Offline')).not.toBeInTheDocument()
-            expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
+            expect(screen.getByRole('status')).toBeInTheDocument()
         })
     })
 

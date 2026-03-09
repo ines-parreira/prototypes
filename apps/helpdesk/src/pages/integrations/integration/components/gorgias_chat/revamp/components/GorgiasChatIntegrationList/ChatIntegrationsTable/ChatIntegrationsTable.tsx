@@ -15,13 +15,13 @@ import type { ColumnDef } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types'
-import { AiAgentStatusCell } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/AiAgentStatusCell'
+import { AiAgentStatusCell } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/AiAgentStatusCell/AiAgentStatusCell'
 import { Tab } from 'pages/integrations/integration/types'
 
-import { ActionsCell } from './ActionsCell'
-import { ChatCell } from './ChatCell'
-import { StatusCell } from './StatusCell'
-import { StoreIntegrationCell } from './StoreIntegrationCell'
+import { ActionsCell } from '../ActionsCell/ActionsCell'
+import { ChatCell } from '../ChatCell/ChatCell'
+import { StatusCell } from '../StatusCell/StatusCell'
+import { StoreIntegrationCell } from '../StoreIntegrationCell/StoreIntegrationCell'
 
 type Props = {
     chats: List<Map<any, any>>
@@ -56,7 +56,11 @@ type ChatIntegrationFields = {
     aiAgentStatus: AiAgentStatusField
 }
 
-export function ChatIntegrationsTable({ chats, integrations, loading }: Props) {
+export const ChatIntegrationsTable = ({
+    chats,
+    integrations,
+    loading,
+}: Props) => {
     const goToChat = (row: ChatIntegrationFields) => {
         const needScopeUpdate = Boolean(
             row.storeIntegration.storeIntegration?.getIn(

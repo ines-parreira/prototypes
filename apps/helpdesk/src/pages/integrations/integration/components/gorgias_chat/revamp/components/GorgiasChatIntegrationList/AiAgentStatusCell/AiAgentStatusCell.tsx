@@ -24,7 +24,7 @@ type AiAgentStatusProps = {
     chat: Map<any, any>
 }
 
-export function AiAgentStatusCell({ chat }: AiAgentStatusProps) {
+export const AiAgentStatusCell = ({ chat }: AiAgentStatusProps) => {
     const { storeIntegration, isConnected } = useStoreIntegration(chat)
     const shopName = storeIntegration?.name as string
 

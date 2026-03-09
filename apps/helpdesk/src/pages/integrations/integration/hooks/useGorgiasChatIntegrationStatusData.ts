@@ -17,6 +17,7 @@ import {
 export const useGorgiasChatIntegrationStatusData = (
     chat: Map<any, any>,
     isLoadingIntegrations = false,
+    skipAutoFetch = false,
 ) => {
     const chatId = chat.get('id')
     const chatStatus: GorgiasChatStatusEnum | undefined = chat.getIn([
@@ -33,10 +34,10 @@ export const useGorgiasChatIntegrationStatusData = (
     )
 
     useEffect(() => {
-        if (!isLoadingIntegrations && !chatStatus) {
+        if (!isLoadingIntegrations && !chatStatus && !skipAutoFetch) {
             void dispatch(fetchChatIntegrationStatus(chatId))
         }
-    }, [dispatch, chatId, chatStatus, isLoadingIntegrations])
+    }, [dispatch, chatId, chatStatus, isLoadingIntegrations, skipAutoFetch])
 
     return { chatStatus, isChatStatusLoading, isChatStatusError }
 }

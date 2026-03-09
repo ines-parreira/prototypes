@@ -22,7 +22,7 @@ type ActionsCellProps = {
     storeIntegration: Map<any, any>
 }
 
-export function ActionsCell({ chat, storeIntegration }: ActionsCellProps) {
+export const ActionsCell = ({ chat, storeIntegration }: ActionsCellProps) => {
     const showUpdatePermissions = useFlag(
         FeatureFlagKey.ChatScopeUpdateChatList,
     )

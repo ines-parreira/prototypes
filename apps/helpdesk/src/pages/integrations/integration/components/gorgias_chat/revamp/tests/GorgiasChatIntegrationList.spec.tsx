@@ -37,7 +37,7 @@ const MockChatIntegrationsTable = jest.fn(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable',
     () => ({
         ChatIntegrationsTable: (props: any) => MockChatIntegrationsTable(props),
     }),
@@ -164,6 +164,40 @@ describe('GorgiasChatIntegrationListRevamp', () => {
                 screen.queryByTestId('chat-integrations-table'),
             ).not.toBeInTheDocument()
         })
+
+        it('does not render ChatIntegrationsTable when loading, even with chat integrations', () => {
+            renderComponent({
+                integrations: fromJS([
+                    {
+                        id: 1,
+                        type: IntegrationType.GorgiasChat,
+                        name: 'Website Chat',
+                    },
+                ]),
+                loading: fromJS({ integrations: true }),
+            })
+
+            expect(
+                screen.queryByTestId('chat-integrations-table'),
+            ).not.toBeInTheDocument()
+            expect(screen.getByTestId('loader')).toBeInTheDocument()
+        })
+
+        it('does not render empty state when loading', () => {
+            renderComponent({
+                integrations: fromJS([]),
+                loading: fromJS({ integrations: true }),
+            })
+
+            expect(
+                screen.queryByText(/chat with your customers/i),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(
+                    /you have no integration of this type at the moment/i,
+                ),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('With Chat Integrations', () => {
@@ -213,7 +247,7 @@ describe('GorgiasChatIntegrationListRevamp', () => {
 
             renderComponent({
                 integrations: mixedIntegrations,
-                loading: fromJS({ integrations: true }),
+                loading: fromJS({ integrations: false }),
             })
 
             expect(MockChatIntegrationsTable).toHaveBeenCalledWith({
@@ -230,7 +264,7 @@ describe('GorgiasChatIntegrationListRevamp', () => {
                     },
                 ]),
                 integrations: mixedIntegrations,
-                loading: fromJS({ integrations: true }),
+                loading: fromJS({ integrations: false }),
             })
         })
 
@@ -281,7 +315,7 @@ describe('GorgiasChatIntegrationListRevamp', () => {
 
             renderComponent({
                 integrations: integrationsWithNull,
-                loading: fromJS({ integrations: true }),
+                loading: fromJS({ integrations: false }),
             })
 
             expect(MockChatIntegrationsTable).toHaveBeenCalledWith({
@@ -293,7 +327,7 @@ describe('GorgiasChatIntegrationListRevamp', () => {
                     },
                 ]),
                 integrations: integrationsWithNull,
-                loading: fromJS({ integrations: true }),
+                loading: fromJS({ integrations: false }),
             })
         })
     })

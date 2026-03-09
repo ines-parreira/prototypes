@@ -32,10 +32,10 @@ const Wrapper = ({ children }: { children: JSX.Element }) => {
     return <div className={css.storeIntegrationCell}>{children}</div>
 }
 
-export function StoreIntegrationCell({
+export const StoreIntegrationCell = ({
     storeIntegration,
     chat,
-}: StoreIntegrationCellProps) {
+}: StoreIntegrationCellProps) => {
     const installationLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${chat.get('id')}/${Tab.Installation}`
     const isStoreDisconnected = Boolean(
         storeIntegration?.get('deactivated_datetime'),

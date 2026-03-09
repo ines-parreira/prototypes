@@ -9,7 +9,7 @@ import { IntegrationType } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import { ChatIntegrationsTable } from './ChatIntegrationsTable'
+import { ChatIntegrationsTable } from './ChatIntegrationsTable/ChatIntegrationsTable'
 
 import css from './GorgiasChatIntegrationList.less'
 
@@ -18,7 +18,9 @@ type Props = {
     loading: Map<any, any>
 }
 
-function GorgiasChatIntegrationList({ integrations, loading }: Props) {
+const GorgiasChatIntegrationList = ({ integrations, loading }: Props) => {
+    const isLoadingIntegrations = loading.get('integrations', false) as boolean
+
     const chats = useMemo(
         () =>
             integrations.filter(
@@ -51,7 +53,9 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                 </Button>
             </div>
 
-            {chats.isEmpty() ? (
+            {isLoadingIntegrations ? (
+                <Loader />
+            ) : chats.isEmpty() ? (
                 <div className={css.emptyChatIntegrationList}>
                     <div>
                         <Text size="md" variant="medium">
@@ -62,14 +66,9 @@ function GorgiasChatIntegrationList({ integrations, loading }: Props) {
                         </Text>
                     </div>
                     <div>
-                        {loading.get('integrations', false) ? (
-                            <Loader />
-                        ) : (
-                            <Text>
-                                You have no integration of this type at the
-                                moment.
-                            </Text>
-                        )}
+                        <Text>
+                            You have no integration of this type at the moment.
+                        </Text>
                     </div>
                 </div>
             ) : (
