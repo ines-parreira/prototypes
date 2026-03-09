@@ -140,9 +140,7 @@ describe('TopOpportunityCard', () => {
                 </TestWrapper>,
             )
 
-            expect(
-                screen.getByText(/Review AI-generated guidance/),
-            ).toBeInTheDocument()
+            expect(screen.getByText(/Fill knowledge gap/)).toBeInTheDocument()
             expect(
                 screen.getByText(/Add guidance for shipping policy/),
             ).toBeInTheDocument()
@@ -168,7 +166,7 @@ describe('TopOpportunityCard', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render review guidance button', () => {
+        it('should render review opportunity button', () => {
             render(
                 <TestWrapper>
                     <TopOpportunityCard
@@ -183,7 +181,7 @@ describe('TopOpportunityCard', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: /review guidance/i }),
+                screen.getByRole('button', { name: /review opportunity/i }),
             ).toBeInTheDocument()
         })
 
@@ -306,7 +304,7 @@ describe('TopOpportunityCard', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /review guidance/i,
+                name: /review opportunity/i,
             })
             await user.click(button)
 
@@ -383,7 +381,7 @@ describe('TopOpportunityCard', () => {
             )
 
             const button = screen.getByRole('button', {
-                name: /review guidance/i,
+                name: /review opportunity/i,
             })
             await user.click(button)
 

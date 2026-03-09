@@ -103,8 +103,8 @@ export const DetectedOpportunitiesBanner = ({
             case OpportunityType.FILL_KNOWLEDGE_GAP:
             default:
                 return {
-                    title: `Review AI-generated guidance:  "${topOpportunity.insight}"`,
-                    buttonText: 'Review guidance',
+                    title: `Fill knowledge gap:  "${topOpportunity.insight}"`,
+                    buttonText: 'Review opportunity',
                     ticketCountText: (
                         <Text variant="regular" size="sm">
                             Based on{' '}

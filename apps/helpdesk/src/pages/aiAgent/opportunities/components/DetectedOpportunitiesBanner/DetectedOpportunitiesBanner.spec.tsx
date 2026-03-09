@@ -217,16 +217,16 @@ describe('DetectedOpportunitiesBanner', () => {
 
             expect(
                 screen.getByText(
-                    /Review AI-generated guidance:.*"Test insight for knowledge gap"/,
+                    /Fill knowledge gap:.*"Test insight for knowledge gap"/,
                 ),
             ).toBeInTheDocument()
         })
 
-        it('should render Review guidance button', () => {
+        it('should render Review opportunity button', () => {
             render(<DetectedOpportunitiesBanner {...defaultProps} />)
 
             expect(
-                screen.getByRole('button', { name: /review guidance/i }),
+                screen.getByRole('button', { name: /review opportunity/i }),
             ).toBeInTheDocument()
         })
 
@@ -312,7 +312,7 @@ describe('DetectedOpportunitiesBanner', () => {
                 render(<DetectedOpportunitiesBanner {...defaultProps} />)
 
                 const button = screen.getByRole('button', {
-                    name: /review guidance/i,
+                    name: /review opportunity/i,
                 })
                 await user.click(button)
 
@@ -336,7 +336,7 @@ describe('DetectedOpportunitiesBanner', () => {
                 render(<DetectedOpportunitiesBanner {...defaultProps} />)
 
                 const button = screen.getByRole('button', {
-                    name: /review guidance/i,
+                    name: /review opportunity/i,
                 })
                 await user.click(button)
 
@@ -554,7 +554,7 @@ describe('DetectedOpportunitiesBanner', () => {
                 container.querySelector('[data-name="card"]'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByText(/Review AI-generated guidance/i),
+                screen.queryByText(/Fill knowledge gap/i),
             ).not.toBeInTheDocument()
         })
     })

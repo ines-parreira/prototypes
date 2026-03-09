@@ -3278,9 +3278,9 @@ describe('AIAgentSimplifiedFeedback', () => {
 
             render(<AIAgentSimplifiedFeedback />)
 
-            // Verify banner is rendered by checking for the "Review guidance" button
+            // Verify banner is rendered by checking for the "Review opportunity" button
             expect(
-                screen.getByRole('button', { name: /review guidance/i }),
+                screen.getByRole('button', { name: /review opportunity/i }),
             ).toBeInTheDocument()
         })
 
@@ -3290,7 +3290,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             render(<AIAgentSimplifiedFeedback />)
 
             expect(
-                screen.queryByRole('button', { name: /review guidance/i }),
+                screen.queryByRole('button', { name: /review opportunity/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -3308,7 +3308,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             render(<AIAgentSimplifiedFeedback />)
 
             expect(
-                screen.queryByRole('button', { name: /review guidance/i }),
+                screen.queryByRole('button', { name: /review opportunity/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -3319,7 +3319,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             render(<AIAgentSimplifiedFeedback />)
 
             expect(
-                screen.queryByRole('button', { name: /review guidance/i }),
+                screen.queryByRole('button', { name: /review opportunity/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -3329,7 +3329,7 @@ describe('AIAgentSimplifiedFeedback', () => {
             render(<AIAgentSimplifiedFeedback />)
 
             expect(
-                screen.getByRole('button', { name: /review guidance/i }),
+                screen.getByRole('button', { name: /review opportunity/i }),
             ).toBeInTheDocument()
         })
     })

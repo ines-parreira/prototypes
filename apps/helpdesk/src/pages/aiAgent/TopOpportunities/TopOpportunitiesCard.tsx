@@ -117,8 +117,8 @@ export const TopOpportunityCard = ({
             case OpportunityType.FILL_KNOWLEDGE_GAP:
             default:
                 return {
-                    title: `Review AI-generated guidance:  "${opportunity.insight}"`,
-                    buttonText: 'Review guidance',
+                    title: `Fill knowledge gap:  "${opportunity.insight}"`,
+                    buttonText: 'Review opportunity',
                     ticketCountText: (
                         <Text variant="regular" size="sm">
                             Based on{' '}
