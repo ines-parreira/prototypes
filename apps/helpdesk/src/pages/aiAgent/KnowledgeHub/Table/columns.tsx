@@ -3,7 +3,6 @@ import { SegmentEvent } from '@repo/logging'
 import type { ColumnDef, SortingState } from '@gorgias/axiom'
 import {
     Box,
-    Color,
     createSelectableColumn,
     Icon,
     Skeleton,
@@ -447,9 +446,17 @@ export const getColumns = (
                 return (
                     <Box alignItems="center" justifyContent="flex-start">
                         {isInUse ? (
-                            <Icon name="check" size="md" color={Color.Green} />
+                            <Icon
+                                name="check"
+                                size="md"
+                                color="--content-success-primary"
+                            />
                         ) : (
-                            <Icon name="close" size="md" color={Color.Grey} />
+                            <Icon
+                                name="close"
+                                size="md"
+                                color="--content-neutral-tertiary"
+                            />
                         )}
                     </Box>
                 )
