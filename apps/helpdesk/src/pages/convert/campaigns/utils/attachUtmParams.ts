@@ -1,7 +1,6 @@
 import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { attachSearchParamsToUrl } from '@repo/utils'
 import { parse } from 'qs'
-
-import { attachSearchParamsToUrl } from 'utils/url'
 
 import type { CampaignProduct } from '../types/CampaignProduct'
 

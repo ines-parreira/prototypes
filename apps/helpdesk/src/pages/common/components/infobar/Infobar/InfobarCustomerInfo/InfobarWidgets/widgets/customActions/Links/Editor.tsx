@@ -2,6 +2,7 @@ import type { FormEvent } from 'react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { ensureHTTPS } from '@repo/utils'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -16,7 +17,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import { AppContext } from 'providers/infobar/AppContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-import { ensureHTTPS } from 'utils/url'
 
 import css from './Links.less'
 
