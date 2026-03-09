@@ -1351,7 +1351,7 @@ describe('KnowledgeHubContainer', () => {
             })
         })
 
-        it('disables sync button and shows tooltip when URL is from store domain', async () => {
+        it('allows syncing URLs from the store domain', async () => {
             const user = userEvent.setup()
 
             mockUseAppSelector.mockImplementation((selector) => {
@@ -1417,11 +1417,8 @@ describe('KnowledgeHubContainer', () => {
 
             await waitFor(() => {
                 const syncButton = screen.getByTestId('sync-button')
-                expect(syncButton).toBeDisabled()
-                expect(syncButton).toHaveAttribute(
-                    'title',
-                    'URL cannot be from your store website',
-                )
+                expect(syncButton).toBeEnabled()
+                expect(syncButton).not.toHaveAttribute('title')
             })
         })
     })

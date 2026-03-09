@@ -33,14 +33,9 @@ import { NotificationStatus } from 'state/notifications/types'
 type Props = {
     helpCenterId: number
     existingUrls: string[]
-    storeUrl: string | null
 }
 
-export const SyncUrlModal = ({
-    helpCenterId,
-    existingUrls,
-    storeUrl,
-}: Props) => {
+export const SyncUrlModal = ({ helpCenterId, existingUrls }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [url, setUrl] = useState('')
     const [originalUrl, setOriginalUrl] = useState<string | null>(null)
@@ -67,7 +62,6 @@ export const SyncUrlModal = ({
         helpCenterId,
         existingUrls: filteredExistingUrls,
         helpCenterCustomDomains,
-        storeUrl,
         shopName,
     })
 

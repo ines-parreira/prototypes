@@ -81,7 +81,6 @@ describe('useKnowledgeHub', () => {
             snippetHelpCenterId: 2,
             refetchKnowledgeHubArticles: mockRefetch,
             storeDomainIngestionLog: undefined,
-            storeUrl: 'https://test-shop.myshopify.com',
             urlSyncStatus: undefined,
             syncingUrls: [],
             urlIngestionLogs: [],
@@ -287,7 +286,6 @@ describe('useKnowledgeHub', () => {
                 helpCenterId: 2,
                 existingUrls: ['https://example.com'],
                 helpCenterCustomDomains: ['custom.domain.com'],
-                storeUrl: 'https://test-shop.myshopify.com',
                 shopName: 'test-shop',
             })
         })
@@ -315,7 +313,6 @@ describe('useKnowledgeHub', () => {
                 helpCenterId: 2,
                 existingUrls: [],
                 helpCenterCustomDomains: [],
-                storeUrl: 'https://test-shop.myshopify.com',
                 shopName: 'test-shop',
             })
         })

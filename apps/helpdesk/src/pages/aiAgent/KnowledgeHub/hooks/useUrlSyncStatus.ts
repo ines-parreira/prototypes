@@ -9,7 +9,6 @@ type UseUrlSyncStatusParams = {
     helpCenterId: number
     existingUrls: string[]
     helpCenterCustomDomains: string[]
-    storeUrl: string | null
     shopName: string
 }
 
@@ -22,14 +21,12 @@ export const useUrlSyncStatus = ({
     helpCenterId,
     existingUrls,
     helpCenterCustomDomains,
-    storeUrl,
     shopName,
 }: UseUrlSyncStatusParams) => {
     const { latestUrlIngestionLog, urlIngestionLogs } = useSyncUrl({
         helpCenterId,
         existingUrls,
         helpCenterCustomDomains,
-        storeUrl,
         shopName,
     })
 

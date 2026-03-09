@@ -52,7 +52,6 @@ export const useKnowledgeHub = () => {
         helpCenterId: snippetHelpCenterId || 0,
         existingUrls,
         helpCenterCustomDomains: helpCenterCustomDomains || [],
-        storeUrl,
         shopName,
     })
 
@@ -78,7 +77,6 @@ export const useKnowledgeHub = () => {
         guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
         storeDomainIngestionLog,
-        storeUrl,
         urlSyncStatus,
         syncingUrls,
         urlIngestionLogs,

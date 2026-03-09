@@ -61,18 +61,6 @@ export const isUrlFromGorgiasHelpCenter = (
     }
 }
 
-export const isUrlFromStoreDomain = (url: string, storeUrl: string | null) => {
-    if (!storeUrl) return false
-
-    try {
-        const urlObj = new URL(url)
-        const storeUrlObj = new URL(storeUrl)
-        return urlObj.hostname === storeUrlObj.hostname
-    } catch {
-        return false
-    }
-}
-
 const DOCUMENT_EXTENSIONS = new Set([
     'pdf',
     'doc',
@@ -108,7 +96,6 @@ export const getUrlValidationError = (
     url: string,
     existingUrls: string[],
     helpCenterCustomDomains: string[],
-    storeUrl: string | null,
     existingUrlLink?: string,
 ): React.ReactNode => {
     if (!url) {
@@ -126,11 +113,6 @@ export const getUrlValidationError = (
     )
     if (isGorgiasHelpCenterUrl) {
         return 'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.'
-    }
-
-    const isStoreDomainUrl = isUrlFromStoreDomain(url, storeUrl)
-    if (isStoreDomainUrl) {
-        return 'URL cannot be from your store website'
     }
 
     const isRootUrl = isUrlRoot(url)
@@ -179,7 +161,6 @@ type Props = {
     helpCenterId: number
     existingUrls: string[]
     helpCenterCustomDomains: string[]
-    storeUrl: string | null
     shopName: string
 }
 
@@ -187,7 +168,6 @@ export const useSyncUrl = ({
     helpCenterId,
     existingUrls,
     helpCenterCustomDomains,
-    storeUrl,
     shopName,
 }: Props) => {
     const queryClient = useQueryClient()
@@ -246,11 +226,10 @@ export const useSyncUrl = ({
                 url,
                 existingUrls,
                 helpCenterCustomDomains,
-                storeUrl,
                 existingUrlLink,
             )
         },
-        [existingUrls, helpCenterCustomDomains, storeUrl, routes.knowledge],
+        [existingUrls, helpCenterCustomDomains, routes.knowledge],
     )
 
     const syncUrl = useCallback(

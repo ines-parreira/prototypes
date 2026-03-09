@@ -76,7 +76,6 @@ describe('SyncUrlModal', () => {
     const defaultProps = {
         helpCenterId: 1,
         existingUrls: [] as string[],
-        storeUrl: null,
     }
 
     beforeEach(() => {

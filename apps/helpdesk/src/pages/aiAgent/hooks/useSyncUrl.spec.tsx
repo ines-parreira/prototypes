@@ -13,7 +13,6 @@ import {
     getUrlValidationError,
     hasAnchorTag,
     isUrlFromGorgiasHelpCenter,
-    isUrlFromStoreDomain,
     isUrlRoot,
     isUrlValid,
     isUrlWithDocumentExtension,
@@ -162,50 +161,6 @@ describe('useSyncUrl', () => {
         })
     })
 
-    describe('isUrlFromStoreDomain', () => {
-        it('returns true when URL matches store domain', () => {
-            expect(
-                isUrlFromStoreDomain(
-                    'https://store.com/page',
-                    'https://store.com',
-                ),
-            ).toBe(true)
-            expect(
-                isUrlFromStoreDomain(
-                    'https://store.com/products/123',
-                    'https://store.com/different-path',
-                ),
-            ).toBe(true)
-        })
-
-        it('returns false when URL does not match store domain', () => {
-            expect(
-                isUrlFromStoreDomain('https://other.com', 'https://store.com'),
-            ).toBe(false)
-            expect(
-                isUrlFromStoreDomain('https://store.com', 'https://other.com'),
-            ).toBe(false)
-        })
-
-        it('returns false when storeUrl is null', () => {
-            expect(isUrlFromStoreDomain('https://example.com', null)).toBe(
-                false,
-            )
-        })
-
-        it('returns false for invalid URL', () => {
-            expect(isUrlFromStoreDomain('not a url', 'https://store.com')).toBe(
-                false,
-            )
-        })
-
-        it('returns false when storeUrl is invalid', () => {
-            expect(
-                isUrlFromStoreDomain('https://example.com', 'not a url'),
-            ).toBe(false)
-        })
-    })
-
     describe('isUrlWithDocumentExtension', () => {
         it('returns true for PDF', () => {
             expect(
@@ -299,22 +254,16 @@ describe('useSyncUrl', () => {
     describe('getUrlValidationError', () => {
         const mockExistingUrls = ['https://existing.com']
         const mockCustomDomains = ['help.example.com']
-        const mockStoreUrl = 'https://store.com'
 
         it('returns error for empty URL', () => {
-            expect(
-                getUrlValidationError('', [], mockCustomDomains, mockStoreUrl),
-            ).toBe('URL is required')
+            expect(getUrlValidationError('', [], mockCustomDomains)).toBe(
+                'URL is required',
+            )
         })
 
         it('returns error for invalid URL', () => {
             expect(
-                getUrlValidationError(
-                    'not a url',
-                    [],
-                    mockCustomDomains,
-                    mockStoreUrl,
-                ),
+                getUrlValidationError('not a url', [], mockCustomDomains),
             ).toBe('Invalid URL')
         })
 
@@ -324,7 +273,6 @@ describe('useSyncUrl', () => {
                     'https://store.gorgias.help/article',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe(
                 'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
@@ -337,22 +285,20 @@ describe('useSyncUrl', () => {
                     'https://help.example.com/article',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe(
                 'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
             )
         })
 
-        it('returns error for store domain URL', () => {
+        it('allows store domain URLs', () => {
             expect(
                 getUrlValidationError(
                     'https://store.com/products',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
-            ).toBe('URL cannot be from your store website')
+            ).toBeNull()
         })
 
         it('returns error for root URL', () => {
@@ -361,7 +307,6 @@ describe('useSyncUrl', () => {
                     'https://example.com',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('URL must include a subpage (ie. www.example.com/faqs)')
             expect(
@@ -369,7 +314,6 @@ describe('useSyncUrl', () => {
                     'https://example.com/',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('URL must include a subpage (ie. www.example.com/faqs)')
         })
@@ -382,7 +326,6 @@ describe('useSyncUrl', () => {
                 'https://existing.com/page',
                 existingUrlsWithPath,
                 mockCustomDomains,
-                mockStoreUrl,
                 mockExistingUrlLink,
             )
 
@@ -408,7 +351,6 @@ describe('useSyncUrl', () => {
                     'https://new.com/page',
                     tenUrls,
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('Maximum 10 URLs allowed')
         })
@@ -419,7 +361,6 @@ describe('useSyncUrl', () => {
                     'https://example.com/doc.pdf',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('URL cannot be a document')
             expect(
@@ -427,7 +368,6 @@ describe('useSyncUrl', () => {
                     'https://example.com/file.docx',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('URL cannot be a document')
         })
@@ -438,7 +378,6 @@ describe('useSyncUrl', () => {
                     'https://example.com/page#section',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe(
                 "URLs with # anchors aren't supported. We'll sync the full page content instead of just that section.",
@@ -451,7 +390,6 @@ describe('useSyncUrl', () => {
                     'https://valid.com/page',
                     [],
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBeNull()
         })
@@ -462,19 +400,16 @@ describe('useSyncUrl', () => {
                     'not a url',
                     mockExistingUrls,
                     mockCustomDomains,
-                    mockStoreUrl,
                 ),
             ).toBe('Invalid URL')
         })
 
-        it('validates in correct order - checks help center before store domain', () => {
-            const helpCenterStoreUrl = 'https://store.gorgias.help'
+        it('validates in correct order - checks help center before other validations', () => {
             expect(
                 getUrlValidationError(
                     'https://store.gorgias.help/article',
                     [],
                     mockCustomDomains,
-                    helpCenterStoreUrl,
                 ),
             ).toBe(
                 'Help Center links are not supported. You can manage Help Center articles separately in Knowledge.',
@@ -486,7 +421,6 @@ describe('useSyncUrl', () => {
         const mockHelpCenterId = 123
         const mockExistingUrls = ['https://existing.com']
         const mockCustomDomains = ['help.example.com']
-        const mockStoreUrl = 'https://store.com'
 
         const mockIngestionLogs = [
             {
@@ -551,7 +485,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -569,7 +502,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -587,7 +519,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -604,7 +535,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -621,7 +551,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -640,7 +569,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: existingUrlsWithPath,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -662,7 +590,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -688,7 +615,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -716,7 +642,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -748,7 +673,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -783,7 +707,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -810,7 +733,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -833,7 +755,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -849,7 +770,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -872,7 +792,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -909,7 +828,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },
@@ -932,7 +850,6 @@ describe('useSyncUrl', () => {
                         helpCenterId: mockHelpCenterId,
                         existingUrls: mockExistingUrls,
                         helpCenterCustomDomains: mockCustomDomains,
-                        storeUrl: mockStoreUrl,
                         shopName: 'test-shop',
                     }),
                 { wrapper: createWrapper() },

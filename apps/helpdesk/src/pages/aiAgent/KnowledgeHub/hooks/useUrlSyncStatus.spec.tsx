@@ -39,7 +39,6 @@ describe('useUrlSyncStatus', () => {
         helpCenterId: 1,
         existingUrls: [],
         helpCenterCustomDomains: [],
-        storeUrl: null,
         shopName: 'test-shop',
     }
 
