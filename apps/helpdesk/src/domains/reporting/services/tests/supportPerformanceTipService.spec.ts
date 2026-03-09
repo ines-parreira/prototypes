@@ -1,3 +1,5 @@
+import { PlanName } from '@repo/billing-utils'
+
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { MetricName } from 'domains/reporting/services/constants'
 import type { Tip } from 'domains/reporting/services/supportPerformanceTipService'
@@ -9,7 +11,6 @@ import {
     TipQualifier,
     tips,
 } from 'domains/reporting/services/supportPerformanceTipService'
-import { PlanName } from 'utils/paywalls'
 
 describe('SupportPerformanceTipService', () => {
     const lowerIsBetterMetric = MetricName.MessagesPerTicket

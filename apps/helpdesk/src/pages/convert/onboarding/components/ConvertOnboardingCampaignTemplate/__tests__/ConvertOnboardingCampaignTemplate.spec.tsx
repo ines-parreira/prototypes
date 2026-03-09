@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { PlanName } from '@repo/billing-utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -12,7 +13,6 @@ import { billingState } from 'fixtures/billing'
 import type { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { PlanName } from 'utils/paywalls'
 
 import ConvertOnboardingCampaignTemplate from '../ConvertOnboardingCampaignTemplate'
 

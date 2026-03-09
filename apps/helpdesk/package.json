@@ -100,6 +100,7 @@
         "@knocklabs/react": "^0.7.31",
         "@reduxjs/toolkit": "^1.9.7",
         "@repo/agent-status": "workspace:*",
+        "@repo/billing-utils": "workspace:*",
         "@repo/browser-storage": "workspace:*",
         "@repo/customer": "workspace:*",
         "@repo/ecommerce": "workspace:*",

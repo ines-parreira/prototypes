@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 
@@ -11,7 +12,6 @@ import { submitSetting } from 'state/currentAccount/actions'
 import { getInTicketSuggestionSettings } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
 import { getTopRankMacroState } from 'state/ticket/selectors'
-import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
 

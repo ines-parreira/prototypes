@@ -1,0 +1,28 @@
+{
+    "name": "@repo/billing-utils",
+    "version": "1.0.0",
+    "description": "Shared billing utilities for the monorepo",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/billing-utils --no-progress",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "devDependencies": {
+        "@repo/config": "workspace:*",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@vitest/coverage-v8": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

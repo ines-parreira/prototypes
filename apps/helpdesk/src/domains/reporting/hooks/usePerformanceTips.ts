@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
+
 import type { MetricName } from 'domains/reporting/services/constants'
 import type { Tip } from 'domains/reporting/services/supportPerformanceTipService'
 import { getPerformanceTip } from 'domains/reporting/services/supportPerformanceTipService'
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
-import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 export const usePerformanceTips = (
     metric: MetricName,

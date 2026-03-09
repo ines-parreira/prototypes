@@ -1,3 +1,4 @@
+import { PlanName } from '@repo/billing-utils'
 import type { List as ImmutableList, Map } from 'immutable'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
@@ -14,7 +15,6 @@ import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
 import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getIntegrationConfig } from 'state/integrations/helpers'
-import { PlanName } from 'utils/paywalls'
 
 import Create from './Create'
 import Integration from './Integration'

@@ -1,8 +1,8 @@
+import type { PlanName } from '@repo/billing-utils'
 import _findLastIndex from 'lodash/findLastIndex'
 
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { MetricName } from 'domains/reporting/services/constants'
-import type { PlanName } from 'utils/paywalls'
 
 type MetricBaseline = [number, number]
 

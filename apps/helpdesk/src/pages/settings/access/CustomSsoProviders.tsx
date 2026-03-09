@@ -1,3 +1,4 @@
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
 import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -7,7 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
 import type { CustomSSOProviders } from 'state/currentAccount/types'
 
-import { convertLegacyPlanNameToPublicPlanName } from '../../../utils/paywalls'
 import CustomSsoProviderModal from './components/CustomSsoProviderModal'
 import ProviderItem from './components/ProviderItem'
 import { useCustomSsoProviderModalState } from './hooks'

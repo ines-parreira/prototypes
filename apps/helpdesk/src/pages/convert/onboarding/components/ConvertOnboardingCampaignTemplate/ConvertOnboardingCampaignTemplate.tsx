@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
 import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -10,7 +11,6 @@ import { CampaignTemplateLabelType } from 'pages/convert/campaigns/templates/typ
 import type { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
 import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
-import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
 

@@ -1,3 +1,5 @@
+import { getCheapestPlanNameForFeature } from '@repo/billing-utils'
+
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -11,7 +13,6 @@ import type {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
-import { getCheapestPlanNameForFeature } from 'utils/paywalls'
 
 import type { PaywallTheme } from '../Paywall/Paywall'
 import Paywall, { UpgradeType } from '../Paywall/Paywall'

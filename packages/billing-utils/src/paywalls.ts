@@ -1,10 +1,3 @@
-import type { AutomatePlan, HelpdeskPlan } from '../models/billing/types'
-import { Cadence } from '../models/billing/types'
-import type {
-    AccountFeature,
-    AccountFeatureMetadata,
-} from '../state/currentAccount/types'
-
 export enum PlanName {
     Starter = 'Starter',
     Basic = 'Basic',
@@ -13,6 +6,23 @@ export enum PlanName {
     Enterprise = 'Enterprise',
     Custom = 'Custom',
     Free = 'Free',
+}
+
+export enum Cadence {
+    Month = 'month',
+    Quarter = 'quarter',
+    Year = 'year',
+}
+
+type PlanFeatureMetadata = {
+    enabled?: boolean
+}
+
+type PlanWithFeatures = {
+    cadence: string
+    features: Record<string, PlanFeatureMetadata | undefined>
+    amount: number
+    name: string
 }
 
 export const convertLegacyPlanNameToPublicPlanName = (
@@ -37,20 +47,12 @@ export const convertLegacyPlanNameToPublicPlanName = (
 }
 
 export const getCheapestPlanNameForFeature = (
-    featureName: AccountFeature,
-    plans: (HelpdeskPlan | AutomatePlan)[],
+    featureName: string,
+    plans: readonly PlanWithFeatures[],
 ) => {
     return plans
         .filter((plan) => plan.cadence === Cadence.Month)
-        .filter(
-            (plan) =>
-                (
-                    plan.features as Record<
-                        AccountFeature,
-                        AccountFeatureMetadata
-                    >
-                )[featureName]?.enabled,
-        )
+        .filter((plan) => plan.features[featureName]?.enabled)
         .sort((a, b) => a.amount - b.amount)
         .find(() => true)?.name
 }

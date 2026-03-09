@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
+import { getCheapestPlanNameForFeature } from '@repo/billing-utils'
 import { useTitle } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -33,7 +34,6 @@ import {
 import type { IntegrationListItem } from 'state/integrations/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { getCheapestPlanNameForFeature } from 'utils/paywalls'
 
 import Card from './Card'
 import CardsWrapper from './CardsWrapper'

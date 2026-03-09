@@ -1,3 +1,4 @@
+import { PlanName } from '@repo/billing-utils'
 import { ulid } from 'ulidx'
 
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
@@ -6,7 +7,6 @@ import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/Cam
 import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
 import { assetsUrl } from 'utils'
-import { PlanName } from 'utils/paywalls'
 
 import { CampaignConfigurationBuilder } from '../constructor'
 import type { CampaignConfiguration, CampaignTemplate } from '../types'
