@@ -300,6 +300,44 @@ describe('OrderSidePanelPreview', () => {
     })
 })
 
+describe('OrderSidePanelPreview — footer View Order link', () => {
+    it('renders View Order link with correct href when order_status_url is provided', async () => {
+        const orderStatusUrl = 'https://example.myshopify.com/orders/abc123'
+
+        render(
+            <OrderSidePanelPreview
+                order={{ ...mockOrder, order_status_url: orderStatusUrl }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        const link = await screen.findByRole('link', { name: /view order/i })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', orderStatusUrl)
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('does not render View Order link when order_status_url is absent', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('link', { name: /view order/i }),
+        ).not.toBeInTheDocument()
+    })
+})
+
 describe('OrderSidePanelPreview — Order Details section', () => {
     beforeEach(() => {
         server.use(shopOrderTagsHandler, metafieldsHandler, definitionsHandler)

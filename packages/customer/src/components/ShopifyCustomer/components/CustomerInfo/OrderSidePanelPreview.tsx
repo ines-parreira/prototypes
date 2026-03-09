@@ -83,27 +83,45 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
 
-            {(onNavigatePrevious || onNavigateNext) && (
+            {(onNavigatePrevious ||
+                onNavigateNext ||
+                order.order_status_url) && (
                 <OverlayFooter hideCancelButton>
                     <div className={css.footer}>
-                        <Box gap="xxxs" padding="lg">
-                            <Button
-                                variant="secondary"
-                                isDisabled={!hasPrevious}
-                                onClick={onNavigatePrevious}
-                                aria-label="Previous order"
-                            >
-                                <Icon name="arrow-chevron-left" />
-                            </Button>
-                            <Button
-                                variant="secondary"
-                                isDisabled={!hasNext}
-                                onClick={onNavigateNext}
-                                aria-label="Next order"
-                            >
-                                <Icon name="arrow-chevron-right" />
-                            </Button>
-                        </Box>
+                        {order.order_status_url && (
+                            <Box mr="xs">
+                                <Button
+                                    as="a"
+                                    href={order.order_status_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    variant="secondary"
+                                    trailingSlot={<Icon name="external-link" />}
+                                >
+                                    View Order
+                                </Button>
+                            </Box>
+                        )}
+                        {(onNavigatePrevious || onNavigateNext) && (
+                            <Box gap="xs">
+                                <Button
+                                    variant="secondary"
+                                    isDisabled={!hasPrevious}
+                                    onClick={onNavigatePrevious}
+                                    aria-label="Previous order"
+                                >
+                                    <Icon name="arrow-chevron-left" />
+                                </Button>
+                                <Button
+                                    variant="secondary"
+                                    isDisabled={!hasNext}
+                                    onClick={onNavigateNext}
+                                    aria-label="Next order"
+                                >
+                                    <Icon name="arrow-chevron-right" />
+                                </Button>
+                            </Box>
+                        )}
                     </div>
                 </OverlayFooter>
             )}
