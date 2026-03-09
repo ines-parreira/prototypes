@@ -4,6 +4,8 @@ import { HttpResponse } from 'msw'
 import {
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
+    mockListUsersHandler,
+    mockListUsersResponse,
 } from '@gorgias/helpdesk-mocks'
 
 import {
@@ -90,6 +92,17 @@ describe('TicketThreadEventItem', () => {
                     }),
                 ),
             ).handler,
+            mockListUsersHandler(async () =>
+                HttpResponse.json(
+                    mockListUsersResponse({
+                        data: [],
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    }),
+                ),
+            ).handler,
         )
     })
 
@@ -114,7 +127,7 @@ describe('TicketThreadEventItem', () => {
                 data: phoneEventData,
                 datetime: '2024-03-21T11:00:00Z',
             },
-            renderedText: JSON.stringify(phoneEventData),
+            renderedText: 'Phone conversation started',
         },
         {
             label: 'audit log event',
@@ -204,7 +217,7 @@ describe('TicketThreadEventItem', () => {
             screen.getByText(JSON.stringify(firstEventData)),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(JSON.stringify(secondEventData)),
+            screen.getByText('Call forwarded to an external number'),
         ).toBeInTheDocument()
         expect(container.firstChild).toHaveStyle({ gap: '4px' })
     })

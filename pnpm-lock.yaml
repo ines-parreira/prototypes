@@ -2842,6 +2842,9 @@ importers:
       classnames:
         specifier: catalog:styles
         version: 2.2.6
+      libphonenumber-js:
+        specifier: catalog:libphonenumber
+        version: 1.12.25
       msw:
         specifier: catalog:test
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)

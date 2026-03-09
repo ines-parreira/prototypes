@@ -163,13 +163,7 @@ function getFallbackOrderToken(
         return null
     }
 
-    if (fallbackLabel.startsWith('#')) {
-        return {
-            label: fallbackLabel,
-        }
-    }
-
-    if (fallbackLabel.includes(' ')) {
+    if (fallbackLabel.startsWith('#') || fallbackLabel.includes(' ')) {
         return {
             label: fallbackLabel,
         }

@@ -61,6 +61,54 @@ export type RuleExecutedEventWithContextSchema = z.infer<
 
 export const phoneEventSchema = ticketEventSchema.extend({
     type: z.enum(PHONE_EVENTS),
+    data: z
+        .object({
+            phone_ticket_id: z.union([z.string(), z.number()]).optional(),
+            customer: z
+                .object({
+                    name: z.string().optional(),
+                    phone_number: z.string().optional(),
+                })
+                .passthrough()
+                .optional(),
+            call: z
+                .object({
+                    selected_menu_option: z
+                        .object({
+                            forward_call: z
+                                .object({
+                                    phone_number: z.string().optional(),
+                                })
+                                .passthrough()
+                                .optional(),
+                            voice_message: z
+                                .object({
+                                    voice_message_type: z.string().optional(),
+                                    new_voice_recording_file_name: z
+                                        .string()
+                                        .optional(),
+                                    text_to_speech_content: z
+                                        .string()
+                                        .optional(),
+                                })
+                                .passthrough()
+                                .optional(),
+                        })
+                        .passthrough()
+                        .optional(),
+                })
+                .passthrough()
+                .optional(),
+            forwarded_to: z.string().optional(),
+        })
+        .passthrough()
+        .optional(),
+    user: z
+        .object({
+            name: z.string().optional(),
+        })
+        .passthrough()
+        .optional(),
 })
 export type PhoneEventSchema = z.infer<typeof phoneEventSchema>
 

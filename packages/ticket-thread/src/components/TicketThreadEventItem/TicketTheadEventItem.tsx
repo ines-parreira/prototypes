@@ -9,6 +9,7 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { TicketThreadActionExecutedEventItem } from './components/TicketThreadActionExecutedEvents/TicketThreadActionExecutedEventItem'
 import { TicketThreadAuditLogEventItem } from './components/TicketThreadAuditLogEvents/TicketThreadAuditLogEventItem'
+import { TicketThreadPhoneEventItem } from './components/TicketThreadPhoneEvents/TicketThreadPhoneEventItem'
 
 type TicketThreadSingleEventItemProps = {
     item: Exclude<TicketThreadEventItem, TicketThreadGroupedEventsItem>
@@ -21,7 +22,7 @@ export function TicketThreadSingleEventItem({
         case TicketThreadItemTag.Events.TicketEvent:
             return <Box padding="md">{JSON.stringify(item.data)}</Box>
         case TicketThreadItemTag.Events.PhoneEvent:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
+            return <TicketThreadPhoneEventItem item={item} />
         case TicketThreadItemTag.Events.AuditLogEvent:
             return <TicketThreadAuditLogEventItem item={item} />
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:

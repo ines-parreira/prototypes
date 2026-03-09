@@ -3,6 +3,7 @@ import {
     isActionExecutedEvent,
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
+    isPhoneEvent,
     isPrivateReplyEvent,
     isRuleExecutedType,
     isSystemRuleEvent,
@@ -61,6 +62,51 @@ describe('ticket thread event predicates', () => {
         expect(toTaggedEvent(event as any)).toMatchObject({
             _tag: TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent,
         })
+    })
+
+    it('keeps valid phone events renderable with structured phone payload', () => {
+        const event = {
+            ...baseEvent,
+            type: 'phone-call-forwarded-to-external-number',
+            data: {
+                phone_ticket_id: 123,
+                customer: {
+                    name: 'Customer Name',
+                    phone_number: '+14567654985',
+                },
+                call: {
+                    selected_menu_option: {
+                        forward_call: {
+                            phone_number: '+14567654985',
+                        },
+                    },
+                },
+            },
+            user: {
+                name: 'Agent Name',
+            },
+        }
+
+        expect(isPhoneEvent(event)).toBe(true)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(true)
+        expect(toTaggedEvent(event as any)).toMatchObject({
+            _tag: TicketThreadItemTag.Events.PhoneEvent,
+        })
+    })
+
+    it('filters phone events with invalid structured phone payload', () => {
+        const event = {
+            ...baseEvent,
+            type: 'phone-call-forwarded-to-external-number',
+            data: {
+                customer: {
+                    name: 123,
+                },
+            },
+        }
+
+        expect(isPhoneEvent(event)).toBe(false)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(false)
     })
 
     it('filters out unknown events without renderable metadata', () => {

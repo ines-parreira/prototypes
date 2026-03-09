@@ -4,9 +4,12 @@ import { HttpResponse } from 'msw'
 import {
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
+    mockListUsersHandler,
+    mockListUsersResponse,
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
+import { PHONE_EVENTS } from '../../../hooks/events/constants'
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { render } from '../../../tests/render.utils'
@@ -25,6 +28,17 @@ beforeEach(() => {
         mockListIntegrationsHandler(async () =>
             HttpResponse.json(
                 mockListIntegrationsResponse({
+                    data: [],
+                    meta: {
+                        prev_cursor: null,
+                        next_cursor: null,
+                    },
+                }),
+            ),
+        ).handler,
+        mockListUsersHandler(async () =>
+            HttpResponse.json(
+                mockListUsersResponse({
                     data: [],
                     meta: {
                         prev_cursor: null,
@@ -56,6 +70,10 @@ const eventData = {
     type: 'ticket-updated',
     data: { action_name: 'setStatus' },
 }
+const phoneEventData = {
+    object_type: 'Ticket',
+    type: PHONE_EVENTS[0],
+} as const
 const voiceCallData = { id: 1, status: 'completed' }
 const satisfactionSurveyData = { score: 5 }
 const ruleSuggestionData = { rule_suggestion: { id: 1 } }
@@ -133,7 +151,7 @@ describe('TicketThreadItem', () => {
                 },
                 {
                     _tag: TicketThreadItemTag.Events.PhoneEvent,
-                    data: { ...eventData, type: 'phone' },
+                    data: phoneEventData,
                     datetime: '2024-03-21T11:00:01Z',
                 },
             ],
@@ -141,7 +159,7 @@ describe('TicketThreadItem', () => {
 
         expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
         expect(
-            screen.getByText(JSON.stringify({ ...eventData, type: 'phone' })),
+            screen.getByText('Phone conversation started'),
         ).toBeInTheDocument()
     })
 
