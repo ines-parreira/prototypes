@@ -2,11 +2,13 @@ import { z } from 'zod'
 
 import type { AUDIT_LOG_EVENT_TYPES } from './constants'
 import {
+    ACTION_EXECUTED_EVENT_TYPE,
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
     InfluencedOrderSource,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
     PHONE_EVENTS,
     PRIVATE_REPLY_ACTIONS,
+    RENDERABLE_ACTION_EXECUTED_ACTIONS,
     SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
     SYSTEM_RULE_TYPE,
 } from './constants'
@@ -254,6 +256,166 @@ export const privateReplyActionEventSchema = ticketEventSchema.extend({
 })
 export type PrivateReplyActionEventSchema = z.infer<
     typeof privateReplyActionEventSchema
+>
+
+export const renderableActionExecutedActionNameSchema = z.enum(
+    RENDERABLE_ACTION_EXECUTED_ACTIONS,
+)
+export type RenderableActionExecutedActionNameSchema = z.infer<
+    typeof renderableActionExecutedActionNameSchema
+>
+
+const shopifyActionExecutedPayloadSchema = z
+    .object({
+        order_id: z.number().optional(),
+        draft_order_id: z.number().optional(),
+        draft_order_name: z.string().optional(),
+        item_id: z.number().optional(),
+        quantity: z.number().optional(),
+        tags_list: z.string().optional(),
+        note: z.string().optional(),
+    })
+    .passthrough()
+
+const rechargeActionExecutedPayloadSchema = z
+    .object({
+        subscription_id: z.number().optional(),
+        charge_id: z.number().optional(),
+    })
+    .passthrough()
+
+const bigCommerceActionExecutedPayloadSchema = z
+    .object({
+        bigcommerce_order_id: z.number().optional(),
+        bigcommerce_checkout_id: z.union([z.string(), z.number()]).optional(),
+    })
+    .passthrough()
+
+const customHttpActionExecutedPayloadSchema = z.object({}).passthrough()
+
+const actionExecutedEventDataBaseSchema = z
+    .object({
+        action_id: z.string().optional(),
+        action_name: renderableActionExecutedActionNameSchema,
+        action_label: z.string().nullable().optional(),
+        app_id: z.union([z.string(), z.number()]).nullable().optional(),
+        integration_id: z.union([z.string(), z.number()]).nullable().optional(),
+        payload: z.object({}).passthrough(),
+        status: z.string().optional(),
+        msg: z.string().optional(),
+    })
+    .passthrough()
+
+const createActionExecutedEventDataSchema = <
+    TActionName extends RenderableActionExecutedActionNameSchema,
+>(
+    actionName: TActionName,
+    payloadSchema: z.ZodTypeAny,
+) =>
+    actionExecutedEventDataBaseSchema.extend({
+        action_name: z.literal(actionName),
+        payload: payloadSchema,
+    })
+
+export const actionExecutedEventSchema = ticketEventSchema.extend({
+    type: z.literal(ACTION_EXECUTED_EVENT_TYPE),
+    data: z.discriminatedUnion('action_name', [
+        createActionExecutedEventDataSchema(
+            'shopifyRefundShippingCostOfOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyCancelOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyRefundOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyFullRefundOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyCreateOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyDuplicateOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifySendDraftOrderInvoice',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyPartialRefundOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyUpdateOrderTags',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyUpdateCustomerTags',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyEditOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyEditShippingAddressOfOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'shopifyEditNoteOfOrder',
+            shopifyActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'bigcommerceCreateOrder',
+            bigCommerceActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'bigcommerceDuplicateOrder',
+            bigCommerceActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'bigcommerceRefundOrder',
+            bigCommerceActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeCancelSubscription',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeActivateSubscription',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeSkipCharge',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeUnskipCharge',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeRefundCharge',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'rechargeRefundOrder',
+            rechargeActionExecutedPayloadSchema,
+        ),
+        createActionExecutedEventDataSchema(
+            'customHttpAction',
+            customHttpActionExecutedPayloadSchema,
+        ),
+    ]),
+})
+export type ActionExecutedEventSchema = z.infer<
+    typeof actionExecutedEventSchema
 >
 
 export const actionNameEventSchema = ticketEventSchema.extend({

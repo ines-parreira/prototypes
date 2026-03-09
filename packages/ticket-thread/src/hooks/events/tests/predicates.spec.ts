@@ -1,5 +1,6 @@
 import { TicketThreadItemTag } from '../../types'
 import {
+    isActionExecutedEvent,
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
     isPrivateReplyEvent,
@@ -72,16 +73,59 @@ describe('ticket thread event predicates', () => {
         expect(shouldRenderTicketThreadEvent(event as any)).toBe(false)
     })
 
-    it('keeps action events with a known action_name payload shape', () => {
+    it('keeps whitelisted action-executed events with valid payload shape', () => {
+        const event = {
+            ...baseEvent,
+            type: 'action-executed',
+            id: 24428826278,
+            isEvent: true,
+            data: {
+                action_id:
+                    'shopifyUpdateCustomerTags-360037000-33858-e4fd6c5d6f814f192458ff177d5d62b8101f1c90',
+                action_label: null,
+                action_name: 'shopifyUpdateCustomerTags',
+                app_id: null,
+                integration_id: 33858,
+                payload: {
+                    tags_list:
+                        'a, ad, Canada, CupShe, ff, United States, action_t',
+                },
+                status: 'success',
+            },
+        }
+
+        expect(isActionExecutedEvent(event)).toBe(true)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(true)
+    })
+
+    it('filters out action events when type is not action-executed', () => {
         const event = {
             ...baseEvent,
             type: 'ticket-updated',
             data: {
-                action_name: 'setStatus',
+                action_name: 'shopifyUpdateCustomerTags',
+                payload: {
+                    tags_list: 'a,b',
+                },
             },
         }
 
-        expect(shouldRenderTicketThreadEvent(event as any)).toBe(true)
+        expect(isActionExecutedEvent(event)).toBe(false)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(false)
+    })
+
+    it('filters out action-executed events with unknown action_name', () => {
+        const event = {
+            ...baseEvent,
+            type: 'action-executed',
+            data: {
+                action_name: 'setStatus',
+                payload: {},
+            },
+        }
+
+        expect(isActionExecutedEvent(event)).toBe(false)
+        expect(shouldRenderTicketThreadEvent(event as any)).toBe(false)
     })
 
     it('identifies typed audit log payloads as renderable audit log events', () => {
@@ -113,12 +157,14 @@ describe('ticket thread event predicates', () => {
     it('filters out action events when action_name is not a string', () => {
         const event = {
             ...baseEvent,
-            type: 'ticket-updated',
+            type: 'action-executed',
             data: {
                 action_name: 123,
+                payload: {},
             },
         }
 
+        expect(isActionExecutedEvent(event)).toBe(false)
         expect(shouldRenderTicketThreadEvent(event as any)).toBe(false)
     })
 

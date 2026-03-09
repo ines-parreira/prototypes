@@ -1,10 +1,16 @@
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockListIntegrationsHandler,
+    mockListIntegrationsResponse,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
 
@@ -15,6 +21,19 @@ vi.mock('../../../utils/LegacyBridge', () => ({
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
+    server.use(
+        mockListIntegrationsHandler(async () =>
+            HttpResponse.json(
+                mockListIntegrationsResponse({
+                    data: [],
+                    meta: {
+                        prev_cursor: null,
+                        next_cursor: null,
+                    },
+                }),
+            ),
+        ).handler,
+    )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         datetimeFormat: 'YYYY-MM-DD',
         currentTicketShoppingAssistantData: {
@@ -40,6 +59,22 @@ const eventData = {
 const voiceCallData = { id: 1, status: 'completed' }
 const satisfactionSurveyData = { score: 5 }
 const ruleSuggestionData = { rule_suggestion: { id: 1 } }
+const actionExecutedEventData = {
+    object_type: 'Ticket',
+    type: 'action-executed',
+    created_datetime: '2024-03-21T11:00:00Z',
+    data: {
+        action_id: 'shopifyRefundOrder-1-33858-abc',
+        action_label: null,
+        action_name: 'shopifyRefundOrder',
+        app_id: null,
+        integration_id: null,
+        payload: {
+            order_id: 360037000,
+        },
+        status: 'success',
+    },
+}
 
 function renderItem(item: TicketThreadItem) {
     return render(<TicketThreadItemComponent item={item} />)
@@ -74,6 +109,16 @@ describe('TicketThreadItem', () => {
         } as TicketThreadItem)
 
         expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+    })
+
+    it('renders an action executed event item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+            data: actionExecutedEventData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadItem)
+
+        expect(screen.getByText('Refund order')).toBeInTheDocument()
     })
 
     it('renders a merged events item', () => {

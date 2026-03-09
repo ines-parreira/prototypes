@@ -36,6 +36,7 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Events.TicketEvent:
         case TicketThreadItemTag.Events.PhoneEvent:
         case TicketThreadItemTag.Events.AuditLogEvent:
+        case TicketThreadItemTag.Events.ActionExecutedEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent:
         case TicketThreadItemTag.Events.ShoppingAssistantEvent:

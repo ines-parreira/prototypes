@@ -90,7 +90,7 @@ function getAuditLogItemByType(
 }
 
 describe('useTicketThreadEvents', () => {
-    it('applies legacy-equivalent event filtering and merges shopping assistant events', async () => {
+    it('applies strict action-executed filtering and merges shopping assistant events', async () => {
         const mockListEvents = getEventsHandler([
             mockEvent({
                 object_type: 'ticket',
@@ -137,6 +137,23 @@ describe('useTicketThreadEvents', () => {
                     action_name: 'setStatus',
                 },
             } as any),
+            mockEvent({
+                object_type: 'ticket',
+                created_datetime: '2024-03-21T11:05:00Z',
+                type: 'action-executed',
+                data: {
+                    action_id:
+                        'shopifyUpdateCustomerTags-360037000-33858-e4fd6c5d6f814f192458ff177d5d62b8101f1c90',
+                    action_label: null,
+                    action_name: 'shopifyUpdateCustomerTags',
+                    app_id: null,
+                    integration_id: 33858,
+                    payload: {
+                        tags_list: 'vip,refund',
+                    },
+                    status: 'success',
+                },
+            } as any),
         ])
         const waitForListEventsRequest = mockListEvents.waitForRequest(server)
 
@@ -160,7 +177,7 @@ describe('useTicketThreadEvents', () => {
         expect(result.current.events.map((event) => event._tag)).toEqual([
             TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent,
             TicketThreadItemTag.Events.PrivateReplyEvent,
-            TicketThreadItemTag.Events.TicketEvent,
+            TicketThreadItemTag.Events.ActionExecutedEvent,
             TicketThreadItemTag.Events.ShoppingAssistantEvent,
         ])
         expect(result.current.hasSatisfactionSurveyRespondedEvent).toBe(true)

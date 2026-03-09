@@ -23,9 +23,9 @@ export function TicketThreadGroupedEventsItem({
                 alignItems="flex-end"
                 justifyContent="flex-end"
             >
-                {item.data.map((event) => (
+                {item.data.map((event, index) => (
                     <TicketThreadSingleEventItem
-                        key={`${event.data.created_datetime}-${event._tag}`}
+                        key={`${event.data.created_datetime}-${event._tag}-${index}`}
                         item={event}
                     />
                 ))}

@@ -7,7 +7,7 @@ import type { TicketThreadItem } from '../types'
 import { TicketThreadItemTag } from '../types'
 import { InfluencedOrderSource } from './constants'
 import {
-    isActionNameEvent,
+    isActionExecutedEvent,
     isAuditLogEvent,
     isInfluencedOrder,
     isPhoneEvent,
@@ -110,6 +110,14 @@ export function toTaggedEvent(
 ): TicketThreadSingleEventItem {
     const datetime = event.created_datetime ?? ''
 
+    if (isActionExecutedEvent(event)) {
+        return {
+            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+            data: event,
+            datetime,
+        }
+    }
+
     if (isShoppingAssistantEvent(event)) {
         return {
             _tag: TicketThreadItemTag.Events.ShoppingAssistantEvent,
@@ -207,6 +215,6 @@ export function shouldRenderTicketThreadEvent(
         isPrivateReplyEvent(event) ||
         isSatisfactionSurveyRespondedEvent(event) ||
         isAuditLogEvent(event) ||
-        isActionNameEvent(event)
+        isActionExecutedEvent(event)
     )
 }

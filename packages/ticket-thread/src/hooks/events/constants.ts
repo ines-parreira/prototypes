@@ -44,6 +44,34 @@ export const PRIVATE_REPLY_ACTIONS = [
     'instagramPrivateReply',
 ] as const
 
+export const ACTION_EXECUTED_EVENT_TYPE = 'action-executed' as const
+
+export const RENDERABLE_ACTION_EXECUTED_ACTIONS = [
+    'shopifyRefundShippingCostOfOrder',
+    'shopifyCancelOrder',
+    'shopifyRefundOrder',
+    'shopifyFullRefundOrder',
+    'shopifyCreateOrder',
+    'shopifyDuplicateOrder',
+    'shopifySendDraftOrderInvoice',
+    'shopifyPartialRefundOrder',
+    'shopifyUpdateOrderTags',
+    'shopifyUpdateCustomerTags',
+    'shopifyEditOrder',
+    'shopifyEditShippingAddressOfOrder',
+    'shopifyEditNoteOfOrder',
+    'bigcommerceCreateOrder',
+    'bigcommerceDuplicateOrder',
+    'bigcommerceRefundOrder',
+    'rechargeCancelSubscription',
+    'rechargeActivateSubscription',
+    'rechargeSkipCharge',
+    'rechargeUnskipCharge',
+    'rechargeRefundCharge',
+    'rechargeRefundOrder',
+    'customHttpAction',
+] as const
+
 export const MESSAGING_TICKET_PRIVATE_REPLY_EVENT =
     'MessagingTicketPrivateReplyEvent'
 export const COMMENT_TICKET_PRIVATE_REPLY_EVENT =

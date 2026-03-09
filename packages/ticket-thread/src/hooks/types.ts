@@ -35,6 +35,7 @@ export const TicketThreadItemTag = {
         TicketEvent: 'ticket-event',
         PhoneEvent: 'phone-event',
         AuditLogEvent: 'audit-log-event',
+        ActionExecutedEvent: 'action-executed-event',
         SatisfactionSurveyRespondedEvent: 'satisfaction-survey-responded-event',
         PrivateReplyEvent: 'private-reply-event',
         ShoppingAssistantEvent: 'shopping-assistant-event',

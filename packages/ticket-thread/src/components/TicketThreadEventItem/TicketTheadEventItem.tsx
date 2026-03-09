@@ -7,6 +7,7 @@ import type {
 } from '../../hooks/events/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
+import { TicketThreadActionExecutedEventItem } from './components/TicketThreadActionExecutedEvents/TicketThreadActionExecutedEventItem'
 import { TicketThreadAuditLogEventItem } from './components/TicketThreadAuditLogEvents/TicketThreadAuditLogEventItem'
 
 type TicketThreadSingleEventItemProps = {
@@ -29,6 +30,8 @@ export function TicketThreadSingleEventItem({
             return <Box padding="md">{JSON.stringify(item.data)}</Box>
         case TicketThreadItemTag.Events.ShoppingAssistantEvent:
             return <Box padding="md">{JSON.stringify(item.data)}</Box>
+        case TicketThreadItemTag.Events.ActionExecutedEvent:
+            return <TicketThreadActionExecutedEventItem item={item} />
         default:
             return assertNever(item)
     }

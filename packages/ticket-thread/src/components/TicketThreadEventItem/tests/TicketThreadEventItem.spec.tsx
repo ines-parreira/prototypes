@@ -1,4 +1,10 @@
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+
+import {
+    mockListIntegrationsHandler,
+    mockListIntegrationsResponse,
+} from '@gorgias/helpdesk-mocks'
 
 import {
     InfluencedOrderSource,
@@ -12,6 +18,7 @@ import type {
 } from '../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { TicketThreadSingleEventItem } from '../TicketTheadEventItem'
 import { TicketThreadGroupedEventsItem } from '../TicketTheadGroupedEventsItem'
 
@@ -44,6 +51,22 @@ const auditLogEventData = {
     data: {},
     created_datetime: '2024-03-21T11:00:00Z',
 } as const
+const actionExecutedEventData = {
+    object_type: 'Ticket',
+    type: 'action-executed',
+    created_datetime: '2024-03-21T11:00:00Z',
+    data: {
+        action_id: 'shopifyRefundOrder-1-33858-abc',
+        action_label: null,
+        action_name: 'shopifyRefundOrder',
+        app_id: null,
+        integration_id: null,
+        payload: {
+            order_id: 360037000,
+        },
+        status: 'success',
+    },
+} as const
 
 function renderItem(item: TicketThreadSingleEventItemType) {
     return render(<TicketThreadSingleEventItem item={item} />)
@@ -54,6 +77,22 @@ function renderGroupedItem(item: TicketThreadGroupedEventsItemType) {
 }
 
 describe('TicketThreadEventItem', () => {
+    beforeEach(() => {
+        server.use(
+            mockListIntegrationsHandler(async () =>
+                HttpResponse.json(
+                    mockListIntegrationsResponse({
+                        data: [],
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    }),
+                ),
+            ).handler,
+        )
+    })
+
     const eventItems: Array<{
         label: string
         item: TicketThreadSingleEventItemType
@@ -115,6 +154,15 @@ describe('TicketThreadEventItem', () => {
                 datetime: '2024-03-21T11:00:00Z',
             },
             renderedText: JSON.stringify(shoppingAssistantEventData),
+        },
+        {
+            label: 'action executed event',
+            item: {
+                _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+                data: actionExecutedEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            },
+            renderedText: 'Refund order',
         },
     ]
 

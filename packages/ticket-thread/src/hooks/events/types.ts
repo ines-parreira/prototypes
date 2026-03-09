@@ -9,6 +9,7 @@ import type {
 } from '../../utils/LegacyBridge'
 import type { TicketThreadItemTag } from '../types'
 import type {
+    ActionExecutedEventSchema,
     AuditLogEventSchema,
     PhoneEventSchema,
     PrivateReplyActionEventSchema,
@@ -75,7 +76,14 @@ export type TicketThreadShoppingAssistantEventItem = {
     datetime: string
 }
 
+export type TicketThreadActionExecutedEventItem = {
+    _tag: typeof TicketThreadItemTag.Events.ActionExecutedEvent
+    data: Prettify<EventWithSchema<ActionExecutedEventSchema>>
+    datetime: string
+}
+
 export type TicketThreadSingleEventItem =
+    | TicketThreadActionExecutedEventItem
     | TicketThreadTicketEventItem
     | TicketThreadPhoneEventItem
     | TicketThreadAuditLogEventItem
