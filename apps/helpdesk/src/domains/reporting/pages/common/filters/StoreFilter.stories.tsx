@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'

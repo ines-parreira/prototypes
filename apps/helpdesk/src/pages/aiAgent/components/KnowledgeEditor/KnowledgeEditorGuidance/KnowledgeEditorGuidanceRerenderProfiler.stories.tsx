@@ -10,7 +10,7 @@ import {
     useState,
 } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import type { GuidanceArticle } from 'pages/aiAgent/types'

@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { BrowserRouter, Link } from 'react-router-dom'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { DisplayType } from './components/NavigationSectionItem'
 import { Navigation } from './Navigation'

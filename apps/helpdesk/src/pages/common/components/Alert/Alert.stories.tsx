@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { Button } from 'reactstrap'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import gorgiasLogo from '@gorgias/branding-assets/favicons/favicon-white.png'
 
@@ -10,6 +10,11 @@ import Alert from './Alert'
 const storyConfig: Meta = {
     title: 'Feedback/Alert',
     component: Alert,
+    globals: {
+        backgrounds: {
+            value: 'grey',
+        },
+    },
     parameters: {
         docs: {
             description: {
@@ -17,7 +22,6 @@ const storyConfig: Meta = {
                     'Alert component for displaying contextual feedback.',
             },
         },
-        backgrounds: { default: 'grey' },
     },
     argTypes: {
         type: {

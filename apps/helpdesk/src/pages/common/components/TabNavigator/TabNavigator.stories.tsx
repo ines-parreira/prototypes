@@ -2,15 +2,17 @@ import type { ComponentProps } from 'react'
 import { useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 
 const storyConfig: Meta = {
     title: 'General/TabNavigator',
     component: TabNavigator,
-    parameters: {
-        backgrounds: { default: 'grey' },
+    globals: {
+        backgrounds: {
+            value: 'grey',
+        },
     },
     argTypes: {
         tabs: {

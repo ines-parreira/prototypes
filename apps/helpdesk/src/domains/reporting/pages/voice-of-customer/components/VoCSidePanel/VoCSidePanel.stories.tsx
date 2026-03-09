@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { VoCSidePanel } from 'domains/reporting/pages/voice-of-customer/components/VoCSidePanel/VoCSidePanel'
 import { SidePanelTab } from 'domains/reporting/state/ui/stats/sidePanelSlice'

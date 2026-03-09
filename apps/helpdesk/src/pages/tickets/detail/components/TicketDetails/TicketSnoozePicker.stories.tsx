@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
 import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'

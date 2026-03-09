@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { Flow } from '../index'
 import { CustomZoomInControl } from './CustomZoomInControl'

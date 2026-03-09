@@ -1,45 +1,44 @@
-import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { mergeRsbuildConfig } from '@rsbuild/core'
 import type { StorybookConfig } from 'storybook-react-rsbuild'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
-const require = createRequire(import.meta.url)
-
-const srcDir = join(__dirname, '../src')
-
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value: string): any {
-    return dirname(require.resolve(join(value, 'package.json')))
-}
+const cssDir = join(__dirname, '../src/assets/css')
+const launchDarklyMockPath = fileURLToPath(
+    new URL('./launchdarkly-js-client-sdk.tsx', import.meta.url),
+)
 
 const config: StorybookConfig = {
-    stories: ['../src/**/*.stories.(js|jsx|ts|tsx)'],
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    addons: ['@storybook/addon-links', '@storybook/addon-docs'],
+    framework: 'storybook-react-rsbuild',
     staticDirs: [
-        srcDir,
+        {
+            from: '../src/assets',
+            to: 'assets',
+        },
         {
             from: '../node_modules/@gorgias/axiom/dist/assets',
             to: 'gorgias/axiom',
         },
     ],
-
-    addons: [
-        getAbsolutePath('@storybook/addon-links'),
-        getAbsolutePath('@storybook/addon-docs'),
-    ],
-    framework: {
-        name: getAbsolutePath('storybook-react-rsbuild'),
-        options: {},
-    },
     typescript: {
         check: false,
         skipCompiler: true,
         reactDocgen: 'react-docgen',
+    },
+    async rsbuildFinal(baseConfig) {
+        return mergeRsbuildConfig(baseConfig, {
+            resolve: {
+                alias: {
+                    css: cssDir,
+                    'launchdarkly-js-client-sdk': launchDarklyMockPath,
+                },
+            },
+        })
     },
 }
 

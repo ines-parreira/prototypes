@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { AttachmentEnum } from 'common/types'
 import { CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES } from 'config/integrations'

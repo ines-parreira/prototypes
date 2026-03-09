@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { Tag } from './Tag'
 
@@ -20,8 +20,10 @@ const colors = [
 const storyConfig: Meta = {
     title: 'General/Tag',
     component: Tag,
-    parameters: {
-        backgrounds: { default: 'grey' },
+    globals: {
+        backgrounds: {
+            value: 'grey',
+        },
     },
     argTypes: {
         color: {
@@ -73,7 +75,7 @@ IconOnlyTag.args = {
 export const TrailIconTag = Template.bind({})
 TrailIconTag.args = {
     ...defaultProps,
-    text: 'Remove',
+    text: 'Close',
     trailIcon: <i className="material-icons">close</i>,
 }
 

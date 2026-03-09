@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { fn } from 'storybook/test'
 
 import AccordionRadioFieldSet from './AccordionRadioFieldSet'

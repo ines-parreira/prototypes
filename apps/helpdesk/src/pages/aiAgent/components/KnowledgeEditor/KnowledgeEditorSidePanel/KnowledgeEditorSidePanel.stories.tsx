@@ -1,11 +1,11 @@
 import type { ComponentProps } from 'react'
 
 import { history } from '@repo/routing'
-import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn, StoryObj } from 'storybook-react-rsbuild'
 
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { KnowledgeEditorSidePanelURLSnippet } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSnippet/KnowledgeEditorSidePanelURLSnippet'

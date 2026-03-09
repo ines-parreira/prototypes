@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 

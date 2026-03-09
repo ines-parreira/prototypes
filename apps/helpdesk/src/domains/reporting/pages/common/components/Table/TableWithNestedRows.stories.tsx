@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { TableWithNestedRows } from 'domains/reporting/pages/common/components/Table/TableWithNestedRows'
 import { OrderDirection } from 'models/api/types'

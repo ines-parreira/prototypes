@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { appQueryClient } from 'api/queryClient'
 import { user } from 'fixtures/users'

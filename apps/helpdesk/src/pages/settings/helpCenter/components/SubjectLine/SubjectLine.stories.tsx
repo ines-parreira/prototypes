@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { noop as _noop } from 'lodash'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import moment from 'moment'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
 import LineChart from 'domains/reporting/pages/common/components/charts/LineChart/LineChart'

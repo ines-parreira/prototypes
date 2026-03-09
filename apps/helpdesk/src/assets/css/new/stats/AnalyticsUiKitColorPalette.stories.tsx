@@ -1,4 +1,4 @@
-import type { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 const storyConfig: Meta = {
     title: 'Analytics UI Kit/Color Palette',

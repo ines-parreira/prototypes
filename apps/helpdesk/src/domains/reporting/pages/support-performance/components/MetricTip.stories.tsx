@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import MetricTip from 'domains/reporting/pages/support-performance/components/MetricTip'
 

@@ -1,5 +1,4 @@
 import { SidebarProvider } from '@repo/navigation'
-import type { Meta } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -7,6 +6,7 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import type { Meta } from 'storybook-react-rsbuild'
 
 import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'

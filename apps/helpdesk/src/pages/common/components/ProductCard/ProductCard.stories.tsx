@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { FRAME_WIDTH } from 'pages/common/components/ProductCarousel/constants/visuals'
 import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'

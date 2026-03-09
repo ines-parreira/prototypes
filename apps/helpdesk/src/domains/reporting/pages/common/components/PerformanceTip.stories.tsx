@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import PerformanceTip from 'domains/reporting/pages/common/components/PerformanceTip'
 

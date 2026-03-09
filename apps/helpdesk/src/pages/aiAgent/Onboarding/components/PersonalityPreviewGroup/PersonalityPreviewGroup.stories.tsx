@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import type { PreviewId } from './constants'
 import { getPreviewsForPreviewType } from './constants'

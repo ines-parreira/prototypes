@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import TicketTag from 'pages/common/components/TicketTag'
 

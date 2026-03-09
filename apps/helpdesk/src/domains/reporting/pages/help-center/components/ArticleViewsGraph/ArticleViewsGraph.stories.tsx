@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { ArticleViewsGraphComponent } from 'domains/reporting/pages/help-center/components/ArticleViewsGraph/ArticleViewsGraph'

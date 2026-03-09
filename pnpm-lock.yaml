@@ -1116,9 +1116,6 @@ importers:
       '@storybook/icons':
         specifier: ^2.0.1
         version: 2.0.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@storybook/react':
-        specifier: ^10.2.14
-        version: 10.2.14(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(storybook@10.2.14(@testing-library/dom@10.4.0)(prettier@3.6.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(typescript@5.9.3)
       '@swc/core':
         specifier: catalog:test
         version: 1.12.1(@swc/helpers@0.5.19)

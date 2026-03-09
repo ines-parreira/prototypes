@@ -293,10 +293,14 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: apps/helpdesk
+          storybookBaseDir: apps/helpdesk
+          storybookConfigDir: .storybook
           buildScriptName: "storybook:build"
           exitOnceUploaded: true
           autoAcceptChanges: "main"
-          onlyChanged: false
+          debug: true
+          onlyChanged: true
+          uploadMetadata: true
           zip: true
 
   security-sast:

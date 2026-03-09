@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { EditingStateEnum } from '../../constants'
 import type { EditingStateProps } from './EditingState'

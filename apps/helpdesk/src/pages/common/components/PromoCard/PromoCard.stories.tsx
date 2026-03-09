@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import preTrialBannerThumbnail from 'assets/img/pre-trial-banner-thumbnail.png'
 import aiAgentPreviewVideo from 'assets/video/ai-agent-sales-video.mp4'

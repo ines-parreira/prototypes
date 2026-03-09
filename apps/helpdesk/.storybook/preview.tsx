@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import type { PropsWithChildren } from 'react'
 
 import { initLaunchDarkly } from '@repo/feature-flags'
-import type { Preview } from '@storybook/react'
 import {
     ArcElement,
     BarController,
@@ -16,18 +16,45 @@ import {
     PointElement,
     Tooltip,
 } from 'chart.js'
+import type { Preview } from 'storybook-react-rsbuild'
 import { spyOn } from 'storybook/test'
 
-import { ThemeProvider, useSetTheme } from '../src/core/theme/index.ts'
-import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx'
+import {
+    THEME_NAME,
+    ThemeProvider,
+    useApplyTheme,
+    useSetTheme,
+} from '../src/core/theme/index.ts'
+import type { HelpdeskThemeName } from '../src/core/theme/index.ts'
+import { decorator as launchDarklyDecorator } from './launchdarkly-js-client-sdk.tsx'
 
 import '../src/assets/css/main.less'
 import './style.less'
 
-// @ts-expect-error
-initLaunchDarkly()
+const STORYBOOK_USER = { id: 'storybook-user' }
+const STORYBOOK_ACCOUNT = {
+    id: 'storybook-account',
+    domain: 'storybook.local',
+}
 
-export const parameters = {
+void initLaunchDarkly(STORYBOOK_USER, STORYBOOK_ACCOUNT)
+
+const backgroundOptions = {
+    light: {
+        name: 'light',
+        value: '#fff',
+    },
+    grey: {
+        name: 'grey',
+        value: '#eee',
+    },
+    dark: {
+        name: 'dark',
+        value: '#333',
+    },
+} satisfies NonNullable<Preview['parameters']>['backgrounds']['options']
+
+const parameters: Preview['parameters'] = {
     chromatic: { disableSnapshot: true },
     viewMode: 'docs',
     docs: {
@@ -49,23 +76,21 @@ export const parameters = {
         },
     },
     backgrounds: {
-        default: 'light',
-        values: [
-            {
-                name: 'light',
-                value: '#fff',
-            },
-            {
-                name: 'grey',
-                value: '#eee',
-            },
-            {
-                name: 'dark',
-                value: '#333',
-            },
-        ],
+        options: backgroundOptions,
     },
 }
+
+const initialGlobals: Preview['initialGlobals'] = {
+    backgrounds: {
+        value: 'light',
+    },
+}
+
+const themeToolbarItems = [
+    { value: THEME_NAME.Light, icon: 'circlehollow', title: 'Light' },
+    { value: THEME_NAME.Dark, icon: 'circle', title: 'Dark' },
+    { value: THEME_NAME.Classic, icon: 'contrast', title: 'Classic' },
+]
 
 Chart.register(
     BarController,
@@ -81,79 +106,99 @@ Chart.register(
     ArcElement,
 )
 
-const ThemeBlock = ({ background, children }) => (
-    <div
-        style={{
-            height: '100%',
-            overflow: 'auto',
-            padding: '1rem',
-            background,
-            color: 'var(--neutral-grey-6)',
-        }}
-    >
-        {children}
-    </div>
-)
+type ThemeBlockProps = PropsWithChildren<{
+    background: string
+}>
 
-const ThemeConsumer = ({ children, theme }) => {
+function ThemeBlock({ background, children }: ThemeBlockProps) {
+    return (
+        <div
+            style={{
+                height: '100%',
+                overflow: 'auto',
+                padding: '1rem',
+                background,
+                color: 'var(--neutral-grey-6)',
+            }}
+        >
+            {children}
+        </div>
+    )
+}
+
+type StorybookThemeProps = PropsWithChildren<{
+    theme: HelpdeskThemeName
+}>
+
+function StorybookTheme({ children, theme }: StorybookThemeProps) {
     const setTheme = useSetTheme()
 
     useEffect(() => {
         setTheme(theme)
     }, [theme, setTheme])
 
+    useApplyTheme()
+
     return children
 }
 
-const withTheme = (StoryFn, context) => {
-    const theme = context.parameters.theme ?? context.globals.theme
-    const background = theme === 'dark' ? '#333' : '#fff'
+function getThemeBackground(theme: HelpdeskThemeName) {
+    return theme === THEME_NAME.Dark ? '#333' : '#fff'
+}
+
+const withTheme: Preview['decorators'][number] = (Story, context) => {
+    const theme = (context.parameters.theme ??
+        context.globals.theme ??
+        THEME_NAME.Light) as HelpdeskThemeName
 
     return (
         <div className={theme} style={{ height: '100%' }}>
             <ThemeProvider>
-                <ThemeConsumer theme={theme}>
-                    <ThemeBlock background={background}>
-                        <StoryFn />
+                <StorybookTheme theme={theme}>
+                    <ThemeBlock background={getThemeBackground(theme)}>
+                        <Story />
                     </ThemeBlock>
-                </ThemeConsumer>
+                </StorybookTheme>
             </ThemeProvider>
         </div>
     )
 }
 
-export const preview: Preview = {
+const preview: Preview = {
     parameters,
+    initialGlobals,
     globalTypes: {
         theme: {
             name: 'Theme',
             description: 'Global theme for components',
-            defaultValue: 'light',
+            defaultValue: THEME_NAME.Light,
             toolbar: {
-                icon: 'circlehollow',
-                items: [
-                    { value: 'light', icon: 'circlehollow', title: 'Light' },
-                    { value: 'dark', icon: 'circle', title: 'Dark' },
-                ],
+                icon: 'mirror',
+                items: themeToolbarItems,
                 showName: true,
             },
         },
     },
-    // @ts-expect-error LDDecorator types mismatch
-    decorators: [withTheme, LDDecorator],
+    decorators: [withTheme, launchDarklyDecorator],
     tags: ['autodocs'],
 }
 
 export default preview
 
+const consoleMethods = [
+    'log',
+    'warn',
+    'error',
+    'info',
+    'debug',
+    'trace',
+    'count',
+    'dir',
+    'assert',
+] as const
+
 export const beforeEach = function beforeEach() {
-    spyOn(console, 'log').mockName('console.log')
-    spyOn(console, 'warn').mockName('console.warn')
-    spyOn(console, 'error').mockName('console.error')
-    spyOn(console, 'info').mockName('console.info')
-    spyOn(console, 'debug').mockName('console.debug')
-    spyOn(console, 'trace').mockName('console.trace')
-    spyOn(console, 'count').mockName('console.count')
-    spyOn(console, 'dir').mockName('console.dir')
-    spyOn(console, 'assert').mockName('console.assert')
+    for (const method of consoleMethods) {
+        spyOn(console, method).mockName(`console.${method}`)
+    }
 }

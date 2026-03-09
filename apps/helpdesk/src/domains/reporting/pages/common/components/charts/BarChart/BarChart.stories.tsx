@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import moment from 'moment'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import { BarChart } from 'domains/reporting/pages/common/components/charts/BarChart/BarChart'

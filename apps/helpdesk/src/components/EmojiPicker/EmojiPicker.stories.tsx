@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { EmojiPicker } from './EmojiPicker'
 import type { EmojiPickerProps } from './EmojiPicker'

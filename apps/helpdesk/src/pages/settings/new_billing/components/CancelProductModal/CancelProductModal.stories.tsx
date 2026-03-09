@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
 

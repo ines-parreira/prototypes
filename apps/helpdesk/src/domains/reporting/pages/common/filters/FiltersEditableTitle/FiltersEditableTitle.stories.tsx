@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { FiltersEditableTitle } from 'domains/reporting/pages/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 

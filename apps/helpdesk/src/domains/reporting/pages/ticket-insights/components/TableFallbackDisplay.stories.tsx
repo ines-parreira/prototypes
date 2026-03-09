@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { TableFallbackDisplay } from 'domains/reporting/pages/ticket-insights/components/TableFallbackDisplay'
 

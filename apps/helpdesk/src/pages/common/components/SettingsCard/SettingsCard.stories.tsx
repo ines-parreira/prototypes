@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'

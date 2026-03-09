@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import DashboardGrid from 'domains/reporting/pages/common/layout/DashboardGrid'
 import DashboardGridCell from 'domains/reporting/pages/common/layout/DashboardGridCell'

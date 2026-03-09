@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { within } from '@testing-library/react'
 import moment from 'moment'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 import { userEvent } from 'storybook/test'
 
 import { ThemeProvider } from 'core/theme'

@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import TableStat from 'domains/reporting/pages/common/components/charts/TableStat/TableStat'
 import { revenuePerAgent, ticketsClosedPerAgent } from 'fixtures/stats'

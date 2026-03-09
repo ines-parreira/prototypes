@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import Tip from './Tip'
 
@@ -24,6 +24,11 @@ const storyConfig: Meta = {
             </Provider>
         ),
     ],
+    globals: {
+        backgrounds: {
+            value: 'grey',
+        },
+    },
     parameters: {
         docs: {
             description: {
@@ -31,7 +36,6 @@ const storyConfig: Meta = {
                     'Component for displaying tips.<br/>The tip is meant to be hidden after the user has closed it once. For this, the component sets a key for the user in localStorage.',
             },
         },
-        backgrounds: { default: 'grey' },
     },
     argTypes: {
         storageKey: {

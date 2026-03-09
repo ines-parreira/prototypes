@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import OverviewCard from 'domains/reporting/pages/help-center/components/OverviewCard/OverviewCard'
 

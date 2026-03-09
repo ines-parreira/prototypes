@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { HelpCenterLayout } from '../../types/layout.enum'
 import type { LayoutSwitchProps } from './LayoutSwitch'

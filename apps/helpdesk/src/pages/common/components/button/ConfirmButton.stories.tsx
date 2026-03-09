@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import _omit from 'lodash/omit'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { action } from 'storybook/actions'
 
 import ConfirmButton from './ConfirmButton'

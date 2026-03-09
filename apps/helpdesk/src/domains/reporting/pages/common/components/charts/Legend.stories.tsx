@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
 

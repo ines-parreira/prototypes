@@ -1,17 +1,29 @@
 {/* Buttons.mdx */}
 
-import { Canvas, Meta } from 'storybook/blocks'
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
 
-import * as ButtonStories from './Button.stories'
+import * as ConfirmButtonStories from './ConfirmButton.stories'
+import * as IconButtonStories from './IconButton.stories'
+import * as LinkButtonStories from './LinkButton.stories'
 
 <Meta title="General/Button/Docs" />
 
 # Buttons
 
-## Button
+## Link Button
 
-Accessible Button component that enables users to trigger an action or event, such as submitting a Form, opening a Dialog, canceling an action, or performing a delete operation.
+Buttons enable users to trigger actions or navigate to related content.
 
-It follows the WAI-ARIA Button Pattern.
+<Canvas of={LinkButtonStories.Primary} sourceState="shown" />
 
-<Canvas of={ButtonStories.Primary} sourceState="shown" />
+## Icon Button
+
+Icon buttons use a compact affordance when the action can be represented by a single icon.
+
+<Canvas of={IconButtonStories.Primary} sourceState="shown" />
+
+## Confirm Button
+
+Confirm buttons gate destructive or high-impact actions behind an explicit confirmation step.
+
+<Canvas of={ConfirmButtonStories.Main} sourceState="shown" />

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { QueryClientProvider } from '@tanstack/react-query'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { appQueryClient } from 'api/queryClient'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'

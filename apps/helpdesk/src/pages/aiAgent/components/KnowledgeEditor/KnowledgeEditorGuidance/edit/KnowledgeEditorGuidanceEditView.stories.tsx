@@ -2,10 +2,10 @@ import type { ComponentProps } from 'react'
 import React, { useState } from 'react'
 
 import { history } from '@repo/routing'
-import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryFn, StoryObj } from 'storybook-react-rsbuild'
 
 import { ThemeProvider } from 'core/theme'
 

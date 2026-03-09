@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import type { Edge, Node } from '@xyflow/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { CustomEdge } from './CustomEdge'
 import { Flow } from './Flow'

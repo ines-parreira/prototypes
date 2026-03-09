@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React, { useMemo, useState } from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { flatMap } from 'lodash'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import Filter from 'domains/reporting/pages/common/components/Filter/Filter'

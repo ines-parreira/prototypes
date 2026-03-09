@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { Cadence } from 'models/billing/types'
 import { getCadenceName } from 'models/billing/utils'

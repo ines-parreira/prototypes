@@ -1,8 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn, StoryObj } from '@storybook/react'
 import { MemoryRouter } from 'react-router-dom'
+import type { Meta, StoryFn, StoryObj } from 'storybook-react-rsbuild'
 
 import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'

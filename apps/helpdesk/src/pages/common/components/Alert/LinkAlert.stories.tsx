@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import LinkAlert from './LinkAlert'
 
@@ -9,6 +9,11 @@ const storyConfig: Meta = {
     title: 'Feedback/LinkAlert',
     component: LinkAlert,
     decorators: [(story) => <BrowserRouter>{story()}</BrowserRouter>],
+    globals: {
+        backgrounds: {
+            value: 'grey',
+        },
+    },
     parameters: {
         docs: {
             description: {
@@ -21,7 +26,6 @@ const storyConfig: Meta = {
                 </p>`,
             },
         },
-        backgrounds: { default: 'grey' },
     },
     argTypes: {
         type: {

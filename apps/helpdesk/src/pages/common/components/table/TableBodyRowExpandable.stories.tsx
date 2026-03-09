@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'

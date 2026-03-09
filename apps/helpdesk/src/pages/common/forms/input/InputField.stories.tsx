@@ -1,7 +1,7 @@
 import type { ComponentProps, CSSProperties } from 'react'
 import { useState } from 'react'
 
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import IconInput from './IconInput'
 import InputField from './InputField'

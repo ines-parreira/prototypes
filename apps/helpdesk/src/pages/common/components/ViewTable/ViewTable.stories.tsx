@@ -1,12 +1,12 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import type { Meta, StoryFn } from '@storybook/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import * as ticketFixtures from 'fixtures/ticket'
 import { view as fixtureView } from 'fixtures/views'

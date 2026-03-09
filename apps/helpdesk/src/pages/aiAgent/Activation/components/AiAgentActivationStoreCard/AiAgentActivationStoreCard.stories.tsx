@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { Map } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { action } from 'storybook/actions'
 
 import { user } from 'fixtures/users'

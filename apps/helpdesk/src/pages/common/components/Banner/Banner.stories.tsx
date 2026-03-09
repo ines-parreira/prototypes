@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import standlonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 

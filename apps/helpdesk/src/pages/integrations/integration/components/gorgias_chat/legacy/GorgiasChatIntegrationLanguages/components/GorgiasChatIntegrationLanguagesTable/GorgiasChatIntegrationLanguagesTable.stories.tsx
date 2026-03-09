@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
 import { BrowserRouter } from 'react-router-dom'
+import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
 import { Language } from 'constants/languages'
