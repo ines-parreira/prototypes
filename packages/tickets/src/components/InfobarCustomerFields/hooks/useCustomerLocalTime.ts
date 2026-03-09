@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useUserDateTimePreferences } from '@repo/user'
+import { useUserDateTimePreferences } from '@repo/preferences'
 import {
     DateAndTimeFormatting,
     getDateAndTimeFormat,

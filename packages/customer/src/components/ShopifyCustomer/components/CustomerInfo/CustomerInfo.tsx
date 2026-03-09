@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { useTicketInfobarNavigation } from '@repo/navigation'
-import { useUserDateTimePreferences } from '@repo/user'
+import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box } from '@gorgias/axiom'
 

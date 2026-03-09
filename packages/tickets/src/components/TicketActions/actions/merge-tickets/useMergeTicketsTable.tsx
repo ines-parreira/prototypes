@@ -1,4 +1,4 @@
-import { useUserDateTimePreferences } from '@repo/user'
+import { useUserDateTimePreferences } from '@repo/preferences'
 import {
     DateAndTimeFormatting,
     formatDatetime,

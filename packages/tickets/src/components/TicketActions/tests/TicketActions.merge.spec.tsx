@@ -9,7 +9,7 @@ import { MergeTicketsModal } from '../actions/merge-tickets/MergeTicketsModal'
 import * as useMergeTicketsModule from '../actions/merge-tickets/useMergeTickets'
 import * as useMergeTicketSearchModule from '../actions/merge-tickets/useMergeTicketSearch'
 
-vi.mock('@repo/user', () => ({
+vi.mock('@repo/preferences', () => ({
     useUserDateTimePreferences: () => ({
         dateFormat: DateFormatType.en_US,
         timeFormat: TimeFormatType.AmPm,

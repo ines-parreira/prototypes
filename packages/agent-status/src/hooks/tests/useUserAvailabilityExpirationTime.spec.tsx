@@ -1,4 +1,4 @@
-import * as userHooks from '@repo/user'
+import * as userHooks from '@repo/preferences'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -6,8 +6,8 @@ import { renderHook } from '../../tests/render.utils'
 import * as utils from '../../utils/formatExpirationTime'
 import { useUserAvailabilityExpirationTime } from '../useUserAvailabilityExpirationTime'
 
-vi.mock('@repo/user', async () => {
-    const actual = await vi.importActual<typeof userHooks>('@repo/user')
+vi.mock('@repo/preferences', async () => {
+    const actual = await vi.importActual<typeof userHooks>('@repo/preferences')
     return {
         ...actual,
         useUserDateTimePreferences: vi.fn(),

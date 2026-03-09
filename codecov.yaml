@@ -33,6 +33,7 @@ ignore:
   - src/routes/Routes.tsx
   - src/pages/automate/workflows/utils/testVisualBuilderScaffolding.tsx
   - src/tests/mockedReactFlow.ts
+  - packages/*/src/tests/render.utils.tsx
   - /**/index.ts
 
 coverage:

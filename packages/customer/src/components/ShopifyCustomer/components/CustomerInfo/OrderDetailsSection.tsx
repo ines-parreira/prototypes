@@ -1,6 +1,6 @@
 import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
-import { useUserDateTimePreferences } from '@repo/user'
+import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box, Text } from '@gorgias/axiom'
 

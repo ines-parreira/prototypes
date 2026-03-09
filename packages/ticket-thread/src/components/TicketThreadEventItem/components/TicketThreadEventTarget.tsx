@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
-import { Text } from '@gorgias/axiom'
+import { useListAllTeams } from '@repo/teams'
+import { useListAllHumanAgents } from '@repo/users'
 
-import { useListAllHumanAgents } from '../../../hooks/shared/useListAllHumanAgents'
-import { useListAllTeams } from '../../../hooks/shared/useListAllTeams'
+import { Text } from '@gorgias/axiom'
 
 type TicketThreadEventTargetProps =
     | {

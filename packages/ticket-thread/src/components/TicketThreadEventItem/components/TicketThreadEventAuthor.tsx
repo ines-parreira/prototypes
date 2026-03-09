@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 
-import { Text } from '@gorgias/axiom'
+import { useListAllHumanAgents } from '@repo/users'
 
-import { useListAllHumanAgents } from '../../../hooks/shared/useListAllHumanAgents'
+import { Text } from '@gorgias/axiom'
 
 type TicketThreadEventAuthorProps = {
     authorId: number

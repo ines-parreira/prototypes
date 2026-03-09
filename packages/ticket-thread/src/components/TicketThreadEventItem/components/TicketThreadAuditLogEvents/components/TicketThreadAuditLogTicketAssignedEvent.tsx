@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 
+import { useListAllHumanAgents } from '@repo/users'
+
 import { Icon, Text } from '@gorgias/axiom'
 
 import type { TicketThreadAuditLogEventByType } from '../../../../../hooks/events/types'
-import { useListAllHumanAgents } from '../../../../../hooks/shared/useListAllHumanAgents'
 import { TicketThreadAuditLogEventAttribution } from '../../TicketThreadAuditLogEventAttribution'
 import { TicketThreadEventContainer } from '../../TicketThreadEventContainer'
 import { TicketThreadEventDateTime } from '../../TicketThreadEventDateTime'
