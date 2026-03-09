@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import moment from 'moment/moment'
 import { Provider } from 'react-redux'
@@ -15,6 +16,15 @@ import { renderWithRouter } from 'utils/testing'
 import { ReportingGranularity } from '../../../domains/reporting/models/types'
 import { FiltersPanelComponent } from '../../../domains/reporting/pages/common/filters/FiltersPanel'
 import { Analytics } from './Analytics'
+
+jest.mock('react-dnd', () => ({
+    DndProvider: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
+    useDrag: () => [{ isDragging: false }, jest.fn(), jest.fn()],
+    useDrop: () => [{ isOver: false }, jest.fn()],
+}))
+jest.mock('react-dnd-html5-backend', () => ({ HTML5Backend: {} }))
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
@@ -555,5 +565,61 @@ describe('<Analytics />', () => {
             expect.any(String),
             [],
         )
+    })
+
+    it('should pass hints from metrics to ConfigureMetricsModal', async () => {
+        const user = userEvent.setup()
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+
+        await waitFor(() => {
+            const modal = screen.getByRole('dialog')
+            const infoIcons = within(modal).getAllByLabelText('info')
+            expect(infoIcons).toHaveLength(8)
+        })
+    })
+
+    it('should handle unknown metric IDs in saved preferences gracefully', async () => {
+        const user = userEvent.setup()
+
+        localStorage.setItem(
+            'ai-journey-analytics-metrics-preferences',
+            JSON.stringify([
+                { id: 'unknown-metric', label: 'Unknown', visibility: true },
+                {
+                    id: 'Click Through Rate',
+                    label: 'Click Through Rate',
+                    visibility: true,
+                },
+            ]),
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+
+        await waitFor(() => {
+            const modal = screen.getByRole('dialog')
+            const infoIcons = within(modal).getAllByLabelText('info')
+            expect(infoIcons).toHaveLength(1)
+        })
     })
 })

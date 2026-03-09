@@ -370,7 +370,10 @@ export const Analytics = () => {
                     <ConfigureMetricsModal
                         isOpen={isEditModalOpen}
                         onClose={() => setIsEditModalOpen(false)}
-                        metrics={keyKpisConfig}
+                        metrics={keyKpisConfig.map((config) => ({
+                            ...config,
+                            hint: metrics.find((m) => m.id === config.id)?.hint,
+                        }))}
                         onSave={setKeyKpisConfig}
                     />
                 </Box>

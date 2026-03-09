@@ -18,9 +18,19 @@ vi.mock('react-dnd-html5-backend', () => ({
 }))
 
 const mockMetrics: MetricConfigItem[] = [
-    { id: 'metric-1', label: 'Overall automation rate', visibility: true },
+    {
+        id: 'metric-1',
+        label: 'Overall automation rate',
+        visibility: true,
+        hint: 'Percentage of interactions handled automatically',
+    },
     { id: 'metric-2', label: 'Automated interactions', visibility: true },
-    { id: 'metric-3', label: 'Handover', visibility: false },
+    {
+        id: 'metric-3',
+        label: 'Handover',
+        visibility: false,
+        hint: 'Number of conversations handed over to agents',
+    },
     { id: 'metric-4', label: 'Drop-off', visibility: true },
     { id: 'metric-5', label: 'Response time', visibility: false },
     { id: 'metric-6', label: 'Customer satisfaction', visibility: false },
@@ -103,13 +113,19 @@ describe('ConfigureMetricsModal', () => {
                 id: 'metric-1',
                 label: 'Overall automation rate',
                 visibility: false,
+                hint: 'Percentage of interactions handled automatically',
             },
             {
                 id: 'metric-2',
                 label: 'Automated interactions',
                 visibility: true,
             },
-            { id: 'metric-3', label: 'Handover', visibility: false },
+            {
+                id: 'metric-3',
+                label: 'Handover',
+                visibility: false,
+                hint: 'Number of conversations handed over to agents',
+            },
             { id: 'metric-4', label: 'Drop-off', visibility: true },
             { id: 'metric-5', label: 'Response time', visibility: false },
             {
@@ -197,6 +213,25 @@ describe('ConfigureMetricsModal', () => {
         })
 
         expect(onSave).not.toHaveBeenCalled()
+    })
+
+    describe('hint tooltips', () => {
+        it('should render info icon for metrics with hints', () => {
+            renderComponent()
+
+            const infoIcons = screen.getAllByLabelText('info')
+            expect(infoIcons).toHaveLength(2)
+        })
+
+        it('should not render info icon for metrics without hints', () => {
+            const metricsWithoutHints: MetricConfigItem[] = [
+                { id: 'metric-1', label: 'Metric A', visibility: true },
+                { id: 'metric-2', label: 'Metric B', visibility: false },
+            ]
+            renderComponent({ metrics: metricsWithoutHints })
+
+            expect(screen.queryByLabelText('info')).not.toBeInTheDocument()
+        })
     })
 
     describe('maxVisibleMetric', () => {
