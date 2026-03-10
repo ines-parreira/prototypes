@@ -49,8 +49,7 @@
         }
     }
 
-    .autoQaContainer,
-    .shopifyContainer {
+    .autoQaContainer {
         display: flex;
         flex: 1;
         flex-direction: column;
@@ -58,6 +57,16 @@
         padding: var(--layout-spacing-s) 0;
         gap: var(--layout-spacing-m);
         overflow: auto;
+    }
+
+    .shopifyContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0); // legacy
+        padding: var(--layout-spacing-s) 0;
+        gap: var(--layout-spacing-m);
+        overflow: hidden;
     }
 }
 

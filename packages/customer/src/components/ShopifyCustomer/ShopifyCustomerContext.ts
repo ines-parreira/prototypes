@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import type { ShopperData } from './types'
+import type { OrderData, ShopperData } from './types'
 
 export enum NotificationStatus {
     Success = 'success',
@@ -17,6 +17,9 @@ export type NotificationParams = {
 export type ShopifyCustomerContextType = {
     dispatchNotification: (params: NotificationParams) => void
     onCreateOrder?: (integrationId: number, shopperData: ShopperData) => void
+    onDuplicateOrder?: (integrationId: number, order: OrderData) => void
+    onRefundOrder?: (integrationId: number, order: OrderData) => void
+    onCancelOrder?: (integrationId: number, order: OrderData) => void
 }
 
 export const ShopifyCustomerContext = createContext<ShopifyCustomerContextType>(

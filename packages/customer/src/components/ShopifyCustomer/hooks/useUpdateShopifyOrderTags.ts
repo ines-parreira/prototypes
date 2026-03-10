@@ -1,5 +1,3 @@
-import { useContext } from 'react'
-
 import { useQueryClient } from '@tanstack/react-query'
 
 import {
@@ -10,10 +8,6 @@ import {
 import { useExecuteAction } from '@gorgias/helpdesk-queries'
 import type { ExecuteActionBody, HttpError } from '@gorgias/helpdesk-types'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../types'
 
 type UpdateOrderTagsParams = {
@@ -33,7 +27,6 @@ type MutationContext = {
 }
 
 export function useUpdateShopifyOrderTags() {
-    const { dispatchNotification } = useContext(ShopifyCustomerContext)
     const queryClient = useQueryClient()
 
     const mutation = useExecuteAction<HttpError, MutationContext>({
@@ -83,12 +76,6 @@ export function useUpdateShopifyOrderTags() {
 
                 return { previousQueries }
             },
-            onSuccess: () => {
-                dispatchNotification({
-                    status: NotificationStatus.Success,
-                    message: 'Order tags updated successfully',
-                })
-            },
             onError: (_error, _variables, context) => {
                 if (context?.previousQueries) {
                     context.previousQueries.forEach(([queryKey, data]) => {
@@ -100,10 +87,6 @@ export function useUpdateShopifyOrderTags() {
                         )
                     })
                 }
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update order tags',
-                })
             },
         },
     })

@@ -59,7 +59,8 @@ export function CustomerInfo({
         onStoreChange,
     })
 
-    const { onCreateOrder } = useContext(ShopifyCustomerContext)
+    const { onCreateOrder, onDuplicateOrder, onRefundOrder, onCancelOrder } =
+        useContext(ShopifyCustomerContext)
 
     const { shopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
@@ -157,23 +158,29 @@ export function CustomerInfo({
 
     const handleDuplicateOrder = useCallback(
         (order: OrderEcommerceData['data']) => {
-            console.warn('Duplicate order:', order.name)
+            if (selectedIntegration?.id && onDuplicateOrder) {
+                onDuplicateOrder(selectedIntegration.id, order)
+            }
         },
-        [],
+        [selectedIntegration?.id, onDuplicateOrder],
     )
 
     const handleRefundOrder = useCallback(
         (order: OrderEcommerceData['data']) => {
-            console.warn('Refund order:', order.name)
+            if (selectedIntegration?.id && onRefundOrder) {
+                onRefundOrder(selectedIntegration.id, order)
+            }
         },
-        [],
+        [selectedIntegration?.id, onRefundOrder],
     )
 
     const handleCancelOrder = useCallback(
         (order: OrderEcommerceData['data']) => {
-            console.warn('Cancel order:', order.name)
+            if (selectedIntegration?.id && onCancelOrder) {
+                onCancelOrder(selectedIntegration.id, order)
+            }
         },
-        [],
+        [selectedIntegration?.id, onCancelOrder],
     )
 
     if (isEditShopifyFieldsOpen) {
@@ -202,34 +209,47 @@ export function CustomerInfo({
 
     return (
         <>
-            <Box flexDirection="column" gap="sm" padding="md">
-                <StorePicker
-                    integrations={filteredIntegrations}
-                    selectedIntegrationId={selectedIntegration?.id}
-                    onChange={handleStoreChange}
-                    isLoading={isLoadingIntegrations || isLoadingTicket}
-                    onSyncProfile={onSyncProfile}
-                />
+            <div
+                style={{
+                    flex: 1,
+                    overflow: 'auto',
+                    minHeight: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <Box flexDirection="column" gap="sm" padding="md">
+                    <StorePicker
+                        integrations={filteredIntegrations}
+                        selectedIntegrationId={selectedIntegration?.id}
+                        onChange={handleStoreChange}
+                        isLoading={isLoadingIntegrations || isLoadingTicket}
+                        onSyncProfile={onSyncProfile}
+                    />
 
-                <CustomerLink
-                    selectedIntegration={selectedIntegration}
-                    shopper={shopper}
-                    isLoading={isLoadingIntegrations}
-                />
-                {hasData && (
-                    <CustomerInfoFieldList fields={fields} context={context} />
-                )}
-            </Box>
+                    <CustomerLink
+                        selectedIntegration={selectedIntegration}
+                        shopper={shopper}
+                        isLoading={isLoadingIntegrations}
+                    />
+                    {hasData && (
+                        <CustomerInfoFieldList
+                            fields={fields}
+                            context={context}
+                        />
+                    )}
+                </Box>
 
-            <OrdersList
-                orders={orders}
-                isLoadingOrders={isLoadingOrders}
-                productsMap={productsMap}
-                draftOrders={draftOrders}
-                isLoadingDraftOrders={isLoadingDraftOrders}
-                onSelectOrder={handleSelectOrder}
-                onCreateOrder={handleCreateOrder}
-            />
+                <OrdersList
+                    orders={orders}
+                    isLoadingOrders={isLoadingOrders}
+                    productsMap={productsMap}
+                    draftOrders={draftOrders}
+                    isLoadingDraftOrders={isLoadingDraftOrders}
+                    onSelectOrder={handleSelectOrder}
+                    onCreateOrder={handleCreateOrder}
+                />
+            </div>
 
             <OrderSidePanelPreview
                 order={selectedOrder?.data ?? null}

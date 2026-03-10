@@ -122,6 +122,7 @@ export type OrderData = {
     customer: ShopperData
     tags?: string
     note?: string
+    cancelled_at?: string | null
     order_status_url?: string
     invoice_url?: string
     fulfillments?: OrderFulfillment[] | null

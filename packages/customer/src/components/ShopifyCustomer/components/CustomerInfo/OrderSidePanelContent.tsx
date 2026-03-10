@@ -40,6 +40,7 @@ export type OrderData = {
     tags?: string
     note?: string
     created_at?: string
+    cancelled_at?: string | null
     order_status_url?: string
     invoice_url?: string
     fulfillments?: Array<{
@@ -105,6 +106,11 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
         ? getMoneySymbol(order.currency, true)
         : ''
 
+    const isRefunded = ['refunded', 'partially_refunded', 'voided'].includes(
+        order.financial_status,
+    )
+    const isCancelled = !!order.cancelled_at
+
     return (
         <OverlayContent>
             <Box
@@ -133,6 +139,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                             Order {order.name}
                         </Heading>
                         <Box gap="xxxs">
+                            {isCancelled && <Tag color="red">Cancelled</Tag>}
                             <Tag color={financialColor}>{financialLabel}</Tag>
                             <Tag color={fulfillmentColor}>
                                 {fulfillmentLabel}
@@ -160,9 +167,13 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
 
                 {!isDraftOrder && (
                     <OrderActions
-                        onDuplicate={handleDuplicate}
-                        onRefund={handleRefund}
-                        onCancel={handleCancel}
+                        onDuplicate={onDuplicate ? handleDuplicate : undefined}
+                        onRefund={
+                            isRefunded || !onRefund ? undefined : handleRefund
+                        }
+                        onCancel={
+                            isCancelled || !onCancel ? undefined : handleCancel
+                        }
                     />
                 )}
 

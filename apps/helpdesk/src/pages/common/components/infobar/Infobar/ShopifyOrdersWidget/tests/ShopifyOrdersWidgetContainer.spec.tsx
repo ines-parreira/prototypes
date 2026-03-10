@@ -35,6 +35,14 @@ jest.mock('@repo/ecommerce/shopify/utils', () => ({
     formatOrderDate: (date: string) => date,
 }))
 
+jest.mock(
+    'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions',
+    () => ({
+        OrderSidePanelWithActions: ({ isOpen }: { isOpen: boolean }) =>
+            isOpen ? <div>OrderSidePanelWithActions</div> : null,
+    }),
+)
+
 const mockGetCurrentUser = mockGetCurrentUserHandler()
 
 const server = setupServer(
@@ -169,14 +177,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
         renderComponent()
 
         expect(
-            screen.queryByRole('heading', { name: /Order #1001/ }),
+            screen.queryByText('OrderSidePanelWithActions'),
         ).not.toBeInTheDocument()
 
         await user.click(screen.getByText('#1001'))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('heading', { name: /Order #1001/ }),
+                screen.getByText('OrderSidePanelWithActions'),
             ).toBeInTheDocument()
         })
     })

@@ -71,6 +71,7 @@ export type OrderCardOrder = {
     financial_status: FinancialStatusValue
     fulfillment_status: FulfillmentStatusValue | null
     line_items: OrderCardLineItem[]
+    cancelled_at?: string | null
 }
 
 export type ShopifyProductData = {

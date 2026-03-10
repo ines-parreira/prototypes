@@ -9,11 +9,13 @@ import { getFinancialStatusInfo, getFulfillmentStatusInfo } from '../../utils'
 type OrderCardStatusProps = {
     financialStatus: FinancialStatusValue
     fulfillmentStatus: FulfillmentStatusValue | null
+    cancelledAt?: string | null
 }
 
 export function OrderCardStatus({
     financialStatus,
     fulfillmentStatus,
+    cancelledAt,
 }: OrderCardStatusProps) {
     const { label: financialLabel, color: financialColor } =
         getFinancialStatusInfo(financialStatus)
@@ -24,6 +26,7 @@ export function OrderCardStatus({
     return (
         <CardFooter>
             <Box flexDirection="row" gap="xs">
+                {cancelledAt && <Tag color="red">Cancelled</Tag>}
                 <Tag color={financialColor}>{financialLabel}</Tag>
                 <Tag color={fulfillmentColor}>{fulfillmentLabel}</Tag>
             </Box>

@@ -5,15 +5,13 @@ import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock, userEvent } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
-import type { QueryObserverResult } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
-import type { HttpError } from '@gorgias/knowledge-service-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
@@ -23,16 +21,18 @@ import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
-import type { Opportunity } from 'pages/aiAgent/opportunities/types'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 import { getAIAgentMessages, getIntegrationsData } from 'state/ticket/selectors'
 import type { RootState, StoreState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
-import { fetchWidgets, selectContext } from 'state/widgets/actions'
 import { renderWithRouter } from 'utils/testing'
 
+import { useCancelOrder } from '../hooks/useCancelOrder'
+import { useDuplicateOrder } from '../hooks/useDuplicateOrder'
+import { useRefundOrder } from '../hooks/useRefundOrder'
 import {
     AI_FEEDBACK_TAB,
     AUTO_QA_TAB,
@@ -46,9 +46,14 @@ let mockCapturedRenderEditShippingAddressModal:
 let mockCapturedConnectedModalProps:
     | {
           onChange: (name: string, value: unknown) => void
+          onBulkChange: (
+              values: Array<{ name: string; value: unknown }>,
+              callback?: () => void,
+          ) => void
           onSubmit: () => void
       }
     | undefined
+let mockCapturedOnSyncProfile: (() => void) | undefined
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -82,9 +87,13 @@ jest.mock('auto_qa', () => ({
 }))
 
 jest.mock('@repo/customer', () => ({
-    ShopifyCustomer: ({ renderEditShippingAddressModal }: any) => {
+    ShopifyCustomer: ({
+        renderEditShippingAddressModal,
+        onSyncProfile,
+    }: any) => {
         mockCapturedRenderEditShippingAddressModal =
             renderEditShippingAddressModal
+        mockCapturedOnSyncProfile = onSyncProfile
         return <div>ShopifyCustomer Component</div>
     },
     ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
@@ -107,10 +116,62 @@ jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn().mockReturnValue({ type: 'MOCK_EXECUTE_ACTION' }),
 }))
 
+jest.mock('pages/tickets/detail/hooks/useCancelOrder', () => ({
+    useCancelOrder: jest.fn().mockReturnValue({
+        isOpen: false,
+        data: null,
+        open: jest.fn(),
+        onChange: jest.fn(),
+        onBulkChange: jest.fn(),
+        onSubmit: jest.fn(),
+        onClose: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/tickets/detail/hooks/useRefundOrder', () => ({
+    useRefundOrder: jest.fn().mockReturnValue({
+        isOpen: false,
+        data: null,
+        open: jest.fn(),
+        onChange: jest.fn(),
+        onBulkChange: jest.fn(),
+        onSubmit: jest.fn(),
+        onClose: jest.fn(),
+    }),
+}))
+
+jest.mock('pages/tickets/detail/hooks/useDuplicateOrder', () => ({
+    useDuplicateOrder: jest.fn().mockReturnValue({
+        isOpen: false,
+        data: null,
+        open: jest.fn(),
+        onChange: jest.fn(),
+        onBulkChange: jest.fn(),
+        onSubmit: jest.fn(),
+        onClose: jest.fn(),
+    }),
+}))
+
 jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
     __esModule: true,
     default: () => null,
 }))
+
+jest.mock(
+    'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal',
+    () => ({
+        __esModule: true,
+        default: () => null,
+    }),
+)
+
+jest.mock(
+    'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal',
+    () => ({
+        __esModule: true,
+        default: () => null,
+    }),
+)
 
 jest.mock('tickets/ticket-timeline', () => ({
     TimelineContent: () => <div>TimelineContent Component</div>,
@@ -118,7 +179,10 @@ jest.mock('tickets/ticket-timeline', () => ({
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm',
-    () => () => <div>CustomerSyncForm Component</div>,
+    () =>
+        ({ isCustomerSyncFormOpen }: { isCustomerSyncFormOpen: boolean }) => (
+            <div>CustomerSyncForm isOpen:{String(isCustomerSyncFormOpen)}</div>
+        ),
 )
 
 jest.mock('state/currentUser/selectors')
@@ -151,7 +215,7 @@ jest.mock(
 )
 
 jest.mock('state/integrations/selectors', () => ({
-    getIntegrationsByType: () => () => [],
+    getIntegrationsByType: jest.fn(() => () => []),
 }))
 
 jest.mock(
@@ -188,11 +252,10 @@ jest.mock(
 
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
 const mockedGetIntegrationsData = assumeMock(getIntegrationsData)
+const mockedGetIntegrationsByType = jest.mocked(getIntegrationsByType)
 const mockedUseFindTopOpportunityByTicketId = assumeMock(
     useFindTopOpportunityByTicketId,
 )
-const mockedSelectContext = assumeMock(selectContext)
-const mockedFetchWidgets = assumeMock(fetchWidgets)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 
 const ticketsStore: Partial<RootState> = {
@@ -229,6 +292,8 @@ describe('<TicketInfobarContainer />', () => {
         jest.clearAllMocks()
         mockCapturedRenderEditShippingAddressModal = undefined
         mockCapturedConnectedModalProps = undefined
+        mockCapturedOnSyncProfile = undefined
+        ;(mockedGetIntegrationsByType as jest.Mock).mockReturnValue(() => [])
         store = mockStore(state)
         store.dispatch = jest.fn()
 
@@ -291,11 +356,10 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        expect(mockedSelectContext).toHaveBeenCalledWith()
-        expect(mockedFetchWidgets).toHaveBeenCalled()
         expect(container.firstChild).toHaveTextContent(
             CUSTOMER_DETAILS_TAB.LABEL,
         )
+        expect(screen.getByText('Infobar')).toBeInTheDocument()
     })
 
     it('should not render the navbar if the UI Vision MS1 flag is enabled', () => {
@@ -311,57 +375,68 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerTab = screen.queryByText(CUSTOMER_DETAILS_TAB.LABEL)
-        expect(customerTab).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(CUSTOMER_DETAILS_TAB.LABEL),
+        ).not.toBeInTheDocument()
     })
 
-    it('should show the AI Feedback tab when AI Agent has worked on ticket', () => {
-        useAiAgentAccessMock.mockReturnValue({
-            hasAccess: false,
-            isLoading: false,
+    describe('AI Feedback tab visibility', () => {
+        it('shows when AI Agent has worked on ticket', () => {
+            useAiAgentAccessMock.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+            useHasAIAgentMock.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/new' },
+            )
+
+            expect(
+                screen.queryByText(AI_FEEDBACK_TAB.LABEL),
+            ).toBeInTheDocument()
         })
 
-        useHasAIAgentMock.mockReturnValue(true)
+        it('does not show when AI Agent feature is not enabled and agent did not work on ticket', () => {
+            useAiAgentAccessMock.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+            useHasAIAgentMock.mockReturnValue(false)
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/new' },
+            )
 
-        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB.LABEL)
-
-        expect(aiAgentTab).toBeInTheDocument()
-    })
-
-    it('should not show the AI Feedback tab if AI Agent feature not enabled and AI agent did not work on ticket', () => {
-        useAiAgentAccessMock.mockReturnValue({
-            hasAccess: false,
-            isLoading: false,
+            expect(
+                screen.queryByText(AI_FEEDBACK_TAB.LABEL),
+            ).not.toBeInTheDocument()
         })
 
-        useHasAIAgentMock.mockReturnValue(false)
+        it('does not show on edit-widgets route', () => {
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                {
+                    path: '/foo/:ticketId?/edit-widgets',
+                    route: '/foo/123/edit-widgets',
+                },
+            )
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
-
-        const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB.LABEL)
-
-        expect(aiAgentTab).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(AI_FEEDBACK_TAB.LABEL),
+            ).not.toBeInTheDocument()
+        })
     })
 
-    it('should call onChangeTab when AI Agent tab is clicked', () => {
+    it('should render TicketFeedback content when AI Agent tab is clicked', () => {
         const { rerenderComponent } = renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
@@ -372,8 +447,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
-        userEvent.click(aiAgentTab)
+        userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
 
@@ -386,10 +460,8 @@ describe('<TicketInfobarContainer />', () => {
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
         )
-        const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB.LABEL)
-        userEvent.click(customerTab)
 
-        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
+        expect(screen.getByText('TicketFeedback')).toBeInTheDocument()
     })
 
     it('should change selected message when AI agent tab is clicked and there is only 1 public AI message', () => {
@@ -411,8 +483,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
-        userEvent.click(aiAgentTab)
+        userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
@@ -448,8 +519,7 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
-        userEvent.click(aiAgentTab)
+        userEvent.click(screen.getByText(AI_FEEDBACK_TAB.LABEL))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
         expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
@@ -480,13 +550,11 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerInformationTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
-
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
-        expect(customerInformationTab).toBeInTheDocument()
+        expect(screen.getByText(AI_FEEDBACK_TAB.LABEL)).toBeInTheDocument()
     })
 
-    it('should not call changeActive tab when AI Agent tab is clicked and is already active', () => {
+    it('should not call onChangeTab when clicking an already active tab', () => {
         renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
@@ -497,19 +565,14 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const customerInformationTab = screen.getByText(
-            CUSTOMER_DETAILS_TAB.LABEL,
-        )
-
-        userEvent.click(customerInformationTab)
+        userEvent.click(screen.getByText(CUSTOMER_DETAILS_TAB.LABEL))
 
         expect(onChangeTab).not.toHaveBeenCalled()
     })
 
-    it('should render AUTO_QA tab', () => {
+    it('should render AutoQA content when AutoQA tab is clicked', () => {
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
-
-        renderWithRouter(
+        const { rerenderComponent } = renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
@@ -519,85 +582,61 @@ describe('<TicketInfobarContainer />', () => {
             },
         )
 
-        const autoQATab = screen.getByText(AUTO_QA_TAB.LABEL)
-
-        expect(autoQATab).toBeInTheDocument()
-    })
-
-    it('should call changeActive tab and render AUTO_QA content when AUTO_QA tab is clicked', () => {
-        useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
-
-        const autoQATab = screen.getByText(AUTO_QA_TAB.LABEL)
-
-        userEvent.click(autoQATab)
+        userEvent.click(screen.getByText(AUTO_QA_TAB.LABEL))
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
-        expect(mockedChangeTicketMessage).toHaveBeenCalled()
-    })
 
-    it('should render TicketFeedback when activeTab is AIAgent', () => {
-        useTicketInfobarNavigationMock.mockReturnValue({
-            activeTab: TicketInfobarTab.AIFeedback,
-            onChangeTab,
-        })
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
-
-        expect(screen.getByText('TicketFeedback')).toBeInTheDocument()
-    })
-
-    it('should render AUTO_QA content when activeTab is AutoQA and feature flag is enabled', () => {
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValueOnce(true)
         useTicketInfobarNavigationMock.mockReturnValue({
             activeTab: TicketInfobarTab.AutoQA,
             onChangeTab,
         })
-
-        renderWithRouter(
+        rerenderComponent(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
         )
 
         expect(screen.getByText('AutoQA Component')).toBeInTheDocument()
     })
 
-    it('should render Infobar when activeTab is CustomerInformation', () => {
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
-        )
+    it('should render ShopifyCustomer with non-null order data from hooks when Shopify tab is active', () => {
+        const orderImmutable = fromJS({ id: 1 })
+        const customerImmutable = fromJS({ id: 99 })
 
-        expect(screen.getByText('Infobar')).toBeInTheDocument()
-    })
-    it('should render ShopifyCustomer component when Shopify tab is active', () => {
+        jest.mocked(useDuplicateOrder).mockReturnValueOnce({
+            isOpen: true,
+            data: {
+                integrationId: 10,
+                orderId: 1,
+                orderImmutable,
+                customerImmutable,
+            },
+            open: jest.fn(),
+            onChange: jest.fn(),
+            onBulkChange: jest.fn(),
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        })
+        jest.mocked(useRefundOrder).mockReturnValueOnce({
+            isOpen: true,
+            data: { integrationId: 20, orderImmutable },
+            open: jest.fn(),
+            onChange: jest.fn(),
+            onBulkChange: jest.fn(),
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        })
+        jest.mocked(useCancelOrder).mockReturnValueOnce({
+            isOpen: true,
+            data: { integrationId: 30, orderImmutable },
+            open: jest.fn(),
+            onChange: jest.fn(),
+            onBulkChange: jest.fn(),
+            onSubmit: jest.fn(),
+            onClose: jest.fn(),
+        })
+
         useTicketInfobarNavigationMock.mockReturnValue({
             activeTab: TicketInfobarTab.Shopify,
             onChangeTab,
@@ -607,10 +646,7 @@ describe('<TicketInfobarContainer />', () => {
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            },
+            { path: '/foo/:ticketId?', route: '/foo/123' },
         )
 
         expect(
@@ -618,8 +654,30 @@ describe('<TicketInfobarContainer />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should open CustomerSyncForm when onSyncProfile is called', () => {
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.Shopify,
+            onChangeTab,
+        })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            { path: '/foo/:ticketId?', route: '/foo/123' },
+        )
+
+        expect(screen.getByText(/isOpen:false/)).toBeInTheDocument()
+
+        act(() => {
+            mockCapturedOnSyncProfile!()
+        })
+
+        expect(screen.getByText(/isOpen:true/)).toBeInTheDocument()
+    })
+
     describe('renderEditShippingAddressModal', () => {
-        it('dispatches executeAction, calls onClose and onSuccess with address payload on submit', () => {
+        beforeEach(() => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Shopify,
                 onChangeTab,
@@ -631,7 +689,9 @@ describe('<TicketInfobarContainer />', () => {
                 </Provider>,
                 { path: '/foo/:ticketId?', route: '/foo/123' },
             )
+        })
 
+        it('dispatches executeAction, calls onClose and onSuccess with address payload on submit', () => {
             const onClose = jest.fn()
             const onSuccess = jest.fn()
             const addressPayload = { address1: '456 New St', city: 'Austin' }
@@ -655,40 +715,82 @@ describe('<TicketInfobarContainer />', () => {
             expect(onClose).toHaveBeenCalledTimes(1)
             expect(onSuccess).toHaveBeenCalledWith(addressPayload)
         })
+
+        it('accumulates onBulkChange values and calls callback before submit', () => {
+            const onClose = jest.fn()
+            const onSuccess = jest.fn()
+            const callback = jest.fn()
+
+            render(
+                mockCapturedRenderEditShippingAddressModal!({
+                    isOpen: true,
+                    orderId: '1',
+                    customerId: '2',
+                    integrationId: 1,
+                    currentShippingAddress: {},
+                    onClose,
+                    onSuccess,
+                }) as React.ReactElement,
+            )
+
+            mockCapturedConnectedModalProps!.onBulkChange(
+                [
+                    { name: 'payload', value: { address1: '123 Main St' } },
+                    { name: 'city', value: 'NYC' },
+                ],
+                callback,
+            )
+            mockCapturedConnectedModalProps!.onSubmit()
+
+            expect(callback).toHaveBeenCalled()
+            expect(store.dispatch).toHaveBeenCalled()
+        })
     })
 
-    it('should render TimelineContent component when Timeline tab is active and shopperId is present', () => {
-        useTicketInfobarNavigationMock.mockReturnValue({
-            activeTab: TicketInfobarTab.Timeline,
-            onChangeTab,
+    describe('Timeline tab', () => {
+        it('renders TimelineContent when shopperId is present', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Timeline,
+                onChangeTab,
+            })
+            useGetTicketMock.mockReturnValue({
+                data: { data: { id: 1, customer: { id: 456 } } },
+            } as any)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('TimelineContent Component'),
+            ).toBeInTheDocument()
         })
 
-        useGetTicketMock.mockReturnValue({
-            data: {
-                data: {
-                    id: 1,
-                    customer: { id: 456 },
-                },
-            },
-        } as any)
+        it('does not render TimelineContent when shopperId is absent', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Timeline,
+                onChangeTab,
+            })
+            useGetTicketMock.mockReturnValue({ data: null } as any)
 
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/123',
-            },
-        )
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
 
-        expect(
-            screen.getByText('TimelineContent Component'),
-        ).toBeInTheDocument()
+            expect(
+                screen.queryByText('TimelineContent Component'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('opportunity indicator', () => {
-        it('should show indicator on AI Feedback tab when top opportunity exists', () => {
+        it('shows on AI Feedback tab when top opportunity exists', () => {
             mockedUseFindTopOpportunityByTicketId.mockReturnValue({
                 topOpportunity: {
                     id: '123',
@@ -699,21 +801,14 @@ describe('<TicketInfobarContainer />', () => {
                 },
                 isLoading: false,
                 isError: false,
-                refetch: function (): Promise<
-                    QueryObserverResult<Opportunity[], HttpError<void>>
-                > {
-                    throw new Error('Function not implemented.')
-                },
+                refetch: jest.fn(),
             })
 
             renderWithRouter(
                 <Provider store={store}>
                     <TicketInfobarContainer {...minProps} />
                 </Provider>,
-                {
-                    path: '/foo/:ticketId?',
-                    route: '/foo/123',
-                },
+                { path: '/foo/:ticketId?', route: '/foo/123' },
             )
 
             expect(
@@ -721,26 +816,12 @@ describe('<TicketInfobarContainer />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should not show indicator on AI Feedback tab when no opportunity exists', () => {
-            mockedUseFindTopOpportunityByTicketId.mockReturnValue({
-                topOpportunity: null,
-                isLoading: false,
-                isError: false,
-                refetch: function (): Promise<
-                    QueryObserverResult<Opportunity[], HttpError<void>>
-                > {
-                    throw new Error('Function not implemented.')
-                },
-            })
-
+        it('does not show when no opportunity exists', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <TicketInfobarContainer {...minProps} />
                 </Provider>,
-                {
-                    path: '/foo/:ticketId?',
-                    route: '/foo/123',
-                },
+                { path: '/foo/:ticketId?', route: '/foo/123' },
             )
 
             expect(

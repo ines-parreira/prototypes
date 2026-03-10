@@ -179,6 +179,9 @@ describe('OrderSidePanelPreview', () => {
                 order={mockOrder}
                 isOpen={true}
                 onOpenChange={vi.fn()}
+                onDuplicate={vi.fn()}
+                onRefund={vi.fn()}
+                onCancel={vi.fn()}
             />,
         )
 

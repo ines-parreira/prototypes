@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 
-import { OrderSidePanelPreview } from '@repo/customer'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { isEmpty } from 'lodash'
 
@@ -8,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
 import { getActiveCustomer } from 'state/customers/selectors'
 import { getTicketCustomer } from 'state/ticket/selectors'
+import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 
 import { ShopifyOrdersWidget } from './ShopifyOrdersWidget'
 import { useShopifyOrdersSummary } from './useShopifyOrdersSummary'
@@ -56,7 +56,7 @@ export function ShopifyOrdersWidgetContainer() {
                 onShowAll={handleShowAll}
                 onClick={handleSelectOrder}
             />
-            <OrderSidePanelPreview
+            <OrderSidePanelWithActions
                 order={lastOrder}
                 isOpen={isOrderOpen}
                 onOpenChange={setIsOrderOpen}

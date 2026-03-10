@@ -44,6 +44,7 @@ export function OrderCard({
                 <OrderCardStatus
                     financialStatus={order.financial_status}
                     fulfillmentStatus={order.fulfillment_status}
+                    cancelledAt={order.cancelled_at}
                 />
             </Card>
         </div>
