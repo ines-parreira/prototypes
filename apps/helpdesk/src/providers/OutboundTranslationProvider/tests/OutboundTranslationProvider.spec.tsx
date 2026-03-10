@@ -1,6 +1,5 @@
 import type React from 'react'
 
-import { useFlag } from '@repo/feature-flags'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
@@ -23,9 +22,6 @@ import {
 jest.mock('@gorgias/realtime-ably')
 const mockUseChannel = useChannel as jest.Mock
 
-jest.mock('@repo/feature-flags')
-const mockUseFlag = useFlag as jest.Mock
-
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
 
@@ -40,6 +36,45 @@ const mockTicketReplyCache = ticketReplyCache
 
 jest.mock('state/notifications/actions')
 const mockNotify = notify as jest.Mock
+
+const cloudEventBase = {
+    id: 'test-event-id',
+    type: 'test',
+    source: '//helpdesk',
+    subject: 'test',
+}
+
+function createTranslationCompletedEvent(data: {
+    id: string
+    stripped_html: string | null
+    stripped_text: string | null
+}): DomainEvent {
+    return {
+        ...cloudEventBase,
+        dataschema:
+            '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
+        data: {
+            account_id: 1,
+            language: 'en',
+            user_id: 1,
+            ...data,
+        },
+    } satisfies DomainEvent
+}
+
+function createTranslationFailedEvent(data: { id: string }): DomainEvent {
+    return {
+        ...cloudEventBase,
+        dataschema: '//helpdesk/draft-ticket-message-translation.failed/1.0.0',
+        data: {
+            account_id: 1,
+            failed_reason: 'test failure',
+            language: 'en',
+            user_id: 1,
+            ...data,
+        },
+    } satisfies DomainEvent
+}
 
 describe('OutboundTranslationProvider', () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -57,7 +92,6 @@ describe('OutboundTranslationProvider', () => {
         })
 
         mockUseAppDispatch.mockReturnValue(jest.fn())
-        mockUseFlag.mockReturnValue(false)
     })
 
     afterEach(() => {
@@ -147,15 +181,11 @@ describe('OutboundTranslationProvider', () => {
             result.current.registerTranslationDraft('123', 'draft456')
         })
 
-        const event = {
-            dataschema:
-                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
-            data: {
-                id: 'draft456',
-                stripped_html: '<p>Translated content</p>',
-                stripped_text: 'Translated content',
-            },
-        } as DomainEvent
+        const event = createTranslationCompletedEvent({
+            id: 'draft456',
+            stripped_html: '<p>Translated content</p>',
+            stripped_text: 'Translated content',
+        })
 
         act(() => {
             onEventListener?.(event)
@@ -181,13 +211,7 @@ describe('OutboundTranslationProvider', () => {
             result.current.registerTranslationDraft('123', 'draft456')
         })
 
-        const event: DomainEvent = {
-            dataschema:
-                '//helpdesk/draft-ticket-message-translation.failed/1.0.0',
-            data: {
-                id: 'draft456',
-            },
-        } as any
+        const event = createTranslationFailedEvent({ id: 'draft456' })
 
         act(() => {
             onEventListener?.(event)
@@ -219,15 +243,11 @@ describe('OutboundTranslationProvider', () => {
         })
         expect(result.current.isTranslationPending).toBe(true)
 
-        const event: DomainEvent = {
-            dataschema:
-                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
-            data: {
-                id: 'draft456',
-                stripped_html: '<p>Translated content</p>',
-                stripped_text: 'Translated content',
-            },
-        } as any
+        const event = createTranslationCompletedEvent({
+            id: 'draft456',
+            stripped_html: '<p>Translated content</p>',
+            stripped_text: 'Translated content',
+        })
 
         act(() => {
             onEventListener?.(event)
@@ -255,15 +275,11 @@ describe('OutboundTranslationProvider', () => {
             result.current.registerTranslationDraft('456', 'draft789')
         })
 
-        const event = {
-            dataschema:
-                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
-            data: {
-                id: 'draft789',
-                stripped_html: '<p>Translated content</p>',
-                stripped_text: 'Translated content',
-            },
-        } as DomainEvent
+        const event = createTranslationCompletedEvent({
+            id: 'draft789',
+            stripped_html: '<p>Translated content</p>',
+            stripped_text: 'Translated content',
+        })
 
         act(() => {
             onEventListener?.(event)
@@ -325,15 +341,11 @@ describe('OutboundTranslationProvider', () => {
             result.current.registerTranslationDraft('123', 'draft789')
         })
 
-        const event = {
-            dataschema:
-                '//helpdesk/draft-ticket-message-translation.completed/1.0.0',
-            data: {
-                id: 'draft789',
-                stripped_html: '<p>Translated content</p>',
-                stripped_text: 'Translated content',
-            },
-        } as DomainEvent
+        const event = createTranslationCompletedEvent({
+            id: 'draft789',
+            stripped_html: '<p>Translated content</p>',
+            stripped_text: 'Translated content',
+        })
 
         act(() => {
             onEventListener?.(event)

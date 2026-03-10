@@ -11,6 +11,7 @@ import {
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
 
+import { isDomainEvent } from '@gorgias/events'
 import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime-ably'
 
@@ -263,13 +264,17 @@ export const OutboundTranslationProvider = ({
     const handleChannelEvent = useCallback(
         (event: DomainEvent) => {
             if (
-                event.dataschema ===
-                '//helpdesk/draft-ticket-message-translation.completed/1.0.0'
+                isDomainEvent(
+                    event,
+                    '//helpdesk/draft-ticket-message-translation.completed',
+                )
             ) {
                 handleTranslationCompletedEvent(event)
             } else if (
-                event.dataschema ===
-                '//helpdesk/draft-ticket-message-translation.failed/1.0.0'
+                isDomainEvent(
+                    event,
+                    '//helpdesk/draft-ticket-message-translation.failed',
+                )
             ) {
                 handleTranslationFailedEvent(event)
             }
