@@ -43,6 +43,29 @@ describe('AIJourneyDrillDownConfig', () => {
             ])
         })
 
+        it('should return default fields plus customer name for DiscountCodesGenerated metric', () => {
+            const result = getEnrichmentFields(
+                AIJourneyMetric.DiscountCodesGenerated,
+            )
+
+            expect(result).toEqual([
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+            ])
+        })
+
+        it('should return default fields plus customer data for DiscountCodesUsed metric', () => {
+            const result = getEnrichmentFields(
+                AIJourneyMetric.DiscountCodesUsed,
+            )
+
+            expect(result).toEqual([
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+                EnrichmentFields.CustomerIntegrationDataByExternalId,
+            ])
+        })
+
         it('should return only default fields for unknown metric', () => {
             const result = getEnrichmentFields('unknownMetric')
 

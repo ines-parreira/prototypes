@@ -8,6 +8,8 @@ export enum AIJourneyMetric {
     ResponseRate = 'aiJourneyResponseRate',
     OptOutRate = 'aiJourneyOptOutRate',
     ClickThroughRate = 'aiJourneyClickThroughRate',
+    DiscountCodesGenerated = 'aiJourneyDiscountCodesGenerated',
+    DiscountCodesUsed = 'aiJourneyDiscountCodesUsed',
 }
 
 export type AIJourneyMetrics = {
@@ -48,6 +50,18 @@ export const AIJourneyMetricsConfig: Record<
     [AIJourneyMetric.OptOutRate]: {
         title: 'Opt Out Rate',
         metricFormat: 'percent-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.DiscountCodesGenerated]: {
+        title: 'Discount Codes Generated',
+        metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.DiscountCodesUsed]: {
+        title: 'Discount Codes Used',
+        metricFormat: 'decimal',
         showMetric: false,
         domain: Domain.AIJourney,
     },

@@ -10,6 +10,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
@@ -902,5 +903,109 @@ export const aiJourneyTotalUniqueContactsTimeSeriesQuery = (
                 dateRange: getFilterDateRange(filters.period),
             },
         ],
+    }
+}
+
+export const AIJourneyDiscountCodesOfferedQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.DiscountCode,
+                operator: ReportingFilterOperator.Set,
+                values: [],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: [SourceFilter.AiJourney],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_OFFERED,
+    }
+}
+
+export const AIJourneyDiscountCodesUsedQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        measures: [AiSalesAgentOrdersMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.InfluencedBy,
+                operator: ReportingFilterOperator.Equals,
+                values: ['discount-code'],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: [SourceFilter.AiJourney],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.IntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentOrdersDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+        metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_APPLIED,
     }
 }

@@ -90,6 +90,8 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AIJourneyMetric.ResponseRate,
     AIJourneyMetric.OptOutRate,
     AIJourneyMetric.ClickThroughRate,
+    AIJourneyMetric.DiscountCodesGenerated,
+    AIJourneyMetric.DiscountCodesUsed,
     KnowledgeMetric.Tickets,
     KnowledgeMetric.HandoverTickets,
     KnowledgeMetric.CSAT,

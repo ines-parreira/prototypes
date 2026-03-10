@@ -1,5 +1,7 @@
 import {
     aiJourneyClickThroughRateDrillDownQueryFactory,
+    aiJourneyDiscountCodesGeneratedDrillDownQueryFactory,
+    aiJourneyDiscountCodesUsedDrillDownQueryFactory,
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
@@ -517,6 +519,34 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 aiJourneyClickThroughRateDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.DiscountCodesGenerated: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyDiscountCodesGeneratedDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.DiscountCodesUsed: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyDiscountCodesUsedDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     metricData.integrationId,

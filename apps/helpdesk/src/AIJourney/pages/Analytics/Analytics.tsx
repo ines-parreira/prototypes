@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
-import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
 import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
+import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
 import { motion } from 'framer-motion'
 import moment from 'moment/moment'
 
@@ -11,8 +11,10 @@ import {
     Button,
     Heading,
     LegacyLoadingSpinner as LoadingSpinner,
+    Size,
 } from '@gorgias/axiom'
 
+import { DiscountCodesUsageSection } from 'AIJourney/components'
 import {
     useAIJourneyTotalConversations,
     useAverageOrderValue,
@@ -25,6 +27,7 @@ import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeS
 
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
 import { FilterKey } from '../../../domains/reporting/models/stat/types'
+import { DrillDownModal } from '../../../domains/reporting/pages/common/drill-down/DrillDownModal'
 import FiltersPanelWrapper from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { filterNonDraftCampaigns } from '../../../domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
@@ -356,7 +359,7 @@ export const Analytics = () => {
                 />
             </div>
 
-            <Box flexDirection="column" gap="md">
+            <Box flexDirection="column" gap={Size.Lg}>
                 <Box flexDirection="row" justifyContent="space-between">
                     <Heading size="md">Key metrics</Heading>
                     <Button
@@ -433,6 +436,13 @@ export const Analytics = () => {
                         data={selectedData.series}
                     />
                 )}
+                <DiscountCodesUsageSection
+                    integrationId={integrationId}
+                    userTimezone={userTimezone}
+                    filters={filters}
+                    journeyIds={journeysIdsToFilter}
+                />
+                <DrillDownModal />
             </Box>
         </motion.div>
     )

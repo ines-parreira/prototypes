@@ -1,6 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import moment from 'moment/moment'
@@ -136,6 +136,11 @@ const mockUseGetNamespacedShopNameForStore =
 const mockUseStatsFilters =
     require('domains/reporting/hooks/support-performance/useStatsFilters')
         .useStatsFilters as jest.Mock
+const mockDiscountCodesUsageSection = require('AIJourney/components')
+    .DiscountCodesUsageSection as jest.Mock
+const mockDrillDownModal =
+    require('domains/reporting/pages/common/drill-down/DrillDownModal')
+        .DrillDownModal as jest.Mock
 
 jest.mock('domains/reporting/pages/common/filters/FiltersPanel')
 const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
@@ -143,6 +148,15 @@ const FiltersPanelComponentMock = assumeMock(FiltersPanelComponent)
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
     __esModule: true,
     default: () => <div data-testid="filters-panel-wrapper" />,
+}))
+
+jest.mock('AIJourney/components', () => ({
+    ...jest.requireActual('AIJourney/components'),
+    DiscountCodesUsageSection: jest.fn(() => null),
+}))
+
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: jest.fn(() => null),
 }))
 
 describe('<Analytics />', () => {
@@ -580,13 +594,55 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+        })
 
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
             expect(infoIcons).toHaveLength(8)
         })
+    })
+
+    it('should render DiscountCodesUsageSection with correct props', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockDiscountCodesUsageSection).toHaveBeenCalledWith(
+            expect.objectContaining({
+                integrationId: '286584',
+                userTimezone: 'America/New_York',
+                filters: expect.objectContaining({
+                    period: expect.any(Object),
+                }),
+                journeyIds: [],
+            }),
+            expect.anything(),
+        )
+    })
+
+    it('should render DrillDownModal', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockDrillDownModal).toHaveBeenCalled()
     })
 
     it('should handle unknown metric IDs in saved preferences gracefully', async () => {
@@ -613,9 +669,11 @@ describe('<Analytics />', () => {
                 </QueryClientProvider>
             </Provider>,
         )
-
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+        })
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')

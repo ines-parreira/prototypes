@@ -1,4 +1,6 @@
 import {
+    AIJourneyDiscountCodesOfferedQueryFactory,
+    AIJourneyDiscountCodesUsedQueryFactory,
     aiJourneyOptedOutQueryFactory,
     aiJourneyRepliedMessagesQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
@@ -115,6 +117,61 @@ export const aiJourneyClickThroughRateDrillDownQueryFactory = (
     ...(sorting
         ? {
               order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyDiscountCodesGeneratedDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...AIJourneyDiscountCodesOfferedQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyDiscountCodesUsedDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentOrdersCube> => ({
+    ...AIJourneyDiscountCodesUsedQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [AiSalesAgentOrdersMeasure.GmvUsd],
+    dimensions: [
+        AiSalesAgentOrdersDimension.TicketId,
+        AiSalesAgentOrdersDimension.OrderId,
+        AiSalesAgentOrdersDimension.TotalAmount,
+        AiSalesAgentOrdersDimension.CustomerId,
+    ],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentOrdersDimension.TicketId, sorting]],
           }
         : {
               order: [],

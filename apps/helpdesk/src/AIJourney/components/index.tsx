@@ -15,3 +15,4 @@ export { PlaygroundPreviewHeader } from './PlaygroundPreviewHeader/PlaygroundPre
 export { PlaygroundPreview } from './PlaygroundPreview/PlaygroundPreview'
 export { JourneysTable } from './JourneysTable/JourneysTable'
 export { MetricCell } from './MetricCell/MetricCell'
+export { DiscountCodesUsageSection } from './DiscountCodesUsageSection/DiscountCodesUsageSection'

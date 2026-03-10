@@ -25,7 +25,14 @@ export const getEnrichmentFields = (metricName: string) => {
         case AIJourneyMetric.ResponseRate:
         case AIJourneyMetric.ClickThroughRate:
         case AIJourneyMetric.OptOutRate:
+        case AIJourneyMetric.DiscountCodesGenerated:
             return [...defaultEnrichmentFields, EnrichmentFields.CustomerName]
+        case AIJourneyMetric.DiscountCodesUsed:
+            return [
+                ...defaultEnrichmentFields,
+                EnrichmentFields.CustomerName,
+                EnrichmentFields.CustomerIntegrationDataByExternalId,
+            ]
         default:
             return [...defaultEnrichmentFields]
     }
@@ -57,5 +64,9 @@ export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
             AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate],
         [AIJourneyMetric.OptOutRate]:
             AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate],
+        [AIJourneyMetric.DiscountCodesGenerated]:
+            AIJourneyMetricsConfig[AIJourneyMetric.DiscountCodesGenerated],
+        [AIJourneyMetric.DiscountCodesUsed]:
+            AIJourneyMetricsConfig[AIJourneyMetric.DiscountCodesUsed],
     },
 }
