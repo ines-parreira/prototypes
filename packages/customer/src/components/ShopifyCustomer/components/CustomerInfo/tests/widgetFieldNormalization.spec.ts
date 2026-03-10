@@ -3,6 +3,7 @@ import {
     FIELD_ID_TO_TEMPLATE_PATH,
     LEAF_TEMPLATE_DEFAULTS,
     preferencesToWidgetFields,
+    sectionPreferencesToWidgets,
     TEMPLATE_PATH_TO_FIELD_ID,
     widgetFieldsToPreferences,
 } from '../widgetFieldNormalization'
@@ -156,7 +157,7 @@ describe('widgetFieldNormalization', () => {
             })
         })
 
-        it('preserves unmapped template fields', () => {
+        it('preserves unmapped template fields but excludes section source paths', () => {
             const existingWidgets = [
                 { path: 'addresses', type: 'array', title: 'Addresses' },
                 { path: 'total_spent', type: 'text', title: 'Total spent' },
@@ -164,6 +165,11 @@ describe('widgetFieldNormalization', () => {
                     path: 'email_marketing_consent',
                     type: 'text',
                     title: 'Email marketing consent',
+                },
+                {
+                    path: 'some_custom_field',
+                    type: 'text',
+                    title: 'Custom',
                 },
             ]
 
@@ -176,8 +182,9 @@ describe('widgetFieldNormalization', () => {
 
             const paths = widgets.map((w) => w.path)
             expect(paths).toContain('total_spent')
-            expect(paths).toContain('addresses')
-            expect(paths).toContain('email_marketing_consent')
+            expect(paths).toContain('some_custom_field')
+            expect(paths).not.toContain('addresses')
+            expect(paths).not.toContain('email_marketing_consent')
         })
 
         it('returns the full preferences array as fieldPreferences', () => {
@@ -211,6 +218,120 @@ describe('widgetFieldNormalization', () => {
                 'email',
                 'total_spent',
             ])
+        })
+    })
+
+    describe('sectionPreferencesToWidgets', () => {
+        it('returns empty array when no sections provided', () => {
+            expect(sectionPreferencesToWidgets(undefined, undefined)).toEqual(
+                [],
+            )
+        })
+
+        it('skips customer section', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    customer: {
+                        fields: [{ id: 'totalSpent', visible: true }],
+                    },
+                },
+                undefined,
+            )
+            expect(result).toEqual([])
+        })
+
+        it('generates card widget for defaultAddress', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    defaultAddress: {
+                        fields: [
+                            { id: 'address1', visible: true },
+                            { id: 'city', visible: true },
+                            { id: 'company', visible: false },
+                        ],
+                    },
+                },
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].path).toBe('default_address')
+            expect(result[0].type).toBe('card')
+            expect(result[0].widgets).toHaveLength(2)
+            expect(result[0].widgets![0].path).toBe('address1')
+            expect(result[0].widgets![1].path).toBe('city')
+        })
+
+        it('generates card widget for emailMarketingConsent', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    emailMarketingConsent: {
+                        fields: [{ id: 'state', visible: true }],
+                    },
+                },
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].path).toBe('email_marketing_consent')
+            expect(result[0].type).toBe('card')
+            expect(result[0].widgets).toHaveLength(1)
+            expect(result[0].widgets![0].path).toBe('state')
+        })
+
+        it('generates card widget for smsMarketingConsent', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    smsMarketingConsent: {
+                        fields: [
+                            { id: 'state', visible: true },
+                            { id: 'optInLevel', visible: true },
+                        ],
+                    },
+                },
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].path).toBe('sms_marketing_consent')
+            expect(result[0].type).toBe('card')
+            expect(result[0].widgets).toHaveLength(2)
+        })
+
+        it('generates list > card structure for addresses', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    addresses: {
+                        fields: [{ id: 'address1', visible: true }],
+                    },
+                },
+                undefined,
+            )
+
+            expect(result).toHaveLength(1)
+            expect(result[0].path).toBe('addresses')
+            expect(result[0].type).toBe('list')
+            expect(result[0].widgets).toHaveLength(1)
+            expect(result[0].widgets![0].type).toBe('card')
+            expect(result[0].widgets![0].path).toBeUndefined()
+            expect(result[0].widgets![0].widgets).toHaveLength(1)
+            expect(result[0].widgets![0].widgets![0].path).toBe('address1')
+        })
+
+        it('skips sections with no visible fields', () => {
+            const result = sectionPreferencesToWidgets(
+                {
+                    defaultAddress: {
+                        fields: [
+                            { id: 'address1', visible: false },
+                            { id: 'city', visible: false },
+                        ],
+                    },
+                },
+                undefined,
+            )
+
+            expect(result).toEqual([])
         })
     })
 

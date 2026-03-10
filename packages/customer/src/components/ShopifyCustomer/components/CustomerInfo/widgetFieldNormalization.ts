@@ -1,5 +1,10 @@
 import { FIELD_DEFINITIONS } from './fields'
-import type { FieldPreference, LeafTemplate } from './types'
+import type {
+    FieldPreference,
+    LeafTemplate,
+    SectionKey,
+    SectionPreferences,
+} from './types'
 
 export const TEMPLATE_PATH_TO_FIELD_ID: Record<string, string> = {
     total_spent: 'totalSpent',
@@ -54,6 +59,97 @@ export const LEAF_TEMPLATE_DEFAULTS: Record<
     taxExemptions: { type: 'array', title: 'Tax exemptions' },
 }
 
+const ADDRESS_FIELD_ID_TO_PATH: Record<string, string> = {
+    address1: 'address1',
+    address2: 'address2',
+    city: 'city',
+    company: 'company',
+    country: 'country',
+    countryCode: 'country_code',
+    countryName: 'country_name',
+    customerId: 'customer_id',
+    default: 'default',
+    firstName: 'first_name',
+    lastName: 'last_name',
+    zip: 'zip',
+    phone: 'phone',
+    province: 'province',
+    provinceCode: 'province_code',
+    name: 'name',
+    id: 'id',
+}
+
+const CONSENT_FIELD_ID_TO_PATH: Record<string, string> = {
+    state: 'state',
+    optInLevel: 'opt_in_level',
+    consentUpdatedAt: 'consent_updated_at',
+}
+
+export const SECTION_FIELD_ID_TO_TEMPLATE_PATH: Record<
+    string,
+    Record<string, string>
+> = {
+    defaultAddress: ADDRESS_FIELD_ID_TO_PATH,
+    emailMarketingConsent: CONSENT_FIELD_ID_TO_PATH,
+    smsMarketingConsent: CONSENT_FIELD_ID_TO_PATH,
+    addresses: ADDRESS_FIELD_ID_TO_PATH,
+}
+
+const SECTION_LEAF_DEFAULTS: Record<
+    string,
+    Record<string, { type: string; title: string }>
+> = {
+    defaultAddress: {
+        address1: { type: 'text', title: 'Address 1' },
+        address2: { type: 'text', title: 'Address 2' },
+        city: { type: 'text', title: 'City' },
+        company: { type: 'text', title: 'Company' },
+        country: { type: 'text', title: 'Country' },
+        countryCode: { type: 'text', title: 'Country code' },
+        countryName: { type: 'text', title: 'Country name' },
+        customerId: { type: 'text', title: 'Customer ID' },
+        default: { type: 'text', title: 'Default' },
+        firstName: { type: 'text', title: 'First name' },
+        lastName: { type: 'text', title: 'Last name' },
+        zip: { type: 'text', title: 'Zip' },
+        phone: { type: 'text', title: 'Phone' },
+        province: { type: 'text', title: 'Province' },
+        provinceCode: { type: 'text', title: 'Province code' },
+        name: { type: 'text', title: 'Name' },
+        id: { type: 'text', title: 'ID' },
+    },
+    emailMarketingConsent: {
+        state: { type: 'text', title: 'State' },
+        optInLevel: { type: 'text', title: 'Opt-in level' },
+        consentUpdatedAt: { type: 'text', title: 'Consent updated at' },
+    },
+    smsMarketingConsent: {
+        state: { type: 'text', title: 'State' },
+        optInLevel: { type: 'text', title: 'Opt-in level' },
+        consentUpdatedAt: { type: 'text', title: 'Consent updated at' },
+    },
+}
+
+SECTION_LEAF_DEFAULTS.addresses = SECTION_LEAF_DEFAULTS.defaultAddress
+
+export const SECTION_KEY_TO_SOURCE_PATH: Record<string, string> = {
+    defaultAddress: 'default_address',
+    emailMarketingConsent: 'email_marketing_consent',
+    smsMarketingConsent: 'sms_marketing_consent',
+    addresses: 'addresses',
+}
+
+export const SECTION_KEY_TO_TITLE: Record<string, string> = {
+    defaultAddress: 'Default address',
+    emailMarketingConsent: 'Email marketing consent',
+    smsMarketingConsent: 'Sms marketing consent',
+    addresses: 'Addresses',
+}
+
+export const SECTION_SOURCE_PATHS = new Set(
+    Object.values(SECTION_KEY_TO_SOURCE_PATH),
+)
+
 const MAPPED_FIELD_IDS = new Set(Object.keys(FIELD_ID_TO_TEMPLATE_PATH))
 
 export function widgetFieldsToPreferences(
@@ -97,7 +193,9 @@ export function preferencesToWidgetFields(
     }
 
     const unmappedWidgets = (existingWidgets ?? []).filter(
-        (w) => !TEMPLATE_PATH_TO_FIELD_ID[w.path],
+        (w) =>
+            !TEMPLATE_PATH_TO_FIELD_ID[w.path] &&
+            !SECTION_SOURCE_PATHS.has(w.path),
     )
 
     const mappedWidgets: LeafTemplate[] = []
@@ -126,4 +224,77 @@ export function preferencesToWidgetFields(
         widgets: [...mappedWidgets, ...unmappedWidgets],
         fieldPreferences: preferences,
     }
+}
+
+function buildSectionLeaves(
+    sectionKey: string,
+    fields: FieldPreference[],
+): LeafTemplate[] {
+    const fieldMap = SECTION_FIELD_ID_TO_TEMPLATE_PATH[sectionKey]
+    const defaults = SECTION_LEAF_DEFAULTS[sectionKey]
+    if (!fieldMap || !defaults) return []
+
+    const leaves: LeafTemplate[] = []
+    for (const field of fields) {
+        if (!field.visible) continue
+        const path = fieldMap[field.id]
+        const def = defaults[field.id]
+        if (path && def) {
+            leaves.push({ path, type: def.type, title: def.title })
+        }
+    }
+    return leaves
+}
+
+type WidgetNode = {
+    path?: string
+    type: string
+    title?: string
+    widgets?: WidgetNode[]
+}
+
+export function sectionPreferencesToWidgets(
+    sections: Partial<Record<SectionKey, SectionPreferences>> | undefined,
+    __existingWidgets: LeafTemplate[] | undefined,
+): WidgetNode[] {
+    if (!sections) return []
+
+    const result: WidgetNode[] = []
+
+    for (const [key, prefs] of Object.entries(sections) as [
+        SectionKey,
+        SectionPreferences,
+    ][]) {
+        if (key === 'customer') continue
+        if (!prefs?.fields?.length) continue
+
+        const sourcePath = SECTION_KEY_TO_SOURCE_PATH[key]
+        if (!sourcePath) continue
+
+        const leaves = buildSectionLeaves(key, prefs.fields)
+        if (leaves.length === 0) continue
+
+        if (key === 'addresses') {
+            result.push({
+                path: sourcePath,
+                type: 'list',
+                widgets: [
+                    {
+                        type: 'card',
+                        title: SECTION_KEY_TO_TITLE[key],
+                        widgets: leaves,
+                    },
+                ],
+            })
+        } else {
+            result.push({
+                path: sourcePath,
+                type: 'card',
+                title: SECTION_KEY_TO_TITLE[key],
+                widgets: leaves,
+            })
+        }
+    }
+
+    return result
 }

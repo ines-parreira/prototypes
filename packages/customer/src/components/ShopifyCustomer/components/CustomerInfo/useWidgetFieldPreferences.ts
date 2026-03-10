@@ -11,13 +11,17 @@ import {
 import type { Widget } from '@gorgias/helpdesk-types'
 
 import { FIELD_DEFINITIONS } from './fields'
+import { SECTION_CONFIGS } from './sectionConfig'
 import type {
     FieldPreference,
     LeafTemplate,
+    SectionKey,
+    SectionPreferences,
     ShopifyFieldPreferences,
 } from './types'
 import {
     preferencesToWidgetFields,
+    sectionPreferencesToWidgets,
     widgetFieldsToPreferences,
 } from './widgetFieldNormalization'
 
@@ -30,6 +34,7 @@ type NestedWidget = {
             links?: unknown[]
             buttons?: unknown[]
             fieldPreferences?: FieldPreference[]
+            sectionPreferences?: Partial<Record<SectionKey, SectionPreferences>>
         }
         [key: string]: unknown
     }
@@ -49,8 +54,24 @@ type ShopifyWidget = Widget & {
 const ALL_FIELD_IDS = Object.keys(FIELD_DEFINITIONS)
 const LIST_WIDGETS_LIMIT = 100
 
+function buildDefaultSections(): Partial<
+    Record<SectionKey, SectionPreferences>
+> {
+    const sections: Partial<Record<SectionKey, SectionPreferences>> = {}
+    for (const config of SECTION_CONFIGS) {
+        sections[config.key] = {
+            fields: Object.keys(config.fieldDefinitions).map((id) => ({
+                id,
+                visible: false,
+            })),
+        }
+    }
+    return sections
+}
+
 const defaultPreferences: ShopifyFieldPreferences = {
     fields: ALL_FIELD_IDS.map((id) => ({ id, visible: false })),
+    sections: buildDefaultSections(),
 }
 
 function findCustomerWidget(
@@ -95,7 +116,27 @@ export function useWidgetFieldPreferences() {
             customerWidget.meta?.custom?.fieldPreferences,
         )
 
-        return fields.length > 0 ? { fields } : defaultPreferences
+        if (fields.length === 0) return defaultPreferences
+
+        const storedSections = customerWidget.meta?.custom?.sectionPreferences
+        const sections: Partial<Record<SectionKey, SectionPreferences>> = {}
+
+        for (const config of SECTION_CONFIGS) {
+            if (storedSections?.[config.key]) {
+                sections[config.key] = storedSections[config.key]
+            } else if (config.key === 'customer') {
+                sections[config.key] = { fields }
+            } else {
+                sections[config.key] = {
+                    fields: Object.keys(config.fieldDefinitions).map((id) => ({
+                        id,
+                        visible: false,
+                    })),
+                }
+            }
+        }
+
+        return { fields, sections }
     }, [customerWidget])
 
     const listWidgetsQueryKey = queryKeys.widgets.listWidgets(listWidgetsParams)
@@ -115,6 +156,15 @@ export function useWidgetFieldPreferences() {
             const { widgets: newLeaves, fieldPreferences } =
                 preferencesToWidgetFields(newPreferences.fields, existingLeaves)
 
+            const sectionWidgets = sectionPreferencesToWidgets(
+                newPreferences.sections,
+                existingLeaves,
+            )
+            const allWidgets = [
+                ...newLeaves,
+                ...sectionWidgets,
+            ] as LeafTemplate[]
+
             if (widget?.id && template) {
                 const updatedTemplate: WidgetTemplate = {
                     ...template,
@@ -122,12 +172,14 @@ export function useWidgetFieldPreferences() {
                         w.path === 'customer'
                             ? {
                                   ...w,
-                                  widgets: newLeaves,
+                                  widgets: allWidgets,
                                   meta: {
                                       ...w.meta,
                                       custom: {
                                           ...w.meta?.custom,
                                           fieldPreferences,
+                                          sectionPreferences:
+                                              newPreferences.sections,
                                       },
                                   },
                               }
@@ -173,10 +225,11 @@ export function useWidgetFieldPreferences() {
                         {
                             path: 'customer',
                             type: 'customer',
-                            widgets: newLeaves,
+                            widgets: allWidgets,
                             meta: {
                                 custom: {
                                     fieldPreferences,
+                                    sectionPreferences: newPreferences.sections,
                                 },
                             },
                         },

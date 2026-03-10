@@ -128,6 +128,24 @@ export type OrderData = {
     fulfillments?: OrderFulfillment[] | null
 }
 
+export type EmailMarketingConsent = {
+    state: string
+    opt_in_level: string
+    consent_updated_at: string
+}
+
+export type EmailMarketingConsentData = {
+    customer_id?: number
+    email_address?: string
+    email_marketing_consent?: EmailMarketingConsent
+}
+
+export type SmsMarketingConsentData = {
+    customer_id?: number
+    phone?: string
+    sms_marketing_consent?: EmailMarketingConsent
+}
+
 export type OrderEcommerceData = {
     id: string
     account_id: number

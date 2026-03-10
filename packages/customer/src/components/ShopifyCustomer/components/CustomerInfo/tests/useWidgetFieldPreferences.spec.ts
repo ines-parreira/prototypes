@@ -189,6 +189,70 @@ describe('useWidgetFieldPreferences', () => {
         })
     })
 
+    it('includes section widgets in save payload', async () => {
+        const listWidgetsMock = mockListWidgetsHandler(async () =>
+            HttpResponse.json(widgetListResponse),
+        )
+        const updateWidgetMock = mockUpdateWidgetHandler()
+        server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+
+        const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+
+        const { result } = renderHook(() => useWidgetFieldPreferences())
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        await act(async () => {
+            await result.current.savePreferences({
+                fields: [{ id: 'totalSpent', visible: true }],
+                sections: {
+                    customer: {
+                        fields: [{ id: 'totalSpent', visible: true }],
+                    },
+                    defaultAddress: {
+                        fields: [
+                            { id: 'address1', visible: true },
+                            { id: 'city', visible: true },
+                        ],
+                    },
+                    emailMarketingConsent: {
+                        fields: [{ id: 'state', visible: true }],
+                    },
+                    addresses: {
+                        fields: [{ id: 'address1', visible: true }],
+                    },
+                },
+            })
+        })
+
+        await waitForUpdateRequest(async (request) => {
+            const body = await request.json()
+            const customerWidgets = body.template.widgets[0].widgets
+
+            const defaultAddressWidget = customerWidgets.find(
+                (w: { path: string }) => w.path === 'default_address',
+            )
+            expect(defaultAddressWidget).toBeDefined()
+            expect(defaultAddressWidget.type).toBe('card')
+            expect(defaultAddressWidget.widgets).toHaveLength(2)
+
+            const emailConsentWidget = customerWidgets.find(
+                (w: { path: string }) => w.path === 'email_marketing_consent',
+            )
+            expect(emailConsentWidget).toBeDefined()
+            expect(emailConsentWidget.type).toBe('card')
+
+            const addressesWidget = customerWidgets.find(
+                (w: { path: string }) => w.path === 'addresses',
+            )
+            expect(addressesWidget).toBeDefined()
+            expect(addressesWidget.type).toBe('list')
+            expect(addressesWidget.widgets[0].type).toBe('card')
+        })
+    })
+
     it('rolls back optimistic update on error', async () => {
         const listWidgetsMock = mockListWidgetsHandler(async () =>
             HttpResponse.json(widgetListResponse),

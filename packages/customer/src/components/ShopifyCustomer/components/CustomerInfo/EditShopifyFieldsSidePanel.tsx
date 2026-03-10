@@ -8,32 +8,24 @@ import {
 } from 'react'
 
 import {
-    Box,
     Button,
-    HeaderCell,
-    Icon,
     OverlayContent,
     OverlayFooter,
     OverlayHeader,
     SidePanel,
-    TableBody,
-    TableHeader,
-    TableRoot,
-    TableRow,
-    Text,
-    ToggleField,
 } from '@gorgias/axiom'
 
 import {
     NotificationStatus,
     ShopifyCustomerContext,
 } from '../../ShopifyCustomerContext'
-import { DraggableFieldRow } from './DraggableFieldRow'
+import { EditableFieldSection } from './EditableFieldSection'
 import { reorderArray } from './editShopifyFields.utils'
-import { FIELD_DEFINITIONS } from './fields'
+import { SECTION_CONFIGS } from './sectionConfig'
 import type {
     FieldPreference,
     FieldRenderContext,
+    SectionKey,
     ShopifyFieldPreferences,
 } from './types'
 
@@ -47,9 +39,42 @@ type Props = {
     context: FieldRenderContext
 }
 
-function fieldsEqual(a: FieldPreference[], b: FieldPreference[]): boolean {
-    if (a.length !== b.length) return false
-    return a.every((f, i) => f.id === b[i].id && f.visible === b[i].visible)
+function sectionsEqual(
+    a: Record<SectionKey, FieldPreference[]>,
+    b: Record<SectionKey, FieldPreference[]>,
+): boolean {
+    for (const config of SECTION_CONFIGS) {
+        const aFields = a[config.key]
+        const bFields = b[config.key]
+        if (aFields.length !== bFields.length) return false
+        if (
+            !aFields.every(
+                (f, i) =>
+                    f.id === bFields[i].id && f.visible === bFields[i].visible,
+            )
+        )
+            return false
+    }
+    return true
+}
+
+function initSections(
+    preferences: ShopifyFieldPreferences,
+): Record<SectionKey, FieldPreference[]> {
+    const sections = {} as Record<SectionKey, FieldPreference[]>
+    for (const config of SECTION_CONFIGS) {
+        const sectionPref = preferences.sections?.[config.key]
+        if (sectionPref) {
+            sections[config.key] = sectionPref.fields
+        } else if (config.key === 'customer') {
+            sections[config.key] = preferences.fields
+        } else {
+            sections[config.key] = Object.keys(config.fieldDefinitions).map(
+                (id) => ({ id, visible: false }),
+            )
+        }
+    }
+    return sections
 }
 
 export function EditShopifyFieldsSidePanel({
@@ -60,42 +85,80 @@ export function EditShopifyFieldsSidePanel({
     context,
 }: Props) {
     const { dispatchNotification } = useContext(ShopifyCustomerContext)
-    const [localFields, setLocalFields] = useState(preferences.fields)
-    const initialFieldsRef = useRef(preferences.fields)
+    const [localSections, setLocalSections] = useState(() =>
+        initSections(preferences),
+    )
+    const initialSectionsRef = useRef(localSections)
     const isSavingRef = useRef(false)
-    const [isExpanded, setIsExpanded] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
 
     useEffect(() => {
         if (isOpen && !isSavingRef.current) {
-            setLocalFields(preferences.fields)
-            initialFieldsRef.current = preferences.fields
-            setIsExpanded(true)
+            const sections = initSections(preferences)
+            setLocalSections(sections)
+            initialSectionsRef.current = sections
         }
-    }, [isOpen, preferences.fields])
+    }, [isOpen, preferences])
 
     const hasChanges = useMemo(
-        () => !fieldsEqual(localFields, initialFieldsRef.current),
-        [localFields],
+        () => !sectionsEqual(localSections, initialSectionsRef.current),
+        [localSections],
     )
 
-    const handleToggleVisibility = useCallback((id: string) => {
-        setLocalFields((prev) =>
-            prev.map((field) =>
-                field.id === id ? { ...field, visible: !field.visible } : field,
-            ),
-        )
-    }, [])
+    const handleToggleVisibility = useCallback(
+        (sectionKey: SectionKey, id: string) => {
+            setLocalSections((prev) => ({
+                ...prev,
+                [sectionKey]: prev[sectionKey].map((field) =>
+                    field.id === id
+                        ? { ...field, visible: !field.visible }
+                        : field,
+                ),
+            }))
+        },
+        [],
+    )
 
-    const handleDrop = useCallback((dragIndex: number, hoverIndex: number) => {
-        setLocalFields((prev) => reorderArray(prev, dragIndex, hoverIndex))
+    const handleDrop = useCallback(
+        (sectionKey: SectionKey, dragIndex: number, hoverIndex: number) => {
+            setLocalSections((prev) => ({
+                ...prev,
+                [sectionKey]: reorderArray(
+                    prev[sectionKey],
+                    dragIndex,
+                    hoverIndex,
+                ),
+            }))
+        },
+        [],
+    )
+
+    const handleToggleAll = useCallback((sectionKey: SectionKey) => {
+        setLocalSections((prev) => {
+            const allVisible = prev[sectionKey].every((f) => f.visible)
+            const newVisible = !allVisible
+            return {
+                ...prev,
+                [sectionKey]: prev[sectionKey].map((field) => ({
+                    ...field,
+                    visible: newVisible,
+                })),
+            }
+        })
     }, [])
 
     const handleSave = useCallback(async () => {
         isSavingRef.current = true
         setIsSaving(true)
         try {
-            await onSave({ fields: localFields })
+            const sections: ShopifyFieldPreferences['sections'] = {}
+            for (const config of SECTION_CONFIGS) {
+                sections[config.key] = { fields: localSections[config.key] }
+            }
+            await onSave({
+                fields: localSections.customer,
+                sections,
+            })
             onOpenChange(false)
         } catch {
             dispatchNotification({
@@ -106,36 +169,7 @@ export function EditShopifyFieldsSidePanel({
             isSavingRef.current = false
             setIsSaving(false)
         }
-    }, [localFields, onSave, onOpenChange, dispatchNotification])
-
-    const allVisible = localFields.every((f) => f.visible)
-
-    const handleToggleAll = useCallback(() => {
-        const newVisible = !allVisible
-        setLocalFields((prev) =>
-            prev.map((field) => ({ ...field, visible: newVisible })),
-        )
-    }, [allVisible])
-
-    const fieldsWithLabels = useMemo(
-        () =>
-            localFields
-                .filter((f) => FIELD_DEFINITIONS[f.id])
-                .map((f) => {
-                    const def = FIELD_DEFINITIONS[f.id]
-                    const rawValue = def.getValue(context)
-                    const displayValue = def.formatValue
-                        ? def.formatValue(rawValue, context)
-                        : String(rawValue ?? '-')
-
-                    return {
-                        ...f,
-                        label: def.label,
-                        displayValue,
-                    }
-                }),
-        [localFields, context],
-    )
+    }, [localSections, onSave, onOpenChange, dispatchNotification])
 
     return (
         <SidePanel
@@ -150,78 +184,44 @@ export function EditShopifyFieldsSidePanel({
 
             <OverlayContent>
                 <div className={css.tableContainer}>
-                    <div className={css.sectionContainer}>
-                        <Box
-                            pt="sm"
-                            pb="sm"
-                            pl="md"
-                            pr="md"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            className={css.sectionHeader}
-                        >
-                            <Text variant="bold">Customer</Text>
-                            <Box gap="sm" alignItems="center">
-                                <ToggleField
-                                    value={allVisible}
-                                    onChange={handleToggleAll}
-                                />
-                                <Button
-                                    variant="tertiary"
-                                    icon={
-                                        isExpanded
-                                            ? 'arrow-chevron-up'
-                                            : 'arrow-chevron-down'
-                                    }
-                                    aria-label={
-                                        isExpanded
-                                            ? 'Collapse fields'
-                                            : 'Expand fields'
-                                    }
-                                    onClick={() => setIsExpanded((v) => !v)}
-                                />
-                            </Box>
-                        </Box>
-                        {isExpanded && (
-                            <TableRoot>
-                                <TableHeader>
-                                    <TableRow>
-                                        <HeaderCell
-                                            className={css.dragHeaderCell}
-                                        >
-                                            <Icon name="arrow-down-up" />
-                                        </HeaderCell>
-                                        <HeaderCell
-                                            className={css.metricHeaderCell}
-                                        >
-                                            Metric
-                                        </HeaderCell>
-                                        <HeaderCell
-                                            className={css.valueHeaderCell}
-                                        />
-                                        <HeaderCell
-                                            className={css.toggleHeaderCell}
-                                        >
-                                            Show
-                                        </HeaderCell>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {fieldsWithLabels.map((field, index) => (
-                                        <DraggableFieldRow
-                                            key={field.id}
-                                            field={field}
-                                            index={index}
-                                            onToggleVisibility={
-                                                handleToggleVisibility
-                                            }
-                                            onDrop={handleDrop}
-                                        />
-                                    ))}
-                                </TableBody>
-                            </TableRoot>
-                        )}
-                    </div>
+                    {SECTION_CONFIGS.map((config) => {
+                        const fields = localSections[config.key]
+                        const fieldsWithLabels = fields
+                            .filter((f) => config.fieldDefinitions[f.id])
+                            .map((f) => {
+                                const def = config.fieldDefinitions[f.id]
+                                const rawValue = def.getValue(context)
+                                const displayValue = def.formatValue
+                                    ? def.formatValue(rawValue, context)
+                                    : String(rawValue ?? '-')
+
+                                return {
+                                    ...f,
+                                    label: def.label,
+                                    displayValue,
+                                }
+                            })
+
+                        return (
+                            <EditableFieldSection
+                                key={config.key}
+                                label={config.label}
+                                fields={fieldsWithLabels}
+                                dragType={config.dragType}
+                                onToggleAll={() => handleToggleAll(config.key)}
+                                onToggleVisibility={(id) =>
+                                    handleToggleVisibility(config.key, id)
+                                }
+                                onDrop={(dragIndex, hoverIndex) =>
+                                    handleDrop(
+                                        config.key,
+                                        dragIndex,
+                                        hoverIndex,
+                                    )
+                                }
+                            />
+                        )
+                    })}
                 </div>
             </OverlayContent>
 

@@ -743,6 +743,263 @@ describe('CustomerInfo', () => {
         expect(onToggleEditShopifyFields).toHaveBeenCalledWith(false)
     })
 
+    describe('Address sections', () => {
+        const mockAddress1 = {
+            id: 1001,
+            address1: '123 Main St',
+            city: 'New York',
+            first_name: 'John',
+            last_name: 'Doe',
+        }
+
+        const mockAddress2 = {
+            id: 1002,
+            address1: '456 Oak Ave',
+            city: 'Los Angeles',
+            first_name: 'Jane',
+            last_name: 'Doe',
+        }
+
+        function createWidgetListResponse(
+            sectionPreferences: Record<
+                string,
+                { fields: Array<{ id: string; visible: boolean }> }
+            >,
+        ) {
+            return {
+                data: [
+                    {
+                        id: 1,
+                        type: 'shopify' as const,
+                        context: 'ticket' as const,
+                        template: {
+                            type: 'wrapper',
+                            widgets: [
+                                {
+                                    path: 'customer',
+                                    type: 'customer',
+                                    widgets: [
+                                        {
+                                            path: 'email',
+                                            type: 'email',
+                                            title: 'Email',
+                                        },
+                                    ],
+                                    meta: {
+                                        custom: {
+                                            fieldPreferences: [
+                                                {
+                                                    id: 'email',
+                                                    visible: true,
+                                                },
+                                            ],
+                                            sectionPreferences,
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list' as unknown,
+                uri: '/api/widgets',
+            }
+        }
+
+        it('renders a CollapsibleFieldSection per address', async () => {
+            const widgetResponse = createWidgetListResponse({
+                addresses: {
+                    fields: [
+                        { id: 'address1', visible: true },
+                        { id: 'city', visible: true },
+                    ],
+                },
+            })
+
+            server.use(
+                mockListWidgetsHandler(async () =>
+                    HttpResponse.json(widgetResponse),
+                ).handler,
+                mockGetEcommerceDataByExternalIdHandler(async () =>
+                    HttpResponse.json(
+                        mockEcommerceData({
+                            data: {
+                                ...mockShopperData,
+                                addresses: [mockAddress1, mockAddress2],
+                            },
+                            relationships: {
+                                shopper_identity_id: 'shopper-identity-1',
+                            },
+                        }),
+                    ),
+                ).handler,
+            )
+
+            render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByRole('button', {
+                        name: /collapse address/i,
+                    }),
+                ).toHaveLength(2)
+            })
+
+            expect(screen.getByText('123 Main St')).toBeInTheDocument()
+            expect(screen.getByText('New York')).toBeInTheDocument()
+            expect(screen.getByText('456 Oak Ave')).toBeInTheDocument()
+            expect(screen.getByText('Los Angeles')).toBeInTheDocument()
+        })
+
+        it('renders no address sections when addresses array is empty', async () => {
+            const widgetResponse = createWidgetListResponse({
+                addresses: {
+                    fields: [
+                        { id: 'address1', visible: true },
+                        { id: 'city', visible: true },
+                    ],
+                },
+            })
+
+            server.use(
+                mockListWidgetsHandler(async () =>
+                    HttpResponse.json(widgetResponse),
+                ).handler,
+            )
+
+            render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('link', { name: /john doe/i }),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.queryByRole('button', {
+                    name: /collapse address/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('collapse and expand works on address section', async () => {
+            const widgetResponse = createWidgetListResponse({
+                addresses: {
+                    fields: [{ id: 'address1', visible: true }],
+                },
+            })
+
+            server.use(
+                mockListWidgetsHandler(async () =>
+                    HttpResponse.json(widgetResponse),
+                ).handler,
+                mockGetEcommerceDataByExternalIdHandler(async () =>
+                    HttpResponse.json(
+                        mockEcommerceData({
+                            data: {
+                                ...mockShopperData,
+                                addresses: [mockAddress1],
+                            },
+                            relationships: {
+                                shopper_identity_id: 'shopper-identity-1',
+                            },
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const { user } = render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('123 Main St')).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /collapse address/i,
+                }),
+            )
+
+            expect(screen.queryByText('123 Main St')).not.toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: /expand address/i,
+                }),
+            )
+
+            expect(screen.getByText('123 Main St')).toBeInTheDocument()
+        })
+
+        it('renders non-address section with its label', async () => {
+            const widgetResponse = createWidgetListResponse({
+                defaultAddress: {
+                    fields: [{ id: 'address1', visible: true }],
+                },
+            })
+
+            server.use(
+                mockListWidgetsHandler(async () =>
+                    HttpResponse.json(widgetResponse),
+                ).handler,
+                mockGetEcommerceDataByExternalIdHandler(async () =>
+                    HttpResponse.json(
+                        mockEcommerceData({
+                            data: {
+                                ...mockShopperData,
+                                default_address: {
+                                    id: 2001,
+                                    address1: '789 Pine Rd',
+                                    city: 'Chicago',
+                                },
+                            },
+                            relationships: {
+                                shopper_identity_id: 'shopper-identity-1',
+                            },
+                        }),
+                    ),
+                ).handler,
+            )
+
+            render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', {
+                        name: /collapse default address/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            expect(screen.getByText('789 Pine Rd')).toBeInTheDocument()
+        })
+    })
+
     it('calls onCreateOrder with integration id and shopper data when Create order is clicked', async () => {
         const onCreateOrder = vi.fn()
 

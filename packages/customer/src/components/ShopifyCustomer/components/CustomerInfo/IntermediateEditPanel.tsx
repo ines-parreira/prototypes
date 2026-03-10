@@ -20,7 +20,7 @@ import type {
 import css from './IntermediateEditPanel.less'
 
 type Props = {
-    fields: FieldConfig[]
+    customerFields: FieldConfig[]
     context: FieldRenderContext
     preferences: ShopifyFieldPreferences
     onSavePreferences: (preferences: ShopifyFieldPreferences) => Promise<void>
@@ -39,7 +39,7 @@ const placeholderOrder: OrderCardOrder = {
 }
 
 export function IntermediateEditPanel({
-    fields,
+    customerFields,
     context,
     preferences,
     onSavePreferences,
@@ -69,7 +69,10 @@ export function IntermediateEditPanel({
                             Edit metrics
                         </Button>
                     </Box>
-                    <CustomerInfoFieldList fields={fields} context={context} />
+                    <CustomerInfoFieldList
+                        fields={customerFields}
+                        context={context}
+                    />
                 </div>
 
                 <Separator />

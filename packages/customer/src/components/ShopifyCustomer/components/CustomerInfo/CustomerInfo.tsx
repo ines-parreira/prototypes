@@ -8,13 +8,17 @@ import { Box } from '@gorgias/axiom'
 
 import { useGetOrderProducts, useIntegrationSelection } from '../../hooks'
 import { useGetDraftOrders } from '../../hooks/useGetDraftOrders'
+import { useGetEmailMarketingConsent } from '../../hooks/useGetEmailMarketingConsent'
 import { useGetOrders } from '../../hooks/useGetOrders'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
+import { useGetSmsMarketingConsent } from '../../hooks/useGetSmsMarketingConsent'
 import { ShopifyCustomerContext } from '../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../types'
 import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
+import { createAddressFieldDefinitions } from './addressesFields'
+import { CollapsibleFieldSection } from './CollapsibleFieldSection'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { IntermediateEditPanel } from './IntermediateEditPanel'
 import { NoShopifyProfile } from './NoShopifyProfile'
@@ -88,6 +92,16 @@ export function CustomerInfo({
         externalId: selectedExternalId,
     })
 
+    const { emailMarketingConsent } = useGetEmailMarketingConsent({
+        integrationId: selectedIntegration?.id,
+        externalId: selectedExternalId,
+    })
+
+    const { smsMarketingConsent } = useGetSmsMarketingConsent({
+        integrationId: selectedIntegration?.id,
+        externalId: selectedExternalId,
+    })
+
     const { dateFormat, timeFormat } = useUserDateTimePreferences()
 
     const context: FieldRenderContext = {
@@ -99,11 +113,13 @@ export function CustomerInfo({
         externalId: selectedExternalId,
         customerId,
         ticketId,
+        emailMarketingConsent,
+        smsMarketingConsent,
     }
 
     const hasData = !!purchaseSummary || !!shopper
 
-    const { fields, preferences, savePreferences } =
+    const { customerFields, sections, preferences, savePreferences } =
         useCustomerFieldPreferences()
 
     const { isEditShopifyFieldsOpen, onToggleEditShopifyFields } =
@@ -186,7 +202,7 @@ export function CustomerInfo({
     if (isEditShopifyFieldsOpen) {
         return (
             <IntermediateEditPanel
-                fields={fields}
+                customerFields={customerFields}
                 context={context}
                 preferences={preferences}
                 onSavePreferences={savePreferences}
@@ -233,10 +249,41 @@ export function CustomerInfo({
                         isLoading={isLoadingIntegrations}
                     />
                     {hasData && (
-                        <CustomerInfoFieldList
-                            fields={fields}
-                            context={context}
-                        />
+                        <>
+                            <CustomerInfoFieldList
+                                fields={customerFields}
+                                context={context}
+                            />
+                            {sections.map((section) => {
+                                if (section.key === 'addresses') {
+                                    const addresses =
+                                        context.shopper?.data?.addresses ?? []
+                                    return addresses.map((_, index) => {
+                                        const fieldDefs =
+                                            createAddressFieldDefinitions(index)
+                                        const fields = section.fields
+                                            .map((f) => fieldDefs[f.id])
+                                            .filter(Boolean)
+                                        return (
+                                            <CollapsibleFieldSection
+                                                key={`address-${index}`}
+                                                label={`Address`}
+                                                fields={fields}
+                                                context={context}
+                                            />
+                                        )
+                                    })
+                                }
+                                return (
+                                    <CollapsibleFieldSection
+                                        key={section.key}
+                                        label={section.label}
+                                        fields={section.fields}
+                                        context={context}
+                                    />
+                                )
+                            })}
+                        </>
                     )}
                 </Box>
 

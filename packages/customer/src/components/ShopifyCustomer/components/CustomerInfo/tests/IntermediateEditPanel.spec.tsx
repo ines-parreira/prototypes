@@ -28,6 +28,8 @@ const mockContext: FieldRenderContext = {
     externalId: undefined,
     customerId: undefined,
     ticketId: undefined,
+    emailMarketingConsent: undefined,
+    smsMarketingConsent: undefined,
 }
 
 const defaultPreferences: ShopifyFieldPreferences = {
@@ -46,7 +48,7 @@ const fields: FieldConfig[] = [
 
 describe('IntermediateEditPanel', () => {
     const defaultProps = {
-        fields,
+        customerFields: fields,
         context: mockContext,
         preferences: defaultPreferences,
         onSavePreferences: vi.fn().mockResolvedValue(undefined),

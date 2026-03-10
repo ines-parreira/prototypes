@@ -2,13 +2,31 @@ import type { ReactNode } from 'react'
 
 import type { DateFormatType, TimeFormatType } from '@repo/utils'
 
-import type { PurchaseSummaryData, ShopperEcommerceData } from '../../types'
+import type {
+    EmailMarketingConsentData,
+    PurchaseSummaryData,
+    ShopperEcommerceData,
+    SmsMarketingConsentData,
+} from '../../types'
 
 export type {
+    EmailMarketingConsentData,
     PurchaseSummaryData,
     ShopperData,
     ShopperEcommerceData,
+    SmsMarketingConsentData,
 } from '../../types'
+
+export type SectionKey =
+    | 'customer'
+    | 'defaultAddress'
+    | 'emailMarketingConsent'
+    | 'smsMarketingConsent'
+    | 'addresses'
+
+export type SectionPreferences = {
+    fields: FieldPreference[]
+}
 
 export type OrderDetailsData = {
     id: number | string
@@ -27,6 +45,8 @@ export type FieldRenderContext = {
     externalId: string | undefined
     customerId: number | undefined
     ticketId: string | undefined
+    emailMarketingConsent: EmailMarketingConsentData | undefined
+    smsMarketingConsent: SmsMarketingConsentData | undefined
 }
 
 type BaseFieldConfig = {
@@ -62,6 +82,7 @@ export type FieldPreference = {
 
 export type ShopifyFieldPreferences = {
     fields: FieldPreference[]
+    sections?: Partial<Record<SectionKey, SectionPreferences>>
 }
 
 export type OrderFieldRenderContext = {

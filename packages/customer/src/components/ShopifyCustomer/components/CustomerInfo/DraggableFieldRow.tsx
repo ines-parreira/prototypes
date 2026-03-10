@@ -15,22 +15,22 @@ type Props = {
         displayValue: ReactNode
     }
     index: number
+    dragType: string
     onToggleVisibility: (id: string) => void
     onDrop: (dragIndex: number, hoverIndex: number) => void
 }
 
-const DRAG_TYPE = 'shopify-field'
-
 export function DraggableFieldRow({
     field,
     index,
+    dragType,
     onToggleVisibility,
     onDrop,
 }: Props) {
     const ref = useRef<HTMLTableRowElement>(null)
 
     const [{ isDragging }, drag] = useDrag({
-        type: DRAG_TYPE,
+        type: dragType,
         item: { index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
@@ -38,7 +38,7 @@ export function DraggableFieldRow({
     })
 
     const [, drop] = useDrop<{ index: number }, void, unknown>({
-        accept: DRAG_TYPE,
+        accept: dragType,
         hover: (item) => {
             if (!ref.current) {
                 return

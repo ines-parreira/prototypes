@@ -23,6 +23,8 @@ const mockContext: FieldRenderContext = {
     externalId: undefined,
     customerId: undefined,
     ticketId: undefined,
+    emailMarketingConsent: undefined,
+    smsMarketingConsent: undefined,
 }
 
 const defaultPreferences: ShopifyFieldPreferences = {
@@ -83,13 +85,18 @@ describe('EditShopifyFieldsSidePanel', () => {
 
         await user.click(screen.getByRole('button', { name: /save/i }))
 
-        expect(defaultProps.onSave).toHaveBeenCalledWith({
-            fields: [
-                { id: 'totalSpent', visible: true },
-                { id: 'orders', visible: false },
-                { id: 'note', visible: false },
-            ],
-        })
+        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        expect(savedPrefs.fields).toEqual([
+            { id: 'totalSpent', visible: true },
+            { id: 'orders', visible: false },
+            { id: 'note', visible: false },
+        ])
+        expect(savedPrefs.sections).toBeDefined()
+        expect(savedPrefs.sections.customer.fields).toEqual([
+            { id: 'totalSpent', visible: true },
+            { id: 'orders', visible: false },
+            { id: 'note', visible: false },
+        ])
         expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
     })
 
@@ -101,7 +108,7 @@ describe('EditShopifyFieldsSidePanel', () => {
         expect(screen.getByText('Total spent')).toBeInTheDocument()
 
         await user.click(
-            screen.getByRole('button', { name: /collapse fields/i }),
+            screen.getByRole('button', { name: /collapse customer fields/i }),
         )
 
         expect(screen.queryByText('Total spent')).not.toBeInTheDocument()
@@ -127,11 +134,14 @@ describe('EditShopifyFieldsSidePanel', () => {
 
         await user.click(screen.getByRole('button', { name: /save/i }))
 
-        expect(defaultProps.onSave).toHaveBeenCalledWith({
-            fields: [
-                { id: 'totalSpent', visible: false },
-                { id: 'orders', visible: false },
-            ],
-        })
+        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        expect(savedPrefs.fields).toEqual([
+            { id: 'totalSpent', visible: false },
+            { id: 'orders', visible: false },
+        ])
+        expect(savedPrefs.sections.customer.fields).toEqual([
+            { id: 'totalSpent', visible: false },
+            { id: 'orders', visible: false },
+        ])
     })
 })
