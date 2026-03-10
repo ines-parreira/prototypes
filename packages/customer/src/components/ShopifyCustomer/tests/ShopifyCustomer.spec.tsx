@@ -1,3 +1,4 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -6,6 +7,7 @@ import { mockGetEcommerceDataByExternalIdHandler } from '@gorgias/ecommerce-stor
 import {
     mockGetTicketHandler,
     mockListIntegrationsHandler,
+    mockListWidgetsHandler,
     mockTicket,
     mockTicketCustomer,
 } from '@gorgias/helpdesk-mocks'
@@ -22,6 +24,14 @@ vi.mock('@repo/navigation', async (importOriginal) => ({
         isExpanded: true,
         onChangeTab: vi.fn(),
         onToggle: vi.fn(),
+    }),
+}))
+
+vi.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: DateFormatType.en_US,
+        timeFormat: TimeFormatType.AmPm,
+        timezone: undefined,
     }),
 }))
 
@@ -79,12 +89,14 @@ const mockGetTicket = mockGetTicketHandler(async () =>
 )
 
 const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler()
+const mockListWidgets = mockListWidgetsHandler()
 
 beforeEach(() => {
     server.use(
         mockListIntegrations.handler,
         mockGetTicket.handler,
         mockGetEcommerceData.handler,
+        mockListWidgets.handler,
     )
 })
 

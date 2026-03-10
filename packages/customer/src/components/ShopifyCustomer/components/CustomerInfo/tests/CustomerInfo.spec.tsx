@@ -1,5 +1,6 @@
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
@@ -9,7 +10,6 @@ import {
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
 import {
-    mockGetCurrentUserHandler,
     mockListIntegrationsHandler,
     mockListWidgetsHandler,
 } from '@gorgias/helpdesk-mocks'
@@ -44,6 +44,14 @@ vi.mock('@repo/navigation', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
     useTicketInfobarNavigation: (...args: unknown[]) =>
         mockUseTicketInfobarNavigation(...args),
+}))
+
+vi.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: DateFormatType.en_US,
+        timeFormat: TimeFormatType.AmPm,
+        timezone: undefined,
+    }),
 }))
 
 const server = setupServer()
@@ -141,7 +149,39 @@ const mockListOrders = mockListEcommerceDataHandler(async () =>
     ),
 )
 
-const mockGetCurrentUser = mockGetCurrentUserHandler()
+const shopTagsHandler = http.get(
+    '/integrations/shopify/shop-tags/customers/list/',
+    () =>
+        HttpResponse.json({
+            data: {
+                shop: {
+                    customerTags: {
+                        edges: [],
+                    },
+                },
+            },
+        }),
+)
+
+const shopOrderTagsHandler = http.get(
+    '/integrations/shopify/shop-tags/orders/list/',
+    () =>
+        HttpResponse.json({
+            data: {
+                shop: {
+                    orderTags: {
+                        edges: [],
+                    },
+                },
+            },
+        }),
+)
+
+const metafieldDefinitionsHandler = http.get(
+    '/api/integrations/shopify/:integrationId/metafield-definitions',
+    () => HttpResponse.json({ data: [], meta: {} }),
+)
+
 const mockListWidgets = mockListWidgetsHandler()
 
 beforeEach(() => {
@@ -170,7 +210,9 @@ beforeEach(() => {
         mockListIntegrations.handler,
         mockGetEcommerceData.handler,
         mockListOrders.handler,
-        mockGetCurrentUser.handler,
+        shopTagsHandler,
+        shopOrderTagsHandler,
+        metafieldDefinitionsHandler,
         mockListWidgets.handler,
     )
 })
