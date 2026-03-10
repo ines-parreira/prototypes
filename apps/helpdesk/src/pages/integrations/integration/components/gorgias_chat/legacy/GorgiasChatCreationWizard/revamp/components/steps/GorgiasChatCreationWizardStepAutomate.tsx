@@ -247,7 +247,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 shouldRedirectAfterSave
             />
             <GorgiasChatCreationWizardStep
-                preview={null}
                 footer={
                     <GorgiasChatCreationWizardFooter
                         backButton={{

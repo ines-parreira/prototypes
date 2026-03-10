@@ -39,7 +39,6 @@ const mockStoreState = {
 
 const defaultProps = {
     children: <div>Step content</div>,
-    preview: <div>Preview content</div>,
     footer: <button>Next</button>,
 }
 
@@ -72,7 +71,6 @@ describe('GorgiasChatCreationWizardStep', () => {
         const { getByText } = renderComponent()
 
         expect(getByText('Step content')).toBeInTheDocument()
-        expect(getByText('Preview content')).toBeInTheDocument()
         expect(getByText('Next')).toBeInTheDocument()
     })
 
@@ -101,28 +99,6 @@ describe('GorgiasChatCreationWizardStep', () => {
 
         expect(
             container.querySelector('[class*="footerShadow"]'),
-        ).not.toBeInTheDocument()
-    })
-
-    it('shows preview placeholder when showPreviewPlaceholder is true', () => {
-        const { getByText, queryByText } = renderComponent({
-            showPreviewPlaceholder: true,
-        })
-
-        expect(
-            getByText('Connect a store to use AI Agent features in Chat'),
-        ).toBeInTheDocument()
-        expect(queryByText('Preview content')).not.toBeInTheDocument()
-    })
-
-    it('shows preview content when showPreviewPlaceholder is false', () => {
-        const { getByText, queryByText } = renderComponent({
-            showPreviewPlaceholder: false,
-        })
-
-        expect(getByText('Preview content')).toBeInTheDocument()
-        expect(
-            queryByText('Connect a store to use AI Agent features in Chat'),
         ).not.toBeInTheDocument()
     })
 })

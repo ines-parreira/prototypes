@@ -17,26 +17,6 @@
         flex: 1;
     }
 
-    .preview {
-        flex-grow: 1;
-        background: var(--elevation-neutral-default);
-        padding: var(--layout-spacing-m) var(--layout-spacing-m) 0
-            var(--layout-spacing-m);
-
-        @media (min-width: 1280px) {
-            padding: var(--layout-spacing-m) 46px 0 46px;
-        }
-    }
-
-    .previewCenter {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        max-width: 684px;
-        position: sticky;
-        top: 0;
-    }
-
     .wizardProgressHeader {
         top: 0;
         position: sticky;
@@ -76,15 +56,5 @@
         background: var(--elevation-neutral-default);
         padding: var(--md, 16px) 0;
         gap: var(--xs, 8px);
-    }
-
-    .previewPlaceholder {
-        width: 384px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        padding: 42px;
-        color: var(--content-neutral-secondary);
     }
 }

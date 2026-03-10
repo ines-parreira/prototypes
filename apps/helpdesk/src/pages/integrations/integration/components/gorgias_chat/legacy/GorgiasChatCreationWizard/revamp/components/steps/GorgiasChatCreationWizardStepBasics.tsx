@@ -470,7 +470,6 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             />
             <ShopifyScriptTagScopeModal />
             <GorgiasChatCreationWizardStep
-                preview={null}
                 footer={
                     <GorgiasChatCreationWizardFooter
                         cancelButton={
