@@ -36,6 +36,17 @@ export default function ActionExecutionsView() {
         () => new URLSearchParams(location.search),
         [location.search],
     )
+    const initialUserJourneyId = useMemo(() => {
+        const ticket = queryParams.get('ticket')
+
+        if (!ticket) {
+            return undefined
+        }
+
+        const parsedTicketId = Number(ticket)
+
+        return Number.isFinite(parsedTicketId) ? parsedTicketId : undefined
+    }, [queryParams])
 
     const [filterState, dispatchFilter] = useReducer(
         (state: Filter, action: Partial<Filter>): Filter => {
@@ -48,7 +59,7 @@ export default function ActionExecutionsView() {
             from: moment().subtract(1, 'week').toDate(),
             to: moment().toDate(),
             status: undefined,
-            userJourneyId: undefined,
+            userJourneyId: initialUserJourneyId,
             orderBy: 'DESC',
             page: 1,
         },
@@ -59,18 +70,20 @@ export default function ActionExecutionsView() {
     >(queryParams.get('execution_id'))
 
     useEffect(() => {
+        const nextSearchParams = new URLSearchParams()
+
         if (selectedExecutionId) {
-            history.replace({
-                search: new URLSearchParams({
-                    execution_id: selectedExecutionId,
-                }).toString(),
-            })
-        } else {
-            history.replace({
-                search: '',
-            })
+            nextSearchParams.set('execution_id', selectedExecutionId)
         }
-    }, [history, location.pathname, queryParams, selectedExecutionId])
+
+        if (filterState.userJourneyId) {
+            nextSearchParams.set('ticket', filterState.userJourneyId.toString())
+        }
+
+        history.replace({
+            search: nextSearchParams.toString(),
+        })
+    }, [filterState.userJourneyId, history, selectedExecutionId])
 
     const { shopName, id: configurationId } = useParams<{
         id: string
@@ -166,6 +179,7 @@ export default function ActionExecutionsView() {
             <ActionEventsHeader
                 initialEndDate={filterState.to}
                 initialStartDate={filterState.from}
+                initialUserJourneyId={initialUserJourneyId}
                 onChange={handleFilterChange}
             />
             <ActionEventsList

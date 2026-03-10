@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 
 import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { coerceResourceType } from 'pages/aiAgent/utils/reasoningResources'
 import { sanitizeHtmlDefault } from 'utils/html'
 
@@ -28,6 +29,32 @@ const isKnownResourceType = (markerString: string): boolean => {
     )
 }
 
+const getActionEventsUrl = ({
+    resourceId,
+    resourceType,
+    shopName,
+    ticketId,
+}: {
+    resourceId: string
+    resourceType: AiAgentKnowledgeResourceTypeEnum
+    shopName?: string
+    ticketId?: number | null
+}) => {
+    if (
+        resourceType !== AiAgentKnowledgeResourceTypeEnum.ACTION ||
+        !resourceId ||
+        !shopName ||
+        !ticketId
+    ) {
+        return undefined
+    }
+
+    const actionEventsPath =
+        getAiAgentNavigationRoutes(shopName).actionEvents(resourceId)
+
+    return `${actionEventsPath}?ticket=${ticketId}`
+}
+
 export type AiAgentReasoningContentProps = {
     reasoningContent: string | null
     reasoningResources: KnowledgeReasoningResource[]
@@ -39,6 +66,7 @@ export type AiAgentReasoningContentProps = {
         shopName?: string
         shopType?: string
     } | null
+    ticketId?: number | null
 
     openPreview: (params: {
         id: string
@@ -61,6 +89,7 @@ export const AiAgentReasoningContent = ({
     reasoningResources,
     data,
     storeConfiguration,
+    ticketId,
 
     openPreview,
     onKnowledgeResourceClick,
@@ -137,10 +166,19 @@ export const AiAgentReasoningContent = ({
                             'isDeleted' in resourceData
                                 ? resourceData.isDeleted
                                 : false
+                        const resourceType =
+                            resource.resourceType as AiAgentKnowledgeResourceTypeEnum
 
-                        const isLink = knowledgeResourceShouldBeLink(
-                            resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                        )
+                        const isLink =
+                            knowledgeResourceShouldBeLink(resourceType)
+                        const resourceUrl =
+                            getActionEventsUrl({
+                                resourceId: resource.resourceId,
+                                resourceType,
+                                shopName: storeConfiguration?.shopName,
+                                ticketId,
+                            }) ||
+                            ('url' in resourceData ? resourceData.url : '')
 
                         // If the resource does not have a title it means that there was no match from the query resources so the ID of the resource is hallucinated
                         if (isDeleted && !resource.resourceTitle) {
@@ -151,14 +189,10 @@ export const AiAgentReasoningContent = ({
                             ? undefined
                             : () => {
                                   if (isLink) {
-                                      const resourceUrl =
-                                          'url' in resourceData
-                                              ? resourceData.url
-                                              : ''
                                       if (resourceUrl) {
                                           onKnowledgeResourceClick?.(
                                               resource.resourceId,
-                                              resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                                              resourceType,
                                               resource.resourceSetId || '',
                                           )
                                           window.open(resourceUrl, '_blank')
@@ -175,8 +209,7 @@ export const AiAgentReasoningContent = ({
                                               resource.resourceTitle ||
                                               '',
                                           content: resourceData.content,
-                                          knowledgeResourceType:
-                                              resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                                          knowledgeResourceType: resourceType,
                                           helpCenterId: resource.resourceSetId,
                                       })
                                   }

@@ -4,7 +4,7 @@ import 'pages/aiAgent/test/mock-activation-hooks.utils'
 import { assumeMock } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import _range from 'lodash/range'
 import { Provider } from 'react-redux'
@@ -44,6 +44,22 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 jest.mock('pages/aiAgent/Activation/hooks/useActivation')
 jest.mock('pages/aiAgent/Activation/hooks/useStoreActivations.ts')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
+jest.mock('pages/aiAgent/components/AiAgentLayout/AiAgentLayout', () => ({
+    AiAgentLayout: ({
+        children,
+        isLoading,
+        title,
+    }: {
+        children: any
+        isLoading?: boolean
+        title: string
+    }) => (
+        <div data-testid="ai-agent-layout">
+            <h1>{title}</h1>
+            {isLoading ? <div>Loading...</div> : children}
+        </div>
+    ),
+}))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
@@ -388,6 +404,33 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.getByLabelText('Event details')).toHaveClass('opened')
         fireEvent.click(screen.getByText('keyboard_tab'))
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
+    })
+
+    it('hydrates the ticket filter from the URL and requests executions for that ticket', async () => {
+        renderWithRouter(
+            <Provider store={defaultStore}>
+                <QueryClientProvider client={queryClient}>
+                    <ActionEventsViewContainer />
+                </QueryClientProvider>
+            </Provider>,
+            {
+                path: '/:shopType/:shopName/ai-agent/actions/events/:id',
+                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id?ticket=563832433',
+            },
+        )
+
+        await waitFor(() => {
+            expect(
+                useGetConfigurationExecutionsMocked,
+            ).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    userJourneyId: 563832433,
+                }),
+                expect.any(Object),
+            )
+        })
+
+        expect(screen.getByLabelText('Ticket ID')).toHaveValue(563832433)
     })
 
     it('open side panel for success execution', () => {

@@ -32,6 +32,7 @@ import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { AiAgentReasoning } from '../AiAgentReasoning'
+import { AiAgentReasoningContent } from '../AiReasoningContent'
 
 jest.mock('@repo/navigation', () => ({
     ...jest.requireActual('@repo/navigation'),
@@ -878,6 +879,56 @@ describe('AiAgentReasoning', () => {
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
                 'https://artemisathletix.gorgias.help/en-us/articles/13608-cheirosa-68-beija-flor-perfume-mist-guide',
+                '_blank',
+            )
+        })
+
+        it('should open the action events page scoped to the current ticket for action resources', () => {
+            const mockWindowOpen = jest.fn()
+            window.open = mockWindowOpen
+
+            mockKnowledgeResourceShouldBeLink.mockImplementation(
+                (resourceType) =>
+                    resourceType === AiAgentKnowledgeResourceTypeEnum.ACTION,
+            )
+
+            render(
+                <AiAgentReasoningContent
+                    reasoningContent="Action <<<action_execution::uuid>>>"
+                    reasoningResources={[
+                        {
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.ACTION,
+                            resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
+                            resourceSetId: 'uuid',
+                            resourceTitle: 'Test Action',
+                        },
+                    ]}
+                    data={[
+                        {
+                            title: 'Action Guide',
+                            content: 'Action content',
+                            url: 'https://example.com/action',
+                            isDeleted: false,
+                        },
+                    ]}
+                    storeConfiguration={{
+                        shopName: 'Test Shop',
+                        shopType: 'shopify',
+                    }}
+                    ticketId={123}
+                    openPreview={jest.fn()}
+                />,
+            )
+
+            const actionResource = screen.getByTestId(
+                'knowledge-source-popover-ACTION',
+            )
+
+            fireEvent.click(actionResource)
+
+            expect(mockWindowOpen).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/Test Shop/actions/events/01J7KWHHMDY3H5S174D89VG7S3?ticket=123',
                 '_blank',
             )
         })

@@ -210,6 +210,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                             reasoningResources={reasoningResources}
                             data={reasoningMetadata?.data}
                             storeConfiguration={storeConfiguration}
+                            ticketId={ticketId}
                             openPreview={openPreview}
                             onKnowledgeResourceClick={onKnowledgeResourceClick}
                         />

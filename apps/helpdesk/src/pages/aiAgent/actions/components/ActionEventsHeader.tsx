@@ -19,6 +19,7 @@ import css from './ActionEventsHeader.less'
 type Props = {
     initialStartDate: Date
     initialEndDate: Date
+    initialUserJourneyId?: number
     onChange: (filter: {
         from: Date
         to: Date
@@ -45,6 +46,7 @@ export default function ActionEventsHeader({
     onChange,
     initialEndDate,
     initialStartDate,
+    initialUserJourneyId,
 }: Props) {
     const dispatch = useAppDispatch()
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
@@ -57,7 +59,7 @@ export default function ActionEventsHeader({
     const [endDateFilter, setEndDateFilter] = useState(initialEndDate)
     const [isPeriodFilterSet, setIsPeriodFilterSet] = useState(false)
     const [userJourneyId, setUserJourneyId] = useState<number | undefined>(
-        undefined,
+        initialUserJourneyId,
     )
     useEffectOnce(() => {
         dispatch(
@@ -91,6 +93,7 @@ export default function ActionEventsHeader({
             status: statusFilterOptions.map(
                 (dropDownValue) => dropDownValue.value,
             ) as ('success' | 'error' | 'partial_success')[],
+            userJourneyId,
         })
     }, [
         endDateFilter,
@@ -98,6 +101,7 @@ export default function ActionEventsHeader({
         startDateFilter,
         statusValues,
         statusFilterOptions,
+        userJourneyId,
     ])
 
     const handleFilterChange = (option: DropdownOption) => {
