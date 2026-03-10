@@ -49,7 +49,7 @@ export type MetricTrend = {
     isFetching: boolean
     isError: boolean
     data?: {
-        label: string
+        label?: string
         value: number | null
         prevValue: number | null
     }

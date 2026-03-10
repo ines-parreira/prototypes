@@ -25,6 +25,7 @@ type ChartHeaderProps = {
     interpretAs?: TrendDirection
     onMetricChange?: (metric: string) => void
     chartControls?: ReactNode
+    alwaysShowChartControls?: boolean
     tooltipData?: {
         period: string
     }
@@ -41,6 +42,7 @@ export const ChartHeader = ({
     interpretAs = 'neutral',
     onMetricChange,
     chartControls,
+    alwaysShowChartControls = false,
     tooltipData,
     isLoading,
 }: ChartHeaderProps) => {
@@ -76,7 +78,7 @@ export const ChartHeader = ({
                         </Text>
                     )}
                 </Box>
-                {hasData && chartControls && (
+                {(alwaysShowChartControls || hasData) && chartControls && (
                     <Box display="flex" gap="xxxs">
                         {chartControls}
                     </Box>

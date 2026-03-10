@@ -58,3 +58,9 @@ export type {
     SankeyLinkItem,
     SankeyLinkClickPayload,
 } from './components/SankeyChart/types'
+export {
+    ConfigurableGraph,
+    ConfigurableGraphType,
+    type ConfigurableGraphGroupingConfig,
+    type ConfigurableGraphMetricConfig,
+} from './components/ConfigurableGraph'

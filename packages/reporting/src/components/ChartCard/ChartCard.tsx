@@ -27,6 +27,7 @@ type ChartCardProps = {
         period: string
     }
     isLoading?: boolean
+    alwaysShowChartControls?: boolean
 }
 
 export const ChartCard = ({
@@ -42,6 +43,7 @@ export const ChartCard = ({
     prevValue,
     tooltipData,
     isLoading,
+    alwaysShowChartControls = false,
 }: ChartCardProps) => {
     const noData = !isLoading && !value
 
@@ -59,6 +61,7 @@ export const ChartCard = ({
                 chartControls={chartControls}
                 tooltipData={tooltipData}
                 isLoading={isLoading}
+                alwaysShowChartControls={alwaysShowChartControls}
             />
             {noData ? (
                 <Box

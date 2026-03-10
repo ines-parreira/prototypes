@@ -38,7 +38,7 @@ const MAP_DIMENSION_API_TO_UI: Record<string, string> = {
 }
 
 export const useAutomationRateByFeature = (): {
-    data: ChartDataItem[] | undefined
+    data: ChartDataItem[]
     isLoading: boolean
     isError: boolean
 } => {
@@ -63,20 +63,21 @@ export const useAutomationRateByFeature = (): {
         ? {
               isLoading: response.isFetching,
               isError: response.isError,
-              data: response.data?.allValues
-                  ?.filter((metricValue) =>
-                      Object.keys(MAP_DIMENSION_API_TO_UI).includes(
-                          metricValue.dimension.toString(),
-                      ),
-                  )
-                  .map((metricValue) => {
-                      return {
-                          name: MAP_DIMENSION_API_TO_UI[
-                              metricValue.dimension.toString()
-                          ],
-                          value: metricValue.value,
-                      }
-                  }),
+              data:
+                  response.data?.allValues
+                      ?.filter((metricValue) =>
+                          Object.keys(MAP_DIMENSION_API_TO_UI).includes(
+                              metricValue.dimension.toString(),
+                          ),
+                      )
+                      .map((metricValue) => {
+                          return {
+                              name: MAP_DIMENSION_API_TO_UI[
+                                  metricValue.dimension.toString()
+                              ],
+                              value: metricValue.value,
+                          }
+                      }) ?? [],
           }
         : oldData
 }
@@ -84,7 +85,7 @@ export const useAutomationRateByFeature = (): {
 export const useAutomationRateByFeatureV1 = (
     enabled: boolean = true,
 ): {
-    data: ChartDataItem[] | undefined
+    data: ChartDataItem[]
     isLoading: boolean
     isError: boolean
 } => {
@@ -179,7 +180,7 @@ export const useAutomationRateByFeatureV1 = (
         !billableTicketsExcludingAIAgent.data
     ) {
         return {
-            data: undefined,
+            data: [],
             isLoading,
             isError,
         }

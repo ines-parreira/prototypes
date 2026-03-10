@@ -148,10 +148,10 @@ describe('useAutomationRateByFeature', () => {
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 
-        expect(result.current.isError).toBe(true)
+        expect(result.current.isError).toEqual(true)
     })
 
-    it('should return undefined data when AI Agent interactions data is missing', () => {
+    it('should return empty data when AI Agent interactions data is missing', () => {
         mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
             data: undefined,
             isFetching: false,
@@ -160,7 +160,7 @@ describe('useAutomationRateByFeature', () => {
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 
-        expect(result.current.data).toBeUndefined()
+        expect(result.current.data).toEqual([])
     })
 
     it('should return undefined data when all automated interactions data is missing', () => {
@@ -172,7 +172,7 @@ describe('useAutomationRateByFeature', () => {
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 
-        expect(result.current.data).toBeUndefined()
+        expect(result.current.data).toEqual([])
     })
 
     it('should return undefined data when billable tickets data is missing', () => {
@@ -184,7 +184,7 @@ describe('useAutomationRateByFeature', () => {
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 
-        expect(result.current.data).toBeUndefined()
+        expect(result.current.data).toEqual([])
     })
 
     it('should handle zero interactions gracefully', () => {
@@ -457,7 +457,7 @@ describe('useAutomationRateByFeature when stage is live or complete', () => {
 
         const { result } = renderHook(() => useAutomationRateByFeature())
 
-        expect(result.current.data).toBeUndefined()
+        expect(result.current.data).toEqual([])
     })
 
     it('should handle null values in dimension data', () => {
