@@ -306,7 +306,20 @@ jest.mock('core/theme/useTheme.ts', () =>
     })),
 )
 
-jest.mock('@repo/feature-flags')
+jest.mock('@repo/feature-flags', () => {
+    const mockModule = jest.createMockFromModule(
+        '@repo/feature-flags',
+    ) as typeof import('@repo/feature-flags')
+    const actual = jest.requireActual(
+        '@repo/feature-flags',
+    ) as typeof import('@repo/feature-flags')
+    return {
+        ...mockModule,
+        FeatureFlagKey: actual.FeatureFlagKey,
+        useFlag: jest.fn(),
+        useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+    }
+})
 
 const SocketManagerMock = () => ({
     registerJoinEvents: jest.fn(),

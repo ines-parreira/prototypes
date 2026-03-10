@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
@@ -7,7 +7,9 @@ import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/comp
 import { GorgiasChatIntegrationInstall } from './GorgiasChatIntegrationInstall'
 
 jest.mock('@repo/feature-flags')
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseFlagWithLoading = useFlagWithLoading as jest.MockedFunction<
+    typeof useFlagWithLoading
+>
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',
@@ -40,6 +42,15 @@ jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
     useStoreIntegration: () => ({ storeIntegration: undefined }),
 }))
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationInstall/ChatSettingsInstallationSkeleton',
+    () => ({
+        ChatSettingsInstallationSkeleton: () => (
+            <div data-testid="installation-skeleton" />
+        ),
+    }),
+)
+
 const mockUseShouldShowChatSettingsRevamp = jest.mocked(
     useShouldShowChatSettingsRevamp,
 )
@@ -61,12 +72,93 @@ describe('<GorgiasChatIntegrationInstall />', () => {
         jest.resetAllMocks()
     })
 
-    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
-        mockUseFlag.mockReturnValue(false)
+    it('should render the skeleton while the feature flag is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevamp: false,
             shouldShowPreviewForRevamp: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            isLoading: false,
+        })
+
+        render(<GorgiasChatIntegrationInstall {...minProps} />)
+
+        expect(screen.getByTestId('installation-skeleton')).toBeInTheDocument()
+        expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('old-revamp-install'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('new-revamp-install'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the skeleton while the integration id is not yet available', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            isLoading: false,
+        })
+
+        render(
+            <GorgiasChatIntegrationInstall
+                {...minProps}
+                integration={fromJS({})}
+            />,
+        )
+
+        expect(screen.getByTestId('installation-skeleton')).toBeInTheDocument()
+        expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('old-revamp-install'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('new-revamp-install'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the skeleton while the store configuration is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            isLoading: true,
+        })
+
+        render(<GorgiasChatIntegrationInstall {...minProps} />)
+
+        expect(screen.getByTestId('installation-skeleton')).toBeInTheDocument()
+        expect(screen.queryByTestId('legacy-install')).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('old-revamp-install'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('new-revamp-install'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            isLoading: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)
@@ -81,13 +173,18 @@ describe('<GorgiasChatIntegrationInstall />', () => {
     })
 
     it('should render the old revamp component when shouldShowRevampWhenAiAgentEnabled is true but ChatSettingsScreensRevamp flag is disabled', () => {
-        mockUseFlag.mockImplementation((key) =>
-            key === FeatureFlagKey.ChatSettingsScreensRevamp ? false : false,
-        )
+        mockUseFlagWithLoading.mockImplementation((key) => ({
+            value:
+                key === FeatureFlagKey.ChatSettingsScreensRevamp
+                    ? false
+                    : false,
+            isLoading: false,
+        }))
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevamp: true,
             shouldShowPreviewForRevamp: true,
             shouldShowRevampWhenAiAgentEnabled: true,
+            isLoading: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)
@@ -100,13 +197,16 @@ describe('<GorgiasChatIntegrationInstall />', () => {
     })
 
     it('should render the new revamp component when shouldShowRevampWhenAiAgentEnabled is true and ChatSettingsScreensRevamp flag is enabled', () => {
-        mockUseFlag.mockImplementation((key) =>
-            key === FeatureFlagKey.ChatSettingsScreensRevamp ? true : false,
-        )
+        mockUseFlagWithLoading.mockImplementation((key) => ({
+            value:
+                key === FeatureFlagKey.ChatSettingsScreensRevamp ? true : false,
+            isLoading: false,
+        }))
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevamp: true,
             shouldShowPreviewForRevamp: true,
             shouldShowRevampWhenAiAgentEnabled: true,
+            isLoading: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)

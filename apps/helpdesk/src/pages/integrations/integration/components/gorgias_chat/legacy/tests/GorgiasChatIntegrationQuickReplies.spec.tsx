@@ -239,6 +239,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     shouldShowRevamp: false,
                     shouldShowPreviewForRevamp: true,
                     shouldShowRevampWhenAiAgentEnabled: false,
+                    isLoading: false,
                 })
 
                 const integrationWithShop = quickRepliesIntegration.setIn(
@@ -283,6 +284,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const shopifyIntegration = {
@@ -331,6 +333,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const bigCommerceIntegration = {
@@ -382,6 +385,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: false,
                         shouldShowPreviewForRevamp: true,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const magentoIntegration = {
@@ -433,6 +437,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
                     shouldShowRevampWhenAiAgentEnabled: false,
+                    isLoading: false,
                 })
 
                 const integrationWithoutShop = quickRepliesIntegration
@@ -456,6 +461,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                     shouldShowRevamp: true,
                     shouldShowPreviewForRevamp: false,
                     shouldShowRevampWhenAiAgentEnabled: false,
+                    isLoading: false,
                 })
 
                 const integrationWithInvalidShopId =
@@ -482,6 +488,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const integrationWithoutShop = quickRepliesIntegration
@@ -506,6 +513,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const integrationWithInvalidShopId =
@@ -534,6 +542,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         shouldShowRevamp: true,
                         shouldShowPreviewForRevamp: false,
                         shouldShowRevampWhenAiAgentEnabled: false,
+                        isLoading: false,
                     })
 
                 const integrationWithUnsupportedType =

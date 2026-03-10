@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreIntegration } from 'models/integration/types'
@@ -15,7 +15,8 @@ const useShouldShowChatSettingsRevamp = (
     storeIntegration?: StoreIntegration,
     chatId?: number,
 ) => {
-    const isRevampEnabled = useFlag(FeatureFlagKey.ChatSettingsRevamp)
+    const { value: isRevampEnabled, isLoading: isFlagLoading } =
+        useFlagWithLoading(FeatureFlagKey.ChatSettingsRevamp)
 
     const shopName = storeIntegration
         ? getShopNameFromStoreIntegration(storeIntegration)
@@ -23,10 +24,11 @@ const useShouldShowChatSettingsRevamp = (
 
     const currentAccount = useAppSelector(getCurrentAccountState)
 
-    const { storeConfiguration } = useStoreConfiguration({
-        shopName: shopName ?? '',
-        accountDomain: currentAccount.get('domain'),
-    })
+    const { storeConfiguration, isLoading: isStoreConfigurationLoading } =
+        useStoreConfiguration({
+            shopName: shopName ?? '',
+            accountDomain: currentAccount.get('domain'),
+        })
 
     const isAiAgentEnabled = useMemo(() => {
         if (!storeConfiguration || !shopName || !chatId) {
@@ -48,6 +50,7 @@ const useShouldShowChatSettingsRevamp = (
         shouldShowRevamp,
         shouldShowPreviewForRevamp,
         shouldShowRevampWhenAiAgentEnabled,
+        isLoading: isFlagLoading || isStoreConfigurationLoading,
     }
 }
 

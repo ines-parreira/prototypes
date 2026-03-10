@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,16 +8,11 @@ import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration
 
 import useShouldShowChatSettingsRevamp from '../useShouldShowChatSettingsRevamp'
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-
 jest.mock('hooks/useAppSelector')
 
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 
-const useFlagMock = useFlag as jest.Mock
+const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
 const useAppSelectorMock = useAppSelector as jest.MockedFunction<
     typeof useAppSelector
 >
@@ -54,7 +49,10 @@ describe('useShouldShowChatSettingsRevamp', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useFlagMock.mockReturnValue(false)
+        useFlagWithLoadingMock.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
         useAppSelectorMock.mockReturnValue({
             get: (key: string) => {
                 if (key === 'domain') return 'test-account.gorgias.com'
@@ -71,7 +69,10 @@ describe('useShouldShowChatSettingsRevamp', () => {
 
     describe('when revamp is enabled', () => {
         beforeEach(() => {
-            useFlagMock.mockReturnValue(true)
+            useFlagWithLoadingMock.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
         })
 
         it('returns false for shouldShowPreviewForRevamp when AI agent is enabled with Shopify integration', () => {
@@ -94,7 +95,7 @@ describe('useShouldShowChatSettingsRevamp', () => {
             expect(result.current.shouldShowRevamp).toBe(true)
             expect(result.current.shouldShowRevampWhenAiAgentEnabled).toBe(true)
             expect(result.current.shouldShowPreviewForRevamp).toBe(false)
-            expect(useFlag).toHaveBeenCalledWith(
+            expect(useFlagWithLoading).toHaveBeenCalledWith(
                 FeatureFlagKey.ChatSettingsRevamp,
             )
         })
@@ -265,7 +266,10 @@ describe('useShouldShowChatSettingsRevamp', () => {
 
     describe('when revamp is disabled', () => {
         beforeEach(() => {
-            useFlagMock.mockReturnValue(false)
+            useFlagWithLoadingMock.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
         })
 
         it('returns true for shouldShowPreviewForRevamp when AI agent is enabled', () => {

@@ -8,6 +8,7 @@ export { fetchFlag } from './fetchFlag'
 export { readMigration } from './readMigration'
 export type { MigrationStage } from './readMigration'
 export { useAreFlagsLoading } from './useAreFlagsLoading'
+export { useFlagWithLoading } from './useFlagWithLoading'
 
 // Shared flags
 export { useHelpdeskV2MS2Flag } from './shared-flags/useHelpdeskV2MS2Flag'
