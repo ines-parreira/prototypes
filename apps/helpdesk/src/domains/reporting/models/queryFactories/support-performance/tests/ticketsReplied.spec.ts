@@ -18,13 +18,17 @@ import {
     ticketsRepliedQueryFactory,
     ticketsRepliedTimeSeriesQueryFactory,
 } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
-import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import {
+    withDefaultLogicalOperator,
+    withLogicalOperator,
+} from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { TagFilterInstanceId } from 'domains/reporting/models/stat/types'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -87,6 +91,37 @@ describe('ticketsRepliedQueryFactory', () => {
                 },
             ],
             timezone,
+        })
+    })
+})
+
+describe('ticketsRepliedQueryFactory with NOT_ONE_OF channel filter', () => {
+    const periodStart = formatReportingQueryDate(moment())
+    const periodEnd = formatReportingQueryDate(moment())
+    const timezone = 'someTimeZone'
+
+    it('should append internal-note to the excluded channel values', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd,
+                start_datetime: periodStart,
+            },
+            channels: withLogicalOperator(
+                [TicketChannel.Email, TicketChannel.Chat],
+                LogicalOperatorEnum.NOT_ONE_OF,
+            ),
+        }
+
+        const query = ticketsRepliedQueryFactory(statsFilters, timezone)
+
+        expect(query.filters).toContainEqual({
+            member: TicketMember.Channel,
+            operator: ReportingFilterOperator.NotEquals,
+            values: [
+                TicketChannel.Email,
+                TicketChannel.Chat,
+                TicketMessageSourceType.InternalNote,
+            ],
         })
     })
 })
