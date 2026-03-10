@@ -916,6 +916,7 @@ describe('AiAgentReasoning', () => {
                         shopName: 'Test Shop',
                         shopType: 'shopify',
                     }}
+                    referenceDatetime="2024-01-01T00:00:00Z"
                     ticketId={123}
                     openPreview={jest.fn()}
                 />,
@@ -928,7 +929,7 @@ describe('AiAgentReasoning', () => {
             fireEvent.click(actionResource)
 
             expect(mockWindowOpen).toHaveBeenCalledWith(
-                '/app/ai-agent/shopify/Test Shop/actions/events/01J7KWHHMDY3H5S174D89VG7S3?ticket=123',
+                '/app/ai-agent/shopify/Test Shop/actions/events/01J7KWHHMDY3H5S174D89VG7S3?ticket=123&start_datetime=2023-12-31T00%3A00%3A00.000Z&end_datetime=2024-01-02T23%3A59%3A59.999Z',
                 '_blank',
             )
         })

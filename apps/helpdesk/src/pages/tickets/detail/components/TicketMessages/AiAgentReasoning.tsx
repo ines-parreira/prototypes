@@ -211,6 +211,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                             data={reasoningMetadata?.data}
                             storeConfiguration={storeConfiguration}
                             ticketId={ticketId}
+                            referenceDatetime={message.created_datetime}
                             openPreview={openPreview}
                             onKnowledgeResourceClick={onKnowledgeResourceClick}
                         />

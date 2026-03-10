@@ -407,6 +407,9 @@ describe('ActionEventsViewContainer', () => {
     })
 
     it('hydrates the ticket filter from the URL and requests executions for that ticket', async () => {
+        const startDatetime = '2023-12-31T00:00:00.000Z'
+        const endDatetime = '2024-01-02T23:59:59.999Z'
+
         renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
@@ -415,18 +418,22 @@ describe('ActionEventsViewContainer', () => {
             </Provider>,
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
-                route: '/shopify/my-shop/ai-agent/actions/events/configuration_id?ticket=563832433',
+                route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?ticket=563832433&start_datetime=${encodeURIComponent(startDatetime)}&end_datetime=${encodeURIComponent(endDatetime)}`,
             },
         )
 
         await waitFor(() => {
-            expect(
-                useGetConfigurationExecutionsMocked,
-            ).toHaveBeenLastCalledWith(
-                expect.objectContaining({
-                    userJourneyId: 563832433,
-                }),
-                expect.any(Object),
+            expect(useGetConfigurationExecutionsMocked.mock.calls).toEqual(
+                expect.arrayContaining([
+                    [
+                        expect.objectContaining({
+                            from: new Date(startDatetime),
+                            to: new Date(endDatetime),
+                            userJourneyId: 563832433,
+                        }),
+                        expect.any(Object),
+                    ],
+                ]),
             )
         })
 

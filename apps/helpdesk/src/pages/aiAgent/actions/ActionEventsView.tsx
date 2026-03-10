@@ -28,6 +28,16 @@ export type Filter = Omit<
     'configurationInternalId'
 >
 
+const getDateFromQueryParam = (value: string | null) => {
+    if (!value) {
+        return undefined
+    }
+
+    const date = new Date(value)
+
+    return Number.isNaN(date.getTime()) ? undefined : date
+}
+
 export default function ActionExecutionsView() {
     const location = useLocation()
     const history = useHistory()
@@ -47,6 +57,15 @@ export default function ActionExecutionsView() {
 
         return Number.isFinite(parsedTicketId) ? parsedTicketId : undefined
     }, [queryParams])
+    const initialStartDate = useMemo(
+        () => getDateFromQueryParam(queryParams.get('start_datetime')),
+        [queryParams],
+    )
+    const initialEndDate = useMemo(
+        () => getDateFromQueryParam(queryParams.get('end_datetime')),
+        [queryParams],
+    )
+    const hasInitialDateRange = !!initialStartDate && !!initialEndDate
 
     const [filterState, dispatchFilter] = useReducer(
         (state: Filter, action: Partial<Filter>): Filter => {
@@ -56,8 +75,8 @@ export default function ActionExecutionsView() {
             }
         },
         {
-            from: moment().subtract(1, 'week').toDate(),
-            to: moment().toDate(),
+            from: initialStartDate || moment().subtract(1, 'week').toDate(),
+            to: initialEndDate || moment().toDate(),
             status: undefined,
             userJourneyId: initialUserJourneyId,
             orderBy: 'DESC',
@@ -80,10 +99,25 @@ export default function ActionExecutionsView() {
             nextSearchParams.set('ticket', filterState.userJourneyId.toString())
         }
 
+        if (hasInitialDateRange || filterState.userJourneyId) {
+            nextSearchParams.set(
+                'start_datetime',
+                filterState.from.toISOString(),
+            )
+            nextSearchParams.set('end_datetime', filterState.to.toISOString())
+        }
+
         history.replace({
             search: nextSearchParams.toString(),
         })
-    }, [filterState.userJourneyId, history, selectedExecutionId])
+    }, [
+        filterState.from,
+        filterState.to,
+        filterState.userJourneyId,
+        hasInitialDateRange,
+        history,
+        selectedExecutionId,
+    ])
 
     const { shopName, id: configurationId } = useParams<{
         id: string

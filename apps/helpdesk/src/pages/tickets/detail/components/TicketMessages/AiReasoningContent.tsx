@@ -1,5 +1,6 @@
 import React from 'react'
 
+import moment from 'moment'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 
@@ -34,11 +35,13 @@ const getActionEventsUrl = ({
     resourceType,
     shopName,
     ticketId,
+    referenceDatetime,
 }: {
     resourceId: string
     resourceType: AiAgentKnowledgeResourceTypeEnum
     shopName?: string
     ticketId?: number | null
+    referenceDatetime?: string
 }) => {
     if (
         resourceType !== AiAgentKnowledgeResourceTypeEnum.ACTION ||
@@ -51,8 +54,30 @@ const getActionEventsUrl = ({
 
     const actionEventsPath =
         getAiAgentNavigationRoutes(shopName).actionEvents(resourceId)
+    const searchParams = new URLSearchParams({
+        ticket: ticketId.toString(),
+    })
 
-    return `${actionEventsPath}?ticket=${ticketId}`
+    if (referenceDatetime) {
+        searchParams.set(
+            'start_datetime',
+            moment
+                .utc(referenceDatetime)
+                .subtract(1, 'day')
+                .startOf('day')
+                .toISOString(),
+        )
+        searchParams.set(
+            'end_datetime',
+            moment
+                .utc(referenceDatetime)
+                .add(1, 'day')
+                .endOf('day')
+                .toISOString(),
+        )
+    }
+
+    return `${actionEventsPath}?${searchParams.toString()}`
 }
 
 export type AiAgentReasoningContentProps = {
@@ -67,6 +92,7 @@ export type AiAgentReasoningContentProps = {
         shopType?: string
     } | null
     ticketId?: number | null
+    referenceDatetime?: string
 
     openPreview: (params: {
         id: string
@@ -90,6 +116,7 @@ export const AiAgentReasoningContent = ({
     data,
     storeConfiguration,
     ticketId,
+    referenceDatetime,
 
     openPreview,
     onKnowledgeResourceClick,
@@ -177,6 +204,7 @@ export const AiAgentReasoningContent = ({
                                 resourceType,
                                 shopName: storeConfiguration?.shopName,
                                 ticketId,
+                                referenceDatetime,
                             }) ||
                             ('url' in resourceData ? resourceData.url : '')
 
