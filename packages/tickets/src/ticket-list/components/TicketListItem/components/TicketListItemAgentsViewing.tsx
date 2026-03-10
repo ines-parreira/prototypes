@@ -22,7 +22,7 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
             <Tooltip>
                 <TooltipTrigger>
                     <div>
-                        <AvatarGroup max={3} direction="left">
+                        <AvatarGroup max={3}>
                             {agents.map((agent) => (
                                 <Avatar
                                     key={agent.id}

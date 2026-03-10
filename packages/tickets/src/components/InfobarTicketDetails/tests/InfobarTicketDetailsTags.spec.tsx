@@ -635,8 +635,10 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 expect(documentationOptions.length).toBeGreaterThan(0)
             })
 
-            const bugCheckbox = screen.getAllByRole('checkbox')[0]
-            await user.click(bugCheckbox)
+            const bugOption = await screen.findByRole('option', {
+                name: 'Bug',
+            })
+            await user.click(bugOption)
 
             await waitForUpdateTicketRequest(async (request) => {
                 const body = await request.clone().json()

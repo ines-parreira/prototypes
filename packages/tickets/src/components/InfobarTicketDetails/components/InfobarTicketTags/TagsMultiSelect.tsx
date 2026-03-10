@@ -5,12 +5,11 @@ import { shortcutManager, useShortcuts } from '@repo/utils'
 import type { ColorValue } from '@gorgias/axiom'
 import {
     Button,
-    CheckBoxField,
     Dot,
     Icon,
     ListFooter,
-    ListItem,
     MultiSelect,
+    MultiSelectItem,
     OverflowList,
     OverflowListItem,
     OverflowListShowLess,
@@ -236,7 +235,7 @@ export function TagsMultiSelect({
                         }
                     >
                         {(option) => (
-                            <ListItem
+                            <MultiSelectItem
                                 key={option.id}
                                 textValue={option.label}
                                 label={
@@ -246,9 +245,6 @@ export function TagsMultiSelect({
                                         </Text>
                                     </OverflowTooltip>
                                 }
-                                leadingSlot={({ isSelected }) => (
-                                    <CheckBoxField value={isSelected} />
-                                )}
                                 wrap={false}
                             />
                         )}

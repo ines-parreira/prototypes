@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
+import { ListSection, MultiSelectField, MultiSelectItem } from '@gorgias/axiom'
 
 import { FieldPresentation } from 'AIJourney/components'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -126,7 +126,7 @@ export const AudienceSelect = ({
                         name={section.name}
                         items={section.items}
                     >
-                        {(option) => <ListItem label={option.name} />}
+                        {(option) => <MultiSelectItem label={option.name} />}
                     </ListSection>
                 )}
             </MultiSelectField>

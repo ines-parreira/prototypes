@@ -246,9 +246,7 @@ export default function StoreSelector({
         >
             <Select
                 items={sections}
-                // @ts-expect-error - the generic expects a StoreSelectorSection
                 selectedItem={selectedItem}
-                // @ts-expect-error - the generic expects a StoreSelectorSection handler
                 onSelect={handleSelect}
                 isSearchable={withSearch}
                 maxHeight={400}

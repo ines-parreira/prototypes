@@ -1,4 +1,4 @@
-import { Button, ListItem, MultiSelect } from '@gorgias/axiom'
+import { Button, MultiSelect, MultiSelectItem } from '@gorgias/axiom'
 
 type FilterType = 'dateRange' | 'interactionType' | 'ticketStatus'
 
@@ -55,7 +55,7 @@ export function FilteringButton({
                 <Button variant="tertiary" size="sm" icon="slider-filter" />
             )}
         >
-            {(option) => <ListItem label={option.label} />}
+            {(option) => <MultiSelectItem label={option.label} />}
         </MultiSelect>
     )
 }

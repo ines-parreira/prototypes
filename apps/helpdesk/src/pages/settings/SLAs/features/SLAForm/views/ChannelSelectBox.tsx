@@ -1,7 +1,7 @@
 import { FormField, useFormContext } from '@repo/forms'
 
 import type { MultiSelectFieldProps } from '@gorgias/axiom'
-import { ListItem, MultiSelectField } from '@gorgias/axiom'
+import { MultiSelectField, MultiSelectItem } from '@gorgias/axiom'
 import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
 import {
     SLAPolicyMetricType,
@@ -89,7 +89,7 @@ export function ChannelSelectBox() {
             >
                 {(option: { id: string; name: string }) =>
                     option.id === PHONE_CHANNEL_SLUG ? (
-                        <ListItem
+                        <MultiSelectItem
                             label={option.name}
                             textValue={option.name}
                             isDisabled={isVoiceChannelDisabled}
@@ -100,7 +100,7 @@ export function ChannelSelectBox() {
                             }
                         />
                     ) : (
-                        <ListItem
+                        <MultiSelectItem
                             label={option.name}
                             isDisabled={isVoiceChannelSelected}
                         />

@@ -5,6 +5,7 @@ import {
     LegacyIconButton as IconButton,
     ListItem,
     MultiSelectField,
+    MultiSelectItem,
     SelectField,
     TextField,
 } from '@gorgias/axiom'
@@ -94,7 +95,7 @@ export function CustomerLookupActionsFieldItem({
                             }}
                         >
                             {(option: { id: string; name: string }) => (
-                                <ListItem
+                                <MultiSelectItem
                                     label={option.name}
                                     isDisabled={
                                         !availableOptions.includes(option.id)

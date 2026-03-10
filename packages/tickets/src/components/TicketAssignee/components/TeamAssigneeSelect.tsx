@@ -87,9 +87,7 @@ export function TeamAssigneeSelect({
             isSearchable={true}
             searchValue={search}
             onSearchChange={setSearch}
-            // @ts-expect-error - the generic expects a TeamSection
             selectedItem={selectedOption}
-            // @ts-expect-error - the generic expects a TeamSection handler
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isDisabled || isLoading}

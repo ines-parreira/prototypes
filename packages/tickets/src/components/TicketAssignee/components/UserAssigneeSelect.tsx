@@ -86,9 +86,7 @@ export function UserAssigneeSelect({
             isSearchable={true}
             searchValue={search}
             onSearchChange={setSearch}
-            // @ts-expect-error - the generic expects a UserSection
             selectedItem={selectedOption}
-            // @ts-expect-error - the generic expects a UserSection handler
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isDisabled || isLoading}
