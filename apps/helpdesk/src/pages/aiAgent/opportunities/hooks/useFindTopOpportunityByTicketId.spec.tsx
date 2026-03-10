@@ -1,6 +1,7 @@
 import type React from 'react'
 
 import { useFlag } from '@repo/feature-flags'
+import { DurationInMs } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
@@ -320,6 +321,33 @@ describe('useFindTopOpportunityByTicketId', () => {
                 expect.objectContaining({
                     query: expect.objectContaining({
                         refetchOnWindowFocus: true,
+                    }),
+                }),
+            )
+        })
+
+        it('should set staleTime to 15 minutes', () => {
+            const mockUseFindOpportunitiesByTicketIdOpportunity =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            mockUseFindOpportunitiesByTicketIdOpportunity.mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(
+                mockUseFindOpportunitiesByTicketIdOpportunity,
+            ).toHaveBeenCalledWith(
+                789,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({
+                        staleTime: DurationInMs.FifteenMinutes,
                     }),
                 }),
             )

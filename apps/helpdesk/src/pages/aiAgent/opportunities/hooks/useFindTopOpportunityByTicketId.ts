@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { DurationInMs } from '@repo/utils'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 
@@ -51,6 +52,7 @@ export const useFindTopOpportunityByTicketId = (
                 select: (response): Opportunity[] => {
                     return response.data.map(mapOpportunityDetailToOpportunity)
                 },
+                staleTime: DurationInMs.FifteenMinutes,
             },
         })
 
