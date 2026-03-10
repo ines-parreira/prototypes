@@ -5,6 +5,10 @@ import type {
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
+import {
+    CustomerVisibilityEnum,
+    VisibilityStatusEnum,
+} from 'models/helpCenter/types'
 
 import type { ArticleModeType } from './types'
 
@@ -28,7 +32,8 @@ export const createEmptyTranslation = (
             title: null,
             description: null,
         },
-        visibility_status: 'PUBLIC',
+        visibility_status: VisibilityStatusEnum.PUBLIC,
+        customer_visibility: CustomerVisibilityEnum.PUBLIC,
         is_current: true,
         draft_version_id: null,
         published_version_id: null,
@@ -65,7 +70,8 @@ export const mergeContentAndTitle = (
 
 export const getEditModeFromVisibility = (
     visibilityStatus: VisibilityStatus,
-): ArticleModeType => (visibilityStatus === 'PUBLIC' ? 'edit' : 'edit')
+): ArticleModeType =>
+    visibilityStatus === VisibilityStatusEnum.PUBLIC ? 'edit' : 'edit'
 
 export const computeHasDraft = (
     article: ArticleWithLocalTranslation | undefined,

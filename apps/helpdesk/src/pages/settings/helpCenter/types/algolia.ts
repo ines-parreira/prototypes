@@ -1,6 +1,6 @@
 import type { HighlightResult, Hit } from '@algolia/client-search'
 
-import type { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
+import type { CustomerVisibility, LocaleCode } from 'models/helpCenter/types'
 
 export type AlgoliaHit<T> = Hit<T> & {
     _highlightResult?: {
@@ -46,16 +46,16 @@ export type EntitiesBaseRecord = {
     parent_category_2: NestedParentCategory
     parent_category_3: NestedParentCategory
 
-    visibility_status: VisibilityStatus
+    customer_visibility: CustomerVisibility
 }
 
-export type ParentCategoryFieldVisibilityStatus = VisibilityStatus
+export type ParentCategoryFieldCustomerVisibility = CustomerVisibility
 
 export type NestedParentCategory = {
     id: number
     title: string
     description: string
-    visibility_status: ParentCategoryFieldVisibilityStatus
+    customer_visibility: ParentCategoryFieldCustomerVisibility
 } | null
 
 export type EntitiesArticleRecord = EntitiesBaseRecord & {

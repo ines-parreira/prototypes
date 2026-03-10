@@ -1,3 +1,5 @@
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
+
 import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
@@ -21,7 +23,7 @@ export class ReviewAIGeneratedGuidancesTask extends Task {
             (data.guidances ?? []).filter(
                 (g) =>
                     g.templateKey?.startsWith('ai_guidance') &&
-                    g.visibility === 'UNLISTED',
+                    g.visibility === VisibilityStatusEnum.UNLISTED,
             ).length > 0
         )
     }

@@ -246,7 +246,6 @@ describe('<CategoriesTableRow />', () => {
             ...baseCategory,
             translation: {
                 ...baseCategory.translation,
-                visibility_status: 'PUBLIC',
                 customer_visibility: 'UNLISTED',
             },
         }

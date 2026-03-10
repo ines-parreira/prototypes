@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 
 import { useArticleContext } from '../context/ArticleContext'
 
@@ -19,7 +20,9 @@ export const useToggleAIAgentVisibility = () => {
         if (!state.article?.id) return
 
         const newStatus =
-            currentVisibilityStatus === 'UNLISTED' ? 'PUBLIC' : 'UNLISTED'
+            currentVisibilityStatus === VisibilityStatusEnum.UNLISTED
+                ? VisibilityStatusEnum.PUBLIC
+                : VisibilityStatusEnum.UNLISTED
 
         dispatch({ type: 'SET_UPDATING', payload: true })
 
@@ -49,7 +52,7 @@ export const useToggleAIAgentVisibility = () => {
                 })
                 onUpdatedFn?.()
                 notifySuccess(
-                    newStatus === 'PUBLIC'
+                    newStatus === VisibilityStatusEnum.PUBLIC
                         ? 'Content enabled for AI Agent.'
                         : 'Content disabled for AI Agent.',
                 )

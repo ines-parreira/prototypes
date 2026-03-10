@@ -1,5 +1,5 @@
 import type { Category } from '../../../../../../models/helpCenter/types'
-import { eligibleParentCategories } from '../utils'
+import { eligibleParentCategories, isOneOfParentsUnlisted } from '../utils'
 
 const rootCategory: Category = {
     created_datetime: '2022-03-14T13:11:08.813Z',
@@ -28,7 +28,7 @@ const topLevelCategory: Category = {
         updated_datetime: '2022-03-17T12:52:14.243Z',
         deleted_datetime: null,
         parent_category_id: null,
-        visibility_status: 'PUBLIC',
+        customer_visibility: 'PUBLIC',
         description: '',
         title: 'Top level',
         slug: 'top-level',
@@ -58,7 +58,7 @@ const level1CategoryWithChildren: Category = {
         updated_datetime: '2022-03-17T12:53:10.489Z',
         deleted_datetime: null,
         parent_category_id: 47,
-        visibility_status: 'PUBLIC',
+        customer_visibility: 'PUBLIC',
         description: '',
         title: 'Level 1',
         slug: 'level-1',
@@ -88,7 +88,7 @@ const level2Category: Category = {
         updated_datetime: '2022-03-17T12:54:26.411Z',
         deleted_datetime: null,
         parent_category_id: 48,
-        visibility_status: 'PUBLIC',
+        customer_visibility: 'PUBLIC',
         description: '',
         title: 'Level 2',
         slug: 'level-2',
@@ -118,7 +118,7 @@ const level1Category: Category = {
         updated_datetime: '2022-03-23T10:34:42.017Z',
         deleted_datetime: null,
         parent_category_id: 47,
-        visibility_status: 'PUBLIC',
+        customer_visibility: 'PUBLIC',
         description: '',
         title: 'level 1 - B',
         slug: 'level-1---b',
@@ -168,5 +168,35 @@ describe('eligibleParentCategories()', () => {
         expect(
             eligibleParentCategories(categories, 'en-US', level1Category),
         ).toMatchSnapshot('top level and level 1 & level 2 nodes returned')
+    })
+})
+
+describe('isOneOfParentsUnlisted()', () => {
+    it('uses customer_visibility on parent categories', () => {
+        const parentCategories: Category[] = [
+            {
+                ...topLevelCategory,
+                translation: {
+                    ...topLevelCategory.translation!,
+                    customer_visibility: 'UNLISTED',
+                },
+            },
+            {
+                ...level1CategoryWithChildren,
+                translation: {
+                    ...level1CategoryWithChildren.translation!,
+                    customer_visibility: 'PUBLIC',
+                },
+            },
+            {
+                ...level2Category,
+                translation: {
+                    ...level2Category.translation!,
+                    customer_visibility: 'PUBLIC',
+                },
+            },
+        ]
+
+        expect(isOneOfParentsUnlisted(parentCategories, 49)).toBe(true)
     })
 })

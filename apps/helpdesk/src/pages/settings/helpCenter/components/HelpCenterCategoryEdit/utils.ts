@@ -58,7 +58,7 @@ export const isOneOfParentsUnlisted = (
             )
             isUnlisted =
                 isUnlisted ||
-                currentCategory?.translation?.visibility_status === 'UNLISTED'
+                currentCategory?.translation?.customer_visibility === 'UNLISTED'
 
             if (currentCategory?.translation?.parent_category_id) {
                 traverseParents(currentCategory.translation.parent_category_id)

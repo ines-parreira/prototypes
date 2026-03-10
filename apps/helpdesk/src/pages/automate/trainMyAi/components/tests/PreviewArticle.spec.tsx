@@ -81,6 +81,7 @@ describe('<PreviewArticle />', () => {
                                         title: 'title',
                                         updated_datetime: '',
                                         visibility_status: 'PUBLIC',
+                                        customer_visibility: 'PUBLIC',
                                     },
                                     help_center_id: 1,
                                     id: 1,

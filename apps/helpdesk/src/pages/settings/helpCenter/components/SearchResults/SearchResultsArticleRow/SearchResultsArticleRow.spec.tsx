@@ -88,7 +88,7 @@ const createSearchResultArticle = (article: Article): SearchResultArticle => ({
             preview_draft: '',
             gorgias_domain: 'test.gorgias.com',
             custom_domain: '',
-            visibility_status: 'PUBLIC',
+            customer_visibility: 'PUBLIC',
             parent_category_1: null,
             parent_category_2: null,
             parent_category_3: null,

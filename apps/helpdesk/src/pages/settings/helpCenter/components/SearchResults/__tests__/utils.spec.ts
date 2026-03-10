@@ -1,7 +1,11 @@
 import type { Category } from 'models/helpCenter/types'
 
 import { searchResultsResponseFixture } from '../SearchResults.response.fixture'
-import { getMissingEntities, searchResultsTreeFromAlgolia } from '../utils'
+import {
+    getMissingEntities,
+    isResultOrAncestorUnlisted,
+    searchResultsTreeFromAlgolia,
+} from '../utils'
 
 const categoriesById: Record<string, Category> = {
     '0': {
@@ -39,7 +43,7 @@ const categoriesById: Record<string, Category> = {
                 description: null,
             },
             category_unlisted_id: 'my-unlisted-id-28',
-            visibility_status: 'PUBLIC',
+            customer_visibility: 'PUBLIC',
         },
         children: [],
         unlisted_id: 'my-unlisted-id-28',
@@ -98,7 +102,7 @@ describe('SearchResults utils', () => {
                             parent_category_2: null,
                             parent_category_3: null,
                             parent_category_4: null,
-                            visibility_status: 'PUBLIC',
+                            customer_visibility: 'PUBLIC',
                             id: 100,
                             help_center_id: 8,
                             locale: 'en-US',
@@ -140,6 +144,83 @@ describe('SearchResults utils', () => {
                 missingCategoriesIds: new Set([39, 38, 37, 35, 36, 29, 30, 31]),
                 missingArticlesIds: new Set([34, 32, 31, 29, 100]),
             })
+        })
+    })
+
+    describe('isResultOrAncestorUnlisted', () => {
+        it('uses customer_visibility from category hits', () => {
+            const [searchResultCategory] = searchResultsTreeFromAlgolia(
+                [
+                    {
+                        objectID: 'category-39/en-US',
+                        id: 39,
+                        type: 'category',
+                        locale: 'en-US',
+                        help_center_id: 8,
+                        title: 'Sub cat 5 mod',
+                        title_draft: 'Sub cat 5 mod',
+                        slug: 'sub-cat-5-mod',
+                        slug_draft: 'sub-cat-5-mod',
+                        preview: '',
+                        preview_draft: '',
+                        gorgias_domain: 'goose.gorgias.docker',
+                        custom_domain: '',
+                        customer_visibility: 'UNLISTED',
+                        parent_category_1: null,
+                        parent_category_2: null,
+                        parent_category_3: null,
+                        _tags: ['level1', 'latest_draft', 'current'],
+                    },
+                ],
+                categoriesById,
+                articlesById,
+            ).categorized
+
+            expect(
+                isResultOrAncestorUnlisted(searchResultCategory, 'en-US'),
+            ).toBe(true)
+        })
+
+        it('uses customer_visibility from parent category hits', () => {
+            const [searchResultCategory] = searchResultsTreeFromAlgolia(
+                [
+                    {
+                        objectID: 'article-1/en-US',
+                        id: 1,
+                        type: 'article',
+                        locale: 'en-US',
+                        help_center_id: 8,
+                        title: 'Article',
+                        title_draft: 'Article',
+                        slug: 'article',
+                        slug_draft: 'article',
+                        preview: '',
+                        preview_draft: '',
+                        article_content: '',
+                        article_content_draft: '',
+                        gorgias_domain: 'goose.gorgias.docker',
+                        custom_domain: '',
+                        customer_visibility: 'PUBLIC',
+                        parent_category_1: {
+                            id: 28,
+                            description: '',
+                            title: 'Cat 1 mod',
+                            customer_visibility: 'UNLISTED',
+                        },
+                        parent_category_2: null,
+                        parent_category_3: null,
+                        parent_category_4: null,
+                        _tags: ['current'],
+                    },
+                ],
+                categoriesById,
+                articlesById,
+            ).categorized
+            const [searchResultArticle] = searchResultCategory.children
+
+            expect(
+                isResultOrAncestorUnlisted(searchResultArticle, 'en-US'),
+            ).toBe(true)
         })
     })
 })

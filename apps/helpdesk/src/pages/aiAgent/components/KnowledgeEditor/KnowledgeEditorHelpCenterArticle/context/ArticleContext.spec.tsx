@@ -87,6 +87,7 @@ describe('ArticleContext', () => {
             title: 'Test Article Title',
             content: '<p>Test Article Content</p>',
             visibility_status: 'PUBLIC' as const,
+            customer_visibility: 'PUBLIC' as const,
         },
         ingested_resource_id: 1,
         origin: undefined,

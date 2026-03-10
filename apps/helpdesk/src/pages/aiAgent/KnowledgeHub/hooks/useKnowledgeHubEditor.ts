@@ -5,6 +5,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import { useNotify } from 'hooks/useNotify'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { InitialArticleMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { InitialArticleModeValue } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
@@ -256,7 +257,9 @@ export const useKnowledgeHubEditor = <T extends KnowledgeEditorConfig>(
             })
 
             const notificationType =
-                visibility === 'PUBLIC' ? 'visibilityOn' : 'visibilityOff'
+                visibility === VisibilityStatusEnum.PUBLIC
+                    ? 'visibilityOn'
+                    : 'visibilityOff'
 
             notifySuccess(editorConfig.notifications[notificationType])
             dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)

@@ -8,6 +8,10 @@ import {
     useCreateArticleTranslation,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/mutations'
+import {
+    CustomerVisibilityEnum,
+    VisibilityStatusEnum,
+} from 'models/helpCenter/types'
 import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
@@ -92,8 +96,9 @@ export const useArticleAutoSave = () => {
                                 },
                                 category_id: null,
                                 is_current: false,
-                                visibility_status: 'PUBLIC',
-                                customer_visibility: 'PUBLIC',
+                                visibility_status: VisibilityStatusEnum.PUBLIC,
+                                customer_visibility:
+                                    CustomerVisibilityEnum.PUBLIC,
                             },
                             template_key: template?.key,
                         },
@@ -139,7 +144,7 @@ export const useArticleAutoSave = () => {
                             },
                             category_id: null,
                             is_current: false,
-                            visibility_status: 'PUBLIC',
+                            visibility_status: VisibilityStatusEnum.PUBLIC,
                         },
                     ])
 

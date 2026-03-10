@@ -16,7 +16,7 @@ const translation: CategoryTranslation = {
     updated_datetime: '2022-03-07T14:47:03.686Z',
     deleted_datetime: null,
     parent_category_id: null,
-    visibility_status: 'PUBLIC',
+    customer_visibility: 'PUBLIC',
     description: '',
     title: 'Category 1',
     slug: 'category-1',

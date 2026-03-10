@@ -5,6 +5,7 @@ import {
     useKnowledgeHubBulkDelete,
     useKnowledgeHubBulkUpdateVisibility,
 } from 'models/helpCenter/knowledgeHub/mutations'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -121,7 +122,9 @@ export function useBulkKnowledgeActions({
             )
 
             const action =
-                visibilityStatus === 'PUBLIC' ? 'enabled' : 'disabled'
+                visibilityStatus === VisibilityStatusEnum.PUBLIC
+                    ? 'enabled'
+                    : 'disabled'
             void dispatch(
                 notify({
                     message: `Successfully ${action} items for AI Agent`,
@@ -145,9 +148,9 @@ export function useBulkKnowledgeActions({
     return {
         handleBulkDelete,
         handleBulkEnable: (items: GroupedKnowledgeItem[]) =>
-            handleBulkVisibilityUpdate(items, 'PUBLIC'),
+            handleBulkVisibilityUpdate(items, VisibilityStatusEnum.PUBLIC),
         handleBulkDisable: (items: GroupedKnowledgeItem[]) =>
-            handleBulkVisibilityUpdate(items, 'UNLISTED'),
+            handleBulkVisibilityUpdate(items, VisibilityStatusEnum.UNLISTED),
         isLoading: deleteMutation.isLoading || visibilityMutation.isLoading,
     }
 }

@@ -10,6 +10,7 @@ import type {
     CustomerVisibility,
     LocaleCode,
 } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { getCategories } from 'state/entities/helpCenter/categories'
 
 import {
@@ -79,7 +80,7 @@ export const HelpCenterEditModalHeader = ({
     showVisibilitySelect = false,
     domain,
     articleMode,
-    customerVisibility = 'PUBLIC',
+    customerVisibility = CustomerVisibilityEnum.PUBLIC,
     lastUpdate,
     lastUpdateDetailed,
     helpCenterHasDefaultLayout,
@@ -105,7 +106,8 @@ export const HelpCenterEditModalHeader = ({
     const isUnlisted = useMemo(() => {
         return (
             isParentUnlisted ||
-            selectedArticle?.translation.customer_visibility === 'UNLISTED'
+            selectedArticle?.translation.customer_visibility ===
+                CustomerVisibilityEnum.UNLISTED
         )
     }, [isParentUnlisted, selectedArticle?.translation.customer_visibility])
 

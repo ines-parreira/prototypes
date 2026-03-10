@@ -221,7 +221,7 @@ describe('SearchView', () => {
                         parent_category_1: null,
                         parent_category_2: null,
                         parent_category_3: null,
-                        visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         id: 28,
                         help_center_id: 1,
                         locale: 'en-US',

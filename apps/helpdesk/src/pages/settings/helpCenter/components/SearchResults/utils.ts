@@ -1,4 +1,5 @@
 import type { Article, Category, LocaleCode } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
 import { MAX_CATEGORY_DEPTH } from '../../constants'
@@ -224,11 +225,17 @@ export const isResultOrAncestorUnlisted = (
             break
         }
 
-        if (parentBreadcrumb.visibility_status === 'UNLISTED') {
+        if (
+            parentBreadcrumb.customer_visibility ===
+            CustomerVisibilityEnum.UNLISTED
+        ) {
             hasUnlistedAncestor = true
             break
         }
     }
 
-    return hasUnlistedAncestor || hit.visibility_status === 'UNLISTED'
+    return (
+        hasUnlistedAncestor ||
+        hit.customer_visibility === CustomerVisibilityEnum.UNLISTED
+    )
 }

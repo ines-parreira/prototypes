@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
@@ -46,7 +47,7 @@ export const useKnowledgeEditorGuidanceData = ({
                 title: article.title,
                 draftVersionId: article.draftVersionId,
                 publishedVersionId: article.publishedVersionId,
-                visibility: article.visibility ?? 'UNLISTED',
+                visibility: article.visibility ?? VisibilityStatusEnum.UNLISTED,
             })),
         [rawGuidanceArticles],
     )

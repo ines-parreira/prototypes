@@ -16,6 +16,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
 import type { Article, NonRootCategory } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -199,7 +200,8 @@ const DroppableCategoriesTableRow = ({
             >
                 <VisibilityCell
                     status={
-                        category.translation.customer_visibility ?? 'PUBLIC'
+                        category.translation.customer_visibility ??
+                        CustomerVisibilityEnum.PUBLIC
                     }
                     isParentUnlisted={isUnlisted}
                 />
@@ -331,7 +333,7 @@ export const CategoriesTableRow = ({
                                                         currentCategory
                                                             .translation
                                                             .customer_visibility ===
-                                                            'UNLISTED'
+                                                            CustomerVisibilityEnum.UNLISTED
                                                     }
                                                     category={currentCategory}
                                                     position={index}

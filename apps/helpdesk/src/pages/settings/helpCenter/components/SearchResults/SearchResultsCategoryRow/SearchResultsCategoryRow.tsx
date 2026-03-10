@@ -12,6 +12,7 @@ import type {
     LocaleCode,
     NonRootCategory,
 } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -213,7 +214,8 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                         <VisibilityCell
                             status={
                                 category.category.translation
-                                    .customer_visibility ?? 'PUBLIC'
+                                    .customer_visibility ??
+                                CustomerVisibilityEnum.PUBLIC
                             }
                             isParentUnlisted={isAncestorUnlisted}
                         />

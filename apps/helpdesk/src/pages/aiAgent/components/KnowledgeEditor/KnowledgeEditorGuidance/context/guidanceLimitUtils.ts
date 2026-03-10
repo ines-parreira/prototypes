@@ -1,3 +1,4 @@
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { NEW_GUIDANCE_ARTICLE_LIMIT } from 'pages/aiAgent/constants'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 
@@ -5,7 +6,7 @@ export const calculateGuidanceLimit = (
     guidanceArticles: FilteredKnowledgeHubArticle[],
 ) => {
     const activeGuidanceCount = (guidanceArticles ?? []).filter(
-        (article) => article.visibility === 'PUBLIC',
+        (article) => article.visibility === VisibilityStatusEnum.PUBLIC,
     ).length
 
     const isAtLimit = activeGuidanceCount >= NEW_GUIDANCE_ARTICLE_LIMIT

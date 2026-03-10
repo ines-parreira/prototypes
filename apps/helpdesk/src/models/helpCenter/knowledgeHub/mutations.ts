@@ -13,7 +13,10 @@ import type {
     KnowledgeHubArticlesQueryParams,
     KnowledgeHubArticlesResponse,
 } from 'models/helpCenter/types'
-import { KnowledgeHubArticleSourceType } from 'models/helpCenter/types'
+import {
+    KnowledgeHubArticleSourceType,
+    VisibilityStatusEnum,
+} from 'models/helpCenter/types'
 
 type AdditionalCallbacks<TData = unknown, TError = unknown> = {
     onSuccess?: (data: TData) => void | Promise<void>
@@ -59,7 +62,9 @@ export const useKnowledgeHubCreateArticle = (
                 title: translation.title,
                 source: '',
                 localeCode: translation.locale,
-                visibilityStatus: translation.visibility_status ?? 'UNLISTED',
+                visibilityStatus:
+                    translation.visibility_status ??
+                    VisibilityStatusEnum.UNLISTED,
                 shopName: null,
                 createdDatetime: nowIso,
                 updatedDatetime: nowIso,

@@ -16,10 +16,7 @@ export enum HeaderType {
     URL = 'url',
 }
 
-export enum VisibilityStatus {
-    PUBLIC = 'PUBLIC',
-    UNLISTED = 'UNLISTED',
-}
+export { VisibilityStatusEnum as VisibilityStatus } from 'models/helpCenter/types'
 
 export const PAGE_NAME = {
     SOURCE: 'knowledge-source',

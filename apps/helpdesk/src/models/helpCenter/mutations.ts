@@ -18,6 +18,7 @@ import {
     rebasePublishArticleTranslation,
     updateArticleTranslation,
 } from './resources'
+import { CustomerVisibilityEnum, VisibilityStatusEnum } from './types'
 
 type ArticleListData = NonNullable<
     Awaited<ReturnType<typeof import('./resources').getHelpCenterArticles>>
@@ -85,8 +86,12 @@ export const useCreateArticle = (
                     seo_meta: translation.seo_meta,
                     is_current: translation.is_current ?? false,
                     visibility_status:
-                        translation.visibility_status ?? 'UNLISTED',
-                    customer_visibility: translation.customer_visibility,
+                        translation.visibility_status ??
+                        VisibilityStatusEnum.UNLISTED,
+                    customer_visibility:
+                        translation.customer_visibility ??
+                        translation.visibility_status ??
+                        CustomerVisibilityEnum.UNLISTED,
                     article_id: tempId,
                     article_unlisted_id: tempUnlistedId,
                     draft_version_id: null,

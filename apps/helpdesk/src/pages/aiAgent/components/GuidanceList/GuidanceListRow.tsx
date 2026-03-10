@@ -9,6 +9,7 @@ import {
 } from '@gorgias/axiom'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { StoreIntegration } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -78,7 +79,7 @@ export const GuidanceListRow = ({
         <TableBodyRow onClick={() => onRowClick(article.id)}>
             <BodyCell innerClassName={css.itemTitle}>
                 <ToggleField
-                    value={article.visibility === 'PUBLIC'}
+                    value={article.visibility === VisibilityStatusEnum.PUBLIC}
                     aria-label="Toggle guidance visibility"
                     onChange={(val, event) => {
                         event.stopPropagation()

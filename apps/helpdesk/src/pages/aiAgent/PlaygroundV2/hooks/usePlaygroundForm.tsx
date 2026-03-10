@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { Link } from 'react-router-dom'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import { analyzeKnowledgeSources } from 'pages/aiAgent/PlaygroundV2/utils/knowledgeSourcesAnalysis'
 
@@ -64,7 +65,7 @@ export const usePlaygroundForm = ({
 
     const guidanceUsed = useMemo(() => {
         return guidanceArticles?.filter(
-            (article) => article.visibility === 'PUBLIC',
+            (article) => article.visibility === VisibilityStatusEnum.PUBLIC,
         )
     }, [guidanceArticles])
 

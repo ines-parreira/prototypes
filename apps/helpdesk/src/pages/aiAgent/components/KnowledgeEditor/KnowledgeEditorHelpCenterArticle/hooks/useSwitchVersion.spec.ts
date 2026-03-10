@@ -47,6 +47,7 @@ describe('useSwitchVersion (Article)', () => {
         excerpt: 'Test excerpt',
         category_id: 1,
         visibility_status: 'PUBLIC' as const,
+        customer_visibility: 'PUBLIC' as const,
         article_id: 123,
         article_unlisted_id: 'test-unlisted-id',
         seo_meta: { title: 'SEO Title', description: 'SEO Description' },

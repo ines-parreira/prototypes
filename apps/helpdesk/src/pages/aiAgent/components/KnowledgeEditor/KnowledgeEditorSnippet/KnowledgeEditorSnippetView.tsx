@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { Card } from '@gorgias/axiom'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
 import type { Props as ImpactProps } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSectionImpact'
@@ -100,7 +101,7 @@ export const KnowledgeEditorSnippetView = ({
     const renderSidePanel = () => {
         const baseDetails = {
             aiAgentStatus: {
-                value: snippet.aiAgentEnabled === 'PUBLIC',
+                value: snippet.aiAgentEnabled === VisibilityStatusEnum.PUBLIC,
                 onChange: onToggleAIAgentEnabled,
             },
             createdDatetime: snippet.createdDatetime,

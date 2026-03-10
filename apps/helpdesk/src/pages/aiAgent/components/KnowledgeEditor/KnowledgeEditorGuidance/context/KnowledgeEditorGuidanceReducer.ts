@@ -1,3 +1,5 @@
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
+
 import type { GuidanceReducerAction, GuidanceState } from './types'
 import { createInitialState } from './types'
 
@@ -57,7 +59,9 @@ export function guidanceReducer(
                 guidance: state.guidance
                     ? {
                           ...state.guidance,
-                          visibility: action.payload ? 'PUBLIC' : 'UNLISTED',
+                          visibility: action.payload
+                              ? VisibilityStatusEnum.PUBLIC
+                              : VisibilityStatusEnum.UNLISTED,
                       }
                     : undefined,
             }

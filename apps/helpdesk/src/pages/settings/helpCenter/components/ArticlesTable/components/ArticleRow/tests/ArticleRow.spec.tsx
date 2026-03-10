@@ -99,7 +99,9 @@ describe('<ArticleRow />', () => {
             translation: {
                 ...baseArticle.translation,
                 visibility_status: 'UNLISTED',
-                customer_visibility: undefined,
+                customer_visibility: undefined as unknown as
+                    | 'PUBLIC'
+                    | 'UNLISTED',
                 is_current: true,
             },
         }

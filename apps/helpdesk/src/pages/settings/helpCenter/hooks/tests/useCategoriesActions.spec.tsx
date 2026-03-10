@@ -258,7 +258,7 @@ describe('useCategoriesActions', () => {
                     title: '',
                     slug: '',
                     description: '',
-                    visibility_status: 'PUBLIC',
+                    customer_visibility: 'PUBLIC',
                     seo_meta: {
                         title: null,
                         description: null,
@@ -280,7 +280,7 @@ describe('useCategoriesActions', () => {
                 title: '',
                 slug: '',
                 description: '',
-                visibility_status: 'PUBLIC',
+                customer_visibility: 'PUBLIC',
             })
 
             expect(updateCategoryTranslation).toHaveBeenCalled()

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import {
     analyzeKnowledgeSources,
@@ -56,7 +57,7 @@ export const usePlaygroundPrerequisites = ({
 
     const guidanceUsed = useMemo(() => {
         return guidanceArticles?.filter(
-            (article) => article.visibility === 'PUBLIC',
+            (article) => article.visibility === VisibilityStatusEnum.PUBLIC,
         )
     }, [guidanceArticles])
 

@@ -98,9 +98,19 @@ export type Article = ArticleWithLocalTranslationAndRating & {
 export type VisibilityStatus =
     Components.Schemas.LocalArticleTranslation['visibility_status']
 
+export enum VisibilityStatusEnum {
+    PUBLIC = 'PUBLIC',
+    UNLISTED = 'UNLISTED',
+}
+
 export type CustomerVisibility = NonNullable<
     Components.Schemas.LocalArticleTranslation['customer_visibility']
 >
+
+export enum CustomerVisibilityEnum {
+    PUBLIC = 'PUBLIC',
+    UNLISTED = 'UNLISTED',
+}
 
 // NAVIGATION
 

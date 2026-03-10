@@ -46,7 +46,7 @@ describe('SearchBar', () => {
                             parent_category_2: null,
                             parent_category_3: null,
 
-                            visibility_status: 'PUBLIC',
+                            customer_visibility: 'PUBLIC',
                         },
                     ],
                     resultsCount: 1,

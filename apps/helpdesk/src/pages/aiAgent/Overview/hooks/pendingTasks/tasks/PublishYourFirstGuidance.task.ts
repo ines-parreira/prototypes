@@ -1,3 +1,5 @@
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
+
 import type { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 import { Task } from './Task'
 
@@ -23,8 +25,9 @@ export class PublishYourFirstGuidanceTask extends Task {
 
         return (
             data.guidances.length > 0 &&
-            data.guidances.filter((g) => g.visibility === 'UNLISTED').length ===
-                data.guidances.length
+            data.guidances.filter(
+                (g) => g.visibility === VisibilityStatusEnum.UNLISTED,
+            ).length === data.guidances.length
         )
     }
 

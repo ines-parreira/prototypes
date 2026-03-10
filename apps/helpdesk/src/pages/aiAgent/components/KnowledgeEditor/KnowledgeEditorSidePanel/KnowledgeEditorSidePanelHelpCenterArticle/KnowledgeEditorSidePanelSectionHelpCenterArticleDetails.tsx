@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { Tag, Text } from '@gorgias/axiom'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useArticleContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorHelpCenterArticle/context'
 import {
     useArticleDetailsFromContext,
@@ -46,7 +47,8 @@ export const KnowledgeEditorSidePanelSectionHelpCenterArticleDetails = ({
     const isPublished = article ? article.isCurrent : undefined
     const isDraft = !article?.isCurrent
     const isUnlisted =
-        state.article?.translation.visibility_status === 'UNLISTED'
+        state.article?.translation.visibility_status ===
+        VisibilityStatusEnum.UNLISTED
     const canToggleAIAgent = !isDraft && !isViewingHistoricalVersion
 
     const getCurrentLocaleName = (): string => {

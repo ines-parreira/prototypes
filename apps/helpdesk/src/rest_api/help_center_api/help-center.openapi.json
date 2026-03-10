@@ -8809,8 +8809,8 @@
                             }
                         ]
                     },
-                    "visibility_status": {
-                        "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
+                    "customer_visibility": {
+                        "description": "The customer-facing visibility of the category.",
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
@@ -8904,10 +8904,6 @@
                             }
                         ]
                     },
-                    "visibility_status": {
-                        "enum": ["PUBLIC", "UNLISTED"],
-                        "type": "string"
-                    },
                     "customer_visibility": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -8934,7 +8930,6 @@
                     "parent_category_id",
                     "locale",
                     "seo_meta",
-                    "visibility_status",
                     "customer_visibility",
                     "image_url",
                     "title",
@@ -9072,10 +9067,6 @@
                             }
                         ]
                     },
-                    "visibility_status": {
-                        "enum": ["PUBLIC", "UNLISTED"],
-                        "type": "string"
-                    },
                     "customer_visibility": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -9097,7 +9088,6 @@
                     "parent_category_id",
                     "locale",
                     "seo_meta",
-                    "visibility_status",
                     "customer_visibility",
                     "image_url",
                     "title",
@@ -9156,8 +9146,8 @@
                             }
                         ]
                     },
-                    "visibility_status": {
-                        "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
+                    "customer_visibility": {
+                        "description": "The customer-facing visibility of the category.",
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },

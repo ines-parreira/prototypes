@@ -14,7 +14,11 @@ import type {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import { ARTICLE_TEMPLATES_KEYS } from 'models/helpCenter/types'
+import {
+    ARTICLE_TEMPLATES_KEYS,
+    CustomerVisibilityEnum,
+    VisibilityStatusEnum,
+} from 'models/helpCenter/types'
 import type { StoreIntegration } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -46,7 +50,7 @@ export const getNewArticleTranslation = (
     excerpt: '',
     slug: '',
     category_id: categoryId,
-    visibility_status: 'PUBLIC',
+    visibility_status: VisibilityStatusEnum.PUBLIC,
     seo_meta: {
         title: null,
         description: null,
@@ -329,7 +333,8 @@ export const mapAILibraryArticleItemToArticle = (
             slug: slugify(article.title),
             locale,
             is_current: publish,
-            customer_visibility: customerVisibility || 'PUBLIC',
+            customer_visibility:
+                customerVisibility || CustomerVisibilityEnum.PUBLIC,
         },
     }
 

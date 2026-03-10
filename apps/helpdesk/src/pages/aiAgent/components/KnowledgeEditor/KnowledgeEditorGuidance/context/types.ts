@@ -2,6 +2,7 @@ import type { SizeValue } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
 import type { HelpCenter } from 'models/helpCenter/types'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
@@ -185,7 +186,7 @@ export const createInitialState = (
     // For new articles, default to false if at limit
     let defaultVisibility = true
     if (article) {
-        defaultVisibility = article.visibility === 'PUBLIC'
+        defaultVisibility = article.visibility === VisibilityStatusEnum.PUBLIC
     } else if (initialMode === 'create') {
         defaultVisibility = false
     }

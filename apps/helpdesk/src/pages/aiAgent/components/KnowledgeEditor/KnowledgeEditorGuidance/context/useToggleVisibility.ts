@@ -4,12 +4,11 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 
 import { useGuidanceStore } from './KnowledgeEditorGuidanceContext'
 import { useGuidanceLimit } from './useGuidanceLimit'
-
-type VisibilityStatus = 'PUBLIC' | 'UNLISTED'
 
 type IntentConflictDetail = {
     intent: string
@@ -182,7 +181,7 @@ export const useToggleVisibility = () => {
     const { isAtLimit, limitMessage } = useGuidanceLimit(guidanceArticles)
 
     const applyVisibilityUpdate = useCallback(
-        async (newVisibility: VisibilityStatus) => {
+        async (newVisibility: VisibilityStatusEnum) => {
             if (!guidanceId || !guidanceHelpCenterLocale) return false
 
             const response = await updateGuidanceArticle(
@@ -200,7 +199,7 @@ export const useToggleVisibility = () => {
 
             dispatch({
                 type: 'SET_VISIBILITY',
-                payload: newVisibility === 'PUBLIC',
+                payload: newVisibility === VisibilityStatusEnum.PUBLIC,
             })
             onUpdateFn?.()
             handleVisibilityUpdate?.(newVisibility)
@@ -220,12 +219,12 @@ export const useToggleVisibility = () => {
     const toggleVisibility = useCallback(async () => {
         if (!guidanceId || !guidanceHelpCenterLocale) return
 
-        const newVisibility: VisibilityStatus = visibility
-            ? 'UNLISTED'
-            : 'PUBLIC'
+        const newVisibility: VisibilityStatusEnum = visibility
+            ? VisibilityStatusEnum.UNLISTED
+            : VisibilityStatusEnum.PUBLIC
 
         // Prevent enabling if at limit
-        if (newVisibility === 'PUBLIC' && isAtLimit) {
+        if (newVisibility === VisibilityStatusEnum.PUBLIC && isAtLimit) {
             notifyError(limitMessage)
             return
         }
@@ -236,7 +235,7 @@ export const useToggleVisibility = () => {
             setVisibilityConflict(EMPTY_VISIBILITY_CONFLICT_STATE)
         } catch (error) {
             if (
-                newVisibility === 'PUBLIC' &&
+                newVisibility === VisibilityStatusEnum.PUBLIC &&
                 isGorgiasApiError(error) &&
                 error.response.status === 409
             ) {
@@ -344,7 +343,9 @@ export const useToggleVisibility = () => {
                 }
             }
 
-            const isVisibilityUpdated = await applyVisibilityUpdate('PUBLIC')
+            const isVisibilityUpdated = await applyVisibilityUpdate(
+                VisibilityStatusEnum.PUBLIC,
+            )
             if (isVisibilityUpdated) {
                 setVisibilityConflict(EMPTY_VISIBILITY_CONFLICT_STATE)
             }

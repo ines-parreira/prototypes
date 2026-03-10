@@ -263,7 +263,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -534,7 +534,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -722,7 +722,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -1341,8 +1341,7 @@ declare namespace Components {
                 title: string | null
                 description: string | null
             }
-            visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             /**
              * example:
              * https://cdn.shopify.com/image.jpg
@@ -1438,7 +1437,7 @@ declare namespace Components {
                     description: string | null
                 }
                 visibility_status: 'PUBLIC' | 'UNLISTED'
-                customer_visibility?: 'PUBLIC' | 'UNLISTED'
+                customer_visibility: 'PUBLIC' | 'UNLISTED'
                 is_current: boolean
                 draft_version_id: number | null
                 published_version_id: number | null
@@ -1578,8 +1577,7 @@ declare namespace Components {
                     title: string | null
                     description: string | null
                 }
-                visibility_status: 'PUBLIC' | 'UNLISTED'
-                customer_visibility?: 'PUBLIC' | 'UNLISTED'
+                customer_visibility: 'PUBLIC' | 'UNLISTED'
                 /**
                  * example:
                  * https://cdn.shopify.com/image.jpg
@@ -2416,10 +2414,6 @@ declare namespace Components {
                  */
                 description: string | null
             }
-            /**
-             * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
-             */
-            visibility_status?: 'PUBLIC' | 'UNLISTED'
             /**
              * The customer-facing visibility of the category.
              */
@@ -3381,7 +3375,7 @@ declare namespace Components {
                 description: string | null
             }
             visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             is_current: boolean
             draft_version_id: number | null
             published_version_id: number | null
@@ -3494,8 +3488,7 @@ declare namespace Components {
                 title: string | null
                 description: string | null
             }
-            visibility_status: 'PUBLIC' | 'UNLISTED'
-            customer_visibility?: 'PUBLIC' | 'UNLISTED'
+            customer_visibility: 'PUBLIC' | 'UNLISTED'
             /**
              * example:
              * https://cdn.shopify.com/image.jpg
@@ -4138,10 +4131,6 @@ declare namespace Components {
                  */
                 description: string | null
             }
-            /**
-             * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
-             */
-            visibility_status?: 'PUBLIC' | 'UNLISTED'
             /**
              * The customer-facing visibility of the category.
              */

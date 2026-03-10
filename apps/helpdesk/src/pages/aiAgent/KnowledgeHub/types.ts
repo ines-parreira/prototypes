@@ -3,6 +3,7 @@ import type { History } from 'history'
 import type { IconName } from '@gorgias/axiom'
 
 import type { LocaleCode } from 'models/helpCenter/types'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 
 export enum KnowledgeType {
     Document = 'document',
@@ -103,7 +104,9 @@ export const mapSnippetTypeToKnowledgeType = (
 export const mapKnowledgeVisibilityToArticleVisibility = (
     visibility?: KnowledgeVisibility,
 ): 'PUBLIC' | 'UNLISTED' => {
-    return visibility === KnowledgeVisibility.PUBLIC ? 'PUBLIC' : 'UNLISTED'
+    return visibility === KnowledgeVisibility.PUBLIC
+        ? VisibilityStatusEnum.PUBLIC
+        : VisibilityStatusEnum.UNLISTED
 }
 
 export type EditorType = 'guidance' | 'faq' | 'snippet'

@@ -10,6 +10,7 @@ import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up-white.svg'
 import type { Article } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -108,7 +109,8 @@ export const ArticleRow = ({
 
         const isArticleOrAncestorUnlisted =
             isAncestorUnlisted ||
-            article.translation.customer_visibility === 'UNLISTED'
+            article.translation.customer_visibility ===
+                CustomerVisibilityEnum.UNLISTED
 
         return onClickSettings(ev, name, article, isArticleOrAncestorUnlisted)
     }
@@ -187,7 +189,10 @@ export const ArticleRow = ({
                 className={css['nested-cell']}
             >
                 <VisibilityCell
-                    status={article.translation.customer_visibility ?? 'PUBLIC'}
+                    status={
+                        article.translation.customer_visibility ??
+                        CustomerVisibilityEnum.PUBLIC
+                    }
                     isParentUnlisted={isAncestorUnlisted}
                     isArticle
                     isDraft={isNotPublished(article)}

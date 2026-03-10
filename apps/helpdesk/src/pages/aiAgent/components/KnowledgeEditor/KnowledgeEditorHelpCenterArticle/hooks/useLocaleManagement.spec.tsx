@@ -42,6 +42,7 @@ const createMockArticle = (
             excerpt: 'Test excerpt',
             category_id: 1,
             visibility_status: 'PUBLIC',
+            customer_visibility: 'PUBLIC',
             article_id: 1,
             article_unlisted_id: 'test-unlisted-id',
             seo_meta: { title: 'SEO Title', description: 'SEO Description' },

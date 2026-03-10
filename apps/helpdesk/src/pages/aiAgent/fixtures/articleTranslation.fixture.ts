@@ -18,6 +18,7 @@ export const getArticleTranslationWithRatingFixture = (
         description: null,
     },
     visibility_status: 'PUBLIC',
+    customer_visibility: 'PUBLIC',
     is_current: true,
     category_id: 1,
     article_id: articleId,

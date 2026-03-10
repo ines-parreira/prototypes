@@ -14,6 +14,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { CustomerVisibility } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 
 import css from './SelectVisibilityStatus.less'
 
@@ -38,7 +39,7 @@ type VisibilityOption = {
 }
 
 const SelectCustomerVisibility = ({
-    status = 'PUBLIC',
+    status = CustomerVisibilityEnum.PUBLIC,
     onChange,
     className,
     isParentUnlisted,
@@ -51,14 +52,14 @@ const SelectCustomerVisibility = ({
         () => [
             {
                 id: 'visibility-unlisted',
-                value: 'UNLISTED',
+                value: CustomerVisibilityEnum.UNLISTED,
                 title: 'Unlisted',
                 description: `Accessible only via direct link, not indexed by search engines.`,
                 icon: 'hide',
             },
             {
                 id: 'visibility-public',
-                value: 'PUBLIC',
+                value: CustomerVisibilityEnum.PUBLIC,
                 title: 'Public',
                 description: `Visible to Help Center visitors.`,
                 descriptionInheritUnlisted: `${_upperFirst(
@@ -81,7 +82,8 @@ const SelectCustomerVisibility = ({
 
     const selectedText = useMemo(() => {
         const isPublicButUnlisted =
-            isParentUnlisted && selectedOption.value === 'PUBLIC'
+            isParentUnlisted &&
+            selectedOption.value === CustomerVisibilityEnum.PUBLIC
         return isPublicButUnlisted
             ? `${selectedOption.title} (currently Unlisted)`
             : selectedOption.title
@@ -116,7 +118,8 @@ const SelectCustomerVisibility = ({
             >
                 {(option: VisibilityOption) => {
                     const isPublicButUnlisted =
-                        isParentUnlisted && option.value === 'PUBLIC'
+                        isParentUnlisted &&
+                        option.value === CustomerVisibilityEnum.PUBLIC
                     const title = isPublicButUnlisted
                         ? `${option.title} (currently Unlisted)`
                         : option.title
@@ -135,7 +138,7 @@ const SelectCustomerVisibility = ({
                     )
                 }}
             </Select>
-            {showNotification && status === 'PUBLIC' && (
+            {showNotification && status === CustomerVisibilityEnum.PUBLIC && (
                 <div className={css.notificationWrapper}>
                     <div>
                         This {type}{' '}

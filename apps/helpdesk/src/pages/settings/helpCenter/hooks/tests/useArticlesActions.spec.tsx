@@ -400,6 +400,7 @@ describe('useArticlesActions()', () => {
                         article_unlisted_id: '69b26316a6d0474d814457984a232b90',
                         category_id: null,
                         visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         seo_meta: {
                             title: null,
                             description: null,
@@ -464,6 +465,7 @@ describe('useArticlesActions()', () => {
                         article_unlisted_id: 'a04b78751802417989df20c2b9d21b22',
                         category_id: null,
                         visibility_status: 'PUBLIC',
+                        customer_visibility: 'PUBLIC',
                         seo_meta: {
                             title: null,
                             description: null,

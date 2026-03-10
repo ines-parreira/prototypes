@@ -40,7 +40,7 @@ describe('<ArticleSelectPreview />', () => {
                     slug: 'slug',
                     title: 'title',
                     updated_datetime: '',
-                    visibility_status: 'PUBLIC',
+                    customer_visibility: 'PUBLIC',
                 },
             },
         })

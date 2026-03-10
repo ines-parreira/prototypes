@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 
 import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { LocaleCode } from 'models/helpCenter/types'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 
@@ -63,7 +64,9 @@ export const AiAgentGuidanceDetailView = ({
                 ? {
                       name: guidanceArticle.title,
                       content: guidanceArticle.content,
-                      isVisible: guidanceArticle.visibility === 'PUBLIC',
+                      isVisible:
+                          guidanceArticle.visibility ===
+                          VisibilityStatusEnum.PUBLIC,
                   }
                 : undefined,
         [guidanceArticle],

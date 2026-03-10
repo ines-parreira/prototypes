@@ -34,6 +34,7 @@ import type {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import { Drawer } from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import {
@@ -124,7 +125,7 @@ export const HelpCenterCategoryEdit = ({
     const [title, setTitle] = useState('')
     const [parentCategory, setParentCategory] = useState<number | undefined>()
     const [customerVisibility, setCustomerVisibility] =
-        useState<CustomerVisibility>('PUBLIC')
+        useState<CustomerVisibility>(CustomerVisibilityEnum.PUBLIC)
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
@@ -220,7 +221,8 @@ export const HelpCenterCategoryEdit = ({
             setImageUrl(category.translation?.image_url ?? '')
             if (category.translation) {
                 setCustomerVisibility(
-                    category.translation.customer_visibility ?? 'PUBLIC',
+                    category.translation.customer_visibility ??
+                        CustomerVisibilityEnum.PUBLIC,
                 )
             }
         } else {
@@ -230,7 +232,7 @@ export const HelpCenterCategoryEdit = ({
             setMetaTitle(null)
             setMetaDescription(null)
             setParentCategory(parentCategoryId)
-            setCustomerVisibility('PUBLIC')
+            setCustomerVisibility(CustomerVisibilityEnum.PUBLIC)
             setImageUrl('')
         }
         setParentCategory(
@@ -413,8 +415,9 @@ export const HelpCenterCategoryEdit = ({
             if (
                 !isCreate &&
                 hasChildren &&
-                category?.translation?.customer_visibility === 'PUBLIC' &&
-                customerVisibility === 'UNLISTED'
+                category?.translation?.customer_visibility ===
+                    CustomerVisibilityEnum.PUBLIC &&
+                customerVisibility === CustomerVisibilityEnum.UNLISTED
             ) {
                 setPendingSaveCategory(true)
 
@@ -476,8 +479,8 @@ export const HelpCenterCategoryEdit = ({
         const categoryId = category.id
         const unlistedId = category.translation.category_unlisted_id
         const isUnlisted =
-            category.translation.customer_visibility === 'UNLISTED' ||
-            isParentUnlisted
+            category.translation.customer_visibility ===
+                CustomerVisibilityEnum.UNLISTED || isParentUnlisted
 
         const categoryUrl = hasDefaultLayout
             ? getCategoryUrl({
@@ -505,8 +508,8 @@ export const HelpCenterCategoryEdit = ({
         const categoryId = category.id
         const unlistedId = category.translation.category_unlisted_id
         const isUnlisted =
-            category.translation.customer_visibility === 'UNLISTED' ||
-            isParentUnlisted
+            category.translation.customer_visibility ===
+                CustomerVisibilityEnum.UNLISTED || isParentUnlisted
 
         copy(
             hasDefaultLayout
@@ -545,7 +548,8 @@ export const HelpCenterCategoryEdit = ({
 
     const isUnlisted =
         (category?.translation &&
-            category.translation.customer_visibility === 'UNLISTED') ||
+            category.translation.customer_visibility ===
+                CustomerVisibilityEnum.UNLISTED) ||
         isParentUnlisted
 
     const showPreviewAndShareButton =

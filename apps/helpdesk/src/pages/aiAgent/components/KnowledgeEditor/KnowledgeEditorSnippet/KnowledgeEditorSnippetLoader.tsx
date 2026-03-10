@@ -14,6 +14,7 @@ import {
     useGetHelpCenterArticle,
     useGetIngestedResource,
 } from 'models/helpCenter/queries'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { LocaleCode } from 'models/helpCenter/types'
 import type { IngestedResourceWithArticleId } from 'pages/aiAgent/AiAgentScrapedDomainContent/types'
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -200,7 +201,8 @@ export const KnowledgeEditorSnippetLoader = ({
             title: articleData.translation.title,
             content: articleData.translation.content,
             aiAgentEnabled:
-                articleData.translation.visibility_status || 'UNLISTED',
+                articleData.translation.visibility_status ||
+                VisibilityStatusEnum.UNLISTED,
             createdDatetime: new Date(articleData.created_datetime),
             lastUpdatedDatetime: new Date(articleData.updated_datetime),
         }
@@ -255,8 +257,11 @@ export const KnowledgeEditorSnippetLoader = ({
 
         try {
             const currentVisibility =
-                articleData.translation.visibility_status === 'PUBLIC'
-            const newVisibility = currentVisibility ? 'UNLISTED' : 'PUBLIC'
+                articleData.translation.visibility_status ===
+                VisibilityStatusEnum.PUBLIC
+            const newVisibility = currentVisibility
+                ? VisibilityStatusEnum.UNLISTED
+                : VisibilityStatusEnum.PUBLIC
 
             await updateTranslationMutation([
                 undefined,

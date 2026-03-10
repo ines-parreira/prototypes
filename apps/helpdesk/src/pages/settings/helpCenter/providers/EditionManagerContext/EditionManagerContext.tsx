@@ -10,6 +10,7 @@ import type {
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { HelpCenterArticleModalState } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import { changeViewLanguage } from 'state/ui/helpCenter'
 import { getViewLanguage } from 'state/ui/helpCenter/selectors'
@@ -62,7 +63,7 @@ export const EditionManagerContextProvider = (props: {
         null,
     )
     const [selectedVisibility, setSelectedVisibility] =
-        useState<VisibilityStatus>('PUBLIC')
+        useState<VisibilityStatus>(VisibilityStatusEnum.PUBLIC)
     const [selectedArticleLanguage, setSelectedArticleLanguage] =
         useState<LocaleCode>(viewLanguage ?? helpCenter.supported_locales[0])
 

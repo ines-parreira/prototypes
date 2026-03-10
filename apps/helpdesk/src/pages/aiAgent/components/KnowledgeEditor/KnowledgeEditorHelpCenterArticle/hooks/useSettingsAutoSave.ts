@@ -5,6 +5,7 @@ import { useDebouncedEffect } from '@repo/hooks'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useUpdateArticleTranslation } from 'models/helpCenter/mutations'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 import type {
     Locale,
     LocaleCode,
@@ -317,7 +318,7 @@ export const useSettingsAutoSave = () => {
                 customerVisibility:
                     state.pendingSettingsChanges.customer_visibility ??
                     state.article?.translation.customer_visibility ??
-                    'PUBLIC',
+                    CustomerVisibilityEnum.PUBLIC,
                 onChangeVisibility,
                 isParentUnlisted,
             },

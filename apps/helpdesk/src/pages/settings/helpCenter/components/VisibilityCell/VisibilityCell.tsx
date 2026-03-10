@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { VisibilityStatus } from 'models/helpCenter/types'
+import { CustomerVisibilityEnum } from 'models/helpCenter/types'
 
 import css from './VisibilityCell.less'
 
@@ -30,12 +31,13 @@ export const optionsSharingStatus: Record<
 }
 
 const VisibilityCell = ({
-    status = 'PUBLIC',
+    status = CustomerVisibilityEnum.PUBLIC,
     isParentUnlisted = false,
     isArticle = false,
     isDraft = false,
 }: VisibilityCellProps) => {
-    const isPublicUnlisted = isParentUnlisted && status === 'PUBLIC'
+    const isPublicUnlisted =
+        isParentUnlisted && status === CustomerVisibilityEnum.PUBLIC
     const ref = useRef<HTMLDivElement | null>(null)
 
     if (isDraft) {

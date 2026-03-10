@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import {
     getArticleUrl,
     getHelpCenterDomain,
@@ -67,7 +68,7 @@ export const useArticleDetailsFromContext = (): ArticleDetailsData => {
                           unlistedId: article.unlisted_id,
                           isUnlisted:
                               article.translation.visibility_status ===
-                              'UNLISTED',
+                              VisibilityStatusEnum.UNLISTED,
                       })
                     : undefined,
             helpCenter: {
