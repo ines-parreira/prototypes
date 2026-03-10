@@ -4,11 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 import { MemoryRouter, Route } from 'react-router-dom'
 
+import type { DomainEventWithType } from '@gorgias/events'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { Language } from '@gorgias/helpdesk-types'
 
 import { useTicket } from '../../hooks/useTicket'
-import type { ExtractEvent } from '../hooks/types'
 import { useTicketMessageTranslationCompleteEventHandler } from '../hooks/useLiveTicketTranslationsUpdates/useTicketMessageTranslationCompleteEventHandler'
 import { DisplayedContent, FetchingState } from '../store/constants'
 import { useTicketMessageTranslationDisplay } from '../store/useTicketMessageTranslationDisplay'
@@ -87,7 +87,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
     })
 
     describe('event handling', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
+        const mockEvent: DomainEventWithType<'//helpdesk/ticket-message-translation.completed'> =
             {
                 id: 'test-event-1',
                 dataschema:
@@ -314,7 +314,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
     })
 
     describe('ticket translations invalidation', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
+        const mockEvent: DomainEventWithType<'//helpdesk/ticket-message-translation.completed'> =
             {
                 id: 'test-event-1',
                 dataschema:
@@ -384,7 +384,7 @@ describe('useTicketMessageTranslationCompleteEventHandler', () => {
         })
 
         it('should not invalidate queries when non-first message is translated', () => {
-            const nonFirstMessageEvent: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'> =
+            const nonFirstMessageEvent: DomainEventWithType<'//helpdesk/ticket-message-translation.completed'> =
                 {
                     ...mockEvent,
                     data: {

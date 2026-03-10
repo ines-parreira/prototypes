@@ -57,7 +57,6 @@ export { useCurrentUserLanguagePreferences } from './translations/hooks/useCurre
 export { DisplayedContent, FetchingState } from './translations/store/constants'
 
 export type { CurrentUser } from './translations/hooks/useCurrentUserLanguagePreferences'
-export type { ExtractEvent } from './translations/hooks/types'
 export type { DisplayType } from './translations/store/constants'
 
 export { useCloseTicket } from './components/TicketMenuStatus/useCloseTicket'

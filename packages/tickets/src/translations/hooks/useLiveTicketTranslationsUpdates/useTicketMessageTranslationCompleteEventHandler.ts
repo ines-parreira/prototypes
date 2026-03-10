@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 
+import type { DomainEventWithType } from '@gorgias/events'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type {
     HttpResponse,
@@ -15,7 +16,7 @@ import { useTicket } from '../../../hooks/useTicket'
 import { DisplayedContent, FetchingState } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
 import { KeyPrefixes } from '../constants'
-import type { ExtractEvent, TicketTranslationsQueryKeyParams } from '../types'
+import type { TicketTranslationsQueryKeyParams } from '../types'
 
 type CachedData = HttpResponse<ListTicketMessageTranslations200> | undefined
 
@@ -31,7 +32,7 @@ export function useTicketMessageTranslationCompleteEventHandler() {
 
     const handleTicketMessageTranslationCompleted = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-message-translation.completed/1.0.1'>,
+            event: DomainEventWithType<'//helpdesk/ticket-message-translation.completed'>,
         ) => {
             if (!ticket) {
                 return

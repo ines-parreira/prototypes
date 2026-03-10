@@ -8,11 +8,10 @@ import {
     useState,
 } from 'react'
 
-import type { ExtractEvent } from '@repo/tickets'
 import type { ContentState } from 'draft-js'
 import { convertToRaw, EditorState } from 'draft-js'
 
-import type { DomainEvent } from '@gorgias/events'
+import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
 import { useChannel } from '@gorgias/realtime-ably'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -159,7 +158,7 @@ export const OutboundTranslationProvider = ({
 
     const handleTranslationCompletedEvent = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/draft-ticket-message-translation.completed/1.0.0'>,
+            event: DomainEventWithType<'//helpdesk/draft-ticket-message-translation.completed'>,
         ) => {
             const { stripped_html, stripped_text, id: draft_id } = event.data
 
@@ -224,7 +223,7 @@ export const OutboundTranslationProvider = ({
 
     const handleTranslationFailedEvent = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/draft-ticket-message-translation.failed/1.0.0'>,
+            event: DomainEventWithType<'//helpdesk/draft-ticket-message-translation.failed'>,
         ) => {
             const { id: draft_id } = event.data
 

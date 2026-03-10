@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
 
+import type { DomainEventWithType } from '@gorgias/events'
+
 import { FetchingState } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
-import type { ExtractEvent } from '../types'
 
 export function useTicketMessageTranslationFailedEventHandler() {
     const {
@@ -12,7 +13,7 @@ export function useTicketMessageTranslationFailedEventHandler() {
 
     const handleTicketMessageTranslationFailed = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-message-translation.failed/1.0.1'>,
+            event: DomainEventWithType<'//helpdesk/ticket-message-translation.failed'>,
         ) => {
             const { ticket_message_id } = event.data
             const displayType =

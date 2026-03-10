@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
+import type { DomainEventWithType } from '@gorgias/events'
 import { Language } from '@gorgias/helpdesk-types'
 
 import { KeyPrefixes } from '../hooks/constants'
-import type { ExtractEvent } from '../hooks/types'
 import { useTicketTranslationCompleteEventHandler } from '../hooks/useLiveTicketTranslationsUpdates/useTicketTranslationCompleteEventHandler'
 
 const queryClient = new QueryClient({
@@ -43,7 +43,7 @@ describe('useTicketTranslationCompleteEventHandler', () => {
     })
 
     describe('event handling', () => {
-        const mockEvent: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.1'> =
+        const mockEvent: DomainEventWithType<'//helpdesk/ticket-translation.completed'> =
             {
                 id: 'test-event-1',
                 dataschema: '//helpdesk/ticket-translation.completed/1.0.1',

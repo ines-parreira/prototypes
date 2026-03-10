@@ -2,20 +2,21 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { DomainEventWithType } from '@gorgias/events'
 import type {
     HttpResponse,
     ListTicketTranslations200,
 } from '@gorgias/helpdesk-types'
 
 import { KeyPrefixes } from '../constants'
-import type { ExtractEvent, TicketTranslationsQueryKeyParams } from '../types'
+import type { TicketTranslationsQueryKeyParams } from '../types'
 
 export function useTicketTranslationCompleteEventHandler() {
     const queryClient = useQueryClient()
 
     const handleTicketTranslationCompleted = useCallback(
         (
-            event: ExtractEvent<'//helpdesk/ticket-translation.completed/1.0.1'>,
+            event: DomainEventWithType<'//helpdesk/ticket-translation.completed'>,
         ) => {
             const { ticket_id } = event.data
             const queryCache = queryClient.getQueryCache()

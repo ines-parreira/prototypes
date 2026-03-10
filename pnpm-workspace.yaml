@@ -61,7 +61,7 @@ catalogs:
   realtime-ably:
     '@gorgias/realtime-ably': '^0.2.21'
   events:
-    '@gorgias/events': '^0.13.5'
+    '@gorgias/events': '^0.14.1'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'

@@ -52,8 +52,8 @@ catalogs:
       version: 1.0.1
   events:
     '@gorgias/events':
-      specifier: ^0.13.5
-      version: 0.13.5
+      specifier: ^0.14.1
+      version: 0.14.1
   feature-flags:
     launchdarkly-js-client-sdk:
       specifier: ^3.3.0
@@ -526,7 +526,7 @@ importers:
         version: 2.0.4
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.5
+        version: 0.14.1
       '@gorgias/help-center-client':
         specifier: catalog:rest-api-sdk
         version: 0.3.14
@@ -1553,7 +1553,7 @@ importers:
     dependencies:
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.5
+        version: 0.14.1
       '@gorgias/realtime-ably':
         specifier: catalog:realtime-ably
         version: 0.2.21(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
@@ -2789,7 +2789,7 @@ importers:
     dependencies:
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.5
+        version: 0.14.1
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.170
@@ -2932,7 +2932,7 @@ importers:
         version: 0.193.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
-        version: 0.13.5
+        version: 0.14.1
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.112
@@ -4694,6 +4694,10 @@ packages:
 
   '@gorgias/events@0.13.5':
     resolution: {integrity: sha512-F0UrSXZ4bN+Q+Wr8web/eJ59CWqKYF4s5EHnNtNKRv/9IyJG3c0V6Wi3kEzBdSJMLPK1ilXIF4uTZyPcq4yP/Q==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.13.5/4aa63313140c339a14b4172cd1014ccfd069089c}
+    engines: {node: '>=22.22.0'}
+
+  '@gorgias/events@0.14.1':
+    resolution: {integrity: sha512-5yPjTVIFVqlnc8E5RMAD2MizjYCtACbXY7TIVE9AI1Dh1NMlTciqcmfW4prDu7L/Ekv9fvryGFdSXJJfvMWlmQ==, tarball: https://npm.pkg.github.com/download/@gorgias/events/0.14.1/ac1b9906aa9274a804d096cde12c44117f14df1c}
     engines: {node: '>=22.22.0'}
 
   '@gorgias/help-center-client@0.3.14':
@@ -16837,6 +16841,8 @@ snapshots:
   '@gorgias/event-tracker-utils@1.0.1': {}
 
   '@gorgias/events@0.13.5': {}
+
+  '@gorgias/events@0.14.1': {}
 
   '@gorgias/help-center-client@0.3.14':
     dependencies:
