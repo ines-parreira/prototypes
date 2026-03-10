@@ -408,6 +408,24 @@ describe('TagsMultiSelect', () => {
         expect(updatedTags.map((tag) => tag.name)).toEqual(['Alpha', 'Zulu'])
     })
 
+    it('displays tags in alphabetical order regardless of value prop order', async () => {
+        const unorderedTags = [
+            mockTicketTag({ id: 1, name: 'Zulu', decoration: null }),
+            mockTicketTag({ id: 2, name: 'Alpha', decoration: null }),
+            mockTicketTag({ id: 3, name: 'Mango', decoration: null }),
+        ]
+
+        render(<TagsMultiSelect value={unorderedTags} onChange={vi.fn()} />)
+
+        await waitForQueriesSettled()
+
+        const tagNames = screen
+            .getAllByText(/^(Alpha|Mango|Zulu)$/)
+            .map((el) => el.textContent)
+
+        expect(tagNames).toEqual(['Alpha', 'Mango', 'Zulu'])
+    })
+
     it('allows selecting a tag from the dropdown and removing it', async () => {
         const onChange = vi.fn()
 

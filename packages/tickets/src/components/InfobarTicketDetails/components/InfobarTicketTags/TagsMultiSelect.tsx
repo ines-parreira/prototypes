@@ -173,6 +173,10 @@ export function TagsMultiSelect({
 
     useShortcuts('InfobarTicketTags', actions)
 
+    const sortedTags = useMemo(
+        () => [...value].sort(sortByAlphabeticalTagNameOrder),
+        [value],
+    )
     return (
         <div className={css.container}>
             <OverflowList gap="xxxs" nonExpandedLineCount={2}>
@@ -250,7 +254,7 @@ export function TagsMultiSelect({
                         )}
                     </MultiSelect>
                 </OverflowListItem>
-                {value.map((tag) => (
+                {sortedTags.map((tag) => (
                     <OverflowListItem key={tag.id}>
                         <Tag
                             onClose={() => handleCloseTag(tag)}
@@ -269,7 +273,7 @@ export function TagsMultiSelect({
                         </Tag>
                     </OverflowListItem>
                 ))}
-                <TagsMultiSelectShowMore value={value} />
+                <TagsMultiSelectShowMore value={sortedTags} />
                 <OverflowListShowLess>
                     <div className={css.overflowButtonContent}>
                         <span>Show less</span>
