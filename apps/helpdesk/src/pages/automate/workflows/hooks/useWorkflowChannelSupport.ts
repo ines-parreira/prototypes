@@ -85,7 +85,8 @@ function useSupportedChannelsFromFeatureFlag(
         | FeatureFlagKey.FlowsStepsShopperAuthentication
         | FeatureFlagKey.FlowsStepsOrderLineItemSelection,
 ): Set<SelfServiceChannelType> {
-    const supportedChannelsRaw: string = useFlag(featureFlag) ?? ''
+    const flagValue = useFlag(featureFlag)
+    const supportedChannelsRaw = typeof flagValue === 'string' ? flagValue : ''
 
     return useMemo(() => {
         return new Set(
