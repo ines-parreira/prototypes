@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { systemViewIcons } from '@repo/tickets/utils/views'
 import { render } from '@testing-library/react'
 
 import type { View } from 'models/view/types'
 import { ViewCategory } from 'models/view/types'
-import { systemViewIcons } from 'utils/views'
 
 import ViewDecoration from '../ViewDecoration'
 

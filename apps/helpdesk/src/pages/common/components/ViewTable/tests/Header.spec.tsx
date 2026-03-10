@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { systemViewIcons } from '@repo/tickets/utils/views'
 import { screen } from '@testing-library/dom'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
@@ -12,7 +13,6 @@ import { newViews } from 'models/view/mocks'
 import { EntityType } from 'models/view/types'
 import { HeaderContainer } from 'pages/common/components/ViewTable/Header'
 import { fetchViewItems } from 'state/views/actions'
-import { systemViewIcons } from 'utils/views'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 

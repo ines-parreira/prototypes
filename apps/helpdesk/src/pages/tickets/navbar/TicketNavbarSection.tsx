@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
 import classnames from 'classnames'
 import type { DropTargetMonitor } from 'react-dnd'
 import { useDrag } from 'react-dnd'
@@ -24,7 +25,6 @@ import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
 import type { RootState } from 'state/types'
 import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 import { hasRole } from 'utils'
-import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 import type { TicketNavbarSectionElement } from './TicketNavbarContent'
 import { TicketNavbarView } from './TicketNavbarView'

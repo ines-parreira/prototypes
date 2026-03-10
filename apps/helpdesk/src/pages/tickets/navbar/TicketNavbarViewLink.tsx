@@ -2,6 +2,7 @@ import type { ForwardedRef } from 'react'
 import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
 import classnames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -16,7 +17,6 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { isTicketPath } from 'utils'
-import { addCanduLinkForValidViewOrSection } from 'utils/views'
 
 import css from './TicketNavbarViewLink.less'
 

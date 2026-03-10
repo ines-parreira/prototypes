@@ -2,6 +2,7 @@ import { Component, createRef } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'
 
 import { history } from '@repo/routing'
+import { systemViewIcons } from '@repo/tickets/utils/views'
 import { isMacOs } from '@repo/utils'
 import classnames from 'classnames'
 import { Map } from 'immutable'
@@ -30,7 +31,6 @@ import {
 } from 'state/views/actions'
 import { getActiveView, getLastViewId } from 'state/views/selectors'
 import { slugify } from 'utils'
-import { systemViewIcons } from 'utils/views'
 
 import { ViewTableHeaderToggle } from './ViewTableHeaderToggle'
 

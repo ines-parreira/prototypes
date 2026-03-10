@@ -1,8 +1,8 @@
+import { systemViewIcons } from '@repo/tickets/utils/views'
 import classnames from 'classnames'
 
 import type { View } from 'models/view/types'
 import { ViewCategory } from 'models/view/types'
-import { systemViewIcons } from 'utils/views'
 
 import css from './ViewDecoration.less'
 

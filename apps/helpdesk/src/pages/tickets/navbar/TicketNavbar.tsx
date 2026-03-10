@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { useSidebar } from '@repo/navigation'
+import { systemViewIcons } from '@repo/tickets/utils/views'
 import { shortcutManager } from '@repo/utils'
 import _debounce from 'lodash/debounce'
 import type { DropTargetMonitor } from 'react-dnd'
@@ -74,7 +75,6 @@ import {
     getTopSystemTicketNavbarElements,
 } from 'state/views/selectors'
 import { hasRole, isTicketPath } from 'utils'
-import { systemViewIcons } from 'utils/views'
 
 import { ViewCategories, ViewCategoriesIcons } from './constants'
 import { CreateTicketNavbarButton } from './CreateTicketNavbarButton'
