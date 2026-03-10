@@ -19,6 +19,9 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: () => ({ ticketId: '1' }),
 }))
+jest.mock('@repo/routing', () => ({
+    useSearchParams: jest.fn(),
+}))
 jest.mock('@repo/ticket-thread', () => ({
     TicketThreadContainer: ({ children }: { children: ReactNode }) => (
         <section aria-label="Ticket thread container">{children}</section>
@@ -29,12 +32,7 @@ jest.mock('@repo/ticket-thread', () => ({
     TicketThreadItem: ({ item }: { item: { _tag: string } }) => (
         <div>{item._tag}</div>
     ),
-    useTicketThread: () => ({
-        ticketThreadItems: [
-            { _tag: 'Thread feed item 1' },
-            { _tag: 'Thread feed item 100' },
-        ],
-    }),
+    useTicketThread: jest.fn(),
 }))
 jest.mock('pages/common/editor/Editor', () =>
     jest.fn(
@@ -70,6 +68,10 @@ const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseInitialMacroFilters = useInitialMacroFilters as jest.Mock
 const mockEditor = Editor as jest.Mock
 const mockEditorFocused = editorFocused as unknown as jest.Mock
+const mockUseSearchParams = jest.requireMock('@repo/routing')
+    .useSearchParams as jest.Mock
+const mockUseTicketThread = jest.requireMock('@repo/ticket-thread')
+    .useTicketThread as jest.Mock
 
 describe('<TicketThread />', () => {
     const dispatch = jest.fn()
@@ -77,6 +79,7 @@ describe('<TicketThread />', () => {
     const initialMacroFilters = { languages: ['en'] }
     let ticket: { id: number; customer?: { name?: string } }
     let ticketState: ReturnType<typeof fromJS>
+    let searchParams: URLSearchParams
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -85,6 +88,7 @@ describe('<TicketThread />', () => {
             id: 1,
             customer: { name: 'Jane Doe' },
         }
+        searchParams = new URLSearchParams()
         ticketState = fromJS({
             _internal: {
                 isShopperTyping: true,
@@ -96,6 +100,13 @@ describe('<TicketThread />', () => {
         mockEditorFocused.mockImplementation((focused: boolean) => ({
             focused,
         }))
+        mockUseSearchParams.mockReturnValue([searchParams, jest.fn()])
+        mockUseTicketThread.mockReturnValue({
+            ticketThreadItems: [
+                { _tag: 'Thread feed item 1' },
+                { _tag: 'Thread feed item 100' },
+            ],
+        })
         mockUseAppSelector.mockImplementation((selector: unknown) => {
             if (selector === getTicketState) {
                 return ticketState
@@ -130,6 +141,11 @@ describe('<TicketThread />', () => {
             },
             expect.objectContaining({}),
         )
+        expect(mockUseTicketThread).toHaveBeenCalledWith({
+            pendingMessages: [],
+            showTicketEvents: false,
+            ticketId: 1,
+        })
     })
 
     it('falls back to "Customer" when the ticket customer has no name', () => {
@@ -166,5 +182,20 @@ describe('<TicketThread />', () => {
         )
         expect(mockEditorFocused).toHaveBeenCalledWith(false)
         expect(dispatch).toHaveBeenCalledWith({ focused: false })
+    })
+
+    it('passes showTicketEvents to the thread hook when enabled in the URL', () => {
+        searchParams = new URLSearchParams({
+            show_ticket_events: 'true',
+        })
+        mockUseSearchParams.mockReturnValue([searchParams, jest.fn()])
+
+        render(<TicketThread submit={submit} />)
+
+        expect(mockUseTicketThread).toHaveBeenCalledWith({
+            pendingMessages: [],
+            showTicketEvents: true,
+            ticketId: 1,
+        })
     })
 })
