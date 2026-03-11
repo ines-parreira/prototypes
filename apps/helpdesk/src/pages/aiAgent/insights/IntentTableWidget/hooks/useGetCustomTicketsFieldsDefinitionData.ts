@@ -10,8 +10,9 @@ export const useGetCustomTicketsFieldsDefinitionData = (): {
     outcomeCustomFieldId: number
     intentCustomFieldId: number
     sentimentCustomFieldId: number | null
+    isLoading: boolean
 } => {
-    const { data: { data: activeFields = [] } = {} } =
+    const { data: { data: activeFields = [] } = {}, isLoading } =
         useCustomFieldDefinitions(activeParams)
 
     const outcomeCustomField = activeFields.find(
@@ -32,6 +33,7 @@ export const useGetCustomTicketsFieldsDefinitionData = (): {
         intentCustomFieldId:
             intentCustomField?.id || TICKET_FIELD_ID_NOT_AVAILABLE,
         sentimentCustomFieldId: sentimentCustomField?.id || null,
+        isLoading,
     }
 }
 

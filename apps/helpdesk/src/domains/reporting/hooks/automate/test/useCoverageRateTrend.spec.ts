@@ -63,6 +63,7 @@ describe('CoverageRateTrend', () => {
                 outcomeCustomFieldId,
                 intentCustomFieldId: -1,
                 sentimentCustomFieldId: null,
+                isLoading: false,
             })
             useAllTicketsMock.mockReturnValue(allTicketsData)
             useMetricTrendMock.mockReturnValue(aiAgentTicketsData)

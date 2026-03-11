@@ -34,6 +34,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
                     },
                 ] as unknown as CustomField[],
             },
+            isLoading: false,
         } as ReturnType<typeof useCustomFieldDefinitions>
 
         useCustomFieldDefinitionsMock.mockReturnValue(mockData)
@@ -46,6 +47,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
             outcomeCustomFieldId: '1',
             intentCustomFieldId: '2',
             sentimentCustomFieldId: '3',
+            isLoading: false,
         })
     })
 
@@ -59,6 +61,7 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
                     } as unknown as CustomField,
                 ],
             },
+            isLoading: false,
         } as ReturnType<typeof useCustomFieldDefinitions>
 
         useCustomFieldDefinitionsMock.mockReturnValue(mockData)
@@ -71,12 +74,14 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
             outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             sentimentCustomFieldId: null,
+            isLoading: false,
         })
     })
 
     it('should handle empty data gracefully', () => {
         const mockData = {
             data: { data: [] as CustomField[] },
+            isLoading: false,
         } as ReturnType<typeof useCustomFieldDefinitions>
 
         useCustomFieldDefinitionsMock.mockReturnValue(mockData)
@@ -89,6 +94,27 @@ describe('useGetCustomTicketsFieldsDefinitionData', () => {
             outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             sentimentCustomFieldId: null,
+            isLoading: false,
+        })
+    })
+
+    it('should return isLoading: true while custom fields are being fetched', () => {
+        const mockData = {
+            data: undefined,
+            isLoading: true,
+        } as ReturnType<typeof useCustomFieldDefinitions>
+
+        useCustomFieldDefinitionsMock.mockReturnValue(mockData)
+
+        const { result } = renderHook(() =>
+            useGetCustomTicketsFieldsDefinitionData(),
+        )
+
+        expect(result.current).toEqual({
+            outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            sentimentCustomFieldId: null,
+            isLoading: true,
         })
     })
 })
@@ -138,7 +164,7 @@ describe('fetchCustomTicketsFieldsDefinitionData', () => {
         })
     })
 
-    it('should handle empty fields list', async () => {
+    it('should return fallback values when fields list is empty', async () => {
         listCustomFieldsMock.mockResolvedValue({
             data: { data: [] as CustomField[] },
         } as Awaited<ReturnType<typeof listCustomFields>>)

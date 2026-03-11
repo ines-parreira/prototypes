@@ -78,6 +78,7 @@ describe('TotalTicketSentimentOverTimeChart', () => {
             sentimentCustomFieldId: 123,
             intentCustomFieldId: intentCustomFieldId,
             outcomeCustomFieldId: 789,
+            isLoading: false,
         })
     })
 

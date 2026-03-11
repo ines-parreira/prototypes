@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import React from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -218,6 +218,10 @@ describe('KnowledgeHubTable - Row Interactions', () => {
         })
     })
 
+    afterEach(async () => {
+        await act(async () => {})
+    })
+
     describe('row selection', () => {
         it('disables selection for grouped rows', () => {
             renderComponent()
@@ -239,7 +243,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             expect(firstCheckbox).toBeDefined()
 
             if (firstCheckbox) {
-                await user.click(firstCheckbox)
+                await act(async () => {
+                    await user.click(firstCheckbox)
+                })
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -272,7 +278,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await user.click(firstCheckbox)
+                await act(async () => {
+                    await user.click(firstCheckbox)
+                })
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -305,7 +313,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await user.click(firstCheckbox)
+                await act(async () => {
+                    await user.click(firstCheckbox)
+                })
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -349,7 +359,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await user.click(firstCheckbox)
+                await act(async () => {
+                    await user.click(firstCheckbox)
+                })
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -446,10 +458,14 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onGuidanceRowClick).toHaveBeenCalledWith(123)
-            expect(onRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onGuidanceRowClick).toHaveBeenCalledWith(123)
+                expect(onRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onFaqRowClick with correct ID when clicking ungrouped FAQ row', async () => {
@@ -477,10 +493,14 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onFaqRowClick).toHaveBeenCalledWith(456)
-            expect(onRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onFaqRowClick).toHaveBeenCalledWith(456)
+                expect(onRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onRowClick when clicking grouped rows', async () => {
@@ -498,11 +518,15 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
             const groupedRow = screen.getByText('docs.example.com')
 
-            await user.click(groupedRow)
+            await act(async () => {
+                await user.click(groupedRow)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onSnippetRowClick with correct ID and type when clicking Document rows', async () => {
@@ -534,15 +558,19 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onSnippetRowClick).toHaveBeenCalledWith(
-                789,
-                KnowledgeType.Document,
-            )
-            expect(onRowClick).not.toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onSnippetRowClick).toHaveBeenCalledWith(
+                    789,
+                    KnowledgeType.Document,
+                )
+                expect(onRowClick).not.toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onRowClick when clicking Document rows and onSnippetRowClick is not provided', async () => {
@@ -572,11 +600,15 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onSnippetRowClick with correct ID and type when clicking URL rows', async () => {
@@ -619,15 +651,19 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onSnippetRowClick).toHaveBeenCalledWith(
-                999,
-                KnowledgeType.URL,
-            )
-            expect(onRowClick).not.toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onSnippetRowClick).toHaveBeenCalledWith(
+                    999,
+                    KnowledgeType.URL,
+                )
+                expect(onRowClick).not.toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onRowClick when clicking URL rows and onSnippetRowClick is not provided', async () => {
@@ -668,11 +704,15 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onSnippetRowClick with correct ID and type when clicking Domain rows', async () => {
@@ -715,15 +755,19 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onSnippetRowClick).toHaveBeenCalledWith(
-                888,
-                KnowledgeType.Domain,
-            )
-            expect(onRowClick).not.toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onSnippetRowClick).toHaveBeenCalledWith(
+                    888,
+                    KnowledgeType.Domain,
+                )
+                expect(onRowClick).not.toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('calls onRowClick when clicking Domain rows and onSnippetRowClick is not provided', async () => {
@@ -764,11 +808,15 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('falls back to onRowClick when onGuidanceRowClick is not provided for Guidance row', async () => {
@@ -785,9 +833,11 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
+            await waitFor(() => expect(onRowClick).toHaveBeenCalled())
         })
 
         it('falls back to onRowClick when onFaqRowClick is not provided for FAQ row', async () => {
@@ -813,9 +863,11 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 .closest('div[class*="clickableCell"]')
             expect(titleCell).not.toBeNull()
 
-            await user.click(titleCell!)
+            await act(async () => {
+                await user.click(titleCell!)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
+            await waitFor(() => expect(onRowClick).toHaveBeenCalled())
         })
 
         it('does not call any handler for grouped Guidance rows', async () => {
@@ -850,10 +902,14 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
             const groupedRow = screen.getByText('guidance.example.com')
 
-            await user.click(groupedRow)
+            await act(async () => {
+                await user.click(groupedRow)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onGuidanceRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onGuidanceRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('does not call any handler for grouped FAQ rows', async () => {
@@ -888,10 +944,14 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
             const groupedRow = screen.getByText('faq.example.com')
 
-            await user.click(groupedRow)
+            await act(async () => {
+                await user.click(groupedRow)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onFaqRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onFaqRowClick).not.toHaveBeenCalled()
+            })
         })
 
         it('does not call onSnippetRowClick for grouped snippet rows', async () => {
@@ -926,10 +986,14 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
             const groupedRow = screen.getByText('docs.example.com')
 
-            await user.click(groupedRow)
+            await act(async () => {
+                await user.click(groupedRow)
+            })
 
-            expect(onRowClick).toHaveBeenCalled()
-            expect(onSnippetRowClick).not.toHaveBeenCalled()
+            await waitFor(() => {
+                expect(onRowClick).toHaveBeenCalled()
+                expect(onSnippetRowClick).not.toHaveBeenCalled()
+            })
         })
     })
 

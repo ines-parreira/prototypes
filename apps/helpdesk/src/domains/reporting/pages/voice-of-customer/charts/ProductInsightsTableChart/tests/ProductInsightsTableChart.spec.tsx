@@ -45,6 +45,7 @@ describe('ProductInsightsTableChart', () => {
             sentimentCustomFieldId: 123,
             intentCustomFieldId: 456,
             outcomeCustomFieldId: 789,
+            isLoading: false,
         })
         ProductInsightsEditColumnsMock.mockImplementation(() => (
             <div>Edit Columns</div>
@@ -102,6 +103,7 @@ describe('ProductInsightsTableChart', () => {
             sentimentCustomFieldId: 123,
             intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             outcomeCustomFieldId: 789,
+            isLoading: false,
         })
 
         renderWithStore(<ProductInsightsTableChart />, state)
@@ -117,6 +119,7 @@ describe('ProductInsightsTableChart', () => {
             sentimentCustomFieldId: null,
             intentCustomFieldId: 123,
             outcomeCustomFieldId: 789,
+            isLoading: false,
         })
 
         renderWithStore(<ProductInsightsTableChart />, state)

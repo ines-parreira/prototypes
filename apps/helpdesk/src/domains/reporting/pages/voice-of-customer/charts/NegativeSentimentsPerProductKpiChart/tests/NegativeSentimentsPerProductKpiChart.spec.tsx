@@ -49,6 +49,7 @@ describe('NegativeSentimentsPerProductKpiChart', () => {
             sentimentCustomFieldId: null,
             outcomeCustomFieldId: 0,
             intentCustomFieldId: 0,
+            isLoading: false,
         })
 
         renderWithStore(<NegativeSentimentsPerProductKpiChart />, defaultState)
@@ -61,6 +62,7 @@ describe('NegativeSentimentsPerProductKpiChart', () => {
             sentimentCustomFieldId: sentimentCustomFieldId,
             outcomeCustomFieldId: 0,
             intentCustomFieldId: 0,
+            isLoading: false,
         })
 
         renderWithStore(<NegativeSentimentsPerProductKpiChart />, defaultState)

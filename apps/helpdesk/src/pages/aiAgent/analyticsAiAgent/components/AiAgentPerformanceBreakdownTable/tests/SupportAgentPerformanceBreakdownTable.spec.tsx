@@ -84,6 +84,7 @@ describe('SupportAgentPerformanceBreakdownTable', () => {
             intentCustomFieldId: 5253,
             outcomeCustomFieldId: 5254,
             sentimentCustomFieldId: null,
+            isLoading: false,
         })
 
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(10)

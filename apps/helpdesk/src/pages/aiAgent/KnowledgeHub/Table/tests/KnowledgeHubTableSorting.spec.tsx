@@ -189,6 +189,10 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
         })
     })
 
+    afterEach(async () => {
+        await act(async () => {})
+    })
+
     describe('Branch 1: No sort active (sortState.length === 0)', () => {
         it('should render items in original order when no sort is applied', () => {
             const mockSortableData: KnowledgeItem[] = [
@@ -317,7 +321,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const titleHeader = screen.getByText('Title').closest('button')
             expect(titleHeader).toBeInTheDocument()
 
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -366,7 +372,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const titleHeader = screen.getByText('Title').closest('button')
             expect(titleHeader).toBeInTheDocument()
 
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -412,7 +420,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             renderComponent({ data: mockSortableData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -425,7 +435,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const dateHeader = screen
                 .getByText('Last updated')
                 .closest('button')
-            await user.click(dateHeader!)
+            await act(async () => {
+                await user.click(dateHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -477,7 +489,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             })
             expect(inUseHeader).toBeInTheDocument()
 
-            await user.click(inUseHeader)
+            await act(async () => {
+                await user.click(inUseHeader)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -520,7 +534,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -599,7 +615,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -662,7 +680,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -741,7 +761,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -806,7 +828,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -862,7 +886,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -1112,7 +1138,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -1185,7 +1213,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const dateHeader = screen
                 .getByText('Last updated')
                 .closest('button')
-            await user.click(dateHeader!)
+            await act(async () => {
+                await user.click(dateHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -1261,7 +1291,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             renderComponent({ data: mockSortableData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -1280,7 +1312,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const dateHeader = screen
                 .getByText('Last updated')
                 .closest('button')
-            await user.click(dateHeader!)
+            await act(async () => {
+                await user.click(dateHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')
@@ -1326,7 +1360,9 @@ describe('KnowledgeHubTable - displayData useMemo Logic', () => {
             const { rerender } = renderComponent({ data: initialData })
 
             const titleHeader = screen.getByText('Title').closest('button')
-            await user.click(titleHeader!)
+            await act(async () => {
+                await user.click(titleHeader!)
+            })
 
             await waitFor(() => {
                 const rows = screen.getAllByRole('row')

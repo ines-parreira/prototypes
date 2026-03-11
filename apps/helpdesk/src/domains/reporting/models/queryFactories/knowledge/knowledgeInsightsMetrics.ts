@@ -545,8 +545,11 @@ export const useResourceMetrics = ({
     dateRange,
 }: ResourceMetricsParams): ResourceMetricsResult => {
     // Fetch the AI Agent custom field IDs for filtering
-    const { outcomeCustomFieldId, intentCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
+    const {
+        outcomeCustomFieldId,
+        intentCustomFieldId,
+        isLoading: isCustomFieldsLoading,
+    } = useGetCustomTicketsFieldsDefinitionData()
 
     // Set up filters for specific article and help center
     const filters: ApiStatsFilters = useMemo(() => {
@@ -680,7 +683,7 @@ export const useResourceMetrics = ({
             TicketInsightsTaskMeasure.TicketCount,
         ),
         handoverTicketsV2Query,
-        enabled,
+        enabled && !isCustomFieldsLoading,
     )
 
     // Fetch CSAT score
@@ -717,7 +720,7 @@ export const useResourceMetrics = ({
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
-        enabled,
+        enabled && !isCustomFieldsLoading,
     )
 
     const isLoading =
@@ -896,8 +899,11 @@ export const useAllResourcesMetrics = ({
     loadIntents = true,
     dateRange,
 }: AllResourcesMetricsParams): AllResourcesMetricsResult => {
-    const { outcomeCustomFieldId, intentCustomFieldId } =
-        useGetCustomTicketsFieldsDefinitionData()
+    const {
+        outcomeCustomFieldId,
+        intentCustomFieldId,
+        isLoading: isCustomFieldsLoading,
+    } = useGetCustomTicketsFieldsDefinitionData()
 
     const filters: ApiStatsFilters = useMemo(() => {
         return {
@@ -986,7 +992,7 @@ export const useAllResourcesMetrics = ({
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
-        enabled,
+        enabled && !isCustomFieldsLoading,
     )
 
     const csatMetric = useMetricPerDimensionV2(
@@ -1022,7 +1028,7 @@ export const useAllResourcesMetrics = ({
             limit: KNOWLEDGE_QUERY_LIMIT,
         }),
         undefined,
-        enabled && loadIntents,
+        enabled && loadIntents && !isCustomFieldsLoading,
     )
 
     const isLoading =

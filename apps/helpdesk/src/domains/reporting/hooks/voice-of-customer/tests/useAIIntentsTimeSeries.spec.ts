@@ -48,6 +48,7 @@ describe('useAIIntentsTimeSeries', () => {
         intentCustomFieldId: 2,
         outcomeCustomFieldId: 3,
         sentimentCustomFieldId: 4,
+        isLoading: false,
     })
 
     it('should return intents custom field trend', () => {
@@ -84,6 +85,7 @@ describe('useAIIntentsForProductTimeSeries', () => {
         intentCustomFieldId: 2,
         outcomeCustomFieldId: 3,
         sentimentCustomFieldId: 4,
+        isLoading: false,
     })
 
     it('should return intents custom field trend', () => {

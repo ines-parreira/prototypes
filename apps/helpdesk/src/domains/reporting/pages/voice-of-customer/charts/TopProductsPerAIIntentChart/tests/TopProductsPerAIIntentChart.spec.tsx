@@ -29,6 +29,7 @@ describe('TopProductsPerIntentChart', () => {
             intentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             outcomeCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
             sentimentCustomFieldId: TICKET_FIELD_ID_NOT_AVAILABLE,
+            isLoading: false,
         })
 
         render(<TopProductsPerAIIntentChart />)
@@ -44,6 +45,7 @@ describe('TopProductsPerIntentChart', () => {
             intentCustomFieldId,
             outcomeCustomFieldId: 456,
             sentimentCustomFieldId: 789,
+            isLoading: false,
         })
 
         render(<TopProductsPerAIIntentChart />)
