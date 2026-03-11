@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { isDomainEvent } from '@gorgias/events'
 import type { UserAvailabilityStatus } from '@gorgias/helpdesk-types'
 import type { UseChannelProps } from '@gorgias/realtime-ably'
 
@@ -22,18 +23,16 @@ export function useUserAvailabilityRealtimeHandler(): NonNullable<
     const updateUserAvailabilityInCache = useUpdateUserAvailabilityInCache()
 
     return useCallback(
-        ({ data, dataschema }) => {
-            switch (dataschema) {
-                case '//helpdesk/user-availability.created/1.0.1':
-                case '//helpdesk/user-availability.updated/1.0.1': {
-                    updateUserAvailabilityInCache({
-                        ...data,
-                        user_status: data.user_status as UserAvailabilityStatus,
-                    })
-                    break
-                }
-                default:
-                    break
+        (event) => {
+            if (
+                isDomainEvent(event, '//helpdesk/user-availability.created') ||
+                isDomainEvent(event, '//helpdesk/user-availability.updated')
+            ) {
+                updateUserAvailabilityInCache({
+                    ...event.data,
+                    user_status: event.data
+                        .user_status as UserAvailabilityStatus,
+                })
             }
         },
         [updateUserAvailabilityInCache],

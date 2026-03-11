@@ -30,6 +30,7 @@ describe('useUserAvailabilityRealtimeHandler', () => {
         specversion: '1.0',
         type: 'test.event',
         source: 'test-source',
+        subject: 'test-subject',
         id: 'test-id',
         time: new Date().toISOString(),
         datacontenttype: 'application/json',
