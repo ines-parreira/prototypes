@@ -26,6 +26,7 @@ export enum TicketMessagesEnrichedResponseTimesMember {
     FirstHelpdeskMessageDatetime = 'TicketMessagesEnrichedResponseTimes.firstHelpdeskMessageDatetime',
     TicketMessageUserId = 'TicketMessagesEnrichedResponseTimes.ticketMessageUserId',
     FirstMessageChannel = 'TicketMessagesEnrichedResponseTimes.firstMessageChannel',
+    Store = 'TicketMessagesEnrichedResponseTimes.store',
 }
 
 export type TicketMessagesEnrichedResponseTimesTimeDimensions =

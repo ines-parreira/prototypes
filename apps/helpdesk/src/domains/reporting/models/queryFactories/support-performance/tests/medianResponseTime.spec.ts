@@ -289,6 +289,31 @@ describe('medianResponseTime', () => {
         })
     })
 
+    describe('medianResponseTimeQueryFactory', () => {
+        it('should build a query with stores filter', () => {
+            const stores = [1, 2]
+            expect(
+                medianResponseTimeQueryFactory(
+                    {
+                        ...statsFilters,
+                        stores: withDefaultLogicalOperator(stores),
+                    },
+                    timezone,
+                ),
+            ).toEqual(
+                expect.objectContaining({
+                    filters: expect.arrayContaining([
+                        {
+                            member: TicketMessagesEnrichedResponseTimesMember.Store,
+                            operator: ReportingFilterOperator.Equals,
+                            values: stores.map(String),
+                        },
+                    ]),
+                }),
+            )
+        })
+    })
+
     describe('medianResponseTimeMetricPerTicketQueryFactory', () => {
         it('should build a query', () => {
             expect(
