@@ -2732,9 +2732,9 @@ describe('AIAgentSimplifiedFeedback', () => {
             // Should show Product 2
             expect(screen.getByText('Product 2')).toBeInTheDocument()
 
-            // Should have 2 Shopify logos
-            const shopifyLogos = screen.getAllByAltText('shopify logo')
-            expect(shopifyLogos).toHaveLength(2)
+            // Should have 2 knowledge source icons (SVGs from Axiom Icon)
+            const badgeIcons = document.querySelectorAll('.badge svg')
+            expect(badgeIcons).toHaveLength(2)
         })
     })
 

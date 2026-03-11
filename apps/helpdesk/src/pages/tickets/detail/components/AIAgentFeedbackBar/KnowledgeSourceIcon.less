@@ -3,13 +3,11 @@
 
 :local {
     .badge {
-        :global {
-            .material-icons {
-                font-size: 14px;
-            }
-        }
-        background-color: transparent; // legacy
-        color: var(--neutral-grey-5); // legacy
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        color: var(--neutral-grey-5);
         padding: var(--layout-spacing-xxs);
         span {
             text-transform: none;
@@ -18,36 +16,30 @@
     }
 
     .reasoningBadge {
-        :global {
-            .material-icons {
-                font-size: @caption-regular-font-size;
-            }
-        }
-        background-color: transparent; // legacy
-        color: var(--neutral-grey-5); // legacy
+        background-color: transparent;
+        color: var(--neutral-grey-5);
         padding: 0;
-    }
-
-    .imageLogo {
-        width: 14px;
-        height: 14px;
     }
 }
 
 .axiom :local {
     .badge {
-        background-color: var(--static-secondary) !important;
-        color: var(--content-inverted-default) !important;
-        border: none;
-        border-radius: 10px;
-        min-width: 20px !important;
-        min-height: 20px !important;
-        max-width: 20px !important;
-        max-height: 20px !important;
-        margin-right: var(--spacing-xxxs);
+        display: flex;
+        align-items: center;
         justify-content: center;
+        flex-shrink: 0;
+        width: var(--spacing-md);
+        height: var(--spacing-md);
+        background-color: var(--surface-neutral-secondary);
+        color: var(--content-neutral-secondary);
+        border: none;
+        border-radius: var(--spacing-md);
+        margin-right: var(--spacing-xxxs);
         padding: 0;
-        box-shadow: none !important;
+
+        > span[data-name='icon'] {
+            display: flex;
+        }
     }
 
     .reasoningBadge {

@@ -1,13 +1,9 @@
 import cs from 'classnames'
 
-import { LegacyBadge as Badge } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
 
-import shopifyLogo from 'assets/img/icons/shopifyStore.svg'
 import type { KnowledgeSourceType } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import {
-    KNOWLEDGE_SOURCE_TYPE,
-    KnowledgeSourceTypeIcon,
-} from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
+import { KNOWLEDGE_SOURCE_TYPE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceIcon.less'
 
 type KnowledgeSourceIconProps = {
@@ -25,26 +21,11 @@ const KnowledgeSourceIcon = ({
         return null
     }
 
-    if (KNOWLEDGE_SOURCE_TYPE[type].icon === KnowledgeSourceTypeIcon.shopify) {
-        return (
-            <Badge className={cs(css.badge, badgeIconClassname)}>
-                <img
-                    className={css.imageLogo}
-                    alt="shopify logo"
-                    src={shopifyLogo}
-                />
-                {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
-            </Badge>
-        )
-    }
-
     return (
         <>
-            <Badge className={cs(css.badge, badgeIconClassname)}>
-                <i className="material-icons">
-                    {KNOWLEDGE_SOURCE_TYPE[type].icon}
-                </i>
-            </Badge>
+            <span className={cs(css.badge, badgeIconClassname)}>
+                <Icon name={KNOWLEDGE_SOURCE_TYPE[type].icon} size="xs" />
+            </span>
             {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
         </>
     )

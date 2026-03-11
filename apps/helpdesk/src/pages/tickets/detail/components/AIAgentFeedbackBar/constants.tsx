@@ -1,13 +1,16 @@
+import type { IconName } from '@gorgias/axiom'
+import { Icon } from '@gorgias/axiom'
+
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
 
 export const RESOURCE_ICONS: Record<string, JSX.Element> = {
-    'Soft action': <i className="material-icons">play_circle</i>,
-    'Hard action': <i className="material-icons">play_circle</i>,
-    'Help Center articles': <i className="material-icons">article</i>,
-    Macros: <i className="material-icons">article</i>,
-    'External websites': <i className="material-icons">article</i>,
-    'External files': <i className="material-icons">article</i>,
-    Guidance: <i className="material-icons">map</i>,
+    'Soft action': <Icon name="media-play-circle" size="xs" />,
+    'Hard action': <Icon name="media-play-circle" size="xs" />,
+    'Help Center articles': <Icon name="file-document" size="xs" />,
+    Macros: <Icon name="file-document" size="xs" />,
+    'External websites': <Icon name="file-document" size="xs" />,
+    'External files': <Icon name="file-document" size="xs" />,
+    Guidance: <Icon name="nav-map" size="xs" />,
 }
 
 export const RESOURCE_LABELS: Record<string, string> = {
@@ -54,33 +57,19 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
     store_website: 'Store website questions::',
 }
 
-export enum KnowledgeSourceTypeIcon {
-    webhook = 'webhook',
-    map = 'map',
-    article = 'article',
-    language = 'language',
-    bolt = 'bolt',
-    link = 'link',
-    attach_file = 'attach_file',
-    shopify = 'shopify',
-}
-
-export const KNOWLEDGE_SOURCE_TYPE = {
-    action: { icon: KnowledgeSourceTypeIcon.webhook, label: 'Action' },
-    guidance: { icon: KnowledgeSourceTypeIcon.map, label: 'Guidance' },
-    article: {
-        icon: KnowledgeSourceTypeIcon.article,
-        label: 'Help Center article',
-    },
-    website: { icon: KnowledgeSourceTypeIcon.language, label: 'Store website' },
-    macro: { icon: KnowledgeSourceTypeIcon.bolt, label: 'Macro' },
-    link: { icon: KnowledgeSourceTypeIcon.link, label: 'URL' },
-    external_snippet: {
-        icon: KnowledgeSourceTypeIcon.attach_file,
-        label: 'Document',
-    },
-    order: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Order' },
-    product: { icon: KnowledgeSourceTypeIcon.shopify, label: 'Product' },
+export const KNOWLEDGE_SOURCE_TYPE: Record<
+    string,
+    { icon: IconName; label: string }
+> = {
+    action: { icon: 'media-play-circle', label: 'Action' },
+    guidance: { icon: 'nav-map', label: 'Guidance' },
+    article: { icon: 'file-document', label: 'Help Center article' },
+    website: { icon: 'nav-globe', label: 'Store website' },
+    macro: { icon: 'zap', label: 'Macro' },
+    link: { icon: 'link-horizontal', label: 'URL' },
+    external_snippet: { icon: 'paperclip-attachment', label: 'Document' },
+    order: { icon: 'vendor-shopify-colored', label: 'Order' },
+    product: { icon: 'vendor-shopify-colored', label: 'Product' },
 }
 
 export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE
