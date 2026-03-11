@@ -1,7 +1,9 @@
 import classNames from 'classnames'
 
 import type { User } from 'config/types/user'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentsTableAverageCell } from 'domains/reporting/pages/support-performance/agents/AgentsTableAverageCell'
 import {
@@ -56,7 +58,14 @@ const AgentsSummaryColumn = ({
 
     const useQuery = getQuery(column)
     const { data, isFetching } = useQuery(
-        statsFilters.cleanStatsFilters,
+        {
+            ...statsFilters.cleanStatsFilters,
+            /**
+             * For summary row, we want to only consider tickets with a non null assignee,
+             * otherwise the average and total values will be skewed by unassigned tickets.
+             */
+            agents: withLogicalOperator([], LogicalOperatorEnum.NOT_ONE_OF),
+        },
         statsFilters.userTimezone,
     )
     return (

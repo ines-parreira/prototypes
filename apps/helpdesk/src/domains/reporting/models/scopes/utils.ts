@@ -82,6 +82,13 @@ function createStandardFilter<T>(
     operator: ExtendedLogicalOperatorEnum,
     values: T[],
 ): StandardFilter {
+    if (operator === LogicalOperatorEnum.NOT_ONE_OF && values.length === 0) {
+        return {
+            member,
+            operator: ApiOnlyOperatorEnum.SET,
+            values,
+        } as StandardFilter
+    }
     return {
         member,
         operator,

@@ -141,4 +141,38 @@ describe('<AgentsSummaryRow', () => {
             document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
+
+    it('should pass agents filter to exclude unassigned tickets', () => {
+        const mockQueryHook = jest.fn(() => ({
+            isFetching: false,
+            isError: false,
+            data: { value: metricValue },
+        }))
+
+        getSummaryQueryMock.mockImplementation(() => mockQueryHook)
+
+        render(
+            <AgentsSummaryRow
+                statsFilters={statsFilters}
+                agents={agentsList}
+                columns={columns}
+                isTableScrolled={false}
+                type={AgentsTableRow.Average}
+            />,
+            {
+                container: document.body.appendChild(tableBody),
+            },
+        )
+
+        expect(mockQueryHook).toHaveBeenCalledWith(
+            expect.objectContaining({
+                ...statsFilters.cleanStatsFilters,
+                agents: {
+                    operator: 'not-one-of',
+                    values: [],
+                },
+            }),
+            statsFilters.userTimezone,
+        )
+    })
 })

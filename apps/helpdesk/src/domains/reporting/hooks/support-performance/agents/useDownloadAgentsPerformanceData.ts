@@ -58,8 +58,10 @@ import {
     fetchTicketsRepliedPerHourPerAgentTotalCapacity,
 } from 'domains/reporting/hooks/useTicketsRepliedPerHour'
 import { fetchTicketsRepliedPerHourPerAgent } from 'domains/reporting/hooks/useTicketsRepliedPerHourPerAgent'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type { BusiestTimeOfDaysMetrics } from 'domains/reporting/pages/support-performance/busiest-times-of-days/types'
 import { createAgentsReport } from 'domains/reporting/services/agentsPerformanceReportingService'
 import { getSortedAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
@@ -282,7 +284,16 @@ export const useDownloadAgentsPerformanceData = () => {
     const { data: totalData, isFetching: totalIsLoading } = useTableReportData<
         keyof AgentsReportAverageData,
         Metric
-    >(cleanStatsFilters, userTimezone, agentsTotalDataSources)
+    >(
+        {
+            ...cleanStatsFilters,
+            /// For the agents performance report, we want to exclude unassigned tickets from the average and total calculations,
+            /// otherwise the values will be skewed by unassigned tickets.
+            agents: withLogicalOperator([], LogicalOperatorEnum.NOT_ONE_OF),
+        },
+        userTimezone,
+        agentsTotalDataSources,
+    )
 
     const { files } = createAgentsReport(
         agents,

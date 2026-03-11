@@ -125,6 +125,30 @@ describe('utils', () => {
             })
         })
 
+        it('should convert NOT_ONE_OF with empty values to SET operator for agents filter', () => {
+            const scopeConfig: ScopeMeta = {
+                measures: ['ticketCount'],
+                scope: MetricScope.TicketsOpen,
+                filters: ['agentId'],
+            }
+
+            const statFilters: StatsFiltersWithLogicalOperator = {
+                ...basePeriodFilters,
+                agents: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            }
+
+            const result = createScopeFilters(statFilters, scopeConfig)
+
+            expect(result).toContainEqual({
+                member: 'agentId',
+                operator: ApiOnlyOperatorEnum.SET,
+                values: [],
+            })
+        })
+
         it('should add channels filter when present in scope config and stat filters', () => {
             const scopeConfig: ScopeMeta = {
                 measures: ['ticketCount'],
