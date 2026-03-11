@@ -28,6 +28,10 @@ const StyledList = styled.div<ListProps>`
 /**
  * A component that is used to display multiple <ListItem\/> components together in a compact way.
  * @param children The <ListItem\/> components to be displayed.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<List />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 const List: React.FC<HTMLAttributes<HTMLDivElement> & ListProps> = ({
     children,

@@ -6,6 +6,12 @@ import BaseButton from './BaseButton'
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> &
     Omit<ComponentProps<typeof BaseButton>, 'children' | 'isLoading'>
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Button />` or `<Link />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 const LinkButton = forwardRef<HTMLAnchorElement, Props>(function (
     {
         className,

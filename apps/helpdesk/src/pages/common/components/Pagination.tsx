@@ -13,6 +13,12 @@ type Props = {
     className?: string
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Pagination />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 export default class Pagination extends Component<Props> {
     _handlePageClick = ({ selected }: { selected: number }) => {
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib

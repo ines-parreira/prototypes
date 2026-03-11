@@ -14,6 +14,12 @@ type Props = { id: string; index?: number } & Omit<AccordionItemProps, 'id'>
 
 type DragItem = { id: string } & DragItemRequired
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Disclosure />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 const SortableAccordionItem = ({ index = 1, ...props }: Props) => {
     const { id } = props
     const { type, isDisabled, onMove, onDrop, onCancel } =

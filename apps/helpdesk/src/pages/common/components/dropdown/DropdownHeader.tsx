@@ -17,6 +17,12 @@ type Props = {
     suffix?: ReactNode
 } & Omit<HTMLProps<HTMLDivElement>, 'prefix'>
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Menu />` or `<Select />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 const DropdownHeader = (
     { children, className, prefix, suffix, ...other }: Props,
     ref: ForwardedRef<HTMLDivElement>,

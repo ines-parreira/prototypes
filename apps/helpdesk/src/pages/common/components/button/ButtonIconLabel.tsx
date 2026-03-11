@@ -16,6 +16,12 @@ type Props = {
     position?: ButtonIconPosition
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Button />` from @gorgias/axiom instead, which has built-in icon support.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 function ButtonIconLabel(
     { children, className, icon, iconClassName, position = 'left' }: Props,
     ref: ForwardedRef<HTMLButtonElement>,

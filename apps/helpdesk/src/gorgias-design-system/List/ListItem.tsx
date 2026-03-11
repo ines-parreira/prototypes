@@ -141,6 +141,10 @@ type ListItemProps = {
 /**
  * A clickable list item to perform an action, make a selection or navigate.
  * Should be placed inside a <List\/> component along with other <ListItem\/> components.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<ListItem />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 const ListItem: React.FC<ListItemProps & HTMLAttributes<HTMLDivElement>> = ({
     variant = 'default',

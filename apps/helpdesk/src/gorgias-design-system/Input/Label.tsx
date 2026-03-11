@@ -54,6 +54,10 @@ export const StyledLabel = styled.label`
 
 /**
  * A component to identify a field.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Label />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 export const Label: React.FC<HTMLAttributes<HTMLDivElement> & LabelProps> = ({
     id,

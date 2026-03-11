@@ -11,6 +11,12 @@ type Props = {
     label?: React.ReactNode
 } & Omit<ComponentProps<typeof NewToggleButton>, 'checked'>
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<ToggleField />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 function NewToggleField(
     { value, label, ...props }: Props,
     ref: ForwardedRef<HTMLInputElement>,

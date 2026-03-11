@@ -11,6 +11,12 @@ import type {
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Button />` + `<Modal />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 type Props = {
     confirmationButtonIntent?: ButtonProps['intent']
     confirmationContent?: ReactNode

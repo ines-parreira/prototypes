@@ -17,6 +17,12 @@ export type AccordionProps<T = string | string[] | null> = {
     children?: ReactNode
 } & Pick<HTMLAttributes<HTMLDivElement>, 'className'>
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Disclosure />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 const Accordion = <T extends string | string[] | null>({
     defaultExpandedItem = null as T,
     expandedItem: expandedItemProp,

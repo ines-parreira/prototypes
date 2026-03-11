@@ -195,6 +195,10 @@ type IconButtonProps = {
 /**
  * A button component with an icon inside.
  * The color of the icon is applied to any element with the class `withFill`.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Button />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 const IconButton: FC<HTMLAttributes<HTMLButtonElement> & IconButtonProps> = ({
     disabled,

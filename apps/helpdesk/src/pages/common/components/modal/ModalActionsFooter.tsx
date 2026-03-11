@@ -15,6 +15,12 @@ type Props = {
     innerClassName?: string
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Modal />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
+ */
 const ModalActionsFooter = ({
     children,
     className,

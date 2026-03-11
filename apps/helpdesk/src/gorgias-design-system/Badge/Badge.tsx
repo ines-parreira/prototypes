@@ -62,6 +62,10 @@ const StyledBadge = styled.div<{ color?: BadgeColor }>`
 
 /**
  * Non-interactive components used to display statuses or information.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Tag />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 export const Badge: FC<BadgeProps> = ({ ...props }: BadgeProps) => {
     const { label, color = 'accessoryBlue' } = props

@@ -96,6 +96,10 @@ type CardProps = {
 
 /**
  * A card that is used to navigate to a different page inside the widget.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Card />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 const Card: FC<CardProps & HTMLAttributes<HTMLDivElement>> = ({
     title,

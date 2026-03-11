@@ -102,6 +102,10 @@ export type AvatarProps = {
 /**
  * A component that represents a profile picture or an image used to identify a user or a bot.
  * It can display either an image, a bot icon, or initials as fallback.
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use `<Avatar />` from @gorgias/axiom instead.
+ * @date 2026-03-11
+ * @type ui-kit-migration
  */
 const Avatar: FC<AvatarProps & HTMLAttributes<HTMLDivElement>> = ({
     isBot,
