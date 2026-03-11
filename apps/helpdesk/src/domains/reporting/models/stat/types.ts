@@ -22,6 +22,7 @@ export enum FilterKey {
     CommunicationSkills = 'communicationSkills',
     CustomFields = 'customFields',
     Efficiency = 'efficiency',
+    Handover = 'handover',
     HelpCenters = 'helpCenters',
     Integrations = 'integrations',
     InternalCompliance = 'internalCompliance',
@@ -74,6 +75,7 @@ export type StateOnlyFilterKeys = Exclude<
     | FilterKey.JourneyType
     | FilterKey.JourneyFlows
     | FilterKey.JourneyCampaigns
+    | FilterKey.Handover
 >
 
 export type CleanFilterComponentKeys = Exclude<
@@ -110,6 +112,7 @@ export type StaticFilter =
     | FilterKey.InternalCompliance
     | FilterKey.BrandVoice
     | FilterKey.ResolutionCompleteness
+    | FilterKey.Handover
     | FilterKey.StoreIntegrations
     | FilterKey.Stores
     | FilterKey.AssignedTeam
@@ -285,6 +288,7 @@ export type StatsFiltersWithLogicalOperator = {
     [FilterKey.CommunicationSkills]?: WithLogicalOperator<string>
     [FilterKey.CustomFields]?: CustomFieldFilter[]
     [FilterKey.Efficiency]?: WithLogicalOperator<string>
+    [FilterKey.Handover]?: WithLogicalOperator<string>
     [FilterKey.HelpCenters]?: WithLogicalOperator<number>
     [FilterKey.Integrations]?: WithLogicalOperator<number>
     [FilterKey.InternalCompliance]?: WithLogicalOperator<string>

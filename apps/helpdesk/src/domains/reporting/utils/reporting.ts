@@ -242,6 +242,7 @@ export const statsFiltersToReportingFilters = (
         storeIntegrations,
         voiceQueues,
         isDuringBusinessHours,
+        handover,
     } = statsFilters
 
     let filters: ReportingFilter[] = [
@@ -381,6 +382,30 @@ export const statsFiltersToReportingFilters = (
             member: members.isDuringBusinessHours,
             operator: ReportingFilterOperator.Equals,
         })
+    }
+    if (handover && hasFilter(handover) && members.handover) {
+        const hasYes = handover.values.includes('yes')
+        const hasNo = handover.values.includes('no')
+
+        if (hasYes && !hasNo) {
+            filters = [
+                ...filters,
+                {
+                    member: members.handover,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['handover'],
+                },
+            ]
+        } else if (!hasYes && hasNo) {
+            filters = [
+                ...filters,
+                {
+                    member: members.handover,
+                    operator: ReportingFilterOperator.NotEquals,
+                    values: ['handover'],
+                },
+            ]
+        }
     }
 
     return filters

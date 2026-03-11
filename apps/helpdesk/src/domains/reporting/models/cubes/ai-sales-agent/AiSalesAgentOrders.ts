@@ -33,6 +33,7 @@ export enum AiSalesAgentOrdersDimension {
     Source = 'AiSalesAgentOrders.source',
     Channel = 'AiSalesAgentOrders.channel',
     JourneyId = 'AiSalesAgentOrders.journeyId',
+    Outcome = 'AiSalesAgentOrders.outcome',
 }
 
 export const ProductRecommendation = 'product-recommendation'
@@ -47,6 +48,7 @@ export enum AiSalesAgentOrdersFilterMember {
     IsInfluenced = 'AiSalesAgentOrders.isInfluenced',
     JourneyId = 'AiSalesAgentOrders.journeyId',
     TicketId = 'AiSalesAgentOrders.ticketId',
+    Outcome = 'AiSalesAgentOrders.outcome',
 }
 
 export type AiSalesAgentOrdersTimeDimension =

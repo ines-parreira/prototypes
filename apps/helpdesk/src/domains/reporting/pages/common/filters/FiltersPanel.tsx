@@ -113,6 +113,7 @@ const getActiveFilters = (
             filterKey !== FilterKey.JourneyType &&
             filterKey !== FilterKey.JourneyFlows &&
             filterKey !== FilterKey.JourneyCampaigns &&
+            filterKey !== FilterKey.Handover &&
             filterKey !== FilterKey.Period
         ) {
             const filter =

@@ -48,6 +48,7 @@ export const FilterLabels: Record<FilterKey | FilterComponentKey, string> = {
     [FilterKey.ResolutionCompleteness]: 'Resolution completeness',
     [FilterKey.Accuracy]: 'Accuracy',
     [FilterKey.Efficiency]: 'Efficiency',
+    [FilterKey.Handover]: 'Handover',
     [FilterKey.InternalCompliance]: 'Internal compliance',
     [FilterKey.BrandVoice]: 'Brand voice',
     [FilterKey.StoreIntegrations]: 'Store',

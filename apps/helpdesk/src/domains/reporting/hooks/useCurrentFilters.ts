@@ -37,6 +37,7 @@ export const getValidator = (
         case FilterKey.JourneyType:
         case FilterKey.CommunicationSkills:
         case FilterKey.Efficiency:
+        case FilterKey.Handover:
         case FilterKey.HelpCenters:
         case FilterKey.Integrations:
         case FilterKey.StoreIntegrations:

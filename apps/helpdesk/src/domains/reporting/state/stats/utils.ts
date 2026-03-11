@@ -87,6 +87,8 @@ export const fromPartialLegacyStatsFilters = (
                         acc[key] = getCustomFields(statsFilters)
                     }
                     break
+                case FilterKey.Handover:
+                    break
                 default:
                     if (statsFilters[key] !== undefined) {
                         acc[key] = withDefaultLogicalOperator(statsFilters[key])
@@ -149,6 +151,8 @@ export const fromLegacyStatsFilters = (
                     ) {
                         acc[key] = getCustomFields(statsFilters)
                     }
+                    break
+                case FilterKey.Handover:
                     break
                 default:
                     if (
@@ -217,6 +221,8 @@ export const fromFiltersWithLogicalOperators = (
                             }, [])
                         }
                         break
+                    case FilterKey.Handover:
+                        break
                     default:
                         if (statsFilters[filter]?.values !== undefined) {
                             acc[filter] = statsFilters[filter]?.values
@@ -282,6 +288,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                 case FilterKey.JourneyType:
                 case FilterKey.JourneyFlows:
                 case FilterKey.JourneyCampaigns:
+                case FilterKey.Handover:
                 case FilterKey.StoreIntegrations:
                     break
                 case FilterKey.Tags: {

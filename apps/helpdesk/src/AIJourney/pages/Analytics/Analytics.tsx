@@ -54,6 +54,7 @@ export const Analytics = () => {
 
     const filters = {
         period: statsFilters.period,
+        handover: statsFilters.handover,
     }
 
     const nonDraftCampaigns = useMemo(
@@ -347,6 +348,7 @@ export const Analytics = () => {
                         FilterKey.AggregationWindow,
                         FilterKey.JourneyFlows,
                         FilterKey.JourneyCampaigns,
+                        FilterKey.Handover,
                     ]}
                     withSavedFilters={false}
                     filterSettingsOverrides={{

@@ -2,11 +2,14 @@ import { useMemo } from 'react'
 
 import moment from 'moment'
 
+import type { WithLogicalOperator } from 'domains/reporting/models/stat/types'
+
 export type FilterType = {
     period: {
         start_datetime: string
         end_datetime: string
     }
+    handover?: WithLogicalOperator<string>
 }
 
 export const useFilters = () => {

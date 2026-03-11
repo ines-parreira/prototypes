@@ -13,6 +13,7 @@ export const aiSalesAgentOrdersDefaultFiltersMembers: StatsFiltersMembers = {
     periodEnd: AiSalesAgentOrdersFilterMember.PeriodEnd,
     storeIntegrations: AiSalesAgentOrdersFilterMember.IntegrationId,
     channels: AiSalesAgentOrdersFilterMember.Channel,
+    handover: AiSalesAgentOrdersFilterMember.Outcome,
 }
 
 export const aiSalesAgentOrderCustomersDefaultFiltersMembers: StatsFiltersMembers =
@@ -30,6 +31,7 @@ export const aiSalesAgentConversationsDefaultFiltersMembers: StatsFiltersMembers
         storeIntegrations:
             AiSalesAgentConversationsFilterMember.StoreIntegrationId,
         channels: AiSalesAgentConversationsFilterMember.Channel,
+        handover: AiSalesAgentConversationsFilterMember.Outcome,
     }
 
 export const clicksDefaultFilters = (

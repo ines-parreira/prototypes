@@ -47,6 +47,10 @@ import {
     EfficiencyFilterWithSavedState,
     EfficiencyFilterWithState,
 } from 'domains/reporting/pages/common/filters/EfficiencyFilter'
+import {
+    HandoverFilterFromContext,
+    HandoverFilterFromSavedContext,
+} from 'domains/reporting/pages/common/filters/HandoverFilter'
 import { HelpCenterFilterWithState } from 'domains/reporting/pages/common/filters/HelpCenterFilter'
 import { HelpCenterLanguageFilterWithState } from 'domains/reporting/pages/common/filters/HelpCenterLanguageFilter'
 import {
@@ -121,6 +125,7 @@ export const FilterComponentMap: Record<
     [FilterKey.CommunicationSkills]: CommunicationSkillsFilterWithState,
     [FilterKey.CustomFields]: CustomFieldsFilterWithState,
     [FilterKey.Efficiency]: EfficiencyFilterWithState,
+    [FilterKey.Handover]: HandoverFilterFromContext,
     [FilterKey.HelpCenters]: HelpCenterFilterWithState,
     [FilterKey.Integrations]: IntegrationsFilterWithState,
     [FilterKey.InternalCompliance]: InternalComplianceFilterWithState,
@@ -151,6 +156,7 @@ export const SavedFilterComponentMap: Record<
     [FilterKey.LanguageProficiency]: LanguageProficiencyFilterWithSavedState,
     [FilterKey.Accuracy]: AccuracyFilterWithSavedState,
     [FilterKey.Efficiency]: EfficiencyFilterWithSavedState,
+    [FilterKey.Handover]: HandoverFilterFromSavedContext,
     [FilterKey.InternalCompliance]: InternalComplianceFilterWithSavedState,
     [FilterKey.BrandVoice]: BrandVoiceFilterWithSavedState,
     [FilterKey.IsDuringBusinessHours]: DuringBusinessHoursFilterWithSavedState,
