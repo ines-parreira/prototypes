@@ -787,7 +787,7 @@ export function isValidSelectionKey(
 const decorateTextWithQuotes = (blockText: string, depth: number): string => {
     return depth <= 0
         ? blockText
-        : new Array(depth).fill('>').join('') + ' ' + blockText
+        : Array.from({ length: depth }, () => '>').join('') + ' ' + blockText
 }
 
 // Replacement for DraftJS getPlainText:

@@ -35,7 +35,7 @@ export default function LiveVoiceAgentsSection({ params }: Props) {
             <Wrapper>
                 <TableWrapper>
                     <TableBody>
-                        {new Array(10).fill(null).map((_, index) => (
+                        {Array.from({ length: 10 }, (_, index) => (
                             <TableBodyRow key={index}>
                                 <BodyCell innerClassName={css.avatarSkeleton}>
                                     <Skeleton

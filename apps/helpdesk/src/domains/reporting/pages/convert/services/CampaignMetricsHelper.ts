@@ -319,10 +319,10 @@ const _getDefaultsForAllDates = (
     while (start <= end) {
         allDates[
             start.startOf(momentGranularity).format(COMPARISON_DATA_FORMAT)
-        ] = new Array(defaultsLength).fill({
+        ] = Array.from({ length: defaultsLength }, () => ({
             x: start.startOf(momentGranularity).format(GRAPH_LABEL_DATE_FORMAT),
             y: 0,
-        })
+        }))
         start = moment(start).add(1, granularity)
     }
     return allDates

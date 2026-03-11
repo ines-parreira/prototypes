@@ -34,9 +34,9 @@ Default.args = defaultProps
 export const MultipleLinesWithColorsFromDesign = Template.bind({})
 MultipleLinesWithColorsFromDesign.args = {
     ...defaultProps,
-    data: new Array(3).fill(null).map((_, index) => ({
+    data: Array.from({ length: 3 }, (_, index) => ({
         label: `Line ${index + 1}`,
-        values: new Array(7).fill(null).map((__, idx) => ({
+        values: Array.from({ length: 7 }, (__, idx) => ({
             x: moment('01/01/2023', 'MM/DD/YYYY')
                 .add(idx * 7, 'days')
                 .format('MMM DD'),
@@ -91,9 +91,9 @@ const stackedColors: ChartColors & AnalyticsTheme = {
 
 MultipleLinesWithColorsFromDesignStacked.args = {
     ...defaultProps,
-    data: new Array(3).fill(null).map((_, index) => ({
+    data: Array.from({ length: 3 }, (_, index) => ({
         label: `Line ${index + 1}`,
-        values: new Array(7).fill(null).map((__, idx) => ({
+        values: Array.from({ length: 7 }, (__, idx) => ({
             x: moment('01/01/2023', 'MM/DD/YYYY')
                 .add(idx * 7, 'days')
                 .format('MMM DD'),
@@ -119,16 +119,16 @@ const generateRandomColor = () =>
 export const MultipleLines = Template.bind({})
 MultipleLines.args = {
     ...defaultProps,
-    data: new Array(3).fill(null).map((_, index) => ({
+    data: Array.from({ length: 3 }, (_, index) => ({
         label: `Line ${index + 1}`,
-        values: new Array(7).fill(null).map((__, idx) => ({
+        values: Array.from({ length: 7 }, (__, idx) => ({
             x: moment('01/01/2023', 'MM/DD/YYYY')
                 .add(idx * 7, 'days')
                 .format('MMM DD'),
             y: Math.floor(Math.random() * 100_000_000),
         })),
     })),
-    customColors: new Array(15).fill(null).map(() => generateRandomColor()),
+    customColors: Array.from({ length: 15 }, () => generateRandomColor()),
     options: {
         elements: {
             point: {

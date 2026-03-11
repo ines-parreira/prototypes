@@ -211,7 +211,7 @@ describe('<AllUsedTagsTable />', () => {
 
     it('should render with pagination', () => {
         useTicketCountPerTagMock.mockReturnValue({
-            data: new Array(16).fill(exampleDataRow),
+            data: Array.from({ length: 16 }, () => exampleDataRow),
             grandTotal: 16 * grandTotal,
             columnTotals: [16 * 100, 16 * 23, 0],
             dateTimes: someDateTimes,

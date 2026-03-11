@@ -42,7 +42,7 @@ export const TableFallbackDisplay = ({
                             }
                         ></HeaderCellProperty>
                     ))}
-                    {new Array(rowsPerPage).fill(null).map((_, rowIndex) => (
+                    {Array.from({ length: rowsPerPage }, (_, rowIndex) => (
                         <TableBodyRow key={rowIndex}>
                             {columnOrder.map((column, columnIndex) => (
                                 <BodyCell key={column}>

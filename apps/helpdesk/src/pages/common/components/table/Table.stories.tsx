@@ -118,7 +118,7 @@ const TableWithGauges: StoryObj<typeof TableWrapper> = {
                     ))}
                 </TableHead>
                 <TableBody>
-                    {new Array(10).fill(null).map((_, rowIndex) => (
+                    {Array.from({ length: 10 }, (_, rowIndex) => (
                         <TableBodyRow key={rowIndex}>
                             {tableColumns.map((item, index) => (
                                 <BodyCell key={index}>

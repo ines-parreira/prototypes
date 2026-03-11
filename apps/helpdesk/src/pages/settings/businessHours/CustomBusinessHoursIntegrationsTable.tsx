@@ -216,9 +216,9 @@ export default function CustomBusinessHoursIntegrationsTable({
                     </TableHead>
                     <TableBody>
                         {isLoading ? (
-                            new Array(5)
-                                .fill(null)
-                                .map((_, key) => <RowSkeleton key={key} />)
+                            Array.from({ length: 5 }, (_, key) => (
+                                <RowSkeleton key={key} />
+                            ))
                         ) : (
                             <FormField
                                 name={name}

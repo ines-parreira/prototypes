@@ -76,7 +76,7 @@ export default function VoiceCallTableContent({
             columnName,
             skeletonColumnsWidth[columnName],
         ])
-        return new Array(CALL_LIST_PAGE_SIZE).fill(null).map((_, rowIndex) => (
+        return Array.from({ length: CALL_LIST_PAGE_SIZE }, (_, rowIndex) => (
             <TableBodyRow key={rowIndex} className={css.tableRow}>
                 {orderedSkeletonColumns.map(([key, width]) => (
                     <BodyCell

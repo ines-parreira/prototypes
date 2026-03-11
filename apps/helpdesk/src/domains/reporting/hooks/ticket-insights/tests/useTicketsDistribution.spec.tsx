@@ -178,7 +178,7 @@ describe('useTicketsDistribution', () => {
     it('should return calculate outside data', () => {
         const maxTicketCount = 145
         const ticketsCountTotal = 190
-        const allData = new Array(20).fill(null).map((_, index) => ({
+        const allData = Array.from({ length: 20 }, (_, index) => ({
             [BREAKDOWN_FIELD]: `Level ${index}`,
             [VALUE_FIELD]: `${index}`,
         }))

@@ -55,7 +55,7 @@ export const formatData = (
     ..._orderBy(
         Object.entries(data || {}).map(([key, timeSeries]) => {
             const levels = String(key).split('::')
-            const allLevels = new Array<string>(MAX_LEVEL_DEPTH)
+            const allLevels = Array<string>(MAX_LEVEL_DEPTH)
                 .fill('')
                 .map((value, index) => levels[index] || value)
 

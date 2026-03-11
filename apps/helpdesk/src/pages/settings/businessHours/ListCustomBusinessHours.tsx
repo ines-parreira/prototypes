@@ -104,9 +104,9 @@ export default function ListCustomBusinessHours() {
                 </TableHead>
                 <TableBody>
                     {isLoading ? (
-                        new Array(5)
-                            .fill(null)
-                            .map((_, key) => <RowSkeleton key={key} />)
+                        Array.from({ length: 5 }, (_, key) => (
+                            <RowSkeleton key={key} />
+                        ))
                     ) : !businessHours?.length ? (
                         <tr>
                             <td colSpan={4}>

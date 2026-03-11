@@ -37,9 +37,9 @@ const generateRandomColor = () =>
 export const MultipleLines = Template.bind({})
 MultipleLines.args = {
     ...defaultProps,
-    data: new Array(10).fill(null).map((_, index) => ({
+    data: Array.from({ length: 10 }, (_, index) => ({
         label: `Line ${index + 1}`,
-        values: new Array(15).fill(null).map((__, idx) => ({
+        values: Array.from({ length: 15 }, (__, idx) => ({
             x: moment('01/01/2023', 'MM/DD/YYYY')
                 .add(idx * 7, 'days')
                 .format('MMM DD'),
@@ -47,7 +47,7 @@ MultipleLines.args = {
         })),
     })),
     hasBackground: false,
-    customColors: new Array(15).fill(null).map(() => generateRandomColor()),
+    customColors: Array.from({ length: 15 }, () => generateRandomColor()),
     options: {
         elements: {
             point: {

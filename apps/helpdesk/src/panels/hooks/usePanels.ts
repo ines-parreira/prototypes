@@ -92,9 +92,9 @@ export default function usePanels(config: Config): UsePanelsReturn {
     // we need one handler less than the amount of panels
     const resizeStartHandlers = useMemo(
         () =>
-            new Array(config.length - 1)
-                .fill(0)
-                .map((_index, i) => createHandleResizeStart(i)),
+            Array.from({ length: config.length - 1 }, (_index, i) =>
+                createHandleResizeStart(i),
+            ),
         [config, createHandleResizeStart],
     )
 

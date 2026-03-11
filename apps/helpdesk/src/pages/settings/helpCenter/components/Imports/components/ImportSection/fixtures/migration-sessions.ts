@@ -1,7 +1,7 @@
 export const migrationStatsWithFailures = {
     articles: {
         errors_count: 5,
-        errors_details: new Array(5).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 5 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled article',
@@ -11,7 +11,7 @@ export const migrationStatsWithFailures = {
     },
     categories: {
         errors_count: 4,
-        errors_details: new Array(4).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 4 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled collection',
@@ -54,7 +54,7 @@ export const emptyMigrationStats = {
 export const failedMigrationStats = {
     articles: {
         errors_count: 12,
-        errors_details: new Array(12).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 12 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled article',
@@ -64,7 +64,7 @@ export const failedMigrationStats = {
     },
     categories: {
         errors_count: 7,
-        errors_details: new Array(12).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 12 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled collection',
@@ -92,7 +92,7 @@ export const succeededMigrationStats = {
 export const partiallySucceededMigrationStats = {
     articles: {
         errors_count: 2,
-        errors_details: new Array(2).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 2 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled article',
@@ -102,7 +102,7 @@ export const partiallySucceededMigrationStats = {
     },
     categories: {
         errors_count: 2,
-        errors_details: new Array(2).fill(null).map((_, i) => ({
+        errors_details: Array.from({ length: 2 }, (_, i) => ({
             error_message: 'sample exception',
             instance_id: '3886032' + String(i),
             instance_title: 'Untitled collection',

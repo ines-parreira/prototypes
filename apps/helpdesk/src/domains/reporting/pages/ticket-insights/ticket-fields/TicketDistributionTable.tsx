@@ -43,7 +43,7 @@ const LoadingFallback = () => {
     return (
         <TableWrapper className={css.table}>
             <TableBody>
-                {new Array(10).fill(null).map((_, rowIndex) => (
+                {Array.from({ length: 10 }, (_, rowIndex) => (
                     <TableBodyRow key={rowIndex}>
                         <BodyCell>
                             <Skeleton inline width={260} />

@@ -508,8 +508,9 @@ describe('DrillDownData hooks', () => {
         it('should switch to next page of data', () => {
             useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
                 data: {
-                    allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
-                        exampleRow,
+                    allData: Array.from(
+                        { length: DRILL_DOWN_PER_PAGE + 1 },
+                        () => exampleRow,
                     ),
                 } as unknown as any,
                 isFetching: false,
@@ -1148,8 +1149,9 @@ describe('DrillDownData hooks', () => {
         it('should switch to next page of data', () => {
             useMetricPerDimensionMock.mockReturnValue({
                 data: {
-                    allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
-                        exampleRow,
+                    allData: Array.from(
+                        { length: DRILL_DOWN_PER_PAGE + 1 },
+                        () => exampleRow,
                     ),
                 } as unknown as any,
                 isFetching: false,
@@ -1314,8 +1316,9 @@ describe('DrillDownData hooks', () => {
         it('should switch to next page of data', () => {
             useMetricPerDimensionV2Mock.mockReturnValue({
                 data: {
-                    allData: new Array(DRILL_DOWN_PER_PAGE + 1).fill(
-                        exampleRow,
+                    allData: Array.from(
+                        { length: DRILL_DOWN_PER_PAGE + 1 },
+                        () => exampleRow,
                     ),
                 } as unknown as any,
                 isFetching: false,

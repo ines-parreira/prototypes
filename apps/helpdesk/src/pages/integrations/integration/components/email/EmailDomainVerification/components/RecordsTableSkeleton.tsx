@@ -11,9 +11,9 @@ const ROW_COUNT = 3
 export default function RecordsTableSkeleton() {
     return (
         <>
-            {new Array(ROW_COUNT).fill(null).map((_, index) => (
+            {Array.from({ length: ROW_COUNT }, (_, index) => (
                 <TableBodyRow key={index}>
-                    {new Array(CELL_COUNT).fill(null).map((_, cellIndex) => (
+                    {Array.from({ length: CELL_COUNT }, (_, cellIndex) => (
                         <BodyCell key={`row-${index}-cell-${cellIndex}`}>
                             <Skeleton
                                 height={16}
