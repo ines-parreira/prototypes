@@ -21,12 +21,12 @@ describe('CollapsedWorkflowsSidebar', () => {
             icon: 'flows',
             items: [
                 {
-                    key: 'all',
+                    id: 'all',
                     path: 'rules',
                     label: 'All Rules',
                 },
                 {
-                    key: 'new',
+                    id: 'new',
                     path: 'rules/new',
                     label: 'New Rule',
                 },
@@ -38,12 +38,12 @@ describe('CollapsedWorkflowsSidebar', () => {
             icon: 'chart-line',
             items: [
                 {
-                    key: 'all',
+                    id: 'all',
                     path: 'macros',
                     label: 'All Macros',
                 },
                 {
-                    key: 'new',
+                    id: 'new',
                     path: 'macros/new',
                     label: 'New Macro',
                 },
@@ -55,7 +55,7 @@ describe('CollapsedWorkflowsSidebar', () => {
             icon: 'tag',
             items: [
                 {
-                    key: 'all',
+                    id: 'all',
                     path: 'tags',
                     label: 'All Tags',
                 },
@@ -135,5 +135,45 @@ describe('CollapsedWorkflowsSidebar', () => {
         await user.click(buttons[0])
 
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('marks the active section as selected when URL matches a section item', () => {
+        renderWithRouter(
+            <CollapsedWorkflowsSidebar sections={mockSections} />,
+            {
+                route: '/app/workflows/rules',
+            },
+        )
+
+        const buttons = screen.getAllByRole('radio')
+        expect(buttons[0]).toHaveAttribute('aria-checked', 'true')
+        expect(buttons[1]).not.toHaveAttribute('aria-checked', 'true')
+    })
+
+    it('renders all section items as menu items', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+
+        await user.click(screen.getAllByRole('radio')[0])
+
+        expect(
+            screen.getByRole('menuitemradio', { name: 'All Rules' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitemradio', { name: 'New Rule' }),
+        ).toBeInTheDocument()
+    })
+
+    it('navigates to a specific item when clicking a menu item', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedWorkflowsSidebar sections={mockSections} />)
+
+        await user.click(screen.getAllByRole('radio')[0])
+        jest.clearAllMocks()
+        await user.click(
+            screen.getByRole('menuitemradio', { name: 'New Rule' }),
+        )
+
+        expect(history.push).toHaveBeenCalledWith('/app/workflows/rules/new')
     })
 })

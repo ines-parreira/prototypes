@@ -48,7 +48,7 @@ export function WorkflowsSidebar() {
                     <Navigation.SectionContent>
                         {section.items.map((item) => (
                             <SettingsNavbarItem
-                                key={item.key}
+                                key={item.id}
                                 to={item.path}
                                 rootPath={`${WORKFLOWS_DEFAULT_PATH}/`}
                                 text={item.label}

@@ -1,13 +1,11 @@
 import { useSidebar } from '@repo/navigation'
 
+import { Box, Icon } from '@gorgias/axiom'
+
 import { Navigation } from 'components/Navigation/Navigation'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import { StatsNavSectionItem } from 'domains/reporting/pages/common/components/StatsNavbarView/StatsNavSectionItem'
 import { useStatsNavbarSections } from 'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections'
-import { DashboardsNavbarBlock } from 'domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock'
-import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
-import UpgradeIcon from 'pages/common/components/UpgradeIcon'
-import { ConvertStatsNavbar } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar'
 import { useStatsNavbarConfig } from 'routes/layout/products/analytics'
 import { CollapsedAnalyticsSidebar } from 'routes/layout/sidebars/AnalyticsSidebar/CollapsedAnalyticsSidebar'
 
@@ -27,17 +25,6 @@ export function AnalyticsSidebar() {
             onValueChange={handleNavigationStateChange}
         >
             {sections.map((section) => {
-                // Render component sections
-                switch (section.id) {
-                    case 'dashboards':
-                        return <DashboardsNavbarBlock key={section.id} />
-                    case 'automate':
-                        return <AutomateStatsNavbar key={section.id} />
-                    case 'convert':
-                        return <ConvertStatsNavbar key={section.id} />
-                }
-
-                // Render static sections
                 if (section.items) {
                     return (
                         <Navigation.Section
@@ -49,20 +36,30 @@ export function AnalyticsSidebar() {
                                 data-candu-id={section.sectionCanduId}
                                 icon={section.icon}
                             >
-                                {section.label}
+                                <Box
+                                    alignItems="center"
+                                    width="100%"
+                                    justifyContent="space-between"
+                                    gap="xs"
+                                >
+                                    {section.label}
+                                    {section.actionsSlot}
+                                </Box>
                                 <Navigation.SectionIndicator />
                             </Navigation.SectionTrigger>
+
                             <Navigation.SectionContent>
                                 {section.items.map((item) => (
                                     <StatsNavSectionItem
-                                        key={item.key}
+                                        key={item.id}
                                         to={`${STATS_ROUTE_PREFIX}${item.route}`}
                                         data-candu-id={item.canduId}
                                         id={item.itemId}
                                     >
                                         {item.label}
+                                        {item.trailingSlot}
                                         {item.requiresUpgrade && (
-                                            <UpgradeIcon />
+                                            <Icon name="arrow-circle-up" />
                                         )}
                                     </StatsNavSectionItem>
                                 ))}

@@ -205,4 +205,87 @@ describe('CollapsedActionDrivenNavigationItems', () => {
 
         expect(history.push).not.toHaveBeenCalled()
     })
+
+    it('renders sub-items as menu items for items with nested items', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={mockNavigationItems}
+            />,
+        )
+
+        await user.click(screen.getByRole('img', { name: 'flows' }))
+
+        expect(
+            screen.getByRole('menuitemradio', { name: 'Analytics' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitemradio', { name: 'Opportunities' }),
+        ).toBeInTheDocument()
+    })
+
+    it('navigates to sub-item route when clicking a menu item', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={mockNavigationItems}
+            />,
+        )
+
+        await user.click(screen.getByRole('img', { name: 'flows' }))
+        jest.clearAllMocks()
+        await user.click(
+            screen.getByRole('menuitemradio', { name: 'Opportunities' }),
+        )
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/ai-agent/shopify/test-store/analyze/opportunities',
+        )
+    })
+
+    it('renders items without sub-items as bare ButtonGroupItems without a menu', () => {
+        const navItemWithoutSubItems: NavigationItem[] = [
+            {
+                route: '/app/ai-agent/shopify/test-store/overview',
+                title: 'Overview',
+                icon: 'settings',
+                exact: true,
+            },
+        ]
+
+        renderWithRouter(
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={navItemWithoutSubItems}
+            />,
+        )
+
+        expect(screen.getAllByRole('radio')).toHaveLength(1)
+        expect(screen.queryAllByRole('menuitemradio')).toHaveLength(0)
+    })
+
+    it('marks the active section as selected when URL matches a direct route', () => {
+        renderWithRouter(
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={mockNavigationItems}
+            />,
+            { route: '/app/ai-agent/shopify/test-store/overview' },
+        )
+
+        const buttons = screen.getAllByRole('radio')
+        expect(buttons[0]).toHaveAttribute('aria-checked', 'true')
+    })
+
+    it('marks the active section as selected when URL matches a sub-item route', () => {
+        renderWithRouter(
+            <CollapsedActionDrivenNavigationItems
+                navigationItems={mockNavigationItems}
+            />,
+            {
+                route: '/app/ai-agent/shopify/test-store/analyze/analytics',
+            },
+        )
+
+        const buttons = screen.getAllByRole('radio')
+        expect(buttons[1]).toHaveAttribute('aria-checked', 'true')
+    })
 })

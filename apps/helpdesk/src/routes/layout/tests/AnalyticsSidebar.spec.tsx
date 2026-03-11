@@ -1,6 +1,9 @@
 import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { renderWithRouter } from 'utils/testing'
 
 import { useStatsNavbarConfig } from '../products/analytics'
 import { AnalyticsSidebar } from '../sidebars/AnalyticsSidebar/AnalyticsSidebar'
@@ -9,27 +12,9 @@ jest.mock(
     'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections',
     () => ({
         useStatsNavbarSections: () => ({
-            sections: {},
+            sections: [],
             handleNavigationStateChange: jest.fn(),
         }),
-    }),
-)
-
-jest.mock(
-    'domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock',
-    () => ({
-        DashboardsNavbarBlock: () => <div>DashboardsNavbarBlock</div>,
-    }),
-)
-
-jest.mock('domains/reporting/pages/self-service/AutomateStatsNavbar', () => ({
-    AutomateStatsNavbar: () => <div>AutomateStatsNavbar</div>,
-}))
-
-jest.mock(
-    'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar',
-    () => ({
-        ConvertStatsNavbar: () => <div>ConvertStatsNavbar</div>,
     }),
 )
 
@@ -40,8 +25,49 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'domains/reporting/pages/report-chart-restrictions/ProtectedRoute',
+    () => ({
+        ProtectedRoute: ({ children }: any) => children,
+    }),
+)
+
 jest.mock('routes/layout/products/analytics')
 const useStatsNavbarConfigMock = assumeMock(useStatsNavbarConfig)
+
+const mockSections = [
+    {
+        id: 'dashboards',
+        label: 'Dashboards',
+        icon: 'chart-line',
+        items: [
+            {
+                key: 'dashboard-1',
+                route: 'dashboards/1',
+                label: 'My Dashboard',
+                itemId: 'dashboard-1',
+            },
+        ],
+    },
+    {
+        id: 'support-performance',
+        label: 'Support Performance',
+        icon: 'alarm',
+        items: [
+            {
+                key: 'overview',
+                route: 'support-performance/overview',
+                label: 'Overview',
+                requiresUpgrade: true,
+            },
+            {
+                key: 'agents',
+                route: 'support-performance-agents',
+                label: 'Agents',
+            },
+        ],
+    },
+]
 
 const wrapper = ({ children }: any) => (
     <SidebarContext.Provider
@@ -54,11 +80,7 @@ const wrapper = ({ children }: any) => (
 describe('AnalyticsSidebar', () => {
     beforeEach(() => {
         useStatsNavbarConfigMock.mockReturnValue({
-            sections: [
-                { id: 'dashboards' },
-                { id: 'automate' },
-                { id: 'convert' },
-            ] as any,
+            sections: mockSections as any,
         })
     })
 
@@ -67,28 +89,109 @@ describe('AnalyticsSidebar', () => {
     })
 
     describe('when expanded', () => {
-        it('should render DashboardsNavbarBlock for dashboards section', () => {
+        it('renders section labels from config', () => {
             render(<AnalyticsSidebar />, { wrapper })
+
+            expect(screen.getByText('Dashboards')).toBeInTheDocument()
+            expect(screen.getByText('Support Performance')).toBeInTheDocument()
+        })
+
+        it('renders upgrade icon only for items with requiresUpgrade', async () => {
+            const user = userEvent.setup()
+            renderWithRouter(
+                <SidebarContext.Provider
+                    value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
+                >
+                    <AnalyticsSidebar />
+                </SidebarContext.Provider>,
+            )
+
+            await user.click(screen.getByText('Support Performance'))
+
             expect(
-                screen.getByText('DashboardsNavbarBlock'),
-            ).toBeInTheDocument()
+                screen.getAllByRole('img', { name: 'arrow-circle-up' }),
+            ).toHaveLength(1)
         })
 
-        it('should render AutomateStatsNavbar for automate section', () => {
+        it('does not render sections without items', () => {
+            useStatsNavbarConfigMock.mockReturnValue({
+                sections: [
+                    { id: 'empty', label: 'Empty', icon: 'ai' },
+                    ...mockSections,
+                ] as any,
+            })
+
             render(<AnalyticsSidebar />, { wrapper })
-            expect(screen.getByText('AutomateStatsNavbar')).toBeInTheDocument()
+
+            expect(screen.queryByText('Empty')).not.toBeInTheDocument()
+            expect(screen.getByText('Dashboards')).toBeInTheDocument()
         })
 
-        it('should render ConvertStatsNavbar for convert section', () => {
+        it('does not render CollapsedAnalyticsSidebar', () => {
             render(<AnalyticsSidebar />, { wrapper })
-            expect(screen.getByText('ConvertStatsNavbar')).toBeInTheDocument()
-        })
 
-        it('should not render CollapsedAnalyticsSidebar', () => {
-            render(<AnalyticsSidebar />, { wrapper })
             expect(
                 screen.queryByText('CollapsedAnalyticsSidebar'),
             ).not.toBeInTheDocument()
+        })
+
+        it('renders actionsSlot in section trigger when provided', () => {
+            useStatsNavbarConfigMock.mockReturnValue({
+                sections: [
+                    {
+                        id: 'dashboards',
+                        label: 'Dashboards',
+                        icon: 'chart-line',
+                        actionsSlot: <button>Add Dashboard</button>,
+                        items: [
+                            {
+                                key: 'dashboard-1',
+                                route: 'dashboards/1',
+                                label: 'My Dashboard',
+                            },
+                        ],
+                    },
+                ] as any,
+            })
+
+            render(<AnalyticsSidebar />, { wrapper })
+
+            expect(
+                screen.getByRole('button', { name: 'Add Dashboard' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders trailingSlot for items that have one', async () => {
+            const user = userEvent.setup()
+            useStatsNavbarConfigMock.mockReturnValue({
+                sections: [
+                    {
+                        id: 'automate',
+                        label: 'Automate',
+                        icon: 'zap',
+                        items: [
+                            {
+                                key: 'analytics-overview',
+                                route: 'analytics-overview',
+                                label: 'Overview',
+                                trailingSlot: <span>Beta</span>,
+                            },
+                        ],
+                    },
+                ] as any,
+            })
+
+            renderWithRouter(
+                <SidebarContext.Provider
+                    value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
+                >
+                    <AnalyticsSidebar />
+                </SidebarContext.Provider>,
+            )
+
+            await user.click(screen.getByText('Automate'))
+
+            expect(screen.getByText('Beta')).toBeInTheDocument()
         })
     })
 
@@ -104,24 +207,12 @@ describe('AnalyticsSidebar', () => {
             </SidebarContext.Provider>
         )
 
-        it('should render CollapsedAnalyticsSidebar', () => {
+        it('renders CollapsedAnalyticsSidebar', () => {
             render(<AnalyticsSidebar />, { wrapper: collapsedWrapper })
+
             expect(
                 screen.getByText('CollapsedAnalyticsSidebar'),
             ).toBeInTheDocument()
-        })
-
-        it('should not render expanded sidebar content', () => {
-            render(<AnalyticsSidebar />, { wrapper: collapsedWrapper })
-            expect(
-                screen.queryByText('DashboardsNavbarBlock'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('AutomateStatsNavbar'),
-            ).not.toBeInTheDocument()
-            expect(
-                screen.queryByText('ConvertStatsNavbar'),
-            ).not.toBeInTheDocument()
         })
     })
 })

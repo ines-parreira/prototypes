@@ -47,7 +47,7 @@ export function SettingsSidebar() {
                     <Navigation.SectionContent>
                         {section.items.map((item) => (
                             <Item
-                                key={item.key}
+                                key={item.id}
                                 to={item.to}
                                 text={item.text}
                                 requiredRole={item.requiredRole}

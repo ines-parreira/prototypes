@@ -21,12 +21,12 @@ describe('CollapsedSettingsSidebar', () => {
             icon: 'user',
             items: [
                 {
-                    key: 'profile',
+                    id: 'profile',
                     to: 'account/profile',
                     text: 'Profile',
                 },
                 {
-                    key: 'preferences',
+                    id: 'preferences',
                     to: 'account/preferences',
                     text: 'Preferences',
                 },
@@ -38,12 +38,12 @@ describe('CollapsedSettingsSidebar', () => {
             icon: 'chart-line',
             items: [
                 {
-                    key: 'details',
+                    id: 'details',
                     to: 'company/details',
                     text: 'Company Details',
                 },
                 {
-                    key: 'billing',
+                    id: 'billing',
                     to: 'company/billing',
                     text: 'Billing',
                 },
@@ -55,7 +55,7 @@ describe('CollapsedSettingsSidebar', () => {
             icon: 'calendar',
             items: [
                 {
-                    key: 'all',
+                    id: 'all',
                     to: 'integrations',
                     text: 'All Integrations',
                 },
@@ -139,5 +139,77 @@ describe('CollapsedSettingsSidebar', () => {
         await user.click(buttons[0])
 
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('marks the active section as selected when URL matches a section item', () => {
+        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />, {
+            route: '/app/settings/account/profile',
+        })
+
+        const buttons = screen.getAllByRole('radio')
+        expect(buttons[0]).toHaveAttribute('aria-checked', 'true')
+        expect(buttons[1]).not.toHaveAttribute('aria-checked', 'true')
+    })
+
+    it('renders all section items as menu items', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+
+        await user.click(screen.getAllByRole('radio')[0])
+
+        expect(
+            screen.getByRole('menuitemradio', { name: 'Profile' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitemradio', { name: 'Preferences' }),
+        ).toBeInTheDocument()
+    })
+
+    it('navigates to a specific item when clicking a menu item', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedSettingsSidebar sections={mockSections} />)
+
+        await user.click(screen.getAllByRole('radio')[0])
+        jest.clearAllMocks()
+        await user.click(
+            screen.getByRole('menuitemradio', { name: 'Preferences' }),
+        )
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/settings/account/preferences',
+        )
+    })
+
+    it('calls item onClick when a menu item is clicked', async () => {
+        const user = userEvent.setup()
+        const onClickMock = jest.fn()
+        const sectionsWithOnClick: SettingsNavbarSection[] = [
+            {
+                id: 'account',
+                label: 'Account',
+                icon: 'user',
+                items: [
+                    {
+                        id: 'profile',
+                        to: 'account/profile',
+                        text: 'Profile',
+                        onClick: onClickMock,
+                    },
+                ],
+            },
+        ]
+
+        renderWithRouter(
+            <CollapsedSettingsSidebar sections={sectionsWithOnClick} />,
+        )
+
+        await user.click(screen.getAllByRole('radio')[0])
+        jest.clearAllMocks()
+        await user.click(screen.getByRole('menuitemradio', { name: 'Profile' }))
+
+        expect(onClickMock).toHaveBeenCalled()
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/settings/account/profile',
+        )
     })
 })

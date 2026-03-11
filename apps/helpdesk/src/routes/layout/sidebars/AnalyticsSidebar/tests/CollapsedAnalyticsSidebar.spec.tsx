@@ -21,12 +21,12 @@ describe('CollapsedAnalyticsSidebar', () => {
             icon: 'ai',
             items: [
                 {
-                    key: 'overview',
+                    id: 'overview',
                     route: 'live-overview',
                     label: 'Overview',
                 },
                 {
-                    key: 'agents',
+                    id: 'agents',
                     route: 'live-agents',
                     label: 'Agents',
                 },
@@ -38,12 +38,12 @@ describe('CollapsedAnalyticsSidebar', () => {
             icon: 'alarm',
             items: [
                 {
-                    key: 'overview',
+                    id: 'overview',
                     route: 'support-performance/overview',
                     label: 'Overview',
                 },
                 {
-                    key: 'agents',
+                    id: 'agents',
                     route: 'support-performance/agents',
                     label: 'Agents',
                 },
@@ -55,7 +55,7 @@ describe('CollapsedAnalyticsSidebar', () => {
             icon: 'bookmark',
             items: [
                 {
-                    key: 'ticket-fields',
+                    id: 'ticket-fields',
                     route: 'ticket-insights/ticket-fields',
                     label: 'Ticket Fields',
                 },
@@ -135,5 +135,29 @@ describe('CollapsedAnalyticsSidebar', () => {
         await user.click(buttons[0])
 
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('navigates to a specific item when clicking a menu item', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+
+        await user.click(screen.getAllByRole('radio')[0])
+        jest.clearAllMocks()
+        await user.click(screen.getByRole('menuitemradio', { name: 'Agents' }))
+
+        expect(history.push).toHaveBeenCalledWith('/app/stats/live-agents')
+    })
+
+    it('navigates directly when clicking a single-item section without opening a menu', async () => {
+        const user = userEvent.setup()
+        renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
+
+        const buttons = screen.getAllByRole('radio')
+        await user.click(buttons[2])
+
+        expect(history.push).toHaveBeenCalledWith(
+            '/app/stats/ticket-insights/ticket-fields',
+        )
+        expect(screen.queryByRole('menu')).not.toBeInTheDocument()
     })
 })

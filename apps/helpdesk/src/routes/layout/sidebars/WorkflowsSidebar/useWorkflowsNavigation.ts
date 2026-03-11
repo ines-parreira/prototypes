@@ -20,7 +20,7 @@ export type WorkflowsNavbarSection = {
     icon?: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
     items: {
-        key: string
+        id: string
         path: string
         label: string
         requiredRole?: UserRole.Admin | UserRole.Agent
@@ -43,7 +43,7 @@ export function useWorkflowsNavigation() {
     const sections = useMemo<WorkflowsNavbarSection[]>(() => {
         const toolsItems = [
             {
-                key: WorkflowsRoute.Flows,
+                id: WorkflowsRoute.Flows,
                 path: workflowsRoutes[WorkflowsRoute.Flows].path,
                 label: workflowsRoutes[WorkflowsRoute.Flows].label,
                 requiredRole:
@@ -51,7 +51,7 @@ export function useWorkflowsNavigation() {
                 shouldRender: shouldRenderAiAgentRelatedItems,
             },
             {
-                key: WorkflowsRoute.OrderManagement,
+                id: WorkflowsRoute.OrderManagement,
                 path: workflowsRoutes[WorkflowsRoute.OrderManagement].path,
                 label: workflowsRoutes[WorkflowsRoute.OrderManagement].label,
                 requiredRole:
@@ -60,21 +60,21 @@ export function useWorkflowsNavigation() {
                 shouldRender: shouldRenderAiAgentRelatedItems,
             },
             {
-                key: WorkflowsRoute.Rules,
+                id: WorkflowsRoute.Rules,
                 path: workflowsRoutes[WorkflowsRoute.Rules].path,
                 label: workflowsRoutes[WorkflowsRoute.Rules].label,
                 requiredRole:
                     workflowsRoutes[WorkflowsRoute.Rules].requiredRole,
             },
             {
-                key: WorkflowsRoute.Macros,
+                id: WorkflowsRoute.Macros,
                 path: workflowsRoutes[WorkflowsRoute.Macros].path,
                 label: workflowsRoutes[WorkflowsRoute.Macros].label,
                 requiredRole:
                     workflowsRoutes[WorkflowsRoute.Macros].requiredRole,
             },
             {
-                key: WorkflowsRoute.TicketAssignment,
+                id: WorkflowsRoute.TicketAssignment,
                 path: workflowsRoutes[WorkflowsRoute.TicketAssignment].path,
                 label: workflowsRoutes[WorkflowsRoute.TicketAssignment].label,
                 requiredRole:
@@ -82,20 +82,20 @@ export function useWorkflowsNavigation() {
                         .requiredRole,
             },
             {
-                key: WorkflowsRoute.AutoMerge,
+                id: WorkflowsRoute.AutoMerge,
                 path: workflowsRoutes[WorkflowsRoute.AutoMerge].path,
                 label: workflowsRoutes[WorkflowsRoute.AutoMerge].label,
                 requiredRole:
                     workflowsRoutes[WorkflowsRoute.AutoMerge].requiredRole,
             },
             {
-                key: WorkflowsRoute.CSAT,
+                id: WorkflowsRoute.CSAT,
                 path: workflowsRoutes[WorkflowsRoute.CSAT].path,
                 label: workflowsRoutes[WorkflowsRoute.CSAT].label,
                 requiredRole: workflowsRoutes[WorkflowsRoute.CSAT].requiredRole,
             },
             {
-                key: WorkflowsRoute.SLA,
+                id: WorkflowsRoute.SLA,
                 path: workflowsRoutes[WorkflowsRoute.SLA].path,
                 label: workflowsRoutes[WorkflowsRoute.SLA].label,
                 requiredRole: workflowsRoutes[WorkflowsRoute.SLA].requiredRole,
@@ -104,7 +104,7 @@ export function useWorkflowsNavigation() {
 
         if (isArticleRecEnabledWhileSunset) {
             toolsItems.push({
-                key: WorkflowsRoute.ArticleRecommendations,
+                id: WorkflowsRoute.ArticleRecommendations,
                 path: workflowsRoutes[WorkflowsRoute.ArticleRecommendations]
                     .path,
                 label: workflowsRoutes[WorkflowsRoute.ArticleRecommendations]
@@ -132,7 +132,7 @@ export function useWorkflowsNavigation() {
                         .requiredRole,
                 items: [
                     {
-                        key: WorkflowsRoute.TicketFields,
+                        id: WorkflowsRoute.TicketFields,
                         path: workflowsRoutes[WorkflowsRoute.TicketFields].path,
                         label: workflowsRoutes[WorkflowsRoute.TicketFields]
                             .label,
@@ -141,7 +141,7 @@ export function useWorkflowsNavigation() {
                                 .requiredRole,
                     },
                     {
-                        key: WorkflowsRoute.CustomerFields,
+                        id: WorkflowsRoute.CustomerFields,
                         path: workflowsRoutes[WorkflowsRoute.CustomerFields]
                             .path,
                         label: workflowsRoutes[WorkflowsRoute.CustomerFields]
@@ -151,7 +151,7 @@ export function useWorkflowsNavigation() {
                                 .requiredRole,
                     },
                     {
-                        key: WorkflowsRoute.FieldConditions,
+                        id: WorkflowsRoute.FieldConditions,
                         path: workflowsRoutes[WorkflowsRoute.FieldConditions]
                             .path,
                         label: workflowsRoutes[WorkflowsRoute.FieldConditions]
@@ -161,7 +161,7 @@ export function useWorkflowsNavigation() {
                                 .requiredRole,
                     },
                     {
-                        key: WorkflowsRoute.Tags,
+                        id: WorkflowsRoute.Tags,
                         path: workflowsRoutes[WorkflowsRoute.Tags].path,
                         label: workflowsRoutes[WorkflowsRoute.Tags].label,
                         requiredRole:

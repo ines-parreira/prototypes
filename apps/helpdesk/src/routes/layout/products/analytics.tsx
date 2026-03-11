@@ -1,14 +1,27 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UserRole } from '@repo/utils'
 
+import { Tag } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
+import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
+import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { StatsNavbarViewSections } from 'domains/reporting/pages/common/components/StatsNavbarView/constants'
+import { CreateDashboardMenu } from 'domains/reporting/pages/dashboards/CreateDashboardMenu/CreateDashboardMenu'
+import {
+    PAGE_TITLE_AI_AGENT,
+    PAGE_TITLE_OVERVIEW,
+    PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+    ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+} from 'domains/reporting/pages/self-service/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { STATS_ROUTES } from 'routes/constants'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -28,13 +41,15 @@ export type StatsNavbarSection = {
     label: string
     icon: IconName
     sectionCanduId?: string
+    actionsSlot?: ReactNode
     items?: {
-        key: string
+        id: string
         route: string
         label: string
         canduId?: string
         itemId?: string
         requiresUpgrade?: boolean
+        trailingSlot?: ReactNode
     }[]
 }
 
@@ -90,9 +105,19 @@ export function useStatsNavbarConfig() {
         currentAccountHasProduct(ProductType.Voice),
     )
     const { hasAccess } = useAiAgentAccess()
+    const canUseAiSalesAgent = useCanUseAiSalesAgent()
+    const { getDashboardsHandler } = useDashboardActions()
+    const isConvertSubscriber = useIsConvertSubscriber()
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isNewSatisfactionReportEnabled = useFlag(
         FeatureFlagKey.NewSatisfactionReport,
+    )
+    const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
+    const isAiSalesAgentAnalyticsEnabled = useFlag(
+        FeatureFlagKey.AiShoppingAssistantEnabled,
+    )
+    const isAnalyticsDashboardsNewScreensEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
     )
 
     const isAutoQANavLinkAvailable = useMemo(
@@ -109,17 +134,17 @@ export function useStatsNavbarConfig() {
                 sectionCanduId: 'navbar-block-live',
                 items: [
                     {
-                        key: 'live-overview',
+                        id: 'live-overview',
                         route: STATS_ROUTES.LIVE_OVERVIEW,
                         label: 'Overview',
                     },
                     {
-                        key: 'live-agents',
+                        id: 'live-agents',
                         route: STATS_ROUTES.LIVE_AGENTS,
                         label: 'Agents',
                     },
                     {
-                        key: 'live-voice',
+                        id: 'live-voice',
                         route: STATS_ROUTES.LIVE_VOICE,
                         label: 'Voice',
                         itemId: 'live-voice',
@@ -133,7 +158,17 @@ export function useStatsNavbarConfig() {
                     .label,
                 icon: analyticsSections[StatsNavbarViewSections.Dashboards]
                     .icon,
-                items: [],
+                actionsSlot: <CreateDashboardMenu />,
+                items: getDashboardsHandler().map((dashboard) => ({
+                    id: `dashboard-${dashboard.id}`,
+                    route: STATS_ROUTES.DASHBOARDS_PAGE.replace(
+                        ':id',
+                        String(dashboard.id),
+                    ),
+                    label: dashboard.emoji
+                        ? `${dashboard.emoji} ${dashboard.name}`
+                        : dashboard.name,
+                })),
             },
             {
                 id: StatsNavbarViewSections.SupportPerformance,
@@ -146,51 +181,51 @@ export function useStatsNavbarConfig() {
                 sectionCanduId: 'navbar-block-support-performance',
                 items: [
                     {
-                        key: 'support-performance-overview',
+                        id: 'support-performance-overview',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_OVERVIEW,
                         label: 'Overview',
                     },
                     {
-                        key: 'support-performance-agents',
+                        id: 'support-performance-agents',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
                         label: 'Agents',
                     },
                     {
-                        key: 'support-performance-busiest-times',
+                        id: 'support-performance-busiest-times',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES,
                         label: 'Busiest Times',
                         canduId: 'statistics-link-busiest-times-of-days',
                     },
                     {
-                        key: 'support-performance-channels',
+                        id: 'support-performance-channels',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS,
                         label: 'Channels',
                     },
                     {
-                        key: 'support-performance-satisfaction',
+                        id: 'support-performance-satisfaction',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION,
                         label: 'Satisfaction',
                     },
                     {
-                        key: 'support-performance-revenue',
+                        id: 'support-performance-revenue',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_REVENUE,
                         label: 'Revenue',
                     },
                     {
-                        key: 'support-performance-help-center',
+                        id: 'support-performance-help-center',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER,
                         label: 'Help Center',
                         canduId: 'statistics-link-help-center',
                     },
                     {
-                        key: 'support-performance-slas',
+                        id: 'support-performance-slas',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT,
                         label: 'SLAs',
                     },
                     ...(!isNewSatisfactionReportEnabled
                         ? [
                               {
-                                  key: 'auto-qa',
+                                  id: 'auto-qa',
                                   route: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
                                   label: 'Auto QA',
                               },
@@ -207,22 +242,22 @@ export function useStatsNavbarConfig() {
                 sectionCanduId: 'navbar-block-ticket-insights',
                 items: [
                     {
-                        key: 'ticket-insights-ticket-fields',
+                        id: 'ticket-insights-ticket-fields',
                         route: STATS_ROUTES.TICKET_INSIGHTS_TICKET_FIELDS,
                         label: 'Ticket Fields',
                     },
                     {
-                        key: 'ticket-insights-tags',
+                        id: 'ticket-insights-tags',
                         route: STATS_ROUTES.TICKET_INSIGHTS_TAGS,
                         label: 'Tags',
                     },
                     {
-                        key: 'ticket-insights-macros',
+                        id: 'ticket-insights-macros',
                         route: STATS_ROUTES.TICKET_INSIGHTS_MACROS,
                         label: 'Macros',
                     },
                     {
-                        key: 'ticket-insights-intents',
+                        id: 'ticket-insights-intents',
                         route: STATS_ROUTES.TICKET_INSIGHTS_INTENTS,
                         label: 'Intents',
                         canduId: 'statistics-link-intents',
@@ -244,14 +279,14 @@ export function useStatsNavbarConfig() {
                               ...(isAutoQANavLinkAvailable
                                   ? [
                                         {
-                                            key: 'auto-qa',
+                                            id: 'auto-qa',
                                             route: STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
                                             label: 'Auto QA',
                                         },
                                     ]
                                   : []),
                               {
-                                  key: 'quality-management-satisfaction',
+                                  id: 'quality-management-satisfaction',
                                   route: STATS_ROUTES.QUALITY_MANAGEMENT_SATISFACTION,
                                   label: 'Satisfaction',
                               },
@@ -264,13 +299,79 @@ export function useStatsNavbarConfig() {
                 label: analyticsSections[StatsNavbarViewSections.Automate]
                     .label,
                 icon: analyticsSections[StatsNavbarViewSections.Automate].icon,
-                items: [],
+                items: hasAccess
+                    ? [
+                          ...(isAnalyticsDashboardsNewScreensEnabled
+                              ? [
+                                    {
+                                        id: 'analytics-overview',
+                                        route: STATS_ROUTES.ANALYTICS_OVERVIEW,
+                                        label: PAGE_TITLE_OVERVIEW,
+                                        trailingSlot: (
+                                            <Tag color="purple">Beta</Tag>
+                                        ),
+                                    },
+                                    {
+                                        id: 'analytics-ai-agent',
+                                        route: STATS_ROUTES.ANALYTICS_AI_AGENT,
+                                        label: PAGE_TITLE_AI_AGENT,
+                                        trailingSlot: (
+                                            <Tag color="purple">Beta</Tag>
+                                        ),
+                                    },
+                                ]
+                              : []),
+                          {
+                              id: 'automate-overview',
+                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                              label: PAGE_TITLE_OVERVIEW,
+                          },
+                          ...(isAiAgentStatsPageEnabled
+                              ? [
+                                    {
+                                        id: 'automate-ai-agent',
+                                        route: STATS_ROUTES.AUTOMATE_AI_AGENTS,
+                                        label: PAGE_TITLE_AI_AGENT,
+                                    },
+                                ]
+                              : []),
+                          ...(isAiSalesAgentAnalyticsEnabled
+                              ? [
+                                    {
+                                        id: 'ai-sales-agent',
+                                        route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
+                                        label: LINK_AI_SALES_AGENT_TEXT,
+                                        requiresUpgrade: !canUseAiSalesAgent,
+                                    },
+                                ]
+                              : []),
+                          {
+                              id: 'performance-by-features',
+                              route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+                              label: PAGE_TITLE_PERFORMANCE_BY_FEATURES,
+                          },
+                      ]
+                    : [
+                          {
+                              id: 'automate-overview',
+                              route: STATS_ROUTES.AI_AGENT_OVERVIEW,
+                              label: PAGE_TITLE_OVERVIEW,
+                              requiresUpgrade: true,
+                          },
+                      ],
             },
             {
                 id: StatsNavbarViewSections.Convert,
                 label: analyticsSections[StatsNavbarViewSections.Convert].label,
                 icon: analyticsSections[StatsNavbarViewSections.Convert].icon,
-                items: [],
+                items: [
+                    {
+                        id: 'convert-campaigns',
+                        route: STATS_ROUTES.CONVERT_CAMPAIGNS,
+                        label: 'Campaigns',
+                        requiresUpgrade: !isConvertSubscriber,
+                    },
+                ],
             },
             {
                 id: StatsNavbarViewSections.Voice,
@@ -279,13 +380,13 @@ export function useStatsNavbarConfig() {
                 sectionCanduId: 'navbar-block-voice',
                 items: [
                     {
-                        key: 'voice-overview',
+                        id: 'voice-overview',
                         route: STATS_ROUTES.VOICE_OVERVIEW,
                         label: 'Overview',
                         requiresUpgrade: !hasVoiceFeature,
                     },
                     {
-                        key: 'voice-agents',
+                        id: 'voice-agents',
                         route: STATS_ROUTES.VOICE_AGENTS,
                         label: 'Agents',
                         requiresUpgrade: !hasVoiceFeature,
@@ -297,6 +398,13 @@ export function useStatsNavbarConfig() {
         isNewSatisfactionReportEnabled,
         isAutoQANavLinkAvailable,
         hasVoiceFeature,
+        hasAccess,
+        isAiAgentStatsPageEnabled,
+        isAiSalesAgentAnalyticsEnabled,
+        isAnalyticsDashboardsNewScreensEnabled,
+        canUseAiSalesAgent,
+        getDashboardsHandler,
+        isConvertSubscriber,
     ])
 
     return { sections }

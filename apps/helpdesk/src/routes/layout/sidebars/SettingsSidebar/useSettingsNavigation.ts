@@ -20,7 +20,7 @@ export type SettingsNavbarSection = {
     icon?: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
     items: {
-        key: string
+        id: string
         to: string
         text: string
         requiredRole?: UserRole.Admin | UserRole.Agent
@@ -36,13 +36,13 @@ export function useSettingsNavigation() {
     const sections = useMemo<SettingsNavbarSection[]>(() => {
         const accountItems: SettingsNavbarSection['items'] = [
             {
-                key: 'users',
+                id: 'users',
                 to: 'users',
                 text: 'Users',
                 requiredRole: UserRoleEnum.Admin,
             },
             {
-                key: 'teams',
+                id: 'teams',
                 to: 'teams',
                 text: 'Teams',
                 requiredRole: UserRoleEnum.Admin,
@@ -51,7 +51,7 @@ export function useSettingsNavigation() {
 
         if (isAgentUnavailabilityEnabled) {
             accountItems.push({
-                key: 'agent-statuses',
+                id: 'agent-statuses',
                 to: 'agent-statuses',
                 text: 'Agent unavailability',
                 requiredRole: UserRoleEnum.Admin,
@@ -60,13 +60,13 @@ export function useSettingsNavigation() {
 
         accountItems.push(
             {
-                key: 'access',
+                id: 'access',
                 to: 'access',
                 text: 'Access management',
                 requiredRole: UserRoleEnum.Admin,
             },
             {
-                key: 'billing',
+                id: 'billing',
                 to: 'billing',
                 text: 'Billing & usage',
                 requiredRole: UserRoleEnum.Admin,
@@ -76,20 +76,20 @@ export function useSettingsNavigation() {
                     ),
             },
             {
-                key: 'http-integration',
+                id: 'http-integration',
                 to: `integrations/${IntegrationType.Http}`,
                 text: 'HTTP integration',
                 requiredRole: UserRoleEnum.Admin,
                 exact: true,
             },
             {
-                key: 'api',
+                id: 'api',
                 to: 'api',
                 text: 'REST API',
                 requiredRole: UserRoleEnum.Admin,
             },
             {
-                key: 'audit',
+                id: 'audit',
                 to: 'audit',
                 text: 'Audit logs',
                 requiredRole: UserRoleEnum.Admin,
@@ -98,7 +98,7 @@ export function useSettingsNavigation() {
 
         if (isHistoricalImportsEnabled) {
             accountItems.push({
-                key: 'historical-imports',
+                id: 'historical-imports',
                 to: 'historical-imports',
                 text: 'Imports',
                 requiredRole: UserRoleEnum.Admin,
@@ -106,13 +106,13 @@ export function useSettingsNavigation() {
         } else {
             accountItems.push(
                 {
-                    key: 'import-email',
+                    id: 'import-email',
                     to: 'import-email',
                     text: 'Email Import',
                     requiredRole: UserRoleEnum.Admin,
                 },
                 {
-                    key: 'import-zendesk',
+                    id: 'import-zendesk',
                     to: 'import-zendesk',
                     text: 'Zendesk import',
                     requiredRole: UserRoleEnum.Admin,
@@ -121,7 +121,7 @@ export function useSettingsNavigation() {
         }
 
         accountItems.push({
-            key: 'password-2fa',
+            id: 'password-2fa',
             to: 'password-2fa',
             text: 'Password & 2FA',
         })
@@ -135,14 +135,14 @@ export function useSettingsNavigation() {
                     settingsSections[SettingsSection.Apps].requiredRole,
                 items: [
                     {
-                        key: 'installed-apps',
+                        id: 'installed-apps',
                         to: 'integrations/mine',
                         text: 'Installed apps',
                         requiredRole: UserRoleEnum.Admin,
                         exact: true,
                     },
                     {
-                        key: 'app-store',
+                        id: 'app-store',
                         to: 'integrations',
                         text: 'App store',
                         requiredRole: UserRoleEnum.Admin,
@@ -158,13 +158,13 @@ export function useSettingsNavigation() {
                     settingsSections[SettingsSection.Workspace].requiredRole,
                 items: [
                     {
-                        key: 'store',
+                        id: 'store',
                         to: 'store-management',
                         text: 'Store',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'business-hours',
+                        id: 'business-hours',
                         to: 'business-hours',
                         text: 'Business hours',
                         requiredRole: UserRoleEnum.Admin,
@@ -177,42 +177,42 @@ export function useSettingsNavigation() {
                 icon: settingsSections[SettingsSection.Channels].icon,
                 items: [
                     {
-                        key: 'help-center',
+                        id: 'help-center',
                         to: 'help-center',
                         text: 'Help Center',
                     },
                     {
-                        key: 'phone-numbers',
+                        id: 'phone-numbers',
                         to: 'phone-numbers',
                         text: 'Phone numbers',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'email',
+                        id: 'email',
                         to: `channels/${IntegrationType.Email}`,
                         text: 'Email',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'voice',
+                        id: 'voice',
                         to: `channels/${IntegrationType.Phone}`,
                         text: 'Voice',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'sms',
+                        id: 'sms',
                         to: `channels/${IntegrationType.Sms}`,
                         text: 'SMS',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'chat',
+                        id: 'chat',
                         to: `channels/${IntegrationType.GorgiasChat}`,
                         text: 'Chat',
                         requiredRole: UserRoleEnum.Admin,
                     },
                     {
-                        key: 'contact-form',
+                        id: 'contact-form',
                         to: 'contact-form',
                         text: 'Contact form',
                         requiredRole: UserRoleEnum.Admin,

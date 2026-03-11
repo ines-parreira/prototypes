@@ -1,8 +1,9 @@
 import { history } from '@repo/routing'
 
-import { ButtonGroup, ButtonGroupItem } from '@gorgias/axiom'
+import { ButtonGroup, ButtonGroupItem, Menu, MenuItem } from '@gorgias/axiom'
 
 import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
+import { useCollapsedSidebarActiveMatch } from 'routes/layout/sidebars/hooks/useCollapsedSidebarActiveMatch'
 import type { SettingsNavbarSection } from 'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation'
 
 type Props = {
@@ -10,13 +11,22 @@ type Props = {
 }
 
 export const CollapsedSettingsSidebar = ({ sections }: Props) => {
+    const activeMatch = useCollapsedSidebarActiveMatch(
+        sections,
+        (item) => `${SETTINGS_DEFAULT_PATH}/${item.to}`,
+    )
+
+    const navigateTo = (to: string) => {
+        history.push(`${SETTINGS_DEFAULT_PATH}/${to}`)
+    }
+
     const handleSelectionChange = (id: string) => {
         const sectionFirstRoute = sections.find((section) => section.id === id)
             ?.items?.[0]?.to
 
         if (!sectionFirstRoute) return
 
-        history.push(`${SETTINGS_DEFAULT_PATH}/${sectionFirstRoute}`)
+        navigateTo(sectionFirstRoute)
     }
 
     return (
@@ -24,15 +34,39 @@ export const CollapsedSettingsSidebar = ({ sections }: Props) => {
             orientation="vertical"
             withoutBorder
             onSelectionChange={handleSelectionChange}
+            selectedKey={activeMatch?.sectionId}
         >
             {sections.map((section) => (
-                <ButtonGroupItem
+                <Menu
                     key={section.id}
-                    id={section.id}
-                    icon={section.icon}
+                    selectedKeys={
+                        activeMatch?.sectionId === section.id
+                            ? [activeMatch.itemId]
+                            : []
+                    }
+                    selectionMode="single"
+                    trigger={
+                        <ButtonGroupItem
+                            key={section.id}
+                            id={section.id}
+                            icon={section.icon}
+                        >
+                            {section.label}
+                        </ButtonGroupItem>
+                    }
                 >
-                    {section.label}
-                </ButtonGroupItem>
+                    {section.items?.map((item) => (
+                        <MenuItem
+                            key={item.id}
+                            id={item.id}
+                            label={item.text}
+                            onAction={() => {
+                                item.onClick?.()
+                                navigateTo(item.to)
+                            }}
+                        />
+                    ))}
+                </Menu>
             ))}
         </ButtonGroup>
     )
