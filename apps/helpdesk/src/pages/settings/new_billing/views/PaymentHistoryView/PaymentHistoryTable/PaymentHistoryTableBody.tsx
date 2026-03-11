@@ -1,10 +1,10 @@
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 import { TableBodyContent } from '@gorgias/axiom'
 
 import type { Invoice } from 'state/billing/types'
 
 type PaymentHistoryTableBodyProps = {
-    table: Table<Invoice>
+    table: TableV1Instance<Invoice>
     isLoading: boolean
     columnCount: number
 }

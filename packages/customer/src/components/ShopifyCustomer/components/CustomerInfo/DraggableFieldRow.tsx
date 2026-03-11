@@ -3,7 +3,13 @@ import { useRef } from 'react'
 
 import { useDrag, useDrop } from 'react-dnd'
 
-import { Icon, TableCell, TableRow, Text, ToggleField } from '@gorgias/axiom'
+import {
+    Icon,
+    TableV1Cell as TableCell,
+    TableV1Row as TableRow,
+    Text,
+    ToggleField,
+} from '@gorgias/axiom'
 
 import css from './EditShopifyFieldsSidePanel.less'
 

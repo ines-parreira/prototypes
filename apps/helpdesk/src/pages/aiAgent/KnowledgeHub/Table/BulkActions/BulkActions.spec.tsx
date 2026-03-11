@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 
 import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
 import * as useBulkKnowledgeActionsModule from '../../hooks/useBulkKnowledgeActions'
@@ -103,7 +103,7 @@ describe('BulkActions', () => {
     const createMockTable = (
         selectedItems: GroupedKnowledgeItem[],
         totalRows: GroupedKnowledgeItem[] = selectedItems,
-    ): Table<GroupedKnowledgeItem> => {
+    ): TableV1Instance<GroupedKnowledgeItem> => {
         return {
             getFilteredSelectedRowModel: () => ({
                 rows: selectedItems.map((original) => ({ original })),
@@ -114,7 +114,7 @@ describe('BulkActions', () => {
             getCoreRowModel: () => ({
                 rows: totalRows.map((original) => ({ original })),
             }),
-        } as Table<GroupedKnowledgeItem>
+        } as TableV1Instance<GroupedKnowledgeItem>
     }
 
     it('should render nothing when no items selected and search not active', () => {

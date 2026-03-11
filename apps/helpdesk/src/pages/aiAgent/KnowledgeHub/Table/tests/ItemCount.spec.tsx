@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from '../../types'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
@@ -9,7 +9,7 @@ import { ItemCount } from '../ItemCount'
 const createMockTable = (
     rows: GroupedKnowledgeItem[],
     selectedRowIndices: number[] = [],
-): Table<GroupedKnowledgeItem> => {
+): TableV1Instance<GroupedKnowledgeItem> => {
     return {
         getFilteredSelectedRowModel: () => ({
             rows: selectedRowIndices.map((index) => ({
@@ -19,7 +19,7 @@ const createMockTable = (
         getFilteredRowModel: () => ({
             rows: rows.map((row) => ({ original: row })),
         }),
-    } as unknown as Table<GroupedKnowledgeItem>
+    } as unknown as TableV1Instance<GroupedKnowledgeItem>
 }
 
 describe('ItemCount', () => {

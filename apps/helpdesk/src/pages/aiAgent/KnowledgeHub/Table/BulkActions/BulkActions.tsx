@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 
 import { DuplicateGuidance } from '../../../components/KnowledgeEditor/shared/DuplicateGuidance/DuplicateGuidance'
 import { useGuidanceArticleMutation } from '../../../hooks/useGuidanceArticleMutation'
@@ -28,7 +28,7 @@ import {
 import css from './BulkActions.less'
 
 type BulkActionsProps = {
-    table: Table<GroupedKnowledgeItem>
+    table: TableV1Instance<GroupedKnowledgeItem>
     helpCenterIds: {
         guidanceHelpCenterId?: number | null
         faqHelpCenterId?: number | null

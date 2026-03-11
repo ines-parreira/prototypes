@@ -1,4 +1,4 @@
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 import { Text } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
@@ -6,7 +6,7 @@ import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import css from './ItemCount.less'
 
 type ItemCountProps = {
-    table: Table<GroupedKnowledgeItem>
+    table: TableV1Instance<GroupedKnowledgeItem>
     isSearchActive: boolean
     hasActiveFilters?: boolean
     hasInUseByAIFilter?: boolean

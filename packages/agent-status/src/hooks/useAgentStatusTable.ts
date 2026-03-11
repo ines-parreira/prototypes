@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 import { useTable } from '@gorgias/axiom'
 
 import { getColumns } from '../components/AgentStatusesTable/columns'
@@ -13,7 +13,7 @@ export type UseAgentStatusTableOptions = {
 }
 
 export type UseAgentStatusTableReturn = {
-    table: Table<AgentStatusWithSystem>
+    table: TableV1Instance<AgentStatusWithSystem>
 }
 
 export function useAgentStatusTable({

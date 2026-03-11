@@ -1,9 +1,9 @@
 import { useCallback } from 'react'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 
 type UseMetafieldsFiltersHandlerParams<T> = {
-    table: Table<T>
+    table: TableV1Instance<T>
     filterColumns: string[]
 }
 

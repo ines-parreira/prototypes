@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 
-import type { Table } from '@gorgias/axiom'
+import type { TableV1Instance } from '@gorgias/axiom'
 
 import { useMetafieldsFiltersHandler } from '../../../hooks/useMetafieldsFiltersHandler'
 import type { Field } from '../../../MetafieldsTable/types'
@@ -12,7 +12,7 @@ describe('useMetafieldsFiltersHandler', () => {
     const createMockTable = () =>
         ({
             getColumn: mockGetColumn,
-        }) as unknown as Table<Field>
+        }) as unknown as TableV1Instance<Field>
 
     beforeEach(() => {
         jest.clearAllMocks()
