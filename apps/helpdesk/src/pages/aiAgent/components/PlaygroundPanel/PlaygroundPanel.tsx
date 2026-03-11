@@ -100,9 +100,7 @@ export const PlaygroundPanel = ({
                                 aria-label="open playground settings"
                                 ref={settingsRef}
                             />
-                            <Tooltip target={settingsRef}>
-                                Open settings
-                            </Tooltip>
+                            <Tooltip target={settingsRef}>Configure</Tooltip>
                             <Button
                                 icon="undo"
                                 variant="tertiary"
