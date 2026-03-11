@@ -1207,6 +1207,12 @@ describe('<Routes/>', () => {
             ;(useUpdateJourney as jest.Mock).mockReturnValue({
                 mutateAsync: jest.fn(),
             })
+            ;(
+                require('AIJourney/queries').useTestSms as jest.Mock
+            ).mockReturnValue({
+                mutateAsync: jest.fn(),
+                isLoading: false,
+            })
 
             const cleanStatsFilters = {
                 period: {
@@ -1367,9 +1373,6 @@ describe('<Routes/>', () => {
                 </Provider>,
             )
 
-            expect(
-                screen.getByText('SMS Cart Abandoned flow'),
-            ).toBeInTheDocument()
             expect(screen.getByText('Setup')).toBeInTheDocument()
         })
 
@@ -1394,12 +1397,10 @@ describe('<Routes/>', () => {
                 </Provider>,
             )
 
-            expect(
-                screen.getByText('Give your flow a test run before going live'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('Send a test')).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Receive the test message directly on your phone.',
+                    'Preview how your message will look on a real phone before going live.',
                 ),
             ).toBeInTheDocument()
         })

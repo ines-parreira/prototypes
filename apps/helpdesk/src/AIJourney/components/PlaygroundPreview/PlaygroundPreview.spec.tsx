@@ -82,7 +82,7 @@ describe('PlaygroundPreview', () => {
             </QueryClientProvider>,
         )
         const previewBody = document.querySelector(
-            '.previewBody',
+            '.messagesContainer',
         ) as HTMLDivElement
         Object.defineProperty(previewBody, 'scrollHeight', {
             value: 100,

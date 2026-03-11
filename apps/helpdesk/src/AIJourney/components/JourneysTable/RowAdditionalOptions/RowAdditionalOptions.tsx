@@ -18,7 +18,7 @@ import css from './RowAdditionalOptions.less'
 
 const Options = {
     Edit: 'edit',
-    Test: 'test',
+    Preview: 'preview',
     Activation: 'activation',
     Pause: 'pause',
     Play: 'play',
@@ -29,14 +29,14 @@ type Options = (typeof Options)[keyof typeof Options]
 export const CAMPAIGN_STATE_TO_FIELDS: Record<JourneyStatusEnum, Options[]> = {
     [JourneyStatusEnum.Active]: [
         Options.Edit,
-        Options.Test,
+        Options.Preview,
         Options.Activation,
         Options.Pause,
     ],
     [JourneyStatusEnum.Draft]: [Options.Edit],
     [JourneyStatusEnum.Paused]: [
         Options.Edit,
-        Options.Test,
+        Options.Preview,
         Options.Activation,
         Options.Play,
     ],
@@ -108,12 +108,12 @@ export const RowAdditionalOptions = ({
                         }),
                     )
                     break
-                case Options.Test:
+                case Options.Preview:
                     history.push(
                         getSetupStepPath({
                             shopName,
                             journeyType,
-                            stepName: STEPS_NAMES.TEST,
+                            stepName: STEPS_NAMES.PREVIEW,
                             journeyId,
                         }),
                     )
@@ -152,11 +152,11 @@ export const RowAdditionalOptions = ({
                             id: option,
                             name: 'Edit',
                         }
-                    case Options.Test:
+                    case Options.Preview:
                         return {
                             icon: 'list',
                             id: option,
-                            name: 'Test',
+                            name: 'Preview',
                         }
                     case Options.Activation:
                         return {

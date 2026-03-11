@@ -205,6 +205,33 @@ describe('useHandleSendTestSMS', () => {
             expect(mockTestSms).not.toHaveBeenCalled()
         })
 
+        it('should notify if phone number format is invalid', async () => {
+            const { result } = renderHook(
+                () =>
+                    useHandleSendTestSMS({
+                        ...hookParameters,
+                        testSmsNumber: 'not-a-phone-number',
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            await act(async () => {
+                await result.current.handleTestSms()
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: 'Invalid phone number format',
+                    status: NotificationStatus.Error,
+                }),
+            )
+            expect(mockTestSms).not.toHaveBeenCalled()
+        })
+
         it('should handle API errors gracefully', async () => {
             const testError = new Error('API Error')
             mockTestSms.mockRejectedValue(testError)

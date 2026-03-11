@@ -24,7 +24,7 @@ export const JourneyName = ({
 }: JourneyNameProps) => {
     return (
         <Link
-            to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup/${journeyId}`}
+            to={`/app/ai-journey/${storeName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/setup${journeyId ? `/${journeyId}` : ''}`}
         >
             <Text variant="bold" className={css.journeyNameLink}>
                 {name}

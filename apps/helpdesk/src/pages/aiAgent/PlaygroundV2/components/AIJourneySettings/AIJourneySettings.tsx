@@ -18,7 +18,7 @@ import {
 } from '@gorgias/axiom'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
+import { MAX_WAIT_TIME } from 'AIJourney/constants'
 import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
 import type {
     OrderStatus,
@@ -519,17 +519,15 @@ export const AIJourneySettings: React.FC = () => {
                             label="Wait time after trigger (in minutes)"
                             isInvalid={
                                 postPurchaseWaitInMinutes !== undefined &&
-                                postPurchaseWaitInMinutes >
-                                    POST_PURCHASE_MAX_WAIT_TIME
+                                postPurchaseWaitInMinutes > MAX_WAIT_TIME
                             }
                             minValue={0}
                             value={postPurchaseWaitInMinutes}
                             onChange={handlePostPurchaseWaitTimeField}
                             error={
                                 postPurchaseWaitInMinutes !== undefined &&
-                                postPurchaseWaitInMinutes >
-                                    POST_PURCHASE_MAX_WAIT_TIME
-                                    ? `Please enter wait time between 0 and ${POST_PURCHASE_MAX_WAIT_TIME} minutes (7 days)`
+                                postPurchaseWaitInMinutes > MAX_WAIT_TIME
+                                    ? `Please enter wait time between 0 and ${MAX_WAIT_TIME} minutes (7 days)`
                                     : undefined
                             }
                         />
@@ -548,15 +546,15 @@ export const AIJourneySettings: React.FC = () => {
                         label="Wait time before trigger (in minutes)"
                         isInvalid={
                             waitTimeMinutes !== undefined &&
-                            waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
+                            waitTimeMinutes > MAX_WAIT_TIME
                         }
                         minValue={0}
                         value={waitTimeMinutes}
                         onChange={handleWelcomeWaitTimeField}
                         error={
                             waitTimeMinutes !== undefined &&
-                            waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
-                                ? `Please enter wait time between 0 and ${POST_PURCHASE_MAX_WAIT_TIME} minutes (7 days)`
+                            waitTimeMinutes > MAX_WAIT_TIME
+                                ? `Please enter wait time between 0 and ${MAX_WAIT_TIME} minutes (7 days)`
                                 : undefined
                         }
                     />

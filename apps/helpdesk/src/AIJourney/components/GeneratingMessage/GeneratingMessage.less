@@ -1,13 +1,7 @@
-:local {
-    .container {
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-xs);
-    }
-
+.axiom :local {
     .messageBubble {
         border-radius: 16px 16px 16px 0;
-        background: #fff; // legacy
+        background: var(--elevation-neutral-default);
         box-shadow:
             0 1.448px 3.862px 0 rgba(0, 0, 0, 0.08),
             -0.966px -0.966px 0.483px 0 rgba(0, 0, 0, 0.12) inset;
@@ -16,21 +10,8 @@
     }
 
     .bottomMessage {
-        display: flex;
-        align-items: center;
-        gap: var(--layout-spacing-xxs);
         font-size: 10px;
         font-weight: 600;
-        color: var(--content-neutral-tertiary); // legacy
-    }
-}
-
-.axiom :local {
-    .messageBubble {
-        background: var(--elevation-neutral-default);
-    }
-
-    .bottomMessage {
         color: var(--content-neutral-tertiary);
     }
 }

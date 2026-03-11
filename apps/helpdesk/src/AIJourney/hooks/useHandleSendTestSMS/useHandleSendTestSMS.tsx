@@ -112,5 +112,6 @@ export const useHandleSendTestSMS = ({
 
     return {
         handleTestSms,
+        isLoading: testSms.isLoading,
     }
 }

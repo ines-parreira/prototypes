@@ -46,7 +46,7 @@ describe('<RowAdditionalOptions />', () => {
     const mockJourneyRowData: JourneyApiDTO = {
         id: 'journey-123',
         state: JourneyStatusEnum.Draft,
-        message_instructions: 'Test instructions',
+        message_instructions: 'Preview instructions',
         store_name: 'test-shop',
         type: JourneyTypeEnum.CartAbandoned,
         created_datetime: '2024-01-01T00:00:00Z',
@@ -58,7 +58,7 @@ describe('<RowAdditionalOptions />', () => {
     const mockCurrentIntegration = {
         id: 100,
         type: 'sms',
-        name: 'Test Integration',
+        name: 'Preview Integration',
     }
 
     beforeEach(() => {
@@ -95,7 +95,7 @@ describe('<RowAdditionalOptions />', () => {
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
         })
 
-        it('should show Edit, Test, Activation, and Pause options for Active state', async () => {
+        it('should show Edit, Preview, Activation, and Pause options for Active state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <RowAdditionalOptions
@@ -110,12 +110,12 @@ describe('<RowAdditionalOptions />', () => {
             await act(() => user.click(trigger))
 
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Test').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Preview').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Activation').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Pause').length).toBeGreaterThan(0)
         })
 
-        it('should show Edit, Test, Activation, and Play options for Paused state', async () => {
+        it('should show Edit, Preview, Activation, and Play options for Paused state', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <RowAdditionalOptions
@@ -130,7 +130,7 @@ describe('<RowAdditionalOptions />', () => {
             await act(() => user.click(trigger))
 
             expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
-            expect(screen.getAllByText('Test').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Preview').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Activation').length).toBeGreaterThan(0)
             expect(screen.getAllByText('Play').length).toBeGreaterThan(0)
         })
@@ -166,7 +166,7 @@ describe('<RowAdditionalOptions />', () => {
             )
         })
 
-        it('should navigate to test page when Test option is clicked', async () => {
+        it('should navigate to preview page when Preview option is clicked', async () => {
             const user = userEvent.setup()
             renderWithRouter(
                 <RowAdditionalOptions
@@ -180,7 +180,7 @@ describe('<RowAdditionalOptions />', () => {
             const trigger = screen.getByLabelText('Open options')
             await act(() => user.click(trigger))
 
-            const testOptions = screen.getAllByText('Test')
+            const testOptions = screen.getAllByText('Preview')
             const testListItem = testOptions.find(
                 (el) =>
                     el.closest('[role="option"]') ||
@@ -191,7 +191,7 @@ describe('<RowAdditionalOptions />', () => {
             }
 
             expect(mockHistoryPush).toHaveBeenCalledWith(
-                `/app/ai-journey/test-shop/cart-abandoned/${STEPS_NAMES.TEST}/journey-123`,
+                `/app/ai-journey/test-shop/cart-abandoned/${STEPS_NAMES.PREVIEW}/journey-123`,
             )
         })
 
@@ -252,7 +252,7 @@ describe('<RowAdditionalOptions />', () => {
 
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 journeyState: JourneyStatusEnum.Paused,
-                journeyMessageInstructions: 'Test instructions',
+                journeyMessageInstructions: 'Preview instructions',
             })
         })
 
@@ -282,7 +282,7 @@ describe('<RowAdditionalOptions />', () => {
 
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 journeyState: JourneyStatusEnum.Active,
-                journeyMessageInstructions: 'Test instructions',
+                journeyMessageInstructions: 'Preview instructions',
             })
         })
     })

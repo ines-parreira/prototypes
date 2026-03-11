@@ -1,231 +1,799 @@
-import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
-import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Controller, useFormContext } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
-import { IntegrationType } from '@gorgias/helpdesk-types'
+import { JourneyStatusEnum } from '@gorgias/convert-client'
 
-import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
-import { mockPhoneNumbers } from 'AIJourney/utils/test-fixtures/mockPhoneNumbers'
-import { appQueryClient } from 'api/queryClient'
-import { account } from 'fixtures/account'
-import useAllIntegrations from 'hooks/useAllIntegrations'
-import useAppSelector from 'hooks/useAppSelector'
-import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import {
+    JOURNEY_TYPES,
+    STEPS_NAMES,
+    UpdatableJourneyCampaignState,
+} from 'AIJourney/constants'
+import {
+    useJourneyCreateHandler,
+    useJourneyUpdateHandler,
+} from 'AIJourney/hooks'
+import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import { renderWithRouter } from 'utils/testing'
 
-import { Setup } from '../Setup/Setup'
 import { AiJourneyOnboarding } from './AiJourneyOnboarding'
+import type { StepComponentProps } from './AiJourneyOnboarding'
 
-const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
-    useParams: () => ({
-        shopName: 'shopify-store',
-    }),
+    useHistory: jest.fn(),
 }))
 
 jest.mock('AIJourney/providers', () => ({
-    ...jest.requireActual('AIJourney/providers'),
-    useIntegrations: jest.fn(),
-}))
-
-jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
-    JourneyProvider: ({ children }: { children: React.ReactNode }) => children,
     useJourneyContext: jest.fn(),
 }))
 
 jest.mock('AIJourney/hooks', () => ({
-    ...jest.requireActual('AIJourney/hooks'),
+    useJourneyCreateHandler: jest.fn(),
     useJourneyUpdateHandler: jest.fn(),
 }))
 
-const mockUseJourneyUpdateHandler = require('AIJourney/hooks')
-    .useJourneyUpdateHandler as jest.Mock
-
-jest.mock('AIJourney/queries', () => ({
-    ...jest.requireActual('AIJourney/queries'),
-    useJourneys: jest.fn(),
-    useCreateNewJourney: jest.fn(),
-    useJourneyData: jest.fn(),
-    useUpdateJourney: jest.fn(),
-    useSmsIntegrations: jest.fn(),
+jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
+    useCollapsibleColumn: jest.fn(),
 }))
 
-const mockUseJourneys = require('AIJourney/queries').useJourneys as jest.Mock
-const mockUseSmsIntegrations = require('AIJourney/queries')
-    .useSmsIntegrations as jest.Mock
-const mockUseJourneyConfiguration = require('AIJourney/queries')
-    .useJourneyData as jest.Mock
-const mockUseCreateNewJourney = require('AIJourney/queries')
-    .useCreateNewJourney as jest.Mock
-const mockUseUpdateJourney = require('AIJourney/queries')
-    .useUpdateJourney as jest.Mock
+const mockPush = jest.fn()
+const mockHandleCreate = jest.fn()
+const mockHandleUpdate = jest.fn()
+const mockSetIsCollapsibleColumnOpen = jest.fn()
 
-const mockUseIntegrations = require('AIJourney/providers')
-    .useIntegrations as jest.Mock
-const mockUseJourneyContext =
-    require('AIJourney/providers/JourneyProvider/JourneyProvider')
-        .useJourneyContext as jest.Mock
+const mockUseHistory = useHistory as jest.MockedFunction<typeof useHistory>
+const mockUseJourneyContext = useJourneyContext as jest.MockedFunction<
+    typeof useJourneyContext
+>
+const mockUseJourneyCreateHandler =
+    useJourneyCreateHandler as jest.MockedFunction<
+        typeof useJourneyCreateHandler
+    >
+const mockUseJourneyUpdateHandler =
+    useJourneyUpdateHandler as jest.MockedFunction<
+        typeof useJourneyUpdateHandler
+    >
+const mockUseCollapsibleColumn = useCollapsibleColumn as jest.MockedFunction<
+    typeof useCollapsibleColumn
+>
 
-jest.mock('hooks/useAppSelector', () => jest.fn())
-const mockUseAppSelector = useAppSelector as jest.Mock
+const MockStepComponent = ({ journeyType }: StepComponentProps) => {
+    const { control } = useFormContext<SetupFormValues>()
 
-jest.mock('hooks/useAllIntegrations', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
+    return (
+        <Controller
+            name="sms_sender_integration_id"
+            control={control}
+            defaultValue={{ id: 123, label: '+1234567890' }}
+            render={() => <div>Step content for {journeyType}</div>}
+        />
+    )
+}
 
-jest.mock('pages/aiAgent/hooks/useStoreConfiguration', () => ({
-    useStoreConfiguration: jest.fn(),
-}))
-
-const mockUseStoreConfiguration = useStoreConfiguration as jest.Mock
-
-;(useAllIntegrations as jest.Mock).mockReturnValue({
-    integrations: [
-        {
-            id: 1,
-            type: IntegrationType.Shopify,
-            name: 'shopify-store',
-            meta: { shop_name: 'shopify-store' },
-        },
-    ],
+const defaultContextValue = {
+    currentIntegration: { id: 1, name: 'test-shop' },
+    journeyData: undefined,
+    shopName: 'test-shop',
+    journeys: [],
+    campaigns: [],
+    currency: 'USD',
     isLoading: false,
-})
+    isLoadingJourneys: false,
+    isLoadingJourneyData: false,
+    isLoadingIntegrations: false,
+    journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+    storeConfiguration: undefined,
+}
+
+const renderComponent = (
+    props: Partial<{
+        journeyType: JOURNEY_TYPES
+        step: string
+        stepComponent: React.ComponentType<StepComponentProps>
+    }> = {},
+) => {
+    const user = userEvent.setup()
+
+    const defaultProps = {
+        journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+        step: STEPS_NAMES.SETUP,
+        stepComponent: MockStepComponent,
+    }
+
+    const result = renderWithRouter(
+        <AiJourneyOnboarding {...defaultProps} {...props} />,
+    )
+
+    return { ...result, user }
+}
 
 describe('<AiJourneyOnboarding />', () => {
-    const mockHandleUpdate = jest.fn()
-    const mockStore = configureMockStore([thunk])({
-        currentAccount: fromJS(account),
-    })
-
     beforeEach(() => {
+        mockPush.mockReset()
+        mockHandleCreate.mockReset()
+        mockHandleUpdate.mockReset()
+        mockSetIsCollapsibleColumnOpen.mockReset()
+
+        mockUseHistory.mockReturnValue({ push: mockPush } as any)
+        mockUseJourneyContext.mockReturnValue(defaultContextValue as any)
+        mockUseJourneyCreateHandler.mockReturnValue({
+            handleCreate: mockHandleCreate.mockResolvedValue({
+                id: 'new-journey-id',
+            }),
+            isLoading: false,
+            isSuccess: false,
+        })
+        mockUseJourneyUpdateHandler.mockReturnValue({
+            handleUpdate: mockHandleUpdate.mockResolvedValue(undefined),
+            isLoading: false,
+            isSuccess: false,
+        })
+        mockUseCollapsibleColumn.mockReturnValue({
+            setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
+        } as any)
+    })
+
+    afterEach(() => {
         jest.clearAllMocks()
+    })
 
-        mockUseJourneyContext.mockReturnValue({
-            journey: undefined,
-            journeyData: undefined,
-            currentIntegration: { id: 1, name: 'shopify-store' },
-            shopName: 'shopify-store',
-            isLoading: false,
-            journeyType: 'cart_abandoned',
-            storeConfiguration: {
-                monitoredSmsIntegrations: [1, 2],
+    describe('title mapping', () => {
+        it.each([
+            [JOURNEY_TYPES.WELCOME, 'Welcome flow'],
+            [JOURNEY_TYPES.POST_PURCHASE, 'Post-purchase flow'],
+            [JOURNEY_TYPES.CART_ABANDONMENT, 'SMS cart abandoned flow'],
+            [JOURNEY_TYPES.SESSION_ABANDONMENT, 'SMS browse abandoned flow'],
+            [JOURNEY_TYPES.WIN_BACK, 'Customer win-back flow'],
+        ])(
+            'renders correct title for %s journey type',
+            (journeyType, expectedTitle) => {
+                renderComponent({ journeyType })
+
+                expect(screen.getByText(expectedTitle)).toBeInTheDocument()
             },
-        })
+        )
 
-        mockUseJourneyUpdateHandler.mockImplementation(() => ({
-            handleUpdate: mockHandleUpdate,
-        }))
-        const mockCreateJourneyMutateAsync = jest.fn().mockResolvedValue({})
-        const mockUpdateMutateAsync = jest.fn().mockResolvedValue({})
-
-        mockUseJourneys.mockImplementation(() => ({
-            data: [],
-            isError: false,
-            isLoading: false,
-        }))
-
-        mockUseIntegrations.mockImplementation(() => ({
-            integrations: [{ id: 1, name: 'shopify-store' }],
-            isLoading: false,
-        }))
-
-        mockUseAppSelector.mockImplementation((selector) => {
-            if (selector.name === 'getCurrentAccountState') {
-                return fromJS(account)
-            }
-            // Default to phone numbers for getNewPhoneNumbers selector
-            return {
-                '1': mockPhoneNumbers['1'],
-                '2': {
-                    ...mockPhoneNumbers['2'],
-                    name: 'Regular Phone 2',
+        it('renders campaign title from journey data when available', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: { title: 'Summer Sale' },
                 },
-            }
+            } as any)
+
+            renderComponent({ journeyType: JOURNEY_TYPES.CAMPAIGN })
+
+            expect(screen.getByText('Summer Sale')).toBeInTheDocument()
         })
 
-        mockUseSmsIntegrations.mockReturnValue({
-            data: [
-                { sms_integration_id: 1, store_integration_id: 1 },
-                { sms_integration_id: 2, store_integration_id: 2 },
-            ],
-            isLoading: false,
-            error: null,
+        it('renders default campaign title when no journey data', () => {
+            renderComponent({ journeyType: JOURNEY_TYPES.CAMPAIGN })
+
+            expect(screen.getByText('Create new campaign')).toBeInTheDocument()
         })
-
-        mockUseStoreConfiguration.mockReturnValue({
-            storeConfiguration: {
-                monitoredSmsIntegrations: [1, 2],
-            },
-            isLoading: false,
-        })
-
-        mockUseJourneyConfiguration.mockImplementation(() => ({
-            data: {
-                max_follow_up_messages: 3,
-                offer_discount: true,
-                max_discount_percent: 20,
-                sms_sender_number: '415-111-111',
-                sms_sender_integration_id: 1,
-            },
-            isError: false,
-            isLoading: false,
-        }))
-
-        mockUseCreateNewJourney.mockImplementation(() => ({
-            mutateAsync: mockCreateJourneyMutateAsync,
-            isError: false,
-            isLoading: false,
-        }))
-
-        mockUseUpdateJourney.mockImplementation(() => ({
-            mutateAsync: mockUpdateMutateAsync,
-            isError: false,
-            isLoading: false,
-        }))
     })
 
-    it('should render 3 steps correctly', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <AiJourneyOnboarding
-                        journeyType={JOURNEY_TYPES.CART_ABANDONMENT}
-                        step={STEPS_NAMES.SETUP}
-                        stepComponent={Setup}
-                    />
-                </QueryClientProvider>
-            </Provider>,
-        )
-        expect(screen.getByText('SMS Cart Abandoned flow')).toBeInTheDocument()
+    describe('step component rendering', () => {
+        it('renders the step component with the correct journey type', () => {
+            renderComponent({ journeyType: JOURNEY_TYPES.WELCOME })
 
-        expect(screen.getByText('Setup')).toBeInTheDocument()
-        expect(screen.getByText('Test')).toBeInTheDocument()
-        expect(screen.getByText('Activate')).toBeInTheDocument()
+            expect(
+                screen.getByText(`Step content for ${JOURNEY_TYPES.WELCOME}`),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should render browse abandoned title when joruneyType is session-abandoned', () => {
-        renderWithRouter(
-            <Provider store={mockStore}>
-                <QueryClientProvider client={appQueryClient}>
-                    <AiJourneyOnboarding
-                        journeyType={JOURNEY_TYPES.SESSION_ABANDONMENT}
-                        step={STEPS_NAMES.SETUP}
-                        stepComponent={Setup}
-                    />
-                </QueryClientProvider>
-            </Provider>,
-        )
+    describe('cancel button', () => {
+        it('navigates to flows page for non-campaign journey types', async () => {
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /cancel/i }),
+                    ),
+            )
 
-        expect(
-            screen.getByText('SMS Browse Abandoned flow'),
-        ).toBeInTheDocument()
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/flows',
+            )
+        })
+
+        it('navigates to campaigns page for campaign journey type', async () => {
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /cancel/i }),
+                    ),
+            )
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/campaigns',
+            )
+        })
+    })
+
+    describe('continue button disabled state', () => {
+        it('disables the continue button when create is loading', () => {
+            mockUseJourneyCreateHandler.mockReturnValue({
+                handleCreate: mockHandleCreate,
+                isLoading: true,
+                isSuccess: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).toBeDisabled()
+        })
+
+        it('disables the continue button when update is loading', () => {
+            mockUseJourneyUpdateHandler.mockReturnValue({
+                handleUpdate: mockHandleUpdate,
+                isLoading: true,
+                isSuccess: false,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).toBeDisabled()
+        })
+
+        it('enables the continue button when neither create nor update is loading', () => {
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).not.toBeDisabled()
+        })
+    })
+
+    describe('primary button label', () => {
+        it('shows "Continue" on setup step', () => {
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: 'Continue' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Continue" on preview step', () => {
+            renderComponent({ step: STEPS_NAMES.PREVIEW })
+
+            expect(
+                screen.getByRole('button', { name: 'Continue' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Activate flow" on activate step for a non-campaign journey', () => {
+            renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Activate flow' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Activate campaign" on activate step for a campaign journey', () => {
+            renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            expect(
+                screen.getByRole('button', { name: 'Activate campaign' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('secondary button label', () => {
+        it('shows "Cancel" on setup step', () => {
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: 'Cancel' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Back" on preview step', () => {
+            renderComponent({ step: STEPS_NAMES.PREVIEW })
+
+            expect(
+                screen.getByRole('button', { name: 'Back' }),
+            ).toBeInTheDocument()
+        })
+
+        it('shows "Back" on activate step', () => {
+            renderComponent({ step: STEPS_NAMES.ACTIVATE })
+
+            expect(
+                screen.getByRole('button', { name: 'Back' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('form submission - create path', () => {
+        it('calls handleCreate when no journey id exists', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalled()
+            })
+        })
+
+        it('navigates to preview step with new journey id after creation', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/cart-abandoned/preview/new-journey-id',
+                )
+            })
+        })
+
+        it('passes correct form data to handleCreate', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        phoneNumberIntegrationId: 123,
+                        phoneNumber: '+1234567890',
+                        followUpValue: 0,
+                        includeImage: false,
+                    }),
+                )
+            })
+        })
+    })
+
+    describe('form submission - update path', () => {
+        it('calls handleUpdate when journey data with id exists', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+        })
+
+        it('navigates to preview step with existing journey id after update', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/cart-abandoned/preview/existing-journey-id',
+                )
+            })
+        })
+
+        it('passes correct form data to handleUpdate', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        phoneNumberIntegrationId: 123,
+                        phoneNumber: '+1234567890',
+                        followUpValue: 0,
+                        includeImage: false,
+                    }),
+                )
+            })
+        })
+
+        it('does not call handleCreate when journey id exists', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+            expect(mockHandleCreate).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('form submission - preview step', () => {
+        it('calls setIsCollapsibleColumnOpen(false) when submitting from preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(
+                    false,
+                )
+            })
+        })
+
+        it('calls handleUpdate with only journeyMessageInstructions on preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    journeyMessageInstructions: '',
+                })
+            })
+        })
+
+        it('navigates to activate step after submitting from preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/cart-abandoned/activate/journey-123',
+                )
+            })
+        })
+
+        it('does not call handleCreate on preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+            expect(mockHandleCreate).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('form submission - activate step', () => {
+        it('calls handleUpdate with journeyState Active for a flow', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /activate flow/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    journeyState: JourneyStatusEnum.Active,
+                })
+            })
+        })
+
+        it('calls handleUpdate with campaignState draft for a campaign', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: { title: 'Summer Sale' },
+                },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /activate campaign/i,
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith({
+                    campaignState: UpdatableJourneyCampaignState.Draft,
+                })
+            })
+        })
+
+        it('navigates to flows page after activating a flow', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /activate flow/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/flows',
+                )
+            })
+        })
+
+        it('navigates to campaigns page after activating a campaign', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: {
+                    id: 'journey-123',
+                    campaign: { title: 'Summer Sale' },
+                },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', {
+                            name: /activate campaign/i,
+                        }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-journey/test-shop/campaigns',
+                )
+            })
+        })
+    })
+
+    describe('return button navigation', () => {
+        it('navigates to previous step when journeyId exists on preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /back/i }),
+                    ),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/cart-abandoned/setup/journey-123',
+            )
+        })
+
+        it('navigates to previous step when journeyId exists on activate step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.ACTIVATE,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /back/i }),
+                    ),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/cart-abandoned/preview/journey-123',
+            )
+        })
+
+        it('calls setIsCollapsibleColumnOpen(false) when clicking return on preview step', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /back/i }),
+                    ),
+            )
+
+            expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
+        })
+
+        it('navigates to flows page when no journeyId on preview step', async () => {
+            const { user } = renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /back/i }),
+                    ),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/flows',
+            )
+        })
     })
 })

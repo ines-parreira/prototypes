@@ -495,7 +495,7 @@ describe('<CampaignsView/>', () => {
             })
         })
 
-        it.only('should display the upsell banner for Shopify non-subscribers', () => {
+        it('should display the upsell banner for Shopify non-subscribers', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
 
             const { getByText } = renderComponent(stateWithShopifyIntegration)

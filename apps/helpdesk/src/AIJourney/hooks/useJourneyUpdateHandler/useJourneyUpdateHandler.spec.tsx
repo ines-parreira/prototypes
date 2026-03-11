@@ -1,501 +1,574 @@
-import type React from 'react'
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
-
-import { JourneyStatusEnum } from '@gorgias/convert-client'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { useUpdateJourney } from 'AIJourney/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { IntegrationType } from 'models/integration/constants'
-import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { useJourneyUpdateHandler } from './useUpdateJourneyHandler'
 
-jest.mock('AIJourney/queries')
-jest.mock('hooks/useAppDispatch')
-jest.mock('state/notifications/actions')
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn(),
+}))
 
-const mockUseUpdateJourney = useUpdateJourney as jest.MockedFunction<
-    typeof useUpdateJourney
->
-const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
-    typeof useAppDispatch
->
-const mockNotify = notify as jest.MockedFunction<typeof notify>
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
+jest.mock('AIJourney/queries', () => ({
+    useUpdateJourney: jest.fn(),
+}))
+
+jest.mock('@tanstack/react-query', () => ({
+    ...jest.requireActual('@tanstack/react-query'),
+    useQueryClient: jest.fn(),
+}))
+
+const mockUseAppDispatch = jest.mocked(useAppDispatch)
+const mockUseUpdateJourney = jest.mocked(useUpdateJourney)
+const mockUseQueryClient = require('@tanstack/react-query')
+    .useQueryClient as jest.Mock
 
 describe('useJourneyUpdateHandler', () => {
-    let queryClient: QueryClient
-    let mockDispatch: jest.Mock
-    let mockMutateAsync: jest.Mock
-    let mockUpdateJourney: {
-        mutateAsync: jest.Mock
-        isLoading: boolean
-        isSuccess: boolean
+    const mockDispatch = jest.fn()
+    const mockMutateAsync = jest.fn()
+    const mockInvalidateQueries = jest.fn()
+    const mockStore = configureMockStore([thunk])()
+
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+        <Provider store={mockStore}>{children}</Provider>
+    )
+
+    const defaultHookParams = {
+        integrationId: 1,
+        journeyId: 'journey-123',
     }
 
-    const mockPhoneNumber: NewPhoneNumber = {
-        phone_number: '+1234567890',
-        integrations: [
-            { id: 123, type: IntegrationType.Sms, name: 'SMS Integration' },
-            {
-                id: 456,
-                type: IntegrationType.Aircall,
-                name: 'Aircall Integration',
-            },
-        ],
-    } as NewPhoneNumber
-
     beforeEach(() => {
-        queryClient = new QueryClient({
-            defaultOptions: { queries: { retry: false } },
-        })
-        mockDispatch = jest.fn()
-        mockMutateAsync = jest.fn()
-        mockUpdateJourney = {
+        jest.clearAllMocks()
+
+        mockUseAppDispatch.mockReturnValue(mockDispatch)
+
+        mockUseUpdateJourney.mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
             isSuccess: false,
-        }
+        } as unknown as ReturnType<typeof useUpdateJourney>)
 
-        mockUseAppDispatch.mockReturnValue(mockDispatch)
-        mockUseUpdateJourney.mockReturnValue(mockUpdateJourney as any)
-        mockNotify.mockReturnValue(() => Promise.resolve())
+        mockUseQueryClient.mockReturnValue({
+            invalidateQueries: mockInvalidateQueries,
+        })
 
-        jest.spyOn(queryClient, 'invalidateQueries').mockResolvedValue(
-            undefined,
-        )
+        mockMutateAsync.mockResolvedValue({ id: 'journey-123' })
+        mockInvalidateQueries.mockResolvedValue(undefined)
     })
 
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
-
-    const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
-    )
-
-    describe('handleUpdate', () => {
-        it('should successfully update journey with all parameters', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
+    describe('guard conditions', () => {
+        it('should throw and dispatch error when integrationId is missing', async () => {
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler({ journeyId: 'journey-123' }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await expect(result.current.handleUpdate({})).rejects.toThrow(
+                    'Missing integration',
+                )
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message:
+                        'Error updating journey: Error: Missing integration',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
+
+        it('should throw and dispatch error when both journeyId and id are missing', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler({ integrationId: 1 }),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await expect(result.current.handleUpdate({})).rejects.toThrow(
+                    'Missing journey',
+                )
+            })
+
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: 'Error updating journey: Error: Missing journey',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        })
+    })
+
+    describe('successful update', () => {
+        it('should call mutateAsync with journeyId from hook params', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             await act(async () => {
                 await result.current.handleUpdate({
-                    discountCodeThresholdValue: 2,
-                    discountValue: '10',
-                    followUpValue: 3,
+                    followUpValue: 2,
+                    phoneNumberIntegrationId: 42,
+                    phoneNumber: '+1 555-000-0000',
                     includeImage: true,
-                    isDiscountEnabled: true,
-                    journeyMessageInstructions: 'Custom instructions',
-                    journeyState: JourneyStatusEnum.Active,
-                    phoneNumberValue: mockPhoneNumber,
-                    uploadedImageAttachment: [
-                        {
-                            url: 'image_url',
-                            name: 'image_name',
-                            content_type: 'content_type',
-                        },
-                    ],
                 })
             })
 
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                journeyId: 'journey-123',
-                params: {
-                    state: JourneyStatusEnum.Active,
-                    message_instructions: 'Custom instructions',
-                    included_audience_list_ids: undefined,
-                    excluded_audience_list_ids: undefined,
-                    campaign: undefined,
-                },
-                journeyConfigs: {
-                    max_follow_up_messages: 3,
-                    offer_discount: true,
-                    max_discount_percent: 10,
-                    sms_sender_integration_id: 123,
-                    sms_sender_number: '+1234567890',
-                    discount_code_message_threshold: 2,
-                    include_image: true,
-                    media_urls: [
-                        {
-                            url: 'image_url',
-                            name: 'image_name',
-                            content_type: 'content_type',
-                        },
-                    ],
-                },
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({ journeyId: 'journey-123' }),
+            )
+        })
+
+        it('should use id param over journeyId from hook when id is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ id: 'override-id' })
             })
 
-            expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
-                queryKey: ['journeys'],
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({ journeyId: 'override-id' }),
+            )
+        })
+
+        it('should invalidate queries after successful update', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
             })
+
+            expect(mockInvalidateQueries).toHaveBeenCalledWith(
+                expect.objectContaining({ queryKey: ['journeys'] }),
+            )
+        })
+
+        it('should return the mutation result', async () => {
+            const mutationResult = { id: 'journey-123', state: 'active' }
+            mockMutateAsync.mockResolvedValue(mutationResult)
+
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            let returnValue: unknown
+            await act(async () => {
+                returnValue = await result.current.handleUpdate({
+                    followUpValue: 1,
+                })
+            })
+
+            expect(returnValue).toEqual(mutationResult)
+        })
+
+        it('should not dispatch error notification on success', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
             expect(mockDispatch).not.toHaveBeenCalled()
         })
+    })
 
-        it('should handle journey update without config parameters', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
+    describe('error handling', () => {
+        it('should dispatch error notification and re-throw when mutation fails', async () => {
+            const mutationError = new Error('Mutation failed')
+            mockMutateAsync.mockRejectedValue(mutationError)
 
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             await act(async () => {
-                await result.current.handleUpdate({
-                    journeyState: JourneyStatusEnum.Paused,
-                })
+                await expect(
+                    result.current.handleUpdate({ followUpValue: 1 }),
+                ).rejects.toThrow('Mutation failed')
             })
 
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                journeyId: 'journey-123',
-                params: {
-                    state: JourneyStatusEnum.Paused,
-                    message_instructions: undefined,
-                    included_audience_list_ids: undefined,
-                    excluded_audience_list_ids: undefined,
-                    campaign: undefined,
-                },
-            })
-        })
-
-        it('should handle null message instructions', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await result.current.handleUpdate({
-                    journeyMessageInstructions: null,
-                    journeyState: JourneyStatusEnum.Active,
-                })
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    params: expect.objectContaining({
-                        message_instructions: null,
-                    }),
+            expect(mockDispatch).toHaveBeenCalledWith(
+                notify({
+                    message: `Error updating journey: ${mutationError}`,
+                    status: NotificationStatus.Error,
                 }),
             )
         })
+    })
 
-        it('should handle phone number without SMS integration', async () => {
-            const phoneNumberWithoutSms: NewPhoneNumber = {
-                phone_number: '+1234567890',
-                integrations: [
-                    {
-                        id: 456,
-                        type: IntegrationType.Aircall,
-                        name: 'Aircall Integration',
-                    },
-                ],
-            } as NewPhoneNumber
-
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
+    describe('journey config building', () => {
+        it('should convert discountValue to Number when truthy', async () => {
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             await act(async () => {
                 await result.current.handleUpdate({
-                    followUpValue: 3,
+                    discountValue: 15,
                     isDiscountEnabled: true,
-                    journeyState: JourneyStatusEnum.Active,
-                    phoneNumberValue: phoneNumberWithoutSms,
                 })
             })
 
             expect(mockMutateAsync).toHaveBeenCalledWith(
                 expect.objectContaining({
                     journeyConfigs: expect.objectContaining({
-                        sms_sender_integration_id: undefined,
-                        sms_sender_number: '+1234567890',
+                        max_discount_percent: 15,
                     }),
                 }),
             )
         })
 
-        it('should handle discount value as string and convert to number', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
+        it('should set max_discount_percent to undefined when discountValue is 0', async () => {
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             await act(async () => {
                 await result.current.handleUpdate({
-                    discountValue: '25',
-                    isDiscountEnabled: true,
-                    journeyState: JourneyStatusEnum.Active,
+                    discountValue: 0,
+                    followUpValue: 1,
                 })
             })
 
             expect(mockMutateAsync).toHaveBeenCalledWith(
                 expect.objectContaining({
                     journeyConfigs: expect.objectContaining({
-                        max_discount_percent: 25,
-                    }),
-                }),
-            )
-        })
-
-        it('should set max_discount_percent to undefined when discount value is empty string', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await result.current.handleUpdate({
-                    discountValue: '',
-                    journeyState: JourneyStatusEnum.Active,
-                })
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith({
-                journeyId: 'journey-123',
-                params: {
-                    state: JourneyStatusEnum.Active,
-                    message_instructions: undefined,
-                    included_audience_list_ids: undefined,
-                    excluded_audience_list_ids: undefined,
-                    campaign: undefined,
-                },
-            })
-        })
-
-        it('should set max_discount_percent to undefined when discount value is not provided', async () => {
-            const mockResponse = { id: 'journey-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await result.current.handleUpdate({
-                    isDiscountEnabled: true,
-                    journeyState: JourneyStatusEnum.Active,
-                })
-            })
-
-            expect(mockMutateAsync).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    journeyConfigs: expect.objectContaining({
-                        offer_discount: true,
                         max_discount_percent: undefined,
                     }),
                 }),
             )
         })
 
-        it('should use id parameter over journeyId from hook', async () => {
-            const mockResponse = { id: 'override-123', updated: true }
-            mockMutateAsync.mockResolvedValue(mockResponse)
-
+        it('should include campaign object when campaignTitle is provided', async () => {
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             await act(async () => {
                 await result.current.handleUpdate({
-                    id: 'override-123',
-                    journeyState: JourneyStatusEnum.Active,
+                    campaignTitle: 'Summer Sale',
                 })
             })
 
             expect(mockMutateAsync).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    journeyId: 'override-123',
+                    params: expect.objectContaining({
+                        campaign: { title: 'Summer Sale', state: undefined },
+                    }),
                 }),
+            )
+        })
+
+        it('should include campaign object when campaignState is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    campaignState: 'sent' as any,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({
+                        campaign: { title: undefined, state: 'sent' },
+                    }),
+                }),
+            )
+        })
+
+        it('should set campaign to undefined when neither campaignTitle nor campaignState are provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    params: expect.objectContaining({ campaign: undefined }),
+                }),
+            )
+        })
+
+        it('should not include journeyConfigs when all config values are undefined', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({})
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody).not.toHaveProperty('journeyConfigs')
+        })
+
+        it('should include journeyConfigs when at least one config value is defined', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody).toHaveProperty('journeyConfigs')
+        })
+    })
+
+    describe('optional configs', () => {
+        it('should include inactive_days when inactiveDays is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    inactiveDays: 30,
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        inactive_days: 30,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include inactive_days when inactiveDays is not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'inactive_days',
+            )
+        })
+
+        it('should include cooldown_days when cooldownDays is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    cooldownDays: 7,
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        cooldown_days: 7,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include cooldown_days when cooldownDays is not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'cooldown_days',
+            )
+        })
+
+        it('should include wait_time_minutes when waitTimeMinutes is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    waitTimeMinutes: 60,
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        wait_time_minutes: 60,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include wait_time_minutes when waitTimeMinutes is not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'wait_time_minutes',
+            )
+        })
+
+        it('should include post_purchase_wait_minutes when postPurchaseWaitMinutes is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    postPurchaseWaitMinutes: 120,
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        post_purchase_wait_minutes: 120,
+                    }),
+                }),
+            )
+        })
+
+        it('should not include post_purchase_wait_minutes when postPurchaseWaitMinutes is not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'post_purchase_wait_minutes',
+            )
+        })
+
+        it('should include target_order_status when targetOrderStatus is provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({
+                    targetOrderStatus: 'order_placed',
+                    followUpValue: 1,
+                })
+            })
+
+            expect(mockMutateAsync).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    journeyConfigs: expect.objectContaining({
+                        target_order_status: 'order_placed',
+                    }),
+                }),
+            )
+        })
+
+        it('should not include target_order_status when not provided', async () => {
+            const { result } = renderHook(
+                () => useJourneyUpdateHandler(defaultHookParams),
+                { wrapper },
+            )
+
+            await act(async () => {
+                await result.current.handleUpdate({ followUpValue: 1 })
+            })
+
+            const requestBody = mockMutateAsync.mock.calls[0][0]
+            expect(requestBody.journeyConfigs).not.toHaveProperty(
+                'target_order_status',
             )
         })
     })
 
-    describe('error handling', () => {
-        it('should throw error when integrationId is missing and phoneNumberValue is provided', async () => {
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: undefined,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await expect(
-                    result.current.handleUpdate({
-                        journeyState: JourneyStatusEnum.Active,
-                        phoneNumberValue: mockPhoneNumber,
-                    }),
-                ).rejects.toThrow('Missing integration')
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message: expect.stringContaining('Error updating journey:'),
-                    status: NotificationStatus.Error,
-                }),
-            )
-        })
-
-        it('should throw error when journey id is missing', async () => {
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: undefined,
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await expect(
-                    result.current.handleUpdate({
-                        journeyState: JourneyStatusEnum.Active,
-                    }),
-                ).rejects.toThrow('Missing journey')
-            })
-        })
-
-        it('should throw error when journey id is empty string', async () => {
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: '',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await expect(
-                    result.current.handleUpdate({
-                        journeyState: JourneyStatusEnum.Active,
-                    }),
-                ).rejects.toThrow('Missing journey')
-            })
-        })
-
-        it('should handle API errors and dispatch notification', async () => {
-            const apiError = new Error('API request failed')
-            mockMutateAsync.mockRejectedValue(apiError)
+    describe('return values', () => {
+        it('should return isLoading true when mutation is in flight', () => {
+            mockUseUpdateJourney.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                isLoading: true,
+                isSuccess: false,
+            } as unknown as ReturnType<typeof useUpdateJourney>)
 
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
-                { wrapper },
-            )
-
-            await act(async () => {
-                await expect(
-                    result.current.handleUpdate({
-                        journeyState: JourneyStatusEnum.Active,
-                    }),
-                ).rejects.toThrow('API request failed')
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(
-                notify({
-                    message:
-                        'Error updating journey: Error: API request failed',
-                    status: NotificationStatus.Error,
-                }),
-            )
-        })
-    })
-
-    describe('loading and success states', () => {
-        it('should return loading state from useUpdateJourney', () => {
-            mockUpdateJourney.isLoading = true
-
-            const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
             expect(result.current.isLoading).toBe(true)
-            expect(result.current.isSuccess).toBe(false)
         })
 
-        it('should return success state from useUpdateJourney', () => {
-            mockUpdateJourney.isSuccess = true
+        it('should return isSuccess true when mutation has completed', () => {
+            mockUseUpdateJourney.mockReturnValue({
+                mutateAsync: mockMutateAsync,
+                isLoading: false,
+                isSuccess: true,
+            } as unknown as ReturnType<typeof useUpdateJourney>)
 
             const { result } = renderHook(
-                () =>
-                    useJourneyUpdateHandler({
-                        integrationId: 100,
-                        journeyId: 'journey-123',
-                    }),
+                () => useJourneyUpdateHandler(defaultHookParams),
                 { wrapper },
             )
 
-            expect(result.current.isLoading).toBe(false)
             expect(result.current.isSuccess).toBe(true)
         })
     })

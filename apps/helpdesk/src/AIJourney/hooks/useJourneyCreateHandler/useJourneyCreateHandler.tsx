@@ -2,13 +2,12 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
 import type { JOURNEY_TYPES } from 'AIJourney/constants'
 import { JOURNEY_TYPE_MAP_FROM_URL } from 'AIJourney/constants'
-import type { UploadedImageAttachment } from 'AIJourney/pages/Setup/fields/UploadImage/UploadImage'
 import { useCreateNewJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -20,14 +19,15 @@ type UseJourneyCreateHandlerParams = {
 
 type HandleCreateParams = {
     campaignTitle?: string
-    discountCodeThresholdValue?: number
-    discountValue?: string
+    discountCodeThresholdValue?: number | null
+    discountValue?: number | null
     excludedAudienceListIds?: string[]
-    followUpValue?: number
+    followUpValue?: number | null
     includedAudienceListIds?: string[]
     includeImage?: boolean
     isDiscountEnabled?: boolean
-    phoneNumberValue?: NewPhoneNumber
+    phoneNumberIntegrationId?: number | null | undefined
+    phoneNumber?: string | null | undefined
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
@@ -55,7 +55,8 @@ export const useJourneyCreateHandler = ({
             includedAudienceListIds,
             includeImage,
             isDiscountEnabled,
-            phoneNumberValue,
+            phoneNumberIntegrationId,
+            phoneNumber,
             inactiveDays,
             cooldownDays,
             waitTimeMinutes,
@@ -76,11 +77,8 @@ export const useJourneyCreateHandler = ({
                     max_discount_percent: discountValue
                         ? Number(discountValue)
                         : undefined,
-                    sms_sender_integration_id:
-                        phoneNumberValue?.integrations.find(
-                            (integration) => integration.type === 'sms',
-                        )?.id,
-                    sms_sender_number: phoneNumberValue?.phone_number,
+                    sms_sender_integration_id: phoneNumberIntegrationId,
+                    sms_sender_number: phoneNumber,
                     discount_code_message_threshold: isDiscountEnabled
                         ? discountCodeThresholdValue
                         : undefined,

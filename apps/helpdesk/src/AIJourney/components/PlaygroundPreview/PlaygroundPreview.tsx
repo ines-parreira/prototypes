@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react'
 
+import { Box, Button, Card, Heading, Separator, Size } from '@gorgias/axiom'
 import type { AttachmentDTO } from '@gorgias/convert-client'
 
+import { PlaygroundPreviewAttachedImage } from 'AIJourney/components/PlaygroundPreviewAttachedImage/PlaygroundPreviewAttachedImage'
+import { PlaygroundPreviewMessagePlaceholder } from 'AIJourney/components/PlaygroundPreviewMessagePlaceholder/PlaygroundPreviewMessagePlaceholder'
 import { highlightFakeLinks } from 'AIJourney/utils/highlightFakeLinks/highlightFakeLinks'
 import type { Image } from 'constants/integrations/types/shopify'
 
@@ -17,6 +20,7 @@ type PlaygroundPreviewProps = {
     selectedProductImage?: Maybe<Image>
     isCampaign?: boolean
     campaignImage?: AttachmentDTO
+    onGenerateMessages?: () => void
 }
 
 export const PlaygroundPreview = ({
@@ -26,6 +30,7 @@ export const PlaygroundPreview = ({
     selectedProductImage,
     isCampaign,
     campaignImage,
+    onGenerateMessages,
 }: PlaygroundPreviewProps) => {
     const previewBodyRef = useRef<HTMLDivElement>(null)
 
@@ -33,6 +38,9 @@ export const PlaygroundPreview = ({
         !isCampaign && includeImage && !!selectedProductImage?.src
     const shouldIncludeCampaignImage =
         isCampaign && campaignImage && !!campaignImage?.url
+
+    const shouldRenderMessagePlaceholder =
+        !isGeneratingMessages && (!content || content.length === 0)
 
     useEffect(() => {
         if (previewBodyRef.current) {
@@ -42,57 +50,93 @@ export const PlaygroundPreview = ({
     }, [content])
 
     return (
-        <div className={css.previewContainer}>
-            <PlaygroundPreviewHeader />
-            <div className={css.previewBody} ref={previewBodyRef}>
-                {!isGeneratingMessages &&
-                    (!content || content.length === 0) && (
-                        <div className={css.messageBubble}>
-                            <i
-                                className="material-icons-outlined"
-                                style={{ marginRight: '6px' }}
+        <Box flexDirection="column" flex={1}>
+            <Box flexDirection="column" width="100%">
+                <Box padding={Size.Md}>
+                    <Heading>Message preview</Heading>
+                </Box>
+                <Separator />
+            </Box>
+            <Box
+                flexDirection="column"
+                alignItems="center"
+                paddingLeft={Size.Md}
+                paddingRight={Size.Md}
+                paddingTop={Size.Lg}
+                paddingBottom={Size.Lg}
+                gap={Size.Lg}
+                flex={1}
+            >
+                <Card
+                    width="100%"
+                    flex={1}
+                    flexDirection="column"
+                    alignItems="center"
+                    padding={0}
+                    gap={0}
+                >
+                    <PlaygroundPreviewHeader />
+                    <Box
+                        ref={previewBodyRef}
+                        className={css.messagesContainer}
+                        width="100%"
+                        flex={1}
+                        flexDirection="column"
+                        gap={Size.Lg}
+                        padding={Size.Lg}
+                    >
+                        {shouldRenderMessagePlaceholder && (
+                            <PlaygroundPreviewMessagePlaceholder />
+                        )}
+                        {content?.map((message, index) => (
+                            <Box
+                                flexDirection="column"
+                                gap={Size.Xs}
+                                alignItems="center"
+                                className={css.followUpMessage}
+                                key={index}
                             >
-                                auto_awesome
-                            </i>
-                            AI agent ready to preview messages
-                        </div>
-                    )}
-                {content?.map((message, index) => (
-                    <div className={css.followUpMessage} key={index}>
-                        <span>
-                            {index === 0
-                                ? 'Today'
-                                : `${index * 24} hours later`}
-                        </span>
-                        <div className={css.messageBubble}>
-                            {index === 0 && shouldIncludeFlowImage && (
-                                <div className={css.attachedImage}>
-                                    <img
-                                        src={selectedProductImage.src}
-                                        alt={
-                                            selectedProductImage.alt ??
-                                            'selected-product-image'
-                                        }
-                                    />
-                                </div>
-                            )}
-                            {index === 0 && shouldIncludeCampaignImage && (
-                                <div className={css.attachedImage}>
-                                    <img
-                                        src={campaignImage?.url}
-                                        alt={
-                                            campaignImage?.name ??
-                                            'selected-product-image'
-                                        }
-                                    />
-                                </div>
-                            )}
-                            {highlightFakeLinks(message, css.fakeLink)}
-                        </div>
-                    </div>
-                ))}
-                {isGeneratingMessages && <GeneratingMessage />}
-            </div>
-        </div>
+                                <span>
+                                    {index === 0
+                                        ? 'Today'
+                                        : `${index * 24} hours later`}
+                                </span>
+                                <Box
+                                    flexDirection="column"
+                                    alignSelf="flex-start"
+                                    padding={Size.Sm}
+                                    className={css.messageBubble}
+                                >
+                                    {index === 0 && shouldIncludeFlowImage && (
+                                        <PlaygroundPreviewAttachedImage
+                                            src={selectedProductImage.src}
+                                            alt={
+                                                selectedProductImage.alt ??
+                                                'selected-product-image'
+                                            }
+                                        />
+                                    )}
+                                    {index === 0 &&
+                                        shouldIncludeCampaignImage && (
+                                            <PlaygroundPreviewAttachedImage
+                                                src={campaignImage?.url}
+                                                alt={
+                                                    campaignImage?.name ??
+                                                    'selected-product-image'
+                                                }
+                                            />
+                                        )}
+                                    {highlightFakeLinks(message, css.fakeLink)}
+                                </Box>
+                            </Box>
+                        ))}
+                        {isGeneratingMessages && <GeneratingMessage />}
+                    </Box>
+                </Card>
+                <Button variant="secondary" onClick={onGenerateMessages}>
+                    Preview messages
+                </Button>
+            </Box>
+        </Box>
     )
 }

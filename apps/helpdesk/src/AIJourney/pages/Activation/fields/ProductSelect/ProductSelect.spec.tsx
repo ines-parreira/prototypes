@@ -139,4 +139,65 @@ describe('<ProductSelectField />', () => {
             ],
         })
     })
+
+    it('calls onChange with the correct product when a non-first option is selected', async () => {
+        mockUseGetCurrentUser.mockReturnValue({
+            data: {
+                data: {
+                    name: 'Jane Smith',
+                },
+            },
+        } as any)
+
+        const onChange = jest.fn()
+        renderWithQueryClientProvider(
+            <Provider store={mockStore}>
+                <ProductSelectField
+                    name="Customer scenario"
+                    options={options}
+                    onChange={onChange}
+                />
+            </Provider>,
+        )
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('New Ancient 2003R'))
+        })
+
+        expect(onChange).toHaveBeenCalledWith({
+            id: '321312590',
+            title: 'New Ancient 2003R',
+            image: 'image',
+            variants: [
+                {
+                    title: 'variant title 2',
+                },
+            ],
+        })
+    })
+
+    it('does not throw when onChange is not provided and an option is selected', async () => {
+        mockUseGetCurrentUser.mockReturnValue({
+            data: {
+                data: {
+                    name: 'Jane Smith',
+                },
+            },
+        } as any)
+
+        renderWithQueryClientProvider(
+            <Provider store={mockStore}>
+                <ProductSelectField
+                    name="Customer scenario"
+                    options={options}
+                />
+            </Provider>,
+        )
+
+        await act(async () => {
+            await userEvent.click(screen.getByText('New Very Old 2006R'))
+        })
+
+        expect(screen.getAllByText('New Very Old 2006R')[0]).toBeInTheDocument()
+    })
 })

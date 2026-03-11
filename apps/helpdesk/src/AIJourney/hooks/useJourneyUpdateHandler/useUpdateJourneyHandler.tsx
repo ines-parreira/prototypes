@@ -12,12 +12,11 @@ import type {
     WinbackJourneyConfigurationApiDTO,
 } from '@gorgias/convert-client'
 
+import type { UploadedImageAttachment } from 'AIJourney/components/ImageDropzone/ImageDropzone'
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
-import type { UploadedImageAttachment } from 'AIJourney/pages/Setup/fields/UploadImage/UploadImage'
 import { useUpdateJourney } from 'AIJourney/queries'
 import { aiJourneyKeys } from 'AIJourney/queries/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
@@ -29,8 +28,8 @@ type UseJourneyUpdateHandlerParams = {
 type HandleUpdateParams = {
     campaignState?: UpdatableJourneyCampaignState
     campaignTitle?: string
-    discountCodeThresholdValue?: number
-    discountValue?: string
+    discountCodeThresholdValue?: number | null | undefined
+    discountValue?: number | null | undefined
     excludedAudienceListIds?: string[]
     followUpValue?: number
     id?: string
@@ -39,7 +38,8 @@ type HandleUpdateParams = {
     isDiscountEnabled?: boolean
     journeyMessageInstructions?: string | null
     journeyState?: JourneyStatusEnum
-    phoneNumberValue?: NewPhoneNumber
+    phoneNumberIntegrationId?: number | null | undefined
+    phoneNumber?: string | null | undefined
     inactiveDays?: number | null
     cooldownDays?: number | null
     waitTimeMinutes?: number
@@ -57,31 +57,11 @@ export const useJourneyUpdateHandler = ({
     const updateJourney = useUpdateJourney()
 
     const handleUpdate = useCallback(
-        async ({
-            campaignState,
-            campaignTitle,
-            discountCodeThresholdValue,
-            discountValue,
-            excludedAudienceListIds,
-            followUpValue,
-            id,
-            includeImage,
-            includedAudienceListIds,
-            isDiscountEnabled,
-            journeyMessageInstructions,
-            journeyState,
-            phoneNumberValue,
-            inactiveDays,
-            cooldownDays,
-            waitTimeMinutes,
-            targetOrderStatus,
-            postPurchaseWaitMinutes,
-            uploadedImageAttachment,
-        }: HandleUpdateParams) => {
+        async (updateParams: HandleUpdateParams) => {
             try {
-                const entityId = id || journeyId
+                const entityId = updateParams.id || journeyId
 
-                if (phoneNumberValue && !integrationId) {
+                if (!integrationId) {
                     throw new Error(`Missing integration`)
                 }
 
@@ -89,39 +69,38 @@ export const useJourneyUpdateHandler = ({
                     throw new Error(`Missing journey`)
                 }
 
-                const smsIntegrationId = phoneNumberValue?.integrations.find(
-                    (integration) => integration.type === 'sms',
-                )?.id
-
                 const baseJourneyConfigs = {
-                    max_follow_up_messages: followUpValue,
-                    offer_discount: isDiscountEnabled,
-                    max_discount_percent: discountValue
-                        ? Number(discountValue)
+                    max_follow_up_messages: updateParams.followUpValue,
+                    offer_discount: updateParams.isDiscountEnabled,
+                    max_discount_percent: updateParams.discountValue
+                        ? Number(updateParams.discountValue)
                         : undefined,
-                    sms_sender_integration_id: smsIntegrationId,
-                    sms_sender_number: phoneNumberValue?.phone_number,
-                    discount_code_message_threshold: discountCodeThresholdValue,
-                    include_image: includeImage,
+                    sms_sender_integration_id:
+                        updateParams.phoneNumberIntegrationId,
+                    sms_sender_number: updateParams.phoneNumber,
+                    discount_code_message_threshold:
+                        updateParams.discountCodeThresholdValue,
+                    include_image: updateParams.includeImage,
                 }
 
                 const optionalConfigs = {
-                    ...(inactiveDays !== undefined && {
-                        inactive_days: inactiveDays,
+                    ...(updateParams.inactiveDays !== undefined && {
+                        inactive_days: updateParams.inactiveDays,
                     }),
-                    ...(cooldownDays !== undefined && {
-                        cooldown_days: cooldownDays,
+                    ...(updateParams.cooldownDays !== undefined && {
+                        cooldown_days: updateParams.cooldownDays,
                     }),
-                    ...(waitTimeMinutes !== undefined && {
-                        wait_time_minutes: waitTimeMinutes,
+                    ...(updateParams.waitTimeMinutes !== undefined && {
+                        wait_time_minutes: updateParams.waitTimeMinutes,
                     }),
-                    ...(postPurchaseWaitMinutes !== undefined && {
-                        post_purchase_wait_minutes: postPurchaseWaitMinutes,
+                    ...(updateParams.postPurchaseWaitMinutes !== undefined && {
+                        post_purchase_wait_minutes:
+                            updateParams.postPurchaseWaitMinutes,
                     }),
-                    ...(targetOrderStatus && {
-                        target_order_status: targetOrderStatus,
+                    ...(updateParams.targetOrderStatus && {
+                        target_order_status: updateParams.targetOrderStatus,
                     }),
-                    media_urls: uploadedImageAttachment,
+                    media_urls: updateParams.uploadedImageAttachment,
                 }
 
                 const journeyConfigs:
@@ -141,15 +120,19 @@ export const useJourneyUpdateHandler = ({
                 const requestBody = {
                     journeyId: entityId,
                     params: {
-                        state: journeyState,
-                        message_instructions: journeyMessageInstructions,
-                        included_audience_list_ids: includedAudienceListIds,
-                        excluded_audience_list_ids: excludedAudienceListIds,
+                        state: updateParams.journeyState,
+                        message_instructions:
+                            updateParams.journeyMessageInstructions,
+                        included_audience_list_ids:
+                            updateParams.includedAudienceListIds,
+                        excluded_audience_list_ids:
+                            updateParams.excludedAudienceListIds,
                         campaign:
-                            campaignTitle || campaignState
+                            updateParams.campaignTitle ||
+                            updateParams.campaignState
                                 ? ({
-                                      title: campaignTitle,
-                                      state: campaignState,
+                                      title: updateParams.campaignTitle,
+                                      state: updateParams.campaignState,
                                   } as PatchJourneyBody)
                                 : undefined,
                     },

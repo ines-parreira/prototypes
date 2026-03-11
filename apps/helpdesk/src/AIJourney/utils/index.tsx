@@ -135,3 +135,9 @@ export const getSetupStepPath = ({
 }) => {
     return `/app/ai-journey/${shopName}/${JOURNEY_TYPES_MAP_TO_URL[journeyType]}/${stepName}${journeyId ? `/${journeyId}` : ''}`
 }
+
+export const getOrdinalSuffix = (num: number): string => {
+    const suffixes = ['th', 'st', 'nd', 'rd']
+    const value = num % 100
+    return num + (suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0])
+}

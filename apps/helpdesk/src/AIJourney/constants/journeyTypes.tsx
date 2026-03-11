@@ -1,6 +1,6 @@
 import { Activation } from 'AIJourney/pages/Activation/Activation'
+import { Preview } from 'AIJourney/pages/Preview/Preview'
 import { Setup } from 'AIJourney/pages/Setup/Setup'
-import { Test } from 'AIJourney/pages/Test/Test'
 
 import { JOURNEY_TYPES, STEPS_NAMES } from '.'
 
@@ -10,8 +10,8 @@ const DEFAULT_STEPS = [
         component: Setup,
     },
     {
-        stepName: STEPS_NAMES.TEST,
-        component: Test,
+        stepName: STEPS_NAMES.PREVIEW,
+        component: Preview,
     },
     {
         stepName: STEPS_NAMES.ACTIVATE,

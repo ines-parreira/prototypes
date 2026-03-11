@@ -30,7 +30,7 @@ export const useAIJourneyProductList = ({
         IntegrationDataItem<Product>[]
     >((acc, page) => [...acc, ...page.data.data], [])
 
-    const productList = useMemo(() => {
+    const productList = useMemo<Product[]>(() => {
         return (productItemsData ?? [])
             .filter(
                 (item) =>

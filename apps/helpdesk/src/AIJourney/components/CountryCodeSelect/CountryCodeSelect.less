@@ -1,0 +1,20 @@
+:local {
+    .trigger {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+        margin-left: calc(var(--spacing-xs) * (-1));
+        height: var(--spacing-xl);
+        border: 1px solid var(--border-neutral-default);
+        border-right: 0px;
+        border-top-left-radius: var(--spacing-xs);
+        border-bottom-left-radius: var(--spacing-xs);
+        cursor: pointer;
+        transition: background-color 0.2s linear;
+
+        &:hover {
+            box-shadow: inset 0 0 0 9999px var(--hover-default);
+        }
+    }
+}

@@ -19,7 +19,7 @@ import type {
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
-import { POST_PURCHASE_MAX_WAIT_TIME } from 'AIJourney/constants'
+import { MAX_WAIT_TIME } from 'AIJourney/constants'
 import { useAIJourneyProductList } from 'AIJourney/hooks'
 import {
     useJourneyData,
@@ -385,19 +385,14 @@ const WrappedAIJourneyProvider = ({
                 isNaN(aiJourneySettings.postPurchaseWaitInMinutes)
             )
                 return true
-            return (
-                aiJourneySettings.postPurchaseWaitInMinutes >
-                POST_PURCHASE_MAX_WAIT_TIME
-            )
+            return aiJourneySettings.postPurchaseWaitInMinutes > MAX_WAIT_TIME
         } else if (isWelcome) {
             if (
                 aiJourneySettings.waitTimeMinutes === undefined ||
                 isNaN(aiJourneySettings.waitTimeMinutes)
             )
                 return true
-            return (
-                aiJourneySettings.waitTimeMinutes > POST_PURCHASE_MAX_WAIT_TIME
-            )
+            return aiJourneySettings.waitTimeMinutes > MAX_WAIT_TIME
         }
         return false
     }, [

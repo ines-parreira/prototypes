@@ -1,54 +1,27 @@
-:local {
-    .previewContainer {
-        display: flex;
-        flex-direction: column;
-        height: 550px;
-        width: 100%;
-        border: 1px solid var(--border-neutral-default); // legacy
-        border-radius: var(--layout-spacing-m);
-
-        overflow: hidden;
+.axiom :local {
+    .messagesContainer {
+        background-color: var(--elevation-neutral-bg);
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
     }
 
-    .previewBody {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-s);
-        padding: var(--layout-spacing-s) var(--layout-spacing-m)
-            var(--layout-spacing-m) var(--layout-spacing-m);
-        height: 100%;
-        width: 350px;
-        max-height: 550px;
-        overflow-y: scroll;
-        scroll-behavior: smooth;
-
-        background-color: var(--surface-neutral-primary); // legacy
+    .fakeLink {
+        color: var(--content-accent-default);
     }
 
     .followUpMessage {
-        display: flex;
-        flex-direction: column;
-        gap: var(--layout-spacing-xs);
-        align-items: center;
         height: fit-content;
     }
 
     .messageBubble {
-        align-self: flex-start;
         border-radius: 16px 16px 16px 0;
-        background: #fff; // legacy
+        background: var(--elevation-neutral-default);
         box-shadow:
             0 1.448px 3.862px 0 rgba(0, 0, 0, 0.08),
             -0.966px -0.966px 0.483px 0 rgba(0, 0, 0, 0.12) inset;
         max-width: 300px;
         overflow-wrap: break-word;
-        padding: var(--layout-spacing-s);
         white-space: pre-line;
-    }
-
-    .fakeLink {
-        color: var(--button-primary-hover, #386aff); // legacy
     }
 
     .attachedImage {
@@ -59,23 +32,5 @@
             object-fit: cover;
             display: block;
         }
-    }
-}
-
-.axiom :local {
-    .previewContainer {
-        border: 1px solid var(--border-neutral-default);
-    }
-
-    .previewBody {
-        background-color: var(--surface-neutral-primary);
-    }
-
-    .messageBubble {
-        background: var(--elevation-neutral-default);
-    }
-
-    .fakeLink {
-        color: var(--content-accent-default);
     }
 }

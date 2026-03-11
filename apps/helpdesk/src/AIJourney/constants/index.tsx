@@ -4,9 +4,11 @@ import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 export const STEPS_NAMES = {
     SETUP: 'setup',
-    TEST: 'test',
+    PREVIEW: 'preview',
     ACTIVATE: 'activate',
 }
+
+export type STEPS_NAMES = (typeof STEPS_NAMES)[keyof typeof STEPS_NAMES]
 
 export const CAMPAIGN_TYPE = 'campaign'
 
@@ -65,6 +67,22 @@ export const UpdatableJourneyCampaignState = {
     Paused: 'paused',
 }
 
-export const POST_PURCHASE_MAX_WAIT_TIME = moment
-    .duration(7, 'days')
-    .asMinutes()
+export const MAX_WAIT_TIME = moment.duration(7, 'days').asMinutes()
+
+export const JOURNEY_ONBOARDING_STEPS = [
+    {
+        name: STEPS_NAMES.SETUP,
+        label: 'Setup',
+        stepNumber: 1,
+    },
+    {
+        name: STEPS_NAMES.PREVIEW,
+        label: 'Preview',
+        stepNumber: 2,
+    },
+    {
+        name: STEPS_NAMES.ACTIVATE,
+        label: 'Test and activate',
+        stepNumber: 3,
+    },
+]
