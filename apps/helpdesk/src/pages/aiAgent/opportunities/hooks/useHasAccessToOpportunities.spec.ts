@@ -21,12 +21,6 @@ describe('useHasAccessToOpportunities', () => {
         expect(mockUseTrialAccess).toHaveBeenCalledWith('my-shop')
     })
 
-    it('passes undefined to useTrialAccess when no shopName is provided', () => {
-        renderHook(() => useHasAccessToOpportunities())
-
-        expect(mockUseTrialAccess).toHaveBeenCalledWith(undefined)
-    })
-
     describe('USD6+ plan', () => {
         it('returns true when plan generation is exactly 6', () => {
             mockUseTrialAccess.mockReturnValue(
@@ -35,7 +29,9 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(true)
         })
@@ -47,7 +43,9 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(true)
         })
@@ -59,7 +57,9 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(false)
         })
@@ -73,22 +73,26 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(true)
         })
     })
 
     describe('ShoppingAssistant trial', () => {
-        it('returns true when any trial is active and trialType is ShoppingAssistant (no shopName)', () => {
+        it('returns true when hasCurrentStoreTrialActive is true and trialType is ShoppingAssistant', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasAnyTrialActive: true,
+                    hasCurrentStoreTrialActive: true,
                     trialType: TrialType.ShoppingAssistant,
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(true)
         })
@@ -116,7 +120,9 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(false)
         })
@@ -129,7 +135,9 @@ describe('useHasAccessToOpportunities', () => {
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(false)
         })
@@ -150,16 +158,18 @@ describe('useHasAccessToOpportunities', () => {
             expect(result.current).toBe(false)
         })
 
-        it('returns false when no shopName but only hasCurrentStoreTrialActive is true', () => {
+        it('returns false when hasCurrentStoreTrialActive is false even if hasAnyTrialActive is true', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasAnyTrialActive: false,
-                    hasCurrentStoreTrialActive: true,
+                    hasAnyTrialActive: true,
+                    hasCurrentStoreTrialActive: false,
                     trialType: TrialType.ShoppingAssistant,
                 }),
             )
 
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(false)
         })
@@ -167,7 +177,9 @@ describe('useHasAccessToOpportunities', () => {
 
     describe('no access', () => {
         it('returns false when no plan and no active trial', () => {
-            const { result } = renderHook(() => useHasAccessToOpportunities())
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
 
             expect(result.current).toBe(false)
         })

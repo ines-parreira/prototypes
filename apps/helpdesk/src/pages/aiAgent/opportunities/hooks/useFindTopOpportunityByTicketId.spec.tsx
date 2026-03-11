@@ -8,7 +8,10 @@ import { renderHook } from '@testing-library/react'
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 import type { FindOpportunitiesByTicketIdOpportunity200Item } from '@gorgias/knowledge-service-types'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/constants'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -34,6 +37,12 @@ jest.mock(
         useHasAccessToOpportunities: jest.fn(),
     }),
 )
+
+jest.mock('hooks/useAppSelector')
+
+jest.mock('state/integrations/selectors', () => ({
+    getIntegrationByIdAndType: jest.fn(),
+}))
 
 describe('useFindTopOpportunityByTicketId', () => {
     const queryClient = new QueryClient({
@@ -152,12 +161,22 @@ describe('useFindTopOpportunityByTicketId', () => {
     const mockUseFlag = useFlag as jest.Mock
     const mockUseHasAccessToOpportunities =
         useHasAccessToOpportunities as jest.Mock
+    const mockUseAppSelector = useAppSelector as jest.Mock
+    const mockGetIntegrationByIdAndType = getIntegrationByIdAndType as jest.Mock
+
+    const mockShopIntegration = {
+        id: 789,
+        name: 'test-shop',
+        type: IntegrationType.Shopify,
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
         mockUseFlag.mockReturnValue(true)
         mockUseHasAccessToOpportunities.mockReturnValue(true)
+        mockUseAppSelector.mockReturnValue(mockShopIntegration)
+        mockGetIntegrationByIdAndType.mockReturnValue(jest.fn())
     })
 
     describe('SDK hook invocation', () => {
@@ -869,6 +888,75 @@ describe('useFindTopOpportunityByTicketId', () => {
                 '12345',
                 expect.objectContaining({
                     query: expect.objectContaining({ enabled: true }),
+                }),
+            )
+        })
+    })
+
+    describe('shop integration lookup', () => {
+        beforeEach(() => {
+            ;(
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+            ).mockReturnValue({
+                data: [],
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetch,
+            })
+        })
+
+        it('should call getIntegrationByIdAndType with shopIntegrationId and Shopify type', () => {
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockGetIntegrationByIdAndType).toHaveBeenCalledWith(
+                789,
+                IntegrationType.Shopify,
+            )
+        })
+
+        it('should pass integration name to useHasAccessToOpportunities when integration is found', () => {
+            mockUseAppSelector.mockReturnValue({
+                ...mockShopIntegration,
+                name: 'my-shop',
+            })
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockUseHasAccessToOpportunities).toHaveBeenCalledWith(
+                'my-shop',
+            )
+        })
+
+        it('should pass empty string to useHasAccessToOpportunities when integration is not found', () => {
+            mockUseAppSelector.mockReturnValue(undefined)
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockUseHasAccessToOpportunities).toHaveBeenCalledWith('')
+        })
+
+        it('should disable the query when integration is not found and access check fails', () => {
+            mockUseAppSelector.mockReturnValue(undefined)
+            mockUseHasAccessToOpportunities.mockReturnValue(false)
+
+            const mockSDKHook =
+                useFindOpportunitiesByTicketIdOpportunity as jest.Mock
+
+            renderHook(() => useFindTopOpportunityByTicketId(789, '12345'), {
+                wrapper,
+            })
+
+            expect(mockSDKHook).toHaveBeenCalledWith(
+                789,
+                '12345',
+                expect.objectContaining({
+                    query: expect.objectContaining({ enabled: false }),
                 }),
             )
         })

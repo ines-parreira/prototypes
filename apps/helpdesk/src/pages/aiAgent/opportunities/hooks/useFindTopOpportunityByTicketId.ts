@@ -5,7 +5,10 @@ import { DurationInMs } from '@repo/utils'
 
 import { useFindOpportunitiesByTicketIdOpportunity } from '@gorgias/knowledge-service-queries'
 
+import useAppSelector from 'hooks/useAppSelector'
+import { IntegrationType } from 'models/integration/constants'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 import { OpportunityType } from '../enums'
 import type { Opportunity } from '../types'
@@ -21,7 +24,13 @@ export const useFindTopOpportunityByTicketId = (
         }
     },
 ) => {
-    const hasAccessToOpportunities = useHasAccessToOpportunities()
+    const shopIntegration = useAppSelector(
+        getIntegrationByIdAndType(shopIntegrationId, IntegrationType.Shopify),
+    )
+
+    const hasAccessToOpportunities = useHasAccessToOpportunities(
+        shopIntegration?.name ?? '',
+    )
 
     const isTopOpportunitiesEnabled = useFlag(
         FeatureFlagKey.IncreaseVisibilityOfOpportunity,
