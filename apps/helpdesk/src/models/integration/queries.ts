@@ -39,7 +39,7 @@ export const getInstallationSnippetQueryKey = (
 
 export const useGetInstallationSnippet = (
     params: GetInstallationSnippetParams,
-    overrides?: { enabled: boolean },
+    overrides?: { enabled?: boolean; retry?: number },
 ) =>
     useQuery({
         queryKey: getInstallationSnippetQueryKey(params),

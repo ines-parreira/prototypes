@@ -179,7 +179,10 @@ const config = {
                     },
                 ],
             }),
-        isDev && new ReactRefreshPlugin(),
+        isDev &&
+            new ReactRefreshPlugin({
+                exclude: [/node_modules/i, /ChatPreviewBootstrapScript\.js$/],
+            }),
         isDev && new rspack.HotModuleReplacementPlugin(),
         new rspack.BannerPlugin(
             'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
@@ -234,6 +237,10 @@ const config = {
                         options: cssLoaderOptions,
                     },
                 ],
+            },
+            {
+                resourceQuery: /raw/,
+                type: 'asset/source',
             },
             {
                 test: imageExtRegex,
