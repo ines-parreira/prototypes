@@ -823,8 +823,8 @@ importers:
         specifier: catalog:html
         version: 4.3.2
       liquidjs:
-        specifier: ^10.9.2
-        version: 10.9.2
+        specifier: 10.25.0
+        version: 10.25.0
       localforage:
         specifier: catalog:browser-storage
         version: 1.10.0
@@ -11582,9 +11582,9 @@ packages:
   linkifyjs@4.3.2:
     resolution: {integrity: sha512-NT1CJtq3hHIreOianA8aSXn6Cw0JzYOuDQbOrSPe7gqFnCpKP++MQe3ODgO3oh2GJFORkAAdqredOa60z63GbA==}
 
-  liquidjs@10.9.2:
-    resolution: {integrity: sha512-ygPCgYyiFKQNyRi/CK3s3U5RimosBtrIq7TaMYK5ek93mUl9CZ6xxqw2T+1G4kVc9dAmwI71bWLQNKRToV8SsQ==}
-    engines: {node: '>=14'}
+  liquidjs@10.25.0:
+    resolution: {integrity: sha512-XpO7AiGULTG4xcTlwkcTI5JreFG7b6esLCLp+aUSh7YuQErJZEoUXre9u9rbdb0057pfWG4l0VursvLd5Q/eAw==}
+    engines: {node: '>=16'}
     hasBin: true
 
   load-json-file@4.0.0:
@@ -25514,7 +25514,7 @@ snapshots:
 
   linkifyjs@4.3.2: {}
 
-  liquidjs@10.9.2:
+  liquidjs@10.25.0:
     dependencies:
       commander: 10.0.1
 

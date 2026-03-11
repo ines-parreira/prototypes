@@ -179,7 +179,7 @@
         "linkify-it": "2.0.3",
         "linkify-string": "catalog:html",
         "linkifyjs": "catalog:html",
-        "liquidjs": "^10.9.2",
+        "liquidjs": "10.25.0",
         "localforage": "catalog:browser-storage",
         "localforage-getitems": "catalog:browser-storage",
         "localforage-observable": "catalog:browser-storage",

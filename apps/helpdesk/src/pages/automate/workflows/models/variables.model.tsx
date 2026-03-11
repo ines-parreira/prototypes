@@ -2,10 +2,7 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import { Liquid, Output } from 'liquidjs'
-import type {
-    IdentifierToken,
-    PropertyAccessToken,
-} from 'liquidjs/dist/src/tokens'
+import type { IdentifierToken, PropertyAccessToken } from 'liquidjs/dist/tokens'
 import _flatten from 'lodash/flatten'
 import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
