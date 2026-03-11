@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { Box, Modal, OverlayHeader } from '@gorgias/axiom'
@@ -62,6 +63,7 @@ import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { getTimezone } from 'state/currentUser/selectors'
 
+import { useKnowledgeTracking } from '../hooks/useKnowledgeTracking'
 import { usePlaygroundPanel } from '../hooks/usePlaygroundPanel'
 import { SnippetEditorWrapper } from './EditorWrappers/SnippetEditorWrapper'
 import { DeleteDocumentModal } from './EmptyState/DeleteDocumentModal'
@@ -103,6 +105,12 @@ export const KnowledgeHubContainer = () => {
         fileIngestionLogs,
         filePendingCount,
     } = useKnowledgeHub()
+
+    const { onKnowledgeSourcesViewed } = useKnowledgeTracking({ shopName })
+
+    useEffectOnce(() => {
+        onKnowledgeSourcesViewed()
+    })
 
     const {
         selectedFilter,
