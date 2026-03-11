@@ -2,9 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
+import type { List, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { LegacyButton as Button, Icon } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
@@ -32,11 +33,25 @@ type AiAgentReasoningProps = {
     message: TicketMessage
 }
 
+const EVOLI_STATIC_MESSAGE =
+    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
+
 export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
-    const [state, setState] = useState<AiAgentReasoningState>('collapsed')
+    const ticket = useAppSelector(getTicketState)
+
+    const ticketTags = ticket.get('tags') as
+        | List<Map<string, string>>
+        | undefined
+    const isEvoliTicket =
+        ticketTags?.some((tag) =>
+            ['ai_evolution', 'ai_next_gen'].includes(tag?.get('name') ?? ''),
+        ) ?? false
+
+    const [state, setState] = useState<AiAgentReasoningState>(
+        isEvoliTicket ? 'static' : 'collapsed',
+    )
     const [isRetriable] = useState(true)
 
-    const ticket = useAppSelector(getTicketState)
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
     const { search } = useLocation()
@@ -84,7 +99,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         objectId: ticketId.toString(),
         objectType: 'TICKET',
         messageId: messageId.toString(),
-        enabled: state !== 'collapsed' && !!messageId,
+        enabled: !isEvoliTicket && state !== 'collapsed' && !!messageId,
         isHandover,
     })
 
@@ -202,7 +217,16 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 })}
             >
                 {isStatic ? (
-                    <span>{staticMessage}</span>
+                    <span className={css.staticContent}>
+                        {isEvoliTicket && (
+                            <Icon
+                                name="info"
+                                size="sm"
+                                color="--content-accent-default"
+                            />
+                        )}
+                        {isEvoliTicket ? EVOLI_STATIC_MESSAGE : staticMessage}
+                    </span>
                 ) : (
                     <>
                         <AiAgentReasoningContent
@@ -299,7 +323,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     </div>
                 )}
                 {renderBody()}
-                {renderFooter()}
+                {!isEvoliTicket && renderFooter()}
             </div>
             <Button
                 intent="secondary"

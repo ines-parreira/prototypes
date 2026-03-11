@@ -2050,6 +2050,98 @@ describe('AiAgentReasoning', () => {
         })
     })
 
+    describe('Evoli (ai_evolution) ticket', () => {
+        const createMockEvoliTicket = () =>
+            fromJS({
+                id: 123,
+                tags: [{ name: 'ai_evolution' }],
+            })
+
+        it('should display the static Evoli message when ticket has ai_evolution tag', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon.",
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show the reasoning toggle for Evoli tickets', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(screen.queryByText('Show reasoning')).not.toBeInTheDocument()
+            expect(screen.queryByText('Hide reasoning')).not.toBeInTheDocument()
+        })
+
+        it('should not trigger reasoning fetch for Evoli tickets', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    objectId: '123',
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+    })
+
     describe('coerceResourceType function', () => {
         it('should return PRODUCT_KNOWLEDGE as fallback for unknown product subtype', () => {
             const result = coerceResourceType(['product', '12345', 'unknown'])
@@ -2076,6 +2168,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'GUIDANCE' as const,
@@ -2085,6 +2178,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'ACTION' as const,
@@ -2094,6 +2188,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
 
             {
@@ -2104,6 +2199,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'EXTERNAL_SNIPPET' as const,
@@ -2113,6 +2209,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'ORDER' as const,
@@ -2122,6 +2219,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'PRODUCT_KNOWLEDGE' as const,
@@ -2131,6 +2229,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
             {
                 resourceType: 'PRODUCT_RECOMMENDATION' as const,
@@ -2140,6 +2239,7 @@ describe('AiAgentReasoning', () => {
                 resourceLocale: 'en',
                 taskIds: [],
                 resourceIsDraft: false,
+                resourceVersion: '1',
             },
         ]
 
