@@ -4,6 +4,7 @@ export { InfobarTicketDetailsContainer } from './components/InfobarTicketDetails
 export { useTicketFieldsStore } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
 export { useTicketFields } from './components/InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFields'
 export type { TicketFieldsState } from './components/InfobarTicketDetails/components/InfobarTicketFields/store/useTicketFieldsStore'
+export { useDefaultViews, useExpandableDefaultViews } from './sidebar'
 export {
     getNumberOrUndefined,
     isNumberInput,
@@ -66,6 +67,12 @@ export type { FieldRowProps } from './components/InfobarCustomerFields/component
 export { EditableField } from './components/InfobarCustomerFields/components/EditableField'
 
 export { InfobarTicketCustomerInstagramSection } from './components/InfobarTicketCustomerInstagram/InfobarTicketCustomerInstagramSection'
+
+export {
+    CollapsedDefaultViews,
+    DefaultViewsMenu,
+    SYSTEM_VIEW_DEFINITIONS,
+} from './sidebar'
 
 // Layout components
 export { TicketLayout, TicketLayoutContent } from './layout/TicketLayout'

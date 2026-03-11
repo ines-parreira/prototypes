@@ -82,6 +82,13 @@ jest.mock('../TicketNavbarViewLink', () => ({
         <span>{view.name}</span>
     ),
 }))
+jest.mock('@repo/tickets', () => ({
+    ...jest.requireActual('@repo/tickets'),
+    CollapsedDefaultViews: () => <div>CollapsedDefaultViews</div>,
+}))
+jest.mock('../DefaultViews', () => ({
+    DefaultViews: () => <div>DefaultViews</div>,
+}))
 jest.mock(
     '../SectionFormModal',
     () =>
@@ -439,13 +446,13 @@ describe('<TicketNavbar/>', () => {
             mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
         })
 
-        it('should return null when sidebar is collapsed and wayfinding flag is enabled', () => {
+        it('should render CollapsedDefaultViews when sidebar is collapsed and wayfinding flag is enabled', () => {
             mockUseSidebar.mockReturnValue({
                 isCollapsed: true,
                 toggleCollapse: jest.fn(),
             })
 
-            const { container } = renderWithRouter(
+            const { getByText } = renderWithRouter(
                 <DndProvider backend={HTML5Backend}>
                     <Provider store={mockStore(store as any)}>
                         <TicketNavbarContainer {...minProps} />
@@ -457,7 +464,7 @@ describe('<TicketNavbar/>', () => {
                 },
             )
 
-            expect(container.firstChild).toBeNull()
+            expect(getByText('CollapsedDefaultViews')).toBeInTheDocument()
         })
 
         it('should render when sidebar is expanded and wayfinding flag is enabled', () => {

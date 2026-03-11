@@ -169,12 +169,6 @@ export function useSettingsNavigation() {
                         text: 'Business hours',
                         requiredRole: UserRoleEnum.Admin,
                     },
-                    {
-                        key: 'default-views',
-                        to: 'sidebar',
-                        text: 'Default views',
-                        requiredRole: UserRoleEnum.Admin,
-                    },
                 ],
             },
             {

@@ -79,7 +79,6 @@ describe('SettingsSidebar', () => {
         renderSettingsSidebar()
         expect(screen.getByText('Store')).toBeInTheDocument()
         expect(screen.getByText('Business hours')).toBeInTheDocument()
-        expect(screen.getByText('Default views')).toBeInTheDocument()
     })
 
     it('should render Channels section with items', () => {

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { useSidebar } from '@repo/navigation'
+import { CollapsedDefaultViews } from '@repo/tickets'
 import { systemViewIcons } from '@repo/tickets/utils/views'
 import { shortcutManager } from '@repo/utils'
 import _debounce from 'lodash/debounce'
@@ -78,6 +79,7 @@ import { hasRole, isTicketPath } from 'utils'
 
 import { ViewCategories, ViewCategoriesIcons } from './constants'
 import { CreateTicketNavbarButton } from './CreateTicketNavbarButton'
+import { DefaultViews } from './DefaultViews'
 import DeleteSectionModal from './DeleteSectionModal'
 import { PlaceCallNavbarButton } from './PlaceCallNavbarButton'
 import { RecentChats } from './RecentChats'
@@ -146,7 +148,6 @@ export function TicketNavbarContainer({
         () => hasRole(currentUser, UserRole.Agent),
         [currentUser],
     )
-
     const systemTopElements = useAppSelector(getTopSystemTicketNavbarElements)
 
     const systemBottomElements = useAppSelector(
@@ -456,7 +457,7 @@ export function TicketNavbarContainer({
     const { scrollableAreaRef } = useAutoScrollOnDragging()
 
     if (hasWayfindingMS1Flag && isCollapsed) {
-        return null
+        return <CollapsedDefaultViews />
     }
 
     return (
@@ -478,7 +479,8 @@ export function TicketNavbarContainer({
             }
         >
             <RecentChats />
-            {!!systemTopElements.length && (
+            {hasWayfindingMS1Flag && <DefaultViews viewCount={viewsCount} />}
+            {!hasWayfindingMS1Flag && !!systemTopElements.length && (
                 <div
                     data-appcues="new-system-views"
                     data-testid="new-system-views"
@@ -569,7 +571,7 @@ export function TicketNavbarContainer({
                     </TicketNavbarDropTarget>
                 ))}
             </Navigation.Root>
-            {!!systemBottomElements.length && (
+            {!hasWayfindingMS1Flag && !!systemBottomElements.length && (
                 <div className={css.navigation}>
                     {systemBottomElements.map((element) => (
                         <TicketNavbarViewLink
