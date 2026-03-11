@@ -4,6 +4,7 @@ on: [push]
 
 env:
   GH_TOKEN: ${{ github.token }}
+  NODE_VERSION: "22.22.0"
 
 permissions:
   actions: read
@@ -16,12 +17,44 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  workspace-setup:
+    name: Workspace setup
+    runs-on: gh-actions-large-runner-set
+    outputs:
+      cache-key: ${{ env.CACHE_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
+
+  build-docker-assets:
+    name: Build docker assets
+    needs: workspace-setup
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+    with:
+      cache-key: ${{ needs.workspace-setup.outputs.cache-key }}
+      node-version: "22.22.0"
+      assets-url: ""
+      release: ""
+      build-dir: apps/helpdesk/build
+      artifact: docker-build
+      no-content-hash: true
+
   build-docker-image:
     name: Build docker image
+    needs: build-docker-assets
     uses: gorgias/reusable-actions/.github/workflows/image-build.yml@main
     with:
       image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
       docker-file-path: deployment/docker/Dockerfile
       build-args: RELEASE=${{ github.sha }}
       additional-platforms: 'linux/arm64'
+      artifact: docker-build
+      artifact-download-path: apps/helpdesk/build
     secrets: inherit

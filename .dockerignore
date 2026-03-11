@@ -1,0 +1,9 @@
+*
+!.dockerignore
+!apps/
+!apps/helpdesk/
+!apps/helpdesk/build/
+!apps/helpdesk/build/**
+!deployment/
+!deployment/docker/
+!deployment/docker/Dockerfile
