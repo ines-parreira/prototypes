@@ -3,7 +3,6 @@
         max-width: 100%;
         display: inline-flex;
         align-items: center;
-        gap: var(--spacing-xxs);
         padding: var(--spacing-xxxs);
         border-radius: var(--spacing-xxs);
         height: 24px;
@@ -36,6 +35,18 @@
         &:hover,
         &:has(.content:hover) {
             background: var(--hover-default);
+
+            .editPencil {
+                padding: var(--spacing-xxs);
+            }
+        }
+
+        &:hover:not(:has(.content:focus)) {
+            padding-right: 0;
+
+            .editPencil {
+                padding: var(--spacing-xxs);
+            }
         }
     }
 
