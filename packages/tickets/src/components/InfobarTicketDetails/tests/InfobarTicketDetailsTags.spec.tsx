@@ -305,6 +305,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
             await user.click(documentationOption)
 
             await waitForFirstRequest()
+            await waitForQueriesSettled()
 
             await openTagMenu(user)
 
