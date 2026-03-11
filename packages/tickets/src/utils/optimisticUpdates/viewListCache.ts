@@ -1,7 +1,7 @@
 import type { InfiniteData, QueryClient } from '@tanstack/react-query'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
-import type { Ticket } from '@gorgias/helpdesk-queries'
+import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 
 export const LIST_VIEW_ITEMS_QUERY_KEY_PREFIX = [
     ...queryKeys.views.all(),
@@ -9,11 +9,18 @@ export const LIST_VIEW_ITEMS_QUERY_KEY_PREFIX = [
 ] as const
 
 type ViewListPage = { data: Ticket[] }
+export type TicketCachePatch =
+    | Partial<Ticket>
+    | ((ticket: Ticket) => Partial<Ticket>)
+
+function resolvePatch(ticket: Ticket, patch: TicketCachePatch) {
+    return typeof patch === 'function' ? patch(ticket) : patch
+}
 
 export function patchTicketInViewListCache(
     queryClient: QueryClient,
     ticketId: number,
-    patch: Partial<Ticket>,
+    patch: TicketCachePatch,
 ) {
     queryClient.setQueriesData<InfiniteData<ViewListPage>>(
         { queryKey: LIST_VIEW_ITEMS_QUERY_KEY_PREFIX },
@@ -27,7 +34,7 @@ export function patchTicketInViewListCache(
                 const nextData = page.data.map((t) => {
                     if (t.id !== ticketId) return t
                     pageChanged = true
-                    return { ...t, ...patch }
+                    return { ...t, ...resolvePatch(t, patch) }
                 })
 
                 if (!pageChanged) return page
@@ -44,7 +51,7 @@ export function patchTicketInViewListCache(
 export function patchAllTicketsInViewListCache(
     queryClient: QueryClient,
     viewId: number,
-    patch: Partial<Ticket>,
+    patch: TicketCachePatch,
 ) {
     queryClient.setQueriesData<InfiniteData<ViewListPage>>(
         { queryKey: [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId] },
@@ -55,8 +62,32 @@ export function patchAllTicketsInViewListCache(
                 ...old,
                 pages: old.pages.map((page) => ({
                     ...page,
-                    data: page.data.map((t) => ({ ...t, ...patch })),
+                    data: page.data.map((t) => ({
+                        ...t,
+                        ...resolvePatch(t, patch),
+                    })),
                 })),
+            }
+        },
+    )
+}
+
+export function patchTicketDetailCache(
+    queryClient: QueryClient,
+    ticketId: number,
+    patch: TicketCachePatch,
+) {
+    queryClient.setQueryData<HttpResponse<Ticket> | undefined>(
+        queryKeys.tickets.getTicket(ticketId),
+        (old) => {
+            if (!old) return old
+
+            return {
+                ...old,
+                data: {
+                    ...old.data,
+                    ...resolvePatch(old.data, patch),
+                },
             }
         },
     )

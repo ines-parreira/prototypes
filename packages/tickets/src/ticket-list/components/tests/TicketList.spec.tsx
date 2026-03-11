@@ -8,6 +8,8 @@ import { VirtuosoMockContext } from 'react-virtuoso'
 import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
+    mockListTeamsHandler,
+    mockListUsersHandler,
     mockListViewItemsHandler,
     mockListViewItemsUpdatesHandler,
     mockTicket,
@@ -15,6 +17,13 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
+import * as useCurrentUserLanguagePreferencesModule from '../../../translations/hooks/useCurrentUserLanguagePreferences'
+import * as useTicketsTranslatedPropertiesModule from '../../../translations/hooks/useTicketsTranslatedProperties'
+import * as useMarkTicketAsReadModule from '../../hooks/useMarkTicketAsRead'
+import * as useSortOrderModule from '../../hooks/useSortOrder'
+import * as useTicketSelectionModule from '../../hooks/useTicketSelection'
+import * as useTicketsListModule from '../../hooks/useTicketsList'
+import * as useViewVisibleTicketsModule from '../../hooks/useViewVisibleTickets'
 import { TicketList } from '../TicketList'
 
 const mockViewTickets = vi.fn()
@@ -62,6 +71,8 @@ const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
 
 const mockCurrentUser = mockGetCurrentUserHandler()
 const mockGetView = mockGetViewHandler()
+const mockListTeams = mockListTeamsHandler()
+const mockListUsers = mockListUsersHandler()
 const mockUpdateTicket = mockUpdateTicketHandler()
 
 const server = setupServer()
@@ -79,6 +90,8 @@ beforeEach(() => {
         mockListViewItemsUpdatesNoOp.handler,
         mockCurrentUser.handler,
         mockGetView.handler,
+        mockListTeams.handler,
+        mockListUsers.handler,
     )
 })
 
@@ -397,5 +410,123 @@ describe('selection behaviour', () => {
 
     afterEach(() => {
         localStorage.clear()
+    })
+})
+
+describe('polling pause behaviour', () => {
+    it('resumes list updates after selection is cleared', async () => {
+        const useTicketsListSpy = vi.spyOn(
+            useTicketsListModule,
+            'useTicketsList',
+        )
+        const useTicketSelectionSpy = vi.spyOn(
+            useTicketSelectionModule,
+            'useTicketSelection',
+        )
+        const setHasAnySelection = vi.fn<(value: boolean) => void>()
+        const markAsRead = vi.fn()
+
+        vi.spyOn(useSortOrderModule, 'useSortOrder').mockReturnValue([
+            'last_received_message_datetime:asc',
+            vi.fn(),
+        ] as ReturnType<typeof useSortOrderModule.useSortOrder>)
+        vi.spyOn(
+            useViewVisibleTicketsModule,
+            'useViewVisibleTickets',
+        ).mockReturnValue({ viewVisibleTickets: vi.fn() })
+        vi.spyOn(
+            useMarkTicketAsReadModule,
+            'useMarkTicketAsRead',
+        ).mockReturnValue({
+            markAsRead,
+        })
+        vi.spyOn(
+            useTicketsTranslatedPropertiesModule,
+            'useTicketsTranslatedProperties',
+        ).mockReturnValue({
+            translationMap: {},
+            isInitialLoading: false,
+            updateTicketTranslatedSubject: vi.fn(),
+        })
+        vi.spyOn(
+            useCurrentUserLanguagePreferencesModule,
+            'useCurrentUserLanguagePreferences',
+        ).mockReturnValue({
+            isFetching: false,
+            primary: undefined,
+            proficient: undefined,
+            shouldShowTranslatedContent: () => false,
+        })
+
+        useTicketsListSpy.mockImplementation(() => ({
+            tickets: [
+                {
+                    ...mockTicket1,
+                    excerpt: '',
+                    integrations: [],
+                    last_sent_message_not_delivered: false,
+                    messages_count: 0,
+                },
+            ],
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: null,
+            data: undefined,
+        }))
+
+        useTicketSelectionSpy.mockImplementation(() => {
+            const [hasAnySelection, setSelection] = React.useState(false)
+
+            setHasAnySelection.mockImplementation((value: boolean) => {
+                setSelection(value)
+            })
+
+            return {
+                hasSelectedAll: false,
+                selectedTicketIds: new Set<number>(),
+                selectionCount: hasAnySelection ? 1 : 0,
+                hasAnySelection,
+                onSelect: vi.fn(),
+                onSelectAll: vi.fn(),
+                clear: () => setSelection(false),
+            }
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(useTicketsListSpy).toHaveBeenLastCalledWith(
+                viewId,
+                { order_by: 'last_received_message_datetime:asc' },
+                false,
+            )
+        })
+
+        act(() => {
+            setHasAnySelection(true)
+        })
+
+        await waitFor(() => {
+            expect(useTicketsListSpy).toHaveBeenLastCalledWith(
+                viewId,
+                { order_by: 'last_received_message_datetime:asc' },
+                true,
+            )
+        })
+
+        act(() => {
+            setHasAnySelection(false)
+        })
+
+        await waitFor(() => {
+            expect(useTicketsListSpy).toHaveBeenLastCalledWith(
+                viewId,
+                { order_by: 'last_received_message_datetime:asc' },
+                false,
+            )
+        })
     })
 })

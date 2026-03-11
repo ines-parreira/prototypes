@@ -65,34 +65,38 @@ export function TicketListItemTrailingSlot({
 
     return (
         <Box flexDirection="row" alignItems="center" gap="xxs">
-            {status && (
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Tag size="sm">
-                            <Icon
-                                name={STATUS_ICON_MAP[status]}
-                                color={STATUS_COLOR_MAP[status]}
-                            />
-                        </Tag>
-                    </TooltipTrigger>
-                    <TooltipContent>{STATUS_LABEL_MAP[status]}</TooltipContent>
-                </Tooltip>
-            )}
-            {priority && PRIORITY_ICON_MAP[priority] && (
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Tag size="sm">
-                            <Icon
-                                name={PRIORITY_ICON_MAP[priority]!}
-                                color={PRIORITY_COLOR_MAP[priority]}
-                            />
-                        </Tag>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        {PRIORITY_LABEL_MAP[priority]}
-                    </TooltipContent>
-                </Tooltip>
-            )}
+            <Box flexDirection="row" alignItems="center" gap="xxxxs">
+                {status && (
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Tag size="sm">
+                                <Icon
+                                    name={STATUS_ICON_MAP[status]}
+                                    color={STATUS_COLOR_MAP[status]}
+                                />
+                            </Tag>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {STATUS_LABEL_MAP[status]}
+                        </TooltipContent>
+                    </Tooltip>
+                )}
+                {priority && PRIORITY_ICON_MAP[priority] && (
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Tag size="sm">
+                                <Icon
+                                    name={PRIORITY_ICON_MAP[priority]!}
+                                    color={PRIORITY_COLOR_MAP[priority]}
+                                />
+                            </Tag>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {PRIORITY_LABEL_MAP[priority]}
+                        </TooltipContent>
+                    </Tooltip>
+                )}
+            </Box>
             {relativeTime && (
                 <Text size="sm" color="content-neutral-secondary">
                     {relativeTime}

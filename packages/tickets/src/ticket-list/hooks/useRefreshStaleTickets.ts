@@ -25,6 +25,18 @@ type DiffResult = {
     staleIds: Set<number>
 }
 
+function invalidateTicketCaches(
+    queryClient: ReturnType<typeof useQueryClient>,
+    ticketIds: Iterable<number>,
+) {
+    for (const ticketId of ticketIds) {
+        const queryKey = queryKeys.tickets.getTicket(ticketId)
+        if (!queryClient.getQueryState(queryKey)) continue
+
+        void queryClient.invalidateQueries({ queryKey })
+    }
+}
+
 function buildCachedTimestamps(
     cached: InfiniteData<{ data: Ticket[] }>,
 ): Map<number, string | null> {
@@ -122,11 +134,17 @@ export function useRefreshStaleTickets({
         )
 
         if (needsFullRefetch) {
-            queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
                 queryKey: queryKeys.views.listViewItems(viewId, params),
             })
+            invalidateTicketCaches(
+                queryClient,
+                updates.flatMap((update) =>
+                    typeof update.id === 'number' ? [update.id] : [],
+                ),
+            )
         } else if (staleIds.size > 0) {
-            queryClient.invalidateQueries({
+            void queryClient.invalidateQueries({
                 queryKey: queryKeys.views.listViewItems(viewId, params),
                 refetchPage: (page: { data: Array<{ id?: number }> }) =>
                     page.data.some(
@@ -134,6 +152,7 @@ export function useRefreshStaleTickets({
                             ticket.id !== undefined && staleIds.has(ticket.id),
                     ),
             })
+            invalidateTicketCaches(queryClient, staleIds)
         }
     }, [updates, queryClient, viewId, params])
 }

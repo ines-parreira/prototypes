@@ -43,14 +43,15 @@ function makeInfiniteData(tickets: Ticket[]): InfiniteData<{ data: Ticket[] }> {
 }
 
 function seedViewCache(tickets: Ticket[]) {
-    const key = queryKeys.views.listViewItems(VIEW_ID, undefined)
-    testAppQueryClient.setQueryData(key, makeInfiniteData(tickets))
+    testAppQueryClient.setQueryData(
+        queryKeys.views.listViewItems(VIEW_ID, undefined),
+        makeInfiniteData(tickets),
+    )
 }
 
 function getViewCache() {
-    const key = queryKeys.views.listViewItems(VIEW_ID, undefined)
     return testAppQueryClient.getQueryData<InfiniteData<{ data: Ticket[] }>>(
-        key,
+        queryKeys.views.listViewItems(VIEW_ID, undefined),
     )
 }
 
@@ -118,12 +119,31 @@ describe('useBulkJobAction', () => {
             })
         })
 
+        it('optimistically patches list cache when a list patch is provided', async () => {
+            seedViewCache([
+                mockTicket({ id: 1, is_unread: false }),
+                mockTicket({ id: 2, is_unread: false }),
+                mockTicket({ id: 3, is_unread: false }),
+            ])
+            const { result } = setup({ ticketIds: [1, 2] })
+
+            await result.current.createJob(
+                JobType.UpdateTicket,
+                { is_unread: true },
+                undefined,
+                { is_unread: true },
+            )
+
+            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(true)
+            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(true)
+            expect(getViewCache()?.pages[0].data[2]?.is_unread).toBe(false)
+        })
+
         it('dispatches a success notification after the job completes', async () => {
             const { result, dispatchNotification } = setup()
 
             await result.current.createJob(
                 JobType.UpdateTicket,
-                undefined,
                 undefined,
                 'Done!',
             )
@@ -145,102 +165,64 @@ describe('useBulkJobAction', () => {
             })
         })
 
-        it('applies optimistic cache patch to selected ticket IDs', async () => {
-            const tickets = TICKET_IDS.map((id) =>
-                mockTicket({ id, subject: 'Original' }),
-            )
-            seedViewCache(tickets)
-
-            const { result } = setup({
-                ticketIds: [1, 2],
-                hasSelectedAll: false,
-            })
-
-            await result.current.createJob(JobType.UpdateTicket, undefined, {
-                subject: 'Updated',
-            })
-
-            const cache = getViewCache()
-            expect(cache?.pages[0].data[0].subject).toBe('Updated')
-            expect(cache?.pages[0].data[1].subject).toBe('Updated')
-            expect(cache?.pages[0].data[2].subject).toBe('Original')
-        })
-
-        it('applies optimistic cache patch to all tickets when hasSelectedAll is true', async () => {
-            const tickets = TICKET_IDS.map((id) =>
-                mockTicket({ id, subject: 'Original' }),
-            )
-            seedViewCache(tickets)
-
-            const { result } = setup({ hasSelectedAll: true })
-
-            await result.current.createJob(JobType.UpdateTicket, undefined, {
-                subject: 'Patched',
-            })
-
-            const cache = getViewCache()
-            cache?.pages[0].data.forEach((ticket) => {
-                expect(ticket.subject).toBe('Patched')
-            })
-        })
-
-        it('reverts cache and dispatches error notification on failure', async () => {
+        it('dispatches error notification on failure', async () => {
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
 
-            const tickets = TICKET_IDS.map((id) =>
-                mockTicket({ id, subject: 'Original' }),
-            )
-            seedViewCache(tickets)
-
             const { result, dispatchNotification } = setup({
                 ticketIds: [1],
                 hasSelectedAll: false,
             })
 
-            await result.current.createJob(JobType.UpdateTicket, undefined, {
-                subject: 'Should be reverted',
-            })
+            await result.current.createJob(JobType.UpdateTicket)
 
-            const cache = getViewCache()
-            expect(cache?.pages[0].data[0].subject).toBe('Original')
             expect(dispatchNotification).toHaveBeenCalledWith({
                 status: NotificationStatus.Error,
                 message: 'Failed to apply action. Please try again.',
             })
         })
+
+        it('rolls back the list cache when an optimistic list patch fails', async () => {
+            seedViewCache([
+                mockTicket({ id: 1, is_unread: false }),
+                mockTicket({ id: 2, is_unread: false }),
+            ])
+            server.use(
+                mockCreateJobHandler(async () =>
+                    HttpResponse.json(null, { status: 500 }),
+                ).handler,
+            )
+            const { result } = setup({ ticketIds: [1, 2] })
+
+            await result.current.createJob(
+                JobType.UpdateTicket,
+                { is_unread: true },
+                undefined,
+                { is_unread: true },
+            )
+
+            expect(getViewCache()?.pages[0].data[0]?.is_unread).toBe(false)
+            expect(getViewCache()?.pages[0].data[1]?.is_unread).toBe(false)
+        })
     })
 
     describe('createJobRemovingTickets', () => {
-        it('removes selected tickets from cache optimistically', async () => {
-            const tickets = TICKET_IDS.map((id) => mockTicket({ id }))
-            seedViewCache(tickets)
-
-            const { result } = setup({
-                ticketIds: [1, 2],
-                hasSelectedAll: false,
-            })
-
-            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
-
-            const cache = getViewCache()
-            expect(cache?.pages[0].data).toHaveLength(1)
-            expect(cache?.pages[0].data[0].id).toBe(3)
-        })
-
-        it('removes all tickets from cache when hasSelectedAll is true', async () => {
-            const tickets = TICKET_IDS.map((id) => mockTicket({ id }))
-            seedViewCache(tickets)
-
-            const { result } = setup({ hasSelectedAll: true })
+        it('optimistically removes selected tickets from list cache', async () => {
+            seedViewCache([
+                mockTicket({ id: 1 }),
+                mockTicket({ id: 2 }),
+                mockTicket({ id: 3 }),
+            ])
+            const { result } = setup({ ticketIds: [1, 2] })
 
             await result.current.createJobRemovingTickets(JobType.DeleteTicket)
 
-            const cache = getViewCache()
-            expect(cache?.pages[0].data).toHaveLength(0)
+            expect(
+                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
+            ).toEqual([3])
         })
 
         it('dispatches success notification', async () => {
@@ -258,15 +240,13 @@ describe('useBulkJobAction', () => {
             })
         })
 
-        it('reverts cache and dispatches error notification on failure', async () => {
+        it('dispatches error notification on failure', async () => {
+            seedViewCache([mockTicket({ id: 1 }), mockTicket({ id: 2 })])
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
-
-            const tickets = TICKET_IDS.map((id) => mockTicket({ id }))
-            seedViewCache(tickets)
 
             const { result, dispatchNotification } = setup({
                 ticketIds: [1, 2],
@@ -275,12 +255,13 @@ describe('useBulkJobAction', () => {
 
             await result.current.createJobRemovingTickets(JobType.DeleteTicket)
 
-            const cache = getViewCache()
-            expect(cache?.pages[0].data).toHaveLength(3)
             expect(dispatchNotification).toHaveBeenCalledWith({
                 status: NotificationStatus.Error,
                 message: 'Failed to apply action. Please try again.',
             })
+            expect(
+                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
+            ).toEqual([1, 2])
         })
 
         it('posts with view_id when hasSelectedAll is true', async () => {
@@ -291,15 +272,24 @@ describe('useBulkJobAction', () => {
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
-                expect(body.params).toMatchObject({ view_id: VIEW_ID })
+                expect(body).toMatchObject({
+                    type: JobType.DeleteTicket,
+                    params: { view_id: VIEW_ID },
+                })
             })
         })
-    })
 
-    describe('isLoading', () => {
-        it('is false initially', () => {
-            const { result } = setup()
-            expect(result.current.isLoading).toBe(false)
+        it('optimistically clears the whole visible list when hasSelectedAll is true', async () => {
+            seedViewCache([
+                mockTicket({ id: 1 }),
+                mockTicket({ id: 2 }),
+                mockTicket({ id: 3 }),
+            ])
+            const { result } = setup({ hasSelectedAll: true })
+
+            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
+
+            expect(getViewCache()?.pages[0].data).toEqual([])
         })
     })
 })

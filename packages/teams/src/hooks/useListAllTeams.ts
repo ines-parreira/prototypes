@@ -4,11 +4,18 @@ import { DurationInMs } from '@repo/utils'
 import { listTeams } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-export function useListAllTeams() {
+type UseListAllTeamsParams = {
+    enabled?: boolean
+}
+
+export function useListAllTeams({
+    enabled = true,
+}: UseListAllTeamsParams = {}) {
     return useExhaustEndpoint(
         queryKeys.teams.listTeams(),
         (cursor) => listTeams({ cursor, limit: 100 }),
         {
+            enabled,
             staleTime: DurationInMs.OneDay,
             refetchOnWindowFocus: false,
         },

@@ -88,6 +88,12 @@ function seedViewListCache(queryClient: QueryClient, tickets: Ticket[]) {
     )
 }
 
+function seedTicketCache(queryClient: QueryClient, ticket: Ticket) {
+    queryClient.setQueryData(queryKeys.tickets.getTicket(ticket.id), {
+        data: ticket,
+    })
+}
+
 function renderHook(queryClient: QueryClient) {
     return renderHookPrimitive(
         () =>
@@ -192,6 +198,7 @@ describe('useRefreshStaleTickets', () => {
         it('should call invalidateQueries with refetchPage when a ticket is stale', async () => {
             const queryClient = createQueryClient()
             seedViewListCache(queryClient, [mockTicket1, mockTicket2])
+            seedTicketCache(queryClient, mockTicket1)
 
             server.use(
                 mockListViewItemsUpdatesHandler(async () =>
@@ -222,6 +229,9 @@ describe('useRefreshStaleTickets', () => {
                         refetchPage: expect.any(Function),
                     }),
                 )
+            })
+            expect(invalidateSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.tickets.getTicket(1),
             })
         })
 

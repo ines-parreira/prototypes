@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
-import type { TicketTeam } from '@gorgias/helpdesk-queries'
+import { useListAllTeams } from '@repo/teams'
 
-import { useListTeamsSearch } from './useListTeamsSearch'
+import type { Team, TicketTeam } from '@gorgias/helpdesk-queries'
 
 const SECTION_DETAILS = {
     TEAMS: {
@@ -33,25 +33,57 @@ export type TeamSection = {
     items: TeamOption[]
 }
 
-type UseTeamOptionsParams = {
-    currentTeam?: TicketTeam | null
+type TeamWithRequiredFields = Team & {
+    id: NonNullable<Team['id']>
+    name: NonNullable<Team['name']>
 }
 
-export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
-    const { teams, isLoading, search, setSearch, onLoad, shouldLoadMore } =
-        useListTeamsSearch()
+type UseTeamOptionsParams = {
+    currentTeam?: TicketTeam | null
+    enabled?: boolean
+}
+
+export function useTeamOptions({
+    currentTeam,
+    enabled = true,
+}: UseTeamOptionsParams) {
+    const [search, setSearch] = useState('')
+    const { data: allTeams = [], isLoading } = useListAllTeams({ enabled })
+
+    const teams = useMemo<TeamWithRequiredFields[]>(() => {
+        const validTeams = allTeams.filter(
+            (team): team is TeamWithRequiredFields =>
+                typeof team.id === 'number' && typeof team.name === 'string',
+        )
+
+        const sortedTeams = [...validTeams].sort((teamA, teamB) =>
+            teamA.name.localeCompare(teamB.name),
+        )
+
+        if (!search) {
+            return sortedTeams
+        }
+
+        const searchValue = search.toLowerCase()
+        return sortedTeams.filter((team) =>
+            team.name.toLowerCase().includes(searchValue),
+        )
+    }, [allTeams, search])
 
     const teamsMap = useMemo(() => {
-        return new Map(teams.map((team) => [team.id, team]))
-    }, [teams])
+        return new Map(allTeams.map((team) => [team.id, team]))
+    }, [allTeams])
 
     const teamSections = useMemo<TeamSection[]>(() => {
         const sections: TeamSection[] = []
 
-        if (teams.length > 0) {
+        if (teams.length > 0 || currentTeam) {
             let isCurrentTeamLoaded = false
-            const items = teams.map((team) => {
-                if (team.id === currentTeam?.id) {
+            const items = teams.map((team): TeamOption => {
+                if (
+                    typeof currentTeam?.id === 'number' &&
+                    team.id === currentTeam.id
+                ) {
                     isCurrentTeamLoaded = true
                 }
                 return {
@@ -60,7 +92,12 @@ export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
                 }
             })
 
-            if (currentTeam && !isCurrentTeamLoaded) {
+            if (
+                currentTeam &&
+                !isCurrentTeamLoaded &&
+                typeof currentTeam.id === 'number' &&
+                typeof currentTeam.name === 'string'
+            ) {
                 items.push({
                     id: currentTeam.id,
                     label: currentTeam.name,
@@ -101,7 +138,7 @@ export function useTeamOptions({ currentTeam }: UseTeamOptionsParams) {
         isLoading,
         search,
         setSearch,
-        onLoad,
-        shouldLoadMore,
+        onLoad: () => undefined,
+        shouldLoadMore: false,
     }
 }

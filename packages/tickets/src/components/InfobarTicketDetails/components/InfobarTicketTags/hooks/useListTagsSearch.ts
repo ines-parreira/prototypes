@@ -7,7 +7,11 @@ import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import { useInfiniteListTags } from './useInfiniteListTags'
 
-export const useListTagsSearch = () => {
+type Params = {
+    enabled?: boolean
+}
+
+export const useListTagsSearch = ({ enabled = true }: Params = {}) => {
     const [search, setSearch] = useState('')
     const debouncedSearch = useDebouncedValue(search, 250)
     const queryResult = useInfiniteListTags(
@@ -16,6 +20,7 @@ export const useListTagsSearch = () => {
             order_by: ListTagsOrderBy.UsageDescNameDesc,
         },
         {
+            enabled,
             staleTime: DurationInMs.FiveMinutes,
             keepPreviousData: true,
         },

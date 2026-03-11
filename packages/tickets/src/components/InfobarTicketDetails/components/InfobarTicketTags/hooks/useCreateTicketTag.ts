@@ -3,16 +3,9 @@ import { useCallback } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 import type { TicketTag } from '@gorgias/helpdesk-queries'
-import {
-    queryKeys,
-    useCreateTag as useCreateTagPrimitive,
-} from '@gorgias/helpdesk-queries'
+import { useCreateTag as useCreateTagPrimitive } from '@gorgias/helpdesk-queries'
 
-type TagsQueryKeyParams = {
-    queryParams: {
-        search: string
-    }
-}
+import { upsertTagIntoListTagsCache } from '../../../../../utils/optimisticUpdates/tagListCache'
 
 export function useCreateTicketTag() {
     const queryClient = useQueryClient()
@@ -32,23 +25,7 @@ export function useCreateTicketTag() {
                 decoration: response.data.decoration,
             }
 
-            void queryClient.invalidateQueries({
-                predicate: ({ queryKey }) => {
-                    const base = queryKeys.tags.listTags()
-                    if (queryKey[0] !== base[0] || queryKey[1] !== base[1]) {
-                        return false
-                    }
-
-                    const params = queryKey[2] as TagsQueryKeyParams | undefined
-                    const searchParam = params?.queryParams?.search ?? ''
-
-                    const normalizedInput = input.toLowerCase()
-                    const normalizedSearch = searchParam.toLowerCase()
-
-                    // Clear all tags queries that could have matched the newly created tag
-                    return normalizedInput.includes(normalizedSearch)
-                },
-            })
+            upsertTagIntoListTagsCache(queryClient, createdTag)
             return createdTag
         },
         [queryClient, createTagMutation],

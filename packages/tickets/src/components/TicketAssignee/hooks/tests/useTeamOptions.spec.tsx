@@ -58,9 +58,9 @@ describe('useTeamOptions', () => {
         expect(result.current.teamSections).toHaveLength(1)
         expect(result.current.teamSections[0].id).toBe('teams')
         expect(result.current.teamSections[0].items).toEqual([
-            { id: 1, label: 'Support' },
-            { id: 2, label: 'Sales' },
             { id: 3, label: 'Engineering' },
+            { id: 2, label: 'Sales' },
+            { id: 1, label: 'Support' },
         ])
         expect(result.current.selectedOption).toEqual(NO_TEAM_OPTION)
     })
@@ -79,9 +79,9 @@ describe('useTeamOptions', () => {
         expect(result.current.teamSections[0].items).toEqual([NO_TEAM_OPTION])
         expect(result.current.teamSections[1].id).toBe('teams')
         expect(result.current.teamSections[1].items).toEqual([
-            { id: 1, label: 'Support' },
-            { id: 2, label: 'Sales' },
             { id: 3, label: 'Engineering' },
+            { id: 2, label: 'Sales' },
+            { id: 1, label: 'Support' },
         ])
         expect(result.current.selectedOption).toEqual({
             id: 1,
@@ -122,5 +122,46 @@ describe('useTeamOptions', () => {
         expect(result.current.teamsMap.get(2)).toEqual(team2)
         expect(result.current.teamsMap.get(3)).toEqual(team3)
         expect(result.current.teamsMap.size).toBe(3)
+    })
+
+    it('should append the current team when it is missing from the fetched teams', async () => {
+        const legacyTeam = mockTicketTeam({
+            id: 99,
+            name: 'Legacy Team',
+        })
+
+        const { result } = renderHook(() =>
+            useTeamOptions({ currentTeam: legacyTeam }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.teamSections).toHaveLength(2)
+        expect(result.current.teamSections[0].items).toEqual([NO_TEAM_OPTION])
+        expect(result.current.teamSections[1].items).toEqual([
+            { id: 3, label: 'Engineering' },
+            { id: 2, label: 'Sales' },
+            { id: 1, label: 'Support' },
+            { id: 99, label: 'Legacy Team' },
+        ])
+        expect(result.current.selectedOption).toEqual({
+            id: 99,
+            label: 'Legacy Team',
+        })
+    })
+
+    it('should expose a no-op onLoad and disable load more', async () => {
+        const { result } = renderHook(() =>
+            useTeamOptions({ currentTeam: null }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.shouldLoadMore).toBe(false)
+        expect(result.current.onLoad()).toBeUndefined()
     })
 })

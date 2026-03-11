@@ -2970,6 +2970,9 @@ importers:
       '@repo/routing':
         specifier: workspace:*
         version: link:../routing
+      '@repo/teams':
+        specifier: workspace:*
+        version: link:../teams
       '@repo/types':
         specifier: workspace:*
         version: link:../types

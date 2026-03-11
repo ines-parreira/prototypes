@@ -17,6 +17,7 @@ export function useExhaustEndpoint<ListItemType>(
     fetchPage: (cursor?: string) => Promise<Response<ListItemType>>,
     options?: UseInfiniteQueryOptions<Response<ListItemType>>,
 ) {
+    const isEnabled = options?.enabled ?? true
     const {
         data,
         fetchNextPage,
@@ -30,10 +31,13 @@ export function useExhaustEndpoint<ListItemType>(
     })
 
     useEffect(() => {
+        if (!isEnabled) {
+            return
+        }
         if (!isFetchingNextPage && hasNextPage) {
             fetchNextPage()
         }
-    }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+    }, [fetchNextPage, hasNextPage, isEnabled, isFetchingNextPage])
 
     const isLoading = hasNextPage || isFetching
 

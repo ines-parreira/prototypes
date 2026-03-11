@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
+import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
@@ -122,6 +122,7 @@ type Props = {
     onCollapse: () => void
     activeTicketId?: number
     currentUserId?: number
+    onApplyMacro?: (ticketIds: number[]) => void
 }
 
 export function TicketList({
@@ -129,16 +130,14 @@ export function TicketList({
     onCollapse,
     activeTicketId,
     currentUserId,
+    onApplyMacro,
 }: Props) {
     const [sortOrder] = useSortOrder(viewId)
+    const [pauseUpdates, setPauseUpdates] = useState(false)
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder }),
         [sortOrder],
     )
-
-    // Ref allows polling pause state to inform useTicketsList on the same render
-    // that a selection change occurred, avoiding a one-render lag.
-    const pauseUpdatesRef = useRef(false)
 
     const {
         tickets,
@@ -147,7 +146,7 @@ export function TicketList({
         isLoading,
         isFetchingNextPage,
         error,
-    } = useTicketsList(viewId, ticketsListParams, pauseUpdatesRef.current)
+    } = useTicketsList(viewId, ticketsListParams, pauseUpdates)
 
     const {
         hasSelectedAll,
@@ -159,8 +158,11 @@ export function TicketList({
         clear,
     } = useTicketSelection(tickets)
 
-    // Keep the ref in sync so the next render passes the correct value to useTicketsList
-    pauseUpdatesRef.current = hasAnySelection
+    // Temporary bridge to preserve legacy pause-on-selection behavior.
+    // Once selection is handled by the Axiom list component, this state/effect can be removed.
+    useEffect(() => {
+        setPauseUpdates(hasAnySelection)
+    }, [hasAnySelection])
 
     const previousSortOrder = usePrevious(sortOrder)
     useEffect(() => {
@@ -270,10 +272,12 @@ export function TicketList({
             <TicketListActions
                 viewId={viewId}
                 selectedTicketIds={selectedTicketIds}
+                visibleTicketIds={ticketIds}
                 hasSelectedAll={hasSelectedAll}
                 selectionCount={selectionCount}
                 onSelectAll={onSelectAll}
                 onActionComplete={clear}
+                onApplyMacro={onApplyMacro}
             />
             <Virtuoso<TicketCompact, ListContext>
                 className={css.ticketList}

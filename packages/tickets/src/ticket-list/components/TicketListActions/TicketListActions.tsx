@@ -7,9 +7,11 @@ import {
     Text,
     Tooltip,
     TooltipContent,
+    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useTicketListActions } from '../../hooks/useTicketListActions'
+import { AssignUserMenu } from './AssignUserMenu'
 import { MoreActionsMenu } from './MoreActionsMenu'
 
 import css from './TicketListActions.module.less'
@@ -17,19 +19,23 @@ import css from './TicketListActions.module.less'
 type Props = {
     viewId: number
     selectedTicketIds: Set<number>
+    visibleTicketIds: number[]
     hasSelectedAll: boolean
     selectionCount: number
     onSelectAll: (selected: boolean) => void
     onActionComplete: () => void
+    onApplyMacro?: (ticketIds: number[]) => void
 }
 
 export function TicketListActions({
     viewId,
     selectedTicketIds,
+    visibleTicketIds,
     hasSelectedAll,
     selectionCount,
     onSelectAll,
     onActionComplete,
+    onApplyMacro,
 }: Props) {
     const isDisabled = !hasSelectedAll && selectionCount === 0
 
@@ -38,14 +44,20 @@ export function TicketListActions({
         handleMarkAsUnread,
         handleMarkAsRead,
         handleChangePriority,
+        handleAssignTeam,
+        handleAssignUser,
+        handleAddTag,
         handleCloseTickets,
         handleMoveToTrash,
         handleExportTickets,
+        handleApplyMacro,
     } = useTicketListActions({
         viewId,
         selectedTicketIds,
+        visibleTicketIds,
         hasSelectedAll,
         onActionComplete,
+        onApplyMacro,
     })
 
     const handleCheckboxChange = useCallback(
@@ -79,32 +91,38 @@ export function TicketListActions({
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
                 <Tooltip>
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        icon="circle-check"
-                        aria-label="Close tickets"
-                        isDisabled={isDisabled || isLoading}
-                        onClick={handleCloseTickets}
+                    <TooltipTrigger>
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon="circle-check"
+                            aria-label="Close tickets"
+                            isDisabled={isDisabled || isLoading}
+                            onClick={handleCloseTickets}
+                        />
+                    </TooltipTrigger>
+                    <TooltipContent
+                        title={
+                            isDisabled
+                                ? 'Select one or more tickets to close'
+                                : 'Close tickets'
+                        }
                     />
-                    <TooltipContent title="Close tickets" />
                 </Tooltip>
-                <Tooltip>
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        icon="user"
-                        aria-label="Assign user"
-                        isDisabled={isDisabled || isLoading}
-                    />
-                    <TooltipContent title="Assign user" />
-                </Tooltip>
+                <AssignUserMenu
+                    value={null}
+                    isDisabled={isDisabled || isLoading}
+                    onAssignUser={handleAssignUser}
+                />
                 <MoreActionsMenu
                     isDisabled={isDisabled || isLoading}
                     onMarkAsUnread={handleMarkAsUnread}
                     onMarkAsRead={handleMarkAsRead}
+                    onAddTag={handleAddTag}
                     onChangePriority={handleChangePriority}
+                    onAssignTeam={handleAssignTeam}
                     onExportTickets={handleExportTickets}
+                    onApplyMacro={handleApplyMacro}
                     onMoveToTrash={handleMoveToTrash}
                 />
             </Box>

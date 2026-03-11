@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 import type { QueryKey } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 
-import type { Ticket } from '@gorgias/helpdesk-queries'
 import { useCreateJob } from '@gorgias/helpdesk-queries'
 import type {
     CreateJobBodyParamsUpdates,
@@ -19,6 +18,7 @@ import {
     removeAllTicketsFromViewListCache,
     removeTicketFromViewListCache,
 } from '../../utils/optimisticUpdates/viewListCache'
+import type { TicketCachePatch } from '../../utils/optimisticUpdates/viewListCache'
 
 type Props = {
     viewId: number
@@ -31,7 +31,6 @@ type JobTypeValue = (typeof JobType)[keyof typeof JobType]
 export function useBulkJobAction({ viewId, ticketIds, hasSelectedAll }: Props) {
     const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
-
     const { mutateAsync, isLoading } = useCreateJob()
 
     const runJob = useCallback(
@@ -51,35 +50,32 @@ export function useBulkJobAction({ viewId, ticketIds, hasSelectedAll }: Props) {
         async (
             type: JobTypeValue,
             updates?: CreateJobBodyParamsUpdates,
-            cachePatch?: Partial<Ticket>,
             successMessage?: string,
+            listCachePatch?: TicketCachePatch,
         ) => {
             let snapshot: [QueryKey, unknown][] = []
 
-            if (cachePatch) {
-                // Prevent polling/refetches from overwriting optimistic updates mid-flight
+            if (listCachePatch) {
+                const queryKey = hasSelectedAll
+                    ? [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId]
+                    : LIST_VIEW_ITEMS_QUERY_KEY_PREFIX
+
+                snapshot = queryClient.getQueriesData({ queryKey })
+
                 if (hasSelectedAll) {
-                    await queryClient.cancelQueries({
-                        queryKey: [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId],
-                    })
-                    snapshot = queryClient.getQueriesData({
-                        queryKey: [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId],
-                    })
                     patchAllTicketsInViewListCache(
                         queryClient,
                         viewId,
-                        cachePatch,
+                        listCachePatch,
                     )
                 } else {
-                    await queryClient.cancelQueries({
-                        queryKey: LIST_VIEW_ITEMS_QUERY_KEY_PREFIX,
+                    ticketIds.forEach((ticketId) => {
+                        patchTicketInViewListCache(
+                            queryClient,
+                            ticketId,
+                            listCachePatch,
+                        )
                     })
-                    snapshot = queryClient.getQueriesData({
-                        queryKey: LIST_VIEW_ITEMS_QUERY_KEY_PREFIX,
-                    })
-                    ticketIds.forEach((id) =>
-                        patchTicketInViewListCache(queryClient, id, cachePatch),
-                    )
                 }
             }
 
@@ -116,27 +112,17 @@ export function useBulkJobAction({ viewId, ticketIds, hasSelectedAll }: Props) {
             updates?: CreateJobBodyParamsUpdates,
             successMessage?: string,
         ) => {
-            let snapshot: [QueryKey, unknown][] = []
+            const queryKey = hasSelectedAll
+                ? [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId]
+                : LIST_VIEW_ITEMS_QUERY_KEY_PREFIX
+            const snapshot = queryClient.getQueriesData({ queryKey })
 
-            // Removing always changes list caches, so we always snapshot + cancel.
             if (hasSelectedAll) {
-                await queryClient.cancelQueries({
-                    queryKey: [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId],
-                })
-                snapshot = queryClient.getQueriesData({
-                    queryKey: [...LIST_VIEW_ITEMS_QUERY_KEY_PREFIX, viewId],
-                })
                 removeAllTicketsFromViewListCache(queryClient, viewId)
             } else {
-                await queryClient.cancelQueries({
-                    queryKey: LIST_VIEW_ITEMS_QUERY_KEY_PREFIX,
+                ticketIds.forEach((ticketId) => {
+                    removeTicketFromViewListCache(queryClient, ticketId)
                 })
-                snapshot = queryClient.getQueriesData({
-                    queryKey: LIST_VIEW_ITEMS_QUERY_KEY_PREFIX,
-                })
-                ticketIds.forEach((id) =>
-                    removeTicketFromViewListCache(queryClient, id),
-                )
             }
 
             try {
