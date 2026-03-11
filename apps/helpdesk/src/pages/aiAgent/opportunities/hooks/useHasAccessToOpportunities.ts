@@ -2,15 +2,22 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
 
 export const useHasAccessToOpportunities = (shopName: string): boolean => {
-    const { currentAutomatePlan, hasCurrentStoreTrialActive, trialType } =
-        useTrialAccess(shopName)
+    const { currentAutomatePlan, trials } = useTrialAccess(shopName)
 
     const isOnUsd6PlusPlan =
         currentAutomatePlan?.generation && currentAutomatePlan.generation >= 6
 
-    return Boolean(
-        isOnUsd6PlusPlan ||
-            (hasCurrentStoreTrialActive &&
-                trialType === TrialType.ShoppingAssistant),
+    const storeTrial = trials?.find(
+        (trial) =>
+            trial.shopName === shopName &&
+            trial.type === TrialType.ShoppingAssistant,
     )
+
+    const now = new Date()
+    const isStoreTrialActive = storeTrial
+        ? new Date(storeTrial.trial.endDatetime ?? 0) > now &&
+          storeTrial.trial.account.actualTerminationDatetime === null
+        : false
+
+    return Boolean(isOnUsd6PlusPlan || isStoreTrialActive)
 }

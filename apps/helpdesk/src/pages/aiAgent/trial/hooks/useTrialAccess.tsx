@@ -4,6 +4,7 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetTrials } from 'models/aiAgent/queries'
+import type { Trial } from 'models/aiAgent/types'
 import type { AutomatePlan } from 'models/billing/types'
 import { HelpdeskPlanTier } from 'models/billing/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
@@ -51,6 +52,7 @@ const createRestrictedTrialAccess = (
     currentAutomatePlan: AutomatePlan | undefined,
     isAdminUser: boolean,
     isTrialingSubscription: boolean,
+    trials: Trial[] | undefined,
 ): TrialAccess => ({
     canNotifyAdmin: false,
     canBookDemo: false,
@@ -73,6 +75,7 @@ const createRestrictedTrialAccess = (
     isInAiAgentTrial: false,
     isOnboarded: false,
     isTrialingSubscription,
+    trials,
 })
 
 export type TrialAccess = {
@@ -106,6 +109,7 @@ export type TrialAccess = {
     isInAiAgentTrial: boolean
     isOnboarded: boolean | undefined
     isTrialingSubscription: boolean
+    trials: Trial[] | undefined
 }
 
 /**
@@ -192,6 +196,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             currentAutomatePlan,
             isAdmin(currentUser),
             isTrialingSubscription,
+            trials,
         )
     }
 
@@ -204,6 +209,7 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
             currentAutomatePlan,
             isAdmin(currentUser),
             isTrialingSubscription,
+            trials,
         )
     }
     const isAdminUser = isAdmin(currentUser)
@@ -319,5 +325,6 @@ export const useTrialAccess = (currentStoreName?: string): TrialAccess => {
         isInAiAgentTrial,
         isOnboarded,
         isTrialingSubscription,
+        trials,
     }
 }

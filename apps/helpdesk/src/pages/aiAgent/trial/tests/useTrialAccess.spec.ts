@@ -97,6 +97,7 @@ const defaultExpectedValues = {
     currentAutomatePlan: {
         generation: 5,
     },
+    trials: [],
 }
 
 const renderUseTrialAccess = (currentStoreName?: string) => {
@@ -531,6 +532,7 @@ describe('useTrialAccess', () => {
                 hasAnyTrialOptedIn: true,
                 hasCurrentStoreTrialExpired: true,
                 hasCurrentStoreTrialStarted: true,
+                trials: [expiredTrial],
             })
         })
 
@@ -602,6 +604,7 @@ describe('useTrialAccess', () => {
                     canSeeSystemBanner: true,
                     canSeeTrialCTA: true,
                     hasAnyTrialOptedOut: true,
+                    trials: [optedOutTrial],
                 })
             })
 

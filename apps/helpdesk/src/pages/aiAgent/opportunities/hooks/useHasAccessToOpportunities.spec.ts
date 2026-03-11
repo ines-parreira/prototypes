@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
+import type { Trial } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -10,9 +11,35 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 
 const mockUseTrialAccess = useTrialAccess as jest.Mock
 
+const FUTURE_DATE = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+const PAST_DATE = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+
+const makeStoreTrial = (
+    shopName: string,
+    overrides?: Partial<Trial['trial']>,
+): Trial => ({
+    shopName,
+    shopType: 'shopify',
+    type: TrialType.ShoppingAssistant,
+    trial: {
+        startDatetime: '2026-02-01T00:00:00Z',
+        endDatetime: FUTURE_DATE,
+        account: {
+            optInDatetime: '2026-02-01T00:00:00Z',
+            optOutDatetime: null,
+            plannedUpgradeDatetime: null,
+            actualUpgradeDatetime: null,
+            actualTerminationDatetime: null,
+        },
+        ...overrides,
+    },
+})
+
 describe('useHasAccessToOpportunities', () => {
     beforeEach(() => {
-        mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
+        mockUseTrialAccess.mockReturnValue(
+            createMockTrialAccess({ trials: [] }),
+        )
     })
 
     it('passes shopName to useTrialAccess', () => {
@@ -26,6 +53,7 @@ describe('useHasAccessToOpportunities', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     currentAutomatePlan: { generation: 6 },
+                    trials: [],
                 }),
             )
 
@@ -40,6 +68,7 @@ describe('useHasAccessToOpportunities', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     currentAutomatePlan: { generation: 8 },
+                    trials: [],
                 }),
             )
 
@@ -54,6 +83,7 @@ describe('useHasAccessToOpportunities', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     currentAutomatePlan: { generation: 5 },
+                    trials: [],
                 }),
             )
 
@@ -68,8 +98,7 @@ describe('useHasAccessToOpportunities', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     currentAutomatePlan: { generation: 6 },
-                    hasAnyTrialActive: false,
-                    hasCurrentStoreTrialActive: false,
+                    trials: [],
                 }),
             )
 
@@ -82,11 +111,10 @@ describe('useHasAccessToOpportunities', () => {
     })
 
     describe('ShoppingAssistant trial', () => {
-        it('returns true when hasCurrentStoreTrialActive is true and trialType is ShoppingAssistant', () => {
+        it('returns true when endDatetime is in the future and not terminated', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasCurrentStoreTrialActive: true,
-                    trialType: TrialType.ShoppingAssistant,
+                    trials: [makeStoreTrial('my-shop')],
                 }),
             )
 
@@ -97,26 +125,12 @@ describe('useHasAccessToOpportunities', () => {
             expect(result.current).toBe(true)
         })
 
-        it('returns true when current store trial is active and trialType is ShoppingAssistant (with shopName)', () => {
+        it('returns false when endDatetime is in the past even if not terminated', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasCurrentStoreTrialActive: true,
-                    trialType: TrialType.ShoppingAssistant,
-                }),
-            )
-
-            const { result } = renderHook(() =>
-                useHasAccessToOpportunities('my-shop'),
-            )
-
-            expect(result.current).toBe(true)
-        })
-
-        it('returns false when trial is active but trialType is not ShoppingAssistant', () => {
-            mockUseTrialAccess.mockReturnValue(
-                createMockTrialAccess({
-                    hasAnyTrialActive: true,
-                    trialType: TrialType.AiAgent,
+                    trials: [
+                        makeStoreTrial('my-shop', { endDatetime: PAST_DATE }),
+                    ],
                 }),
             )
 
@@ -127,11 +141,20 @@ describe('useHasAccessToOpportunities', () => {
             expect(result.current).toBe(false)
         })
 
-        it('returns false when trialType is ShoppingAssistant but no trial is active', () => {
+        it('returns false when actualTerminationDatetime is set even if endDatetime is in the future', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasAnyTrialActive: false,
-                    trialType: TrialType.ShoppingAssistant,
+                    trials: [
+                        makeStoreTrial('my-shop', {
+                            account: {
+                                optInDatetime: null,
+                                optOutDatetime: null,
+                                plannedUpgradeDatetime: null,
+                                actualUpgradeDatetime: null,
+                                actualTerminationDatetime: PAST_DATE,
+                            },
+                        }),
+                    ],
                 }),
             )
 
@@ -142,12 +165,10 @@ describe('useHasAccessToOpportunities', () => {
             expect(result.current).toBe(false)
         })
 
-        it('returns false when shopName is provided but only hasAnyTrialActive is true (not store-specific)', () => {
+        it('returns false when no trial matches the shopName', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasAnyTrialActive: true,
-                    hasCurrentStoreTrialActive: false,
-                    trialType: TrialType.ShoppingAssistant,
+                    trials: [makeStoreTrial('other-shop')],
                 }),
             )
 
@@ -158,13 +179,40 @@ describe('useHasAccessToOpportunities', () => {
             expect(result.current).toBe(false)
         })
 
-        it('returns false when hasCurrentStoreTrialActive is false even if hasAnyTrialActive is true', () => {
+        it('returns false when only an AiAgent trial exists for the shop', () => {
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
-                    hasAnyTrialActive: true,
-                    hasCurrentStoreTrialActive: false,
-                    trialType: TrialType.ShoppingAssistant,
+                    trials: [
+                        {
+                            ...makeStoreTrial('my-shop'),
+                            type: TrialType.AiAgent,
+                        },
+                    ],
                 }),
+            )
+
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
+
+            expect(result.current).toBe(false)
+        })
+
+        it('returns false when trials is empty', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({ trials: [] }),
+            )
+
+            const { result } = renderHook(() =>
+                useHasAccessToOpportunities('my-shop'),
+            )
+
+            expect(result.current).toBe(false)
+        })
+
+        it('returns false when trials is undefined', () => {
+            mockUseTrialAccess.mockReturnValue(
+                createMockTrialAccess({ trials: undefined }),
             )
 
             const { result } = renderHook(() =>
