@@ -9,6 +9,7 @@ import {
     mockListInstagramProfilesHandler,
     mockListIntegrationsHandler,
     mockTicketCustomer,
+    mockTicketCustomerChannel,
 } from '@gorgias/helpdesk-mocks'
 import type { TicketCustomer, TicketMessage } from '@gorgias/helpdesk-types'
 
@@ -48,6 +49,13 @@ const mockListIntegrations = mockListIntegrationsHandler(async () =>
     }),
 )
 
+const mockInstagramChannel = mockTicketCustomerChannel({
+    type: 'instagram',
+    address: 'test_user',
+    created_datetime: '2024-01-01T00:00:00Z',
+    updated_datetime: '2024-06-01T00:00:00Z',
+})
+
 const createMockCustomer = (
     overrides?: Partial<TicketCustomer>,
 ): TicketCustomer =>
@@ -55,6 +63,7 @@ const createMockCustomer = (
         id: 1,
         name: 'test_user',
         email: 'test@example.com',
+        channels: [mockInstagramChannel],
         ...overrides,
     })
 
@@ -140,29 +149,67 @@ afterAll(() => {
 
 describe('InfobarTicketCustomerInstagramSection', () => {
     describe('when customer handle is not available', () => {
-        it('should return null when no messages exist', () => {
-            const { container } = renderComponent(createMockCustomer(), [])
+        it('should return null when customer has no channels', () => {
+            const { container } = renderComponent(
+                createMockCustomer({ channels: [] }),
+            )
 
             expect(container.firstChild).toBeNull()
         })
 
-        it('should return null when message has no sender name', () => {
-            const messagesWithoutSenderName = [
-                {
-                    id: 1,
-                    integration_id: 123,
-                    sender: {
-                        name: undefined,
-                    },
-                } as unknown as TicketMessage,
-            ]
+        it('should return null when customer has no instagram channel', () => {
+            const emailChannel = mockTicketCustomerChannel({
+                type: 'email',
+                address: 'test@example.com',
+            })
 
             const { container } = renderComponent(
-                createMockCustomer(),
-                messagesWithoutSenderName,
+                createMockCustomer({ channels: [emailChannel] }),
             )
 
             expect(container.firstChild).toBeNull()
+        })
+
+        it('should use the most recently updated instagram channel', async () => {
+            const mockEmptyInstagramProfiles = mockListInstagramProfilesHandler(
+                async () =>
+                    HttpResponse.json({
+                        data: [],
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: null,
+                            total_resources: 0,
+                        },
+                        object: 'list',
+                        uri: '/api/instagram/profiles',
+                    }),
+            )
+            server.use(mockEmptyInstagramProfiles.handler)
+
+            const olderChannel = mockTicketCustomerChannel({
+                type: 'instagram',
+                address: 'old_user',
+                created_datetime: '2023-01-01T00:00:00Z',
+                updated_datetime: '2023-06-01T00:00:00Z',
+            })
+            const newerChannel = mockTicketCustomerChannel({
+                type: 'instagram',
+                address: 'new_user',
+                created_datetime: '2024-01-01T00:00:00Z',
+                updated_datetime: '2024-06-01T00:00:00Z',
+            })
+
+            renderComponent(
+                createMockCustomer({
+                    channels: [olderChannel, newerChannel],
+                }),
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('link', { name: /@new_user/ }),
+                ).toBeInTheDocument()
+            })
         })
     })
 

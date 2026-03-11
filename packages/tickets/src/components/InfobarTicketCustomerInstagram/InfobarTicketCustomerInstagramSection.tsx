@@ -63,7 +63,7 @@ export const InfobarTicketCustomerInstagramSection = ({
     messages,
 }: InfobarTicketCustomerInstagramSectionProps) => {
     const [isExpanded, setIsExpanded] = useState(false)
-    const customerInstagramHandle = useCustomerInstagramHandle(messages)
+    const customerInstagramHandle = useCustomerInstagramHandle(customer)
     const { data: customerInstagramProfile } = useCustomerInstagramProfile({
         customer,
         messages,
