@@ -37,6 +37,20 @@ const useListLiveCallQueueVoiceCallsMock = assumeMock(
 
 const mockUseAccountId = useAccountId as jest.Mock
 
+function createDomainEvent(partial: {
+    id?: string
+    dataschema: DomainEvent['dataschema'] | (string & {})
+    data: Record<string, unknown>
+}): DomainEvent {
+    return {
+        type: 'test',
+        source: '//helpdesk',
+        subject: 'test',
+        ...partial,
+        id: partial.id ?? 'test-event-id',
+    } as DomainEvent
+}
+
 describe('useLiveVoiceUpdates', () => {
     const mockedDate = new Date(2025, 0, 15, 12, 10)
     const voiceCalls = [
@@ -113,7 +127,7 @@ describe('useLiveVoiceUpdates', () => {
 
         const { result } = renderHook(() => useLiveVoiceUpdates({}))
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             id: 'test-event-id',
             dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
             data: {
@@ -121,7 +135,7 @@ describe('useLiveVoiceUpdates', () => {
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
 
         // process the event for the first time and check we update the status creation
         result.current.handleEvent(mockEvent)
@@ -156,13 +170,13 @@ describe('useLiveVoiceUpdates', () => {
 
         const { result } = renderHook(() => useLiveVoiceUpdates({}))
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             id: 'test-event-id',
             dataschema: '//helpdesk/phone.voice-call.inbound.ended/1.1.0',
             data: {
                 voice_call_id: 123,
             },
-        } as DomainEvent
+        })
 
         // no exceptions are thrown when handling an event
         result.current.handleEvent(mockEvent)
@@ -175,10 +189,10 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/user-preferences.updated/1.0.1',
             data: {},
-        } as DomainEvent
+        })
 
         it.each([
             {
@@ -219,13 +233,15 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                result.current.handleEvent({
-                    ...mockEvent,
-                    data: {
-                        user_id: agentStatus.id,
-                        ...eventData,
-                    },
-                } as DomainEvent)
+                result.current.handleEvent(
+                    createDomainEvent({
+                        ...mockEvent,
+                        data: {
+                            user_id: agentStatus.id,
+                            ...eventData,
+                        },
+                    }),
+                )
 
                 expect(appQueryClient.getQueryData(queryKey)).toEqual({
                     data: {
@@ -249,7 +265,7 @@ describe('useLiveVoiceUpdates', () => {
         }
         const queryKey =
             queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.received/1.1.1',
             data: {
                 voice_call_id: 123,
@@ -264,7 +280,7 @@ describe('useLiveVoiceUpdates', () => {
                 customer_id: 123456,
                 is_possible_spam: null,
             },
-        } as DomainEvent
+        })
 
         it('should handle inbound voice call event and add it to the list', () => {
             const mockOldData = {
@@ -307,7 +323,7 @@ describe('useLiveVoiceUpdates', () => {
                     data: [],
                 },
             }
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.received/1.1.1',
                 data: {
@@ -323,7 +339,7 @@ describe('useLiveVoiceUpdates', () => {
                     customer_id: 123456,
                     is_possible_spam: true,
                 },
-            } as DomainEvent
+            })
 
             appQueryClient.setQueryData(queryKey, mockOldData)
 
@@ -396,14 +412,14 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.rang-agent/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
 
         it('should update voice call in the list when an agent is rang', () => {
             const queryKey =
@@ -592,14 +608,14 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
 
         it('should update voice call in the list when an agent answered', () => {
             const queryKey =
@@ -780,30 +796,30 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockDeclinedEvent = {
+        const mockDeclinedEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
-        const mockUnansweredEvent = {
+        })
+        const mockUnansweredEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.declined/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
-        const mockCanceledEvent = {
+        })
+        const mockCanceledEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.inbound.canceled/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
         const agentStatus = {
             id: 1,
             name: 'Test Agent',
@@ -939,13 +955,13 @@ describe('useLiveVoiceUpdates', () => {
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema: dataschema,
                 data: {
                     voice_call_id: 123,
                     ticket_id: 456,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -982,13 +998,13 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     dataschema: dataschema,
                     data: {
                         voice_call_id: 123,
                         ticket_id: 456,
                     },
-                } as DomainEvent
+                })
                 result.current.handleEvent(mockEvent)
 
                 expect(appQueryClient.getQueryData(queryKey)).toEqual({
@@ -1010,7 +1026,7 @@ describe('useLiveVoiceUpdates', () => {
             queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
 
         it('should update the voice call with the queue ID and status in queue', () => {
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.enqueued/1.2.1',
                 data: {
@@ -1018,7 +1034,7 @@ describe('useLiveVoiceUpdates', () => {
                     queue_id: 3,
                     status_in_queue: 'waiting',
                 },
-            } as DomainEvent
+            })
             const mockOldData = {
                 data: {
                     data: [
@@ -1050,7 +1066,7 @@ describe('useLiveVoiceUpdates', () => {
         })
 
         it('should not update the voice call if the queue is not in the params', () => {
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.enqueued/1.2.1',
                 data: {
@@ -1058,7 +1074,7 @@ describe('useLiveVoiceUpdates', () => {
                     queue_id: 9999,
                     status_in_queue: 'waiting',
                 },
-            } as DomainEvent
+            })
             const mockOldData = {
                 data: {
                     data: [
@@ -1108,12 +1124,12 @@ describe('useLiveVoiceUpdates', () => {
                     ],
                 },
             }
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema: dataschema,
                 data: {
                     voice_call_id: 123,
                 },
-            } as DomainEvent
+            })
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
@@ -1161,12 +1177,12 @@ describe('useLiveVoiceUpdates', () => {
                     ],
                 },
             }
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema: dataschema,
                 data: {
                     voice_call_id: 123,
                 },
-            } as DomainEvent
+            })
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
@@ -1219,12 +1235,12 @@ describe('useLiveVoiceUpdates', () => {
                     ],
                 },
             }
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema: dataschema,
                 data: {
                     voice_call_id: 123,
                 },
-            } as DomainEvent
+            })
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
@@ -1258,7 +1274,7 @@ describe('useLiveVoiceUpdates', () => {
         }
         const queryKey =
             queryKeys.voiceCallLiveQueue.listLiveCallQueueVoiceCalls(params)
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.outbound.started/1.0.1',
             data: {
                 voice_call_id: 123,
@@ -1273,7 +1289,7 @@ describe('useLiveVoiceUpdates', () => {
                 customer_id: 123456,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
 
         it('should handle inbound voice call event and add it to the list', () => {
             const mockOldData = {
@@ -1386,14 +1402,14 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockEvent = {
+        const mockEvent = createDomainEvent({
             dataschema: '//helpdesk/phone.voice-call.outbound.connected/1.0.1',
             data: {
                 voice_call_id: 123,
                 account_id: 1,
                 user_id: 1,
             },
-        } as DomainEvent
+        })
 
         it('should update voice call in the list when an agent answered', () => {
             const queryKey =
@@ -1516,7 +1532,7 @@ describe('useLiveVoiceUpdates', () => {
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.1',
                 data: {
@@ -1525,7 +1541,7 @@ describe('useLiveVoiceUpdates', () => {
                     transfer_type: 'agent',
                     account_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -1581,7 +1597,7 @@ describe('useLiveVoiceUpdates', () => {
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
             // First, simulate an answered event to populate the voiceCallIdToSidRef
-            const answeredEvent = {
+            const answeredEvent = createDomainEvent({
                 id: '40b7c7ee-f5f0-452e-b1cf-f6ca4291002c',
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.answered/1.0.1',
@@ -1590,12 +1606,12 @@ describe('useLiveVoiceUpdates', () => {
                     account_id: 1,
                     user_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(answeredEvent)
 
             // Now test the transfer-accepted event
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 id: '3150f294-5fb9-467a-8f8f-f3c4a049f2ae',
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.1',
@@ -1605,7 +1621,7 @@ describe('useLiveVoiceUpdates', () => {
                     transfer_type: 'external',
                     account_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -1646,7 +1662,7 @@ describe('useLiveVoiceUpdates', () => {
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.transfer-accepted/1.3.0',
                 data: {
@@ -1655,7 +1671,7 @@ describe('useLiveVoiceUpdates', () => {
                     transfer_type: 'agent',
                     account_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -1674,7 +1690,7 @@ describe('useLiveVoiceUpdates', () => {
             voice_queue_ids: [3],
         }
 
-        const mockWrapUpStartedEvent = {
+        const mockWrapUpStartedEvent = createDomainEvent({
             dataschema:
                 '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.1',
             data: {
@@ -1684,8 +1700,8 @@ describe('useLiveVoiceUpdates', () => {
                 call_sid: 'abc',
                 expiration_datetime: mockedDate.toISOString(),
             },
-        } as DomainEvent
-        const mockWrapUpEndedEvent = {
+        })
+        const mockWrapUpEndedEvent = createDomainEvent({
             dataschema:
                 '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.1',
             data: {
@@ -1694,7 +1710,7 @@ describe('useLiveVoiceUpdates', () => {
                 user_id: 1,
                 call_sid: 'abc',
             },
-        } as DomainEvent
+        })
 
         it('should create the agent status on started event', () => {
             const queryKey =
@@ -1790,7 +1806,7 @@ describe('useLiveVoiceUpdates', () => {
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.wrap-up-started/1.1.0',
                 data: {
@@ -1799,7 +1815,7 @@ describe('useLiveVoiceUpdates', () => {
                     user_id: 1,
                     expiration_datetime: mockedDate.toISOString(),
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -1838,7 +1854,7 @@ describe('useLiveVoiceUpdates', () => {
             appQueryClient.setQueryData(queryKey, mockOldData)
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.wrap-up-ended/1.1.0',
                 data: {
@@ -1846,7 +1862,7 @@ describe('useLiveVoiceUpdates', () => {
                     account_id: 1,
                     user_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -1923,7 +1939,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     id: 'monitoring-started-event',
                     dataschema: dataschema,
                     data: {
@@ -1931,7 +1947,7 @@ describe('useLiveVoiceUpdates', () => {
                         account_id: 1,
                         user_id: 42,
                     },
-                } as DomainEvent
+                })
 
                 result.current.handleEvent(mockEvent)
 
@@ -1968,7 +1984,7 @@ describe('useLiveVoiceUpdates', () => {
 
             const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-            const mockEvent = {
+            const mockEvent = createDomainEvent({
                 id: 'monitoring-started-event',
                 dataschema: dataschema,
                 data: {
@@ -1976,7 +1992,7 @@ describe('useLiveVoiceUpdates', () => {
                     account_id: 1,
                     user_id: 1,
                 },
-            } as DomainEvent
+            })
 
             result.current.handleEvent(mockEvent)
 
@@ -2021,7 +2037,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     id: 'monitoring-started-event',
                     dataschema: dataschema,
                     data: {
@@ -2029,7 +2045,7 @@ describe('useLiveVoiceUpdates', () => {
                         account_id: 1,
                         user_id: 1,
                     },
-                } as DomainEvent
+                })
 
                 result.current.handleEvent(mockEvent)
 
@@ -2062,7 +2078,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     id: 'monitoring-ended-event',
                     dataschema: dataschema,
                     data: {
@@ -2070,7 +2086,7 @@ describe('useLiveVoiceUpdates', () => {
                         account_id: 1,
                         user_id: 1,
                     },
-                } as DomainEvent
+                })
 
                 result.current.handleEvent(mockEvent)
 
@@ -2130,7 +2146,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     id: 'monitoring-ended-event',
                     dataschema: dataschema,
                     data: {
@@ -2138,7 +2154,7 @@ describe('useLiveVoiceUpdates', () => {
                         account_id: 1,
                         user_id: 1,
                     },
-                } as DomainEvent
+                })
 
                 result.current.handleEvent(mockEvent)
 
@@ -2190,7 +2206,7 @@ describe('useLiveVoiceUpdates', () => {
 
                 const { result } = renderHook(() => useLiveVoiceUpdates(params))
 
-                const mockEvent = {
+                const mockEvent = createDomainEvent({
                     id: 'monitoring-ended-event',
                     dataschema: dataschema,
                     data: {
@@ -2198,7 +2214,7 @@ describe('useLiveVoiceUpdates', () => {
                         account_id: 1,
                         user_id: 1,
                     },
-                } as DomainEvent
+                })
 
                 result.current.handleEvent(mockEvent)
 

@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import type { DomainEvent } from '@gorgias/events'
+import { isDomainEvent } from '@gorgias/events'
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
 import { useChannel } from '@gorgias/realtime-ably'
 
@@ -34,10 +35,14 @@ export default function TextToSpeechProvider({
     const handleTTSEvent = useCallback(
         (event: DomainEvent) => {
             if (
-                event.dataschema ===
-                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1' ||
-                event.dataschema ===
-                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1'
+                isDomainEvent(
+                    event,
+                    '//helpdesk/phone.voice-tts.preview.integration-property-synthesized',
+                ) ||
+                isDomainEvent(
+                    event,
+                    '//helpdesk/phone.voice-tts.preview.step-property-synthesized',
+                )
             ) {
                 const {
                     tts_url,

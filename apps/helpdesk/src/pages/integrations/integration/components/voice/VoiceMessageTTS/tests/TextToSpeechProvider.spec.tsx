@@ -37,6 +37,20 @@ jest.mock('state/currentUser/selectors', () => ({
     getCurrentUserId: jest.fn(),
 }))
 
+function createDomainEvent(partial: {
+    id?: string
+    dataschema: DomainEvent['dataschema']
+    data: Record<string, unknown>
+}): DomainEvent {
+    return {
+        type: 'test',
+        source: '//helpdesk',
+        subject: 'test',
+        ...partial,
+        id: partial.id ?? 'test-event-id',
+    } as DomainEvent
+}
+
 describe('TextToSpeechProvider', () => {
     const mockIntegrationId = 123
 
@@ -133,7 +147,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
@@ -143,7 +157,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -170,7 +184,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1',
                 data: {
@@ -180,7 +194,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -201,14 +215,14 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
                     error_message: 'Failed to synthesize speech',
                     property_url: 'testField',
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -232,7 +246,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
@@ -243,7 +257,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -275,7 +289,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
@@ -285,7 +299,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -317,7 +331,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
@@ -327,7 +341,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -359,7 +373,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.integration-property-synthesized/1.0.1',
                 data: {
@@ -369,7 +383,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.EnUs,
                     voice_gender: VoiceGender.Female,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -392,11 +406,11 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-call.inbound.ticket-associated/1.0.1',
                 data: {},
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
@@ -434,7 +448,7 @@ describe('TextToSpeechProvider', () => {
 
             const onEventCallback = mockUseChannel.mock.calls[0][0].onEvent
 
-            const event: DomainEvent = {
+            const event = createDomainEvent({
                 dataschema:
                     '//helpdesk/phone.voice-tts.preview.step-property-synthesized/1.0.1',
                 data: {
@@ -444,7 +458,7 @@ describe('TextToSpeechProvider', () => {
                     language_code: VoiceLanguage.FrFr,
                     voice_gender: VoiceGender.Male,
                 },
-            } as DomainEvent
+            })
 
             act(() => {
                 onEventCallback(event)
