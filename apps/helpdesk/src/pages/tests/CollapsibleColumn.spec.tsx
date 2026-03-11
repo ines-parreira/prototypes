@@ -236,4 +236,92 @@ describe('CollapsibleColumn', () => {
         const contentElement = container.querySelector('.content')
         expect(collapsibleColumnRef.current).toBe(contentElement)
     })
+
+    describe('collapsibleColumnWidthConfig', () => {
+        it('should not apply inline style when collapsibleColumnWidthConfig is undefined', () => {
+            const collapsibleColumnRef = createRef<HTMLDivElement>()
+            mockUseCollapsibleColumn.mockReturnValue({
+                isCollapsibleColumnOpen: true,
+                collapsibleColumnChildren: null,
+                collapsibleColumnRef,
+                collapsibleColumnWidthConfig: undefined,
+            })
+
+            const { container } = render(<CollapsibleColumn />)
+
+            const columnElement = container.querySelector('.collapsible-column')
+            expect(columnElement).not.toHaveAttribute('style')
+        })
+
+        it('should apply all CSS custom properties when collapsibleColumnWidthConfig has all fields', () => {
+            const collapsibleColumnRef = createRef<HTMLDivElement>()
+            mockUseCollapsibleColumn.mockReturnValue({
+                isCollapsibleColumnOpen: true,
+                collapsibleColumnChildren: null,
+                collapsibleColumnRef,
+                collapsibleColumnWidthConfig: {
+                    width: '400px',
+                    maxWidth: '600px',
+                    minWidth: '200px',
+                },
+            })
+
+            const { container } = render(<CollapsibleColumn />)
+
+            const columnElement = container.querySelector<HTMLElement>(
+                '.collapsible-column',
+            )
+            expect(columnElement).toHaveStyle({
+                '--collapsible-column-width': '400px',
+                '--collapsible-column-max-width': '600px',
+                '--collapsible-column-min-width': '200px',
+            })
+        })
+
+        it('should apply only the provided CSS custom properties when collapsibleColumnWidthConfig has partial fields', () => {
+            const collapsibleColumnRef = createRef<HTMLDivElement>()
+            mockUseCollapsibleColumn.mockReturnValue({
+                isCollapsibleColumnOpen: true,
+                collapsibleColumnChildren: null,
+                collapsibleColumnRef,
+                collapsibleColumnWidthConfig: {
+                    width: '300px',
+                },
+            })
+
+            const { container } = render(<CollapsibleColumn />)
+
+            const columnElement = container.querySelector<HTMLElement>(
+                '.collapsible-column',
+            )
+            expect(columnElement).toHaveStyle({
+                '--collapsible-column-width': '300px',
+            })
+        })
+
+        it('should remove inline style when collapsibleColumnWidthConfig changes from defined to undefined', () => {
+            const collapsibleColumnRef = createRef<HTMLDivElement>()
+            mockUseCollapsibleColumn.mockReturnValue({
+                isCollapsibleColumnOpen: true,
+                collapsibleColumnChildren: null,
+                collapsibleColumnRef,
+                collapsibleColumnWidthConfig: { width: '400px' },
+            })
+
+            const { container, rerender } = render(<CollapsibleColumn />)
+
+            const columnElement = container.querySelector('.collapsible-column')
+            expect(columnElement).toHaveAttribute('style')
+
+            mockUseCollapsibleColumn.mockReturnValue({
+                isCollapsibleColumnOpen: true,
+                collapsibleColumnChildren: null,
+                collapsibleColumnRef,
+                collapsibleColumnWidthConfig: undefined,
+            })
+            rerender(<CollapsibleColumn />)
+
+            expect(columnElement?.getAttribute('style')).toBeFalsy()
+        })
+    })
 })

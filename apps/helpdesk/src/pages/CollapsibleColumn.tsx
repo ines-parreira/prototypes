@@ -1,3 +1,5 @@
+import type React from 'react'
+
 import cn from 'classnames'
 
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
@@ -11,7 +13,18 @@ export const CollapsibleColumn = () => {
         isCollapsibleColumnOpen,
         collapsibleColumnChildren,
         collapsibleColumnRef,
+        collapsibleColumnWidthConfig,
     } = useCollapsibleColumn()
+
+    const widthStyle = collapsibleColumnWidthConfig
+        ? ({
+              '--collapsible-column-width': collapsibleColumnWidthConfig.width,
+              '--collapsible-column-max-width':
+                  collapsibleColumnWidthConfig.maxWidth,
+              '--collapsible-column-min-width':
+                  collapsibleColumnWidthConfig.minWidth,
+          } as React.CSSProperties)
+        : undefined
 
     return (
         <div
@@ -23,6 +36,7 @@ export const CollapsibleColumn = () => {
                     ? css[`${collapsibleColumnClassName}-open`]
                     : css[`${collapsibleColumnClassName}-closed`],
             )}
+            style={widthStyle}
         >
             <div
                 className={cn(

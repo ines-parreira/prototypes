@@ -17,10 +17,14 @@ describe('useCollapsibleColumn', () => {
 
         expect(result.current.collapsibleColumnChildren).toBe(null)
         expect(result.current.isCollapsibleColumnOpen).toBe(false)
+        expect(result.current.collapsibleColumnWidthConfig).toBeUndefined()
         expect(typeof result.current.setCollapsibleColumnChildren).toBe(
             'function',
         )
         expect(typeof result.current.setIsCollapsibleColumnOpen).toBe(
+            'function',
+        )
+        expect(typeof result.current.setCollapsibleColumnWidthConfig).toBe(
             'function',
         )
     })
@@ -279,5 +283,122 @@ describe('useCollapsibleColumn', () => {
         rerender()
 
         expect(result.current.collapsibleColumnRef).toBe(refObject)
+    })
+
+    describe('collapsibleColumnWidthConfig', () => {
+        it('should update width config with all properties', () => {
+            const { result } = renderHook(() => useCollapsibleColumn(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.setCollapsibleColumnWidthConfig({
+                    width: '400px',
+                    maxWidth: '600px',
+                    minWidth: '200px',
+                })
+            })
+
+            expect(result.current.collapsibleColumnWidthConfig).toEqual({
+                width: '400px',
+                maxWidth: '600px',
+                minWidth: '200px',
+            })
+        })
+
+        it('should update width config with partial properties', () => {
+            const { result } = renderHook(() => useCollapsibleColumn(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.setCollapsibleColumnWidthConfig({
+                    width: '300px',
+                })
+            })
+
+            expect(result.current.collapsibleColumnWidthConfig).toEqual({
+                width: '300px',
+            })
+        })
+
+        it('should clear width config when set to undefined', () => {
+            const { result } = renderHook(() => useCollapsibleColumn(), {
+                wrapper,
+            })
+
+            act(() => {
+                result.current.setCollapsibleColumnWidthConfig({
+                    width: '400px',
+                })
+            })
+
+            expect(result.current.collapsibleColumnWidthConfig).toBeDefined()
+
+            act(() => {
+                result.current.setCollapsibleColumnWidthConfig(undefined)
+            })
+
+            expect(result.current.collapsibleColumnWidthConfig).toBeUndefined()
+        })
+
+        it('should preserve setCollapsibleColumnWidthConfig reference across renders', () => {
+            const { result, rerender } = renderHook(
+                () => useCollapsibleColumn(),
+                { wrapper },
+            )
+
+            const setWidthConfigRef =
+                result.current.setCollapsibleColumnWidthConfig
+
+            rerender()
+
+            expect(result.current.setCollapsibleColumnWidthConfig).toBe(
+                setWidthConfigRef,
+            )
+        })
+
+        it('should share width config state between multiple hook instances within same provider', () => {
+            let hookResults: any[] = []
+
+            const MultiHookWrapper = ({
+                children,
+            }: {
+                children: ReactNode
+            }) => {
+                const hook1 = useCollapsibleColumn()
+                const hook2 = useCollapsibleColumn()
+                hookResults = [hook1, hook2]
+                return <>{children}</>
+            }
+
+            const WrapperWithProvider = ({
+                children,
+            }: {
+                children: ReactNode
+            }) => (
+                <AppContextProvider>
+                    <MultiHookWrapper>{children}</MultiHookWrapper>
+                </AppContextProvider>
+            )
+
+            renderHook(() => {}, { wrapper: WrapperWithProvider })
+
+            act(() => {
+                hookResults[0].setCollapsibleColumnWidthConfig({
+                    width: '500px',
+                    maxWidth: '800px',
+                })
+            })
+
+            expect(hookResults[0].collapsibleColumnWidthConfig).toEqual({
+                width: '500px',
+                maxWidth: '800px',
+            })
+            expect(hookResults[1].collapsibleColumnWidthConfig).toEqual({
+                width: '500px',
+                maxWidth: '800px',
+            })
+        })
     })
 })

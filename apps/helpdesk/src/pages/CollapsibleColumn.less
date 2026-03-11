@@ -12,9 +12,15 @@
 
         &-open {
             flex-grow: 1;
-            width: 480px;
-            max-width: 480px;
-            min-width: 480px;
+            width: var(--collapsible-column-width, 480px);
+            max-width: var(
+                --collapsible-column-max-width,
+                var(--collapsible-column-width, 480px)
+            );
+            min-width: var(
+                --collapsible-column-min-width,
+                var(--collapsible-column-width, 480px)
+            );
             opacity: 1;
             visibility: visible;
             padding-left: 0;

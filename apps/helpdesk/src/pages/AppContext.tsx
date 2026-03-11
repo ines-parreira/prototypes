@@ -4,11 +4,21 @@ import { createContext, useCallback, useContext, useRef, useState } from 'react'
 
 import { createPortal } from 'react-dom'
 
+type CollapsibleColumnWidthConfig = {
+    width?: string
+    maxWidth?: string
+    minWidth?: string
+}
+
 interface AppContextType {
     collapsibleColumnChildren: ReactNode | null
     setCollapsibleColumnChildren: (children: ReactNode | null) => void
     isCollapsibleColumnOpen: boolean
     setIsCollapsibleColumnOpen: (isOpen: boolean) => void
+    collapsibleColumnWidthConfig: CollapsibleColumnWidthConfig | undefined
+    setCollapsibleColumnWidthConfig: (
+        config: CollapsibleColumnWidthConfig | undefined,
+    ) => void
     collapsibleColumnRef: React.RefObject<HTMLDivElement>
     warpToCollapsibleColumn: (component: ReactNode) => React.ReactPortal | null
 }
@@ -34,6 +44,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         useState<ReactNode | null>(null)
     const [isCollapsibleColumnOpen, setIsCollapsibleColumnOpen] =
         useState(false)
+    const [collapsibleColumnWidthConfig, setCollapsibleColumnWidthConfig] =
+        useState<CollapsibleColumnWidthConfig | undefined>(undefined)
 
     // used to portal components into the collapsible column
     const collapsibleColumnRef = useRef<HTMLDivElement>(null)
@@ -53,6 +65,8 @@ export const AppContextProvider: React.FC<AppContextProviderProps> = ({
         setCollapsibleColumnChildren,
         isCollapsibleColumnOpen,
         setIsCollapsibleColumnOpen,
+        collapsibleColumnWidthConfig,
+        setCollapsibleColumnWidthConfig,
         collapsibleColumnRef,
         warpToCollapsibleColumn,
     }
