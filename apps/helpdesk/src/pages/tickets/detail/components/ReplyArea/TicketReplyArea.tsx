@@ -251,10 +251,10 @@ export class TicketReplyArea extends Component<Props, State> {
         if (this.state.topRankMacro && this.props.appliedMacro) {
             const macroResponseText = (
                 this.props.appliedMacro?.get('actions') as
-                    | Immutable.Map<string, Map<string, any>>
+                    | Map<string, Map<string, any>>
                     | undefined
             )?.find(
-                (action) =>
+                (action?: Map<string, any>) =>
                     action?.get('name') === MacroActionName.SetResponseText,
             )
 

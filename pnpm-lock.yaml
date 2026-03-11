@@ -375,6 +375,7 @@ overrides:
   jquery: 3.5.1
   json-schema: 0.4.0
   minimatch@3.1.2: 3.1.4
+  immutable: 3.8.3
   '@emotion/styled-base': 10.0.31
   isomorphic-fetch: ^3.0.0
   rollup: 4.59.0
@@ -780,8 +781,8 @@ importers:
         specifier: ^10.0.4
         version: 10.1.1
       immutable:
-        specifier: 3.8.2
-        version: 3.8.2
+        specifier: 3.8.3
+        version: 3.8.3
       indefinite:
         specifier: ^2.5.1
         version: 2.5.1
@@ -934,7 +935,7 @@ importers:
         version: 0.5.19(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-immutable-proptypes:
         specifier: 2.1.0
-        version: 2.1.0(immutable@3.8.2)
+        version: 2.1.0(immutable@3.8.3)
       react-json-pretty:
         specifier: catalog:react-json-pretty
         version: 2.2.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -1397,7 +1398,7 @@ importers:
         version: 0.0.9(jest-environment-jsdom@29.7.0)
       jest-immutable-matchers:
         specifier: catalog:test
-        version: 3.0.0(immutable@3.8.2)(jest@29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3)))
+        version: 3.0.0(immutable@3.8.3)(jest@29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3)))
       jest-junit:
         specifier: catalog:test
         version: 16.0.0
@@ -10715,12 +10716,8 @@ packages:
   immutable-devtools@0.1.5:
     resolution: {integrity: sha512-bgQP4q+RiD1Oolw8c0sfNrCpShQIEdqJIGmPPrcG6efyJrX00hNzzM1noe3FsQdDwj2eQqL8JEtukCrwFQbt/w==}
 
-  immutable@3.7.6:
-    resolution: {integrity: sha512-AizQPcaofEtO11RZhPPHBOJRdo/20MKQF9mBLnVkBoyHi1/zXK8fzVdnEpSV9gxqtnh6Qomfp3F0xT5qP/vThw==}
-    engines: {node: '>=0.8.0'}
-
-  immutable@3.8.2:
-    resolution: {integrity: sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==}
+  immutable@3.8.3:
+    resolution: {integrity: sha512-AUY/VyX0E5XlibOmWt10uabJzam1zlYjwiEgQSDc5+UIkFNaF9WM0JxXKaNMGf+F/ffUF+7kRKXM9A7C0xXqMg==}
     engines: {node: '>=0.10.0'}
 
   import-fresh@2.0.0:
@@ -11223,7 +11220,7 @@ packages:
   jest-immutable-matchers@3.0.0:
     resolution: {integrity: sha512-FL4l0FecGx0ojOCE8xIoXxYXqBOGWBRiodjPRhMkiH9yYNvz78g26S/lCqsWAmFB+cN9mAU1+cNwe8X8mCe9Pw==}
     peerDependencies:
-      immutable: '>=3.0.0'
+      immutable: 3.8.3
       jest: '>=21.0.0'
 
   jest-junit@16.0.0:
@@ -13016,7 +13013,7 @@ packages:
   react-immutable-proptypes@2.1.0:
     resolution: {integrity: sha512-gvOKDn37N295IFcH2r1yZ0+S7MZHZ24E9cJr18ZuIv2Lo2TQtCLXTuF1kk5l/m0mt4w94pZxT617dXlBHmPBdA==}
     peerDependencies:
-      immutable: '>=3.6.2'
+      immutable: 3.8.3
 
   react-input-autosize@1.2.0:
     resolution: {integrity: sha512-xlmWqzUnBb07xPrsR8iWMOJ2wPqhCEy8jwspum09luCB1nDkDar6ychBZSM6DRZyLF2KFAPmvEVe0/UsbQUmmg==}
@@ -20700,7 +20697,7 @@ snapshots:
   '@types/draft-js@0.11.5':
     dependencies:
       '@types/react': 18.2.67
-      immutable: 3.7.6
+      immutable: 3.8.3
 
   '@types/emoji-mart@3.0.3':
     dependencies:
@@ -22861,7 +22858,7 @@ snapshots:
   draft-convert@2.1.4(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       draft-js: 0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      immutable: 3.7.6
+      immutable: 3.8.3
       invariant: 2.2.4
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -22869,7 +22866,7 @@ snapshots:
   draft-js-block-breakout-plugin@2.0.1(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       draft-js: 0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      immutable: 3.7.6
+      immutable: 3.8.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
@@ -22878,7 +22875,7 @@ snapshots:
       decorate-component-with-props: 1.0.2(react@18.2.0)
       draft-js: 0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       find-with-regex: 1.1.3(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
-      immutable: 3.7.6
+      immutable: 3.8.3
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -22889,7 +22886,7 @@ snapshots:
       decorate-component-with-props: 1.0.2(react@18.2.0)
       draft-js: 0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       find-with-regex: 1.1.3(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
-      immutable: 3.7.6
+      immutable: 3.8.3
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -22898,14 +22895,14 @@ snapshots:
   draft-js-single-line-plugin@2.0.5(draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       draft-js: 0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      immutable: 3.8.2
+      immutable: 3.8.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
   draft-js@0.10.5(encoding@0.1.13)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       fbjs: 0.8.17(encoding@0.1.13)
-      immutable: 3.7.6
+      immutable: 3.8.3
       object-assign: 4.1.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -24382,9 +24379,7 @@ snapshots:
 
   immutable-devtools@0.1.5: {}
 
-  immutable@3.7.6: {}
-
-  immutable@3.8.2: {}
+  immutable@3.8.3: {}
 
   import-fresh@2.0.0:
     dependencies:
@@ -24960,9 +24955,9 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  jest-immutable-matchers@3.0.0(immutable@3.8.2)(jest@29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3))):
+  jest-immutable-matchers@3.0.0(immutable@3.8.3)(jest@29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3))):
     dependencies:
-      immutable: 3.8.2
+      immutable: 3.8.3
       jest: 29.7.0(@types/node@22.13.13)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.12.1(@swc/helpers@0.5.19))(@types/node@22.13.13)(typescript@5.9.3))
 
   jest-junit@16.0.0:
@@ -27460,9 +27455,9 @@ snapshots:
       react-scrolllock: 2.0.7(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-transition-group: 2.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
-  react-immutable-proptypes@2.1.0(immutable@3.8.2):
+  react-immutable-proptypes@2.1.0(immutable@3.8.3):
     dependencies:
-      immutable: 3.8.2
+      immutable: 3.8.3
 
   react-input-autosize@1.2.0(react@18.2.0):
     dependencies:

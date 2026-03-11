@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable'
+import type { Map as ImmutableMap } from 'immutable'
 import moment from 'moment'
 
 import {
@@ -863,7 +864,7 @@ describe('ticket helpers', () => {
                 },
             })
 
-            const filterFn = (integration: Immutable.Map<any, any>) =>
+            const filterFn = (integration: ImmutableMap<any, any>) =>
                 integration.get('__integration_type__') ===
                 SHOPIFY_INTEGRATION_TYPE
 

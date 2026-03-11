@@ -212,7 +212,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
             isStoreOfShopifyType
-                ? (storeIntegration as Immutable.Map<any, any>)?.toJS()
+                ? (storeIntegration as Map<any, any>)?.toJS()
                 : undefined,
         )
 

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import type { Map } from 'immutable'
+import type { Iterable as ImmutableIterable, Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
@@ -12,7 +12,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 type AddFilterDropdownProps = {
-    filterableFields: Immutable.Iterable<number, any>
+    filterableFields: ImmutableIterable<number, any>
     handleClickFilter: (field: Map<any, any>) => void
 }
 

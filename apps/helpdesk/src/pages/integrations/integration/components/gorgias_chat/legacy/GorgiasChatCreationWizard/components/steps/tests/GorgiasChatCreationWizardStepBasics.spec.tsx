@@ -76,6 +76,10 @@ const minProps: React.ComponentProps<
 }
 
 describe('<GorgiasChatCreationWizardStepBasics />', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     it('renders wizard with default options selected', () => {
         const { getByLabelText } = render(
             <MemoryRouter>

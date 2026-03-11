@@ -20,7 +20,7 @@ const mockedMultiSelectOptionsField = assumeMock(MultiSelectOptionsField)
 
 describe('FilterMultiSelectField', () => {
     const mockedSearchFunction = jest.fn(
-        () => Promise.resolve() as Promise<Maybe<Immutable.List<any>>>,
+        () => Promise.resolve() as Promise<Maybe<List<any>>>,
     )
 
     const mockedMapSearchResults = jest.fn(

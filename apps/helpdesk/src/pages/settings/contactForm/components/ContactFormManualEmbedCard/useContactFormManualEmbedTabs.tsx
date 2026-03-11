@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { Map as ImmutableMap } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type {
@@ -109,7 +110,7 @@ export const CARD_STATES_MAP: Record<
 export function getCardState(
     isAutoEmbedFlagActive: boolean,
     shopName: string | null,
-    shopifyIntegration: Immutable.Map<any, any>,
+    shopifyIntegration: ImmutableMap<any, any>,
 ) {
     // flag is not active, we show the "Any Other Website" tab only
     if (!isAutoEmbedFlagActive) {

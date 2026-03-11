@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
+import type { Map as ImmutableMap } from 'immutable'
+
 import { useReportRestrictions } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import {
@@ -28,7 +30,7 @@ export const getAccountRestrictions = (currentAccountId: number) => {
 }
 
 export const getUserModuleRestrictions = (
-    currentUser: Immutable.Map<any, any>,
+    currentUser: ImmutableMap<any, any>,
     accountRestrictions: (
         | ChartRestriction
         | ReportRestriction
@@ -43,7 +45,7 @@ export const getUserModuleRestrictions = (
 }
 
 export const getUserReportsRestrictions = (
-    currentUser: Immutable.Map<any, any>,
+    currentUser: ImmutableMap<any, any>,
     accountRestrictions: (
         | ChartRestriction
         | ReportRestriction
@@ -58,7 +60,7 @@ export const getUserReportsRestrictions = (
 }
 
 export const getUserChartsRestrictions = (
-    currentUser: Immutable.Map<any, any>,
+    currentUser: ImmutableMap<any, any>,
     accountRestrictions: (
         | ChartRestriction
         | ReportRestriction
