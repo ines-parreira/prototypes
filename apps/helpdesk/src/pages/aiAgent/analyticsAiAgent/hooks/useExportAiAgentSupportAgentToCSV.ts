@@ -5,7 +5,8 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
+import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
+import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { saveZippedFiles } from 'utils/file'
 
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
@@ -24,7 +25,7 @@ export const useExportAiAgentSupportAgentToCSV = () => {
 
     const supportAgentDashboard = useMemo(
         () =>
-            buildKpiDashboard(
+            buildCustomDashboard(
                 REPORT_NAME,
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT,
                 isAnalyticsDashboardsTrendCardsEnabled,
@@ -33,7 +34,11 @@ export const useExportAiAgentSupportAgentToCSV = () => {
     )
 
     const { files: trendCardsFiles, isLoading: isKpiLoading } =
-        useDashboardData(supportAgentDashboard, true)
+        useDashboardData(
+            supportAgentDashboard,
+            true,
+            AnalyticsAiAgentSupportAgentReportConfig.charts,
+        )
 
     const supportInteractionsByIntentData =
         useDownloadSupportInteractionsByIntentData()

@@ -45,6 +45,17 @@ export const handoverInteractionsV2QueryFactory = (
     ctx: HandoverInteractionsContext,
 ) => handoverInteractions.build(ctx)
 
+export const handoverInteractionsPerFeature = handoverInteractionsScope
+    .defineMetricName(METRIC_NAMES.HANDOVER_INTERACTIONS_PER_FEATURE)
+    .defineQuery(() => ({
+        measures: ['handoverInteractionsCount'],
+        dimensions: ['automationFeatureType'],
+    }))
+
+export const handoverInteractionsPerFeatureQueryFactoryV2 = (
+    ctx: HandoverInteractionsContext,
+) => handoverInteractionsPerFeature.build(ctx)
+
 export const aiAgentHandoverInteractions = handoverInteractionsScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS)
     .defineQuery(({ ctx, config }) => ({

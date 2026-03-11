@@ -7,11 +7,11 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { saveZippedFiles } from 'utils/file'
 
+import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from '../config/defaultLayoutConfig'
-import { buildKpiDashboard } from '../utils/buildKpiDashboard'
+import { buildCustomDashboard } from '../utils/buildCustomDashboard'
 import { useDownloadAutomationRateByFeatureData } from './useDownloadAutomationRateByFeatureData'
 import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomationRateTimeSeriesData'
-import { useDownloadPerformanceBreakdownData } from './useDownloadPerformanceBreakdownData'
 
 const REPORT_NAME = 'analytics-overview'
 
@@ -23,7 +23,7 @@ export const useExportAnalyticsOverviewToCSV = () => {
 
     const analyticsOverviewDashboard = useMemo(
         () =>
-            buildKpiDashboard(
+            buildCustomDashboard(
                 REPORT_NAME,
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
                 isAnalyticsDashboardsTrendCardsEnabled,
@@ -31,32 +31,32 @@ export const useExportAnalyticsOverviewToCSV = () => {
         [isAnalyticsDashboardsTrendCardsEnabled],
     )
 
-    const { files: trendCardsFiles, isLoading: isKpiLoading } =
-        useDashboardData(analyticsOverviewDashboard, true)
+    const { files: dashboardDataFiles, isLoading: isKpiLoading } =
+        useDashboardData(
+            analyticsOverviewDashboard,
+            true,
+            AnalyticsOverviewReportConfig.charts,
+        )
 
     const automationRateByFeatureData = useDownloadAutomationRateByFeatureData()
     const automationRateTimeSeriesData =
         useDownloadAutomationRateTimeSeriesData()
-    const performanceBreakdownData = useDownloadPerformanceBreakdownData()
 
     const isLoading =
         isKpiLoading ||
         automationRateByFeatureData.isLoading ||
-        automationRateTimeSeriesData.isLoading ||
-        performanceBreakdownData.isLoading
+        automationRateTimeSeriesData.isLoading
 
     const files = useMemo(
         () => ({
-            ...trendCardsFiles,
+            ...dashboardDataFiles,
             ...automationRateByFeatureData.files,
             ...automationRateTimeSeriesData.files,
-            ...performanceBreakdownData.files,
         }),
         [
-            trendCardsFiles,
+            dashboardDataFiles,
             automationRateByFeatureData.files,
             automationRateTimeSeriesData.files,
-            performanceBreakdownData.files,
         ],
     )
 

@@ -5,12 +5,13 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
 import { useDownloadTotalSalesByProductData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadTotalSalesByProductData'
-import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
+import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { saveZippedFiles } from 'utils/file'
 
 const REPORT_NAME = 'ai-agent-shopping-assistant'
@@ -23,7 +24,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const shoppingAssistantDashboard = useMemo(
         () =>
-            buildKpiDashboard(
+            buildCustomDashboard(
                 REPORT_NAME,
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
                 isAnalyticsDashboardsTrendCardsEnabled,
@@ -32,7 +33,11 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     )
 
     const { files: trendCardsFiles, isLoading: isKpiLoading } =
-        useDashboardData(shoppingAssistantDashboard, true)
+        useDashboardData(
+            shoppingAssistantDashboard,
+            true,
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts,
+        )
 
     const totalSalesByProductData = useDownloadTotalSalesByProductData()
     const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()

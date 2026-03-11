@@ -5,7 +5,7 @@ import {
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
-export const buildKpiDashboard = (
+export const buildCustomDashboard = (
     name: string,
     layout: DashboardLayoutConfig,
     isFeatureFlagEnabled: boolean,
@@ -15,7 +15,11 @@ export const buildKpiDashboard = (
     analytics_filter_id: null,
     emoji: null,
     children: layout.sections
-        .filter((section) => section.type === ChartType.Card)
+        .filter(
+            (section) =>
+                section.type === ChartType.Card ||
+                section.type === ChartType.Table,
+        )
         .map((section) => ({
             type: DashboardChildType.Section,
             children: section.items

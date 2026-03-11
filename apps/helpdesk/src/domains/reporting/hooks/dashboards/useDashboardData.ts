@@ -108,61 +108,66 @@ type Queries = {
         | undefined
 }
 
-const reduceReport = (acc: Queries, child: DashboardChild): Queries => {
-    if (child.type === DashboardChildType.Chart) {
-        const config = chartsLookupTable[child.config_id]
-        if (!config?.csvProducer) {
-            return acc
-        }
+const makeReduceReport =
+    (chartConfigs?: Record<string, ChartConfig | undefined>) =>
+    (acc: Queries, child: DashboardChild): Queries => {
+        if (child.type === DashboardChildType.Chart) {
+            const config = (chartConfigs ?? chartsLookupTable)[child.config_id]
+            if (!config?.csvProducer) {
+                return acc
+            }
 
-        config.csvProducer.forEach((producer) => {
-            if (producer.type === DataExportFormat.Trend) {
-                acc.trends.push({
-                    fetchTrend: producer.fetch,
-                    metricFormat: producer.metricFormat,
-                    title: producer.title ?? String(config.label),
-                })
-            }
-            if (producer.type === DataExportFormat.TimeSeries) {
-                acc.timeSeries.push({
-                    fetchTimeSeries: producer.fetch,
-                    title: producer.title ?? String(config.label),
-                })
-            }
-            if (producer.type === DataExportFormat.TimeSeriesPerDimension) {
-                acc.timeSeriesPerDimension.push({
-                    fetchTimeSeries: producer.fetch,
-                    title: producer.title,
-                    headers: producer.headers,
-                    dimensions: producer.dimensions,
-                })
-            }
-            if (producer.type === DataExportFormat.Distribution) {
-                acc.distributions = {
-                    ...producer.fetch,
-                    metricFormat: 'decimal',
-                    title: String(config.label),
+            config.csvProducer.forEach((producer) => {
+                if (producer.type === DataExportFormat.Trend) {
+                    acc.trends.push({
+                        fetchTrend: producer.fetch,
+                        metricFormat: producer.metricFormat,
+                        title: producer.title ?? String(config.label),
+                    })
                 }
-            }
-            if (producer.type === DataExportFormat.Table) {
-                acc.tables.push({
-                    fetchTable: producer.fetch,
-                    title: String(config.label),
-                })
-            }
-        })
+                if (producer.type === DataExportFormat.TimeSeries) {
+                    acc.timeSeries.push({
+                        fetchTimeSeries: producer.fetch,
+                        title: producer.title ?? String(config.label),
+                    })
+                }
+                if (producer.type === DataExportFormat.TimeSeriesPerDimension) {
+                    acc.timeSeriesPerDimension.push({
+                        fetchTimeSeries: producer.fetch,
+                        title: producer.title,
+                        headers: producer.headers,
+                        dimensions: producer.dimensions,
+                    })
+                }
+                if (producer.type === DataExportFormat.Distribution) {
+                    acc.distributions = {
+                        ...producer.fetch,
+                        metricFormat: 'decimal',
+                        title: String(config.label),
+                    }
+                }
+                if (producer.type === DataExportFormat.Table) {
+                    acc.tables.push({
+                        fetchTable: producer.fetch,
+                        title: String(config.label),
+                    })
+                }
+            })
+        }
+        if (
+            child.type === DashboardChildType.Section ||
+            child.type === DashboardChildType.Row
+        ) {
+            return child.children.reduce(makeReduceReport(chartConfigs), acc)
+        }
+        return acc
     }
-    if (
-        child.type === DashboardChildType.Section ||
-        child.type === DashboardChildType.Row
-    ) {
-        return child.children.reduce(reduceReport, acc)
-    }
-    return acc
-}
 
-const getQueryGroupsFromDashboard = (dashboard: DashboardSchema): Queries => {
-    return dashboard.children.reduce<Queries>(reduceReport, {
+const getQueryGroupsFromDashboard = (
+    dashboard: DashboardSchema,
+    chartConfigs?: Record<string, ChartConfig | undefined>,
+): Queries => {
+    return dashboard.children.reduce<Queries>(makeReduceReport(chartConfigs), {
         timeSeries: [],
         timeSeriesPerDimension: [],
         trends: [],
@@ -178,6 +183,7 @@ const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 export const useDashboardData = (
     dashboard: DashboardSchema,
     isAiAgentDashboard?: boolean,
+    chartConfigs?: Record<string, ChartConfig | undefined>,
 ) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -192,8 +198,8 @@ export const useDashboardData = (
     const sanitizedDashboard = useSanitizedDashboard(dashboard)
 
     const queryGroups = useMemo(
-        () => getQueryGroupsFromDashboard(sanitizedDashboard),
-        [sanitizedDashboard],
+        () => getQueryGroupsFromDashboard(sanitizedDashboard, chartConfigs),
+        [sanitizedDashboard, chartConfigs],
     )
 
     const trends = useTrendReportData(

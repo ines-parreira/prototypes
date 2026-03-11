@@ -5,4 +5,7 @@ export const AutomationFeatureType = {
     Flows: 'flow',
     OrderManagement: 'order-management',
     ArticleRecommendation: 'article-recommendation',
-}
+} as const
+
+export type AutomationFeatureType =
+    (typeof AutomationFeatureType)[keyof typeof AutomationFeatureType]

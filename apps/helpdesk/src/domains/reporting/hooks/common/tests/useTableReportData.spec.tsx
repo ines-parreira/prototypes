@@ -39,6 +39,7 @@ import {
 import { agents } from 'fixtures/agents'
 import { integrationsState } from 'fixtures/integrations'
 import { tags } from 'fixtures/tag'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import type { RootState, StoreDispatch } from 'state/types'
 
 jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
@@ -51,6 +52,10 @@ jest.mock('domains/reporting/state/ui/stats/agentPerformanceSlice')
 const getSortedAgentsMock = assumeMock(getSortedAgents)
 jest.mock('domains/reporting/state/ui/stats/autoQAAgentPerformanceSlice')
 const getSortedAutoQAAgentsMock = assumeMock(getSortedAutoQAAgents)
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
+const useMoneySavedPerInteractionWithAutomateMock = assumeMock(
+    useMoneySavedPerInteractionWithAutomate,
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -116,6 +121,7 @@ describe('useTable hooks', () => {
             } as unknown as ReturnType<typeof useSortedChannels>)
             getSortedAgentsMock.mockReturnValue(agents)
             getSortedAutoQAAgentsMock.mockReturnValue(agents)
+            useMoneySavedPerInteractionWithAutomateMock.mockReturnValue(3.1)
         })
 
         it('should fetch Table Reports', async () => {

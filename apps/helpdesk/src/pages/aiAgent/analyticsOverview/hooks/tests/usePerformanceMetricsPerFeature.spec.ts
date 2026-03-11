@@ -6,10 +6,8 @@ jest.mock('domains/reporting/hooks/automate/automationTrends')
 jest.mock('domains/reporting/hooks/metricTrends')
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 jest.mock('../useAutomationRateByFeature')
+jest.mock('../useHandoverInteractionsPerFeature')
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
-jest.mock(
-    'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend',
-)
 
 const mockUseAutomateFilters = jest.requireMock(
     'domains/reporting/hooks/automate/useAutomateFilters',
@@ -19,10 +17,6 @@ const mockUseTrendFromMultipleMetricsTrend = jest.requireMock(
     'domains/reporting/hooks/automate/automationTrends',
 ).useTrendFromMultipleMetricsTrend as jest.Mock
 
-const mockUseHandoverInteractionsTrend = jest.requireMock(
-    'domains/reporting/pages/automate/aiSalesAgent/hooks/useHandoverInteractionsTrend',
-).useHandoverInteractionsTrend as jest.Mock
-
 const mockUseTicketHandleTimeTrend = jest.requireMock(
     'domains/reporting/hooks/metricTrends',
 ).useTicketHandleTimeTrend as jest.Mock
@@ -30,6 +24,10 @@ const mockUseTicketHandleTimeTrend = jest.requireMock(
 const mockUseAutomationRateByFeature = jest.requireMock(
     '../useAutomationRateByFeature',
 ).useAutomationRateByFeature as jest.Mock
+
+const mockUseHandoverInteractionsPerFeature = jest.requireMock(
+    '../useHandoverInteractionsPerFeature',
+).useHandoverInteractionsPerFeature as jest.Mock
 
 const mockUseMoneySavedPerInteractionWithAutomate = jest.requireMock(
     'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
@@ -46,12 +44,6 @@ describe('usePerformanceMetricsPerFeature', () => {
         })
 
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
-
-        mockUseHandoverInteractionsTrend.mockReturnValue({
-            data: { value: 100 },
-            isFetching: false,
-            isError: false,
-        })
 
         mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
             data: { value: 100 },
@@ -73,6 +65,23 @@ describe('usePerformanceMetricsPerFeature', () => {
                 { name: 'Order Management', value: 6 },
             ],
             isLoading: false,
+            isError: false,
+        })
+
+        mockUseHandoverInteractionsPerFeature.mockReturnValue({
+            data: {
+                allValues: [
+                    { dimension: 'ai-agent', value: 120, decile: null },
+                    { dimension: 'flow', value: 45, decile: null },
+                    {
+                        dimension: 'article-recommendation',
+                        value: 10,
+                        decile: null,
+                    },
+                    { dimension: 'order-management', value: 5, decile: null },
+                ],
+            },
+            isFetching: false,
             isError: false,
         })
     })
@@ -112,7 +121,7 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(aiAgentMetrics).toBeDefined()
         expect(aiAgentMetrics?.automationRate).toBe(18)
         expect(aiAgentMetrics?.automatedInteractions).toBe(100)
-        expect(aiAgentMetrics?.handoverCount).toBe(100)
+        expect(aiAgentMetrics?.handoverCount).toBe(120)
         expect(aiAgentMetrics?.costSaved).toBe(100 * 3.1)
         expect(aiAgentMetrics?.timeSaved).toBe(100 * 1.5)
     })
@@ -126,7 +135,7 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(flowsMetrics).toBeDefined()
         expect(flowsMetrics?.automationRate).toBe(8)
         expect(flowsMetrics?.automatedInteractions).toBe(100)
-        expect(flowsMetrics?.handoverCount).toBe(100)
+        expect(flowsMetrics?.handoverCount).toBe(45)
         expect(flowsMetrics?.costSaved).toBe(100 * 3.1)
         expect(flowsMetrics?.timeSaved).toBe(100 * 1.5)
     })
@@ -140,7 +149,7 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(articleMetrics).toBeDefined()
         expect(articleMetrics?.automationRate).toBe(4)
         expect(articleMetrics?.automatedInteractions).toBe(100)
-        expect(articleMetrics?.handoverCount).toBeNull()
+        expect(articleMetrics?.handoverCount).toBe(10)
         expect(articleMetrics?.costSaved).toBe(100 * 3.1)
         expect(articleMetrics?.timeSaved).toBe(100 * 1.5)
     })
@@ -154,7 +163,7 @@ describe('usePerformanceMetricsPerFeature', () => {
         expect(orderMetrics).toBeDefined()
         expect(orderMetrics?.automationRate).toBe(6)
         expect(orderMetrics?.automatedInteractions).toBe(100)
-        expect(orderMetrics?.handoverCount).toBeNull()
+        expect(orderMetrics?.handoverCount).toBe(5)
         expect(orderMetrics?.costSaved).toBe(100 * 3.1)
         expect(orderMetrics?.timeSaved).toBe(100 * 1.5)
     })
@@ -187,6 +196,18 @@ describe('usePerformanceMetricsPerFeature', () => {
         mockUseAutomationRateByFeature.mockReturnValue({
             data: [],
             isLoading: true,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => usePerformanceMetricsPerFeature())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading true when handover interactions per feature is fetching', () => {
+        mockUseHandoverInteractionsPerFeature.mockReturnValue({
+            data: undefined,
+            isFetching: true,
             isError: false,
         })
 
@@ -232,12 +253,6 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should handle null interactions gracefully', () => {
-        mockUseHandoverInteractionsTrend.mockReturnValue({
-            data: undefined,
-            isFetching: false,
-            isError: false,
-        })
-
         mockUseTrendFromMultipleMetricsTrend.mockReturnValue({
             data: undefined,
             isFetching: false,
@@ -285,7 +300,7 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should calculate cost saved correctly with different interaction values', () => {
-        mockUseHandoverInteractionsTrend.mockReturnValueOnce({
+        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
             data: { value: 500 },
             isFetching: false,
             isError: false,
@@ -300,7 +315,7 @@ describe('usePerformanceMetricsPerFeature', () => {
     })
 
     it('should calculate time saved correctly with different values', () => {
-        mockUseHandoverInteractionsTrend.mockReturnValueOnce({
+        mockUseTrendFromMultipleMetricsTrend.mockReturnValueOnce({
             data: { value: 200 },
             isFetching: false,
             isError: false,

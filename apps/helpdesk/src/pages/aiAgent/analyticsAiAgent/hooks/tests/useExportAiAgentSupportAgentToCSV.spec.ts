@@ -3,18 +3,19 @@ import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
 import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData'
 import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
-import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
+import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
-jest.mock('pages/aiAgent/analyticsOverview/utils/buildKpiDashboard')
+jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData',
 )
@@ -35,7 +36,7 @@ jest.mock('utils/file', () => ({
 const mockUseFlag = jest.mocked(useFlag)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
-const mockedBuildKpiDashboard = jest.mocked(buildKpiDashboard)
+const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
 const mockedUseDownloadSupportInteractionsByIntentData = jest.mocked(
     useDownloadSupportInteractionsByIntentData,
 )
@@ -60,6 +61,14 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         jest.clearAllMocks()
 
         mockUseFlag.mockReturnValue(true)
+
+        mockedBuildKpiDashboard.mockReturnValue({
+            id: 0,
+            name: 'ai-agent-support-agent',
+            analytics_filter_id: 0,
+            children: [],
+            emoji: null,
+        } as any)
 
         mockedUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
@@ -222,13 +231,23 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         ).toBe(true)
     })
 
-    it('should call buildKpiDashboard with the layout and feature flag value', () => {
+    it('should call buildCustomDashboard with the layout and feature flag value', () => {
         mockUseFlag.mockReturnValue(true)
         renderHook(() => useExportAiAgentSupportAgentToCSV())
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-support-agent',
             expect.any(Object),
             true,
+        )
+    })
+
+    it('should call useDashboardData with the SupportAgent report config charts', () => {
+        renderHook(() => useExportAiAgentSupportAgentToCSV())
+
+        expect(mockedUseDashboardData).toHaveBeenCalledWith(
+            expect.any(Object),
+            true,
+            AnalyticsAiAgentSupportAgentReportConfig.charts,
         )
     })
 

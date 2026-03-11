@@ -6,6 +6,8 @@ import {
     aiSupportHandoverInteractions,
     aiSupportHandoverInteractionsV2QueryFactory,
     handoverInteractions,
+    handoverInteractionsPerFeature,
+    handoverInteractionsPerFeatureQueryFactoryV2,
     handoverInteractionsV2QueryFactory,
 } from 'domains/reporting/models/scopes/handoverInteractions'
 import type {
@@ -131,6 +133,22 @@ describe('handoverInteractionsScope', () => {
         })
     })
 
+    describe('handoverInteractionsPerFeature', () => {
+        it('creates query with automationFeatureType dimension', () => {
+            const actual = handoverInteractionsPerFeature.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'handover-interactions-per-feature',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['automationFeatureType'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: timeDimensions,
+            })
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('handoverInteractionsV2QueryFactory', () => {
             it('returns the same result as calling build directly', () => {
@@ -161,6 +179,14 @@ describe('handoverInteractionsScope', () => {
                 expect(
                     aiSupportHandoverInteractionsV2QueryFactory(context),
                 ).toEqual(aiSupportHandoverInteractions.build(context))
+            })
+        })
+
+        describe('handoverInteractionsPerFeatureQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    handoverInteractionsPerFeatureQueryFactoryV2(context),
+                ).toEqual(handoverInteractionsPerFeature.build(context))
             })
         })
     })

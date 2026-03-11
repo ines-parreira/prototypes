@@ -22,7 +22,9 @@ import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/ana
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
-import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable'
+import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
+import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
+import { fetchPerformanceMetricsPerFeatureReport } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsOverviewChart {
@@ -187,9 +189,14 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
             },
             [AnalyticsOverviewChart.PerformanceTable]: {
                 chartComponent: PerformanceBreakdownTable,
-                label: 'Performance breakdown',
-                csvProducer: null,
-                description: '',
+                label: PERFORMANCE_BREAKDOWN_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchPerformanceMetricsPerFeatureReport,
+                    },
+                ],
+                description: PERFORMANCE_BREAKDOWN_TABLE.description,
                 chartType: ChartType.Table,
             },
         },

@@ -1,10 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { DownloadPerformanceBreakdownButton } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
 import * as downloadHook from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
 import * as fileUtils from 'utils/file'
-
-import { DownloadPerformanceBreakdownButton } from '../DownloadPerformanceBreakdownButton'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData',

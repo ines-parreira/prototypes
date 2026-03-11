@@ -151,6 +151,7 @@ export type ReportFetch = (
         integrations: Integration[]
         getAgentDetails: (id: number) => User | undefined
         aiAgentUserId: number | undefined
+        costSavedPerInteraction: number
         campaignsReportContext: CampaignReportContext
         tagResultsSelection: TagSelection
     },

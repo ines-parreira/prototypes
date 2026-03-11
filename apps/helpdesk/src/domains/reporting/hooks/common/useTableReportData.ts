@@ -31,6 +31,8 @@ import {
     getSelectedCustomField,
 } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
 import useAppSelector from 'hooks/useAppSelector'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { getAllAgentsJS } from 'state/agents/selectors'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { getIntegrations } from 'state/integrations/selectors'
@@ -61,6 +63,9 @@ export const useTables = (
     )
 
     const aiAgentUserId = useAIAgentUserId()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET,
+    )
     const [tableData, setTableData] = useState<{
         isFetching: boolean
         files: Record<string, string>
@@ -133,6 +138,7 @@ export const useTables = (
             getAgentDetails,
             integrations,
             aiAgentUserId,
+            costSavedPerInteraction,
             campaignsReportContext,
             tagResultsSelection,
         }),
@@ -155,6 +161,7 @@ export const useTables = (
             getAgentDetails,
             integrations,
             aiAgentUserId,
+            costSavedPerInteraction,
             tagResultsSelection,
         ],
     )

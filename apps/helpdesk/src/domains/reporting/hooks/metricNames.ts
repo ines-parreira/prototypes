@@ -561,6 +561,7 @@ export const METRIC_NAMES = {
 
     // Handover Interactions
     HANDOVER_INTERACTIONS: 'handover-interactions',
+    HANDOVER_INTERACTIONS_PER_FEATURE: 'handover-interactions-per-feature',
     AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS:
         'ai-sales-agent-handover-interactions',
@@ -857,6 +858,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.HandoverInteractions]: [
         METRIC_NAMES.HANDOVER_INTERACTIONS,
+        METRIC_NAMES.HANDOVER_INTERACTIONS_PER_FEATURE,
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,

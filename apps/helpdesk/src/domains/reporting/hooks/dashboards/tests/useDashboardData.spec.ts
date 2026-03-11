@@ -16,11 +16,15 @@ import { useAgentsTableConfigSetting } from 'domains/reporting/hooks/useAgentsTa
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import type {
+    ChartConfig,
     DashboardChartSchema,
     DashboardRowSchema,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import {
+    DashboardChildType,
+    DataExportFormat,
+} from 'domains/reporting/pages/dashboards/types'
 import { ServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/ServiceLevelAgreementsReportConfig'
 import {
     OverviewChartConfig,
@@ -195,6 +199,34 @@ describe('useDownloadDashboardData', () => {
             ),
             isLoading: false,
         })
+    })
+
+    it('should use provided chartConfigs instead of the global lookup table', () => {
+        const customFetchTrend = jest.fn()
+        const chartConfigs: Record<string, ChartConfig> = {
+            [trendChartId]: {
+                ...SupportPerformanceOverviewReportConfig.charts[trendChartId],
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: customFetchTrend,
+                        metricFormat: 'decimal' as const,
+                    },
+                ],
+            },
+        }
+
+        renderHook(() =>
+            useDashboardData(exampleDashboard, false, chartConfigs),
+        )
+
+        expect(useTrendReportDataMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            expect.arrayContaining([
+                expect.objectContaining({ fetchTrend: customFetchTrend }),
+            ]),
+        )
     })
 
     it('should pass only the period filter when isAiAgentDashboard is true', () => {

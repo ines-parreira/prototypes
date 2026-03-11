@@ -1,11 +1,11 @@
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
-import { buildKpiDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildKpiDashboard'
+import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 
-describe('buildKpiDashboard', () => {
+describe('buildCustomDashboard', () => {
     it('should return a dashboard with the provided name', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'ai-agent-shopping-assistant',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,
@@ -14,7 +14,7 @@ describe('buildKpiDashboard', () => {
     })
 
     it('should return a dashboard with fixed metadata', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'ai-agent-shopping-assistant',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,
@@ -24,17 +24,17 @@ describe('buildKpiDashboard', () => {
         expect(result.emoji).toBeNull()
     })
 
-    it('should only include kpis sections', () => {
-        const result = buildKpiDashboard(
+    it('should include card and table sections but exclude graph sections', () => {
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             true,
         )
-        expect(result.children).toHaveLength(1)
+        expect(result.children).toHaveLength(2)
     })
 
     it('should include only non-feature-flagged items when flag is disabled', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,
@@ -59,7 +59,7 @@ describe('buildKpiDashboard', () => {
     })
 
     it('should include feature-flagged items when flag is enabled', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             true,
@@ -73,7 +73,7 @@ describe('buildKpiDashboard', () => {
     })
 
     it('should exclude feature-flagged items when flag is disabled', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,
@@ -87,7 +87,7 @@ describe('buildKpiDashboard', () => {
     })
 
     it('should map sections to DashboardChildType.Section', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,
@@ -98,7 +98,7 @@ describe('buildKpiDashboard', () => {
     })
 
     it('should map items to DashboardChildType.Chart with config_id', () => {
-        const result = buildKpiDashboard(
+        const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
             false,

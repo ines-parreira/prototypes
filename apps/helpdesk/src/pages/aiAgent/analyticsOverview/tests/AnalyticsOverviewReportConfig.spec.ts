@@ -149,7 +149,10 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Performance breakdown')
         expect(config.chartType).toBe(ChartType.Table)
-        expect(config.csvProducer).toBeNull()
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
     it('should have correct report filters', () => {
@@ -177,13 +180,10 @@ describe('AnalyticsOverviewReportConfig', () => {
         })
     })
 
-    it('should have null csvProducer for graph and table charts', () => {
+    it('should have null csvProducer for graph charts', () => {
         Object.values(AnalyticsOverviewChart).forEach((chartId) => {
             const config = AnalyticsOverviewReportConfig.charts[chartId]
-            if (
-                config.chartType === ChartType.Graph ||
-                config.chartType === ChartType.Table
-            ) {
+            if (config.chartType === ChartType.Graph) {
                 expect(config.csvProducer).toBeNull()
             }
         })
