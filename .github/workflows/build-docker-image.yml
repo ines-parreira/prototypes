@@ -1,0 +1,27 @@
+name: Build docker image
+
+on: [push]
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+permissions:
+  actions: read
+  contents: read
+  statuses: write
+
+concurrency:
+  # Only one side branch run at a time. Every commit runs in parallel on main and staging branch
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ contains(fromJSON('["refs/heads/main", "refs/heads/staging"]'), github.ref) && github.sha || '' }}
+  cancel-in-progress: true
+
+jobs:
+  build-docker-image:
+    name: Build docker image
+    uses: gorgias/reusable-actions/.github/workflows/image-build.yml@main
+    with:
+      image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
+      docker-file-path: deployment/docker/Dockerfile
+      build-args: RELEASE=${{ github.sha }}
+      additional-platforms: 'linux/arm64'
+    secrets: inherit

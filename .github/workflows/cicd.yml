@@ -208,16 +208,6 @@ jobs:
       sentry-project: helpdesk-staging
       release: staging-${{ github.sha }}
 
-  build-docker-image:
-    name: Build docker image
-    uses: gorgias/reusable-actions/.github/workflows/image-build.yml@main
-    with:
-      image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
-      docker-file-path: deployment/docker/Dockerfile
-      build-args: RELEASE=${{ github.sha }}
-      additional-platforms: 'linux/arm64'
-    secrets: inherit
-
   build-production:
     name: Build production
     if: github.ref == 'refs/heads/main'
