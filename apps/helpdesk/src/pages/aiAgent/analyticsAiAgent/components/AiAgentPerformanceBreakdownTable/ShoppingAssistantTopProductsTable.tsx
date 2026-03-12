@@ -328,7 +328,7 @@ export const ShoppingAssistantTopProductsTable = () => {
         !isFetching && (data.length === 0 || !hasNonZeroMetrics(data))
 
     return (
-        <Box display="flex" flexDirection="column" minWidth="0px">
+        <Box display="flex" flexDirection="column" width="100%" minWidth="0px">
             <Box display="flex" justifyContent="flex-end">
                 <DownloadTableButton
                     files={downloadData.files}

@@ -6,36 +6,48 @@ import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
+import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
 import type {
-    AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutItem,
     LayoutSection,
     ManagedDashboardId,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
-type DashboardLayoutRendererProps<TChart extends string> = {
+type DashboardLayoutRendererProps = {
     defaultLayoutConfig: DashboardLayoutConfig
-    reportConfig: ReportConfig<TChart>
-    tabKey?: string
+    reportConfig: ReportConfig<string>
     dashboardId: ManagedDashboardId
-    tabId?: string
-    tabName?: string
+    tabId: ManagedDashboardsTabId
+    tabName: string
+    onTableTabChange?: (key: ManagedDashboardsTabId) => void
 }
 
 const renderSection =
     (
-        reportConfig: ReportConfig<AnalyticsChartType>,
-        tabKey: string | undefined,
-        dashboardId: string | undefined,
+        reportConfig: ReportConfig<string>,
+        tabId: ManagedDashboardsTabId,
+        dashboardId: ManagedDashboardId,
         layoutConfig: DashboardLayoutConfig,
-        tabId: string,
         tabName: string,
+        onTableTabChange: ((key: ManagedDashboardsTabId) => void) | undefined,
     ) =>
     (section: LayoutSection) => {
         const isChartsSection = section.type === ChartType.Graph
         const isCardsSection = section.type === ChartType.Card
         const isTableSection = section.type === ChartType.Table
+
+        if (isTableSection) {
+            return (
+                <TablesSection
+                    key={`${tabId}-${section.id}`}
+                    section={section}
+                    reportConfig={reportConfig}
+                    onTabChange={onTableTabChange}
+                />
+            )
+        }
 
         if (isCardsSection) {
             return (
@@ -43,10 +55,9 @@ const renderSection =
                     key={section.id}
                     section={section}
                     reportConfig={reportConfig}
-                    tabKey={tabKey}
+                    tabId={tabId}
                     dashboardId={dashboardId}
                     layoutConfig={layoutConfig}
-                    tabId={tabId}
                     tabName={tabName}
                 />
             )
@@ -65,13 +76,7 @@ const renderSection =
                     <Box
                         key={item.chartId}
                         flex={1}
-                        minWidth={
-                            isChartsSection
-                                ? '300px'
-                                : isTableSection
-                                  ? '0px'
-                                  : undefined
-                        }
+                        minWidth={isChartsSection ? '300px' : undefined}
                     >
                         <DashboardComponent
                             chart={item.chartId}
@@ -86,11 +91,11 @@ const renderSection =
 export const DashboardLayoutRenderer = ({
     defaultLayoutConfig,
     reportConfig,
-    tabKey,
     dashboardId,
-    tabId = 'tab_main',
-    tabName = 'Main',
-}: DashboardLayoutRendererProps<string>) => {
+    tabId,
+    tabName,
+    onTableTabChange,
+}: DashboardLayoutRendererProps) => {
     const layoutConfig = useGetManagedDashboardsLayoutConfig({
         dashboardId,
         defaultLayoutConfig,
@@ -109,11 +114,11 @@ export const DashboardLayoutRenderer = ({
             {layoutConfig.sections.map(
                 renderSection(
                     reportConfig,
-                    tabKey,
+                    tabId,
                     dashboardId,
                     layoutConfig,
-                    tabId,
                     tabName,
+                    onTableTabChange,
                 ),
             )}
         </Box>

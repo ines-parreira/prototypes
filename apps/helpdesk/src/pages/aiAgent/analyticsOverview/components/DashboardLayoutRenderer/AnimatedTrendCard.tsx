@@ -6,6 +6,7 @@ import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRende
 import type {
     AnalyticsChartType,
     LayoutItem,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 const getEntranceAnimation = (index: number) => {
@@ -21,21 +22,21 @@ const getEntranceAnimation = (index: number) => {
 type KpiItemAnimatedProps = {
     item: LayoutItem
     index: number
-    tabKey: string | undefined
+    tabId: ManagedDashboardsTabId
     reportConfig: ReportConfig<AnalyticsChartType>
 }
 
 export const AnimatedTrendCard = ({
     item,
     index,
-    tabKey,
+    tabId,
     reportConfig,
 }: KpiItemAnimatedProps) => {
     const entrance = getEntranceAnimation(index)
 
     return (
         <motion.div
-            key={tabKey ? `${tabKey}-${item.chartId}` : item.chartId}
+            key={`${tabId}-${item.chartId}`}
             initial={{
                 x: entrance.x,
                 y: entrance.y,

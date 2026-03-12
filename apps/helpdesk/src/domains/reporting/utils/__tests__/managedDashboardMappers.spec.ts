@@ -12,11 +12,17 @@ import {
 } from 'domains/reporting/utils/managedDashboardMappers'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+
+const dashboardId = ManagedDashboardId.AiAgentAnalytics
+const tabId = ManagedDashboardsTabId.AllAgents
 
 describe('managedDashboardMappers', () => {
     describe('layoutConfigToBackendConfig', () => {
         it('should transform frontend layout to backend format', () => {
-            const dashboardId = 'ai-agent-overview'
             const layoutConfig: DashboardLayoutConfig = {
                 sections: [
                     {
@@ -54,14 +60,16 @@ describe('managedDashboardMappers', () => {
             const result = layoutConfigToBackendConfig(
                 dashboardId,
                 layoutConfig,
+                tabId,
+                'tabName',
             )
 
             expect(result).toEqual({
                 id: dashboardId,
                 tabs: [
                     {
-                        id: 'tab_main',
-                        name: 'Main',
+                        id: tabId,
+                        name: 'tabName',
                         sections: [
                             {
                                 section_id: 'section_kpis',
@@ -114,14 +122,16 @@ describe('managedDashboardMappers', () => {
             const result = layoutConfigToBackendConfig(
                 dashboardId,
                 layoutConfig,
+                tabId,
+                'tabName',
             )
 
             expect(result).toEqual({
                 id: dashboardId,
                 tabs: [
                     {
-                        id: 'tab_main',
-                        name: 'Main',
+                        id: tabId,
+                        name: 'tabName',
                         sections: [],
                     },
                 ],
@@ -149,7 +159,12 @@ describe('managedDashboardMappers', () => {
                 ],
             }
 
-            const result = layoutConfigToBackendConfig('test-id', layoutConfig)
+            const result = layoutConfigToBackendConfig(
+                'test-id',
+                layoutConfig,
+                ManagedDashboardsTabId.AllAgents,
+                'TabName',
+            )
 
             expect(result.tabs[0].sections[0].type).toBe(ChartType.Card)
             expect(result.tabs[0].sections[1].type).toBe(ChartType.Graph)
@@ -162,11 +177,11 @@ describe('managedDashboardMappers', () => {
             const result = layoutConfigToBackendConfig(
                 'ai-agent-analytics',
                 layoutConfig,
-                'all-agents',
+                tabId,
                 'All Agents',
             )
 
-            expect(result.tabs[0].id).toBe('all-agents')
+            expect(result.tabs[0].id).toBe(tabId)
             expect(result.tabs[0].name).toBe('All Agents')
         })
     })
@@ -191,7 +206,7 @@ describe('managedDashboardMappers', () => {
         it('should create a new config when no existing config is provided', () => {
             const result = buildDashboardConfig(
                 'ai-agent-analytics',
-                'all-agents',
+                tabId,
                 'All Agents',
                 layoutConfig,
             )
@@ -200,7 +215,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-analytics',
                 tabs: [
                     {
-                        id: 'all-agents',
+                        id: tabId,
                         name: 'All Agents',
                         sections: [
                             {
@@ -228,7 +243,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-analytics',
                 tabs: [
                     {
-                        id: 'all-agents',
+                        id: tabId,
                         name: 'All Agents',
                         sections: [
                             {
@@ -239,7 +254,7 @@ describe('managedDashboardMappers', () => {
                         ],
                     },
                     {
-                        id: 'support-agent',
+                        id: ManagedDashboardsTabId.SupportAgent,
                         name: 'Support Agent',
                         sections: [
                             {
@@ -254,16 +269,16 @@ describe('managedDashboardMappers', () => {
 
             const result = buildDashboardConfig(
                 'ai-agent-analytics',
-                'all-agents',
+                tabId,
                 'All Agents',
                 layoutConfig,
                 existingConfig,
             )
 
             expect(result.tabs).toHaveLength(2)
-            expect(result.tabs[0].id).toBe('all-agents')
+            expect(result.tabs[0].id).toBe(tabId)
             expect(result.tabs[0].sections[0].items).toHaveLength(1)
-            expect(result.tabs[1].id).toBe('support-agent')
+            expect(result.tabs[1].id).toBe(ManagedDashboardsTabId.SupportAgent)
             expect(result.tabs[1].sections[0].items).toHaveLength(0)
         })
 
@@ -272,7 +287,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-analytics',
                 tabs: [
                     {
-                        id: 'all-agents',
+                        id: tabId,
                         name: 'All Agents',
                         sections: [],
                     },
@@ -281,15 +296,15 @@ describe('managedDashboardMappers', () => {
 
             const result = buildDashboardConfig(
                 'ai-agent-analytics',
-                'support-agent',
+                ManagedDashboardsTabId.SupportAgent,
                 'Support Agent',
                 layoutConfig,
                 existingConfig,
             )
 
             expect(result.tabs).toHaveLength(2)
-            expect(result.tabs[0].id).toBe('all-agents')
-            expect(result.tabs[1].id).toBe('support-agent')
+            expect(result.tabs[0].id).toBe(tabId)
+            expect(result.tabs[1].id).toBe(ManagedDashboardsTabId.SupportAgent)
         })
     })
 
@@ -299,7 +314,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-overview',
                 tabs: [
                     {
-                        id: 'tab_main',
+                        id: ManagedDashboardsTabId.AllAgents,
                         name: 'Main',
                         sections: [
                             {
@@ -334,6 +349,7 @@ describe('managedDashboardMappers', () => {
             const result = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
+                ManagedDashboardsTabId.AllAgents,
             )
 
             expect(result).toEqual({
@@ -363,7 +379,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-overview',
                 tabs: [
                     {
-                        id: 'tab_main',
+                        id: ManagedDashboardsTabId.AllAgents,
                         name: 'Main',
                         sections: [
                             {
@@ -386,9 +402,13 @@ describe('managedDashboardMappers', () => {
                 ],
             }
 
-            const result = backendConfigToLayoutConfig(backendConfig, {
-                sections: [],
-            })
+            const result = backendConfigToLayoutConfig(
+                backendConfig,
+                {
+                    sections: [],
+                },
+                ManagedDashboardsTabId.AllAgents,
+            )
 
             expect(result.sections[0].type).toBe(ChartType.Card)
             expect(result.sections[1].type).toBe(ChartType.Graph)
@@ -414,6 +434,7 @@ describe('managedDashboardMappers', () => {
             const result = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
+                ManagedDashboardsTabId.Overview,
             )
 
             expect(result).toEqual(defaultConfig)
@@ -424,7 +445,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-overview',
                 tabs: [
                     {
-                        id: 'tab_main',
+                        id: ManagedDashboardsTabId.AllAgents,
                         name: 'Main',
                         sections: [
                             {
@@ -455,6 +476,7 @@ describe('managedDashboardMappers', () => {
             const result = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
+                ManagedDashboardsTabId.AllAgents,
             )
 
             expect(result.sections[0].items[0]).toEqual({
@@ -475,7 +497,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-analytics',
                 tabs: [
                     {
-                        id: 'all-agents',
+                        id: tabId,
                         name: 'All Agents',
                         sections: [
                             {
@@ -494,7 +516,7 @@ describe('managedDashboardMappers', () => {
                         ],
                     },
                     {
-                        id: 'support-agent',
+                        id: ManagedDashboardsTabId.SupportAgent,
                         name: 'Support Agent',
                         sections: [
                             {
@@ -520,7 +542,7 @@ describe('managedDashboardMappers', () => {
             const allAgentsResult = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
-                'all-agents',
+                tabId,
             )
 
             expect(allAgentsResult.sections[0].items[0].chartId).toBe(
@@ -531,7 +553,7 @@ describe('managedDashboardMappers', () => {
             const supportAgentResult = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
-                'support-agent',
+                ManagedDashboardsTabId.SupportAgent,
             )
 
             expect(supportAgentResult.sections[0].items[0].chartId).toBe(
@@ -547,7 +569,7 @@ describe('managedDashboardMappers', () => {
                 id: 'ai-agent-analytics',
                 tabs: [
                     {
-                        id: 'all-agents',
+                        id: tabId,
                         name: 'All Agents',
                         sections: [
                             {
@@ -581,7 +603,7 @@ describe('managedDashboardMappers', () => {
             const result = backendConfigToLayoutConfig(
                 backendConfig,
                 defaultConfig,
-                'support-agent',
+                ManagedDashboardsTabId.SupportAgent,
             )
 
             expect(result).toEqual(defaultConfig)

@@ -77,10 +77,17 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig<Anal
             {
                 id: 'breakdown',
                 type: ChartType.Table,
+                tableTitle: 'Performance breakdown',
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentSupportAgentChart.PerformanceTable,
+                            AnalyticsAiAgentSupportAgentChart.ChannelPerformanceTable,
+                        gridSize: 12,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable,
                         gridSize: 12,
                         visibility: true,
                     },

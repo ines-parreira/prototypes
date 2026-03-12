@@ -8,6 +8,10 @@ import type {
     DashboardLayoutConfig,
     LayoutSection,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/AnimatedTrendCard',
@@ -107,7 +111,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -124,9 +129,9 @@ describe('CardsSection', () => {
                         { chartId: 'kpi1', visibility: true },
                     ])}
                     reportConfig={reportConfigMock}
-                    dashboardId="test-dashboard"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -134,24 +139,6 @@ describe('CardsSection', () => {
             expect(
                 screen.getByText(/MetricsConfigurator with \d+ metrics/),
             ).toBeInTheDocument()
-        })
-
-        it('should not render MetricsConfigurator when dashboardId is not provided', () => {
-            render(
-                <CardsSection
-                    section={makeSection([
-                        { chartId: 'kpi1', visibility: true },
-                    ])}
-                    reportConfig={reportConfigMock}
-                    layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
-                    tabName="Main"
-                />,
-            )
-
-            expect(
-                screen.queryByText(/MetricsConfigurator with \d+ metrics/),
-            ).not.toBeInTheDocument()
         })
 
         it('should pass correct keyKpisConfig (all items) to MetricsConfigurator', () => {
@@ -163,9 +150,9 @@ describe('CardsSection', () => {
                         { chartId: 'kpi3', visibility: true },
                     ])}
                     reportConfig={reportConfigMock}
-                    dashboardId="test-dashboard"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -185,7 +172,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -207,7 +195,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -227,7 +216,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -249,7 +239,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -267,9 +258,9 @@ describe('CardsSection', () => {
                         { chartId: 'kpi1', visibility: true },
                     ])}
                     reportConfig={reportConfigMock}
-                    dashboardId="test-dashboard"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -288,7 +279,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -309,7 +301,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -329,7 +322,8 @@ describe('CardsSection', () => {
                     ])}
                     reportConfig={reportConfigMock}
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -344,9 +338,9 @@ describe('CardsSection', () => {
                         { chartId: 'kpi1', visibility: true },
                     ])}
                     reportConfig={reportConfigMock}
-                    tabKey="test-tab"
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )
@@ -368,9 +362,9 @@ describe('CardsSection', () => {
                         { chartId: 'kpi2', visibility: true },
                     ])}
                     reportConfig={reportConfigMock}
-                    tabKey="test-tab"
                     layoutConfig={defaultLayoutConfig}
-                    tabId="tab_main"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                    tabId={ManagedDashboardsTabId.AllAgents}
                     tabName="Main"
                 />,
             )

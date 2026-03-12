@@ -108,10 +108,17 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
             {
                 id: 'breakdown',
                 type: ChartType.Table,
+                tableTitle: 'Performance breakdown',
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentAllAgentsChart.PerformanceTable,
+                            AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+                        gridSize: 12,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
                         gridSize: 12,
                         visibility: true,
                     },

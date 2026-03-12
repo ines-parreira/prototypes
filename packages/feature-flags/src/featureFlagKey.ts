@@ -49,6 +49,7 @@ export enum FeatureFlagKey {
     AiAgentAnalyticsDashboardsNewScreens = 'linear.project_revamp-ai-agent-analytics-dashboards.show-new-screens',
     AiAgentAnalyticsDashboardsTrendCards = 'linear.project_revamp-ai-agent-analytics-dashboards.trendcards-and-preferences',
     AiAgentAnalyticsDashboardsChartsAndDropdowns = 'linear.project_revamp-ai-agent-analytics-dashboards.charts-and-dropdowns',
+    AiAgentAnalyticsDashboardsTables = 'linear.project_revamp-ai-agent-analytics-dashboards.tables',
     AiJourneyEnabled = 'ai-journey-ui-enabled',
     AiJourneyPlaygroundEnabled = 'ai-journey-playground-enabled',
     AiJourneyCampaignsEnabled = 'ai-journey-campaigns-enabled',

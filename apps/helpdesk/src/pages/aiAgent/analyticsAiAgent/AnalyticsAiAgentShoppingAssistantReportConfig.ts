@@ -32,7 +32,6 @@ import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
-import { AnalyticsShoppingAssistantPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsShoppingAssistantPerformanceTable'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
@@ -40,6 +39,8 @@ import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/ana
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { TotalSalesByProductComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/TotalSalesByProductComboChart'
+import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
+import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
 import { STATS_ROUTES } from 'routes/constants'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
@@ -53,12 +54,6 @@ const fetchShoppingAssistantTrendData = async () =>
     ({
         isLoading: false,
         fileName: 'shopping-assistant-trend.csv',
-        files: {},
-    }) as any
-const fetchPerformanceBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'performance-breakdown.csv',
         files: {},
     }) as any
 
@@ -81,7 +76,8 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     HandoverInteractionsCard = 'handover_interactions_card',
     ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
     ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
-    PerformanceTable = 'performance_table',
+    ChannelPerformanceTable = 'channel_performance_table',
+    TopProductsPerformanceTable = 'top_products_performance_table',
 }
 
 export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<AnalyticsAiAgentShoppingAssistantChart> =
@@ -379,18 +375,21 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     metricFormat: 'currency-precision-1',
                     interpretAs: 'more-is-better',
                 },
-            [AnalyticsAiAgentShoppingAssistantChart.PerformanceTable]: {
-                chartComponent: AnalyticsShoppingAssistantPerformanceTable,
-                label: 'Performance breakdown',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchPerformanceBreakdown,
-                    },
-                ],
-                description: 'Performance breakdown by Shopping Assistant',
+            [AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable]: {
+                chartComponent: ShoppingAssistantChannelTable,
+                label: 'Channel',
+                csvProducer: null,
+                description: 'Performance breakdown by channel',
                 chartType: ChartType.Table,
             },
+            [AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable]:
+                {
+                    chartComponent: ShoppingAssistantTopProductsTable,
+                    label: 'Top products recommended',
+                    csvProducer: null,
+                    description: 'Performance breakdown by top products',
+                    chartType: ChartType.Table,
+                },
         },
         reportFilters: {
             optional: [],

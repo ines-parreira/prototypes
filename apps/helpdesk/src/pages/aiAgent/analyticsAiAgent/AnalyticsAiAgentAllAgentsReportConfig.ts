@@ -21,10 +21,11 @@ import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
 import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
 import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
-import { AnalyticsAllAgentsPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsAllAgentsPerformanceTable'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
+import { ChannelPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable'
+import { IntentPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable'
 import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsCostSavedTrend'
 import { fetchAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsFRTTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
@@ -47,12 +48,6 @@ const fetchAllAgentsTrendData = async () =>
         fileName: 'all-agents-trend.csv',
         files: {},
     }) as any
-const fetchPerformanceBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'performance-breakdown.csv',
-        files: {},
-    }) as any
 
 export enum AnalyticsAiAgentAllAgentsChart {
     AutomationRateCard = 'automation_rate_card',
@@ -69,7 +64,8 @@ export enum AnalyticsAiAgentAllAgentsChart {
     DecreaseInFRTCard = 'decrease_in_frt_all_agents_card',
     AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
     AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
-    PerformanceTable = 'performance_table',
+    ChannelPerformanceTable = 'channel_performance_table',
+    IntentPerformanceTable = 'intent_performance_table',
 }
 
 export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgentAllAgentsChart> =
@@ -300,16 +296,18 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentAllAgentsChart.PerformanceTable]: {
-                chartComponent: AnalyticsAllAgentsPerformanceTable,
-                label: 'Performance breakdown',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchPerformanceBreakdown,
-                    },
-                ],
-                description: 'Performance breakdown by agent',
+            [AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable]: {
+                chartComponent: ChannelPerformanceBreakdownTable,
+                label: 'Channel',
+                csvProducer: null,
+                description: 'Performance breakdown by channel',
+                chartType: ChartType.Table,
+            },
+            [AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable]: {
+                chartComponent: IntentPerformanceBreakdownTable,
+                label: 'Intent',
+                csvProducer: null,
+                description: 'Performance breakdown by intent',
                 chartType: ChartType.Table,
             },
         },

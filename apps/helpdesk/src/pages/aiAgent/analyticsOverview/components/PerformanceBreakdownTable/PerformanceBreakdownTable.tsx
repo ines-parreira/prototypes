@@ -15,7 +15,6 @@ import {
 import {
     buildFeatureColumnDef,
     buildMetricColumnDefs,
-    PERFORMANCE_BREAKDOWN_TABLE,
 } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { DownloadPerformanceBreakdownButton } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
 import css from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable.less'
@@ -51,11 +50,6 @@ export const PerformanceBreakdownTable = () => {
             gap="xxxs"
             minWidth="0px"
         >
-            <Box className={css.header}>
-                <Heading size="sm" className={css.title}>
-                    {PERFORMANCE_BREAKDOWN_TABLE.title}
-                </Heading>
-            </Box>
             <Box
                 className={css.tableContainer}
                 display="flex"

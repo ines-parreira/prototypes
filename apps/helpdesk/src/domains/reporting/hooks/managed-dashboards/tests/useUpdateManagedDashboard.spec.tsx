@@ -21,6 +21,7 @@ import {
 } from 'domains/reporting/hooks/managed-dashboards/useUpdateManagedDashboard'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { buildDashboardConfig } from 'domains/reporting/utils/managedDashboardMappers'
+import { ManagedDashboardsTabId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -66,7 +67,9 @@ const mockDashboard: AnalyticsManagedDashboard = {
     user_id: 2,
     config: {
         id: 'ai-agent-overview',
-        tabs: [{ id: 'tab_main', name: 'Main', sections: [] }],
+        tabs: [
+            { id: ManagedDashboardsTabId.Overview, name: 'Main', sections: [] },
+        ],
     },
     created_datetime: '2026-02-18T00:00:00Z',
     updated_datetime: '2026-02-18T00:00:00Z',
@@ -129,7 +132,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -161,7 +164,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -200,7 +203,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -239,7 +242,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -271,7 +274,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -301,7 +304,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -354,7 +357,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     twoSectionLayout,
                     'section_kpis',
@@ -406,7 +409,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-overview',
-                    'tab_main',
+                    ManagedDashboardsTabId.Overview,
                     'Main',
                     mockLayoutConfig,
                     'section_kpis',
@@ -423,7 +426,7 @@ describe('useUpdateManagedDashboard', () => {
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-overview',
-                'tab_main',
+                ManagedDashboardsTabId.Overview,
                 'Main',
                 expect.any(Object),
                 mockDashboard.config,
@@ -451,7 +454,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-analytics',
-                    'all-agents',
+                    ManagedDashboardsTabId.AllAgents,
                     'All Agents',
                     mockLayoutConfig,
                     'section_kpis',
@@ -468,7 +471,7 @@ describe('useUpdateManagedDashboard', () => {
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-analytics',
-                'all-agents',
+                ManagedDashboardsTabId.AllAgents,
                 'All Agents',
                 expect.any(Object),
                 undefined,
@@ -491,7 +494,7 @@ describe('useUpdateManagedDashboard', () => {
             act(() => {
                 result.current.updateSection(
                     'ai-agent-analytics',
-                    'all-agents',
+                    ManagedDashboardsTabId.AllAgents,
                     'All Agents',
                     mockLayoutConfig,
                     'section_kpis',
@@ -508,7 +511,7 @@ describe('useUpdateManagedDashboard', () => {
 
             expect(jest.mocked(buildDashboardConfig)).toHaveBeenCalledWith(
                 'ai-agent-analytics',
-                'all-agents',
+                ManagedDashboardsTabId.AllAgents,
                 'All Agents',
                 expect.any(Object),
                 undefined,

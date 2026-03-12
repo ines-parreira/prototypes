@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 
 import { AnimatedTrendCard } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/AnimatedTrendCard'
+import { ManagedDashboardsTabId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import type {
     AnalyticsChartType,
     LayoutItem,
@@ -58,7 +59,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi1')}
                 index={0}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -73,7 +74,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi1')}
                 index={0}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -95,7 +96,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi2')}
                 index={1}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -111,7 +112,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi3')}
                 index={2}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -127,7 +128,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi4')}
                 index={3}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -143,7 +144,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi5')}
                 index={4}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )
@@ -159,7 +160,7 @@ describe('KpiItemAnimated', () => {
             <AnimatedTrendCard
                 item={makeItem('kpi1')}
                 index={0}
-                tabKey={undefined}
+                tabId={ManagedDashboardsTabId.Overview}
                 reportConfig={reportConfigMock}
             />,
         )

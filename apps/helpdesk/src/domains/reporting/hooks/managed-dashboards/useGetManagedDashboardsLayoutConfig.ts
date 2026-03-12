@@ -8,6 +8,7 @@ import {
 import type {
     DashboardLayoutConfig,
     ManagedDashboardId,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 export function useGetManagedDashboardsLayoutConfig({
@@ -17,7 +18,7 @@ export function useGetManagedDashboardsLayoutConfig({
 }: {
     dashboardId: ManagedDashboardId
     defaultLayoutConfig: DashboardLayoutConfig
-    tabId?: string
+    tabId: ManagedDashboardsTabId
 }): DashboardLayoutConfig {
     const { data } = useFetchManagedDashboards()
 

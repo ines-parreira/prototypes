@@ -88,16 +88,21 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })
 
-        it('should have breakdown section with performance table', () => {
+        it('should have breakdown section with 2 tables and tableTitle', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
             expect(breakdownSection.type).toBe(ChartType.Table)
-            expect(breakdownSection.items).toHaveLength(1)
+            expect(breakdownSection.tableTitle).toBe('Performance breakdown')
+            expect(breakdownSection.items).toHaveLength(2)
             expect(breakdownSection.items[0].chartId).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,
+                AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[1].chartId).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
+            )
+            expect(breakdownSection.items[1].gridSize).toBe(12)
         })
 
         it('should have all required chart types defined', () => {

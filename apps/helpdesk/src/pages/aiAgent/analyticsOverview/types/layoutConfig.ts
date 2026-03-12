@@ -26,6 +26,7 @@ export type LayoutSection<
 > = {
     id: string
     type: ChartType
+    tableTitle?: string
     items: LayoutItem<TChart>[]
 }
 
@@ -38,4 +39,11 @@ export type DashboardLayoutConfig<
 export enum ManagedDashboardId {
     AiAgentOverview = 'ai-agent-overview',
     AiAgentAnalytics = 'ai-agent-analytics',
+}
+
+export enum ManagedDashboardsTabId {
+    Overview = 'overview',
+    AllAgents = 'all-agents',
+    SupportAgent = 'support-agent',
+    ShoppingAssistant = 'shopping-assistant',
 }

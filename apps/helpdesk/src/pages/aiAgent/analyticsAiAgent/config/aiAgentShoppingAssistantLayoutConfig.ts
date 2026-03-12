@@ -140,10 +140,17 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
             {
                 id: 'breakdown',
                 type: ChartType.Table,
+                tableTitle: 'Performance breakdown',
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.PerformanceTable,
+                            AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
+                        gridSize: 12,
+                        visibility: true,
+                    },
+                    {
+                        chartId:
+                            AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
                         gridSize: 12,
                         visibility: true,
                     },

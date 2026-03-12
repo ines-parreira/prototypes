@@ -110,15 +110,28 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Graph)
     })
 
-    it('should have performance table config', () => {
+    it('should have channel performance table config', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.PerformanceTable
+                AnalyticsAiAgentSupportAgentChart.ChannelPerformanceTable
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Performance breakdown')
+        expect(config.label).toBe('Channel')
         expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).toBeNull()
+    })
+
+    it('should have intent performance table config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Intent')
+        expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).toBeNull()
     })
 
     it('should have correct report filters', () => {

@@ -10,13 +10,14 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 type MetricsConfiguratorProps = {
     metrics: MetricConfigItem[]
     dashboardId: string
     currentLayoutConfig: DashboardLayoutConfig
-    tabId: string
+    tabId: ManagedDashboardsTabId
     tabName: string
 }
 

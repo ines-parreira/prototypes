@@ -13,12 +13,13 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
 import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
-import { AnalyticsSupportAgentPerformanceTable } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentPerformanceTable/AnalyticsSupportAgentPerformanceTable'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
+import { IntentPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable'
+import { SupportAgentChannelPerformanceBreakdownTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable'
 import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
@@ -33,12 +34,6 @@ const fetchSupportAgentTrendBreakdown = async () =>
         fileName: 'support-agent-breakdown.csv',
         files: {},
     }) as any
-const fetchPerformanceBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'performance-breakdown.csv',
-        files: {},
-    }) as any
 
 export enum AnalyticsAiAgentSupportAgentChart {
     TimeSavedCard = 'time_saved_card',
@@ -51,7 +46,8 @@ export enum AnalyticsAiAgentSupportAgentChart {
     SupportAgentTrendComboChart = 'support_agent_trend_combo_chart',
     SupportInteractionsComboChart = 'support_interactions_combo_chart',
     SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
-    PerformanceTable = 'performance_table',
+    ChannelPerformanceTable = 'channel_performance_table',
+    IntentPerformanceTable = 'intent_performance_table',
 }
 
 export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiAgentSupportAgentChart> =
@@ -219,16 +215,18 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentSupportAgentChart.PerformanceTable]: {
-                chartComponent: AnalyticsSupportAgentPerformanceTable,
-                label: 'Performance breakdown',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Table,
-                        fetch: fetchPerformanceBreakdown,
-                    },
-                ],
-                description: 'Performance breakdown by Support Agent',
+            [AnalyticsAiAgentSupportAgentChart.ChannelPerformanceTable]: {
+                chartComponent: SupportAgentChannelPerformanceBreakdownTable,
+                label: 'Channel',
+                csvProducer: null,
+                description: 'Performance breakdown by channel',
+                chartType: ChartType.Table,
+            },
+            [AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable]: {
+                chartComponent: IntentPerformanceBreakdownTable,
+                label: 'Intent',
+                csvProducer: null,
+                description: 'Performance breakdown by intent',
                 chartType: ChartType.Table,
             },
         },

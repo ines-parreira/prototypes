@@ -10,22 +10,22 @@ import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutSection,
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 type CardsSectionProps = {
     section: LayoutSection
     reportConfig: ReportConfig<AnalyticsChartType>
-    tabKey?: string
-    dashboardId?: string
+    dashboardId: ManagedDashboardId
     layoutConfig: DashboardLayoutConfig
-    tabId: string
+    tabId: ManagedDashboardsTabId
     tabName: string
 }
 
 export const CardsSection = ({
     section,
     reportConfig,
-    tabKey,
     dashboardId,
     layoutConfig,
     tabId,
@@ -50,24 +50,20 @@ export const CardsSection = ({
 
     return isAnalyticsDashboardsTrendCardsEnabled ? (
         <>
-            {dashboardId && (
-                <MetricsConfigurator
-                    metrics={keyKpisConfig}
-                    dashboardId={dashboardId}
-                    currentLayoutConfig={layoutConfig}
-                    tabId={tabId}
-                    tabName={tabName}
-                />
-            )}
+            <MetricsConfigurator
+                metrics={keyKpisConfig}
+                dashboardId={dashboardId}
+                currentLayoutConfig={layoutConfig}
+                tabId={tabId}
+                tabName={tabName}
+            />
             <ShowMoreList containerClassName={css.kpisSection}>
                 {visibleItems.map((item, index) => (
                     <AnimatedTrendCard
-                        key={
-                            tabKey ? `${tabKey}-${item.chartId}` : item.chartId
-                        }
+                        key={`${tabId}-${item.chartId}`}
                         item={item}
                         index={index}
-                        tabKey={tabKey}
+                        tabId={tabId}
                         reportConfig={reportConfig}
                     />
                 ))}
@@ -77,10 +73,10 @@ export const CardsSection = ({
         <div className={css.kpisSection}>
             {visibleItems.map((item, index) => (
                 <AnimatedTrendCard
-                    key={tabKey ? `${tabKey}-${item.chartId}` : item.chartId}
+                    key={`${tabId}-${item.chartId}`}
                     item={item}
                     index={index}
-                    tabKey={tabKey}
+                    tabId={tabId}
                     reportConfig={reportConfig}
                 />
             ))}

@@ -18,6 +18,7 @@ import { isGorgiasApiError } from 'models/api/types'
 import type {
     DashboardLayoutConfig,
     LayoutSection,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -68,7 +69,7 @@ export function useUpdateManagedDashboard(
     const updateSection = useCallback(
         (
             dashboardId: string,
-            tabId: string,
+            tabId: ManagedDashboardsTabId,
             tabName: string,
             layoutConfig: DashboardLayoutConfig,
             sectionId: string,

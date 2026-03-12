@@ -14,7 +14,10 @@ import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
-import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -68,6 +71,8 @@ export const AnalyticsOverviewLayout = () => {
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={AnalyticsOverviewReportConfig}
                 dashboardId={ManagedDashboardId.AiAgentOverview}
+                tabId={ManagedDashboardsTabId.Overview}
+                tabName="Overview"
             />
         </AnalyticsPage>
     )

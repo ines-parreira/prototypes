@@ -108,25 +108,30 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })
 
-        it('should have breakdown section with performance table', () => {
+        it('should have breakdown section with 2 tables and tableTitle', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
             expect(breakdownSection.type).toBe(ChartType.Table)
-            expect(breakdownSection.items).toHaveLength(1)
+            expect(breakdownSection.tableTitle).toBe('Performance breakdown')
+            expect(breakdownSection.items).toHaveLength(2)
             expect(breakdownSection.items[0].chartId).toBe(
-                AnalyticsAiAgentSupportAgentChart.PerformanceTable,
+                AnalyticsAiAgentSupportAgentChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[1].chartId).toBe(
+                AnalyticsAiAgentSupportAgentChart.IntentPerformanceTable,
+            )
+            expect(breakdownSection.items[1].gridSize).toBe(12)
         })
 
-        it('should have total of 10 charts across all sections', () => {
+        it('should have total of 11 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(10)
+            expect(totalCharts).toBe(11)
         })
 
         it('should have all required chart types defined', () => {

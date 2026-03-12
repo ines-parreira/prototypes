@@ -14,7 +14,10 @@ import type { AnalyticsManagedDashboard } from '@gorgias/helpdesk-types'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock('@repo/feature-flags', () => ({
@@ -80,7 +83,7 @@ const mockOverviewDashboard: AnalyticsManagedDashboard = {
         id: 'ai-agent-overview',
         tabs: [
             {
-                id: 'tab_main',
+                id: ManagedDashboardsTabId.Overview,
                 name: 'Main',
                 sections: [
                     {
@@ -109,7 +112,7 @@ const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
         id: 'ai-agent-analytics',
         tabs: [
             {
-                id: 'all-agents',
+                id: ManagedDashboardsTabId.AllAgents,
                 name: 'All Agents',
                 sections: [
                     {
@@ -125,7 +128,7 @@ const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
                 ],
             },
             {
-                id: 'support-agent',
+                id: ManagedDashboardsTabId.SupportAgent,
                 name: 'Support Agent',
                 sections: [
                     {
@@ -161,6 +164,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentOverview,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: ManagedDashboardsTabId.Overview,
                 }),
             { wrapper: makeWrapper() },
         )
@@ -186,6 +190,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentAnalytics,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: ManagedDashboardsTabId.AllAgents,
                 }),
             { wrapper: makeWrapper() },
         )
@@ -211,6 +216,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentOverview,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: ManagedDashboardsTabId.Overview,
                 }),
             { wrapper: makeWrapper() },
         )
@@ -247,6 +253,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentOverview,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
+                    tabId: ManagedDashboardsTabId.Overview,
                 }),
             { wrapper: makeWrapper() },
         )
@@ -270,7 +277,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentAnalytics,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: 'all-agents',
+                    tabId: ManagedDashboardsTabId.AllAgents,
                 }),
             { wrapper: makeWrapper() },
         )
@@ -303,7 +310,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 useGetManagedDashboardsLayoutConfig({
                     dashboardId: ManagedDashboardId.AiAgentAnalytics,
                     defaultLayoutConfig: mockDefaultLayoutConfig,
-                    tabId: 'support-agent',
+                    tabId: ManagedDashboardsTabId.SupportAgent,
                 }),
             { wrapper: makeWrapper() },
         )

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { SortableHeaderCell } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/SortableHeaderCell'
+import { SortableHeaderCell } from 'pages/aiAgent/analyticsOverview/components/shared/SortableHeaderCell'
 
 const renderComponent = (
     props: Partial<Parameters<typeof SortableHeaderCell>[0]> = {},

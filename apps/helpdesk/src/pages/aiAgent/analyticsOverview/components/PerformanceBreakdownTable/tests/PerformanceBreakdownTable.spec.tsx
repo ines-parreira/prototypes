@@ -78,12 +78,6 @@ describe('PerformanceBreakdownTable', () => {
         jest.clearAllMocks()
     })
 
-    it('should render the table heading', () => {
-        renderComponent()
-
-        expect(screen.getByText('Performance breakdown')).toBeInTheDocument()
-    })
-
     it('should render all feature names in table', () => {
         renderComponent()
 

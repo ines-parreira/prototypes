@@ -9,6 +9,7 @@ import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
     LayoutSection,
+    ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 type DashboardTab = AnalyticsManagedDashboardConfig['tabs'][number]
@@ -36,8 +37,8 @@ function layoutConfigToTabSections(
 export function layoutConfigToBackendConfig(
     dashboardId: string,
     layoutConfig: DashboardLayoutConfig,
-    tabId = 'tab_main',
-    tabName = 'Main',
+    tabId: ManagedDashboardsTabId,
+    tabName: string,
 ): AnalyticsManagedDashboardConfig {
     return {
         id: dashboardId,
@@ -53,7 +54,7 @@ export function layoutConfigToBackendConfig(
 
 export function buildDashboardConfig(
     dashboardId: string,
-    tabId: string,
+    tabId: ManagedDashboardsTabId,
     tabName: string,
     layoutConfig: DashboardLayoutConfig,
     existingConfig?: AnalyticsManagedDashboardConfig,
@@ -85,11 +86,9 @@ export function buildDashboardConfig(
 export function backendConfigToLayoutConfig(
     backendConfig: AnalyticsManagedDashboardConfig,
     defaultConfig: DashboardLayoutConfig,
-    tabId?: string,
+    tabId: ManagedDashboardsTabId,
 ): DashboardLayoutConfig {
-    const tab = tabId
-        ? backendConfig.tabs.find((t) => t.id === tabId)
-        : backendConfig.tabs[0]
+    const tab = backendConfig.tabs.find((t) => t.id === tabId)
 
     if (!tab) {
         return defaultConfig
@@ -134,6 +133,7 @@ export function mergeWithDefaults(
 
         return {
             ...savedSection,
+            tableTitle: defaultSection.tableTitle,
             items: [...savedSection.items, ...missingItems],
         }
     })

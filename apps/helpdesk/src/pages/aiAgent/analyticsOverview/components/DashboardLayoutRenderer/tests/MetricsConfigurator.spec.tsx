@@ -6,6 +6,7 @@ import { useUpdateManagedDashboard } from 'domains/reporting/hooks/managed-dashb
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import { MetricsConfigurator } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator'
+import { ManagedDashboardsTabId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 jest.mock('@repo/reporting', () => ({
     ConfigureMetricsModal: jest.fn(() => null),
@@ -92,7 +93,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -108,7 +109,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -132,7 +133,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -156,7 +157,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -201,7 +202,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -217,7 +218,7 @@ describe('MetricsConfigurator', () => {
 
         expect(mockUpdateSection).toHaveBeenCalledWith(
             'ai-agent-overview',
-            'tab_main',
+            ManagedDashboardsTabId.Overview,
             'Main',
             mockLayoutConfig,
             'section_kpis',
@@ -237,7 +238,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-analytics"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="all-agents"
+                tabId={ManagedDashboardsTabId.AllAgents}
                 tabName="All Agents"
             />,
         )
@@ -253,7 +254,7 @@ describe('MetricsConfigurator', () => {
 
         expect(mockUpdateSection).toHaveBeenCalledWith(
             'ai-agent-analytics',
-            'all-agents',
+            ManagedDashboardsTabId.AllAgents,
             'All Agents',
             mockLayoutConfig,
             'section_kpis',
@@ -283,7 +284,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={layoutWithNoKpis}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -299,7 +300,7 @@ describe('MetricsConfigurator', () => {
 
         expect(mockUpdateSection).toHaveBeenCalledWith(
             'ai-agent-overview',
-            'tab_main',
+            ManagedDashboardsTabId.Overview,
             'Main',
             layoutWithNoKpis,
             'section_kpis',
@@ -319,7 +320,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -386,7 +387,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics.slice(0, 2)}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={layoutWithFeatureFlag}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -418,7 +419,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )
@@ -470,7 +471,7 @@ describe('MetricsConfigurator', () => {
                 metrics={mockMetrics}
                 dashboardId="ai-agent-overview"
                 currentLayoutConfig={mockLayoutConfig}
-                tabId="tab_main"
+                tabId={ManagedDashboardsTabId.Overview}
                 tabName="Main"
             />,
         )

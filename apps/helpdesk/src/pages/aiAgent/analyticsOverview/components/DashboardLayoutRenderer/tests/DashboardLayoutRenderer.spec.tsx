@@ -9,7 +9,18 @@ import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/Analytic
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
-import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+
+const { createContext, useContext } =
+    jest.requireActual<typeof import('react')>('react')
+
+const ButtonGroupContext = createContext<{
+    selectedKey: string | undefined
+    onSelectionChange: (key: string) => void
+}>({ selectedKey: undefined, onSelectionChange: () => {} })
 
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
@@ -50,6 +61,47 @@ jest.mock('@repo/feature-flags', () => ({
             'ai-agent-analytics-dashboards-trend-cards',
     },
     useFlag: jest.fn(),
+}))
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    ButtonGroup: ({
+        children,
+        selectedKey,
+        onSelectionChange,
+    }: {
+        children: React.ReactNode
+        selectedKey?: string
+        onSelectionChange?: (key: string) => void
+    }) => (
+        <ButtonGroupContext.Provider
+            value={{
+                selectedKey,
+                onSelectionChange: onSelectionChange ?? (() => {}),
+            }}
+        >
+            <div role="group">{children}</div>
+        </ButtonGroupContext.Provider>
+    ),
+    ButtonGroupItem: ({
+        children,
+        id,
+    }: {
+        children: React.ReactNode
+        id?: string
+    }) => {
+        const { selectedKey, onSelectionChange } =
+            useContext(ButtonGroupContext)
+        return (
+            <button
+                role="radio"
+                aria-checked={id === selectedKey}
+                onClick={() => id && onSelectionChange(id)}
+            >
+                {children}
+            </button>
+        )
+    },
 }))
 
 jest.mock('framer-motion', () => ({
@@ -129,6 +181,19 @@ const tableLayoutConfig: DashboardLayoutConfig = {
     ],
 }
 
+const multiTableLayoutConfig: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'tables',
+            type: ChartType.Table,
+            items: [
+                { chartId: 'table1' as any, gridSize: 12, visibility: true },
+                { chartId: 'table2' as any, gridSize: 12, visibility: true },
+            ],
+        },
+    ],
+}
+
 const mixedLayoutConfig: DashboardLayoutConfig = {
     sections: [
         {
@@ -175,6 +240,7 @@ const reportConfigMock = {
         chart1: { chartComponent: () => null, label: 'Chart 1' },
         chart2: { chartComponent: () => null, label: 'Chart 2' },
         table1: { chartComponent: () => null, label: 'Table 1' },
+        table2: { chartComponent: () => null, label: 'Table 2' },
         [AnalyticsOverviewChart.AutomationRateCard]: {
             chartComponent: () => null,
             label: 'Automation Rate',
@@ -228,6 +294,8 @@ describe('DashboardLayoutRenderer', () => {
             <DashboardLayoutRenderer
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
+                tabId={ManagedDashboardsTabId.AllAgents}
+                tabName="All Agents"
                 dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
@@ -292,6 +360,8 @@ describe('DashboardLayoutRenderer', () => {
             <DashboardLayoutRenderer
                 defaultLayoutConfig={DEFAULT_ANALYTICS_OVERVIEW_LAYOUT}
                 reportConfig={reportConfigMock}
+                tabId={ManagedDashboardsTabId.AllAgents}
+                tabName="All Agents"
                 dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
@@ -329,6 +399,8 @@ describe('DashboardLayoutRenderer', () => {
             <DashboardLayoutRenderer
                 defaultLayoutConfig={customConfig}
                 reportConfig={reportConfigMock}
+                tabId={ManagedDashboardsTabId.AllAgents}
+                tabName="All Agents"
                 dashboardId={ManagedDashboardId.AiAgentOverview}
             />,
         )
@@ -361,12 +433,13 @@ describe('DashboardLayoutRenderer', () => {
             mockedUseFlag.mockReset()
         })
 
-        it('should render KPI items with tabKey', () => {
+        it('should render KPI items with tabId', () => {
             render(
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
-                    tabKey="test-tab"
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -410,6 +483,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={configWithHiddenItems}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -436,6 +511,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -453,6 +530,8 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi2',
                     ])}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -467,6 +546,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -481,6 +562,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -498,6 +581,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -520,6 +605,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={sixKpisConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -543,6 +630,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={chartsLayoutConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -558,6 +647,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={tableLayoutConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -572,6 +663,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={mixedLayoutConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -598,6 +691,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={manyKpisConfig}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -619,6 +714,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -635,6 +732,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpisLayoutConfig()}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -655,6 +754,8 @@ describe('DashboardLayoutRenderer', () => {
                         'kpi3',
                     ])}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -662,6 +763,38 @@ describe('DashboardLayoutRenderer', () => {
             expect(
                 screen.getByText('MetricsConfigurator with 3 metrics'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('Table section state isolation', () => {
+        it('should reset table selection to the first table when tabId changes', async () => {
+            const user = userEventLib.setup()
+
+            const { rerender } = render(
+                <DashboardLayoutRenderer
+                    defaultLayoutConfig={multiTableLayoutConfig}
+                    reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                />,
+            )
+
+            await user.click(screen.getByRole('radio', { name: 'Table 2' }))
+            expect(screen.getByText('Chart: table2')).toBeInTheDocument()
+
+            rerender(
+                <DashboardLayoutRenderer
+                    defaultLayoutConfig={multiTableLayoutConfig}
+                    reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.SupportAgent}
+                    tabName="Support Agent"
+                    dashboardId={ManagedDashboardId.AiAgentAnalytics}
+                />,
+            )
+
+            expect(screen.getByText('Chart: table1')).toBeInTheDocument()
+            expect(screen.queryByText('Chart: table2')).not.toBeInTheDocument()
         })
     })
 
@@ -677,6 +810,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -691,6 +826,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(false)}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )
@@ -705,6 +842,8 @@ describe('DashboardLayoutRenderer', () => {
                 <DashboardLayoutRenderer
                     defaultLayoutConfig={createKpiConfigWithFeatureFlag(true)}
                     reportConfig={reportConfigMock}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                    tabName="All Agents"
                     dashboardId={ManagedDashboardId.AiAgentOverview}
                 />,
             )

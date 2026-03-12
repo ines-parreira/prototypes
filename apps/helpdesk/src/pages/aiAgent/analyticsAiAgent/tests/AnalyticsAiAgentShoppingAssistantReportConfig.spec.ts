@@ -141,15 +141,29 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Graph)
     })
 
-    it('should have performance table config', () => {
+    it('should have channel performance table config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart.PerformanceTable
+                AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Performance breakdown')
+        expect(config.label).toBe('Channel')
         expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).toBeNull()
+    })
+
+    it('should have top products performance table config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart
+                    .TopProductsPerformanceTable
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Top products recommended')
+        expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).toBeNull()
     })
 
     it('should have correct report filters', () => {
@@ -323,24 +337,22 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         }
     })
 
-    it('should have fetch function for performance breakdown', async () => {
+    it('should have null csvProducer for channel performance table', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart.PerformanceTable
+                AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable
             ]
 
-        expect(config.csvProducer).toBeDefined()
-        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer).toBeNull()
+    })
 
-        const csvProducer = config.csvProducer?.[0]
-        expect(csvProducer).toBeDefined()
+    it('should have null csvProducer for top products performance table', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart
+                    .TopProductsPerformanceTable
+            ]
 
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(config.csvProducer).toBeNull()
     })
 })

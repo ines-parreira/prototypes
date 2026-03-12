@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
@@ -12,7 +12,10 @@ import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPa
 import { useSearchParam } from 'hooks/useSearchParam'
 import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
-import { ManagedDashboardId } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { useAiAgentAnalyticsDashboardTracking } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -53,8 +56,11 @@ const HEADER_NAVBAR_ITEMS = [
 export const AnalyticsAiAgentLayout = () => {
     useCleanStatsFilters()
     const contentRef = useRef<HTMLDivElement>(null)
-    const { onAnalyticsReportViewed, onAnalyticsAiAgentTabSelected } =
-        useAiAgentAnalyticsDashboardTracking()
+    const {
+        onAnalyticsReportViewed,
+        onAnalyticsAiAgentTabSelected,
+        onTableTabInteraction,
+    } = useAiAgentAnalyticsDashboardTracking()
 
     useEffectOnce(() => {
         const previousUrl = getPreviousUrl()
@@ -89,6 +95,15 @@ export const AnalyticsAiAgentLayout = () => {
         }
     }, [activeTab])
 
+    const handleTableTabChange = useCallback(
+        (key: string) =>
+            onTableTabInteraction({
+                reportName: `${STATS_ROUTES.ANALYTICS_AI_AGENT}/${activeTab}`,
+                tableTab: key,
+            }),
+        [onTableTabInteraction, activeTab],
+    )
+
     const renderDashboard = useMemo(() => {
         switch (activeTab) {
             case AiAgentAnalyticsQueryParams.AllAgents:
@@ -98,10 +113,10 @@ export const AnalyticsAiAgentLayout = () => {
                             ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT
                         }
                         reportConfig={AnalyticsAiAgentAllAgentsReportConfig}
-                        tabKey={AiAgentAnalyticsQueryParams.AllAgents}
                         dashboardId={ManagedDashboardId.AiAgentAnalytics}
-                        tabId={AiAgentAnalyticsQueryParams.AllAgents}
+                        tabId={ManagedDashboardsTabId.AllAgents}
                         tabName={AiAgentAnalyticsContent.AllAgents}
+                        onTableTabChange={handleTableTabChange}
                     />
                 )
             case AiAgentAnalyticsQueryParams.SupportAgent:
@@ -111,10 +126,10 @@ export const AnalyticsAiAgentLayout = () => {
                             ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT
                         }
                         reportConfig={AnalyticsAiAgentSupportAgentReportConfig}
-                        tabKey={AiAgentAnalyticsQueryParams.SupportAgent}
                         dashboardId={ManagedDashboardId.AiAgentAnalytics}
-                        tabId={AiAgentAnalyticsQueryParams.SupportAgent}
+                        tabId={ManagedDashboardsTabId.SupportAgent}
                         tabName={AiAgentAnalyticsContent.SupportAgent}
+                        onTableTabChange={handleTableTabChange}
                     />
                 )
             case AiAgentAnalyticsQueryParams.ShoppingAssistant:
@@ -126,16 +141,16 @@ export const AnalyticsAiAgentLayout = () => {
                         reportConfig={
                             AnalyticsAiAgentShoppingAssistantReportConfig
                         }
-                        tabKey={AiAgentAnalyticsQueryParams.ShoppingAssistant}
                         dashboardId={ManagedDashboardId.AiAgentAnalytics}
-                        tabId={AiAgentAnalyticsQueryParams.ShoppingAssistant}
+                        tabId={ManagedDashboardsTabId.ShoppingAssistant}
                         tabName={AiAgentAnalyticsContent.ShoppingAssistant}
+                        onTableTabChange={handleTableTabChange}
                     />
                 )
             default:
                 return null
         }
-    }, [activeTab])
+    }, [activeTab, handleTableTabChange])
 
     const handleTabChangeCallback = ({
         tabParam,

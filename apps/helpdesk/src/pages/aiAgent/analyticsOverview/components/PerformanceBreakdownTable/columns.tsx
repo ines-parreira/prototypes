@@ -1,14 +1,16 @@
-import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
-
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Icon, Skeleton, Text } from '@gorgias/axiom'
 
-import css from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable.less'
-import { SortableHeaderCell } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/SortableHeaderCell'
 import type {
-    FeatureMetrics,
-    PerformanceMetricsPerFeature,
-} from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+    MetricColumnConfig,
+    MetricLoadingStates,
+} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
+import {
+    buildMetricColumnDefs as buildGenericMetricColumnDefs,
+    buildNameColumnDef,
+} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
+import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+
+import css from './PerformanceBreakdownTable.less'
 
 export const PERFORMANCE_BREAKDOWN_TABLE = {
     title: 'Performance breakdown',
@@ -16,21 +18,7 @@ export const PERFORMANCE_BREAKDOWN_TABLE = {
         'Automation performance metrics per feature, including automation rate, automated interactions, handovers, cost saved, and time saved.',
 }
 
-type LoadingStates = PerformanceMetricsPerFeature['loadingStates']
-type MetricFormat = Parameters<typeof formatMetricValue>[1]
-
-type PerformanceColumnConfig = {
-    accessorKey: keyof Omit<FeatureMetrics, 'feature'>
-    label: string
-    tooltipTitle: string
-    tooltipCaption: string
-    metricFormat: MetricFormat
-    loadingStateKeys: (keyof LoadingStates)[]
-    skeletonWidth?: string
-    showNotAvailable?: boolean
-}
-
-export const PERFORMANCE_BREAKDOWN_COLUMNS: PerformanceColumnConfig[] = [
+export const PERFORMANCE_BREAKDOWN_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'automationRate',
         label: 'Overall automation rate',
@@ -81,87 +69,20 @@ export const PERFORMANCE_BREAKDOWN_COLUMNS: PerformanceColumnConfig[] = [
 ]
 
 export function buildFeatureColumnDef(): ColumnDef<FeatureMetrics> {
-    return {
-        accessorKey: 'feature',
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="xxxs"
-                    className={css.featureName}
-                >
-                    <Text size="sm" variant="bold">
-                        Feature
-                    </Text>
-                    <span
-                        style={{
-                            visibility: sortDirection ? 'visible' : 'hidden',
-                        }}
-                    >
-                        <Icon
-                            name={
-                                sortDirection === 'asc'
-                                    ? 'arrow-down'
-                                    : 'arrow-up'
-                            }
-                            size="xs"
-                        />
-                    </span>
-                </Box>
-            )
-        },
-        meta: { displayName: 'Feature' },
-        cell: (info) => (
-            <Text size="md" variant="bold" className={css.featureName}>
-                {info.getValue() as string}
-            </Text>
-        ),
-        enableHiding: false,
-    }
+    return buildNameColumnDef<FeatureMetrics>(
+        'feature',
+        'Feature',
+        css.featureName,
+    )
 }
 
 export function buildMetricColumnDefs(
-    loadingStates: LoadingStates,
+    loadingStates: MetricLoadingStates,
 ): ColumnDef<FeatureMetrics>[] {
-    return PERFORMANCE_BREAKDOWN_COLUMNS.map((config) => ({
-        accessorKey: config.accessorKey,
-        enableHiding: true,
-        meta: { displayName: config.label },
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <SortableHeaderCell
-                    label={config.label}
-                    sortDirection={sortDirection}
-                    tooltipTitle={config.tooltipTitle}
-                    tooltipCaption={config.tooltipCaption}
-                    className={css.headerWithIcon}
-                />
-            )
-        },
-        cell: (info) => {
-            const value = info.getValue() as number | null
-            const feature = info.row.original.feature
-            const isLoading = config.loadingStateKeys.some(
-                (key) => loadingStates[key],
-            )
-            if (isLoading && value === null) {
-                return (
-                    <Skeleton
-                        key={`${feature}-${config.accessorKey}`}
-                        width={config.skeletonWidth ?? '60px'}
-                        height="20px"
-                    />
-                )
-            }
-
-            if (config.showNotAvailable && value !== null && isNaN(value)) {
-                return NOT_AVAILABLE_PLACEHOLDER
-            }
-
-            return formatMetricValue(value, config.metricFormat, 'USD', true)
-        },
-    }))
+    return buildGenericMetricColumnDefs<FeatureMetrics>(
+        PERFORMANCE_BREAKDOWN_COLUMNS,
+        loadingStates,
+        (row) => row.feature,
+        css.headerWithIcon,
+    )
 }

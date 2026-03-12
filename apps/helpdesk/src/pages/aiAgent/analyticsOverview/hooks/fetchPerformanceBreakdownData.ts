@@ -32,6 +32,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { fetchHandoverInteractionsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature'
+import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -252,7 +253,12 @@ export const fetchPerformanceMetricsPerFeature = async (
     const rows = data.map((row) => [
         row.feature,
         ...PERFORMANCE_BREAKDOWN_COLUMNS.map((col) =>
-            formatMetricValue(row[col.accessorKey], col.metricFormat),
+            formatMetricValue(
+                row[
+                    col.accessorKey as Exclude<keyof FeatureMetrics, 'feature'>
+                ],
+                col.metricFormat,
+            ),
         ),
     ])
 
