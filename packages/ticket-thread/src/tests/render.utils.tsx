@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react'
 
-import type { DateTimeResultFormatType } from '@repo/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type {
     RenderHookOptions as RenderHookOptionsPrimitive,
@@ -38,7 +37,6 @@ export const testAppQueryClient = createTestQueryClient()
 type LegacyBridgeOptions = {
     currentTicketShoppingAssistantData?: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData?: CurrentTicketRuleSuggestionData
-    datetimeFormat?: DateTimeResultFormatType
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -66,7 +64,6 @@ const defaultOptions = {
     currentTicketRuleSuggestionData: {
         shouldDisplayDemoSuggestion: true,
     },
-    datetimeFormat: 'YYYY-MM-DD',
 }
 
 export const render = (element: ReactElement, options?: RenderOptions) => {
@@ -84,8 +81,6 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         currentTicketRuleSuggestionData:
             mergedOptions.currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
-        datetimeFormat:
-            mergedOptions.datetimeFormat ?? defaultOptions.datetimeFormat,
     }
 
     const result = renderPrimitive(element, {
@@ -125,8 +120,6 @@ export const renderHook = <TProps, TResult>(
         currentTicketRuleSuggestionData:
             mergedOptions.currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
-        datetimeFormat:
-            mergedOptions.datetimeFormat ?? defaultOptions.datetimeFormat,
     }
 
     return renderHookPrimitive(hook, {

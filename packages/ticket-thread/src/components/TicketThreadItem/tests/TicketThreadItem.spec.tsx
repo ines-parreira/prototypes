@@ -12,6 +12,7 @@ import {
 import { PHONE_EVENTS } from '../../../hooks/events/constants'
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
@@ -25,6 +26,7 @@ const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
     server.use(
+        getCurrentUserHandler().handler,
         mockListIntegrationsHandler(async () =>
             HttpResponse.json(
                 mockListIntegrationsResponse({
@@ -49,7 +51,6 @@ beforeEach(() => {
         ).handler,
     )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
-        datetimeFormat: 'YYYY-MM-DD',
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
             shopifyOrders: [],

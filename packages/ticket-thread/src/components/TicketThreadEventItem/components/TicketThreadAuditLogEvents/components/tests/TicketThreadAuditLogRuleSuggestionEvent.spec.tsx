@@ -2,7 +2,9 @@ import { screen } from '@testing-library/react'
 
 import type { TicketThreadAuditLogEventByType } from '../../../../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../../../../hooks/types'
+import { getCurrentUserHandler } from '../../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../../tests/render.utils'
+import { server } from '../../../../../../tests/server'
 import { TicketThreadAuditLogRuleSuggestionEvent } from '../TicketThreadAuditLogRuleSuggestionEvent'
 
 function buildRuleSuggestionItem(
@@ -36,6 +38,10 @@ function renderItem(
 }
 
 describe('TicketThreadAuditLogRuleSuggestionEvent', () => {
+    beforeEach(() => {
+        server.use(getCurrentUserHandler().handler)
+    })
+
     it('renders nothing when slug is missing', () => {
         const { container } = renderItem(
             buildRuleSuggestionItem('rule-suggestion-suggested', {}),

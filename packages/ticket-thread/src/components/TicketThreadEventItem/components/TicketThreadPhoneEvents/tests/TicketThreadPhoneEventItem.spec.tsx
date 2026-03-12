@@ -12,6 +12,7 @@ import {
 
 import type { TicketThreadPhoneEventItem } from '../../../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../../../hooks/types'
+import { getCurrentUserHandler } from '../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../tests/render.utils'
 import { server } from '../../../../../tests/server'
 import { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemComponent } from '../TicketThreadPhoneEventItem'
@@ -86,7 +87,7 @@ function buildItem({
 
 describe('TicketThreadPhoneEventItem', () => {
     beforeEach(() => {
-        server.use(getUsersHandler([]).handler)
+        server.use(getCurrentUserHandler().handler, getUsersHandler([]).handler)
     })
 
     it.each<[TicketThreadPhoneEventItem['data']['type'], string]>([
@@ -305,6 +306,6 @@ describe('TicketThreadPhoneEventItem', () => {
     it('renders the event datetime', () => {
         render(<TicketThreadPhoneEventItemComponent item={buildItem()} />)
 
-        expect(screen.getByText('2024-03-21')).toBeInTheDocument()
+        expect(screen.getByText('03/21/2024')).toBeInTheDocument()
     })
 })

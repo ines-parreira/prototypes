@@ -5,7 +5,9 @@ import { screen } from '@testing-library/react'
 import { SYSTEM_RULE_TYPE } from '../../../../../../../hooks/events/constants'
 import type { TicketThreadAuditLogEventByType } from '../../../../../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../../../../../hooks/types'
+import { getCurrentUserHandler } from '../../../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../../../tests/render.utils'
+import { server } from '../../../../../../../tests/server'
 import { TicketThreadAuditLogRuleExecutedEvent } from '../TicketThreadAuditLogRuleExecutedEvent'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => {
@@ -44,6 +46,10 @@ function renderItem(item: TicketThreadAuditLogEventByType<'rule-executed'>) {
 }
 
 describe('TicketThreadAuditLogRuleExecutedEvent', () => {
+    beforeEach(() => {
+        server.use(getCurrentUserHandler().handler)
+    })
+
     it('renders nothing for system rules', () => {
         const { container } = renderItem(
             buildItem({

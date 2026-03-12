@@ -19,6 +19,7 @@ import type {
     TicketThreadSingleEventItem as TicketThreadSingleEventItemType,
 } from '../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { TicketThreadSingleEventItem } from '../TicketTheadEventItem'
@@ -81,6 +82,7 @@ function renderGroupedItem(item: TicketThreadGroupedEventsItemType) {
 describe('TicketThreadEventItem', () => {
     beforeEach(() => {
         server.use(
+            getCurrentUserHandler().handler,
             mockListIntegrationsHandler(async () =>
                 HttpResponse.json(
                     mockListIntegrationsResponse({

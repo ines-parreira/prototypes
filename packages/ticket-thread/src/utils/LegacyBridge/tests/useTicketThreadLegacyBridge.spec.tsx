@@ -87,7 +87,6 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 currentTicketRuleSuggestionData={{
                     shouldDisplayDemoSuggestion: false,
                 }}
-                datetimeFormat="MMM D, YYYY [at] h:mm A"
             >
                 <span>legacy child</span>
             </TicketThreadLegacyBridgeProvider>,

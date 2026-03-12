@@ -4,7 +4,9 @@ import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
+import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
+import { server } from '../../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../TicketThreadMessageItem'
 
@@ -15,8 +17,8 @@ vi.mock('../../../utils/LegacyBridge', () => ({
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
+    server.use(getCurrentUserHandler().handler)
     mockUseTicketThreadLegacyBridge.mockReturnValue({
-        datetimeFormat: 'YYYY-MM-DD',
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
             shopifyOrders: [],

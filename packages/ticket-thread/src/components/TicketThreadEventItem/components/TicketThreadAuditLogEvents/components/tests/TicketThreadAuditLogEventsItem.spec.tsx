@@ -18,6 +18,7 @@ import type {
     TicketThreadAuditLogEventByType,
 } from '../../../../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../../../../hooks/types'
+import { getCurrentUserHandler } from '../../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../../tests/render.utils'
 import { server } from '../../../../../../tests/server'
 import { TicketThreadAuditLogEventItem } from '../../TicketThreadAuditLogEventItem'
@@ -90,6 +91,7 @@ function renderAuditEvent<TType extends TicketThreadAuditLogEvent['type']>(
 describe('TicketThread audit-log rendering', () => {
     beforeEach(() => {
         server.use(
+            getCurrentUserHandler().handler,
             getTagsHandler([
                 mockTag({
                     id: 1,

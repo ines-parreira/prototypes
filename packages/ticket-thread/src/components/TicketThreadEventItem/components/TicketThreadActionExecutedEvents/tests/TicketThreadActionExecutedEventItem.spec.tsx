@@ -14,6 +14,7 @@ import {
 
 import type { TicketThreadActionExecutedEventItem } from '../../../../../hooks/events/types'
 import { TicketThreadItemTag } from '../../../../../hooks/types'
+import { getCurrentUserHandler } from '../../../../../tests/getCurrentUser.mock'
 import { render } from '../../../../../tests/render.utils'
 import { server } from '../../../../../tests/server'
 import { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemComponent } from '../TicketThreadActionExecutedEventItem'
@@ -116,6 +117,10 @@ function getIconUseElement(container: HTMLElement, iconName: string) {
 }
 
 describe('TicketThreadActionExecutedEventItem', () => {
+    beforeEach(() => {
+        server.use(getCurrentUserHandler().handler)
+    })
+
     it('renders shopify row with logo, label, order link, store, author, and date', async () => {
         server.use(
             getIntegrationsHandler([
@@ -151,7 +156,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
             'https://main-shop.myshopify.com/admin/orders/360037000',
         )
         expect(await screen.findByText('Alex Agent')).toBeInTheDocument()
-        expect(screen.getByText('2024-03-21')).toBeInTheDocument()
+        expect(screen.getByText('03/21/2024')).toBeInTheDocument()
         expect(getIconUseElement(container, 'app-shopify')).toBeTruthy()
     })
 

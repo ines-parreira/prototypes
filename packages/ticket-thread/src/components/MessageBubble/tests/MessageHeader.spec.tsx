@@ -5,8 +5,8 @@ import type * as Axiom from '@gorgias/axiom'
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
+import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
-import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageHeader } from '../MessageHeader'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => {
@@ -18,12 +18,14 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
     }
 })
 
-vi.mock('../../../utils/LegacyBridge', () => ({
-    useTicketThreadLegacyBridge: vi.fn(),
+vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
+    useTicketThreadDateTimeFormat: vi.fn(),
 }))
 
 const mockAvatar = vi.mocked(Avatar)
-const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
+const mockUseTicketThreadDateTimeFormat = vi.mocked(
+    useTicketThreadDateTimeFormat,
+)
 
 const baseItem: TicketThreadRegularMessageItem = {
     _tag: TicketThreadItemTag.Messages.Message,
@@ -48,14 +50,9 @@ const baseItem: TicketThreadRegularMessageItem = {
 }
 
 beforeEach(() => {
-    mockUseTicketThreadLegacyBridge.mockReturnValue({
+    mockUseTicketThreadDateTimeFormat.mockReturnValue({
         datetimeFormat: 'YYYY-MM-DD',
-        currentTicketShoppingAssistantData: {
-            influencedOrders: [],
-            shopifyOrders: [],
-            shopifyIntegrations: [],
-        },
-        currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
+        timezone: undefined,
     })
 })
 
@@ -93,6 +90,17 @@ describe('MessageHeader', () => {
         renderHeader()
 
         expect(screen.getByText('2024-03-21')).toBeInTheDocument()
+    })
+
+    it('formats the datetime using the agent timezone when provided', () => {
+        mockUseTicketThreadDateTimeFormat.mockReturnValue({
+            datetimeFormat: 'YYYY-MM-DD HH:mm',
+            timezone: 'America/Los_Angeles',
+        })
+
+        renderHeader()
+
+        expect(screen.getByText('2024-03-20 17:00')).toBeInTheDocument()
     })
 
     it('passes the sender profile picture url to Avatar', () => {
