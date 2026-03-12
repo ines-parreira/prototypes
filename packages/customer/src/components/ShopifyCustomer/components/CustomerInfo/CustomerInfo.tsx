@@ -1,6 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
+import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
 import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
@@ -21,6 +22,7 @@ import { createAddressFieldDefinitions } from './addressesFields'
 import { CollapsibleFieldSection } from './CollapsibleFieldSection'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { IntermediateEditPanel } from './IntermediateEditPanel'
+import { MetafieldsSection } from './MetafieldsSection'
 import { NoShopifyProfile } from './NoShopifyProfile'
 import type { EditShippingAddressModalRenderProps } from './OrderSidePanelPreview'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
@@ -253,6 +255,13 @@ export function CustomerInfo({
                             <CustomerInfoFieldList
                                 fields={customerFields}
                                 context={context}
+                            />
+                            <MetafieldsSection
+                                integrationId={selectedIntegration?.id}
+                                metafields={normalizeMetafields(
+                                    shopper?.data?.metafields,
+                                )}
+                                storeName={selectedIntegration?.name}
                             />
                             {sections.map((section) => {
                                 if (section.key === 'addresses') {

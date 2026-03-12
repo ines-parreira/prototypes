@@ -32,6 +32,7 @@ const testShopperData: ShopperData = {
     admin_graphql_api_id: 'gid://shopify/Customer/789',
     default_address: null,
     tags: '',
+    metafields: [],
 }
 
 const testIntegrationId = 42

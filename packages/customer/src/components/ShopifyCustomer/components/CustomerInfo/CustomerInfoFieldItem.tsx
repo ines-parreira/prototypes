@@ -4,6 +4,8 @@ import { OverflowListItem, Text } from '@gorgias/axiom'
 
 import type { FieldConfig, FieldRenderContext } from './types'
 
+import css from './CustomerInfoFieldItem.less'
+
 type Props = {
     field: FieldConfig
     context: FieldRenderContext
@@ -25,8 +27,10 @@ export function CustomerInfoFieldItem({ field, context, className }: Props) {
 
     return (
         <OverflowListItem className={className}>
-            <FieldRow label={field.label}>
-                <Text size="sm">{displayValue}</Text>
+            <FieldRow label={field.label} className={css.fieldRow}>
+                <Text size="sm" overflow="ellipsis" className={css.fieldValue}>
+                    {displayValue}
+                </Text>
             </FieldRow>
         </OverflowListItem>
     )

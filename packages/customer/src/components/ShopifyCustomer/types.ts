@@ -1,3 +1,5 @@
+import type { FullShopifyMetafield } from '@repo/ecommerce/shopify/components'
+
 export type MoneyAmount = {
     amount: string
     currencyCode: string
@@ -61,6 +63,7 @@ export type ShopperData = {
     admin_graphql_api_id: string
     default_address: ShopperAddress | null
     tags: string
+    metafields: FullShopifyMetafield[]
 }
 
 export type ShopperEcommerceData = {

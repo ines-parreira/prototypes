@@ -4,7 +4,7 @@ import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box, Text } from '@gorgias/axiom'
 
-import { OrderMetafieldsSection } from './OrderMetafieldsSection'
+import { MetafieldsSection } from './MetafieldsSection'
 import type { OrderFieldRenderContext } from './types'
 import { useOrderDetailsFieldPreferences } from './useOrderDetailsFieldPreferences'
 
@@ -99,7 +99,7 @@ export function OrderDetailsSection({
                         </Box>
                     )
                 })}
-                <OrderMetafieldsSection
+                <MetafieldsSection
                     integrationId={integrationId}
                     metafields={normalizeMetafields(order.metafields)}
                     storeName={storeName}

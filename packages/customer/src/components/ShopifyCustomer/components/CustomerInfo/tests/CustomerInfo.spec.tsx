@@ -111,6 +111,7 @@ const mockShopperData = {
     admin_graphql_api_id: 'gid://shopify/Customer/12345',
     default_address: null,
     tags: '',
+    metafields: [],
 }
 
 const mockGetEcommerceData = mockGetEcommerceDataByExternalIdHandler(async () =>
@@ -633,6 +634,75 @@ describe('CustomerInfo', () => {
                     screen.getByRole('heading', { name: /order #1001/i }),
                 ).toBeInTheDocument()
             })
+        })
+
+        it('renders customer metafields above the orders list', async () => {
+            vi.mocked(useGetOrders).mockReturnValue({
+                orders: [mockOrder],
+                isLoadingOrders: false,
+                refetchOrders: vi.fn(),
+            })
+
+            server.use(
+                http.get(
+                    '/api/integrations/shopify/:integrationId/metafield-definitions',
+                    () =>
+                        HttpResponse.json({
+                            data: [
+                                {
+                                    namespace: 'custom',
+                                    key: 'vip_tier',
+                                    name: 'VIP Tier',
+                                },
+                            ],
+                            meta: {},
+                        }),
+                ),
+                mockGetEcommerceDataByExternalIdHandler(async () =>
+                    HttpResponse.json(
+                        mockEcommerceData({
+                            data: {
+                                ...mockShopperData,
+                                metafields: [
+                                    {
+                                        namespace: 'custom',
+                                        key: 'vip_tier',
+                                        type: 'single_line_text_field',
+                                        value: 'Gold',
+                                    },
+                                ],
+                            },
+                            relationships: {
+                                shopper_identity_id: 'shopper-identity-1',
+                            },
+                        }),
+                    ),
+                ).handler,
+            )
+
+            render(
+                <CustomerInfo
+                    associatedShopifyCustomerIds={associatedShopifyCustomerIds}
+                    externalIdMap={externalIdMap}
+                    ticketId="123"
+                />,
+            )
+
+            let metafieldLabel: HTMLElement | undefined
+            let orderName: HTMLElement | undefined
+
+            await waitFor(() => {
+                metafieldLabel = screen.getByText('VIP Tier')
+                expect(screen.getByText('Gold')).toBeInTheDocument()
+                orderName = screen.getByText('#1001')
+            })
+
+            expect(metafieldLabel).toBeDefined()
+            expect(orderName).toBeDefined()
+            expect(
+                metafieldLabel!.compareDocumentPosition(orderName!) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            ).toBeTruthy()
         })
     })
 

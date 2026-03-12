@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
-import { OrderMetafieldsSection } from './OrderMetafieldsSection'
+import { MetafieldsSection } from './MetafieldsSection'
 
 const DEFINITIONS_URL =
     '/api/integrations/shopify/:integrationId/metafield-definitions'
@@ -31,17 +31,15 @@ afterAll(() => {
 
 const defaultProps = { integrationId: 1, metafields: [] }
 
-describe('OrderMetafieldsSection', () => {
+describe('MetafieldsSection', () => {
     it('renders nothing when there is no integrationId', () => {
-        const { container } = render(<OrderMetafieldsSection metafields={[]} />)
+        const { container } = render(<MetafieldsSection metafields={[]} />)
 
         expect(container.firstChild).toBeNull()
     })
 
     it('renders nothing when metafields is empty', async () => {
-        const { container } = render(
-            <OrderMetafieldsSection {...defaultProps} />,
-        )
+        const { container } = render(<MetafieldsSection {...defaultProps} />)
 
         await waitFor(() => {
             expect(container.firstChild).toBeNull()
@@ -50,7 +48,7 @@ describe('OrderMetafieldsSection', () => {
 
     it('renders nothing when metafield has no matching definition', async () => {
         const { container } = render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -69,12 +67,12 @@ describe('OrderMetafieldsSection', () => {
     })
 })
 
-describe('OrderMetafieldsSection — type rendering', () => {
+describe('MetafieldsSection — type rendering', () => {
     it('renders single_line_text_field as text', async () => {
         server.use(mockDefinitionsHandler([{ key: 'note', name: 'Note' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -97,7 +95,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[{ key: 'is_gift', type: 'boolean', value: true }]}
             />,
@@ -114,7 +112,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[{ key: 'is_gift', type: 'boolean', value: false }]}
             />,
@@ -131,7 +129,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -160,7 +158,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     { key: 'brand_color', type: 'color', value: '#FF5733' },
@@ -179,7 +177,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -200,7 +198,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'score', name: 'Score' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -221,7 +219,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'width', name: 'Width' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -244,7 +242,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     { key: 'event_date', type: 'date', value: '2024-01-15' },
@@ -264,7 +262,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -290,7 +288,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     { key: 'quantity', type: 'number_integer', value: 42 },
@@ -307,7 +305,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'config', name: 'Config' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -328,7 +326,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'tags', name: 'Tags' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -351,7 +349,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'links', name: 'Links' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -377,7 +375,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'scores', name: 'Scores' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -402,7 +400,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'dates', name: 'Dates' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -427,7 +425,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -453,7 +451,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -477,7 +475,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -500,7 +498,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         server.use(mockDefinitionsHandler([{ key: 'sizes', name: 'Sizes' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -530,7 +528,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -554,7 +552,7 @@ describe('OrderMetafieldsSection — type rendering', () => {
     })
 })
 
-describe('OrderMetafieldsSection — label resolution', () => {
+describe('MetafieldsSection — label resolution', () => {
     it('uses the definition name as label when available', async () => {
         server.use(
             mockDefinitionsHandler([
@@ -563,7 +561,7 @@ describe('OrderMetafieldsSection — label resolution', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -592,7 +590,7 @@ describe('OrderMetafieldsSection — label resolution', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {
@@ -614,7 +612,7 @@ describe('OrderMetafieldsSection — label resolution', () => {
         server.use(mockDefinitionsHandler([{ key: 'gift' }]))
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[{ key: 'gift', type: 'boolean', value: true }]}
             />,
@@ -633,7 +631,7 @@ describe('OrderMetafieldsSection — label resolution', () => {
         )
 
         render(
-            <OrderMetafieldsSection
+            <MetafieldsSection
                 {...defaultProps}
                 metafields={[
                     {

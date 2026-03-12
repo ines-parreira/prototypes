@@ -52,6 +52,7 @@ const mockOrderData: OrderEcommerceData = {
             admin_graphql_api_id: 'gid://shopify/Customer/456',
             default_address: null,
             tags: '',
+            metafields: [],
         },
     },
 }

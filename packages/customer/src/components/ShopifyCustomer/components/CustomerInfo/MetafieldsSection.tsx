@@ -15,7 +15,7 @@ type Props = {
     storeName?: string
 }
 
-export function OrderMetafieldsSection({
+export function MetafieldsSection({
     integrationId,
     metafields: metafieldsProp,
     storeName,
